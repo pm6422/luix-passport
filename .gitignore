@@ -51,3 +51,4 @@ nb-configuration.xml
 # Misc
 release.properties
 pom.xml.bak
+src/main/webapp/app/constants.js
