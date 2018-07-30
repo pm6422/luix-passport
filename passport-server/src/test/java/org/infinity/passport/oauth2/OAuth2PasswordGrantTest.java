@@ -6,8 +6,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.infinity.passport.PassportLauncher;
-import org.infinity.passport.config.ApplicationConstants;
 import org.infinity.passport.domain.MongoOAuth2ClientDetails;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +15,6 @@ import org.springframework.boot.json.JacksonJsonParser;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.util.Pair;
 import org.springframework.security.web.FilterChainProxy;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -26,9 +23,8 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 
+@SpringBootTest
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = PassportLauncher.class)
-@ActiveProfiles(ApplicationConstants.SPRING_PROFILE_TEST)
 public class OAuth2PasswordGrantTest {
 
     @Autowired
