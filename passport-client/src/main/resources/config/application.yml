@@ -1,0 +1,87 @@
+# ===================================================================
+# Spring Boot configuration.
+#
+# This configuration will be overriden by the Spring profile you use,
+# for example application-dev.yml if you use the "dev" profile.
+# ===================================================================
+
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
+info: # These configuration can be exported to Environment, accessing URL /info can get these properties
+    artifact:
+        id: @project.artifactId@
+        name: @project.name@
+        version: @project.version@
+    project:
+        package: ai.deepbrain.springbootsample
+spring:
+    application:
+        name: ${info.artifact.name}
+    profiles:
+        # The commented value for `active` can be replaced with valid spring profiles to load.
+        # Otherwise, it will be filled in by maven when building the WAR file
+        # Either way, it can be overridden by `--spring.profiles.active` value passed in the commandline or `-Dspring.profiles.active` set in `JAVA_OPTS`
+        active: @spring.profiles.active@
+    messages:
+        # Do not add the prefix classpath:, please refer to MessageSourceAutoConfiguration.getResources(ClassLoader classLoader, String name)
+        # TODO: basename only support the first massage resource for now.
+        basename: i18n/messages_zh_CN,i18n/messages_en_US
+        fallback-to-system-locale: false
+    mvc:
+        favicon:
+            enabled: false
+        locale: zh_CN
+    thymeleaf: #ThymeleafAutoConfiguration
+        mode: HTML
+    http:
+        multipart: # Management http multipart configuration, used by MultipartProperties
+            enabled: true
+            max-file-size: 30MB
+            max-request-size: 30MB
+    banner:
+        location: classpath:config/banner-company.txt
+    aop:
+        proxy-target-class: true
+    devtools:
+        restart:
+            enabled: true
+server: 
+    # It can be overridden by `--server.port` value passed in the commandline or `-Dserver.port` set in `JAVA_OPTS`
+    port: @app.server.port@
+    servlet:
+        session:
+            cookie:
+                name: ${info.artifact.name}
+logging:
+    config: classpath:config/logback-spring.xml
+    path: ${user.home}${file.separator}Log${file.separator}${info.artifact.id}${file.separator}${info.artifact.id}
+    level:
+        ROOT: DEBUG
+        ${info.project.package}: DEBUG
+security:
+    basic:
+        enabled: false
+    oauth2:
+        client:
+            accessTokenUri: ${zuul.routes.sso-server.url}/oauth/token
+            userAuthorizationUri: ${zuul.routes.sso-server.url}/oauth/authorize
+            clientId: internal_client
+            clientSecret: 65G-HD9-4PD-j9F-HP5
+        resource:
+            userInfoUri: ${zuul.routes.sso-server-account-open-api.url}/user
+zuul:
+    routes:
+        sso-server:
+            url: http://127.0.0.1:9010
+        sso-server-account:
+            path: /api/account/**
+            url: ${zuul.routes.sso-server.url}/api/account
+        sso-server-account-open-api:
+            path: /open-api/account/**
+            url: ${zuul.routes.sso-server.url}/open-api/account
+# ===================================================================
+# Application specific properties
+# ===================================================================

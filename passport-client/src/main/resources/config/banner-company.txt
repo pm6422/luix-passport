@@ -1,0 +1,6 @@
+------------------------------------------------------------------------
+-   ${AnsiColor.RED}${AnsiStyle.ITALIC}Passport System${AnsiStyle.NORMAL}${AnsiColor.DEFAULT}
+-   ${AnsiColor.BLUE}${AnsiBackground.YELLOW}http://www.infinity.org${AnsiBackground.DEFAULT}${AnsiColor.DEFAULT}
+-   ${AnsiColor.GREEN}Powered by SpringBoot${spring-boot.formatted-version}${AnsiColor.DEFAULT}
+-   ${AnsiColor.YELLOW}Designed by Louis${AnsiColor.DEFAULT}
+------------------------------------------------------------------------

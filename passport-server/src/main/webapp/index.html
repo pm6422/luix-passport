@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html ng-app="smartcloudserviceApp">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="shortcut icon" href="favicon.png">
+    <!-- Page title set in pageTitle directive -->
+    <title page-title-directive></title>
+
+    <!-- Bootstrap -->
+    <link href="content/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font awesome -->
+    <link href="content/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <!-- Toastr style -->
+    <link href="content/css/plugins/toaster/toaster.min.css" rel="stylesheet">
+    <!-- Sweet alert -->
+    <link href="content/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <!-- JSON formatter -->
+    <link href="content/css/plugins/json-formatter/json-formatter.css" rel="stylesheet">
+    <!-- Main CSS files -->
+    <link href="content/css/animate.css" rel="stylesheet">
+    <link id="loadBefore" href="content/css/style.css" rel="stylesheet">
+</head>
+
+<!-- Main controller with several data on different view -->
+<body ng-controller="MainController as main" class="{{$state.current.data.specialClass}}" landing-scrollspy id="page-top">
+    <!--[if lt IE 9]>
+        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+    <page-ribbon-directive></page-ribbon-directive>
+    <toaster-container toaster-options="{'close-button': false, 'time-out':{ 'toast-success': 2000, 'toast-warning': 4000, 'toast-error': 10000 }, 'position-class': 'toast-top-right'}"></toaster-container>
+    <!-- Layout view  -->
+    <div ui-view></div>
+
+    <!-- jQuery and Bootstrap -->
+    <script src="content/js/jquery/jquery-3.1.1.min.js"></script>
+    <script src="content/js/plugins/jquery-ui/jquery-ui.min.js"></script>
+    <script src="content/js/bootstrap/bootstrap.min.js"></script>
+    
+    <!-- MetisMenu -->
+    <script src="content/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    
+    <!-- SlimScroll -->
+    <script src="content/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    
+    <!-- Pace JS -->
+    <script src="content/js/plugins/pace/pace.min.js"></script>
+    
+    <!-- Custom and plugin javascript -->
+    <script src="app/customized.js"></script>
+    
+    <!-- Main Angular scripts-->
+    <script src="content/js/angular/angular.min.js"></script>
+    <script src="content/js/angular/angular-sanitize.js"></script>
+    <script src="content/js/angular/angular-aria.js"></script>
+    <script src="content/js/angular-translate/angular-translate.min.js"></script>
+    <script src="content/js/angular/ngstorage/ngStorage.min.js"></script>
+    <script src="content/js/angular/angular-resource.js"></script>
+    <script src="content/js/angular/angular-cookies.js"></script>
+    <script src="content/js/angular/angular-cache-buster/angular-cache-buster.js"></script>
+    
+    <script src="content/js/ui-router/angular-ui-router.min.js"></script>
+    <script src="content/js/plugins/oclazyload/dist/ocLazyLoad.min.js"></script>
+    <script src="content/js/bootstrap/ui-bootstrap-tpls-1.1.2.min.js"></script>
+    <script src="content/js/plugins/angular-idle/angular-idle.js"></script>
+    <!-- AngularJS Toaster -->
+    <script src="content/js/plugins/toaster/toaster.min.js"></script>
+    <!-- AngularJS Sweet Alert -->
+    <script src="content/js/plugins/sweetalert/sweetalert.min.js"></script>
+    <script src="content/js/plugins/sweetalert/angular-sweetalert.min.js"></script>
+    <!-- AngularJS Chart JS -->
+    <script src="content/js/plugins/chartJs/Chart.min.js"></script>
+    <script src="content/js/plugins/chartJs/angles.js"></script>
+    <!-- AngularJS JSON formatter -->
+    <script src="content/js/plugins/json-formatter/json-formatter.min.js"></script>
+    
+    <!-- App Script -->
+    <script src="app/modules.js"></script>
+    <script src="app/constants.js"></script>
+    <script src="app/services.js"></script>
+    <script src="app/translations.js"></script>
+    <script src="app/config.js"></script>
+    <script src="app/controllers.js"></script>
+    <script src="app/components.js"></script>
+    <script src="app/directives.js"></script>
+    <script src="app/interceptors.js"></script>
+    <script src="app/filters.js"></script>
+</body>
+</html>

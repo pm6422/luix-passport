@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<!-- Refer WhitelabelApprovalEndpoint,AuthorizationEndpoint -->
+<html xmlns:th="http://www.thymeleaf.org" xmlns:tiles="http://www.thymeleaf.org">
+    <head>
+        <title tiles:fragment="title">DeepBrain | Authorize</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="shortcut icon" th:href="@{/favicon.png}" />
+        <link rel="stylesheet" th:href="@{/content/css/bootstrap.css}" />
+        <link rel="stylesheet" th:href="@{/content/font-awesome/css/font-awesome.min.css}" />
+        <link rel="stylesheet" th:href="@{/content/css/animate.css}" />
+        <link rel="stylesheet" th:href="@{/content/css/style.css}" />
+    </head>
+    <body class="gray-bg" th:style="'background:url(' + @{/content/img/background/bg4.jpg} + ');background-size:cover;'">
+        <div class="ribbon hidden"><a href="" ></a></div>
+        <div class="middle-box text-center loginscreen animated bounceInDown">
+            <h1 class="logo-name" style="font-size:65px">Authorize</h1>
+            <br/>
+            <h3 class="text-info">
+                Do you authorize <strong th:text="${authorizationRequest.clientId}"></strong><br/> at 
+                <strong th:text="${authorizationRequest.redirectUri}"></strong><br/> to access your protected resources?
+            </h3>
+            <br/>
+            <form id="confirmationForm" name="confirmationForm" th:action="@{/oauth/authorize}" method="post">
+                <input type="hidden" name="user_oauth_approval" value="true">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <div class="row" th:each="scope: ${scopes}">
+                    <div class="form-group">
+                        <label><small th:text="${scope.key}" class="text-warning"></small></label>
+                        <div>
+                            <input type="radio" th:name="${scope.key}" value="true" th:checked="${scope.value}"><span class="text-info">&nbsp;&nbsp;Approve&nbsp;&nbsp;&nbsp;</span>
+                            <input type="radio" th:name="${scope.key}" value="false" th:checked="!${scope.value}"><span class="text-danger">&nbsp;&nbsp;Deny</span>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <input id="authorize" name="authorize" value="Authorize" type="submit" class="btn btn-warning m-b font-bold block full-width"></input>
+            </form>
+        </div>
+        <!-- Mainly scripts -->
+        <script th:src="@{/content/js/jquery/jquery-3.1.1.min.js}"></script>
+        <script th:src="@{/content/js/bootstrap/bootstrap.min.js}"></script>
+        
+        <script type="text/javascript">
+            <!-- Note: the front slash '/' cannot be deleted -->
+            $.get("/open-api/profile-info", function(result){
+                if(result.ribbonEnv) {
+                    $('div.ribbon').removeClass('hidden').find('a').text(result.ribbonEnv.toUpperCase());
+                }
+            });
+            $('#authorize').focus();
+        </script>
+    </body>
+</html>

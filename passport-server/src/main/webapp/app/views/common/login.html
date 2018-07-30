@@ -1,0 +1,28 @@
+<div class="middle-box text-center loginscreen animated bounceInDown">
+        <h1 class="logo-name" style="font-size:65px">PASSPORT</h1>
+        <h2 class="text-muted">Welcome to <br/><strong>Passport</strong></h2>
+        <form role="form" name="form" class="m-t" ng-submit="vm.login($event)" novalidate show-validation-directive>
+            <div class="alert alert-danger" ng-show="vm.errorMsg">
+                {{vm.errorMsg}}
+            </div>
+            <div class="form-group">
+                <input type="text" name="userName" class="form-control" placeholder="用户名/email/手机号" ng-model="vm.userName" required>
+            </div>
+            <div class="form-group">
+                <input type="password" name="password" class="form-control" placeholder="密码" ng-model="vm.password" required>
+            </div>
+            <button type="submit" class="btn btn-primary block full-width m-b font-bold" ng-disabled="form.$invalid || vm.isSaving">
+                <span class='fa fa-circle-o-notch fa-spin' ng-show="vm.isSaving"></span>
+                <span ng-hide="vm.isSaving">登录</span>
+            </button>
+            
+            <a class="text-warning font-bold" ui-sref="forgot-password"><small>忘记密码?</small></a>
+            <p class="text-muted text-center font-bold"><small>是否需要创建新账号?</small></p>
+            <a class="btn btn-sm btn-white btn-block font-bold" ui-sref="register">注册账号</a>
+        </form>
+        
+        <a class="text-warning font-bold"><small>用户名：louis 密码：louis</small></a>
+</div>
+<div class="navbar-fixed-bottom text-center">
+    <p class="m-t text-muted font-bold"><small>🅛🅞🅤🅘🅢 &copy; 2017</small></p>
+</div>

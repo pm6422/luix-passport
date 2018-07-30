@@ -1,0 +1,133 @@
+<div class="row border-bottom" ng-controller="NavbarController as vm" ng-switch="vm.isAuthenticated()">
+    <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <span minimalize-sidebar-directive></span>
+            <a class="navbar-brand p-h-m text-muted" href="#">&nbsp;&nbsp;&nbsp;
+                <span>{{APP_NAME}}</span>
+                <span class="navbar-version">v{{VERSION}}</span>
+            </a>
+        </div>
+        <form role="search" class="navbar-form-custom" autocomplete="off">
+            <div class="form-group">
+                <input type="text" id="top-search" name="top-search" placeholder="{{ 'SEARCH' | translate }}" 
+                class="form-control" ng-model="main.selectedLink" uib-typeahead="item as item.adminMenuChineseText for item in main.links | filter:$viewValue | limitTo:5"  
+                typeahead-on-select="main.selectLink($item, $model, $label, $event)">
+            </div>
+        </form>
+        <ul class="nav navbar-top-links navbar-right">
+            <li uib-dropdown ng-switch-when="true" has-authority-directive="ROLE_DEVELOPER">
+                <a class="count-info" href uib-dropdown-toggle>
+                    <span class="fa fa-child"></span>&nbsp;
+                    <span>开发者工具</span>
+                </a>
+                <ul uib-dropdown-menu class="animated fadeInDown m-t-xs">
+                    <li ng-hide="vm.swaggerDisabled" ui-sref-active="active">
+                        <a ui-sref="api" ng-click="vm.collapseNavbar()">
+                            <span class="fa fa-book"></span>&nbsp;
+                            <span>API</span>
+                        </a>
+                    </li>
+                    <li ng-hide="vm.swaggerDisabled" ui-sref-active="active">
+                        <a ui-sref="api-docs" ng-click="vm.collapseNavbar()">
+                            <span class="fa fa-list-alt"></span>&nbsp;
+                            <span>API Docs</span>
+                        </a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="metrics" ng-click="vm.collapseNavbar()">
+                            <span class="fa fa-dashboard"></span>&nbsp;
+                            <span>Metrics</span>
+                        </a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="health" ng-click="vm.collapseNavbar()">
+                            <span class="fa fa-heart"></span>&nbsp;
+                            <span>Health</span>
+                        </a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="configuration" ng-click="vm.collapseNavbar()">
+                            <span class="fa fa-wrench"></span>&nbsp;
+                            <span>Configuration</span>
+                        </a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="beans" ng-click="vm.collapseNavbar()">
+                            <span class="fa fa-bold"></span>&nbsp;
+                            <span>Beans</span>
+                        </a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="mappings" ng-click="vm.collapseNavbar()">
+                            <span class="fa fa-link"></span>&nbsp;
+                            <span>Mappings</span>
+                        </a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="http-trace" ng-click="vm.collapseNavbar()">
+                            <span class="fa fa-random"></span>&nbsp;
+                            <span>Http Trace</span>
+                        </a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="audits" ng-click="vm.collapseNavbar()">
+                            <span class="fa fa-bell"></span>&nbsp;
+                            <span>Audits</span>
+                        </a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="dict-list" ng-click="vm.collapseNavbar()">
+                            <span class="fa fa-th-large"></span>&nbsp;
+                            <span>Dictionary</span>
+                        </a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="dict-item-list" ng-click="vm.collapseNavbar()">
+                            <span class="fa fa-th"></span>&nbsp;
+                            <span>Dictionary Items</span>
+                        </a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="logger" ng-click="vm.collapseNavbar()">
+                            <span class="fa fa-tasks"></span>&nbsp;
+                            <span>Loggers</span>
+                        </a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="schedule" ng-click="vm.collapseNavbar()">
+                            <span class="fa fa-cogs"></span>&nbsp;
+                            <span>Schedule</span>
+                        </a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="control" ng-click="vm.collapseNavbar()">
+                            <span class="fa fa-sliders"></span>&nbsp;
+                            <span>Control</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li uib-dropdown>
+                <a class="count-info" href uib-dropdown-toggle>
+                    <span class="fa fa-language"></span>&nbsp;
+                    <span>语言</span>
+                </a>
+                <ul uib-dropdown-menu class="animated fadeInDown m-t-xs">
+                    <li><a ng-click="vm.changeLanguage('en')">English</a></li>
+                    <li><a ng-click="vm.changeLanguage('es')">Spanish</a></li>
+                </ul>
+            </li>
+            <li>
+                <a ng-click="vm.logout()">
+                    <span class="fa fa-sign-out"></span>&nbsp;
+                    <span>退出</span>
+                </a>
+            </li>
+            <li>
+                <a ng-click="$root.rightSidebar = !$root.rightSidebar">
+                    <i class="fa fa-tasks"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>

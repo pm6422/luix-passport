@@ -1,0 +1,115 @@
+# ===================================================================
+# Spring Boot configuration.
+#
+# This configuration will be overriden by the Spring profile you use,
+# for example application-dev.yml if you use the "dev" profile.
+# ===================================================================
+
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
+management: # Management http server configuration, used by ManagementServerProperties
+    endpoints:
+        web:
+            base-path: /management
+            exposure:
+                include: ['configprops', 'env', 'health', 'info', 'threaddump', 'beans', 'mappings', 'httptrace', 'shutdown', 'auditevents', 'loggers', 'scheduledtasks']
+    endpoint:
+        health:
+            show-details: when_authorized
+        shutdown:
+            enabled: true # explicitly enable
+    health:
+        mail:
+            enabled: true
+        mongo:
+            enabled: true
+    metrics:
+        enabled: false # http://micrometer.io/ is disabled by default, as we use http://metrics.dropwizard.io/ instead
+info: # These configuration can be exported to Environment, accessing URL /info can get these properties
+    artifact:
+        id: @project.artifactId@
+        name: @project.name@
+        version: @project.version@
+    project:
+        package: org.infinity.passport
+spring:
+    application:
+        name: ${info.artifact.name}
+    profiles:
+        # The commented value for `active` can be replaced with valid spring profiles to load.
+        # Otherwise, it will be filled in by maven when building the WAR file
+        # Either way, it can be overridden by `--spring.profiles.active` value passed in the commandline or `-Dspring.profiles.active` set in `JAVA_OPTS`
+        active: @spring.profiles.active@
+    messages:
+        # Do not add the prefix classpath:, please refer to MessageSourceAutoConfiguration.getResources(ClassLoader classLoader, String name)
+        # TODO: basename only support the first massage resource for now.
+        basename: i18n/messages_zh_CN,i18n/messages_en_US
+        fallback-to-system-locale: false
+    mvc:
+        favicon:
+            enabled: false
+        locale: zh_CN
+    thymeleaf: #ThymeleafAutoConfiguration
+        mode: HTML
+    http:
+        multipart: # Management http multipart configuration, used by MultipartProperties
+            enabled: true
+            max-file-size: 30MB
+            max-request-size: 30MB
+    banner:
+        location: classpath:config/banner-company.txt
+server: 
+    # It can be overridden by `--server.port` value passed in the commandline or `-Dserver.port` set in `JAVA_OPTS`
+    port: @app.server.port@
+    servlet:
+        session:
+            cookie:
+                name: ${info.artifact.name}
+logging:
+    config: classpath:config/logback-spring.xml
+    path: ${user.home}${file.separator}Log${file.separator}${info.artifact.id}${file.separator}${info.artifact.id}
+    level:
+        ROOT: DEBUG
+        ${info.project.package}: DEBUG
+security:
+    oauth2:
+        resource:
+            filter-order: 101 # The order of the filter chain used to authenticate tokens. Note: it must be greater than 100.
+# ===================================================================
+# Application specific properties
+# ===================================================================
+application:
+    http:
+        cache: # Used by the CachingHttpHeadersFilter
+            timeToLiveInDays: 31
+    async:
+        core-pool-size: 2
+        max-pool-size: 50
+        queue-capacity: 10000
+    swagger:
+        api:
+            title: Passport Server API
+            description: Passport Server 接口文档
+        open-api:
+            title: Passport Server Open API
+            description: Passport Server 开放接口文档
+        version: @project.version@
+        terms-of-service-url: http://www.infinity.org
+        contact-name: Louis
+        contact-url: http://www.infinity.org
+        contact-email: pm6422@126.com
+        license: 1.0
+        license-url: http://www.apache.org/licenses/LICENSE-2.0.html
+        host: 
+    ribbon:
+        # comma seperated list of profiles to show a ribbon on the GUI
+        display-on-active-profiles: dev,test,demo,preprod
+    user-audit-event:
+        enabled: true
+    http-client-connection:
+        global-retry-count: 1
+        global-read-timeout-in-seconds: 3
+    cache-prefix: ${spring.application.name}_

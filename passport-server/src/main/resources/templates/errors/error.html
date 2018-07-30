@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org ">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title th:text="${status}"></title>
+    <link rel="stylesheet" th:href="@{/content/css/bootstrap.css}"/>
+    <link rel="stylesheet" th:href="@{/content/font-awesome/css/font-awesome.css}"/>
+    <link rel="stylesheet" th:href="@{/content/css/animate.css}"/>
+    <link rel="stylesheet" th:href="@{/content/css/style.css}"/>
+</head>
+<body class="gray-bg">
+<div class="middle-box text-center loginscreen animated bounceInDown">
+    <h1 style="font-size:65px" th:text="#{error.title}"></h1>
+    <h2 th:if="${!#strings.isEmpty(error)}">
+        <span th:text="#{error.status}"></span>&nbsp;<span th:text="${error}"></span><br/>
+    </h2>
+    <h4 th:if="${!#strings.isEmpty(message)}">
+        <span th:text="#{error.message}"></span>&nbsp;<span th:text="${message}"></span><br/>
+    </h4>
+    <br/>
+    <a th:href="@{/}" class="btn btn-lg btn-primary go-back">返回首页<i class="fa fa-home"></i></a>
+</div>
+</body>
+</html>

@@ -1,0 +1,177 @@
+<div has-authority-directive="ROLE_DEVELOPER">
+    <div class="row border-bottom white-bg dashboard-header">
+        <div class="ibox-content m-b-sm border-bottom">
+            <div class="p-xs">
+                <div class="pull-left m-r-md">
+                    <i class="fa fa-globe text-navy mid-icon"></i>
+                </div>
+                <h2>Welcome to Passport System</h2>
+                <span>Feel free to choose topic you're interested in.</span>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="widget style1 navy-bg">
+                <div class="row">
+                    <div class="col-xs-4">
+                        <i class="fa fa-cloud fa-5x"></i>
+                    </div>
+                    <div class="col-xs-8 text-right">
+                        <span> Today degrees </span>
+    
+                        <h2 class="font-bold">26'C</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="widget style1 lazur-bg">
+            <div class="row">
+                <div class="col-xs-4">
+                    <i class="fa fa-envelope-o fa-5x"></i>
+                </div>
+                <div class="col-xs-8 text-right">
+                    <span> New messages </span>
+                    <h2 class="font-bold">260</h2>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="col-sm-9">
+            <h2>接口响应时间变化图</h2>
+            <div ng-controller="ApiResponseTimeController as vm">
+                <canvas linechart options="vm.lineOptions" data="vm.lineData" height="140" responsive=true></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="wrapper wrapper-content">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <h5>用户登录记录</h5>
+                                <div ibox-tools-directive></div>
+                            </div>
+                            <div class="ibox-content">
+                                <div>
+                                    <ul class="list-group clear-list m-t">
+                                        <li class="list-group-item fist-item">
+                                                            <span class="pull-right">
+                                                                2017/06/19 20:16:09
+                                                            </span>
+                                            <span class="label label-primary">1</span> louis
+                                        </li>
+                                        <li class="list-group-item">
+                                                            <span class="pull-right">
+                                                                2017/06/19 20:13:21
+                                                            </span>
+                                            <span class="label label-primary">2</span> jackson
+                                        </li>
+                                        <li class="list-group-item">
+                                                            <span class="pull-right">
+                                                                2017/06/19 20:11:19
+                                                            </span>
+                                            <span class="label label-primary">3</span> jason
+                                        </li>
+                                        <li class="list-group-item">
+                                                            <span class="pull-right">
+                                                                2017/06/19 20:09:17
+                                                            </span>
+                                            <span class="label label-primary">4</span> andy
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-9">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <h5>接口调用次数变化图</h5>
+                                <div ibox-tools-directive></div>
+                            </div>
+                            <div class="ibox-content">
+                                <div ng-controller="ApiAccessController as vm">
+                                    <canvas linechart options="vm.lineOptions" data="vm.lineData" height="140" responsive=true></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="small-chat-box ng-small-chat fadeInRight animated" ng-show="openChat">
+        <div class="heading" draggable="true">
+            <small class="chat-date pull-right">
+            </small>
+            Chatbot
+        </div>
+        <div class="content" chat-slim-scroll>
+            <div class="left">
+                <div class="author-name">
+                    louis <small class="chat-date">
+                    10:02 am
+                </small>
+                </div>
+                <div class="chat-message active">
+                    今天天气怎么样？
+                </div>
+            </div>
+            <div class="right">
+                <div class="author-name">
+                    机器人
+                    <small class="chat-date">
+                        10:02 am
+                    </small>
+                </div>
+                <div class="chat-message">
+                    晴转多云
+                </div>
+            </div>
+            <div class="left">
+                <div class="author-name">
+                    louis
+                    <small class="chat-date">
+                        10:02 am
+                    </small>
+                </div>
+                <div class="chat-message active">
+                    明天呢?
+                </div>
+            </div>
+            <div class="right">
+                <div class="author-name">
+                    机器人
+                    <small class="chat-date">
+                        10:03 am
+                    </small>
+                </div>
+                <div class="chat-message">
+                    多云伴随雷雨
+                </div>
+            </div>
+            <div class="left">
+                <div class="author-name">
+                    louis
+                    <small class="chat-date">
+                        10:03 am
+                    </small>
+                </div>
+                <div class="chat-message active">
+                    后天呢
+                </div>
+            </div>
+        </div>
+        <div class="form-chat">
+            <div class="input-group input-group-sm"><input type="text" class="form-control"> <span class="input-group-btn"> <button
+                    class="btn btn-primary" type="button">Send
+            </button> </span></div>
+        </div>
+    </div>
+    <div id="small-chat" ng-click="openChat = !openChat">
+        <span class="badge badge-warning pull-right">5</span>
+        <a class="open-small-chat">
+            <i class="fa fa-comments"></i>
+        </a>
+    </div>
+</div>

@@ -1,0 +1,141 @@
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation-directive>
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="vm.cancel()">&times;</button>
+        <h4 class="modal-title">{{vm.pageTitle}}</h4>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <label class="control-label">Client ID</label>
+            <input type="text" class="form-control" name="clientId" ng-model="vm.entity.client_id" ng-maxlength="50" ng-disabled="vm.mode == 'edit'">
+            <div ng-show="editForm.clientId.$invalid">
+                <p class="help-block" ng-show="editForm.clientId.$error.maxlength" translate-value-max="50">
+                    <small>最大长度为50个字符</small>
+                </p>
+            </div>
+            <div>
+                <p class="label label-warning" ng-show="vm.mode == 'create'">
+                    <span class="fa fa-exclamation-circle" aria-hidden="true"></span>
+                    该字段输入时则使用指定的值，未输入时则使用系统自动生成值
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Resource IDs</label>
+            <input type="text" class="form-control" name="resourceIds" ng-model="vm.entity.resource_ids" ng-maxlength="50">
+        </div>
+        <div class="form-group">
+            <label class="control-label">Raw Client Secret</label>
+            <input type="text" class="form-control" name="rawClientSecret" ng-model="vm.entity.raw_client_secret" ng-maxlength="50">
+            <div ng-show="editForm.rawClientSecret.$invalid">
+                <p class="help-block" ng-show="editForm.rawClientSecret.$error.maxlength" translate-value-max="50">
+                    <small>最大长度为50个字符</small>
+                </p>
+            </div>
+            <div>
+                <p class="label label-warning" ng-show="vm.mode == 'create'">
+                    <span class="fa fa-exclamation-circle" aria-hidden="true"></span>
+                    该字段输入时则使用指定的值，未输入时则使用系统自动生成值
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Scope</label>
+            <input type="text" class="form-control" name="scope" ng-model="vm.entity.scope" ng-maxlength="50">
+            <div ng-show="editForm.scope.$invalid">
+                <p class="help-block" ng-show="editForm.scope.$error.maxlength" translate-value-max="50">
+                    <small>最大长度为50个字符</small>
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Authorized Grant Types</label>
+            <input type="text" class="form-control" name="authorizedGrantTypes" ng-model="vm.entity.authorized_grant_types" ng-maxlength="100">
+            <div>
+                <p class="label label-info">
+                    <span class="fa fa-exclamation-circle" aria-hidden="true"></span>
+                    authorization_code: 授权码模式(即先登录获取code,再获取token) [最常用]
+                </p>
+            </div>
+            <div>
+                <p class="label label-info">
+                    <span class="fa fa-exclamation-circle" aria-hidden="true"></span>
+                    password: 密码模式(将用户名,密码传过去,直接获取token) [适用于移动设备]
+                </p>
+            </div>
+            <div>
+                <p class="label label-info">
+                    <span class="fa fa-exclamation-circle" aria-hidden="true"></span>
+                    refresh_token: 刷新access_token
+                </p>
+            </div>
+            <div>
+                <p class="label label-info">
+                    <span class="fa fa-exclamation-circle" aria-hidden="true"></span>
+                    client_credentials: 客户端模式(无用户和密码,然后客户端以自己的名义获取最低权限token)
+                </p>
+            </div>
+            <div>
+                <p class="label label-info">
+                    <span class="fa fa-exclamation-circle" aria-hidden="true"></span>
+                    implicit: 简化模式(直接在redirect_uri末尾传递token) [适用于浏览器,如JS,Flash]
+                </p>
+            </div>
+            <div ng-show="editForm.authorizedGrantTypes.$invalid">
+                <p class="help-block" ng-show="editForm.authorizedGrantTypes.$error.maxlength" translate-value-max="100">
+                    最大长度为100个字符
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Web Server Redirect URI</label>
+            <input type="text" class="form-control" name="webServerRedirectUri" ng-model="vm.entity.web_server_redirect_uri" ng-maxlength="100">
+            <div ng-show="editForm.webServerRedirectUri.$invalid">
+                <p class="help-block" ng-show="editForm.webServerRedirectUri.$error.maxlength" translate-value-max="100">
+                    <small>最大长度为100个字符</small>
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Authorities</label>
+            <input type="text" class="form-control" name="authorities" ng-model="vm.entity.authorities" ng-maxlength="100">
+            <div ng-show="editForm.authorities.$invalid">
+                <p class="help-block" ng-show="editForm.authorities.$error.maxlength" translate-value-max="100">
+                    <small>最大长度为100个字符</small>
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Access Token Validity in Seconds</label>
+            <input type="number" class="form-control" name="accessTokenValidity" ng-model="vm.entity.access_token_validity">
+        </div>
+        <div class="form-group">
+            <label class="control-label">Refresh Token Validity in Seconds</label>
+            <input type="number" class="form-control" name="refreshTokenValidity" ng-model="vm.entity.refresh_token_validity">
+        </div>
+        <div class="form-group">
+            <label class="control-label">Additional Information</label>
+            <input type="text" class="form-control" name="additionalInformation" ng-model="vm.entity.additional_information" ng-maxlength="100">
+            <div ng-show="editForm.additionalInformation.$invalid">
+                <p class="help-block" ng-show="editForm.additionalInformation.$error.maxlength" translate-value-max="100">
+                    <small>最大长度为100个字符</small>
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">
+                <input type="checkbox" name="autoapprove" ng-model="vm.entity.selectedAutoApprove">
+                <span>Auto Approve</span>
+            </label>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal" ng-click="vm.cancel()">
+            <span class="fa fa-times"></span>&nbsp;<span>取消</span>
+        </button>
+        <button type="submit" class="btn btn-default btn-sm" ng-disabled="editForm.$invalid || vm.isSaving">
+            <span class='fa fa-circle-o-notch fa-spin' ng-show="vm.isSaving"></span>
+            <span class="fa fa-check" ng-hide="vm.isSaving"></span>
+            &nbsp;<span>保存</span>
+        </button>
+    </div>
+</form>

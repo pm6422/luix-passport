@@ -1,0 +1,12 @@
+<div class="middle-box text-center loginscreen animated bounceInDown">
+        <h1 class="logo-name" style="font-size:65px">激活账号</h1>
+        <h2 class="text-muted" ng-show="vm.success">账号已经激活,请<a class="alert-link" href="" ui-sref="login">登录</a></h2>
+        <h2 class="text-muted" ng-hide="vm.success">账号未能激活,请注册</h2>
+        <div class="alert alert-danger" ng-show="!vm.success && vm.errorMessage">
+            <strong>{{vm.errorMessage}}</strong>
+        </div>
+        <a class="btn btn-sm btn-white btn-block font-bold" ui-sref="login" ng-hide="vm.success">返回</a>
+</div>
+<div class="navbar-fixed-bottom text-center">
+    <p class="m-t text-muted font-bold"><small>🅛🅞🅤🅘🅢 &copy; 2017</small></p>
+</div>

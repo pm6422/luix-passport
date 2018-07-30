@@ -1,0 +1,122 @@
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation-directive>
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="vm.cancel()">&times;</button>
+        <h4 class="modal-title">{{vm.pageTitle}}</h4>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <label class="control-label">用户名</label>
+            <a tooltip-placement="right" uib-tooltip="系统登录用户名"><i class="fa fa-question"></i></a>
+            <input type="text" class="form-control" name="userName" ng-model="vm.entity.userName" ng-disabled="vm.mode=='edit'" required ng-minlength=1 ng-maxlength=50 ng-pattern="/^[a-z0-9]*$/">
+            <div ng-show="editForm.userName.$invalid">
+                <p class="help-block" ng-show="editForm.userName.$error.required">
+                    必填字段
+                </p>
+                <p class="help-block" ng-show="editForm.userName.$error.minlength">
+                    最小长度为1个字符
+                </p>
+                <p class="help-block" ng-show="editForm.userName.$error.maxlength">
+                    最大长度为50个字符
+                </p>
+                <p class="help-block" ng-show="editForm.userName.$error.pattern">
+                    只可以包含小写字母和数字
+                 </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">名</label>
+            <input type="text" class="form-control" name="firstName" ng-model="vm.entity.firstName" ng-maxlength="50">
+            <div ng-show="editForm.firstName.$invalid">
+                <p class="help-block" ng-show="editForm.firstName.$error.maxlength">
+                   最大长度为50个字符
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">姓</label>
+            <input type="text" class="form-control" name="lastName" ng-model="vm.entity.lastName" ng-maxlength="50">
+            <div ng-show="editForm.lastName.$invalid">
+                <p class="help-block" ng-show="editForm.lastName.$error.maxlength">
+                    最大长度为50个字符
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Email</label>
+            <input type="email" class="form-control" name="email" ng-model="vm.entity.email" required ng-maxlength="100">
+            <div ng-show="editForm.email.$invalid">
+                <p class="help-block" ng-show="editForm.email.$error.required">
+                    必填字段
+                </p>
+                <p class="help-block" ng-show="editForm.email.$error.maxlength">
+                    最大长度为100个字符
+                </p>
+                <p class="help-block" ng-show="editForm.email.$error.email">
+                    Email格式不正确
+                 </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">手机号码</label>
+            <input type="text" class="form-control" name="mobileNo"
+                   ng-model="vm.entity.mobileNo" required ng-maxlength="13" ng-pattern="/^(13[0-9]|15[012356789]|17[03678]|18[0-9]|14[57])[0-9]{8}$/">
+            <div ng-show="editForm.mobileNo.$invalid">
+                <p class="help-block" ng-show="editForm.mobileNo.$error.required">
+                    必填字段
+                </p>
+                <p class="help-block" ng-show="editForm.mobileNo.$error.maxlength" translate-value-max="13">
+                    最大长度为13个字符
+                </p>
+                <p class="help-block" ng-show="editForm.mobileNo.$error.pattern" translate-value-max="13">
+                    手机号码格式不正确
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">是否激活</label>
+            <div class="onoffswitch">
+                <input type="checkbox" id="activated" ng-model="vm.entity.activated" class="onoffswitch-checkbox" ng-disabled="vm.entity.userName === null || vm.mode === 'edit' && vm.entity.activated">
+                <label class="onoffswitch-label" for="activated">
+                    <span class="onoffswitch-inner"></span>
+                    <span class="onoffswitch-switch"></span>
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">权限名称</label>
+            <select class="form-control" multiple name="authority" ng-model="vm.entity.authorities"
+                    ng-options="authority for authority in vm.authorities">
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="control-label">头像地址</label>
+            <input type="text" class="form-control" name="avatarImageUrl"
+                   ng-model="vm.entity.avatarImageUrl" ng-maxlength="100">
+            <div ng-show="editForm.avatarImageUrl.$invalid">
+                <p class="help-block" ng-show="editForm.avatarImageUrl.$error.maxlength" translate-value-max="100">
+                    最大长度为100个字符
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">是否可用</label>
+            <div class="onoffswitch">
+                <input type="checkbox" id="enabled" ng-model="vm.entity.enabled" class="onoffswitch-checkbox" ng-disabled="vm.entity.userName === null">
+                <label class="onoffswitch-label" for="enabled">
+                    <span class="onoffswitch-inner"></span>
+                    <span class="onoffswitch-switch"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal" ng-click="vm.cancel()">
+            <span class="fa fa-times"></span>&nbsp;<span>取消</span>
+        </button>
+        <button type="submit" class="btn btn-default btn-sm" ng-disabled="editForm.$invalid || vm.isSaving">
+            <span class='fa fa-circle-o-notch fa-spin' ng-show="vm.isSaving"></span>
+            <span class="fa fa-check" ng-hide="vm.isSaving"></span>
+            &nbsp;<span>保存</span>
+        </button>
+    </div>
+</form>

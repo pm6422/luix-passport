@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<!-- Refer WhitelabelApprovalEndpoint,AuthorizationEndpoint -->
+<html xmlns:th="http://www.thymeleaf.org" xmlns:tiles="http://www.thymeleaf.org">
+    <head>
+        <title tiles:fragment="title">Infinity | Passport</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="shortcut icon" th:href="@{/favicon.png}" />
+        <link rel="stylesheet" th:href="@{/content/css/bootstrap.css}" />
+        <link rel="stylesheet" th:href="@{/content/font-awesome/css/font-awesome.min.css}" />
+        <link rel="stylesheet" th:href="@{/content/css/animate.css}" />
+        <link rel="stylesheet" th:href="@{/content/css/style.css}" />
+    </head>
+    <body class="gray-bg" th:style="'background:url(' + @{/content/img/background/bg3.jpg} + ');background-size:cover;'">
+        <div class="ribbon hidden"><a href="" ></a></div>
+        <div class="middle-box text-center loginscreen animated bounceInDown">
+            <h1 class="logo-name" style="font-size:65px">PASSPORT</h1>
+            <h2 class="text-muted">Welcome to <br/><strong>Passport</strong></h2>
+            <form class="m-t" role="form" th:action="@{/login}" method="post">
+                <div th:if="${param.error}" class="alert alert-danger">
+                    Invalid username or password.
+                </div>
+                <div th:if="${param.logout}" class="alert alert-success">
+                    You have been logged out.
+                </div>
+                <div class="form-group">
+                    <input type="text" name="username" class="form-control" placeholder="Username/Email/Mobile" required="required"/>
+                </div>
+                <div class="form-group">
+                    <input type="password" name="password" class="form-control" placeholder="Password" required="required"/>
+                </div>
+                <button id="signInBtn" type="submit" class="btn btn-primary block full-width m-b font-bold">Sign In</button>
+                
+                <a href=".#/reset/request" class="text-warning font-bold"><small>Forgot password?</small></a>
+                <p class="text-muted text-center font-bold"><small>Do not have an account?</small></p>
+                <a class="btn btn-sm btn-white btn-block font-bold" href=".#/register">Create an account</a>
+            </form>
+        </div>
+        <div class="navbar-fixed-bottom text-center">
+            <p class="m-t text-muted font-bold"><small>www.infinity.org &copy; 2018</small></p>
+        </div>
+        <!-- Mainly scripts -->
+        <script th:src="@{/content/js/jquery/jquery-3.1.1.min.js}"></script>
+        <script th:src="@{/content/js/bootstrap/bootstrap.min.js}"></script>
+        
+        <script type="text/javascript">
+            $.get("open-api/profile-info", function(result){
+                if(result.ribbonEnv) {
+                    $('div.ribbon').removeClass('hidden').find('a').text(result.ribbonEnv.toUpperCase());
+                }
+            });
+            $('#signInBtn').focus();
+        </script>
+    </body>
+</html>
