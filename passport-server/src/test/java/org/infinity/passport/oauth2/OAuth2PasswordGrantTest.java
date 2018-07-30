@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.infinity.passport.PassportLauncher;
+import org.infinity.passport.config.ApplicationConstants;
 import org.infinity.passport.domain.MongoOAuth2ClientDetails;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +28,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = PassportLauncher.class)
-@ActiveProfiles("test")
+@ActiveProfiles(ApplicationConstants.SPRING_PROFILE_TEST)
 public class OAuth2PasswordGrantTest {
 
     @Autowired

@@ -25,8 +25,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import com.codahale.metrics.annotation.Timed;
-
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -145,14 +143,6 @@ public class UserServiceImpl implements UserService {
     public Optional<User> findOneByMobileNo(String mobileNo) {
         Assert.hasText(mobileNo, "it must not be null, empty, or blank");
         return userRepository.findOneByMobileNo(mobileNo.toLowerCase(Locale.ENGLISH));
-    }
-
-    @Timed
-    @Override
-    public Optional<User> findOneByLogin(String login) {
-        Assert.hasText(login, "it must not be null, empty, or blank");
-        return userRepository.findOneByUserNameOrEmailOrMobileNo(login.toLowerCase(Locale.ENGLISH),
-                login.toLowerCase(Locale.ENGLISH), login.toLowerCase(Locale.ENGLISH));
     }
 
     @Override

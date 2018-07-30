@@ -1,13 +1,14 @@
 package org.infinity.passport.service.impl;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 import org.infinity.passport.domain.User;
 import org.infinity.passport.exception.UserDisabledException;
 import org.infinity.passport.exception.UserNotActivatedException;
 import org.infinity.passport.repository.UserAuthorityRepository;
-import org.infinity.passport.service.UserService;
+import org.infinity.passport.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class SpringSecurityUserDetailsServiceImpl
     private static final Logger     LOGGER = LoggerFactory.getLogger(SpringSecurityUserDetailsServiceImpl.class);
 
     @Autowired
-    private UserService             userService;
+    private UserRepository          userRepository;
 
     @Autowired
     private UserAuthorityRepository userAuthorityRepository;
@@ -36,7 +37,9 @@ public class SpringSecurityUserDetailsServiceImpl
     // @Transactional
     public UserDetails loadUserByUsername(final String login) {
         LOGGER.debug("Authenticating {}", login);
-        User userFromDatabase = userService.findOneByLogin(login)
+        User userFromDatabase = userRepository
+                .findOneByUserNameOrEmailOrMobileNo(login.toLowerCase(Locale.ENGLISH),
+                        login.toLowerCase(Locale.ENGLISH), login.toLowerCase(Locale.ENGLISH))
                 .orElseThrow(() -> new UsernameNotFoundException("User " + login + " was not found in the database"));
 
         if (!userFromDatabase.getActivated()) {

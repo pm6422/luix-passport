@@ -27,8 +27,6 @@ public interface UserService {
 
     Optional<User> findOneByMobileNo(String mobileNo);
 
-    Optional<User> findOneByLogin(String login);
-
     Page<User> findByLogin(Pageable pageable, String login);
 
     Optional<User> activateRegistration(String activationKey);

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.infinity.passport.PassportLauncher;
+import org.infinity.passport.config.ApplicationConstants;
 import org.infinity.passport.domain.MongoOAuth2ClientDetails;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,7 +32,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = PassportLauncher.class)
-@ActiveProfiles("test")
+@ActiveProfiles(ApplicationConstants.SPRING_PROFILE_TEST)
 public class OAuth2ClientCredentialsTest {
 
     @Autowired
