@@ -41,7 +41,7 @@ function deleteStartLog() {
 function startApp() {
     JAVA_JMX_OPTS=""
     JAVA_DEBUG_OPTS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
-    JAVA_MEM_OPTS="-XX:+UseG1GC -XX:MaxGCPauseMillis=100 -XX:+ParallelRefProcEnabled -Xmx22768M -Xms22768M -Xss256K -XX:MaxMetaspaceSize=256M -XX:MetaspaceSize=256M"
+    JAVA_MEM_OPTS="-XX:+UseG1GC -XX:MaxGCPauseMillis=100 -XX:+ParallelRefProcEnabled -Xss256K"
     echo -e "Starting the $appName"
     echo "Starting command: nohup java $JAVA_MEM_OPTS -jar $appDir/$appName --logback.loglevel=INFO --spring.profiles.active=$profiles --server.port=$serverPort >> $appStartLog 2>&1 &\n"
     . /etc/profile
