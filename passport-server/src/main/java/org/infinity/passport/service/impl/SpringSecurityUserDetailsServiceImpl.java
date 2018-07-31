@@ -1,17 +1,17 @@
 package org.infinity.passport.service.impl;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 import org.infinity.passport.domain.User;
 import org.infinity.passport.exception.UserDisabledException;
 import org.infinity.passport.exception.UserNotActivatedException;
 import org.infinity.passport.repository.UserAuthorityRepository;
-import org.infinity.passport.repository.UserRepository;
+import org.infinity.passport.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,7 +28,8 @@ public class SpringSecurityUserDetailsServiceImpl
     private static final Logger     LOGGER = LoggerFactory.getLogger(SpringSecurityUserDetailsServiceImpl.class);
 
     @Autowired
-    private UserRepository          userRepository;
+    @Lazy // Use to fix circular dependencies problems on some machines(CentOS 7)
+    private UserService             userService;
 
     @Autowired
     private UserAuthorityRepository userAuthorityRepository;
@@ -37,9 +38,7 @@ public class SpringSecurityUserDetailsServiceImpl
     // @Transactional
     public UserDetails loadUserByUsername(final String login) {
         LOGGER.debug("Authenticating {}", login);
-        User userFromDatabase = userRepository
-                .findOneByUserNameOrEmailOrMobileNo(login.toLowerCase(Locale.ENGLISH),
-                        login.toLowerCase(Locale.ENGLISH), login.toLowerCase(Locale.ENGLISH))
+        User userFromDatabase = userService.findOneByLogin(login)
                 .orElseThrow(() -> new UsernameNotFoundException("User " + login + " was not found in the database"));
 
         if (!userFromDatabase.getActivated()) {
