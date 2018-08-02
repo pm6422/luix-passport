@@ -1283,8 +1283,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
             }
         })
 
-};
-
+}
 function paginationConfig(uibPaginationConfig, PAGINATION_CONSTANTS) {
     uibPaginationConfig.itemsPerPage = PAGINATION_CONSTANTS.itemsPerPage;
     uibPaginationConfig.maxSize = 5;
@@ -1293,14 +1292,12 @@ function paginationConfig(uibPaginationConfig, PAGINATION_CONSTANTS) {
     uibPaginationConfig.previousText = '‹';
     uibPaginationConfig.nextText = '›';
     uibPaginationConfig.lastText = '»';
-};
-
+}
 function pagerConfig(uibPagerConfig, PAGINATION_CONSTANTS) {
     uibPagerConfig.itemsPerPage = PAGINATION_CONSTANTS.itemsPerPage;
     uibPagerConfig.previousText = '«';
     uibPagerConfig.nextText = '»';
-};
-
+}
 function httpConfig($urlRouterProvider, $httpProvider, httpRequestInterceptorCacheBusterProvider, $urlMatcherFactoryProvider) {
     //Cache everything except rest api requests
     httpRequestInterceptorCacheBusterProvider.setMatchlist([/.*api.*/, /.*protected.*/], true);
@@ -1326,13 +1323,11 @@ function httpConfig($urlRouterProvider, $httpProvider, httpRequestInterceptorCac
         },
         pattern: /bool|true|0|1/
     });
-};
-
+}
 function localStorageConfig($localStorageProvider, $sessionStorageProvider) {
     $localStorageProvider.setKeyPrefix('app-');
     $sessionStorageProvider.setKeyPrefix('app-');
-};
-
+}
 function compileServiceConfig($compileProvider, DEBUG_INFO_ENABLED) {
     // disable debug data on prod profile to improve performance
     $compileProvider.debugInfoEnabled(DEBUG_INFO_ENABLED);
@@ -1344,4 +1339,4 @@ function compileServiceConfig($compileProvider, DEBUG_INFO_ENABLED) {
 
     angular.reloadWithDebugInfo();
     */
-};
+}
