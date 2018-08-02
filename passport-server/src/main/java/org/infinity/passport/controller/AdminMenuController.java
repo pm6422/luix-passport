@@ -173,7 +173,7 @@ public class AdminMenuController {
     @Secured({ Authority.ADMIN })
     @Timed
     public ResponseEntity<Void> importData(@ApiParam(value = "文件", required = true) @RequestPart MultipartFile file)
-            throws IOException, InterruptedException {
+            throws IOException {
         List<String> lines = IOUtils.readLines(file.getInputStream(), StandardCharsets.UTF_8);
         List<AdminMenu> list = new ArrayList<AdminMenu>();
         for (String line : lines) {
