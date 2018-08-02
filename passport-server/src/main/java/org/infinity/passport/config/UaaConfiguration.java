@@ -1,9 +1,5 @@
 package org.infinity.passport.config;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import org.infinity.passport.config.oauth2.MongoApprovalStore;
 import org.infinity.passport.config.oauth2.MongoAuthorizationCodeServices;
 import org.infinity.passport.config.oauth2.MongoClientDetailsService;
@@ -30,6 +26,10 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.servlet.view.RedirectView;
 import org.zalando.problem.spring.web.advice.security.SecurityProblemSupport;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * OAuth 2.0 Grants list below
@@ -135,7 +135,7 @@ public class UaaConfiguration {
         }
 
         @Override
-        public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+        public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
             // Note: authenticationManager, tokenStore, userDetailsService must be injected here
             // 如果没有userDetailsService在使用refresh token刷新access token时报错
             // @formatter:off
@@ -150,7 +150,7 @@ public class UaaConfiguration {
             endpoints.addInterceptor(new HandlerInterceptorAdapter() {
                 @Override
                 public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
-                        ModelAndView modelAndView) throws Exception {
+                                       ModelAndView modelAndView) {
                     if (modelAndView != null && modelAndView.getView() instanceof RedirectView) {
                         RedirectView redirect = (RedirectView) modelAndView.getView();
                         String url = redirect.getUrl();
@@ -166,7 +166,7 @@ public class UaaConfiguration {
         }
 
         @Override
-        public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
+        public void configure(AuthorizationServerSecurityConfigurer oauthServer) {
             // 如果没有下面一条语句会在使用authorization code获取access token时报Full
             // authentication is required to access this resource错误
             oauthServer.allowFormAuthenticationForClients();
