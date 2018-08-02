@@ -25,8 +25,7 @@ function alertHandlerInterceptor ($q, AlertUtils) {
         }
         return response;
     }
-};
-
+}
 function alertErrorHandlerInterceptor ($q, $rootScope) {
     return {
         responseError: responseError
@@ -39,8 +38,7 @@ function alertErrorHandlerInterceptor ($q, $rootScope) {
         }
         return $q.reject(response);
     }
-};
-
+}
 function authExpiredInterceptor($rootScope, $q, $injector, $localStorage, $sessionStorage) {
     return {
         responseError: responseError
@@ -58,8 +56,7 @@ function authExpiredInterceptor($rootScope, $q, $injector, $localStorage, $sessi
         }
         return $q.reject(response);
     }
-};
-
+}
 function authInterceptor ($rootScope, $q, $location, $localStorage, $sessionStorage) {
     return {
         request: request
@@ -76,4 +73,4 @@ function authInterceptor ($rootScope, $q, $location, $localStorage, $sessionStor
         
         return config;
     }
-};
+}
