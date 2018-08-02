@@ -69,4 +69,4 @@ function config($translateProvider) {
 
 angular
     .module('smartcloudserviceApp')
-    .config(config)
+    .config(config);
