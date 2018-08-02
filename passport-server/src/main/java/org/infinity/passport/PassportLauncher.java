@@ -1,13 +1,5 @@
 package org.infinity.passport;
 
-import java.io.IOException;
-import java.net.InetAddress;
-import java.nio.charset.Charset;
-import java.util.Arrays;
-import java.util.Date;
-
-import javax.annotation.PostConstruct;
-
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -25,6 +17,13 @@ import org.springframework.util.Assert;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import javax.annotation.PostConstruct;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.nio.charset.Charset;
+import java.util.Arrays;
+import java.util.Date;
 
 @SpringBootApplication
 @EnableConfigurationProperties({ ApplicationProperties.class })
@@ -47,6 +46,7 @@ public class PassportLauncher implements WebMvcConfigurer {
         Environment env = app.run(args).getEnvironment();
         printServerInfo(env);
     }
+
 
     private static void printServerInfo(Environment env) throws IOException {
         String appBanner = StreamUtils.copyToString(new ClassPathResource("config/banner-app.txt").getInputStream(),
