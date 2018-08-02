@@ -1,10 +1,10 @@
 package org.infinity.passport.config;
 
+import org.infinity.passport.domain.HanlpPersonName;
+
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-
-import org.infinity.passport.domain.HanlpPersonName;
 
 /**
  * Application constants.
@@ -41,6 +41,6 @@ public final class ApplicationConstants {
 
     static {
         HANLP_DICT_MAP.put(HanlpPersonName.class.getName(), HanlpPersonName.class.getSimpleName());
-    };
+    }
 
 }
