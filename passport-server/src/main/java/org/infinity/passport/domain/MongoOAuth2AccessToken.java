@@ -1,8 +1,5 @@
 package org.infinity.passport.domain;
 
-import java.io.Serializable;
-import java.util.Date;
-
 import org.infinity.passport.domain.base.AbstractAuditableDomain;
 import org.infinity.passport.dto.MongoOAuth2AccessTokenDTO;
 import org.springframework.beans.BeanUtils;
@@ -11,6 +8,9 @@ import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
+
+import java.io.Serializable;
+import java.util.Date;
 
 @Document
 public class MongoOAuth2AccessToken extends AbstractAuditableDomain implements Serializable {
@@ -135,11 +135,7 @@ public class MongoOAuth2AccessToken extends AbstractAuditableDomain implements S
 
         MongoOAuth2AccessToken that = (MongoOAuth2AccessToken) o;
 
-        if (id != null ? !id.equals(that.id) : that.id != null) {
-            return false;
-        }
-
-        return true;
+        return id != null ? id.equals(that.id) : that.id == null;
     }
 
     @Override
