@@ -98,8 +98,7 @@ function MainController($http, $scope, $state, AuthenticationService, PrincipalS
     function selectLink ($item, $model, $label, $event) {
         $state.go(main.selectedLink.link);
     }
-};
-
+}
 /**
  * ApiResponseTimeController
  */
@@ -142,8 +141,7 @@ function ApiResponseTimeController() {
             }
         ]
     };
-};
-
+}
 function ApiAccessController() {
     var vm = this;
     
@@ -183,8 +181,7 @@ function ApiAccessController() {
             }
         ]
     };
-};
-
+}
 /**
  * LeftSidebarController
  */
@@ -212,9 +209,7 @@ function LeftSidebarController($scope, $state, $element, $timeout, APP_NAME, Aut
              });
          }
      }
-};
-
-
+}
 /**
  * ErrorPageController
  */
@@ -222,8 +217,7 @@ function ErrorPageController ($state, $stateParams, $scope, JSONFormatterConfig)
     var vm = this;
     
     vm.errorMessage = $stateParams.errorMessage;
-};
-
+}
 /**
  * LoginController
  */
@@ -274,8 +268,7 @@ function LoginController($rootScope, $state, AuthenticationService) {
     function requestResetPassword () {
         $state.go('requestReset');
     }
-};
-
+}
 /**
  * NavbarController
  */
@@ -301,8 +294,7 @@ function NavbarController ($rootScope, $scope, $translate, $state, Authenticatio
     function changeLanguage (langKey) {
         $translate.use(langKey);
         $scope.language = langKey;
-    };
-
+    }
     function logout() {
         AuthenticationService.logout();
         $state.go('login');
@@ -315,8 +307,7 @@ function NavbarController ($rootScope, $scope, $translate, $state, Authenticatio
     function collapseNavbar() {
         vm.isNavbarCollapsed = true;
     }
-};
-
+}
 /**
  * ProfileController
  */
@@ -360,8 +351,7 @@ function ProfileController ($state, PrincipalService, AccountService) {
                 vm.isSaving = false;
             });
     }
-};
-
+}
 /**
  * RegisterController
  */
@@ -394,8 +384,7 @@ function RegisterController ($state, $timeout, AuthenticationService, RegisterSe
                     });
         }
     }
-};
-
+}
 /**
  * ActivationController
  */
@@ -417,8 +406,7 @@ function ActivationController ($state, $stateParams, ActivateService) {
                     vm.errorMessage = response.data.message;
                 });
     }
-};
-
+}
 /**
  * ForgotPasswordController
  */
@@ -450,8 +438,7 @@ function ForgotPasswordController($state, $timeout, PasswordResetInitService) {
                 vm.errorMsg = response.error_description;
             });
     }
-};
-
+}
 /**
  * ResetPasswordController
  */
@@ -486,8 +473,7 @@ function ResetPasswordController($state, $stateParams, $timeout, PasswordResetFi
                 vm.isSaving = false;
             });
     }
-};
-
+}
 /**
  * PasswordController
  */
@@ -518,8 +504,7 @@ function PasswordController($state, PasswordService, PrincipalService) {
                 });
         }
     }
-};
-
+}
 /**
  * AuthorityListController
  */
@@ -605,8 +590,7 @@ function AuthorityListController($state, AlertUtils, ParseLinksUtils, PAGINATION
             }
         });
     }
-};
-
+}
 /**
  * AuthorityDialogController
  */
@@ -641,8 +625,7 @@ function AuthorityDialogController ($state, $stateParams, $uibModalInstance, Aut
     function cancel () {
         $uibModalInstance.dismiss('cancel');
     }
-};
-
+}
 /**
  * UserListController
  */
@@ -762,8 +745,7 @@ function UserListController($state, AlertUtils, ParseLinksUtils, PAGINATION_CONS
             }
         });
     }
-};
-
+}
 /**
  * UserDialogController
  */
@@ -799,8 +781,7 @@ function UserDialogController ($state, $stateParams, $uibModalInstance, UserServ
     function cancel () {
         $uibModalInstance.dismiss('cancel');
     }
-};
-
+}
 /**
  * UserDetailsController
  */
@@ -811,8 +792,7 @@ function UserDetailsController ($state, $stateParams, entity) {
     vm.parentPageTitle = $state.$current.parent.data.pageTitle;
     vm.grandfatherPageTitle = $state.$current.parent.parent.data.pageTitle;
     vm.entity = entity;
-};
-
+}
 /**
  * AppListController
  */
@@ -898,8 +878,7 @@ function AppListController($state, AlertUtils, ParseLinksUtils, PAGINATION_CONST
             }
         });
     }
-};
-
+}
 /**
  * AppDialogController
  */
@@ -935,8 +914,7 @@ function AppDialogController ($state, $stateParams, $uibModalInstance, AppServic
     function cancel () {
         $uibModalInstance.dismiss('cancel');
     }
-};
-
+}
 /**
  * AppDetailsController
  */
@@ -947,8 +925,7 @@ function AppDetailsController ($state, $stateParams, entity) {
     vm.parentPageTitle = $state.$current.parent.data.pageTitle;
     vm.grandfatherPageTitle = $state.$current.parent.parent.data.pageTitle;
     vm.entity = entity;
-};
-
+}
 /**
  * AdminMenuListController
  */
@@ -1040,8 +1017,7 @@ function AdminMenuListController($state, AlertUtils, ParseLinksUtils, PAGINATION
                 vm.loadAll()
             });
     }
-};
-
+}
 /**
  * AdminMenuDialogController
  */
@@ -1090,8 +1066,7 @@ function AdminMenuDialogController ($state, $stateParams, $uibModalInstance, Adm
     function cancel () {
         $uibModalInstance.dismiss('cancel');
     }
-};
-
+}
 /**
  * AuthorityAdminMenuController
  */
@@ -1154,8 +1129,7 @@ function AuthorityAdminMenuController ($state, AuthorityAdminMenuService, AppAut
         }
         return adminMenuIds;
     }
-};
-
+}
 /**
  * OAuth2ClientListController
  */
@@ -1230,8 +1204,7 @@ function OAuth2ClientListController($state, AlertUtils, ParseLinksUtils, PAGINAT
             }
         });
     }
-};
-
+}
 /**
  * OAuth2ClientDialogController
  */
@@ -1271,8 +1244,7 @@ function OAuth2ClientDialogController ($state, $stateParams, $uibModalInstance, 
     function cancel () {
         $uibModalInstance.dismiss('cancel');
     }
-};
-
+}
 /**
  * OAuth2ClientDetailsController
  */
@@ -1283,8 +1255,7 @@ function OAuth2ClientDetailsController ($state, $stateParams, entity) {
     vm.parentPageTitle = $state.$current.parent.data.pageTitle;
     vm.grandfatherPageTitle = $state.$current.parent.parent.data.pageTitle;
     vm.entity = entity;
-};
-
+}
 /**
  * OAuth2AccessTokenListController
  */
@@ -1368,8 +1339,7 @@ function OAuth2AccessTokenListController($state, AlertUtils, ParseLinksUtils, PA
     function goRefreshToken(refreshToken) {
         $state.go('security.oauth2-refresh-token-list', {'tokenId': refreshToken});
     }
-};
-
+}
 /**
  * OAuth2AccessTokenDetailsController
  */
@@ -1380,8 +1350,7 @@ function OAuth2AccessTokenDetailsController ($state, $stateParams, entity) {
     vm.parentPageTitle = $state.$current.parent.data.pageTitle;
     vm.grandfatherPageTitle = $state.$current.parent.parent.data.pageTitle;
     vm.entity = entity;
-};
-
+}
 /**
  * OAuth2RefreshTokenListController
  */
@@ -1459,8 +1428,7 @@ function OAuth2RefreshTokenListController($state, AlertUtils, ParseLinksUtils, P
             }
         });
     }
-};
-
+}
 /**
  * OAuth2RefreshTokenDetailsController
  */
@@ -1471,8 +1439,7 @@ function OAuth2RefreshTokenDetailsController ($state, $stateParams, entity) {
     vm.parentPageTitle = $state.$current.parent.data.pageTitle;
     vm.grandfatherPageTitle = $state.$current.parent.parent.data.pageTitle;
     vm.entity = entity;
-};
-
+}
 /**
  * OAuth2ApprovalListController
  */
@@ -1549,8 +1516,7 @@ function OAuth2ApprovalListController($state, AlertUtils, ParseLinksUtils, PAGIN
             }
         });
     }
-};
-
+}
 /**
  * OAuth2ApprovalDetailsController
  */
@@ -1561,8 +1527,7 @@ function OAuth2ApprovalDetailsController ($state, $stateParams, entity, $scope, 
     vm.parentPageTitle = $state.$current.parent.data.pageTitle;
     vm.grandfatherPageTitle = $state.$current.parent.parent.data.pageTitle;
     vm.entity = entity;
-};
-
+}
 /**
  * MetricsController
  * 
@@ -1796,8 +1761,7 @@ function MetricsController ($state, $scope, $uibModal, MetricsService, metrics) 
             });
         });
     }
-};
-
+}
 /**
  * MetricsModalController
  * 
@@ -1844,8 +1808,7 @@ function MetricsModalController ($uibModalInstance, threadDump) {
             return 'label-danger';
         }
     }
-};
-
+}
 function HealthController ($state, HealthService, $uibModal) {
     var vm = this;
 
@@ -1897,8 +1860,7 @@ function HealthController ($state, HealthService, $uibModal) {
             }
         });
     }
-};
-
+}
 function HealthModalController ($uibModalInstance, currentHealth, baseName, subSystemName) {
     var vm = this;
 
@@ -1910,8 +1872,7 @@ function HealthModalController ($uibModalInstance, currentHealth, baseName, subS
     function cancel() {
         $uibModalInstance.dismiss('cancel');
     }
-};
-
+}
 function ConfigurationController ($state, ConfigurationService) {
     var vm = this;
 
@@ -1932,8 +1893,7 @@ function ConfigurationController ($state, ConfigurationService) {
     ConfigurationService.getEnv().then(function (configuration) {
         vm.allConfiguration = configuration;
     });
-};
-
+}
 function BeansController ($state, $http, APP_NAME) {
     var vm = this;
 
@@ -1950,13 +1910,12 @@ function BeansController ($state, $http, APP_NAME) {
             });
         });
     }
-};
-
+}
 function MappingsController ($state, $http, APP_NAME) {
     var vm = this;
 
     vm.pageTitle = $state.current.data.pageTitle;
-    vm.items = new Array();
+    vm.items = [];
     vm.refresh = refresh;
     vm.refresh();
 
@@ -1981,8 +1940,7 @@ function MappingsController ($state, $http, APP_NAME) {
             }
         });
     }
-};
-
+}
 function HttpTraceController ($state, $http) {
     var vm = this;
 
@@ -1995,8 +1953,7 @@ function HttpTraceController ($state, $http) {
             vm.items = response.data.traces;
         });
     }
-};
-
+}
 function AuditsController ($state, $filter, AuditsService, ParseLinksUtils, PAGINATION_CONSTANTS) {
     var vm = this;
 
@@ -2047,8 +2004,7 @@ function AuditsController ($state, $filter, AuditsService, ParseLinksUtils, PAGI
         }
         vm.fromDate = fromDate;
     }
-};
-
+}
 /**
  * DictListController
  */
@@ -2134,8 +2090,7 @@ function DictListController($state, AlertUtils, ParseLinksUtils, PAGINATION_CONS
             }
         });
     }
-};
-
+}
 /**
  * DictDialogController
  */
@@ -2170,8 +2125,7 @@ function DictDialogController ($state, $stateParams, $uibModalInstance, DictServ
     function cancel () {
         $uibModalInstance.dismiss('cancel');
     }
-};
-
+}
 /**
  * DictItemListController
  */
@@ -2259,8 +2213,7 @@ function DictItemListController($state, AlertUtils, ParseLinksUtils, PAGINATION_
             }
         });
     }
-};
-
+}
 /**
  * DictItemDialogController
  */
@@ -2296,8 +2249,7 @@ function DictItemDialogController ($state, $stateParams, $uibModalInstance, Dict
     function cancel () {
         $uibModalInstance.dismiss('cancel');
     }
-};
-
+}
 /**
  * LoggerController
  */
@@ -2325,8 +2277,7 @@ function LoggerController ($state, LoggerService) {
             vm.query();
         });
     }
-};
-
+}
 /**
  * ScheduleController
  */
@@ -2339,8 +2290,7 @@ function ScheduleController ($state, $http) {
     $http.get('management/scheduledtasks').then(function(response) {
         vm.data = response.data;
     });
-};
-
+}
 /**
  * RedisAdminController
  */
@@ -2349,8 +2299,7 @@ function RedisAdminController ($state, AuthServerService) {
 
     vm.pageTitle = $state.current.data.pageTitle;
     vm.url = 'system/redis/admin?access_token=' + AuthServerService.getAccessToken();
-};
-
+}
 /**
  * ControlController
  */
@@ -2369,4 +2318,4 @@ function ControlController ($state, $http, AlertUtils) {
             AlertUtils.error('Shutdown failed', {});
         });
     }
-};
+}
