@@ -1,7 +1,5 @@
 package org.infinity.passport.domain;
 
-import java.io.Serializable;
-
 import org.infinity.passport.domain.base.AbstractAuditableDomain;
 import org.infinity.passport.dto.MongoOAuth2RefreshTokenDTO;
 import org.springframework.beans.BeanUtils;
@@ -9,6 +7,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.oauth2.common.OAuth2RefreshToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
+
+import java.io.Serializable;
 
 @Document
 public class MongoOAuth2RefreshToken extends AbstractAuditableDomain implements Serializable {
@@ -95,11 +95,7 @@ public class MongoOAuth2RefreshToken extends AbstractAuditableDomain implements 
 
         MongoOAuth2RefreshToken that = (MongoOAuth2RefreshToken) o;
 
-        if (id != null ? !id.equals(that.id) : that.id != null) {
-            return false;
-        }
-
-        return true;
+        return id != null ? id.equals(that.id) : that.id == null;
     }
 
     @Override
