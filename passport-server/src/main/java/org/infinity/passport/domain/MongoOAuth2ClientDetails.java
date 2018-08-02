@@ -57,11 +57,7 @@ public class MongoOAuth2ClientDetails extends BaseClientDetails implements Clien
         }
 
         MongoOAuth2ClientDetails that = (MongoOAuth2ClientDetails) o;
-        if (clientId != null ? !clientId.equals(that.clientId) : that.clientId != null) {
-            return false;
-        }
-
-        return true;
+        return clientId != null ? clientId.equals(that.clientId) : that.clientId == null;
     }
 
     @Override
