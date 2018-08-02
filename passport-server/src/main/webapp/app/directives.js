@@ -56,8 +56,7 @@ function pageRibbonDirective($rootScope, ProfileService) {
             });
         }
     }
-};
-
+}
 /**
  * pageTitleDirective - Directive for set Page title - mata title
  */
@@ -76,8 +75,7 @@ function pageTitleDirective($rootScope, $timeout, APP_NAME) {
             $rootScope.$on('$stateChangeStart', listener);
         }
     }
-};
-
+}
 /**
  * sideNavigationDirective - Directive for run metsiMenu on sidebar navigation
  */
@@ -108,8 +106,7 @@ function sideNavigationDirective($timeout) {
             }
         }
     };
-};
-
+}
 /**
  * iboxToolsDirective - Directive for iBox tools elements in right corner of ibox
  */
@@ -216,8 +213,7 @@ function minimalizeSidebarDirective($timeout) {
             }
         }
     };
-};
-
+}
 /**
  * sortDirective
  */
@@ -286,8 +282,7 @@ function sortDirective() {
         controllerAs: 'vm',
         bindToController: true
     }
-};
-
+}
 /**
  * sortByDirective
  */
@@ -302,8 +297,7 @@ function sortByDirective($rootScope, ProfileService) {
             });
         }
     }
-};
-
+}
 /**
  * showValidationDirective
  */
@@ -329,8 +323,7 @@ function showValidationDirective() {
             });
         }
     };
-};
-
+}
 /**
  * hasAuthorityDirective
  */
@@ -373,8 +366,7 @@ function hasAuthorityDirective(PrincipalService) {
             }
         }
     };
-};
-
+}
 /**
  * hasAnyAuthorityDirective
  */
@@ -415,8 +407,7 @@ function hasAnyAuthorityDirective(PrincipalService) {
             }
         }
     };
-};
-
+}
 /**
  * passwordStrengthBarDirective
  */
@@ -499,8 +490,7 @@ function passwordStrengthBarDirective() {
             });
         }
     };
-};
-
+}
 /**
  * 参数说明
  *  tree-data：树形数组
@@ -604,7 +594,7 @@ function treeView() {
 				}
 				//父项被选中，子项也被选中
 				item[children]=changeCheck(item[children],isCheck,check,children);
-			 }
+             };
 			 function isParentUnCheck(id,subItems,parent,checkValue,check){
 				 var flag=true;
 				 var isEqual=false;
@@ -641,8 +631,7 @@ function treeView() {
 			 }
 		 }
 	 };
-};
-
+}
 /**
  * does not work
  */
@@ -663,8 +652,7 @@ function jhiAlert() {
             });
         }
     };
-};
-
+}
 /**
  * does not work
  */
@@ -739,8 +727,7 @@ function jhiAlertError() {
             });
         }
     };
-};
-
+}
 /**
  * responsibleVideo - Directive for responsive video
  */
@@ -753,7 +740,7 @@ function responsiveVideo() {
             video
                 .attr('data-aspectRatio', video.height() / video.width())
                 .removeAttr('height')
-                .removeAttr('width')
+                .removeAttr('width');
 
             //We can use $watch on $window.innerWidth also.
             $(window).resize(function() {
@@ -764,8 +751,7 @@ function responsiveVideo() {
             }).resize();
         }
     }
-};
-
+}
 function closeOffCanvas() {
     return {
         restrict: 'A',
@@ -843,8 +829,7 @@ function sparkline() {
             };
         }
     }
-};
-
+}
 /**
  * icheck - Directive for custom checkbox icheck
  */
@@ -859,7 +844,7 @@ function icheck($timeout) {
 
                 $scope.$watch($attrs['ngModel'], function(newValue){
                     $(element).iCheck('update');
-                })
+                });
 
                 return $(element).iCheck({
                     checkboxClass: 'icheckbox_square-green',
@@ -1040,9 +1025,7 @@ function clockPicker() {
                 element.clockpicker();
         }
     };
-};
-
-
+}
 /**
  * landingScrollspy - Directive for scrollspy in landing page
  */
@@ -1108,8 +1091,7 @@ function touchSpin() {
             };
         }
     }
-};
-
+}
 /**
  * markdownEditor - Directive for Bootstrap Markdown
  */
@@ -1126,9 +1108,7 @@ function markdownEditor() {
             });
         }
     }
-};
-
-
+}
 /**
  * passwordMeter - Directive for jQuery Password Strength Meter
  */
@@ -1147,4 +1127,4 @@ function passwordMeter() {
             };
         }
     }
-};
+}
