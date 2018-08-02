@@ -1,8 +1,7 @@
 package org.infinity.passport.config;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.github.mongobee.Mongobee;
+import com.mongodb.MongoClient;
 import org.infinity.passport.config.oauth2.OAuth2AccessTokenReadConverter;
 import org.infinity.passport.config.oauth2.OAuth2AuthenticationReadConverter;
 import org.infinity.passport.config.oauth2.OAuth2GrantedAuthorityTokenReadConverter;
@@ -17,18 +16,14 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.mongodb.config.EnableMongoAuditing;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
-import org.springframework.data.mongodb.core.convert.DbRefResolver;
-import org.springframework.data.mongodb.core.convert.DefaultDbRefResolver;
-import org.springframework.data.mongodb.core.convert.DefaultMongoTypeMapper;
-import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
-import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
+import org.springframework.data.mongodb.core.convert.*;
 import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
 import org.springframework.data.mongodb.core.mapping.event.ValidatingMongoEventListener;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
-import com.github.mongobee.Mongobee;
-import com.mongodb.MongoClient;
+import java.util.ArrayList;
+import java.util.List;
 
 @Configuration
 @EnableMongoRepositories(ApplicationConstants.BASE_PACKAGE + ".repository")
@@ -64,7 +59,7 @@ public class MongoConfiguration {
     }
 
     @Bean
-    public MappingMongoConverter mappingMongoConverter() throws Exception {
+    public MappingMongoConverter mappingMongoConverter() {
         DbRefResolver dbRefResolver = new DefaultDbRefResolver(mongoDbFactory);
         MappingMongoConverter converter = new MappingMongoConverter(dbRefResolver, mongoMappingContext);
         converter.setCustomConversions(customConversions());
