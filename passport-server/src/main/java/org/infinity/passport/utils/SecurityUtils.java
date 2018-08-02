@@ -1,7 +1,5 @@
 package org.infinity.passport.utils;
 
-import java.util.Collection;
-
 import org.infinity.passport.domain.Authority;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,8 +8,9 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.util.CollectionUtils;
+
+import java.util.Collection;
 
 /**
  * Utility class for Spring Security.
@@ -31,9 +30,6 @@ public final class SecurityUtils {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
         if (authentication != null) {
-            if (authentication instanceof OAuth2Authentication) {
-                authentication = (OAuth2Authentication) authentication;
-            }
             if (authentication.getPrincipal() instanceof User) {
                 return (User) authentication.getPrincipal();
             } else if (authentication.getPrincipal() instanceof String) {
