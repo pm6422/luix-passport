@@ -47,7 +47,6 @@ public class PassportLauncher implements WebMvcConfigurer {
         printServerInfo(env);
     }
 
-
     private static void printServerInfo(Environment env) throws IOException {
         String appBanner = StreamUtils.copyToString(new ClassPathResource("config/banner-app.txt").getInputStream(),
                 Charset.defaultCharset());
