@@ -1,13 +1,13 @@
 package org.infinity.passport.domain;
 
-import java.io.Serializable;
-
 import org.infinity.passport.dto.MongoOAuth2AuthorizationCodeDTO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
+
+import java.io.Serializable;
 
 @Document
 public class MongoOAuth2AuthorizationCode implements Serializable {
@@ -72,11 +72,7 @@ public class MongoOAuth2AuthorizationCode implements Serializable {
 
         MongoOAuth2AuthorizationCode that = (MongoOAuth2AuthorizationCode) o;
 
-        if (id != null ? !id.equals(that.id) : that.id != null) {
-            return false;
-        }
-
-        return true;
+        return id != null ? id.equals(that.id) : that.id == null;
     }
 
     @Override
