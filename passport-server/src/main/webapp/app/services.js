@@ -124,8 +124,7 @@ function StateHandler($rootScope, $state, $sessionStorage, $window, Authenticati
             }
         });
     }
-};
-
+}
 /**
  * Base64Utils
  */
@@ -209,8 +208,7 @@ function Base64Utils () {
 
         return output;
     }
-};
-
+}
 /**
  * ParseLinksUtils
  */
@@ -249,8 +247,7 @@ function ParseLinksUtils () {
 
         return links;
     }
-};
-
+}
 /**
  * PaginationUtils
  */
@@ -284,8 +281,7 @@ function PaginationUtils () {
         }
         return sortArray.join(',');
     }
-};
-
+}
 /**
  * AlertUtils
  */
@@ -339,8 +335,7 @@ function AlertUtils (SweetAlert, toaster, APP_NAME) {
             closeOnCancel: true
         }, confirmReset);
     }
-};
-
+}
 /**
  * DateUtils
  */
@@ -379,8 +374,7 @@ function DateUtils ($filter) {
     function dateformat () {
         return 'yyyy-MM-dd';
     }
-};
-
+}
 /**
  * DataUtils
  */
@@ -444,8 +438,7 @@ function DataUtils ($window) {
             cb(base64Data);
         };
     }
-};
-
+}
 /**
  * ProfileService
  */
@@ -466,8 +459,7 @@ function ProfileService($q, $http, $localStorage) {
         }
         return dataPromise;
     }
-};
-
+}
 /**
  * PasswordService
  */
@@ -477,8 +469,7 @@ function PasswordService($resource) {
     });
 
     return service;
-};
-
+}
 /**
  * PasswordResetInitService
  */
@@ -486,8 +477,7 @@ function PasswordResetInitService($resource) {
     var service = $resource('open-api/account/reset-password/init', {}, {});
 
     return service;
-};
-
+}
 /**
  * PasswordResetFinishService
  */
@@ -495,8 +485,7 @@ function PasswordResetFinishService($resource) {
     var service = $resource('open-api/account/reset-password/finish', {}, {});
 
     return service;
-};
-
+}
 /**
  * AccountService
  */
@@ -516,15 +505,13 @@ function AccountService ($resource) {
         'queryAuthorityNames': {method: 'GET', isArray: true, params: {extension: 'authority-names'}}
     });
     return service;
-};
-
+}
 /**
  * RegisterService
  */
 function RegisterService ($resource) {
     return $resource('open-api/account/register', {}, {});
-};
-
+}
 /**
  * ActivateService
  */
@@ -532,8 +519,7 @@ function ActivateService ($resource) {
     return $resource('open-api/account/activate/:key', {}, {
         'get': { method: 'GET', params: {}, isArray: false}
     });
-};
-
+}
 /**
  * PrincipalService
  */
@@ -628,8 +614,7 @@ function PrincipalService ($q, $http, AccountService) {
     function isIdentityResolved () {
         return angular.isDefined(_identity);
     }
-};
-
+}
 /**
  * AuthServerService
  */
@@ -684,8 +669,7 @@ function AuthServerService ($http, $localStorage, Base64Utils, APP_NAME) {
             delete $localStorage.authenticationToken;
         });
     }
-};
-
+}
 /**
  * AuthenticationService
  */
@@ -790,8 +774,7 @@ function AuthenticationService ($rootScope, $state, $sessionStorage, $q, $locati
         var previousState = { 'name': previousStateName, 'params': previousStateParams };
         $sessionStorage.previousState = previousState;
     }
-};
-
+}
 /**
  * AuthorityAdminMenuService
  */
@@ -808,8 +791,7 @@ function AuthorityAdminMenuService($resource) {
             }
         }
     });
-};
-
+}
 /**
  * AppService
  */
@@ -829,8 +811,7 @@ function AppService ($resource) {
         'del':{ method: 'DELETE' }
     });
     return service;
-};
-
+}
 /**
  * AuthorityService
  */
@@ -850,8 +831,7 @@ function AuthorityService ($resource) {
         'del':{ method: 'DELETE' }
     });
     return service;
-};
-
+}
 /**
  * AppAuthorityService
  */
@@ -872,8 +852,7 @@ function AppAuthorityService ($resource) {
         'del':{ method: 'DELETE', params: {extension: 'app-authorities'}}
     });
     return service;
-};
-
+}
 /**
  * UserService
  */
@@ -893,8 +872,7 @@ function UserService ($resource) {
         'resetPassword': { method: 'PUT' , params: {userName: '@userName'} }
     });
     return service;
-};
-
+}
 /**
  * OAuth2ClientService
  */
@@ -913,8 +891,7 @@ function OAuth2ClientService ($resource) {
         'del':{ method: 'DELETE' }
     });
     return service;
-};
-
+}
 /**
  * OAuth2AccessTokenService
  */
@@ -931,8 +908,7 @@ function OAuth2AccessTokenService ($resource) {
         'del':{ method: 'DELETE' }
     });
     return service;
-};
-
+}
 /**
  * OAuth2RefreshTokenService
  */
@@ -949,8 +925,7 @@ function OAuth2RefreshTokenService ($resource) {
         'del':{ method: 'DELETE' }
     });
     return service;
-};
-
+}
 /**
  * OAuth2ApprovalService
  */
@@ -967,8 +942,7 @@ function OAuth2ApprovalService ($resource) {
         'del':{ method: 'DELETE' }
     });
     return service;
-};
-
+}
 /**
  * AdminMenuService
  */
@@ -1013,8 +987,7 @@ function MetricsService ($rootScope, $http) {
             return response.data;
         });
     }
-};
-
+}
 /**
  * HealthService
  */
@@ -1134,8 +1107,7 @@ function HealthService ($rootScope, $http) {
         });
         return result;
     }
-};
-
+}
 function ConfigurationService ($filter, $http, APP_NAME) {
     var service = {
         get: get,
@@ -1191,9 +1163,7 @@ function ConfigurationService ($filter, $http, APP_NAME) {
             return properties;
         }
     }
-};
-
-
+}
 function DictService ($resource) {
     var service = $resource('api/dict/:extension/:id', {}, {
         'query': { method: 'GET', isArray: true, params: {extension: 'dicts'}},
@@ -1211,8 +1181,7 @@ function DictService ($resource) {
         'del':{ method: 'DELETE', params: {extension: 'dicts'} }
     });
     return service;
-};
-
+}
 function DictItemService ($resource) {
     var service = $resource('api/dict-item/:extension/:id', {}, {
         'query': { method: 'GET', isArray: true, params: {extension: 'items'}},
@@ -1230,8 +1199,7 @@ function DictItemService ($resource) {
         'del':{ method: 'DELETE', params: {extension: 'items'} }
     });
     return service;
-};
-
+}
 function AuditsService ($resource) {
     var service = $resource('api/user-audit-event/user-audit-events/:id', {}, {
         'get': { method: 'GET', isArray: true},
@@ -1243,8 +1211,7 @@ function AuditsService ($resource) {
     });
 
     return service;
-};
-
+}
 function LoggerService ($resource) {
     var service = $resource('management/loggers/:name', {}, {
         'query': { method: 'GET'},
@@ -1252,5 +1219,5 @@ function LoggerService ($resource) {
     });
 
     return service;
-};
+}
 
