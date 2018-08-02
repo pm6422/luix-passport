@@ -25,8 +25,7 @@ function words () {
         
         return input;
     }
-};
-
+}
 function characters () {
     return function (input, chars, breakOnWord) {
         if (isNaN(chars)) {
@@ -53,8 +52,7 @@ function characters () {
         }
         return input;
     }
-};
-
+}
 function capitalize () {
     return function (input) {
         if (input !== null) {
@@ -62,14 +60,13 @@ function capitalize () {
         }
         return input.substring(0, 1).toUpperCase() + input.substring(1);
     }
-};
-
+}
 function nullToWhite () {
     return function (input) {
-        var result = input
+        var result = input;
         if (input === undefined || input === null || input === "null") {
             result = "";
         }
         return result;
     };
-};
+}
