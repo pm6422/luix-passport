@@ -1,21 +1,16 @@
 package org.infinity.passport.config.oauth2;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 import org.infinity.passport.domain.MongoOAuth2ClientDetails;
 import org.infinity.passport.repository.OAuth2ClientDetailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.provider.ClientAlreadyExistsException;
-import org.springframework.security.oauth2.provider.ClientDetails;
-import org.springframework.security.oauth2.provider.ClientDetailsService;
-import org.springframework.security.oauth2.provider.ClientRegistrationException;
-import org.springframework.security.oauth2.provider.ClientRegistrationService;
-import org.springframework.security.oauth2.provider.NoSuchClientException;
+import org.springframework.security.oauth2.provider.*;
 import org.springframework.security.oauth2.provider.client.BaseClientDetails;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MongoClientDetailsService implements ClientDetailsService, ClientRegistrationService {
@@ -45,7 +40,7 @@ public class MongoClientDetailsService implements ClientDetailsService, ClientRe
 
     @Override
     public void updateClientDetails(ClientDetails clientDetails) throws NoSuchClientException {
-        if (oAuth2ClientDetailsRepository.findById(clientDetails.getClientId()) == null) {
+        if (!oAuth2ClientDetailsRepository.findById(clientDetails.getClientId()).isPresent()) {
             throw new NoSuchClientException("No client found with id = " + clientDetails.getClientId());
         }
         saveClientDetails(new MongoOAuth2ClientDetails(), clientDetails);

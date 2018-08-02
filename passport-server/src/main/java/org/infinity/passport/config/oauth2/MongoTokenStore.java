@@ -1,14 +1,5 @@
 package org.infinity.passport.config.oauth2;
 
-import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-
 import org.infinity.passport.domain.MongoOAuth2AccessToken;
 import org.infinity.passport.domain.MongoOAuth2RefreshToken;
 import org.infinity.passport.repository.OAuth2AccessTokenRepository;
@@ -22,6 +13,15 @@ import org.springframework.security.oauth2.provider.token.DefaultAuthenticationK
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.stereotype.Component;
 
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+
 /**
  * A MongoDB implementation of the TokenStore.
  */
@@ -29,12 +29,12 @@ import org.springframework.stereotype.Component;
 public class MongoTokenStore implements TokenStore {
 
     @Autowired
-    private OAuth2AccessTokenRepository  oAuth2AccessTokenRepository;
+    private OAuth2AccessTokenRepository oAuth2AccessTokenRepository;
 
     @Autowired
     private OAuth2RefreshTokenRepository oAuth2RefreshTokenRepository;
 
-    private AuthenticationKeyGenerator   authenticationKeyGenerator = new DefaultAuthenticationKeyGenerator();
+    private AuthenticationKeyGenerator authenticationKeyGenerator = new DefaultAuthenticationKeyGenerator();
 
     @Override
     public OAuth2Authentication readAuthentication(OAuth2AccessToken token) {
@@ -137,11 +137,7 @@ public class MongoTokenStore implements TokenStore {
             throw new IllegalStateException("MD5 algorithm not available. Fatal (should be in the JDK).");
         }
 
-        try {
-            byte[] bytes = digest.digest(value.getBytes("UTF-8"));
-            return String.format("%032x", new BigInteger(1, bytes));
-        } catch (UnsupportedEncodingException e) {
-            throw new IllegalStateException("UTF-8 encoding not available. Fatal (should be in the JDK).");
-        }
+        byte[] bytes = digest.digest(value.getBytes(StandardCharsets.UTF_8));
+        return String.format("%032x", new BigInteger(1, bytes));
     }
 }
