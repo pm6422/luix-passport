@@ -89,7 +89,6 @@ public class AppController {
     @Secured({Authority.ADMIN})
     @Timed
     public ResponseEntity<AppDTO> findById(@ApiParam(value = "应用名称", required = true) @PathVariable String name) {
-        LOGGER.debug("REST request to get app : {}", name);
         App app = appRepository.findById(name).get();
         List<AppAuthority> appAuthorities = appAuthorityRepository.findByAppName(name);
         Set<String> authorities = appAuthorities.stream().map(item -> item.getAuthorityName())
