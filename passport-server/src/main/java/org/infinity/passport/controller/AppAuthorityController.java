@@ -1,17 +1,7 @@
 package org.infinity.passport.controller;
 
-import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
-import static javax.servlet.http.HttpServletResponse.SC_CREATED;
-import static javax.servlet.http.HttpServletResponse.SC_OK;
-
-import java.net.URISyntaxException;
-import java.text.MessageFormat;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.validation.Valid;
-
+import com.codahale.metrics.annotation.Timed;
+import io.swagger.annotations.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.infinity.passport.domain.AppAuthority;
 import org.infinity.passport.domain.Authority;
@@ -31,22 +21,16 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.codahale.metrics.annotation.Timed;
+import javax.validation.Valid;
+import java.net.URISyntaxException;
+import java.text.MessageFormat;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import static javax.servlet.http.HttpServletResponse.*;
 
 /**
  * REST controller for managing the app authority.
@@ -55,22 +39,19 @@ import io.swagger.annotations.ApiResponses;
 @Api(tags = "应用权限")
 public class AppAuthorityController {
 
-    private static final Logger    LOGGER = LoggerFactory.getLogger(AppAuthorityController.class);
-
+    private static final Logger                 LOGGER = LoggerFactory.getLogger(AppAuthorityController.class);
     @Autowired
-    private AppAuthorityRepository appAuthorityRepository;
-
+    private              AppAuthorityRepository appAuthorityRepository;
     @Autowired
-    private AppAuthorityService    appAuthorityService;
-
+    private              AppAuthorityService    appAuthorityService;
     @Autowired
-    private HttpHeaderCreator      httpHeaderCreator;
+    private              HttpHeaderCreator      httpHeaderCreator;
 
     @ApiOperation("创建应用权限")
-    @ApiResponses(value = { @ApiResponse(code = SC_CREATED, message = "成功创建"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "字典名已存在") })
+    @ApiResponses(value = {@ApiResponse(code = SC_CREATED, message = "成功创建"),
+            @ApiResponse(code = SC_BAD_REQUEST, message = "字典名已存在")})
     @PostMapping("/api/app-authority/app-authorities")
-    @Secured({ Authority.ADMIN })
+    @Secured({Authority.ADMIN})
     @Timed
     public ResponseEntity<Void> create(
             @ApiParam(value = "应用权限信息", required = true) @Valid @RequestBody AppAuthorityDTO dto) {
@@ -92,13 +73,13 @@ public class AppAuthorityController {
     }
 
     @ApiOperation("获取应用权限分页列表")
-    @ApiResponses(value = { @ApiResponse(code = SC_OK, message = "成功获取") })
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/app-authority/app-authorities")
-    @Secured({ Authority.ADMIN })
+    @Secured({Authority.ADMIN})
     @Timed
-    public ResponseEntity<List<AppAuthorityDTO>> getAppAuthorities(Pageable pageable,
-            @ApiParam(value = "应用名称", required = false) @RequestParam(value = "appName", required = false) String appName,
-            @ApiParam(value = "权限名称", required = false) @RequestParam(value = "authorityName", required = false) String authorityName)
+    public ResponseEntity<List<AppAuthorityDTO>> find(Pageable pageable,
+                                                      @ApiParam(value = "应用名称", required = false) @RequestParam(value = "appName", required = false) String appName,
+                                                      @ApiParam(value = "权限名称", required = false) @RequestParam(value = "authorityName", required = false) String authorityName)
             throws URISyntaxException {
         Page<AppAuthority> appAuthorities = appAuthorityService.findByAppNameAndAuthorityNameCombinations(pageable,
                 appName, authorityName);
@@ -110,12 +91,12 @@ public class AppAuthorityController {
     }
 
     @ApiOperation("根据字典ID检索应用权限信息")
-    @ApiResponses(value = { @ApiResponse(code = SC_OK, message = "成功获取"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "应用权限不存在") })
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取"),
+            @ApiResponse(code = SC_BAD_REQUEST, message = "应用权限不存在")})
     @GetMapping("/api/app-authority/app-authorities/{id}")
-    @Secured({ Authority.DEVELOPER, Authority.USER })
+    @Secured({Authority.DEVELOPER, Authority.USER})
     @Timed
-    public ResponseEntity<AppAuthorityDTO> getAppAuthority(
+    public ResponseEntity<AppAuthorityDTO> findById(
             @ApiParam(value = "字典编号", required = true) @PathVariable String id) {
         LOGGER.debug("REST request to get app authority : {}", id);
         AppAuthority entity = appAuthorityRepository.findById(id).orElseThrow(() -> new NoDataException(id));
@@ -123,11 +104,11 @@ public class AppAuthorityController {
     }
 
     @ApiOperation("根据应用名称检索应用权限信息")
-    @ApiResponses(value = { @ApiResponse(code = SC_OK, message = "成功获取") })
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/app-authority/app-name/{appName}")
-    @Secured({ Authority.ADMIN })
+    @Secured({Authority.ADMIN})
     @Timed
-    public ResponseEntity<List<AppAuthorityDTO>> getAppAuthorities(
+    public ResponseEntity<List<AppAuthorityDTO>> findByApp(
             @ApiParam(value = "应用名称", required = true) @PathVariable String appName) {
         LOGGER.debug("REST request to get app authorities : {}", appName);
         List<AppAuthority> appAuthorities = appAuthorityRepository.findByAppName(appName);
@@ -139,10 +120,10 @@ public class AppAuthorityController {
     }
 
     @ApiOperation("更新应用权限信息")
-    @ApiResponses(value = { @ApiResponse(code = SC_OK, message = "成功更新"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "应用权限不存在") })
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功更新"),
+            @ApiResponse(code = SC_BAD_REQUEST, message = "应用权限不存在")})
     @PutMapping("/api/app-authority/app-authorities")
-    @Secured({ Authority.ADMIN })
+    @Secured({Authority.ADMIN})
     @Timed
     public ResponseEntity<Void> update(
             @ApiParam(value = "新的应用权限信息", required = true) @Valid @RequestBody AppAuthorityDTO dto) {
@@ -155,10 +136,10 @@ public class AppAuthorityController {
     }
 
     @ApiOperation(value = "根据字典ID删除应用权限信息", notes = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
-    @ApiResponses(value = { @ApiResponse(code = SC_OK, message = "成功删除"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "应用权限不存在") })
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功删除"),
+            @ApiResponse(code = SC_BAD_REQUEST, message = "应用权限不存在")})
     @DeleteMapping("/api/app-authority/app-authorities/{id}")
-    @Secured({ Authority.ADMIN })
+    @Secured({Authority.ADMIN})
     @Timed
     public ResponseEntity<Void> delete(@ApiParam(value = "字典编号", required = true) @PathVariable String id) {
         LOGGER.debug("REST request to delete app authority: {}", id);

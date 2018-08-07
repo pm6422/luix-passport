@@ -1,22 +1,7 @@
 package org.infinity.passport.controller;
 
-import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
-import static javax.servlet.http.HttpServletResponse.SC_CREATED;
-import static javax.servlet.http.HttpServletResponse.SC_OK;
-
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.time.Instant;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-
+import com.codahale.metrics.annotation.Timed;
+import io.swagger.annotations.*;
 import org.apache.commons.lang3.StringUtils;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.User;
@@ -44,22 +29,21 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.codahale.metrics.annotation.Timed;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.time.Instant;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import static javax.servlet.http.HttpServletResponse.*;
 
 /**
  * REST controller for managing users.
@@ -68,36 +52,29 @@ import io.swagger.annotations.ApiResponses;
 @Api(tags = "用户管理")
 public class UserController {
 
-    private static final Logger      LOGGER           = LoggerFactory.getLogger(UserController.class);
-
+    private static final Logger                   LOGGER           = LoggerFactory.getLogger(UserController.class);
     @Autowired
-    private UserRepository           userRepository;
-
+    private              UserRepository           userRepository;
     @Autowired
-    private UserAuthorityRepository  userAuthorityRepository;
-
+    private              UserAuthorityRepository  userAuthorityRepository;
     @Autowired
-    private UserService              userService;
-
+    private              UserService              userService;
     @Autowired
-    private MailService              mailService;
-
+    private              MailService              mailService;
     @Autowired
-    private AjaxLogoutSuccessHandler ajaxLogoutSuccessHandler;
-
+    private              AjaxLogoutSuccessHandler ajaxLogoutSuccessHandler;
     @Autowired
-    private HttpHeaderCreator        httpHeaderCreator;
-
-    private static final String      DEFAULT_PASSWORD = "123456";
+    private              HttpHeaderCreator        httpHeaderCreator;
+    private static final String                   DEFAULT_PASSWORD = "123456";
 
     @ApiOperation(value = "创建新用户并发送激活邮件", response = String.class)
-    @ApiResponses(value = { @ApiResponse(code = SC_CREATED, message = "成功创建"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "账号已注册") })
+    @ApiResponses(value = {@ApiResponse(code = SC_CREATED, message = "成功创建"),
+            @ApiResponse(code = SC_BAD_REQUEST, message = "账号已注册")})
     @PostMapping("/api/user/users")
-    @Secured({ Authority.ADMIN })
+    @Secured({Authority.ADMIN})
     @Timed
     public ResponseEntity<String> create(@ApiParam(value = "用户信息", required = true) @Valid @RequestBody UserDTO dto,
-            HttpServletRequest request) {
+                                         HttpServletRequest request) {
         LOGGER.debug("REST request to create user: {}", dto);
         userService.findOneByUserName(dto.getUserName()).ifPresent((existingEntity) -> {
             throw new FieldValidationException("userDTO", "userName", dto.getUserName(),
@@ -132,12 +109,12 @@ public class UserController {
     }
 
     @ApiOperation("获取用户信息分页列表")
-    @ApiResponses(value = { @ApiResponse(code = SC_OK, message = "成功获取") })
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/user/users")
-    @Secured({ Authority.ADMIN })
+    @Secured({Authority.ADMIN})
     @Timed
-    public ResponseEntity<List<ManagedUserDTO>> getUsers(Pageable pageable,
-            @ApiParam(value = "查询条件", required = false) @RequestParam(value = "login", required = false) String login)
+    public ResponseEntity<List<ManagedUserDTO>> find(Pageable pageable,
+                                                     @ApiParam(value = "查询条件", required = false) @RequestParam(value = "login", required = false) String login)
             throws URISyntaxException {
         Page<User> users = StringUtils.isEmpty(login) ? userRepository.findAll(pageable)
                 : userService.findByLogin(pageable, login);
@@ -148,12 +125,12 @@ public class UserController {
     }
 
     @ApiOperation("根据用户名检索用户信息")
-    @ApiResponses(value = { @ApiResponse(code = SC_OK, message = "成功获取"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "用户不存在或账号无权限") })
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取"),
+            @ApiResponse(code = SC_BAD_REQUEST, message = "用户不存在或账号无权限")})
     @GetMapping("/api/user/users/{userName:[_'.@a-z0-9-]+}")
-    @Secured({ Authority.ADMIN })
+    @Secured({Authority.ADMIN})
     @Timed
-    public ResponseEntity<ManagedUserDTO> getUser(
+    public ResponseEntity<ManagedUserDTO> findByName(
             @ApiParam(value = "用户名", required = true) @PathVariable String userName) {
         User entity = userService.findOneByUserName(userName).orElseThrow(() -> new NoDataException(userName));
         List<UserAuthority> userAuthorities = Optional.ofNullable(userAuthorityRepository.findByUserId(entity.getId()))
@@ -164,16 +141,16 @@ public class UserController {
     }
 
     @ApiOperation("更新用户信息")
-    @ApiResponses(value = { @ApiResponse(code = SC_OK, message = "成功更新"),
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功更新"),
             @ApiResponse(code = SC_BAD_REQUEST, message = "用户不存在"),
             @ApiResponse(code = SC_BAD_REQUEST, message = "账号已注册"),
             @ApiResponse(code = SC_BAD_REQUEST, message = "用户不存在"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "已激活用户无法变成未激活状态") })
+            @ApiResponse(code = SC_BAD_REQUEST, message = "已激活用户无法变成未激活状态")})
     @PutMapping("/api/user/users")
-    @Secured({ Authority.ADMIN })
+    @Secured({Authority.ADMIN})
     @Timed
     public ResponseEntity<Void> update(@ApiParam(value = "新的用户信息", required = true) @Valid @RequestBody UserDTO dto,
-            HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+                                       HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         LOGGER.debug("REST request to update user: {}", dto);
         Optional<User> existingUser = userService.findOneByUserName(dto.getUserName());
 
@@ -209,10 +186,10 @@ public class UserController {
     }
 
     @ApiOperation(value = "根据用户名删除用户", notes = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
-    @ApiResponses(value = { @ApiResponse(code = SC_OK, message = "成功删除"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "用户不存在") })
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功删除"),
+            @ApiResponse(code = SC_BAD_REQUEST, message = "用户不存在")})
     @DeleteMapping("/api/user/users/{userName:[_'.@a-z0-9-]+}")
-    @Secured({ Authority.ADMIN })
+    @Secured({Authority.ADMIN})
     @Timed
     public ResponseEntity<Void> delete(@ApiParam(value = "用户名", required = true) @PathVariable String userName) {
         LOGGER.debug("REST request to delete user: {}", userName);
@@ -224,10 +201,10 @@ public class UserController {
     }
 
     @ApiOperation("根据用户名重置密码")
-    @ApiResponses(value = { @ApiResponse(code = SC_OK, message = "成功重置"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "用户不存在或账号无权限") })
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功重置"),
+            @ApiResponse(code = SC_BAD_REQUEST, message = "用户不存在或账号无权限")})
     @PutMapping("/api/user/users/{userName:[_'.@a-z0-9-]+}")
-    @Secured({ Authority.ADMIN })
+    @Secured({Authority.ADMIN})
     @Timed
     public ResponseEntity<String> resetPassword(
             @ApiParam(value = "用户名", required = true) @PathVariable String userName) {

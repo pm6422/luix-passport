@@ -1,12 +1,7 @@
 package org.infinity.passport.controller;
 
-import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
-import static javax.servlet.http.HttpServletResponse.SC_OK;
-
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.stream.Collectors;
-
+import com.codahale.metrics.annotation.Timed;
+import io.swagger.annotations.*;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.MongoOAuth2AuthorizationCode;
 import org.infinity.passport.dto.MongoOAuth2AuthorizationCodeDTO;
@@ -24,35 +19,29 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.codahale.metrics.annotation.Timed;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.stream.Collectors;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
+import static javax.servlet.http.HttpServletResponse.SC_OK;
 
 @RestController
 @Api(tags = "登录授权码信息")
 public class OAuth2AuthorizationCodeController {
 
-    private static final Logger               LOGGER = LoggerFactory.getLogger(OAuth2AuthorizationCodeController.class);
-
+    private static final Logger                            LOGGER = LoggerFactory.getLogger(OAuth2AuthorizationCodeController.class);
     @Autowired
-    private OAuth2AuthorizationCodeRepository oAuth2AuthorizationCodeRepository;
-
+    private              OAuth2AuthorizationCodeRepository oAuth2AuthorizationCodeRepository;
     @Autowired
-    private HttpHeaderCreator                 httpHeaderCreator;
+    private              HttpHeaderCreator                 httpHeaderCreator;
 
     /**
      * Authorization code will be deleted immediately after authentication process.
      * So the database will be always empty.
+     *
      * @param pageable
      * @param authorizationCodelId
      * @param code
@@ -60,13 +49,13 @@ public class OAuth2AuthorizationCodeController {
      * @throws URISyntaxException
      */
     @ApiOperation("获取授权码信息信息分页列表")
-    @ApiResponses(value = { @ApiResponse(code = SC_OK, message = "成功获取") })
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/oauth2-authorization-code/codes")
     @Secured(Authority.ADMIN)
     @Timed
-    public ResponseEntity<List<MongoOAuth2AuthorizationCodeDTO>> getClientDetails(Pageable pageable,
-            @ApiParam(value = "授权码ID", required = false) @RequestParam(value = "authorizationCodelId", required = false) String authorizationCodelId,
-            @ApiParam(value = "授权码", required = false) @RequestParam(value = "code", required = false) String code)
+    public ResponseEntity<List<MongoOAuth2AuthorizationCodeDTO>> find(Pageable pageable,
+                                                                      @ApiParam(value = "授权码ID", required = false) @RequestParam(value = "authorizationCodelId", required = false) String authorizationCodelId,
+                                                                      @ApiParam(value = "授权码", required = false) @RequestParam(value = "code", required = false) String code)
             throws URISyntaxException {
         MongoOAuth2AuthorizationCode probe = new MongoOAuth2AuthorizationCode();
         probe.setId(authorizationCodelId);
@@ -81,12 +70,12 @@ public class OAuth2AuthorizationCodeController {
     }
 
     @ApiOperation("根据授权码信息ID检索授权码信息信息")
-    @ApiResponses(value = { @ApiResponse(code = SC_OK, message = "成功获取"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "授权码信息信息不存在") })
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取"),
+            @ApiResponse(code = SC_BAD_REQUEST, message = "授权码信息信息不存在")})
     @GetMapping("/api/oauth2-authorization-code/codes/{id}")
-    @Secured({ Authority.ADMIN })
+    @Secured({Authority.ADMIN})
     @Timed
-    public ResponseEntity<MongoOAuth2AuthorizationCodeDTO> getClientDetail(
+    public ResponseEntity<MongoOAuth2AuthorizationCodeDTO> findById(
             @ApiParam(value = "授权码信息ID", required = true) @PathVariable String id) {
         MongoOAuth2AuthorizationCode entity = oAuth2AuthorizationCodeRepository.findById(id)
                 .orElseThrow(() -> new NoDataException(id));
@@ -94,8 +83,8 @@ public class OAuth2AuthorizationCodeController {
     }
 
     @ApiOperation(value = "根据授权码信息ID删除授权码信息信息", notes = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
-    @ApiResponses(value = { @ApiResponse(code = SC_OK, message = "成功删除"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "授权码信息信息不存在") })
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功删除"),
+            @ApiResponse(code = SC_BAD_REQUEST, message = "授权码信息信息不存在")})
     @DeleteMapping("/api/oauth2-authorization-code/codes/{id}")
     @Secured(Authority.ADMIN)
     @Timed

@@ -1,12 +1,7 @@
 package org.infinity.passport.controller;
 
-import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
-import static javax.servlet.http.HttpServletResponse.SC_OK;
-
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.stream.Collectors;
-
+import com.codahale.metrics.annotation.Timed;
+import io.swagger.annotations.*;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.MongoOAuth2AccessToken;
 import org.infinity.passport.dto.MongoOAuth2AccessTokenDTO;
@@ -24,42 +19,35 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.codahale.metrics.annotation.Timed;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.stream.Collectors;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
+import static javax.servlet.http.HttpServletResponse.SC_OK;
 
 @RestController
 @Api(tags = "访问令牌信息")
 public class OAuth2AccessTokenController {
 
-    private static final Logger         LOGGER = LoggerFactory.getLogger(OAuth2AccessTokenController.class);
-
+    private static final Logger                      LOGGER = LoggerFactory.getLogger(OAuth2AccessTokenController.class);
     @Autowired
-    private OAuth2AccessTokenRepository oAuth2AccessTokenRepository;
-
+    private              OAuth2AccessTokenRepository oAuth2AccessTokenRepository;
     @Autowired
-    private HttpHeaderCreator           httpHeaderCreator;
+    private              HttpHeaderCreator           httpHeaderCreator;
 
     @ApiOperation("获取访问令牌信息分页列表")
-    @ApiResponses(value = { @ApiResponse(code = SC_OK, message = "成功获取") })
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/oauth2-access-token/tokens")
     @Secured(Authority.ADMIN)
     @Timed
-    public ResponseEntity<List<MongoOAuth2AccessTokenDTO>> getClientDetails(Pageable pageable,
-            @ApiParam(value = "访问令牌ID", required = false) @RequestParam(value = "tokenId", required = false) String tokenId,
-            @ApiParam(value = "客户端ID", required = false) @RequestParam(value = "clientId", required = false) String clientId,
-            @ApiParam(value = "用户名", required = false) @RequestParam(value = "userName", required = false) String userName,
-            @ApiParam(value = "刷新令牌", required = false) @RequestParam(value = "refreshToken", required = false) String refreshToken)
+    public ResponseEntity<List<MongoOAuth2AccessTokenDTO>> find(Pageable pageable,
+                                                                @ApiParam(value = "访问令牌ID", required = false) @RequestParam(value = "tokenId", required = false) String tokenId,
+                                                                @ApiParam(value = "客户端ID", required = false) @RequestParam(value = "clientId", required = false) String clientId,
+                                                                @ApiParam(value = "用户名", required = false) @RequestParam(value = "userName", required = false) String userName,
+                                                                @ApiParam(value = "刷新令牌", required = false) @RequestParam(value = "refreshToken", required = false) String refreshToken)
             throws URISyntaxException {
         MongoOAuth2AccessToken probe = new MongoOAuth2AccessToken();
         probe.setId(tokenId);
@@ -74,12 +62,12 @@ public class OAuth2AccessTokenController {
     }
 
     @ApiOperation("根据访问令牌ID检索访问令牌信息")
-    @ApiResponses(value = { @ApiResponse(code = SC_OK, message = "成功获取"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "访问令牌信息不存在") })
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取"),
+            @ApiResponse(code = SC_BAD_REQUEST, message = "访问令牌信息不存在")})
     @GetMapping("/api/oauth2-access-token/tokens/{id}")
-    @Secured({ Authority.ADMIN })
+    @Secured({Authority.ADMIN})
     @Timed
-    public ResponseEntity<MongoOAuth2AccessTokenDTO> getClientDetail(
+    public ResponseEntity<MongoOAuth2AccessTokenDTO> findById(
             @ApiParam(value = "访问令牌ID", required = true) @PathVariable String id) {
         MongoOAuth2AccessToken entity = oAuth2AccessTokenRepository.findById(id)
                 .orElseThrow(() -> new NoDataException(id));
@@ -87,8 +75,8 @@ public class OAuth2AccessTokenController {
     }
 
     @ApiOperation(value = "根据访问令牌ID删除访问令牌信息", notes = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
-    @ApiResponses(value = { @ApiResponse(code = SC_OK, message = "成功删除"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "访问令牌信息不存在") })
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功删除"),
+            @ApiResponse(code = SC_BAD_REQUEST, message = "访问令牌信息不存在")})
     @DeleteMapping("/api/oauth2-access-token/tokens/{id}")
     @Secured(Authority.ADMIN)
     @Timed

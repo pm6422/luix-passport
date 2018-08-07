@@ -1,15 +1,7 @@
 package org.infinity.passport.controller;
 
-import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
-import static javax.servlet.http.HttpServletResponse.SC_CREATED;
-import static javax.servlet.http.HttpServletResponse.SC_OK;
-
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.validation.Valid;
-
+import com.codahale.metrics.annotation.Timed;
+import io.swagger.annotations.*;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.dto.AuthorityDTO;
 import org.infinity.passport.exception.NoDataException;
@@ -25,21 +17,14 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.codahale.metrics.annotation.Timed;
+import javax.validation.Valid;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.stream.Collectors;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import static javax.servlet.http.HttpServletResponse.*;
 
 /**
  * REST controller for managing authorities.
@@ -48,18 +33,16 @@ import io.swagger.annotations.ApiResponses;
 @Api(tags = "权限管理")
 public class AuthorityController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AuthorityController.class);
-
+    private static final Logger              LOGGER = LoggerFactory.getLogger(AuthorityController.class);
     @Autowired
-    private AuthorityRepository authorityRepository;
-
+    private              AuthorityRepository authorityRepository;
     @Autowired
-    private HttpHeaderCreator   httpHeaderCreator;
+    private              HttpHeaderCreator   httpHeaderCreator;
 
     @ApiOperation("创建权限")
-    @ApiResponses(value = { @ApiResponse(code = SC_CREATED, message = "成功创建") })
+    @ApiResponses(value = {@ApiResponse(code = SC_CREATED, message = "成功创建")})
     @PostMapping("/api/authority/authorities")
-    @Secured({ Authority.ADMIN })
+    @Secured({Authority.ADMIN})
     @Timed
     public ResponseEntity<Void> create(
             @ApiParam(value = "权限信息", required = true) @Valid @RequestBody AuthorityDTO dto) {
@@ -71,11 +54,11 @@ public class AuthorityController {
     }
 
     @ApiOperation("获取权限列表")
-    @ApiResponses(value = { @ApiResponse(code = SC_OK, message = "成功获取") })
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/authority/authorities")
-    @Secured({ Authority.ADMIN })
+    @Secured({Authority.ADMIN})
     @Timed
-    public ResponseEntity<List<AuthorityDTO>> getAuthorities(Pageable pageable) throws URISyntaxException {
+    public ResponseEntity<List<AuthorityDTO>> find(Pageable pageable) throws URISyntaxException {
         Page<Authority> authorities = authorityRepository.findAll(pageable);
         List<AuthorityDTO> authorityDTOs = authorities.getContent().stream().map(auth -> auth.asDTO())
                 .collect(Collectors.toList());
@@ -84,33 +67,33 @@ public class AuthorityController {
     }
 
     @ApiOperation("获取所有权限")
-    @ApiResponses(value = { @ApiResponse(code = SC_OK, message = "成功获取") })
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/authority/authorities/all")
-    @Secured({ Authority.ADMIN })
+    @Secured({Authority.ADMIN})
     @Timed
-    public ResponseEntity<List<AuthorityDTO>> getAllAuthorities() {
+    public ResponseEntity<List<AuthorityDTO>> findAll() {
         List<AuthorityDTO> authDTOs = authorityRepository.findAll().stream().map(entity -> entity.asDTO())
                 .collect(Collectors.toList());
         return new ResponseEntity<>(authDTOs, HttpStatus.OK);
     }
 
     @ApiOperation("根据权限名称检索权限信息")
-    @ApiResponses(value = { @ApiResponse(code = SC_OK, message = "成功获取"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "权限信息不存在") })
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取"),
+            @ApiResponse(code = SC_BAD_REQUEST, message = "权限信息不存在")})
     @GetMapping("/api/authority/authorities/{name}")
-    @Secured({ Authority.ADMIN })
+    @Secured({Authority.ADMIN})
     @Timed
-    public ResponseEntity<AuthorityDTO> getAuthority(
+    public ResponseEntity<AuthorityDTO> findById(
             @ApiParam(value = "权限名称", required = true) @PathVariable String name) {
         Authority authority = authorityRepository.findById(name).orElseThrow(() -> new NoDataException(name));
         return new ResponseEntity<>(authority.asDTO(), HttpStatus.OK);
     }
 
     @ApiOperation("更新权限信息")
-    @ApiResponses(value = { @ApiResponse(code = SC_OK, message = "成功更新"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "权限信息不存在") })
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功更新"),
+            @ApiResponse(code = SC_BAD_REQUEST, message = "权限信息不存在")})
     @PutMapping("/api/authority/authorities")
-    @Secured({ Authority.ADMIN })
+    @Secured({Authority.ADMIN})
     @Timed
     public ResponseEntity<Void> update(
             @ApiParam(value = "新的权限信息", required = true) @Valid @RequestBody AuthorityDTO dto) {
@@ -123,10 +106,10 @@ public class AuthorityController {
     }
 
     @ApiOperation(value = "根据权限名称删除权限信息", notes = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
-    @ApiResponses(value = { @ApiResponse(code = SC_OK, message = "成功删除"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "权限信息不存在") })
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功删除"),
+            @ApiResponse(code = SC_BAD_REQUEST, message = "权限信息不存在")})
     @DeleteMapping("/api/authority/authorities/{name}")
-    @Secured({ Authority.ADMIN })
+    @Secured({Authority.ADMIN})
     @Timed
     public ResponseEntity<Void> delete(@ApiParam(value = "权限名称", required = true) @PathVariable String name) {
         LOGGER.debug("REST request to delete authority: {}", name);

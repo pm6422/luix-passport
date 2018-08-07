@@ -1,19 +1,8 @@
 package org.infinity.passport.controller;
 
-import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
-import static javax.servlet.http.HttpServletResponse.SC_CREATED;
-import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
-import static javax.servlet.http.HttpServletResponse.SC_OK;
-
-import java.security.Principal;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-
+import com.codahale.metrics.annotation.Timed;
+import com.google.common.collect.ImmutableMap;
+import io.swagger.annotations.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.infinity.passport.domain.Authority;
@@ -45,24 +34,18 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.codahale.metrics.annotation.Timed;
-import com.google.common.collect.ImmutableMap;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.security.Principal;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import static javax.servlet.http.HttpServletResponse.*;
 
 /**
  * REST controller for managing the user's account.
@@ -71,31 +54,24 @@ import io.swagger.annotations.ApiResponses;
 @Api(tags = "账号管理")
 public class AccountController {
 
-    private static final Logger     LOGGER = LoggerFactory.getLogger(AccountController.class);
-
+    private static final Logger                  LOGGER = LoggerFactory.getLogger(AccountController.class);
     @Autowired
-    private UserService             userService;
-
+    private              UserService             userService;
     @Autowired
-    private UserRepository          userRepository;
-
+    private              UserRepository          userRepository;
     @Autowired
-    private UserAuthorityRepository userAuthorityRepository;
-
+    private              UserAuthorityRepository userAuthorityRepository;
     @Autowired
-    private AuthorityService        authorityService;
-
+    private              AuthorityService        authorityService;
     @Autowired
-    private MailService             mailService;
-
+    private              MailService             mailService;
     @Autowired
-    private HttpHeaderCreator       httpHeaderCreator;
-
+    private              HttpHeaderCreator       httpHeaderCreator;
     @Autowired
-    private TokenStore              tokenStore;
+    private              TokenStore              tokenStore;
 
     @ApiOperation(value = "获取访问令牌", notes = "登录成功返回当前访问令牌", response = String.class)
-    @ApiResponses(value = { @ApiResponse(code = SC_OK, message = "成功获取") })
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/account/access-token")
     @Timed
     public ResponseEntity<String> getAccessToken(HttpServletRequest request) {
@@ -109,7 +85,7 @@ public class AccountController {
     }
 
     @ApiOperation(value = "验证当前用户是否已经登录，理论上不会返回false，因为未登录则会出错", notes = "登录成功返回当前用户名", response = String.class)
-    @ApiResponses(value = { @ApiResponse(code = SC_OK, message = "成功获取") })
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/account/authenticate")
     @Timed
     public ResponseEntity<String> isAuthenticated(HttpServletRequest request) {
@@ -118,7 +94,7 @@ public class AccountController {
     }
 
     @ApiOperation(value = "获取登录的用户,用于SSO客户端调用，理论上不会返回null，因为未登录则会出错", notes = "登录成功返回当前用户")
-    @ApiResponses(value = { @ApiResponse(code = SC_OK, message = "成功获取") })
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/account/principal")
     @Timed
     public ResponseEntity<Principal> getPrincipal(Principal user) {
@@ -127,10 +103,10 @@ public class AccountController {
     }
 
     @ApiOperation("获取当前用户信息")
-    @ApiResponses(value = { @ApiResponse(code = SC_OK, message = "成功获取"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "账号无权限") })
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取"),
+            @ApiResponse(code = SC_BAD_REQUEST, message = "账号无权限")})
     @GetMapping("/api/account/user")
-    @Secured({ Authority.USER })
+    @Secured({Authority.USER})
     @Timed
     public ResponseEntity<UserDTO> getCurrentUser() {
         Optional<User> user = userService.findOneByUserName(SecurityUtils.getCurrentUserName());
@@ -147,7 +123,7 @@ public class AccountController {
     }
 
     @ApiOperation("根据访问令牌信息获取绑定的用户信息")
-    @ApiResponses(value = { @ApiResponse(code = SC_OK, message = "成功获取") })
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/open-api/account/user")
     @Timed
     public ResponseEntity<Object> getTokenUser(HttpServletRequest request) {
@@ -173,8 +149,8 @@ public class AccountController {
     }
 
     @ApiOperation("注册新用户")
-    @ApiResponses(value = { @ApiResponse(code = SC_CREATED, message = "成功创建"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "账号已注册") })
+    @ApiResponses(value = {@ApiResponse(code = SC_CREATED, message = "成功创建"),
+            @ApiResponse(code = SC_BAD_REQUEST, message = "账号已注册")})
     @PostMapping("/open-api/account/register")
     @Timed
     public ResponseEntity<Void> registerAccount(
@@ -209,8 +185,8 @@ public class AccountController {
     }
 
     @ApiOperation("根据激活码激活账户")
-    @ApiResponses(value = { @ApiResponse(code = SC_OK, message = "成功激活"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "激活码不存在") })
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功激活"),
+            @ApiResponse(code = SC_BAD_REQUEST, message = "激活码不存在")})
     @GetMapping("/open-api/account/activate/{key:[0-9]+}")
     @Timed
     public ResponseEntity<Void> activateAccount(@ApiParam(value = "激活码", required = true) @PathVariable String key) {
@@ -219,9 +195,9 @@ public class AccountController {
     }
 
     @ApiOperation("获取权限值列表")
-    @ApiResponses(value = { @ApiResponse(code = SC_OK, message = "成功获取") })
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/account/authority-names")
-    @Secured({ Authority.USER })
+    @Secured({Authority.USER})
     @Timed
     public ResponseEntity<List<String>> getAuthorityNames(
             @ApiParam(value = "是否可用,null代表全部", required = false, allowableValues = "false,true,null") @RequestParam(value = "enabled", required = false) Boolean enabled) {
@@ -231,11 +207,11 @@ public class AccountController {
     }
 
     @ApiOperation("更新当前用户信息")
-    @ApiResponses(value = { @ApiResponse(code = SC_OK, message = "成功更新"),
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功更新"),
             @ApiResponse(code = SC_BAD_REQUEST, message = "用户未登录或账号已注册"),
-            @ApiResponse(code = SC_INTERNAL_SERVER_ERROR, message = "登录用户信息已经不存在") })
+            @ApiResponse(code = SC_INTERNAL_SERVER_ERROR, message = "登录用户信息已经不存在")})
     @PutMapping("/api/account/user")
-    @Secured({ Authority.USER })
+    @Secured({Authority.USER})
     @Timed
     public ResponseEntity<Void> updateCurrentAccount(
             @ApiParam(value = "新的用户信息", required = true) @Valid @RequestBody UserDTO userDTO) {
@@ -265,10 +241,10 @@ public class AccountController {
     }
 
     @ApiOperation("修改当前用户的密码")
-    @ApiResponses(value = { @ApiResponse(code = SC_OK, message = "成功更新"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "密码不正确") })
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功更新"),
+            @ApiResponse(code = SC_BAD_REQUEST, message = "密码不正确")})
     @PutMapping("/api/account/password")
-    @Secured({ Authority.USER })
+    @Secured({Authority.USER})
     @Timed
     public ResponseEntity<Void> changePassword(
             @ApiParam(value = "新密码", required = true) @RequestBody String newPassword) {
@@ -281,8 +257,8 @@ public class AccountController {
     }
 
     @ApiOperation("发送重置密码邮件")
-    @ApiResponses(value = { @ApiResponse(code = SC_OK, message = "成功发送"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "账号不存在") })
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功发送"),
+            @ApiResponse(code = SC_BAD_REQUEST, message = "账号不存在")})
     @PostMapping("/open-api/account/reset-password/init")
     @Timed
     public ResponseEntity<Void> requestPasswordReset(
@@ -297,8 +273,8 @@ public class AccountController {
     }
 
     @ApiOperation("重置密码")
-    @ApiResponses(value = { @ApiResponse(code = SC_OK, message = "成功重置"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "重置码无效或已过期") })
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功重置"),
+            @ApiResponse(code = SC_BAD_REQUEST, message = "重置码无效或已过期")})
     @PostMapping("/open-api/account/reset-password/finish")
     @Timed
     public ResponseEntity<Void> finishPasswordReset(
@@ -312,12 +288,12 @@ public class AccountController {
     }
 
     @ApiOperation("上传用户头像")
-    @ApiResponses(value = { @ApiResponse(code = SC_OK, message = "成功上传") })
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功上传")})
     @PostMapping("/api/account/avatar/upload")
-    @Secured({ Authority.USER })
+    @Secured({Authority.USER})
     @Timed
     public ResponseEntity<Void> uploadAvatar(@ApiParam(value = "文件描述", required = true) @RequestPart String description,
-            @ApiParam(value = "用户头像文件", required = true) @RequestPart MultipartFile file) {
+                                             @ApiParam(value = "用户头像文件", required = true) @RequestPart MultipartFile file) {
         return ResponseEntity.ok(null);
     }
 }

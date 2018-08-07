@@ -1,15 +1,7 @@
 package org.infinity.passport.controller;
 
-import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
-import static javax.servlet.http.HttpServletResponse.SC_OK;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import javax.validation.Valid;
-
+import com.codahale.metrics.annotation.Timed;
+import io.swagger.annotations.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.infinity.passport.domain.AdminMenu;
 import org.infinity.passport.domain.Authority;
@@ -30,19 +22,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.codahale.metrics.annotation.Timed;
+import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
+import static javax.servlet.http.HttpServletResponse.SC_OK;
 
 /**
  * REST controller for managing the authority admin menu.
@@ -51,29 +40,24 @@ import io.swagger.annotations.ApiResponses;
 @Api(tags = "权限管理菜单")
 public class AuthorityAdminMenuController {
 
-    private static final Logger          LOGGER = LoggerFactory.getLogger(AuthorityAdminMenuController.class);
-
+    private static final Logger                       LOGGER = LoggerFactory.getLogger(AuthorityAdminMenuController.class);
     @Autowired
-    private AuthorityAdminMenuRepository authorityAdminMenuRepository;
-
+    private              AuthorityAdminMenuRepository authorityAdminMenuRepository;
     @Autowired
-    private AdminMenuRepository          adminMenuRepository;
-
+    private              AdminMenuRepository          adminMenuRepository;
     @Autowired
-    private AdminMenuService             adminMenuService;
-
+    private              AdminMenuService             adminMenuService;
     @Autowired
-    private AuthorityService             authorityService;
-
+    private              AuthorityService             authorityService;
     @Autowired
-    private HttpHeaderCreator            httpHeaderCreator;
+    private              HttpHeaderCreator            httpHeaderCreator;
 
     @ApiOperation("查询当前用户权限关联的菜单")
-    @ApiResponses(value = { @ApiResponse(code = SC_OK, message = "成功获取") })
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/authority-admin-menu/authority-menus")
-    @Secured({ Authority.USER })
+    @Secured({Authority.USER})
     @Timed
-    public ResponseEntity<List<AdminManagedMenuDTO>> getAuthorityMenus(
+    public ResponseEntity<List<AdminManagedMenuDTO>> findByAppName(
             @ApiParam(value = "应用名称", required = true) @RequestParam(value = "appName", required = true) String appName) {
         List<String> allEnabledAuthorities = authorityService.findAllAuthorityNames(true);
         List<String> userEnabledAuthorities = SecurityUtils.getCurrentUserRoles().parallelStream()
@@ -85,11 +69,11 @@ public class AuthorityAdminMenuController {
     }
 
     @ApiOperation("查询当前用户权限关联的链接")
-    @ApiResponses(value = { @ApiResponse(code = SC_OK, message = "成功获取") })
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/authority-admin-menu/authority-links")
-    @Secured({ Authority.USER })
+    @Secured({Authority.USER})
     @Timed
-    public ResponseEntity<List<AdminMenuDTO>> getAuthorityLinks(
+    public ResponseEntity<List<AdminMenuDTO>> findAuthorityLinks(
             @ApiParam(value = "应用名称", required = true) @RequestParam(value = "appName", required = true) String appName) {
         List<String> allEnabledAuthorities = authorityService.findAllAuthorityNames(true);
         List<String> userEnabledAuthorities = SecurityUtils.getCurrentUserRoles().parallelStream()
@@ -101,11 +85,11 @@ public class AuthorityAdminMenuController {
     }
 
     @ApiOperation("根据权限名称查看菜单信息")
-    @ApiResponses(value = { @ApiResponse(code = SC_OK, message = "成功获取") })
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/authority-admin-menu/menu-info")
-    @Secured({ Authority.ADMIN })
+    @Secured({Authority.ADMIN})
     @Timed
-    public ResponseEntity<List<AdminManagedMenuDTO>> getMenus(
+    public ResponseEntity<List<AdminManagedMenuDTO>> findMenus(
             @ApiParam(value = "应用名称", required = true) @RequestParam(value = "appName", required = true) String appName,
             @ApiParam(value = "权限名称", required = true) @RequestParam(value = "authorityName", required = true) String authorityName) {
         // 查询全部管理菜单
@@ -132,9 +116,9 @@ public class AuthorityAdminMenuController {
     }
 
     @ApiOperation("更新权限菜单")
-    @ApiResponses(value = { @ApiResponse(code = SC_OK, message = "成功更新"), @ApiResponse(code = SC_BAD_REQUEST, message = "权限信息不存在") })
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功更新"), @ApiResponse(code = SC_BAD_REQUEST, message = "权限信息不存在")})
     @PutMapping("/api/authority-admin-menu/update-authority-menus")
-    @Secured({ Authority.ADMIN })
+    @Secured({Authority.ADMIN})
     @Timed
     public ResponseEntity<Void> update(
             @ApiParam(value = "新的权限菜单信息", required = true) @Valid @RequestBody AdminAuthorityMenusDTO dto) {

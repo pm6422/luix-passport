@@ -1,12 +1,7 @@
 package org.infinity.passport.controller;
 
-import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
-import static javax.servlet.http.HttpServletResponse.SC_OK;
-
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.stream.Collectors;
-
+import com.codahale.metrics.annotation.Timed;
+import io.swagger.annotations.*;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.MongoOAuth2RefreshToken;
 import org.infinity.passport.dto.MongoOAuth2RefreshTokenDTO;
@@ -24,41 +19,36 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.codahale.metrics.annotation.Timed;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.stream.Collectors;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
+import static javax.servlet.http.HttpServletResponse.SC_OK;
 
 @RestController
 @Api(tags = "刷新令牌信息")
 public class OAuth2RefreshTokenController {
 
-    private static final Logger          LOGGER = LoggerFactory.getLogger(OAuth2RefreshTokenController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(OAuth2RefreshTokenController.class);
 
     @Autowired
     private OAuth2RefreshTokenRepository oAuth2RefreshTokenRepository;
 
     @Autowired
-    private HttpHeaderCreator            httpHeaderCreator;
+    private HttpHeaderCreator httpHeaderCreator;
 
     @ApiOperation("获取刷新令牌信息分页列表")
-    @ApiResponses(value = { @ApiResponse(code = SC_OK, message = "成功获取") })
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/oauth2-refresh-token/tokens")
     @Secured(Authority.ADMIN)
     @Timed
-    public ResponseEntity<List<MongoOAuth2RefreshTokenDTO>> getClientDetails(Pageable pageable,
-            @ApiParam(value = "刷新令牌ID", required = false) @RequestParam(value = "tokenId", required = false) String tokenId,
-            @ApiParam(value = "客户端ID", required = false) @RequestParam(value = "clientId", required = false) String clientId,
-            @ApiParam(value = "用户名", required = false) @RequestParam(value = "userName", required = false) String userName)
+    public ResponseEntity<List<MongoOAuth2RefreshTokenDTO>> find(Pageable pageable,
+                                                                 @ApiParam(value = "刷新令牌ID", required = false) @RequestParam(value = "tokenId", required = false) String tokenId,
+                                                                 @ApiParam(value = "客户端ID", required = false) @RequestParam(value = "clientId", required = false) String clientId,
+                                                                 @ApiParam(value = "用户名", required = false) @RequestParam(value = "userName", required = false) String userName)
             throws URISyntaxException {
         MongoOAuth2RefreshToken probe = new MongoOAuth2RefreshToken();
         probe.setId(tokenId);
@@ -72,12 +62,12 @@ public class OAuth2RefreshTokenController {
     }
 
     @ApiOperation("根据刷新令牌ID检索刷新令牌信息")
-    @ApiResponses(value = { @ApiResponse(code = SC_OK, message = "成功获取"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "刷新令牌信息不存在") })
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取"),
+            @ApiResponse(code = SC_BAD_REQUEST, message = "刷新令牌信息不存在")})
     @GetMapping("/api/oauth2-refresh-token/tokens/{id}")
-    @Secured({ Authority.ADMIN })
+    @Secured({Authority.ADMIN})
     @Timed
-    public ResponseEntity<MongoOAuth2RefreshTokenDTO> getClientDetail(
+    public ResponseEntity<MongoOAuth2RefreshTokenDTO> findById(
             @ApiParam(value = "刷新令牌ID", required = true) @PathVariable String id) {
         MongoOAuth2RefreshToken entity = oAuth2RefreshTokenRepository.findById(id)
                 .orElseThrow(() -> new NoDataException(id));
@@ -85,8 +75,8 @@ public class OAuth2RefreshTokenController {
     }
 
     @ApiOperation(value = "根据刷新令牌ID删除刷新令牌信息", notes = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
-    @ApiResponses(value = { @ApiResponse(code = SC_OK, message = "成功删除"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "刷新令牌信息不存在") })
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功删除"),
+            @ApiResponse(code = SC_BAD_REQUEST, message = "刷新令牌信息不存在")})
     @DeleteMapping("/api/oauth2-refresh-token/tokens/{id}")
     @Secured(Authority.ADMIN)
     @Timed
