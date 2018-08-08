@@ -47,8 +47,8 @@
         *************************************************************************************
     -->
     <include resource="config/logback-spring-default.xml" />
-    
-    <root level="${logging.level.root}">
+
+    <root level="${logging.level.ROOT}">
         <appender-ref ref="ASYNC_FILE"/>
         <appender-ref ref="ASYNC_ERROR_FILE"/>
         <appender-ref ref="CONSOLE"/>
