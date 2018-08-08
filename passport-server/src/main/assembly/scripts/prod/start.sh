@@ -43,9 +43,9 @@ function startApp() {
     JAVA_DEBUG_OPTS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
     JAVA_MEM_OPTS="-XX:+UseG1GC -XX:MaxGCPauseMillis=100 -XX:+ParallelRefProcEnabled -Xss256K"
     echo -e "Starting the $appName"
-    echo "Starting command: nohup java $JAVA_MEM_OPTS -jar $appDir/$appName --logback.loglevel=INFO --spring.profiles.active=$profiles --server.port=$serverPort >> $appStartLog 2>&1 &\n"
+    echo "Starting command: nohup java $JAVA_MEM_OPTS -jar $appDir/$appName --logging.level.ROOT=INFO --spring.profiles.active=$profiles --server.port=$serverPort >> $appStartLog 2>&1 &\n"
     . /etc/profile
-    nohup java $JAVA_MEM_OPTS -jar $appDir/$appName --logback.loglevel=INFO --spring.profiles.active=$profiles --server.port=$serverPort >> $appStartLog 2>&1 &
+    nohup java $JAVA_MEM_OPTS -jar $appDir/$appName --logging.level.ROOT=INFO --spring.profiles.active=$profiles --server.port=$serverPort >> $appStartLog 2>&1 &
 }
 
 #------------------------------------------------------------------------------------------------------------
