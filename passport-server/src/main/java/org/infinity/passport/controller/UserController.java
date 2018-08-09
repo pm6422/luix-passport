@@ -138,7 +138,7 @@ public class UserController {
                 .orElseThrow(() -> new NoAuthorityException(userName));
         Set<String> authorities = userAuthorities.stream().map(item -> item.getAuthorityName())
                 .collect(Collectors.toSet());
-        return ResponseEntity.ok(new ManagedUserDTO(entity, authorities);
+        return ResponseEntity.ok(new ManagedUserDTO(entity, authorities));
     }
 
     @ApiOperation("更新用户信息")
