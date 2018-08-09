@@ -119,10 +119,10 @@ public class UserController {
             throws URISyntaxException {
         Page<User> users = StringUtils.isEmpty(login) ? userRepository.findAll(pageable)
                 : userService.findByLogin(pageable, login);
-        List<ManagedUserDTO> userDTOs = users.getContent().stream().map(entity -> new ManagedUserDTO(entity, null))
+        List<ManagedUserDTO> DTOs = users.getContent().stream().map(entity -> new ManagedUserDTO(entity, null))
                 .collect(Collectors.toList());
         HttpHeaders headers = PaginationUtils.generatePaginationHttpHeaders(users, "/api/user/users");
-        return new ResponseEntity<>(userDTOs, headers, HttpStatus.OK);
+        return ResponseEntity.ok().headers(headers).body(DTOs);
     }
 
     @ApiOperation("根据用户名检索用户信息")
@@ -182,7 +182,7 @@ public class UserController {
             // were changed
             ajaxLogoutSuccessHandler.onLogoutSuccess(request, response, null);
         }
-        return ResponseEntity.status(HttpStatus.OK)
+        return ResponseEntity.ok()
                 .headers(httpHeaderCreator.createSuccessHeader("notification.user.updated", dto.getUserName())).build();
     }
 
@@ -197,7 +197,7 @@ public class UserController {
         User user = userService.findOneByUserName(userName).orElseThrow(() -> new NoDataException(userName));
         userRepository.deleteById(user.getId());
         userAuthorityRepository.deleteByUserId(user.getId());
-        return ResponseEntity.status(HttpStatus.OK)
+        return ResponseEntity.ok()
                 .headers(httpHeaderCreator.createSuccessHeader("notification.user.deleted", userName)).build();
     }
 
@@ -213,6 +213,6 @@ public class UserController {
         userService.changePassword(userName, DEFAULT_PASSWORD);
         HttpHeaders headers = httpHeaderCreator.createSuccessHeader("notification.password.reset.to.default",
                 DEFAULT_PASSWORD);
-        return new ResponseEntity<>(DEFAULT_PASSWORD, headers, HttpStatus.OK);
+        return ResponseEntity.ok().headers(headers).body(DEFAULT_PASSWORD);
     }
 }

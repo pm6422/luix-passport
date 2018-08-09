@@ -67,9 +67,9 @@ public class AppController {
     @Timed
     public ResponseEntity<List<AppDTO>> find(Pageable pageable) throws URISyntaxException {
         Page<App> apps = appRepository.findAll(pageable);
-        List<AppDTO> appDTOs = apps.getContent().stream().map(entity -> entity.asDTO()).collect(Collectors.toList());
+        List<AppDTO> DTOs = apps.getContent().stream().map(entity -> entity.asDTO()).collect(Collectors.toList());
         HttpHeaders headers = PaginationUtils.generatePaginationHttpHeaders(apps, "/api/app/apps");
-        return new ResponseEntity<>(appDTOs, headers, HttpStatus.OK);
+        return ResponseEntity.ok().headers(headers).body(DTOs);
     }
 
     @ApiOperation("获取所有应用")

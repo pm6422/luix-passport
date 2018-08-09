@@ -118,7 +118,7 @@ public class AccountController {
                 .collect(Collectors.toSet());
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-User-Signed-In", "true");
-        return new ResponseEntity<>(new UserDTO(user.get(), authorities), headers, HttpStatus.OK);
+        return ResponseEntity.ok().headers(headers).body(new UserDTO(user.get(), authorities));
     }
 
     @ApiOperation("根据访问令牌信息获取绑定的用户信息")

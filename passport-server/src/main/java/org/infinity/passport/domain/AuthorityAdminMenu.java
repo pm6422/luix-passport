@@ -1,12 +1,11 @@
 package org.infinity.passport.domain;
 
-import java.io.Serializable;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import java.io.Serializable;
 
 /**
  * Spring Data MongoDB collection for the AuthorityAdminMenu entity.
@@ -34,7 +33,6 @@ public class AuthorityAdminMenu implements Serializable {
      * Constructor for creating operation
      * @param authorityName
      * @param adminMenuId
-     * @param modifiedTime
      */
     public AuthorityAdminMenu(String authorityName, String adminMenuId) {
         super();

@@ -60,10 +60,10 @@ public class AuthorityController {
     @Timed
     public ResponseEntity<List<AuthorityDTO>> find(Pageable pageable) throws URISyntaxException {
         Page<Authority> authorities = authorityRepository.findAll(pageable);
-        List<AuthorityDTO> authorityDTOs = authorities.getContent().stream().map(auth -> auth.asDTO())
+        List<AuthorityDTO> DTOs = authorities.getContent().stream().map(auth -> auth.asDTO())
                 .collect(Collectors.toList());
         HttpHeaders headers = PaginationUtils.generatePaginationHttpHeaders(authorities, "/api/authority/authorities");
-        return new ResponseEntity<>(authorityDTOs, headers, HttpStatus.OK);
+        return ResponseEntity.ok().headers(headers).body(DTOs);
     }
 
     @ApiOperation("获取所有权限")

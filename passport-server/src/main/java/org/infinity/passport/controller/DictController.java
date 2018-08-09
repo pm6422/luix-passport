@@ -67,9 +67,9 @@ public class DictController {
             throws URISyntaxException {
         Page<Dict> dicts = StringUtils.isEmpty(dictName) ? dictRepository.findAll(pageable)
                 : dictRepository.findByDictName(pageable, dictName);
-        List<DictDTO> dictDTOs = dicts.getContent().stream().map(entity -> entity.asDTO()).collect(Collectors.toList());
+        List<DictDTO> DTOs = dicts.getContent().stream().map(entity -> entity.asDTO()).collect(Collectors.toList());
         HttpHeaders headers = PaginationUtils.generatePaginationHttpHeaders(dicts, "/api/dict/dicts");
-        return new ResponseEntity<>(dictDTOs, headers, HttpStatus.OK);
+        return ResponseEntity.ok().headers(headers).body(DTOs);
     }
 
     @ApiOperation("根据字典ID检索数据字典信息")

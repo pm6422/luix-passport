@@ -16,7 +16,6 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
@@ -66,7 +65,7 @@ public class OAuth2AuthorizationCodeController {
                 .collect(Collectors.toList());
         HttpHeaders headers = PaginationUtils.generatePaginationHttpHeaders(codes,
                 "/api/oauth2-authorization-code/codes");
-        return new ResponseEntity<>(DTOs, headers, HttpStatus.OK);
+        return ResponseEntity.ok().headers(headers).body(DTOs);
     }
 
     @ApiOperation("根据授权码信息ID检索授权码信息信息")

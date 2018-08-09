@@ -97,13 +97,13 @@ public class DictItemController {
         Page<DictItem> dictItems = dictItemService.findByDictCodeAndDictItemNameCombinations(pageable, dictCode,
                 dictItemName);
         Map<String, String> dictCodeDictNameMap = dictService.findDictCodeDictNameMap();
-        List<DictItemDTO> dictItemDTOs = dictItems.getContent().stream().map(entity -> {
+        List<DictItemDTO> DTOs = dictItems.getContent().stream().map(entity -> {
             DictItemDTO dto = entity.asDTO();
             dto.setDictName(dictCodeDictNameMap.get(dto.getDictCode()));
             return entity.asDTO();
         }).collect(Collectors.toList());
         HttpHeaders headers = PaginationUtils.generatePaginationHttpHeaders(dictItems, "/api/dict-item/items");
-        return new ResponseEntity<>(dictItemDTOs, headers, HttpStatus.OK);
+        return ResponseEntity.ok().headers(headers).body(DTOs);
     }
 
     @ApiOperation("根据数据字典项ID检索数据字典项信息")

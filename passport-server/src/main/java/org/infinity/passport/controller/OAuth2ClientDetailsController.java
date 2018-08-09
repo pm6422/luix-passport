@@ -89,11 +89,11 @@ public class OAuth2ClientDetailsController {
                 ? oAuth2ClientDetailsRepository.findAll(pageable)
                 : new PageImpl<MongoOAuth2ClientDetails>(mongoTemplate.find(query, MongoOAuth2ClientDetails.class),
                 pageable, mongoTemplate.count(query, MongoOAuth2ClientDetails.class));
-        List<MongoOAuth2ClientDetailsDTO> clientDetailsDTOs = clientDetails.getContent().stream()
+        List<MongoOAuth2ClientDetailsDTO> DTOs = clientDetails.getContent().stream()
                 .map(entity -> entity.asDTO()).collect(Collectors.toList());
         HttpHeaders headers = PaginationUtils.generatePaginationHttpHeaders(clientDetails,
                 "/api/oauth2-client/clients");
-        return new ResponseEntity<>(clientDetailsDTOs, headers, HttpStatus.OK);
+        return ResponseEntity.ok().headers(headers).body(DTOs);
     }
 
     @ApiOperation("根据客户端ID检索单点登录客户端信息")

@@ -83,11 +83,11 @@ public class AppAuthorityController {
             throws URISyntaxException {
         Page<AppAuthority> appAuthorities = appAuthorityService.findByAppNameAndAuthorityNameCombinations(pageable,
                 appName, authorityName);
-        List<AppAuthorityDTO> appAuthorityDTOs = appAuthorities.getContent().stream().map(entity -> entity.asDTO())
+        List<AppAuthorityDTO> DTOs = appAuthorities.getContent().stream().map(entity -> entity.asDTO())
                 .collect(Collectors.toList());
         HttpHeaders headers = PaginationUtils.generatePaginationHttpHeaders(appAuthorities,
                 "/api/app-authority/app-authorities");
-        return new ResponseEntity<>(appAuthorityDTOs, headers, HttpStatus.OK);
+        return ResponseEntity.ok().headers(headers).body(DTOs);
     }
 
     @ApiOperation("根据字典ID检索应用权限信息")

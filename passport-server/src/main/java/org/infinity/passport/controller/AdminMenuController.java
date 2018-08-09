@@ -84,10 +84,10 @@ public class AdminMenuController {
             throws URISyntaxException {
         Page<AdminMenu> adminMenus = StringUtils.isEmpty(appName) ? adminMenuRepository.findAll(pageable)
                 : adminMenuRepository.findByAppName(pageable, appName);
-        List<AdminMenuDTO> adminMenuDTOs = adminMenus.getContent().stream().map(entity -> entity.asDTO())
+        List<AdminMenuDTO> DTOs = adminMenus.getContent().stream().map(entity -> entity.asDTO())
                 .collect(Collectors.toList());
         HttpHeaders headers = PaginationUtils.generatePaginationHttpHeaders(adminMenus, "/api/admin-menu/menus");
-        return new ResponseEntity<>(adminMenuDTOs, headers, HttpStatus.OK);
+        return ResponseEntity.ok().headers(headers).body(DTOs);
     }
 
     @ApiOperation("根据菜单ID查询菜单")

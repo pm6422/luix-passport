@@ -1,9 +1,9 @@
 package org.infinity.passport.controller;
 
-import java.net.URISyntaxException;
-import java.util.Date;
-import java.util.List;
-
+import com.codahale.metrics.annotation.Timed;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.time.DateUtils;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.PersistentAuditEvent;
@@ -14,18 +14,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.codahale.metrics.annotation.Timed;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import java.net.URISyntaxException;
+import java.util.Date;
+import java.util.List;
 
 /**
  * REST controller for managing the user audit events.
@@ -56,6 +53,6 @@ public class UserAuditEventController {
                 .findByAuditEventDateBetween(pageable, fromTime.toInstant(), toTime.toInstant());
         HttpHeaders headers = PaginationUtils.generatePaginationHttpHeaders(userAuditEvents,
                 "/api/user-audit-event/user-audit-events");
-        return new ResponseEntity<>(userAuditEvents.getContent(), headers, HttpStatus.OK);
+        return ResponseEntity.ok().headers(headers).body(userAuditEvents.getContent());
     }
 }

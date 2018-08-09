@@ -16,7 +16,6 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
@@ -58,7 +57,7 @@ public class OAuth2AccessTokenController {
         List<MongoOAuth2AccessTokenDTO> DTOs = tokens.getContent().stream().map(entity -> entity.asDTO())
                 .collect(Collectors.toList());
         HttpHeaders headers = PaginationUtils.generatePaginationHttpHeaders(tokens, "/api/oauth2-access-token/tokens");
-        return new ResponseEntity<>(DTOs, headers, HttpStatus.OK);
+        return ResponseEntity.ok().headers(headers).body(DTOs);
     }
 
     @ApiOperation("根据访问令牌ID检索访问令牌信息")
