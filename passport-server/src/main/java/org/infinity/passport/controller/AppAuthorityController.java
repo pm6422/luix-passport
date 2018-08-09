@@ -100,7 +100,7 @@ public class AppAuthorityController {
             @ApiParam(value = "字典编号", required = true) @PathVariable String id) {
         LOGGER.debug("REST request to get app authority : {}", id);
         AppAuthority entity = appAuthorityRepository.findById(id).orElseThrow(() -> new NoDataException(id));
-        return new ResponseEntity<>(entity.asDTO(), HttpStatus.OK);
+        return ResponseEntity.ok(entity.asDTO());
     }
 
     @ApiOperation("根据应用名称检索应用权限信息")
@@ -113,10 +113,10 @@ public class AppAuthorityController {
         LOGGER.debug("REST request to get app authorities : {}", appName);
         List<AppAuthority> appAuthorities = appAuthorityRepository.findByAppName(appName);
         if (CollectionUtils.isEmpty(appAuthorities)) {
-            return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
+            return ResponseEntity.ok(Collections.emptyList());
         }
         List<AppAuthorityDTO> items = appAuthorities.stream().map(item -> item.asDTO()).collect(Collectors.toList());
-        return new ResponseEntity<>(items, HttpStatus.OK);
+        return ResponseEntity.ok(items);
     }
 
     @ApiOperation("更新应用权限信息")
@@ -130,7 +130,7 @@ public class AppAuthorityController {
         LOGGER.debug("REST request to update app authority: {}", dto);
         appAuthorityRepository.findById(dto.getId()).orElseThrow(() -> new NoDataException(dto.getId()));
         appAuthorityRepository.save(AppAuthority.of(dto));
-        return ResponseEntity.status(HttpStatus.OK).headers(
+        return ResponseEntity.ok().headers(
                 httpHeaderCreator.createSuccessHeader("notification.app.authority.updated", dto.getAuthorityName()))
                 .build();
     }

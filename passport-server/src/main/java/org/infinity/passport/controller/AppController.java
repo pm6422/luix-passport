@@ -79,7 +79,7 @@ public class AppController {
     @Timed
     public ResponseEntity<List<AppDTO>> findAll() {
         List<AppDTO> appDTOs = appRepository.findAll().stream().map(app -> app.asDTO()).collect(Collectors.toList());
-        return new ResponseEntity<>(appDTOs, HttpStatus.OK);
+        return ResponseEntity.ok(appDTOs);
     }
 
     @ApiOperation("根据应用名称检索应用信息")
@@ -93,7 +93,7 @@ public class AppController {
         List<AppAuthority> appAuthorities = appAuthorityRepository.findByAppName(name);
         Set<String> authorities = appAuthorities.stream().map(item -> item.getAuthorityName())
                 .collect(Collectors.toSet());
-        return new ResponseEntity<>(new AppDTO(name, app.getEnabled(), authorities), HttpStatus.OK);
+        return ResponseEntity.ok(new AppDTO(name, app.getEnabled(), authorities));
     }
 
     @ApiOperation("更新应用信息")
@@ -106,7 +106,7 @@ public class AppController {
         LOGGER.debug("REST request to update app: {}", dto);
         appRepository.findById(dto.getName()).orElseThrow(() -> new NoDataException(dto.getName()));
         appService.update(dto.getName(), dto.getEnabled(), dto.getAuthorities());
-        return ResponseEntity.status(HttpStatus.OK)
+        return ResponseEntity.ok()
                 .headers(httpHeaderCreator.createSuccessHeader("notification.app.updated", dto.getName())).build();
     }
 
@@ -121,7 +121,7 @@ public class AppController {
         appRepository.findById(name).orElseThrow(() -> new NoDataException(name));
         appRepository.deleteById(name);
         appAuthorityRepository.deleteByAppName(name);
-        return ResponseEntity.status(HttpStatus.OK)
+        return ResponseEntity.ok()
                 .headers(httpHeaderCreator.createSuccessHeader("notification.app.deleted", name)).build();
     }
 }

@@ -18,7 +18,6 @@ import org.infinity.passport.utils.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.GrantedAuthority;
@@ -65,7 +64,7 @@ public class AuthorityAdminMenuController {
                 .map(GrantedAuthority::getAuthority).collect(Collectors.toList());
 
         List<AdminManagedMenuDTO> results = adminMenuService.getAuthorityMenus(appName, userEnabledAuthorities);
-        return new ResponseEntity<List<AdminManagedMenuDTO>>(results, HttpStatus.OK);
+        return ResponseEntity.ok(results);
     }
 
     @ApiOperation("查询当前用户权限关联的链接")
@@ -81,7 +80,7 @@ public class AuthorityAdminMenuController {
                 .map(GrantedAuthority::getAuthority).collect(Collectors.toList());
 
         List<AdminMenuDTO> results = adminMenuService.getAuthorityLinks(appName, userEnabledAuthorities);
-        return new ResponseEntity<List<AdminMenuDTO>>(results, HttpStatus.OK);
+        return ResponseEntity.ok(results);
     }
 
     @ApiOperation("根据权限名称查看菜单信息")
@@ -95,7 +94,7 @@ public class AuthorityAdminMenuController {
         // 查询全部管理菜单
         List<AdminMenu> allAdminMenus = adminMenuRepository.findByAppName(appName);
         if (CollectionUtils.isEmpty(allAdminMenus)) {
-            return new ResponseEntity<List<AdminManagedMenuDTO>>(new ArrayList<AdminManagedMenuDTO>(), HttpStatus.OK);
+            return ResponseEntity.ok(new ArrayList<AdminManagedMenuDTO>());
         }
 
         // 查询当前权限拥有的管理菜单
@@ -112,7 +111,7 @@ public class AuthorityAdminMenuController {
         }).collect(Collectors.toList());
 
         List<AdminManagedMenuDTO> results = adminMenuService.classifyAdminMenu(allAdminMenusDTO);
-        return new ResponseEntity<List<AdminManagedMenuDTO>>(results, HttpStatus.OK);
+        return ResponseEntity.ok(results);
     }
 
     @ApiOperation("更新权限菜单")

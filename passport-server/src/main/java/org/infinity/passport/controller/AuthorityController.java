@@ -74,7 +74,7 @@ public class AuthorityController {
     public ResponseEntity<List<AuthorityDTO>> findAll() {
         List<AuthorityDTO> authDTOs = authorityRepository.findAll().stream().map(entity -> entity.asDTO())
                 .collect(Collectors.toList());
-        return new ResponseEntity<>(authDTOs, HttpStatus.OK);
+        return ResponseEntity.ok(authDTOs);
     }
 
     @ApiOperation("根据权限名称检索权限信息")
@@ -86,7 +86,7 @@ public class AuthorityController {
     public ResponseEntity<AuthorityDTO> findById(
             @ApiParam(value = "权限名称", required = true) @PathVariable String name) {
         Authority authority = authorityRepository.findById(name).orElseThrow(() -> new NoDataException(name));
-        return new ResponseEntity<>(authority.asDTO(), HttpStatus.OK);
+        return ResponseEntity.ok(authority.asDTO());
     }
 
     @ApiOperation("更新权限信息")
@@ -100,7 +100,7 @@ public class AuthorityController {
         LOGGER.debug("REST request to update authority: {}", dto);
         authorityRepository.findById(dto.getName()).orElseThrow(() -> new NoDataException(dto.getName()));
         authorityRepository.save(Authority.of(dto));
-        return ResponseEntity.status(HttpStatus.OK)
+        return ResponseEntity.ok()
                 .headers(httpHeaderCreator.createSuccessHeader("notification.authority.updated", dto.getName()))
                 .build();
     }
@@ -115,7 +115,7 @@ public class AuthorityController {
         LOGGER.debug("REST request to delete authority: {}", name);
         authorityRepository.findById(name).orElseThrow(() -> new NoDataException(name));
         authorityRepository.deleteById(name);
-        return ResponseEntity.status(HttpStatus.OK)
+        return ResponseEntity.ok()
                 .headers(httpHeaderCreator.createSuccessHeader("notification.authority.deleted", name)).build();
     }
 }

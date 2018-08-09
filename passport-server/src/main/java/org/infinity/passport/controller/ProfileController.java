@@ -1,23 +1,20 @@
 package org.infinity.passport.controller;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
+import com.codahale.metrics.annotation.Timed;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.infinity.passport.config.ApplicationProperties;
 import org.infinity.passport.domain.MongoOAuth2ClientDetails;
 import org.infinity.passport.entity.ProfileInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.codahale.metrics.annotation.Timed;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @RestController
 @Api(tags = "系统环境")
@@ -36,7 +33,7 @@ public class ProfileController {
         ProfileInfo profileInfo = new ProfileInfo(env.getActiveProfiles(), getRibbonEnv(),
                 MongoOAuth2ClientDetails.INTERNAL_CLIENT_ID,
                 MongoOAuth2ClientDetails.INTERNAL_RAW_CLIENT_SECRET);
-        return new ResponseEntity<ProfileInfo>(profileInfo, HttpStatus.OK);
+        return ResponseEntity.ok(profileInfo);
     }
 
     private String getRibbonEnv() {

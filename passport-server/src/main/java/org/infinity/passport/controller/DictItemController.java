@@ -116,7 +116,7 @@ public class DictItemController {
             @ApiParam(value = "数据字典项ID", required = true) @PathVariable String id) {
         LOGGER.debug("REST request to get dict item : {}", id);
         DictItem entity = dictItemRepository.findById(id).orElseThrow(() -> new NoDataException(id));
-        return new ResponseEntity<>(entity.asDTO(), HttpStatus.OK);
+        return ResponseEntity.ok(entity.asDTO());
     }
 
     @ApiOperation("根据数据字典代码检索数据字典项信息")
@@ -130,11 +130,11 @@ public class DictItemController {
         // 根据dictCode查询数据字典项信息
         List<DictItem> dictItems = dictItemRepository.findByDictCode(dictCode);
         if (CollectionUtils.isEmpty(dictItems)) {
-            return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
+            return ResponseEntity.ok(Collections.emptyList());
         }
         List<DictItemDTO> dictItemDTOs = dictItems.stream().map(dictItem -> dictItem.asDTO())
                 .collect(Collectors.toList());
-        return new ResponseEntity<>(dictItemDTOs, HttpStatus.OK);
+        return ResponseEntity.ok(dictItemDTOs);
     }
 
     @ApiOperation("更新数据字典项信息")
@@ -149,7 +149,7 @@ public class DictItemController {
         dictItemRepository.findById(dto.getId()).orElseThrow(() -> new NoDataException(dto.getId()));
         dictItemService.update(dto.getId(), dto.getDictCode(), dto.getDictItemCode(), dto.getDictItemName(),
                 dto.getRemark(), dto.getEnabled());
-        return ResponseEntity.status(HttpStatus.OK)
+        return ResponseEntity.ok()
                 .headers(httpHeaderCreator.createSuccessHeader("notification.dict.item.updated", dto.getDictItemName()))
                 .build();
     }

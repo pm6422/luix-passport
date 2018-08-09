@@ -80,7 +80,7 @@ public class DictController {
     @Timed
     public ResponseEntity<DictDTO> findById(@ApiParam(value = "字典编号", required = true) @PathVariable String id) {
         Dict entity = dictRepository.findById(id).orElseThrow(() -> new NoDataException(id));
-        return new ResponseEntity<>(entity.asDTO(), HttpStatus.OK);
+        return ResponseEntity.ok(entity.asDTO());
     }
 
     @ApiOperation("根据字典的状态获取数据字典")
@@ -97,7 +97,7 @@ public class DictController {
             dicts = dictRepository.findByEnabled(enabled);
         }
         List<DictDTO> dictDTOs = dicts.stream().map(dict -> dict.asDTO()).collect(Collectors.toList());
-        return new ResponseEntity<>(dictDTOs, HttpStatus.OK);
+        return ResponseEntity.ok(dictDTOs);
     }
 
     @ApiOperation("更新数据字典信息")
@@ -110,7 +110,7 @@ public class DictController {
         LOGGER.debug("REST request to update dict: {}", dto);
         dictRepository.findById(dto.getId()).orElseThrow(() -> new NoDataException(dto.getId()));
         dictRepository.save(Dict.of(dto));
-        return ResponseEntity.status(HttpStatus.OK)
+        return ResponseEntity.ok()
                 .headers(httpHeaderCreator.createSuccessHeader("notification.dict.updated", dto.getDictName())).build();
     }
 

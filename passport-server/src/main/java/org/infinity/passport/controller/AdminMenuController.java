@@ -98,7 +98,7 @@ public class AdminMenuController {
     @Timed
     public ResponseEntity<AdminMenuDTO> findById(@ApiParam(value = "菜单ID", required = true) @PathVariable String id) {
         AdminMenu entity = adminMenuRepository.findById(id).orElseThrow(() -> new NoDataException(id));
-        return new ResponseEntity<>(entity.asDTO(), HttpStatus.OK);
+        return ResponseEntity.ok(entity.asDTO());
     }
 
     @ApiOperation("查询父类菜单")
@@ -111,7 +111,7 @@ public class AdminMenuController {
             @ApiParam(value = "菜单级别", required = true) @PathVariable Integer level) {
         List<AdminMenuDTO> dtos = adminMenuRepository.findByAppNameAndLevel(appName, level).stream()
                 .map(adminMenu -> adminMenu.asDTO()).collect(Collectors.toList());
-        return new ResponseEntity<List<AdminMenuDTO>>(dtos, HttpStatus.OK);
+        return ResponseEntity.ok(dtos);
     }
 
     @ApiOperation("更新菜单")
@@ -127,7 +127,7 @@ public class AdminMenuController {
 
         adminMenuService.update(dto.getId(), dto.getAppName(), dto.getAdminMenuName(), dto.getAdminMenuChineseText(),
                 dto.getLevel(), dto.getLink(), dto.getSequence(), dto.getParentMenuId());
-        return ResponseEntity.status(HttpStatus.OK).headers(
+        return ResponseEntity.ok().headers(
                 httpHeaderCreator.createSuccessHeader("notification.admin.menu.updated", dto.getAdminMenuName()))
                 .build();
     }
@@ -142,7 +142,7 @@ public class AdminMenuController {
         LOGGER.debug("REST request to delete admin menu: {}", id);
         AdminMenu adminMenu = adminMenuRepository.findById(id).orElseThrow(() -> new NoDataException(id));
         adminMenuRepository.deleteById(id);
-        return ResponseEntity.status(HttpStatus.OK).headers(
+        return ResponseEntity.ok().headers(
                 httpHeaderCreator.createSuccessHeader("notification.admin.menu.deleted", adminMenu.getAdminMenuName()))
                 .build();
     }
@@ -166,7 +166,7 @@ public class AdminMenuController {
             }
         }
         adminMenuRepository.insert(list);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.ok().build();
     }
 
     @ApiOperation("根据菜单ID提高管理菜单顺序")

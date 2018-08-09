@@ -105,7 +105,8 @@ public class UserController {
         mailService.sendCreationEmail(newUser, baseUrl);
         HttpHeaders headers = httpHeaderCreator.createSuccessHeader("notification.user.created", dto.getUserName(),
                 DEFAULT_PASSWORD);
-        return new ResponseEntity<>(DEFAULT_PASSWORD, headers, HttpStatus.OK);
+        return ResponseEntity
+                .status(HttpStatus.CREATED).headers(headers).body(DEFAULT_PASSWORD);
     }
 
     @ApiOperation("获取用户信息分页列表")
@@ -137,7 +138,7 @@ public class UserController {
                 .orElseThrow(() -> new NoAuthorityException(userName));
         Set<String> authorities = userAuthorities.stream().map(item -> item.getAuthorityName())
                 .collect(Collectors.toSet());
-        return new ResponseEntity<>(new ManagedUserDTO(entity, authorities), HttpStatus.OK);
+        return ResponseEntity.ok(new ManagedUserDTO(entity, authorities);
     }
 
     @ApiOperation("更新用户信息")

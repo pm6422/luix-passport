@@ -106,7 +106,7 @@ public class OAuth2ClientDetailsController {
             @ApiParam(value = "客户端ID", required = true) @PathVariable String id) {
         MongoOAuth2ClientDetails entity = oAuth2ClientDetailsRepository.findById(id)
                 .orElseThrow(() -> new NoDataException(id));
-        return new ResponseEntity<>(entity.asDTO(), HttpStatus.OK);
+        return ResponseEntity.ok(entity.asDTO());
     }
 
     @ApiOperation("获取内部检索单点登录客户端信息")
@@ -115,8 +115,8 @@ public class OAuth2ClientDetailsController {
     @GetMapping("/open-api/oauth2-client/internal-client")
     @Timed
     public ResponseEntity<Pair<String, String>> findInternalClient() {
-        return new ResponseEntity<>(Pair.of(MongoOAuth2ClientDetails.INTERNAL_CLIENT_ID,
-                MongoOAuth2ClientDetails.INTERNAL_RAW_CLIENT_SECRET), HttpStatus.OK);
+        return ResponseEntity.ok(Pair.of(MongoOAuth2ClientDetails.INTERNAL_CLIENT_ID,
+                MongoOAuth2ClientDetails.INTERNAL_RAW_CLIENT_SECRET));
     }
 
     @ApiOperation("更新单点登录客户端信息")
@@ -131,7 +131,7 @@ public class OAuth2ClientDetailsController {
         oAuth2ClientDetailsRepository.findById(dto.getClientId())
                 .orElseThrow(() -> new NoDataException(dto.getClientId()));
         oAuth2ClientDetailsRepository.save(MongoOAuth2ClientDetails.of(dto));
-        return ResponseEntity.status(HttpStatus.OK)
+        return ResponseEntity.ok()
                 .headers(httpHeaderCreator.createSuccessHeader("notification.oauth2.client.updated", dto.getClientId()))
                 .build();
 

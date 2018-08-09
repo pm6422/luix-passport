@@ -89,7 +89,7 @@ public class OAuth2ApprovalController {
     public ResponseEntity<MongoOAuth2ApprovalDTO> findById(
             @ApiParam(value = "授权信息ID", required = true) @PathVariable String id) {
         MongoOAuth2Approval entity = oAuth2ApprovalRepository.findById(id).orElseThrow(() -> new NoDataException(id));
-        return new ResponseEntity<>(entity.asDTO(), HttpStatus.OK);
+        return ResponseEntity.ok(entity.asDTO());
     }
 
     @ApiOperation(value = "根据授权信息ID删除授权信息信息", notes = "数据有可能被其他数据所引用，删除之后可能出现一些问题")

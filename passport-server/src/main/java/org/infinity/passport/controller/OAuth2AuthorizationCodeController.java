@@ -79,7 +79,7 @@ public class OAuth2AuthorizationCodeController {
             @ApiParam(value = "授权码信息ID", required = true) @PathVariable String id) {
         MongoOAuth2AuthorizationCode entity = oAuth2AuthorizationCodeRepository.findById(id)
                 .orElseThrow(() -> new NoDataException(id));
-        return new ResponseEntity<>(entity.asDTO(), HttpStatus.OK);
+        return ResponseEntity.ok(entity.asDTO());
     }
 
     @ApiOperation(value = "根据授权码信息ID删除授权码信息信息", notes = "数据有可能被其他数据所引用，删除之后可能出现一些问题")

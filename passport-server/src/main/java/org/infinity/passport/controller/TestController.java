@@ -1,5 +1,8 @@
 package org.infinity.passport.controller;
 
+import com.codahale.metrics.annotation.Timed;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.User;
 import org.infinity.passport.repository.UserRepository;
@@ -8,16 +11,10 @@ import org.infinity.passport.utils.RandomUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.codahale.metrics.annotation.Timed;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 
 @RestController
 @Api(tags = "测试")
@@ -87,7 +84,7 @@ public class TestController {
 
         userRepository.deleteById(user2.getId());
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.ok().build();
     }
 
     @ApiOperation("测试发送邮件功能")
@@ -96,6 +93,6 @@ public class TestController {
     @Timed
     public ResponseEntity<Void> testEmail() {
         mailService.sendEmail("pm6422@126.com", "test", "test", false, false);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.ok().build();
     }
 }

@@ -71,7 +71,7 @@ public class OAuth2RefreshTokenController {
             @ApiParam(value = "刷新令牌ID", required = true) @PathVariable String id) {
         MongoOAuth2RefreshToken entity = oAuth2RefreshTokenRepository.findById(id)
                 .orElseThrow(() -> new NoDataException(id));
-        return new ResponseEntity<>(entity.asDTO(), HttpStatus.OK);
+        return ResponseEntity.ok(entity.asDTO());
     }
 
     @ApiOperation(value = "根据刷新令牌ID删除刷新令牌信息", notes = "数据有可能被其他数据所引用，删除之后可能出现一些问题")

@@ -77,9 +77,8 @@ public class AccountController {
     public ResponseEntity<String> getAccessToken(HttpServletRequest request) {
         String token = request.getHeader("authorization");
         if (token != null && token.toLowerCase().startsWith(OAuth2AccessToken.BEARER_TYPE.toLowerCase())) {
-            return new ResponseEntity<>(
-                    StringUtils.substringAfter(token.toLowerCase(), OAuth2AccessToken.BEARER_TYPE.toLowerCase()).trim(),
-                    HttpStatus.OK);
+            return ResponseEntity.ok(
+                    StringUtils.substringAfter(token.toLowerCase(), OAuth2AccessToken.BEARER_TYPE.toLowerCase()).trim());
         }
         return ResponseEntity.ok().build();
     }
@@ -90,7 +89,7 @@ public class AccountController {
     @Timed
     public ResponseEntity<String> isAuthenticated(HttpServletRequest request) {
         LOGGER.debug("REST request to check if the current user is authenticated");
-        return new ResponseEntity<>(request.getRemoteUser(), HttpStatus.OK);
+        return ResponseEntity.ok(request.getRemoteUser());
     }
 
     @ApiOperation(value = "获取登录的用户,用于SSO客户端调用，理论上不会返回null，因为未登录则会出错", notes = "登录成功返回当前用户")
@@ -99,7 +98,7 @@ public class AccountController {
     @Timed
     public ResponseEntity<Principal> getPrincipal(Principal user) {
         LOGGER.debug("REST request to get current user if the user is authenticated");
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return ResponseEntity.ok(user);
     }
 
     @ApiOperation("获取当前用户信息")
@@ -135,17 +134,16 @@ public class AccountController {
                 Optional<User> user = userService
                         .findOneByUserName(oAuth2Authentication.getUserAuthentication().getName());
                 if (user.isPresent()) {
-                    return new ResponseEntity<>(
+                    return ResponseEntity.ok(
                             new UserDTO(user.get(),
                                     oAuth2Authentication.getUserAuthentication().getAuthorities().stream()
-                                            .map(GrantedAuthority::getAuthority).collect(Collectors.toSet())),
-                            HttpStatus.OK);
+                                            .map(GrantedAuthority::getAuthority).collect(Collectors.toSet())));
                 }
             }
         }
         // UserInfoTokenServices.loadAuthentication里会判断是否返回结果里包含error字段值，如果返回null会有空指针异常
         // 这个也许是客户端的一个BUG，升级后观察是否已经修复
-        return new ResponseEntity<>(ImmutableMap.of("error", true), HttpStatus.OK);
+        return ResponseEntity.ok(ImmutableMap.of("error", true));
     }
 
     @ApiOperation("注册新用户")
@@ -191,7 +189,7 @@ public class AccountController {
     @Timed
     public ResponseEntity<Void> activateAccount(@ApiParam(value = "激活码", required = true) @PathVariable String key) {
         userService.activateRegistration(key).orElseThrow(() -> new NoDataException(key));
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.ok().build();
     }
 
     @ApiOperation("获取权限值列表")
@@ -203,7 +201,7 @@ public class AccountController {
             @ApiParam(value = "是否可用,null代表全部", required = false, allowableValues = "false,true,null") @RequestParam(value = "enabled", required = false) Boolean enabled) {
         List<String> authorities = enabled == null ? authorityService.findAllAuthorityNames()
                 : authorityService.findAllAuthorityNames(enabled);
-        return new ResponseEntity<>(authorities, HttpStatus.OK);
+        return ResponseEntity.ok(authorities);
     }
 
     @ApiOperation("更新当前用户信息")
@@ -235,7 +233,7 @@ public class AccountController {
         currentUser.setAvatarImageUrl(userDTO.getAvatarImageUrl());
         currentUser.setModifiedBy(SecurityUtils.getCurrentUserName());
         userRepository.save(currentUser);
-        return ResponseEntity.status(HttpStatus.OK)
+        return ResponseEntity.ok()
                 .headers(httpHeaderCreator.createSuccessHeader("notification.user.updated", userDTO.getUserName()))
                 .build();
     }
@@ -252,7 +250,7 @@ public class AccountController {
             throw new FieldValidationException("password", "password", "error.incorrect.password.length");
         }
         userService.changePassword(SecurityUtils.getCurrentUserName(), newPassword);
-        return ResponseEntity.status(HttpStatus.OK)
+        return ResponseEntity.ok()
                 .headers(httpHeaderCreator.createSuccessHeader("notification.password.changed")).build();
     }
 
@@ -268,7 +266,7 @@ public class AccountController {
         String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
                 + request.getContextPath();
         mailService.sendPasswordResetMail(user, baseUrl);
-        return ResponseEntity.status(HttpStatus.OK)
+        return ResponseEntity.ok()
                 .headers(httpHeaderCreator.createSuccessHeader("notification.password.reset.email.sent")).build();
     }
 
@@ -282,7 +280,7 @@ public class AccountController {
         userService.completePasswordReset(resetKeyAndPasswordDTO.getNewPassword(), resetKeyAndPasswordDTO.getKey())
                 .orElseThrow(() -> new FieldValidationException("resetKeyAndPasswordDTO", "key",
                         resetKeyAndPasswordDTO.getKey(), "error.invalid.reset.key"));
-        return ResponseEntity.status(HttpStatus.OK)
+        return ResponseEntity.ok()
                 .headers(httpHeaderCreator.createSuccessHeader("notification.password.reset")).build();
 
     }
