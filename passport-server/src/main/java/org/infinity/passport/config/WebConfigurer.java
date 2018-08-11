@@ -34,13 +34,13 @@ import static java.net.URLDecoder.decode;
  */
 @Configuration
 public class WebConfigurer implements ServletContextInitializer, WebServerFactoryCustomizer<WebServerFactory> {
-    private static final Logger   LOGGER = LoggerFactory.getLogger(WebConfigurer.class);
+    private static final Logger                LOGGER = LoggerFactory.getLogger(WebConfigurer.class);
     @Autowired
-    private Environment           env;
+    private              Environment           env;
     @Autowired
-    private ApplicationProperties applicationProperties;
+    private              ApplicationProperties applicationProperties;
     @Autowired(required = false)
-    private MetricRegistry        metricRegistry;
+    private              MetricRegistry        metricRegistry;
 
     @Override
     public void onStartup(ServletContext servletContext) {
@@ -81,7 +81,7 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
             ConfigurableServletWebServerFactory servletWebServer = (ConfigurableServletWebServerFactory) server;
             File root;
             String prefixPath = resolvePathPrefix();
-            root = new File(prefixPath + "target/www/");
+            root = new File(prefixPath + "src/main/webapp/");
             if (root.exists() && root.isDirectory()) {
                 servletWebServer.setDocumentRoot(root);
             }
@@ -89,7 +89,7 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
     }
 
     /**
-     *  Resolve path prefix to static resources.
+     * Resolve path prefix to static resources.
      */
     private String resolvePathPrefix() {
         String fullExecutablePath;
