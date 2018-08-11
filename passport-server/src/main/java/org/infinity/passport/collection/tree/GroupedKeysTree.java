@@ -123,28 +123,22 @@ public class GroupedKeysTree<T> implements Serializable {
                     insert(n, data, keys);
                 }
                 break;
-            } else if (d > 0) {
-                if (i == end - 1) {
+            } else {
+                // insert in front of the current node
+                int insertIndex = i;
+                if (d > 0 && i == end - 1) {
                     // insert into end if it is the last one
+                    insertIndex = end;
+                }
+                if (d < 0 || d > 0 && i == end - 1) {
                     GroupedKeysTreeNode<T> newChildNode = newChildNode(parentNode, data, keys);
-                    parentNode.addChild(end, newChildNode);
+                    parentNode.addChild(insertIndex, newChildNode);
                     nodeSize++;
                     if (newChildNode.getDepth() < keys.length) {
                         insert(newChildNode, data, keys);
                     }
                     break;
-                } else {
-                    continue;
                 }
-            } else if (d < 0) {
-                // insert in front of the current node
-                GroupedKeysTreeNode<T> newChildNode = newChildNode(parentNode, data, keys);
-                parentNode.addChild(i, newChildNode);
-                nodeSize++;
-                if (newChildNode.getDepth() < keys.length) {
-                    insert(newChildNode, data, keys);
-                }
-                break;
             }
         }
         return parentNode;
