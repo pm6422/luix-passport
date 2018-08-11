@@ -1,14 +1,5 @@
 package org.infinity.passport.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.infinity.passport.domain.AdminMenu;
@@ -23,6 +14,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import java.util.*;
+import java.util.stream.Collectors;
+
 @Service
 public class AdminMenuServiceImpl implements AdminMenuService {
 
@@ -33,36 +27,11 @@ public class AdminMenuServiceImpl implements AdminMenuService {
     private AuthorityAdminMenuService authorityAdminMenuService;
 
     @Override
-    public AdminMenu insert(String appName, String adminMenuName, String adminMenuChineseText, String link,
-            Integer sequence, String parentMenuId) {
-        AdminMenu adminMenu = new AdminMenu();
-        adminMenu.setAppName(appName);
-        adminMenu.setAdminMenuName(adminMenuName);
-        adminMenu.setAdminMenuChineseText(adminMenuChineseText);
-
+    public AdminMenu insert(AdminMenu entity) {
         Integer level = 1;
-        if (StringUtils.isNotEmpty(parentMenuId)) {
-            level = adminMenuRepository.findById(parentMenuId).get().getLevel() + 1;
+        if (StringUtils.isNotEmpty(entity.getParentMenuId())) {
+            level = adminMenuRepository.findById(entity.getParentMenuId()).get().getLevel() + 1;
         }
-        adminMenu.setLevel(level);
-        adminMenu.setLink(link);
-        adminMenu.setSequence(sequence);
-        adminMenu.setParentMenuId(parentMenuId);
-
-        return adminMenuRepository.save(adminMenu);
-    }
-
-    @Override
-    public AdminMenu update(String id, String appName, String adminMenuName, String adminMenuChineseText, Integer level,
-            String link, Integer sequence, String parentMenuId) {
-        AdminMenu entity = adminMenuRepository.findById(id).get();
-        entity.setAppName(appName);
-        entity.setAdminMenuName(adminMenuName);
-        entity.setAdminMenuChineseText(adminMenuChineseText);
-        entity.setLevel(level);
-        entity.setLink(link);
-        entity.setSequence(sequence);
-        entity.setParentMenuId(parentMenuId);
 
         return adminMenuRepository.save(entity);
     }

@@ -1,18 +1,14 @@
 package org.infinity.passport.service;
 
-import java.util.List;
-
 import org.infinity.passport.domain.AdminMenu;
 import org.infinity.passport.dto.AdminManagedMenuDTO;
 import org.infinity.passport.dto.AdminMenuDTO;
 
+import java.util.List;
+
 public interface AdminMenuService {
 
-    AdminMenu insert(String appName, String adminMenuName, String adminMenuChineseText, String link, Integer sequence,
-            String parentMenuId);
-
-    AdminMenu update(String id, String appName, String adminMenuName, String adminMenuChineseText, Integer level,
-            String link, Integer sequence, String parentMenuId);
+    AdminMenu insert(AdminMenu entity);
 
     List<AdminManagedMenuDTO> classifyAdminMenu(List<AdminMenuDTO> data);
 
