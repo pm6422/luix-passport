@@ -19,24 +19,20 @@ import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
 import org.springframework.data.mongodb.core.convert.*;
 import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
 import org.springframework.data.mongodb.core.mapping.event.ValidatingMongoEventListener;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
-@EnableMongoRepositories(ApplicationConstants.BASE_PACKAGE + ".repository")
 @EnableMongoAuditing(auditorAwareRef = "springSecurityAuditorAware")
 public class MongoConfiguration {
 
-    private final Logger         LOGGER = LoggerFactory.getLogger(MongoConfiguration.class);
-
+    private final Logger               LOGGER = LoggerFactory.getLogger(MongoConfiguration.class);
     @Autowired
-    private MongoMappingContext  mongoMappingContext;
-
+    private       MongoMappingContext  mongoMappingContext;
     @Autowired
-    private SimpleMongoDbFactory mongoDbFactory;
+    private       SimpleMongoDbFactory mongoDbFactory;
 
     @Bean
     public LocalValidatorFactoryBean validator() {
