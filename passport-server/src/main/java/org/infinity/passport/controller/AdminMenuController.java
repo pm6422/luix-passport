@@ -67,8 +67,7 @@ public class AdminMenuController {
                             "error.duplication",
                             MessageFormat.format("appName: {0}, sequence: {1}", dto.getAppName(), dto.getSequence()));
                 });
-        adminMenuService.insert(dto.getAppName(), dto.getAdminMenuName(), dto.getAdminMenuChineseText(), dto.getLink(),
-                dto.getSequence(), dto.getParentMenuId());
+        adminMenuService.insert(AdminMenu.of(dto));
         return ResponseEntity.status(HttpStatus.CREATED).headers(
                 httpHeaderCreator.createSuccessHeader("notification.admin.menu.created", dto.getAdminMenuName()))
                 .build();
@@ -125,8 +124,7 @@ public class AdminMenuController {
         LOGGER.debug("REST request to update admin menu: {}", dto);
         adminMenuRepository.findById(dto.getId()).orElseThrow(() -> new NoDataException(dto.getId()));
 
-        adminMenuService.update(dto.getId(), dto.getAppName(), dto.getAdminMenuName(), dto.getAdminMenuChineseText(),
-                dto.getLevel(), dto.getLink(), dto.getSequence(), dto.getParentMenuId());
+        adminMenuRepository.save(AdminMenu.of(dto));
         return ResponseEntity.ok().headers(
                 httpHeaderCreator.createSuccessHeader("notification.admin.menu.updated", dto.getAdminMenuName()))
                 .build();
