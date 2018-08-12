@@ -1,5 +1,6 @@
 package org.infinity.passport.collection.tree;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.CharUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -10,10 +11,7 @@ import org.springframework.util.Assert;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * 由于子节点是由数组存储，数据插入涉及到数组拷贝，因此不适合存储千万以上的数据。千万以上数据检索还是很快，但是插入有些慢。
@@ -106,8 +104,8 @@ public class GroupedKeysTree<T> implements Serializable {
             int d = keys[parentNode.getDepth()].compareTo(n.getKey());
             if (d == 0) {
                 if (n.getDepth() == keys.length) {
-                    // set data value
-                    n.setData(data);
+                    // add data value
+                    n.addData(data);
                     dataSize++;
                 } else {
                     // insert node on child node
@@ -147,14 +145,14 @@ public class GroupedKeysTree<T> implements Serializable {
             if (node != null) {
                 node = node.getChild(newKeys[i]);
             }
-            if (node != null && StringUtils.equals(node.getKey(), newKeys[i]) && node.getData() != null) {
-                ret.add(node.getData());
+            if (node != null && StringUtils.equals(node.getKey(), newKeys[i]) && CollectionUtils.isNotEmpty(node.getDataSet())) {
+                ret.addAll(node.getDataSet());
             }
         }
         return ret;
     }
 
-    public T preciseSearch(String... keys) {
+    public Set<T> preciseSearch(String... keys) {
         if (nodeSize == 0) {
             return null;
         }
@@ -165,9 +163,9 @@ public class GroupedKeysTree<T> implements Serializable {
             if (node != null) {
                 node = node.getChild(newKeys[i]);
             }
-            if (node != null && StringUtils.equals(node.getKey(), newKeys[i]) && node.getData() != null
+            if (node != null && StringUtils.equals(node.getKey(), newKeys[i]) && CollectionUtils.isNotEmpty(node.getDataSet())
                     && node.getDepth() == newKeys.length) {
-                return node.getData();
+                return node.getDataSet();
             }
         }
         return null;
@@ -187,8 +185,8 @@ public class GroupedKeysTree<T> implements Serializable {
         GroupedKeysTreeNode<T>[] children = node.getChildren();
         if (ArrayUtils.isNotEmpty(children)) {
             for (GroupedKeysTreeNode<T> childNode : children) {
-                if (childNode.getData() != null) {
-                    ret.add(childNode.getData());
+                if (CollectionUtils.isNotEmpty(childNode.getDataSet())) {
+                    ret.addAll(childNode.getDataSet());
                 }
                 if (!childNode.isTerminate()) {
                     ret.addAll(searchAll(childNode));
@@ -210,8 +208,8 @@ public class GroupedKeysTree<T> implements Serializable {
             GroupedKeysTreeNode<T> childNode = node.getChild(newKeys[i]);
             if (StringUtils.equals(childNode.getKey(), newKeys[i]) && i == newKeys.length - 1
                     && !childNode.isTerminate()) {
-                if (childNode.getData() != null) {
-                    childNode.setData(null);
+                if (CollectionUtils.isNotEmpty(childNode.getDataSet())) {
+                    childNode.setDataSet(Collections.emptySet());
                     dataSize--;
                     return true;
                 }
@@ -221,7 +219,7 @@ public class GroupedKeysTree<T> implements Serializable {
                     node.setChildren(newNodeArray());
                     nodeSize--;
                     dataSize--;
-                    if (node.getData() == null && node.getChildren().length == 0) {
+                    if (CollectionUtils.isEmpty(node.getDataSet()) && node.getChildren().length == 0) {
                         // also need to remove the parent if there are no children and no data
                         String[] parentKeys = new String[keys.length - 1];
                         System.arraycopy(keys, 0, parentKeys, 0, keys.length - 1);
@@ -235,7 +233,7 @@ public class GroupedKeysTree<T> implements Serializable {
                         if (StringUtils.equals(children[j].getKey(), newKeys[i])) {
                             node.removeChild(j);
                             nodeSize--;
-                            if (children[j].getData() != null) {
+                            if (CollectionUtils.isNotEmpty(children[j].getDataSet())) {
                                 dataSize--;
                             }
                             return true;
@@ -253,8 +251,8 @@ public class GroupedKeysTree<T> implements Serializable {
         GroupedKeysTreeNode<T> node = root;
         for (int i = 0; i < newKeys.length; i++) {
             node = node.getChild(newKeys[i]);
-            if (StringUtils.equals(node.getKey(), newKeys[i]) && node.getData() != null && i == newKeys.length - 1) {
-                node.setData(data);
+            if (StringUtils.equals(node.getKey(), newKeys[i]) && CollectionUtils.isNotEmpty(node.getDataSet()) && i == newKeys.length - 1) {
+                node.addData(data);
             }
         }
     }

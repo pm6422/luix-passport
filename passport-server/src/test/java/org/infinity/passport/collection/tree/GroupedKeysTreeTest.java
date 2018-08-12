@@ -40,6 +40,9 @@ public class GroupedKeysTreeTest {
 
         assertThat(tree.getDataSize()).isEqualTo(23);
         assertThat(tree.getNodeSize()).isEqualTo(24);
+
+        tree.searchAll().forEach(System.out::println);
+
         assertThat(tree.searchAll().size()).isEqualTo(tree.getDataSize());
 
         tree.searchAll().forEach(System.out::println);
@@ -73,6 +76,12 @@ public class GroupedKeysTreeTest {
         tree.print();
         assertThat(tree.getDataSize()).isEqualTo(20);
         assertThat(tree.getNodeSize()).isEqualTo(21);
+
+        tree.insert("S024", "C001", "G003");
+        assertThat(tree.getDataSize()).isEqualTo(21);
+        assertThat(tree.getNodeSize()).isEqualTo(21);
+
+        assertThat(tree.preciseSearch("C001", "G003").size()).isEqualTo(2);
     }
 
     @Test

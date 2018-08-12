@@ -3,12 +3,14 @@ package org.infinity.passport.collection.tree;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 public class GroupedKeysTreeNode<T> implements Serializable {
 
     private static final long                     serialVersionUID = 1L;
     private              String                   key;
-    private              T                        data;
+    private              Set<T>                   dataSet          = new HashSet<>();
     private              boolean                  terminate        = true;
     private              int                      depth;
     private              GroupedKeysTreeNode<T>[] children;
@@ -28,7 +30,7 @@ public class GroupedKeysTreeNode<T> implements Serializable {
     private GroupedKeysTreeNode(String key, T data, boolean terminate, int depth, GroupedKeysTreeNode<T>[] children) {
         super();
         this.key = key;
-        this.data = data;
+        this.addData(data);
         this.terminate = terminate;
         this.depth = depth;
         this.children = children;
@@ -42,12 +44,18 @@ public class GroupedKeysTreeNode<T> implements Serializable {
         this.key = key;
     }
 
-    public T getData() {
-        return data;
+    public Set<T> getDataSet() {
+        return dataSet;
     }
 
-    public void setData(T data) {
-        this.data = data;
+    public void addData(T data) {
+        if (data != null) {
+            this.dataSet.add(data);
+        }
+    }
+
+    public void setDataSet(Set<T> dataSet) {
+        this.dataSet = dataSet;
     }
 
     public boolean isTerminate() {
@@ -130,7 +138,7 @@ public class GroupedKeysTreeNode<T> implements Serializable {
 
     @Override
     public String toString() {
-        return "GroupedKeysTreeNode [key=" + key + ", data=" + data + ", terminate=" + terminate + ", depth=" + depth + ", childrenSize=" + children.length
+        return "GroupedKeysTreeNode [key=" + key + ", dataSet=" + dataSet + ", terminate=" + terminate + ", depth=" + depth + ", childrenSize=" + children.length
                 + "]";
     }
 }
