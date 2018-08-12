@@ -55,7 +55,6 @@ public class GroupedKeysTreeNode<T> implements Serializable {
         return terminate;
     }
 
-
     public void setTerminate(boolean terminate) {
         this.terminate = terminate;
     }
