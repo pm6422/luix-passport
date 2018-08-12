@@ -1099,12 +1099,12 @@ function AuthorityAdminMenuController ($state, AuthorityAdminMenuService, AppAut
                 if (!response.root.terminate) {
                     for (var i = 0; i < response.root.children.length; i++) {
                         var menu = {};
-                        menu = response.root.children[i].data;
+                        menu = response.root.children[i].dataSet[0];
                         menu.subItems = [];
 
                         angular.forEach(response.root.children[i].children, function (val, key) {
                             var subMenu = {};
-                            subMenu = val.data;
+                            subMenu = val.dataSet[0];
                             menu.subItems.push(subMenu);
                         });
                         vm.allMenus.push(menu);
