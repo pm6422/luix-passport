@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -44,6 +45,10 @@ public class GroupedKeysTree<T> implements Serializable {
         return depth;
     }
 
+    public GroupedKeysTreeNode<T> getRoot() {
+        return root;
+    }
+
     private GroupedKeysTreeNode<T> newNode() {
         return new GroupedKeysTreeNode<T>();
     }
@@ -69,21 +74,7 @@ public class GroupedKeysTree<T> implements Serializable {
 
     private String[] removeNullKeys(String... keys) {
         Assert.notEmpty(keys, "keys must NOT be empty");
-        int nullIndex = 0;
-        for (int i = 0; i < keys.length; i++) {
-            if (StringUtils.isEmpty(keys[i])) {
-                nullIndex = i;
-                break;
-            }
-        }
-
-        if (nullIndex == 0) {
-            return keys;
-        }
-
-        String[] newKeys = new String[nullIndex];
-        System.arraycopy(keys, 0, newKeys, 0, nullIndex);
-        return newKeys;
+        return Arrays.stream(keys).filter(s -> StringUtils.isNotEmpty(s)).toArray(String[]::new);
     }
 
     public void insert(T data, String... keys) {

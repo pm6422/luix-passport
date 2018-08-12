@@ -198,8 +198,8 @@ function LeftSidebarController($scope, $state, $element, $timeout, APP_NAME, Aut
     function init() {
         if(PrincipalService.isAuthenticated() == true) {
             AuthorityAdminMenuService.query({ appName: APP_NAME }, function(response) {
-                 if (response.length > 0) {
-                     vm.groups = response;
+                if (!response.root.terminate) {
+                    vm.groups = response.root.children;
                      // Call the metsiMenu plugin and plug it to sidebar navigation
                      $timeout(function(){
                          $element.metisMenu();
@@ -1095,8 +1095,23 @@ function AuthorityAdminMenuController ($state, AuthorityAdminMenuService, AppAut
     function searchMenus () {
         if(vm.criteria.authorityName) {
             AuthorityAdminMenuService.queryMenusByAuthorityName({ appName: vm.criteria.appName, authorityName: vm.criteria.authorityName}, function(response){
-                vm.allMenus = response;
+                vm.allMenus = [];
+                if (!response.root.terminate) {
+                    for (var i = 0; i < response.root.children.length; i++) {
+                        var menu = {};
+                        menu = response.root.children[i].data;
+                        menu.subItems = [];
+
+                        angular.forEach(response.root.children[i].children, function (val, key) {
+                            var subMenu = {};
+                            subMenu = val.data;
+                            menu.subItems.push(subMenu);
+                        });
+                        vm.allMenus.push(menu);
+                    }
+                }
             },function(errorResponse){
+                vm.allMenus = [];
             });
         }
         else {
@@ -1117,11 +1132,11 @@ function AuthorityAdminMenuController ($state, AuthorityAdminMenuService, AppAut
             });
         }
     }
-    
+
     function getAllCheckIds(allMenus, adminMenuIds){
         for(var i=0; i < allMenus.length; i++){
             if(allMenus[i].checked){
-                adminMenuIds.push(allMenus[i].id);  
+                adminMenuIds.push(allMenus[i].id);
             }
             if(allMenus[i].subItems){
                 getAllCheckIds(allMenus[i].subItems, adminMenuIds);

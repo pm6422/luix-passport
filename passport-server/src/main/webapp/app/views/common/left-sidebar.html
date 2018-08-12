@@ -22,10 +22,12 @@
                     M+
                 </div>
             </li>
-            <li ng-class="{active: $state.includes('{{group.link}}')}" ng-repeat="group in vm.groups">
-                <a href="#"><i class="fa fa-th-large"></i> <span class="nav-label">{{group.adminMenuChineseText}}</span><span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('{{group.link}}')}">
-                    <li ui-sref-active="active" ng-repeat="child in group.subItems"><a ui-sref="{{child.link}}">{{child.adminMenuChineseText}}</a></li>
+            <li ng-class="{active: $state.includes('{{group.data.link}}')}" ng-repeat="group in vm.groups">
+                <a href="#"><i class="fa fa-th-large"></i> <span
+                        class="nav-label">{{group.data.adminMenuChineseText}}</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('{{group.data.link}}')}">
+                    <li ui-sref-active="active" ng-repeat="child in group.children"><a ui-sref="{{child.data.link}}">{{child.data.adminMenuChineseText}}</a>
+                    </li>
                 </ul>
             </li>
         </ul>

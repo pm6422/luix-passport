@@ -2,19 +2,21 @@ package org.infinity.passport.service.impl;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.infinity.passport.collection.tree.GroupedKeysTree;
 import org.infinity.passport.domain.AdminMenu;
-import org.infinity.passport.dto.AdminManagedMenuDTO;
 import org.infinity.passport.dto.AdminMenuDTO;
 import org.infinity.passport.repository.AdminMenuRepository;
 import org.infinity.passport.service.AdminMenuService;
 import org.infinity.passport.service.AuthorityAdminMenuService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,7 +24,6 @@ public class AdminMenuServiceImpl implements AdminMenuService {
 
     @Autowired
     private AdminMenuRepository       adminMenuRepository;
-
     @Autowired
     private AuthorityAdminMenuService authorityAdminMenuService;
 
@@ -36,96 +37,59 @@ public class AdminMenuServiceImpl implements AdminMenuService {
         return adminMenuRepository.save(entity);
     }
 
+    private GroupedKeysTree<AdminMenu> groupAdminMenu(List<AdminMenu> menus) {
+        GroupedKeysTree<AdminMenu> tree = new GroupedKeysTree();
+        menus.forEach((menu) -> tree.insert(menu, menu.getParentMenuId(), menu.getId()));
+        return tree;
+    }
+
+    private GroupedKeysTree<AdminMenuDTO> groupAdminMenuDTO(List<AdminMenuDTO> menus) {
+        GroupedKeysTree<AdminMenuDTO> tree = new GroupedKeysTree();
+        menus.forEach((menu) -> tree.insert(menu, menu.getParentMenuId(), menu.getId()));
+        return tree;
+    }
+
     @Override
-    public List<AdminManagedMenuDTO> classifyAdminMenu(List<AdminMenuDTO> adminMenuList) {
-        List<AdminManagedMenuDTO> result = new ArrayList<AdminManagedMenuDTO>();
-        Map<String, AdminManagedMenuDTO> idMenuMap = new HashMap<String, AdminManagedMenuDTO>();
-        int level = 1;
-        AdminManagedMenuDTO parent = null;
-        while (idMenuMap.size() < adminMenuList.size()) {
-            for (AdminMenuDTO adminMenu : adminMenuList) {
-                if (level != adminMenu.getLevel().intValue()) {
-                    continue;
-                }
-                parent = idMenuMap.get(adminMenu.getParentMenuId());
-                if (parent == null) {
-                    // 如果parent为空，则表示是顶级元素
-                    parent = new AdminManagedMenuDTO();
-                    BeanUtils.copyProperties(adminMenu, parent);
-                    result.add(parent);
-                    idMenuMap.put(parent.getId(), parent);
-                } else {
-                    List<AdminManagedMenuDTO> subItems = parent.getSubItems();
-                    if (subItems == null) {
-                        subItems = new ArrayList<AdminManagedMenuDTO>();
-                        parent.setSubItems(subItems);
-                    }
-                    AdminManagedMenuDTO parentItem = new AdminManagedMenuDTO();
-                    BeanUtils.copyProperties(adminMenu, parentItem);
-                    subItems.add(parentItem);
-                    idMenuMap.put(adminMenu.getId(), parentItem);
-                }
+    public GroupedKeysTree<AdminMenuDTO> getAllAuthorityMenus(String appName, String enabledAuthority) {
+        Set<String> adminMenuIds = authorityAdminMenuService.findAdminMenuIdSetByAuthorityNameIn(Arrays.asList(enabledAuthority));
+        Sort sort = new Sort(Direction.ASC, AdminMenu.FIELD_SEQUENCE);
+        List<AdminMenuDTO> allAdminMenus = adminMenuRepository.findByAppName(sort, appName).stream().map(menu -> {
+            AdminMenuDTO DTO = menu.asDTO();
+            if (adminMenuIds.contains(menu.getId())) {
+                DTO.setChecked(true);
             }
-            level++;
-        }
-        // Sequence升序
-        Comparator<AdminManagedMenuDTO> seqAscComparator = (c1, c2) -> c1.getSequence().compareTo(c2.getSequence());
-        this.sort(result, seqAscComparator);
-        return result;
+            return DTO;
+        }).collect(Collectors.toList());
+        return this.groupAdminMenuDTO(allAdminMenus);
     }
 
     @Override
-    public List<AdminManagedMenuDTO> getAuthorityMenus(String appName, List<String> enabledAuthorities) {
-        List<AdminManagedMenuDTO> results = new ArrayList<AdminManagedMenuDTO>();
+    public GroupedKeysTree<AdminMenu> getAuthorityMenus(String appName, List<String> enabledAuthorities) {
+        if (CollectionUtils.isEmpty(enabledAuthorities)) {
+            return null;
+        }
+
+        Set<String> adminMenuIds = authorityAdminMenuService.findAdminMenuIdSetByAuthorityNameIn(enabledAuthorities);
+        if (CollectionUtils.isNotEmpty(adminMenuIds)) {
+            Sort sort = new Sort(Direction.ASC, AdminMenu.FIELD_SEQUENCE);
+            List<AdminMenu> adminMenus = adminMenuRepository.findByAppNameAndIdIn(sort, appName, adminMenuIds);
+            return this.groupAdminMenu(adminMenus);
+        }
+        return null;
+    }
+
+    @Override
+    public List<AdminMenu> getAuthorityLinks(String appName, List<String> enabledAuthorities) {
+        List<AdminMenu> results = new ArrayList<>();
         if (CollectionUtils.isEmpty(enabledAuthorities)) {
             return results;
         }
 
-        Set<String> authorityAdminMenuIds = authorityAdminMenuService
-                .findAdminMenuIdSetByAuthorityNameIn(enabledAuthorities);
-
-        if (CollectionUtils.isNotEmpty(authorityAdminMenuIds)) {
-            Sort sort = new Sort(Direction.ASC, AdminMenu.FIELD_LEVEL);
-            List<AdminMenuDTO> amdinMenusDTO = adminMenuRepository
-                    .findByAppNameAndIdIn(sort, appName, new ArrayList<>(authorityAdminMenuIds)).stream()
-                    .map(adminMenu -> adminMenu.asDTO()).collect(Collectors.toList());
-            results = this.classifyAdminMenu(amdinMenusDTO);
+        Set<String> adminMenuIds = authorityAdminMenuService.findAdminMenuIdSetByAuthorityNameIn(enabledAuthorities);
+        if (CollectionUtils.isNotEmpty(adminMenuIds)) {
+            return adminMenuRepository.findByAppNameAndIdInAndLevelGreaterThan(appName, new ArrayList<>(adminMenuIds), 1);
         }
         return results;
-    }
-
-    @Override
-    public List<AdminMenuDTO> getAuthorityLinks(String appName, List<String> enabledAuthorities) {
-        List<AdminMenuDTO> results = new ArrayList<AdminMenuDTO>();
-        if (CollectionUtils.isEmpty(enabledAuthorities)) {
-            return results;
-        }
-
-        Set<String> authorityAdminMenuIds = authorityAdminMenuService
-                .findAdminMenuIdSetByAuthorityNameIn(enabledAuthorities);
-
-        if (CollectionUtils.isNotEmpty(authorityAdminMenuIds)) {
-            return adminMenuRepository
-                    .findByAppNameAndIdInAndLevelGreaterThan(appName, new ArrayList<>(authorityAdminMenuIds), 1)
-                    .stream().map(adminMenu -> adminMenu.asDTO()).collect(Collectors.toList());
-        }
-        return results;
-    }
-
-    /**
-     * 排序方法
-     * 
-     * @param list
-     */
-    private void sort(List<AdminManagedMenuDTO> list, Comparator<AdminManagedMenuDTO> adminMenuDTOComparator) {
-        if (CollectionUtils.isEmpty(list)) {
-            return;
-        }
-        for (AdminManagedMenuDTO managedAdminMenuDTO : list) {
-            sort(managedAdminMenuDTO.getSubItems(), adminMenuDTOComparator);
-        }
-        // 排序
-        Collections.sort(list, adminMenuDTOComparator);
     }
 
     @Override

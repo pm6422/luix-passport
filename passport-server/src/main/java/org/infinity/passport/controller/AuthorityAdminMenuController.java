@@ -3,11 +3,11 @@ package org.infinity.passport.controller;
 import com.codahale.metrics.annotation.Timed;
 import io.swagger.annotations.*;
 import org.apache.commons.collections.CollectionUtils;
+import org.infinity.passport.collection.tree.GroupedKeysTree;
 import org.infinity.passport.domain.AdminMenu;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.AuthorityAdminMenu;
 import org.infinity.passport.dto.AdminAuthorityMenusDTO;
-import org.infinity.passport.dto.AdminManagedMenuDTO;
 import org.infinity.passport.dto.AdminMenuDTO;
 import org.infinity.passport.repository.AdminMenuRepository;
 import org.infinity.passport.repository.AuthorityAdminMenuRepository;
@@ -56,14 +56,14 @@ public class AuthorityAdminMenuController {
     @GetMapping("/api/authority-admin-menu/authority-menus")
     @Secured({Authority.USER})
     @Timed
-    public ResponseEntity<List<AdminManagedMenuDTO>> findByAppName(
+    public ResponseEntity<GroupedKeysTree<AdminMenu>> findByAppName(
             @ApiParam(value = "应用名称", required = true) @RequestParam(value = "appName", required = true) String appName) {
         List<String> allEnabledAuthorities = authorityService.findAllAuthorityNames(true);
         List<String> userEnabledAuthorities = SecurityUtils.getCurrentUserRoles().parallelStream()
                 .filter(userAuthority -> allEnabledAuthorities.contains(userAuthority.getAuthority()))
                 .map(GrantedAuthority::getAuthority).collect(Collectors.toList());
 
-        List<AdminManagedMenuDTO> results = adminMenuService.getAuthorityMenus(appName, userEnabledAuthorities);
+        GroupedKeysTree<AdminMenu> results = adminMenuService.getAuthorityMenus(appName, userEnabledAuthorities);
         return ResponseEntity.ok(results);
     }
 
@@ -72,14 +72,14 @@ public class AuthorityAdminMenuController {
     @GetMapping("/api/authority-admin-menu/authority-links")
     @Secured({Authority.USER})
     @Timed
-    public ResponseEntity<List<AdminMenuDTO>> findAuthorityLinks(
+    public ResponseEntity<List<AdminMenu>> findAuthorityLinks(
             @ApiParam(value = "应用名称", required = true) @RequestParam(value = "appName", required = true) String appName) {
         List<String> allEnabledAuthorities = authorityService.findAllAuthorityNames(true);
         List<String> userEnabledAuthorities = SecurityUtils.getCurrentUserRoles().parallelStream()
                 .filter(userAuthority -> allEnabledAuthorities.contains(userAuthority.getAuthority()))
                 .map(GrantedAuthority::getAuthority).collect(Collectors.toList());
 
-        List<AdminMenuDTO> results = adminMenuService.getAuthorityLinks(appName, userEnabledAuthorities);
+        List<AdminMenu> results = adminMenuService.getAuthorityLinks(appName, userEnabledAuthorities);
         return ResponseEntity.ok(results);
     }
 
@@ -88,29 +88,10 @@ public class AuthorityAdminMenuController {
     @GetMapping("/api/authority-admin-menu/menu-info")
     @Secured({Authority.ADMIN})
     @Timed
-    public ResponseEntity<List<AdminManagedMenuDTO>> findMenus(
+    public ResponseEntity<GroupedKeysTree<AdminMenuDTO>> findMenus(
             @ApiParam(value = "应用名称", required = true) @RequestParam(value = "appName", required = true) String appName,
             @ApiParam(value = "权限名称", required = true) @RequestParam(value = "authorityName", required = true) String authorityName) {
-        // 查询全部管理菜单
-        List<AdminMenu> allAdminMenus = adminMenuRepository.findByAppName(appName);
-        if (CollectionUtils.isEmpty(allAdminMenus)) {
-            return ResponseEntity.ok(new ArrayList<AdminManagedMenuDTO>());
-        }
-
-        // 查询当前权限拥有的管理菜单
-        Set<String> adminMenuIds = authorityAdminMenuRepository.findByAuthorityName(authorityName).stream()
-                .map(AuthorityAdminMenu::getAdminMenuId).collect(Collectors.toSet());
-
-        // 转换成展示菜单
-        List<AdminMenuDTO> allAdminMenusDTO = allAdminMenus.stream().map(adminMenu -> {
-            AdminMenuDTO adminMenuDTO = adminMenu.asDTO();
-            if (adminMenuIds.contains(adminMenu.getId())) {
-                adminMenuDTO.setChecked(true);
-            }
-            return adminMenuDTO;
-        }).collect(Collectors.toList());
-
-        List<AdminManagedMenuDTO> results = adminMenuService.classifyAdminMenu(allAdminMenusDTO);
+        GroupedKeysTree<AdminMenuDTO> results = adminMenuService.getAllAuthorityMenus(appName, authorityName);
         return ResponseEntity.ok(results);
     }
 

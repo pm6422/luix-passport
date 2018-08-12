@@ -1,16 +1,16 @@
 package org.infinity.passport.domain;
 
-import java.io.Serializable;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 import org.infinity.passport.domain.base.AbstractAuditableDomain;
 import org.infinity.passport.dto.AdminMenuDTO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 /**
  * Spring Data MongoDB collection for the AdminMenu entity.
@@ -21,6 +21,8 @@ public class AdminMenu extends AbstractAuditableDomain implements Serializable {
     private static final long  serialVersionUID = 1L;
 
     public static final String FIELD_LEVEL      = "level";
+
+    public static final String FIELD_SEQUENCE = "sequence";
 
     // 主键不要定义为Long型，因为定义为Long型的字段如果超过16位的话在前端页面O会显示为0
     @Id
@@ -37,11 +39,13 @@ public class AdminMenu extends AbstractAuditableDomain implements Serializable {
 
     private String             adminMenuChineseText;
 
-    private Integer            level;
+    @Field(FIELD_LEVEL)
+    private Integer level;
 
     private String             link;
 
-    private Integer            sequence;
+    @Field(FIELD_SEQUENCE)
+    private Integer sequence;
 
     private String             parentMenuId;
 

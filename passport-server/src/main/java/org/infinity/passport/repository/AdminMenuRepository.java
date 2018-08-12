@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Spring Data MongoDB repository for the AdminMenu entity.
@@ -18,11 +19,13 @@ public interface AdminMenuRepository extends MongoRepository<AdminMenu, String> 
 
     Optional<AdminMenu> findOneByAppNameAndSequence(String appName, Integer sequence);
 
-    List<AdminMenu> findByAppNameAndIdIn(Sort sort, String appName, List<String> ids);
+    List<AdminMenu> findByAppNameAndIdIn(Sort sort, String appName, Set<String> ids);
 
     List<AdminMenu> findByAppNameAndIdInAndLevelGreaterThan(String appName, List<String> ids, Integer level);
 
     List<AdminMenu> findByAppName(String appName);
+
+    List<AdminMenu> findByAppName(Sort sort, String appName);
 
     Page<AdminMenu> findByAppName(Pageable pageable, String appName);
 

@@ -42,6 +42,8 @@ public class GroupedKeysTreeTest {
         assertThat(tree.getNodeSize()).isEqualTo(24);
         assertThat(tree.searchAll().size()).isEqualTo(tree.getDataSize());
 
+        tree.searchAll().forEach(System.out::println);
+
 
         PrintWriter pw = new PrintWriter(System.out, true);
         tree.print(pw);
