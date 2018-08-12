@@ -12,9 +12,8 @@ public class GroupedKeysTreeNode<T> implements Serializable {
     private              boolean                  terminate        = true;
     private              int                      depth;
     private              GroupedKeysTreeNode<T>[] children;
-
     @SuppressWarnings("rawtypes")
-    private static GroupedKeysTreeNode[] emptyChildren = {};
+    private static       GroupedKeysTreeNode[]    emptyChildren    = {};
 
     @SuppressWarnings("unchecked")
     public GroupedKeysTreeNode() {
