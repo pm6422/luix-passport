@@ -11,7 +11,10 @@ import org.springframework.util.Assert;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.Writer;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * 由于子节点是由数组存储，数据插入涉及到数组拷贝，因此不适合存储千万以上的数据。千万以上数据检索还是很快，但是插入有些慢。
@@ -152,7 +155,7 @@ public class GroupedKeysTree<T> implements Serializable {
         return ret;
     }
 
-    public Set<T> preciseSearch(String... keys) {
+    public List<T> preciseSearch(String... keys) {
         if (nodeSize == 0) {
             return null;
         }
@@ -165,7 +168,7 @@ public class GroupedKeysTree<T> implements Serializable {
             }
             if (node != null && StringUtils.equals(node.getKey(), newKeys[i]) && CollectionUtils.isNotEmpty(node.getDataSet())
                     && node.getDepth() == newKeys.length) {
-                return node.getDataSet();
+                return new ArrayList<>(node.getDataSet());
             }
         }
         return null;

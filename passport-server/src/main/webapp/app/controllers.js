@@ -1026,7 +1026,6 @@ function AdminMenuDialogController ($state, $stateParams, $uibModalInstance, Adm
 
     vm.pageTitle = $state.current.data.pageTitle;
     vm.mode = $state.current.data.mode;
-//    vm.apps = DictItemService.queryByDictCode({id: 'app'});
     vm.apps = AppService.queryAll();
     vm.searchParentMenus = searchParentMenus;
     vm.entity = entity;
