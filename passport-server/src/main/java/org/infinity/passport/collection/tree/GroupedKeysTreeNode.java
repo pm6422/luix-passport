@@ -58,6 +58,10 @@ public class GroupedKeysTreeNode<T> implements Serializable {
         this.dataSet = dataSet;
     }
 
+    public T getFirstData() {
+        return this.dataSet.stream().findFirst().orElse(null);
+    }
+
     public boolean isTerminate() {
         return terminate;
     }

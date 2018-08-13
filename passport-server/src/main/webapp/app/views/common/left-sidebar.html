@@ -24,10 +24,10 @@
             </li>
             <li ng-class="{active: $state.includes('{{group.data.link}}')}" ng-repeat="group in vm.groups">
                 <a href="#"><i class="fa fa-th-large"></i> <span
-                        class="nav-label">{{group.dataSet[0].adminMenuChineseText}}</span><span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('{{group.dataSet[0].link}}')}">
+                        class="nav-label">{{group.firstData.adminMenuChineseText}}</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('{{group.firstData.link}}')}">
                     <li ui-sref-active="active" ng-repeat="child in group.children"><a
-                            ui-sref="{{child.dataSet[0].link}}">{{child.dataSet[0].adminMenuChineseText}}</a>
+                            ui-sref="{{child.firstData.link}}">{{child.firstData.adminMenuChineseText}}</a>
                     </li>
                 </ul>
             </li>
