@@ -171,7 +171,7 @@ public class GroupedKeysTree<T> implements Serializable {
                 return new ArrayList<>(node.getDataSet());
             }
         }
-        return null;
+        return Collections.emptyList();
     }
 
     public List<T> searchAll() {
