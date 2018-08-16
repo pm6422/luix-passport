@@ -470,12 +470,16 @@
                 <configuration>
                     <rules>
                         <requireMavenVersion>
-                            <message>You are running an older version of Maven. JHipster requires at least Maven ${maven.version}</message>
+                            <message>You are running an older version of Maven. Application requires at least Maven
+                                ${maven.version}
+                            </message>
                             <version>[${maven.version},)</version>
                         </requireMavenVersion>
                         <requireJavaVersion>
                             <!-- Until it supports JDK 9 -->
-                            <message>You are running an incompatible version of Java. JHipster requires JDK ${java.version}</message>
+                            <message>You are running an incompatible version of Java. Application requires JDK
+                                ${java.version}
+                            </message>
                             <version>[1.8,1.9)</version>
                         </requireJavaVersion>
                     </rules>
