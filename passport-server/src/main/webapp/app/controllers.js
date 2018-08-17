@@ -1232,20 +1232,17 @@ function OAuth2ClientDialogController ($state, $stateParams, $uibModalInstance, 
     vm.pageTitle = $state.current.data.pageTitle;
     vm.mode = $state.current.data.mode;
     vm.entity = entity;
-    vm.entity.selectedAutoApprove = (entity.autoapprove[0] === 'true');
     vm.isSaving = false;
     vm.save = save;
     vm.cancel = cancel;
+    vm.addUri = addUri;
+    vm.delUri = delUri;
     
     function save () {
         vm.isSaving = true;
         if (vm.mode == 'edit') {
-            vm.entity.autoapprove = [];
-            vm.entity.autoapprove.push('' + vm.entity.selectedAutoApprove);
             OAuth2ClientService.update(vm.entity, onSaveSuccess, onSaveError);
         } else {
-            vm.entity.autoapprove = [];
-            vm.entity.autoapprove.push('' + vm.entity.selectedAutoApprove);
             OAuth2ClientService.save(vm.entity, onSaveSuccess, onSaveError);
         }
     }
@@ -1261,6 +1258,15 @@ function OAuth2ClientDialogController ($state, $stateParams, $uibModalInstance, 
     
     function cancel () {
         $uibModalInstance.dismiss('cancel');
+    }
+
+    function addUri() {
+        vm.entity.redirect_uri.length++;
+    }
+
+    function delUri(index) {
+        // Remove element
+        vm.entity.redirect_uri.splice(index, 1);
     }
 }
 /**

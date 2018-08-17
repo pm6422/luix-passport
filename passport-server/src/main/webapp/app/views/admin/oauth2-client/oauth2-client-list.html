@@ -26,7 +26,7 @@
                     <div class="row p-h-xs">
                         <div class="col-sm-12">
                             <div class="form-group">
-                                <label class="control-label" for="clientId">客户端ID</label>
+                                <label class="control-label">客户端ID</label>
                                 <input type="text" name="clientId" class="form-control" ng-model="vm.criteria.clientId" ng-keydown="vm.checkPressEnter($event)">
                             </div>
                         </div>
@@ -43,7 +43,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="entity in vm.entities track by entity.clientId">
+                        <tr ng-repeat="entity in vm.entities track by entity.client_id">
                                 <td><a ui-sref=".view({id: entity.client_id})">{{entity.client_id}}</a></td>
                                 <td>{{entity.raw_client_secret}}</td>
                                 <td>{{entity.authorized_grant_types}}</td>

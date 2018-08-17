@@ -20,7 +20,8 @@
         'oitozero.ngSweetAlert',
         'toaster',                       // AngularJS Toaster
         'angles',                        // AngularJS Chart JS
-        'jsonFormatter'                  // AngularJS JSON formatter
+        'jsonFormatter',                 // AngularJS JSON formatter
+        'checklist-model'
     ])
     .run(run);
     

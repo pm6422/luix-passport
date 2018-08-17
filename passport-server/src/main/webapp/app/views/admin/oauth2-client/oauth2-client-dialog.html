@@ -39,7 +39,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label">Scope</label>
+            <label class="control-label">Scopes</label>
             <input type="text" class="form-control" name="scope" ng-model="vm.entity.scope" ng-maxlength="50">
             <div ng-show="editForm.scope.$invalid">
                 <p class="help-block" ng-show="editForm.scope.$error.maxlength" translate-value-max="50">
@@ -87,14 +87,32 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label">Web Server Redirect URI</label>
-            <input type="text" class="form-control" name="webServerRedirectUri" ng-model="vm.entity.web_server_redirect_uri" ng-maxlength="100">
-            <div ng-show="editForm.webServerRedirectUri.$invalid">
-                <p class="help-block" ng-show="editForm.webServerRedirectUri.$error.maxlength" translate-value-max="100">
-                    <small>最大长度为100个字符</small>
-                </p>
+            <label class="control-label">Client Redirect URI</label>
+            <div ng-repeat="v in vm.entity.redirect_uri track by $index">
+                <div class="input-group">
+                    <input type="text" name="redirectUri" class="form-control" ng-model="vm.entity.redirect_uri[$index]"
+                           placeholder="客户端重定向地址" required>
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-danger" ng-click="vm.delUri($index)"><i
+                                class="fa fa-minus"></i></button>
+                    </span>
+                </div>
+                <div ng-show="editForm.redirectUri.$invalid">
+                    <p class="help-block" ng-show="editForm.redirectUri.$error.required">
+                        必填字段
+                    </p>
+                </div>
+                <div class="hr-line-dashed"></div>
             </div>
         </div>
+        <div class="form-group">
+            <div class="control-label">
+                <button class="btn btn-primary pull-right m-t-n-sm" type="button" ng-click="vm.addUri()">
+                    <i class="fa fa-plus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="row"/>
         <div class="form-group">
             <label class="control-label">Authorities</label>
             <input type="text" class="form-control" name="authorities" ng-model="vm.entity.authorities" ng-maxlength="100">
@@ -122,10 +140,12 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label">
-                <input type="checkbox" name="autoapprove" ng-model="vm.entity.selectedAutoApprove">
-                <span>Auto Approve</span>
-            </label>
+            <label class="control-label">Auto Approve Scopes</label>
+            <div class="control-label">
+                <label ng-repeat="s in vm.entity.scope">
+                    <input type="checkbox" checklist-model="vm.entity.autoapprove" checklist-value="s"/>&nbsp;&nbsp;{{s}}&nbsp;&nbsp;
+                </label>
+            </div>
         </div>
     </div>
     <div class="modal-footer">
