@@ -1,7 +1,6 @@
 package org.infinity.passport.service.impl;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.infinity.passport.collection.tree.GroupedKeysTree;
 import org.infinity.passport.domain.AdminMenu;
 import org.infinity.passport.dto.AdminMenuDTO;
@@ -26,16 +25,6 @@ public class AdminMenuServiceImpl implements AdminMenuService {
     private AdminMenuRepository       adminMenuRepository;
     @Autowired
     private AuthorityAdminMenuService authorityAdminMenuService;
-
-    @Override
-    public AdminMenu insert(AdminMenu entity) {
-        Integer level = 1;
-        if (StringUtils.isNotEmpty(entity.getParentMenuId())) {
-            level = adminMenuRepository.findById(entity.getParentMenuId()).get().getLevel() + 1;
-        }
-
-        return adminMenuRepository.save(entity);
-    }
 
     private GroupedKeysTree<AdminMenu> groupAdminMenu(List<AdminMenu> menus) {
         GroupedKeysTree<AdminMenu> tree = new GroupedKeysTree();

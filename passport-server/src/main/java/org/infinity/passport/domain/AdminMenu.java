@@ -15,7 +15,7 @@ import java.io.Serializable;
 /**
  * Spring Data MongoDB collection for the AdminMenu entity.
  */
-@Document
+@Document(collection = "AdminMenu")
 public class AdminMenu extends AbstractAuditableDomain implements Serializable {
 
     private static final long  serialVersionUID = 1L;

@@ -10,7 +10,7 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 
 import java.io.Serializable;
 
-@Document
+@Document(collection = "MongoOAuth2RefreshToken")
 public class MongoOAuth2RefreshToken extends AbstractAuditableDomain implements Serializable {
 
     private static final long    serialVersionUID = 1L;

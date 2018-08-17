@@ -1,17 +1,16 @@
 package org.infinity.passport.domain;
 
-import java.io.Serializable;
-
-import javax.validation.constraints.Size;
-
 import org.infinity.passport.dto.AuthorityDTO;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.Size;
+import java.io.Serializable;
+
 /**
  * Spring Data MongoDB collection for the Authority entity.
  */
-@Document
+@Document(collection = "Authority")
 public class Authority implements Serializable {
 
     private static final long  serialVersionUID       = 1L;

@@ -8,8 +8,6 @@ import java.util.List;
 
 public interface AdminMenuService {
 
-    AdminMenu insert(AdminMenu entity);
-
     GroupedKeysTree<AdminMenuDTO> getAllAuthorityMenus(String appName, String enabledAuthority);
 
     GroupedKeysTree<AdminMenu> getAuthorityMenus(String appName, List<String> enabledAuthorities);

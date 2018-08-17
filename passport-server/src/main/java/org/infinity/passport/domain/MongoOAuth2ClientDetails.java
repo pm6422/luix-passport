@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.client.BaseClientDetails;
 
-@Document
+@Document(collection = "MongoOAuth2ClientDetails")
 public class MongoOAuth2ClientDetails extends BaseClientDetails implements ClientDetails {
 
     private static final long  serialVersionUID           = 1L;

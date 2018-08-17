@@ -1,17 +1,16 @@
 package org.infinity.passport.domain;
 
-import java.io.Serializable;
-
-import javax.validation.constraints.NotNull;
-
 import org.infinity.passport.entity.IHanlpDictionary;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+
 /**
  * Spring Data MongoDB collection for the Hanlp PersonName entity.
  */
-@Document
+@Document(collection = "HanlpPersonName")
 public class HanlpPersonName implements Serializable, IHanlpDictionary {
 
     private static final long serialVersionUID = 1L;

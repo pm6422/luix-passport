@@ -12,7 +12,7 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import java.io.Serializable;
 import java.util.Date;
 
-@Document
+@Document(collection = "MongoOAuth2AccessToken")
 public class MongoOAuth2AccessToken extends AbstractAuditableDomain implements Serializable {
 
     private static final long    serialVersionUID = 1L;

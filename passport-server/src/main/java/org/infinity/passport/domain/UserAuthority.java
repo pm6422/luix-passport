@@ -1,17 +1,16 @@
 package org.infinity.passport.domain;
 
-import java.io.Serializable;
-
-import javax.validation.constraints.NotNull;
-
 import org.infinity.passport.domain.base.AbstractAuditableDomain;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+
 /**
  * Spring Data MongoDB collection for the UserAuthority entity.
  */
-@Document
+@Document(collection = "UserAuthority")
 public class UserAuthority extends AbstractAuditableDomain implements Serializable {
 
     private static final long serialVersionUID = 1L;

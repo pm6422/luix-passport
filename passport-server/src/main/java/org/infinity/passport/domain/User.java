@@ -15,7 +15,7 @@ import java.time.Instant;
 /**
  * Spring Data MongoDB collection for the User entity.
  */
-@Document
+@Document(collection = "User")
 public class User extends AbstractAuditableDomain implements Serializable {
 
     private static final long  serialVersionUID = 1L;

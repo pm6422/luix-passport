@@ -1,17 +1,17 @@
 package org.infinity.passport.domain;
 
-import java.io.Serializable;
-
 import org.infinity.passport.domain.base.AbstractAuditableDomain;
 import org.infinity.passport.dto.DictDTO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.io.Serializable;
+
 /**
  * Spring Data MongoDB collection for the Dict entity.
  */
-@Document
+@Document(collection = "Dict")
 public class Dict extends AbstractAuditableDomain implements Serializable {
 
     private static final long serialVersionUID = 1L;

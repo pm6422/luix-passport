@@ -67,7 +67,7 @@ public class AdminMenuController {
                             "error.duplication",
                             MessageFormat.format("appName: {0}, sequence: {1}", dto.getAppName(), dto.getSequence()));
                 });
-        adminMenuService.insert(AdminMenu.of(dto));
+        adminMenuRepository.save(AdminMenu.of(dto));
         return ResponseEntity.status(HttpStatus.CREATED).headers(
                 httpHeaderCreator.createSuccessHeader("notification.admin.menu.created", dto.getAdminMenuName()))
                 .build();

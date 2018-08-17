@@ -9,7 +9,7 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 
 import java.io.Serializable;
 
-@Document
+@Document(collection = "MongoOAuth2AuthorizationCode")
 public class MongoOAuth2AuthorizationCode implements Serializable {
 
     private static final long    serialVersionUID = 1L;

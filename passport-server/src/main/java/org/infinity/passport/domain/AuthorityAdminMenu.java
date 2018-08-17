@@ -10,7 +10,7 @@ import java.io.Serializable;
 /**
  * Spring Data MongoDB collection for the AuthorityAdminMenu entity.
  */
-@Document
+@Document(collection = "AuthorityAdminMenu")
 public class AuthorityAdminMenu implements Serializable {
 
     private static final long serialVersionUID = 1L;
