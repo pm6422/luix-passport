@@ -27,13 +27,13 @@ public class AdminMenuServiceImpl implements AdminMenuService {
     private AuthorityAdminMenuService authorityAdminMenuService;
 
     private GroupedKeysTree<AdminMenu> groupAdminMenu(List<AdminMenu> menus) {
-        GroupedKeysTree<AdminMenu> tree = new GroupedKeysTree();
+        GroupedKeysTree<AdminMenu> tree = new GroupedKeysTree<>();
         menus.forEach((menu) -> tree.insert(menu, menu.getParentMenuId(), menu.getId()));
         return tree;
     }
 
     private GroupedKeysTree<AdminMenuDTO> groupAdminMenuDTO(List<AdminMenuDTO> menus) {
-        GroupedKeysTree<AdminMenuDTO> tree = new GroupedKeysTree();
+        GroupedKeysTree<AdminMenuDTO> tree = new GroupedKeysTree<>();
         menus.forEach((menu) -> tree.insert(menu, menu.getParentMenuId(), menu.getId()));
         return tree;
     }
