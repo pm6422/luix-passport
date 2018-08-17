@@ -1,10 +1,5 @@
 package demo;
 
-import java.io.IOException;
-import java.net.InetAddress;
-import java.nio.charset.Charset;
-import java.util.Date;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
@@ -19,22 +14,27 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.util.StreamUtils;
 
+import java.io.IOException;
+import java.net.InetAddress;
+import java.nio.charset.Charset;
+import java.util.Date;
+
 @SpringBootApplication
 @EnableZuulProxy
 @EnableOAuth2Sso
-public class PassportClient extends WebSecurityConfigurerAdapter {
+public class PassportClientLauncher extends WebSecurityConfigurerAdapter {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(PassportClient.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PassportClientLauncher.class);
 
     /**
      * Entrance method which used to run the application. Spring profiles can be configured with a program arguments
      * --spring.profiles.active=your-active-profile
-     * 
+     *
      * @param args
-     * @throws IOException 
+     * @throws IOException
      */
     public static void main(String[] args) throws IOException {
-        SpringApplication app = new SpringApplication(PassportClient.class);
+        SpringApplication app = new SpringApplication(PassportClientLauncher.class);
         Environment env = app.run(args).getEnvironment();
         printServerInfo(env);
     }
