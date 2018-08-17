@@ -1047,14 +1047,14 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                             client_id: null,
                             resource_ids: null,
                             client_secret: null,
-                            scope: null,
+                            scope: [],
                             authorized_grant_types: 'authorization_code,password,refresh_token',
-                            web_server_redirect_uri: null,
-                            authorities: null,
+                            redirect_uri: [],
+                            authorities: [],
                             access_token_validity: null,
                             refresh_token_validity: null,
                             additional_information: '{}',
-                            autoapprove: true
+                            autoapprove: 'read,write'
                         }
                     }
                 }).result.then(function () {
