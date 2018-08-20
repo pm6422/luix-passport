@@ -5,6 +5,7 @@ import org.infinity.passport.domain.AdminMenu;
 import org.infinity.passport.dto.AdminMenuDTO;
 
 import java.util.List;
+import java.util.Map;
 
 public interface AdminMenuService {
 
@@ -13,6 +14,8 @@ public interface AdminMenuService {
     GroupedKeysTree<AdminMenu> getAuthorityMenus(String appName, List<String> enabledAuthorities);
 
     List<AdminMenu> getAuthorityLinks(String appName, List<String> enabledAuthorities);
+
+    Map<String, Integer> getParentIdSeqMap();
 
     void raiseSeq(String id);
 

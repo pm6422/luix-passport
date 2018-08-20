@@ -1,6 +1,7 @@
 package org.infinity.passport.service.impl;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.infinity.passport.collection.tree.GroupedKeysTree;
 import org.infinity.passport.domain.AdminMenu;
 import org.infinity.passport.dto.AdminMenuDTO;
@@ -8,14 +9,9 @@ import org.infinity.passport.repository.AdminMenuRepository;
 import org.infinity.passport.service.AdminMenuService;
 import org.infinity.passport.service.AuthorityAdminMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,21 +24,32 @@ public class AdminMenuServiceImpl implements AdminMenuService {
 
     private GroupedKeysTree<AdminMenu> groupAdminMenu(List<AdminMenu> menus) {
         GroupedKeysTree<AdminMenu> tree = new GroupedKeysTree<>();
-        menus.forEach((menu) -> tree.insert(menu, menu.getParentMenuId(), menu.getId()));
+        menus.forEach((menu) -> {
+            if (StringUtils.isEmpty(menu.getParentMenuId())) {
+                tree.insert(menu, "" + menu.getSequence());
+            } else {
+                tree.insert(menu, "" + this.getParentIdSeqMap().get(menu.getParentMenuId()), "" + menu.getSequence());
+            }
+        });
         return tree;
     }
 
     private GroupedKeysTree<AdminMenuDTO> groupAdminMenuDTO(List<AdminMenuDTO> menus) {
         GroupedKeysTree<AdminMenuDTO> tree = new GroupedKeysTree<>();
-        menus.forEach((menu) -> tree.insert(menu, menu.getParentMenuId(), menu.getId()));
+        menus.forEach((menu) -> {
+            if (StringUtils.isEmpty(menu.getParentMenuId())) {
+                tree.insert(menu, "" + menu.getSequence());
+            } else {
+                tree.insert(menu, "" + this.getParentIdSeqMap().get(menu.getParentMenuId()), "" + menu.getSequence());
+            }
+        });
         return tree;
     }
 
     @Override
     public GroupedKeysTree<AdminMenuDTO> getAllAuthorityMenus(String appName, String enabledAuthority) {
         Set<String> adminMenuIds = authorityAdminMenuService.findAdminMenuIdSetByAuthorityNameIn(Arrays.asList(enabledAuthority));
-        Sort sort = new Sort(Direction.ASC, AdminMenu.FIELD_SEQUENCE);
-        List<AdminMenuDTO> allAdminMenus = adminMenuRepository.findByAppName(sort, appName).stream().map(menu -> {
+        List<AdminMenuDTO> allAdminMenus = adminMenuRepository.findByAppName(appName).stream().map(menu -> {
             AdminMenuDTO DTO = menu.asDTO();
             if (adminMenuIds.contains(menu.getId())) {
                 DTO.setChecked(true);
@@ -60,8 +67,7 @@ public class AdminMenuServiceImpl implements AdminMenuService {
 
         Set<String> adminMenuIds = authorityAdminMenuService.findAdminMenuIdSetByAuthorityNameIn(enabledAuthorities);
         if (CollectionUtils.isNotEmpty(adminMenuIds)) {
-            Sort sort = new Sort(Direction.ASC, AdminMenu.FIELD_SEQUENCE);
-            List<AdminMenu> adminMenus = adminMenuRepository.findByAppNameAndIdIn(sort, appName, adminMenuIds);
+            List<AdminMenu> adminMenus = adminMenuRepository.findByAppNameAndIdIn(appName, adminMenuIds);
             return this.groupAdminMenu(adminMenus);
         }
         return null;
@@ -79,6 +85,11 @@ public class AdminMenuServiceImpl implements AdminMenuService {
             return adminMenuRepository.findByAppNameAndIdInAndLevelGreaterThan(appName, new ArrayList<>(adminMenuIds), 1);
         }
         return results;
+    }
+
+    @Override
+    public Map<String, Integer> getParentIdSeqMap() {
+        return adminMenuRepository.findByLevel(1).stream().collect(Collectors.toMap(AdminMenu::getId, AdminMenu::getSequence));
     }
 
     @Override
