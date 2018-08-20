@@ -982,7 +982,11 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
             data: {
                 pageTitle: '权限管理菜单'
             },
-            resolve: {}
+            criteria: ['$stateParams', function ($stateParams) {
+                return {
+                    authorityName: ''
+                };
+            }]
         })
         .state('security', {
             abstract: true,
