@@ -1082,7 +1082,6 @@ function AuthorityAdminMenuController ($state, AuthorityAdminMenuService, AppAut
     vm.authorities = [];
     vm.allMenus = [];
     vm.isSaving = false;
-    vm.authorityName = null;
     vm.searchAuthorities = searchAuthorities;
     vm.searchMenus = searchMenus;
     vm.save = save;
