@@ -5,7 +5,7 @@
     <parent>
         <artifactId>platform-bom</artifactId>
         <groupId>io.spring.platform</groupId>
-        <version>Cairo-SR2</version>
+        <version>Cairo-SR3</version>
         <relativePath />
     </parent>
 
