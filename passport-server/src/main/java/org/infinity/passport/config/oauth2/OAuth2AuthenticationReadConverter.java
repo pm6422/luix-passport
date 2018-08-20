@@ -1,12 +1,5 @@
 package org.infinity.passport.config.oauth2;
 
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.bson.Document;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,6 +8,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.OAuth2Request;
+
+import java.io.Serializable;
+import java.util.*;
 
 /**
  * Deserialize back into an OAuth2Authentication Object made necessary because
@@ -39,11 +35,18 @@ public class OAuth2AuthenticationReadConverter implements Converter<Document, OA
         if (source.get("userAuthentication") != null) {
             Document userAuthorization = (Document) source.get("userAuthentication");
             Object principal = getPrincipalObject(userAuthorization.get("principal"));
-            userAuthentication = new UsernamePasswordAuthenticationToken(principal,
-                    userAuthorization.get("credentials"),
-                    getAuthorities((List<Map<String, String>>) userAuthorization.get("authorities")));
+            if (principal == null) {
+                userAuthorization = (Document) userAuthorization.get("userAuthentication");// For nested userAuthorization in OAuth2Authentication
+                if (userAuthorization != null) {
+                    principal = getPrincipalObject(userAuthorization.get("principal"));
+                }
+            }
+            if (principal != null) {
+                userAuthentication = new UsernamePasswordAuthenticationToken(principal,
+                        userAuthorization.get("credentials"),
+                        getAuthorities((List<Map<String, String>>) userAuthorization.get("authorities")));
+            }
         }
-
         return new OAuth2Authentication(oAuth2Request, userAuthentication);
     }
 
