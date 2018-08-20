@@ -63,11 +63,11 @@ public class OAuth2ClientDetailsController {
     public ResponseEntity<Void> create(
             @ApiParam(value = "单点登录客户端信息", required = true) @Valid @RequestBody MongoOAuth2ClientDetailsDTO dto) {
         LOGGER.debug("REST create oauth client detail: {}", dto);
+        dto.setClientId(StringUtils.defaultIfEmpty(dto.getClientId(), RandomUtils.generateId()));
         oAuth2ClientDetailsRepository.findById(dto.getClientId()).ifPresent((existingEntity) -> {
             throw new FieldValidationException("oAuth2ClientDetailsDTO", "clientId", dto.getClientId(),
                     "error.oauth2.client.id.exists", dto.getClientId());
         });
-        dto.setClientId(StringUtils.defaultIfEmpty(dto.getClientId(), RandomUtils.generateId()));
         dto.setRawClientSecret(StringUtils.defaultIfEmpty(dto.getClientSecret(), RandomUtils.generateId()));
         dto.setClientSecret(passwordEncoder.encode(dto.getRawClientSecret()));
         oAuth2ClientDetailsRepository.save(MongoOAuth2ClientDetails.of(dto));

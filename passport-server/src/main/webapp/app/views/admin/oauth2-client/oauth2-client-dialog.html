@@ -88,17 +88,20 @@
         </div>
         <div class="form-group">
             <label class="control-label">Client Redirect URI</label>
+            <a tooltip-placement="right" uib-tooltip="登录验证成功重定向地址"><i class="fa fa-question"></i></a>
             <div ng-repeat="v in vm.entity.redirect_uri track by $index">
                 <div class="input-group">
-                    <input type="text" name="redirectUri" class="form-control" ng-model="vm.entity.redirect_uri[$index]"
+                    <input type="text" name="redirectUri[]" class="form-control"
+                           ng-model="vm.entity.redirect_uri[$index]"
                            placeholder="客户端重定向地址" required>
                     <span class="input-group-btn">
-                        <button type="button" class="btn btn-danger" ng-click="vm.delUri($index)"><i
-                                class="fa fa-minus"></i></button>
+                        <button type="button" class="btn btn-danger" ng-click="vm.delUri($index)">
+                            <i class="fa fa-minus"></i>
+                        </button>
                     </span>
                 </div>
-                <div ng-show="editForm.redirectUri.$invalid">
-                    <p class="help-block" ng-show="editForm.redirectUri.$error.required">
+                <div ng-show="editForm.redirectUri[$index].$invalid">
+                    <p class="help-block" ng-show="editForm.redirectUri[$index].$error.required">
                         必填字段
                     </p>
                 </div>

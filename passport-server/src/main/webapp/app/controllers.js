@@ -1237,6 +1237,10 @@ function OAuth2ClientDialogController ($state, $stateParams, $uibModalInstance, 
     vm.cancel = cancel;
     vm.addUri = addUri;
     vm.delUri = delUri;
+
+    if (vm.mode == 'create') {
+        vm.entity.redirect_uri.push("");
+    }
     
     function save () {
         vm.isSaving = true;
