@@ -532,20 +532,6 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 pageTitle: 'Schedule'
             }
         })
-        .state('redis-admin', {
-            parent: 'developer',
-            url: '/redis-admin',
-            views: {
-                'content@': {
-                    templateUrl: 'app/views/developer/redis-admin/redis-admin.html',
-                    controller: 'RedisAdminController',
-                    controllerAs: 'vm'
-                }
-            },
-            data: {
-                pageTitle: 'Redis Admin'
-            }
-        })
         .state('control', {
             parent: 'developer',
             url: '/control',

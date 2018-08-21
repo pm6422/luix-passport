@@ -51,7 +51,6 @@ angular
     .controller('DictItemDialogController', DictItemDialogController)
     .controller('LoggerController', LoggerController)
     .controller('ScheduleController', ScheduleController)
-    .controller('RedisAdminController', RedisAdminController)
     .controller('ControlController', ControlController);
 
 /**
@@ -2317,15 +2316,6 @@ function ScheduleController ($state, $http) {
     $http.get('management/scheduledtasks').then(function(response) {
         vm.data = response.data;
     });
-}
-/**
- * RedisAdminController
- */
-function RedisAdminController ($state, AuthServerService) {
-    var vm = this;
-
-    vm.pageTitle = $state.current.data.pageTitle;
-    vm.url = 'api/system/redis-admin?access_token=' + AuthServerService.getAccessToken();
 }
 /**
  * ControlController
