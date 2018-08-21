@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import org.infinity.passport.config.ApplicationProperties;
 import org.infinity.passport.domain.Authority;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,7 +35,7 @@ public class SystemController {
 
     @GetMapping("/api/system/ip")
     @Secured(Authority.DEVELOPER)
-    public String getIp() throws UnknownHostException {
-        return InetAddress.getLocalHost().getHostAddress();
+    public ResponseEntity<String> getIp() throws UnknownHostException {
+        return ResponseEntity.ok(InetAddress.getLocalHost().getHostAddress());
     }
 }
