@@ -4,8 +4,10 @@
             <li class="nav-header">
                 <div class="profile-element" uib-dropdown>
                     <div class="text-center">
-                        <img alt="image" class="img-circle" style="width:50px" src="{{main.account.avatarImageUrl}}" ng-show="main.account.avatarImageUrl"/>
-                        <img alt="image" class="img-circle" style="width:50px" src="content/img/profile_small.jpg" ng-hide="main.account.avatarImageUrl"/>
+                        <img alt="image" class="img-circle" style="width:50px" ng-src="{{main.account.avatarImageUrl}}"
+                             ng-show="main.account.avatarImageUrl"/>
+                        <img alt="image" class="img-circle" style="width:50px" ng-src="content/img/profile_small.png"
+                             ng-hide="main.account.avatarImageUrl"/>
                     </div>
                     <a uib-dropdown-toggle>
                         <span class="clear forum-info">
