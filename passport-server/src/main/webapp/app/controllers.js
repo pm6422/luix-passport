@@ -10,6 +10,7 @@ angular
     .controller('ErrorPageController', ErrorPageController)
     .controller('LoginController', LoginController)
     .controller('NavbarController', NavbarController)
+    .controller('FooterController', FooterController)
     .controller('ProfileController', ProfileController)
     .controller('RegisterController', RegisterController)
     .controller('ActivationController', ActivationController)
@@ -308,11 +309,28 @@ function NavbarController ($rootScope, $scope, $translate, $state, Authenticatio
     }
 }
 /**
+ * FooterController
+ */
+function FooterController($http) {
+    var vm = this;
+
+    $http({
+        url: 'open-api/system/ip',
+        method: 'GET',
+        transformResponse: [function (data) {
+            return data;
+        }]
+    }).then(function (response) {
+        vm.ip = response.data;
+    });
+}
+
+/**
  * ProfileController
  */
 function ProfileController ($state, PrincipalService, AccountService) {
     var vm = this;
-    
+
     vm.pageTitle = $state.current.data.pageTitle;
     vm.save = save;
     vm.isSaving = false;
