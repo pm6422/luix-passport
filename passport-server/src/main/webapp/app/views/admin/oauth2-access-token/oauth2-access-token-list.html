@@ -81,7 +81,9 @@
                                     <div class="btn-group">
                                         <button class="btn-white btn btn-xs" ui-sref=".view({id: entity.id})">查看</button>
                                         <button class="btn-white btn btn-xs" ng-click="vm.del(entity.id)">删除</button>
-                                        <button class="btn-white btn btn-xs" ng-click="vm.goRefreshToken(entity.refreshToken)">关联刷新令牌</button>
+                                        <button class="btn-white btn btn-xs" ng-show="entity.refreshToken"
+                                                ng-click="vm.goRefreshToken(entity.refreshToken)">关联刷新令牌
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
