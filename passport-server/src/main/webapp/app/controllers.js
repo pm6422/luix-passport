@@ -2325,7 +2325,7 @@ function RedisAdminController ($state, AuthServerService) {
     var vm = this;
 
     vm.pageTitle = $state.current.data.pageTitle;
-    vm.url = 'system/redis/admin?access_token=' + AuthServerService.getAccessToken();
+    vm.url = 'api/system/redis-admin?access_token=' + AuthServerService.getAccessToken();
 }
 /**
  * ControlController
