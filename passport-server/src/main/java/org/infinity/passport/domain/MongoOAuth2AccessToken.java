@@ -23,8 +23,7 @@ public class MongoOAuth2AccessToken extends AbstractAuditableDomain implements S
     private              String               authenticationId;
     private              String               userName;
     private              String               clientId;
-    // Expires in 1 day
-    @Indexed(expireAfterSeconds = 60 * 60 * 24)
+    @Indexed(expireAfterSeconds = 0)//Expire Documents at a Specific Clock Time
     private              Date                 expiration;
     private              OAuth2Authentication authentication;
     private              String               refreshToken;
@@ -35,7 +34,7 @@ public class MongoOAuth2AccessToken extends AbstractAuditableDomain implements S
 
     @PersistenceConstructor
     public MongoOAuth2AccessToken(OAuth2AccessToken oAuth2AccessToken, OAuth2Authentication authentication,
-            String authenticationId) {
+                                  String authenticationId) {
         this.id = oAuth2AccessToken.getValue();
         this.oAuth2AccessToken = oAuth2AccessToken;
         this.authenticationId = authenticationId;
