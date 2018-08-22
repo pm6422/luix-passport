@@ -59,6 +59,10 @@ spring:
             enabled: true
             max-file-size: 30MB
             max-request-size: 30MB
+    session: # Refer to MongoOperationsSessionRepository.java
+        store-type: MONGODB
+        mongodb:
+            collection-name: Session
     banner:
         location: classpath:config/banner-company.txt
 server: 
@@ -68,6 +72,7 @@ server:
         session:
             cookie:
                 name: ${info.artifact.name}
+        timeout: 30M # Session timeout in 30 minutes, Note: this statement can effect spring session, refer to SessionProperties.java
 logging:
     config: classpath:config/logback-spring.xml
     path: ${user.home}${file.separator}Log${file.separator}${info.artifact.id}${file.separator}${info.artifact.id}
