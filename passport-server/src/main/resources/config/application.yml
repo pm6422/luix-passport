@@ -72,7 +72,8 @@ server:
         session:
             cookie:
                 name: ${info.artifact.name}
-        timeout: 30M # Session timeout in 30 minutes, Note: this statement can effect spring session, refer to SessionProperties.java
+        timeout: 30M # Session timeout in 30 minutes, Note: this parameter can control the login expiration
+        # and this statement can effect spring session, refer to SessionProperties.java
 logging:
     config: classpath:config/logback-spring.xml
     path: ${user.home}${file.separator}Log${file.separator}${info.artifact.id}${file.separator}${info.artifact.id}
