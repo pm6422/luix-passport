@@ -14,6 +14,13 @@ angular
     .factory('PasswordService', PasswordService)
     .factory('PasswordResetInitService', PasswordResetInitService)
     .factory('PasswordResetFinishService', PasswordResetFinishService)
+    .factory('MetricsService', MetricsService)
+    .factory('HealthService', HealthService)
+    .factory('ConfigurationService', ConfigurationService)
+    .factory('DictService', DictService)
+    .factory('DictItemService', DictItemService)
+    .factory('AuditsService', AuditsService)
+    .factory('LoggerService', LoggerService)
     .factory('AccountService', AccountService)
     .factory('RegisterService', RegisterService)
     .factory('ActivateService', ActivateService)
@@ -29,14 +36,7 @@ angular
     .factory('OAuth2AccessTokenService', OAuth2AccessTokenService)
     .factory('OAuth2RefreshTokenService', OAuth2RefreshTokenService)
     .factory('OAuth2ApprovalService', OAuth2ApprovalService)
-    .factory('AdminMenuService', AdminMenuService)
-    .factory('MetricsService', MetricsService)
-    .factory('HealthService', HealthService)
-    .factory('ConfigurationService', ConfigurationService)
-    .factory('DictService', DictService)
-    .factory('DictItemService', DictItemService)
-    .factory('AuditsService', AuditsService)
-    .factory('LoggerService', LoggerService);
+    .factory('AdminMenuService', AdminMenuService);
 
 /**
  * StateHandler
@@ -483,6 +483,266 @@ function PasswordResetInitService($resource) {
  */
 function PasswordResetFinishService($resource) {
     var service = $resource('open-api/account/reset-password/finish', {}, {});
+
+    return service;
+}
+
+/**
+ * MetricsService
+ */
+function MetricsService($rootScope, $http) {
+    return {
+        getMetrics: getMetrics,
+        threadDump: threadDump
+    };
+
+    function getMetrics() {
+        return $http.get('api/metric/metrics').then(function (response) {
+            return response.data;
+        });
+    }
+
+    function threadDump() {
+        return $http.get('management/threaddump').then(function (response) {
+            return response.data;
+        });
+    }
+}
+
+/**
+ * HealthService
+ */
+function HealthService($rootScope, $http) {
+    var separator = '.';
+    return {
+        checkHealth: checkHealth,
+        transformHealthData: transformHealthData,
+        getBaseName: getBaseName,
+        getSubSystemName: getSubSystemName
+    };
+
+    function checkHealth() {
+        return $http.get('management/health').then(function (response) {
+            return response.data;
+        });
+    }
+
+    function transformHealthData(data) {
+        var response = [];
+        flattenHealthData(response, null, data.details);
+        return response;
+    }
+
+    function getBaseName(name) {
+        if (name) {
+            var split = name.split('.');
+            return split[0];
+        }
+    }
+
+    function getSubSystemName(name) {
+        if (name) {
+            var split = name.split('.');
+            split.splice(0, 1);
+            var remainder = split.join('.');
+            return remainder ? ' - ' + remainder : '';
+        }
+    }
+
+    /* private methods */
+    function flattenHealthData(result, path, data) {
+        angular.forEach(data, function (value, key) {
+            if (isHealthObject(value)) {
+                if (hasSubSystem(value)) {
+                    addHealthObject(result, false, value, getModuleName(path, key));
+                    flattenHealthData(result, getModuleName(path, key), value);
+                } else {
+                    addHealthObject(result, true, value, getModuleName(path, key));
+                }
+            }
+        });
+        return result;
+    }
+
+    function addHealthObject(result, isLeaf, healthObject, name) {
+
+        var healthData = {
+            'name': name
+        };
+        var details = {};
+        var hasDetails = false;
+
+        angular.forEach(healthObject, function (value, key) {
+            if (key === 'status' || key === 'error') {
+                healthData[key] = value;
+            } else {
+                if (!isHealthObject(value)) {
+                    details[key] = value;
+                    hasDetails = true;
+                }
+            }
+        });
+
+        // Add the of the details
+        if (hasDetails) {
+            angular.extend(healthData, {'details': details});
+        }
+
+        // Only add nodes if they provide additional information
+        if (isLeaf || hasDetails || healthData.error) {
+            result.push(healthData);
+        }
+        return healthData;
+    }
+
+    function getModuleName(path, name) {
+        var result;
+        if (path && name) {
+            result = path + separator + name;
+        } else if (path) {
+            result = path;
+        } else if (name) {
+            result = name;
+        } else {
+            result = '';
+        }
+        return result;
+    }
+
+    function hasSubSystem(healthObject) {
+        var result = false;
+        angular.forEach(healthObject, function (value) {
+            if (value && value.status) {
+                result = true;
+            }
+        });
+        return result;
+    }
+
+    function isHealthObject(healthObject) {
+        var result = false;
+        angular.forEach(healthObject, function (value, key) {
+            if (key === 'status') {
+                result = true;
+            }
+        });
+        return result;
+    }
+}
+
+function ConfigurationService($filter, $http, APP_NAME) {
+    var service = {
+        get: get,
+        getEnv: getEnv
+    };
+
+    return service;
+
+    function get() {
+        return $http.get('management/configprops').then(getConfigPropsComplete);
+
+        function getConfigPropsComplete(response) {
+            var properties = [];
+            var propertiesObject = getConfigPropertiesObjects(response.data);
+            for (var key in propertiesObject) {
+                if (propertiesObject.hasOwnProperty(key)) {
+                    properties.push(propertiesObject[key]);
+                }
+            }
+            var orderBy = $filter('orderBy');
+            return orderBy(properties, 'prefix');
+        }
+    }
+
+    function getConfigPropertiesObjects(res) {
+        // This code is for Spring Boot 2
+        if (res['contexts'] !== undefined) {
+            for (var key in res['contexts']) {
+                // If the key is not bootstrap, it will be the ApplicationContext Id
+                // For default app, it is baseName
+                // For microservice, it is baseName-1
+                if (!key.startsWith('bootstrap')) {
+                    return res['contexts'][key]['beans'];
+                }
+            }
+        }
+        // by default, use the default ApplicationContext Id
+        return res['contexts'][APP_NAME]['beans'];
+    }
+
+    function getEnv() {
+        return $http.get('management/env').then(getEnvComplete);
+
+        function getEnvComplete(response) {
+            var properties = {};
+            angular.forEach(response.data['propertySources'], function (val, key) {
+                var vals = [];
+                angular.forEach(val['properties'], function (v, k) {
+                    vals.push({key: k, val: v});
+                });
+                properties[val['name']] = vals;
+            });
+            return properties;
+        }
+    }
+}
+
+function DictService($resource) {
+    var service = $resource('api/dict/:extension/:id', {}, {
+        'query': {method: 'GET', isArray: true, params: {extension: 'dicts'}},
+        'queryAll': {method: 'GET', isArray: true, params: {extension: 'all'}},
+        'get': {
+            method: 'GET',
+            transformResponse: function (data) {
+                data = angular.fromJson(data);
+                return data;
+            },
+            params: {extension: 'dicts'}
+        },
+        'save': {method: 'POST', params: {extension: 'dicts'}},
+        'update': {method: 'PUT', params: {extension: 'dicts'}},
+        'del': {method: 'DELETE', params: {extension: 'dicts'}}
+    });
+    return service;
+}
+
+function DictItemService($resource) {
+    var service = $resource('api/dict-item/:extension/:id', {}, {
+        'query': {method: 'GET', isArray: true, params: {extension: 'items'}},
+        'queryByDictCode': {method: 'GET', isArray: true, params: {extension: 'dict-code'}},
+        'get': {
+            method: 'GET',
+            transformResponse: function (data) {
+                data = angular.fromJson(data);
+                return data;
+            },
+            params: {extension: 'items'}
+        },
+        'save': {method: 'POST', params: {extension: 'items'}},
+        'update': {method: 'PUT', params: {extension: 'items'}},
+        'del': {method: 'DELETE', params: {extension: 'items'}}
+    });
+    return service;
+}
+
+function AuditsService($resource) {
+    var service = $resource('api/user-audit-event/user-audit-events/:id', {}, {
+        'get': {method: 'GET', isArray: true},
+        'query': {
+            method: 'GET',
+            isArray: true,
+            params: {fromDate: null, toDate: null}
+        }
+    });
+
+    return service;
+}
+
+function LoggerService($resource) {
+    var service = $resource('management/loggers/:name', {}, {
+        'query': {method: 'GET'},
+        'changeLevel': {method: 'POST'}
+    });
 
     return service;
 }
@@ -964,260 +1224,6 @@ function AdminMenuService ($resource, APP_NAME) {
         'raiseSeq': { method: 'GET', params: {extension: 'raise-seq'} },
         'lowerSeq': { method: 'GET', params: {extension: 'lower-seq'} }
     });
-    return service;
-}
-
-/**
- * MetricsService
- */
-function MetricsService ($rootScope, $http) {
-    return {
-        getMetrics: getMetrics,
-        threadDump: threadDump
-    };
-
-    function getMetrics () {
-        return $http.get('api/metric/metrics').then(function (response) {
-            return response.data;
-        });
-    }
-
-    function threadDump () {
-        return $http.get('management/threaddump').then(function (response) {
-            return response.data;
-        });
-    }
-}
-/**
- * HealthService
- */
-function HealthService ($rootScope, $http) {
-    var separator = '.';
-    return {
-        checkHealth: checkHealth,
-        transformHealthData: transformHealthData,
-        getBaseName: getBaseName,
-        getSubSystemName: getSubSystemName
-    };
-
-    function checkHealth () {
-        return $http.get('management/health').then(function (response) {
-            return response.data;
-        });
-    }
-
-    function transformHealthData (data) {
-        var response = [];
-        flattenHealthData(response, null, data.details);
-        return response;
-    }
-
-    function getBaseName (name) {
-        if (name) {
-            var split = name.split('.');
-            return split[0];
-        }
-    }
-
-    function getSubSystemName (name) {
-        if (name) {
-            var split = name.split('.');
-            split.splice(0, 1);
-            var remainder = split.join('.');
-            return remainder ? ' - ' + remainder : '';
-        }
-    }
-
-    /* private methods */
-    function flattenHealthData (result, path, data) {
-        angular.forEach(data, function (value, key) {
-            if (isHealthObject(value)) {
-                if (hasSubSystem(value)) {
-                    addHealthObject(result, false, value, getModuleName(path, key));
-                    flattenHealthData(result, getModuleName(path, key), value);
-                } else {
-                    addHealthObject(result, true, value, getModuleName(path, key));
-                }
-            }
-        });
-        return result;
-    }
-
-    function addHealthObject (result, isLeaf, healthObject, name) {
-
-        var healthData = {
-            'name': name
-        };
-        var details = {};
-        var hasDetails = false;
-
-        angular.forEach(healthObject, function (value, key) {
-            if (key === 'status' || key === 'error') {
-                healthData[key] = value;
-            } else {
-                if (!isHealthObject(value)) {
-                    details[key] = value;
-                    hasDetails = true;
-                }
-            }
-        });
-
-        // Add the of the details
-        if (hasDetails) {
-            angular.extend(healthData, {'details': details});
-        }
-
-        // Only add nodes if they provide additional information
-        if (isLeaf || hasDetails || healthData.error) {
-            result.push(healthData);
-        }
-        return healthData;
-    }
-
-    function getModuleName (path, name) {
-        var result;
-        if (path && name) {
-            result = path + separator + name;
-        }  else if (path) {
-            result = path;
-        } else if (name) {
-            result = name;
-        } else {
-            result = '';
-        }
-        return result;
-    }
-
-    function hasSubSystem (healthObject) {
-        var result = false;
-        angular.forEach(healthObject, function (value) {
-            if (value && value.status) {
-                result = true;
-            }
-        });
-        return result;
-    }
-
-    function isHealthObject (healthObject) {
-        var result = false;
-        angular.forEach(healthObject, function (value, key) {
-            if (key === 'status') {
-                result = true;
-            }
-        });
-        return result;
-    }
-}
-function ConfigurationService ($filter, $http, APP_NAME) {
-    var service = {
-        get: get,
-        getEnv: getEnv
-    };
-
-    return service;
-
-    function get () {
-        return $http.get('management/configprops').then(getConfigPropsComplete);
-
-        function getConfigPropsComplete (response) {
-            var properties = [];
-            var propertiesObject = getConfigPropertiesObjects(response.data);
-            for (var key in propertiesObject) {
-                if (propertiesObject.hasOwnProperty(key)) {
-                    properties.push(propertiesObject[key]);
-                }
-            }
-            var orderBy = $filter('orderBy');
-            return orderBy(properties, 'prefix');
-        }
-    }
-    
-    function getConfigPropertiesObjects(res) {
-        // This code is for Spring Boot 2
-        if (res['contexts'] !== undefined) {
-            for (var key in res['contexts']) {
-                // If the key is not bootstrap, it will be the ApplicationContext Id
-                // For default app, it is baseName
-                // For microservice, it is baseName-1
-                if (!key.startsWith('bootstrap')) {
-                    return res['contexts'][key]['beans'];
-                }
-            }
-        }
-        // by default, use the default ApplicationContext Id
-        return res['contexts'][APP_NAME]['beans'];
-    }
-
-    function getEnv () {
-        return $http.get('management/env').then(getEnvComplete);
-
-        function getEnvComplete (response) {
-            var properties = {};
-            angular.forEach(response.data['propertySources'], function (val, key) {
-                var vals = [];
-                angular.forEach(val['properties'], function (v, k) {
-                    vals.push({ key: k, val: v });
-                });
-                properties[val['name']] = vals;
-            });
-            return properties;
-        }
-    }
-}
-function DictService ($resource) {
-    var service = $resource('api/dict/:extension/:id', {}, {
-        'query': { method: 'GET', isArray: true, params: {extension: 'dicts'}},
-        'queryAll': { method: 'GET', isArray: true, params: {extension: 'all'}},
-        'get': {
-            method: 'GET',
-            transformResponse: function (data) {
-                data = angular.fromJson(data);
-                return data;
-            },
-            params: {extension: 'dicts'}
-        },
-        'save': { method: 'POST', params: {extension: 'dicts'} },
-        'update': { method: 'PUT', params: {extension: 'dicts'} },
-        'del':{ method: 'DELETE', params: {extension: 'dicts'} }
-    });
-    return service;
-}
-function DictItemService ($resource) {
-    var service = $resource('api/dict-item/:extension/:id', {}, {
-        'query': { method: 'GET', isArray: true, params: {extension: 'items'}},
-        'queryByDictCode': { method: 'GET', isArray: true, params: {extension: 'dict-code'}},
-        'get': {
-            method: 'GET',
-            transformResponse: function (data) {
-                data = angular.fromJson(data);
-                return data;
-            },
-            params: {extension: 'items'}
-        },
-        'save': { method: 'POST', params: {extension: 'items'} },
-        'update': { method: 'PUT', params: {extension: 'items'} },
-        'del':{ method: 'DELETE', params: {extension: 'items'} }
-    });
-    return service;
-}
-function AuditsService ($resource) {
-    var service = $resource('api/user-audit-event/user-audit-events/:id', {}, {
-        'get': { method: 'GET', isArray: true},
-        'query': {
-            method: 'GET',
-            isArray: true,
-            params: {fromDate: null, toDate: null}
-        }
-    });
-
-    return service;
-}
-function LoggerService ($resource) {
-    var service = $resource('management/loggers/:name', {}, {
-        'query': { method: 'GET'},
-        'changeLevel': { method: 'POST'}
-    });
-
     return service;
 }
 
