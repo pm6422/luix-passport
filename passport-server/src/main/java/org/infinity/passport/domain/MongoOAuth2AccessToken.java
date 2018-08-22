@@ -5,6 +5,7 @@ import org.infinity.passport.dto.MongoOAuth2AccessTokenDTO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -15,24 +16,18 @@ import java.util.Date;
 @Document(collection = "MongoOAuth2AccessToken")
 public class MongoOAuth2AccessToken extends AbstractAuditableDomain implements Serializable {
 
-    private static final long    serialVersionUID = 1L;
-
+    private static final long                 serialVersionUID = 1L;
     @Id
-    private String               id;                   // AccessTokenId存储在id字段则保证所有客户端共享，一个客户端退出可以退出所有客户端
-
-    private OAuth2AccessToken    oAuth2AccessToken;
-
-    private String               authenticationId;
-
-    private String               userName;
-
-    private String               clientId;
-
-    private Date                 expiration;
-
-    private OAuth2Authentication authentication;
-
-    private String               refreshToken;
+    private              String               id;                   // AccessTokenId存储在id字段则保证所有客户端共享，一个客户端退出可以退出所有客户端
+    private              OAuth2AccessToken    oAuth2AccessToken;
+    private              String               authenticationId;
+    private              String               userName;
+    private              String               clientId;
+    // Expires in 1 day
+    @Indexed(expireAfterSeconds = 60 * 60 * 24)
+    private              Date                 expiration;
+    private              OAuth2Authentication authentication;
+    private              String               refreshToken;
 
     public MongoOAuth2AccessToken() {
         super();
