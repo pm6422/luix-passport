@@ -60,7 +60,6 @@
                                 <th sort-by-directive="clientId"><span>客户端ID</span> <span class="fa fa-sort"></span></th>
                                 <th sort-by-directive="userName"><span>用户名</span> <span class="fa fa-sort"></span></th>
                                 <th>授权类型</th>
-                                <th>是否过期</th>
                                 <th sort-by-directive="expiration"><span>过期时间</span> <span class="fa fa-sort"></span></th>
                                 <th sort-by-directive="modifiedTime"><span>修改时间</span> <span class="fa fa-sort"></span></th>
                                 <th>当前令牌</th>
@@ -73,7 +72,6 @@
                                 <td>{{entity.clientId}}</td>
                                 <td>{{entity.userName}}</td>
                                 <td>{{entity.authentication.oauth2Request.grantType}}</td>
-                                <td>{{!entity.authentication.principal.accountNonExpired}}</td>
                                 <td>{{entity.expiration | date:'yyyy/MM/dd HH:mm:ss'}}</td>
                                 <td>{{entity.modifiedTime | date:'yyyy/MM/dd HH:mm:ss'}}</td>
                                 <td><i class="fa fa-check text-navy" ng-show="vm.currentAccessToken==entity.id"></i></td>
