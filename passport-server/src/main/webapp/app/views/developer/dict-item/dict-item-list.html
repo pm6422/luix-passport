@@ -15,8 +15,10 @@
                     <div class="row p-h-xs">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label class="control-label" for="dictName">字典</label>
-                                <select class="form-control" ng-model="vm.criteria.dictCode" ng-options="item.dictCode as item.dictName for item in vm.dicts" ng-change="vm.transition()">
+                                <label class="control-label" for="dictCode">字典</label>
+                                <select class="form-control" id="dictCode" ng-model="vm.criteria.dictCode"
+                                        ng-options="item.dictCode as item.dictName for item in vm.dicts"
+                                        ng-change="vm.transition()">
                                     <option value="">请选择...</option>
                                 </select>
                             </div>
@@ -24,7 +26,8 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="control-label" for="dictItemName">字典项名称</label>
-                                <input type="text" name="dictItemName" class="form-control" ng-model="vm.criteria.dictItemName" ng-keydown="vm.checkPressEnter($event)">
+                                <input type="text" id="dictItemName" class="form-control"
+                                       ng-model="vm.criteria.dictItemName" ng-keydown="vm.checkPressEnter($event)">
                             </div>
                         </div>
                     </div>

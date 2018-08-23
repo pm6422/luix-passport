@@ -302,6 +302,45 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 pageTitle: 'Http Trace'
             }
         })
+        .state('http-session', {
+            parent: 'developer',
+            url: '/http-session?page&sort&principal',
+            views: {
+                'content@': {
+                    templateUrl: 'app/views/developer/session/http-session.html',
+                    controller: 'HttpSessionController',
+                    controllerAs: 'vm'
+                }
+            },
+            data: {
+                pageTitle: 'Http Session'
+            },
+            params: {
+                page: {
+                    value: '1',
+                    squash: true
+                },
+                sort: {
+                    value: 'principal,asc',
+                    squash: true
+                }
+            },
+            resolve: {
+                pagingParams: ['$stateParams', 'PaginationUtils', function ($stateParams, PaginationUtils) {
+                    return {
+                        page: PaginationUtils.parsePage($stateParams.page),
+                        sort: $stateParams.sort,
+                        predicate: PaginationUtils.parsePredicate($stateParams.sort),
+                        ascending: PaginationUtils.parseAscending($stateParams.sort)
+                    };
+                }],
+                criteria: ['$stateParams', function ($stateParams) {
+                    return {
+                        principal: $stateParams.principal
+                    };
+                }]
+            }
+        })
         .state('audits', {
             parent: 'developer',
             url: '/audits',

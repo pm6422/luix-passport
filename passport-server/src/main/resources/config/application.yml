@@ -62,7 +62,7 @@ spring:
     session: # Refer to MongoOperationsSessionRepository.java
         store-type: MONGODB
         mongodb:
-            collection-name: Session
+            collection-name: HttpSession
     banner:
         location: classpath:config/banner-company.txt
 server: 

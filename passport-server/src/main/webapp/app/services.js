@@ -17,6 +17,7 @@ angular
     .factory('MetricsService', MetricsService)
     .factory('HealthService', HealthService)
     .factory('ConfigurationService', ConfigurationService)
+    .factory('HttpSessionService', HttpSessionService)
     .factory('DictService', DictService)
     .factory('DictItemService', DictItemService)
     .factory('AuditsService', AuditsService)
@@ -685,6 +686,14 @@ function ConfigurationService($filter, $http, APP_NAME) {
             return properties;
         }
     }
+}
+
+function HttpSessionService($resource) {
+    var service = $resource('api/http-session/:extension/:id', {}, {
+        'query': {method: 'GET', isArray: true, params: {extension: 'sessions'}},
+        'del': {method: 'DELETE', params: {extension: 'sessions'}}
+    });
+    return service;
 }
 
 function DictService($resource) {
