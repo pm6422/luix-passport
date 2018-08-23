@@ -436,6 +436,7 @@
                     <sortDependencies>groupId,artifactId</sortDependencies>
                     <keepBlankLines>true</keepBlankLines>
                     <expandEmptyElements>false</expandEmptyElements>
+                    <createBackupFile>false</createBackupFile>
                 </configuration>
             </plugin>
             <plugin>
