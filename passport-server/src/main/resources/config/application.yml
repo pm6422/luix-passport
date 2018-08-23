@@ -17,8 +17,8 @@ management: # Management http server configuration, used by ManagementServerProp
             exposure:
                 include: ['configprops', 'env', 'health', 'info', 'threaddump', 'beans', 'mappings', 'httptrace', 'shutdown', 'auditevents', 'loggers', 'scheduledtasks']
     endpoint:
-        health:
-            show-details: when_authorized
+        health: # used by HealthEndpointProperties, Note: it will show health details if it has the access token by Ajax
+            show-details: WHEN_AUTHORIZED
         shutdown:
             enabled: true # explicitly enable
     health:
