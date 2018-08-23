@@ -1,8 +1,5 @@
 package org.infinity.passport;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,8 +10,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-
 import springfox.documentation.staticdocs.Swagger2MarkupResultHandler;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -23,7 +22,7 @@ public class Swagger2MarkupTest {
     @Autowired
     private WebApplicationContext context;
 
-    private MockMvc               mockMvc;
+    private MockMvc mockMvc;
 
     /**
      * The constructor will be executed first before the spring boot starting.

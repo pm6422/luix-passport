@@ -16,8 +16,6 @@ spring:
             enabled: true
         livereload:
             enabled: false # we use gulp + BrowserSync for livereload
-    messages:
-        cache-seconds: 1
     thymeleaf:
         cache: false
 # ===================================================================

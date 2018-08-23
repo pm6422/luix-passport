@@ -13,7 +13,7 @@ public class MongoOAuth2ClientDetails extends BaseClientDetails implements Clien
 
     private static final long  serialVersionUID           = 1L;
 
-    public static final String INTERNAL_CLIENT_ID         = "internal_client";
+    public static final String INTERNAL_CLIENT_ID = "internal-client";
 
     public static final String INTERNAL_RAW_CLIENT_SECRET = "65G-HD9-4PD-j9F-HP5";
 

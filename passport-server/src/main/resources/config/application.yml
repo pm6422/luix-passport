@@ -59,7 +59,7 @@ spring:
             enabled: true
             max-file-size: 30MB
             max-request-size: 30MB
-    session: # Refer to MongoOperationsSessionRepository.java
+    session: # used by MongoOperationsSessionRepository
         store-type: MONGODB
         mongodb:
             collection-name: HttpSession
@@ -73,7 +73,7 @@ server:
             cookie:
                 name: ${info.artifact.name}
         timeout: 30M # Session timeout in 30 minutes, Note: this parameter can control the login expiration
-        # and this statement can effect spring session, refer to SessionProperties.java
+        # and this statement can effect spring session, used by SessionProperties
 logging:
     config: classpath:config/logback-spring.xml
     path: ${user.home}${file.separator}Log${file.separator}${info.artifact.id}${file.separator}${info.artifact.id}

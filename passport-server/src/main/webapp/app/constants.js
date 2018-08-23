@@ -5,10 +5,10 @@
     angular
         .module('smartcloudserviceApp')
         .constant('APP_NAME', 'PassportServer')
-        .constant('VERSION', '0.0.1-SNAPSHOT')
+        .constant('VERSION', '1.0.0')
         .constant('PAGINATION_CONSTANTS', {
             'itemsPerPage': 10
          })
-//        .constant('ENV', 'test')
+        //        .constant('ENV', 'prod')
         .constant('DEBUG_INFO_ENABLED', true);
 })();

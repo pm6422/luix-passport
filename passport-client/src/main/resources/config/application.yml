@@ -57,13 +57,11 @@ logging:
         ROOT: DEBUG
         ${info.project.package}: DEBUG
 security:
-    basic:
-        enabled: false
     oauth2:
-        client:
+        client: # used by OAuth2ClientProperties
             accessTokenUri: ${zuul.routes.sso-server.url}/oauth/token
             userAuthorizationUri: ${zuul.routes.sso-server.url}/oauth/authorize
-            clientId: internal_client
+            clientId: internal-client
             clientSecret: 65G-HD9-4PD-j9F-HP5
         resource:
             userInfoUri: ${zuul.routes.sso-server-account-open-api.url}/user
