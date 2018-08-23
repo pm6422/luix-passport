@@ -36,11 +36,6 @@ spring:
         locale: zh_CN
     thymeleaf: #ThymeleafAutoConfiguration
         mode: HTML
-    http:
-        multipart: # Management http multipart configuration, used by MultipartProperties
-            enabled: true
-            max-file-size: 30MB
-            max-request-size: 30MB
     banner:
         location: classpath:config/banner-company.txt
     aop:
