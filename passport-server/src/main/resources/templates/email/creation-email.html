@@ -1,24 +1,66 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <title th:text="#{email.activation.title}">Creation</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    </head>
-    <body>
-        <p th:text="#{email.activation.greeting(${user.userName})}">
-            Dear
-        </p>
-        <p th:text="#{email.activation.text1}">
-            Your account has been created, please click on the URL below to activate it:
-        </p>
-        <p>
-          <a th:href="@{|${baseUrl}/#/reset-password?key=${user.resetKey}|}"
-             th:text="|${user.userName}|">login</a>
-        </p>
-        <p>
-            <span th:text="#{email.activation.text2}">Regards, </span>
-            <br/>
-            <em th:text="#{email.signature}">Infinity.</em>
-        </p>
-    </body>
+<head>
+    <title th:text="#{email.activation.title}"></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="http://passport2.deepbrain.ai/content/css/mail-style.css" media="all" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<table class="body-wrap">
+    <tr>
+        <td></td>
+        <td class="container" width="600">
+            <div class="content">
+                <table class="main" width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td class="alert alert-good">
+                            <span th:text="#{email.activation.title}"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="content-wrap">
+                            <table width="100%" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td class="content-block">
+                                        <span th:text="#{email.activation.greeting(${user.userName})}"></span>:
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="content-block">
+                                        <span th:text="#{email.activation.text1}"></span>:
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="content-block">
+                                        <a th:href="@{|${baseUrl}/#/reset-password?key=${user.resetKey}|}"
+                                           th:text="|${user.userName}|">Login</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="content-block">
+                                        <p>
+                                            <em th:text="#{email.closing}"></em>
+                                            <br/>
+                                            <em th:text="#{email.signature}"></em>
+                                            <br/>
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                <div class="footer">
+                    <table width="100%">
+                        <tr>
+                            <td class="aligncenter content-block">www.deepbrain.ai</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </td>
+        <td></td>
+    </tr>
+</table>
+</body>
 </html>
