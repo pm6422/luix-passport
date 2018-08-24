@@ -1,18 +1,18 @@
 package org.infinity.passport.annotation;
 
+import org.infinity.passport.config.ApplicationConstants;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.concurrent.TimeUnit;
 
-import org.infinity.passport.config.ApplicationConstants;
-
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface DistributedLock {
 
-    public static final String AROUND = "@annotation(" + ApplicationConstants.BASE_PACKAGE
+    String AROUND = "@annotation(" + ApplicationConstants.BASE_PACKAGE
             + ".annotation.DistributedLock)";
 
     /**
@@ -20,7 +20,7 @@ public @interface DistributedLock {
      *
      * @return
      */
-    int expiration() default 30;
+    long expiration() default 30;
 
     /**
      * Time Unit
@@ -28,4 +28,12 @@ public @interface DistributedLock {
      * @return
      */
     TimeUnit timeUnit() default TimeUnit.SECONDS;
+
+
+    /**
+     * Decide whether need to release lock after execution
+     *
+     * @return
+     */
+    boolean requireReleaseLock() default true;
 }
