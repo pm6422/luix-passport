@@ -1,6 +1,7 @@
 package org.infinity.passport.controller;
 
 import io.swagger.annotations.Api;
+import org.infinity.passport.config.ApplicationConstants;
 import org.infinity.passport.config.ApplicationProperties;
 import org.infinity.passport.domain.Authority;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 @RestController
@@ -36,6 +36,6 @@ public class SystemController {
     @GetMapping("/api/system/ip")
     @Secured(Authority.DEVELOPER)
     public ResponseEntity<String> getIp() throws UnknownHostException {
-        return ResponseEntity.ok(InetAddress.getLocalHost().getHostAddress());
+        return ResponseEntity.ok(ApplicationConstants.SERVER_IP);
     }
 }

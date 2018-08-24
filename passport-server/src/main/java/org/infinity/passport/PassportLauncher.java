@@ -20,7 +20,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Date;
@@ -55,7 +54,7 @@ public class PassportLauncher implements WebMvcConfigurer {
                 env.getProperty("server.port"),
                 StringUtils.defaultString(env.getProperty("server.servlet.context-path")),
                 StringUtils.isEmpty(env.getProperty("server.ssl.key-store")) ? "http" : "https",
-                InetAddress.getLocalHost().getHostAddress(), env.getProperty("server.port"),
+                ApplicationConstants.SERVER_IP, env.getProperty("server.port"),
                 StringUtils.defaultString(env.getProperty("server.servlet.context-path")),
                 org.springframework.util.StringUtils.arrayToCommaDelimitedString(env.getActiveProfiles()),
                 env.getProperty("PID"), Charset.defaultCharset(), env.getProperty("LOG_PATH") + "-"
