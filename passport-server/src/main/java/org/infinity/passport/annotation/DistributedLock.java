@@ -12,8 +12,7 @@ import java.util.concurrent.TimeUnit;
 @Target(ElementType.METHOD)
 public @interface DistributedLock {
 
-    String AROUND = "@annotation(" + ApplicationConstants.BASE_PACKAGE
-            + ".annotation.DistributedLock)";
+    String AROUND = "@annotation(" + ApplicationConstants.BASE_PACKAGE + ".annotation.DistributedLock)";
 
     /**
      * Expiration
