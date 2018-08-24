@@ -33,7 +33,8 @@ public class SystemController {
         response.sendRedirect(applicationProperties.getScheduler().getAdminUrl());
     }
 
-    @GetMapping("/open-api/system/ip")
+    @GetMapping("/api/system/ip")
+    @Secured(Authority.DEVELOPER)
     public ResponseEntity<String> getIp() throws UnknownHostException {
         return ResponseEntity.ok(InetAddress.getLocalHost().getHostAddress());
     }

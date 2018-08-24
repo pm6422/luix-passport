@@ -199,7 +199,7 @@ function LeftSidebarController($scope, $state, $element, $timeout, APP_NAME, Aut
     function init() {
         if(PrincipalService.isAuthenticated() == true) {
             AuthorityAdminMenuService.query({ appName: APP_NAME }, function(response) {
-                if (!response.root.terminate) {
+                if (response.root && !response.root.terminate) {
                     vm.groups = response.root.children;
                      // Call the metsiMenu plugin and plug it to sidebar navigation
                      $timeout(function(){
@@ -312,18 +312,23 @@ function NavbarController ($rootScope, $scope, $translate, $state, Authenticatio
 /**
  * FooterController
  */
-function FooterController($http) {
+function FooterController($http, PrincipalService) {
     var vm = this;
 
-    $http({
-        url: 'open-api/system/ip',
-        method: 'GET',
-        transformResponse: [function (data) {
-            return data;
-        }]
-    }).then(function (response) {
-        vm.ip = response.data;
-    });
+    PrincipalService.hasAuthority('ROLE_DEVELOPER')
+        .then(function (result) {
+            if (result) {
+                $http({
+                    url: 'api/system/ip',
+                    method: 'GET',
+                    transformResponse: [function (data) {
+                        return data;
+                    }]
+                }).then(function (response) {
+                    vm.ip = response.data;
+                });
+            }
+        });
 }
 
 /**
