@@ -1,0 +1,32 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>{{vm.pageTitle}}</h2>
+    </div>
+</div>
+<div class="wrapper wrapper-content p-h-xs animated fadeInDown">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <table class="table table-condensed table-striped table-bordered table-responsive"
+                           style="table-layout:fixed" ng-hide="filteredConfig.length == 0">
+                        <thead>
+                        <tr>
+                            <th class="col-sm-3">User</th>
+                            <th class="col-sm-3">IP Address</th>
+                            <th class="col-sm-3">Current page</th>
+                            <th class="col-sm-3">Time</th>
+                        </tr>
+                        </thead>
+                        <tr ng-repeat="activity in vm.activities">
+                            <td>{{activity.userLogin}}</td>
+                            <td>{{activity.ipAddress}}</td>
+                            <td>{{activity.page}}</td>
+                            <td>{{activity.time | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

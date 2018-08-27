@@ -355,6 +355,26 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 pageTitle: 'Audits'
             }
         })
+        .state('tracker', {
+            parent: 'developer',
+            url: '/tracker',
+            views: {
+                'content@': {
+                    templateUrl: 'app/views/developer/tracker/tracker.html',
+                    controller: 'TrackerController',
+                    controllerAs: 'vm'
+                }
+            },
+            data: {
+                pageTitle: 'Tracker'
+            },
+            onEnter: ['TrackerService', function (TrackerService) {
+                TrackerService.subscribe();
+            }],
+            onExit: ['TrackerService', function (TrackerService) {
+                TrackerService.unsubscribe();
+            }]
+        })
         .state('dict-list', {
             parent: 'developer',
             url: '/dict-list?page&sort&dictName',

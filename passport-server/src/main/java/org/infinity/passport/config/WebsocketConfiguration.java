@@ -73,7 +73,7 @@ public class WebsocketConfiguration implements WebSocketMessageBrokerConfigurer 
                 Principal principal = request.getPrincipal();
                 if (principal == null) {
                     Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-                    authorities.add(new SimpleGrantedAuthority(Authority.ADMIN));
+                    authorities.add(new SimpleGrantedAuthority(Authority.ANONYMOUS));
                     principal = new AnonymousAuthenticationToken(WebsocketConfiguration.class.getSimpleName(),
                             "anonymous", authorities);
                 }
