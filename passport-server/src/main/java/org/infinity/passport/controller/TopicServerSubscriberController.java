@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Controller;
@@ -32,14 +33,13 @@ public class TopicServerSubscriberController implements ApplicationListener<Sess
     }
 
     @MessageMapping("/topic/server-subscriber/tracker")
-    //    @SendTo("/topic/client-subscriber/tracker") @SendTo会被@Aspect拦截导致无效
-    public void sendActivity(@Payload TrackerDTO trackerDTO, StompHeaderAccessor stompHeaderAccessor, Principal principal) {
+    @SendTo("/topic/client-subscriber/tracker")
+    public TrackerDTO sendActivity(@Payload TrackerDTO trackerDTO, StompHeaderAccessor stompHeaderAccessor, Principal principal) {
         trackerDTO.setUserLogin(principal.getName());
         trackerDTO.setSessionId(stompHeaderAccessor.getSessionId());
         trackerDTO.setIpAddress(stompHeaderAccessor.getSessionAttributes().get(IP_ADDRESS).toString());
         trackerDTO.setTime(Instant.now());
         LOGGER.debug("Sending user tracking data {}", trackerDTO);
-        messagingTemplate.convertAndSend("/topic/client-subscriber/tracker", trackerDTO);
+        return trackerDTO;
     }
-
 }
