@@ -21,6 +21,7 @@ angular
     .factory('DictService', DictService)
     .factory('DictItemService', DictItemService)
     .factory('AuditsService', AuditsService)
+    .factory('TrackerService', TrackerService)
     .factory('LoggerService', LoggerService)
     .factory('AccountService', AccountService)
     .factory('RegisterService', RegisterService)
