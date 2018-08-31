@@ -1,6 +1,5 @@
 package org.infinity.passport.oauth2;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.infinity.passport.domain.MongoOAuth2ClientDetails;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,10 +16,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -75,37 +70,15 @@ public class OAuth2ClientCredentialsTest {
     }
 
     @Test
-    public void accessResourceWhenUseLowerAuthorityAccessTokenThenOk() throws Exception {
+    public void accessAnyResourceWhenUseClientCredentialsAccessTokenThenOk() throws Exception {
         String accessToken = this.obtainAccessToken();
 
         // @formatter:off
-        ResultActions result = mockMvc.perform(get("/api/account/authority-names")
+        ResultActions result = mockMvc.perform(get("/management/env")
                 .header("Authorization", "Bearer " + accessToken)
                 .contentType(CONTENT_TYPE)
                 .accept(CONTENT_TYPE))
                 .andExpect(status().isOk());
         // @formatter:on
-
-        String resultString = result.andReturn().getResponse().getContentAsString();
-        ObjectMapper mapper = new ObjectMapper();
-        @SuppressWarnings("unchecked")
-        List<String> resultObj = mapper.readValue(resultString, ArrayList.class);
-        assertThat(resultObj).isNotEmpty();
-
-//     // @formatter:off
-//        mockMvc.perform(get("/management/env")
-//                .header("Authorization", "Bearer " + accessToken)
-//                .contentType(CONTENT_TYPE)
-//                .accept(CONTENT_TYPE))
-//                .andExpect(status().isForbidden());
-//        // @formatter:on
-        //
-//     // @formatter:off
-//         mockMvc.perform(get("/api/app/apps/all")
-//                .header("Authorization", "Bearer " + accessToken)
-//                .contentType(CONTENT_TYPE)
-//                .accept(CONTENT_TYPE))
-//                .andExpect(status().isForbidden());
-//        // @formatter:on
     }
 }
