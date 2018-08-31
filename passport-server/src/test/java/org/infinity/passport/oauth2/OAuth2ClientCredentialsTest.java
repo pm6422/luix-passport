@@ -1,14 +1,6 @@
 package org.infinity.passport.oauth2;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.infinity.passport.domain.MongoOAuth2ClientDetails;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,27 +17,31 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class OAuth2ClientCredentialsTest {
 
+    private static final String                CLIENT_ID         = MongoOAuth2ClientDetails.INTERNAL_CLIENT_ID;
+    private static final String                RAW_CLIENT_SECRET = MongoOAuth2ClientDetails.INTERNAL_RAW_CLIENT_SECRET;
+    private static final String                CONTENT_TYPE      = "application/json;charset=UTF-8";
     @Autowired
-    private WebApplicationContext wac;
-
+    private              WebApplicationContext wac;
     @Autowired
-    private FilterChainProxy      springSecurityFilterChain;
-
-    private MockMvc               mockMvc;
-
-    private static final String   CLIENT_ID         = MongoOAuth2ClientDetails.INTERNAL_CLIENT_ID;
-    private static final String   RAW_CLIENT_SECRET = MongoOAuth2ClientDetails.INTERNAL_RAW_CLIENT_SECRET;
-    private static final String   CONTENT_TYPE      = "application/json;charset=UTF-8";
+    private              FilterChainProxy      springSecurityFilterChain;
+    private              MockMvc               mockMvc;
 
     /**
-    * The constructor will be executed first before the spring boot starting.
-    */
+     * The constructor will be executed first before the spring boot starting.
+     */
     public OAuth2ClientCredentialsTest() {
         super();
     }
@@ -55,7 +51,7 @@ public class OAuth2ClientCredentialsTest {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).addFilter(springSecurityFilterChain).build();
     }
 
-    private ResultActions obtainToken(String username, String password) throws Exception {
+    private ResultActions obtainToken() throws Exception {
         final MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("client_id", CLIENT_ID);
         params.add("client_secret", RAW_CLIENT_SECRET);
@@ -63,15 +59,15 @@ public class OAuth2ClientCredentialsTest {
 
         // @formatter:off
         ResultActions result = mockMvc.perform(post("/oauth/token")
-                               .params(params)
-                               .accept(CONTENT_TYPE))
-                               .andExpect(status().isOk())
-                               .andExpect(content().contentType(CONTENT_TYPE));
+                .params(params)
+                .accept(CONTENT_TYPE))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(CONTENT_TYPE));
         return result;
     }
-    
-    private String obtainAccessToken(String username, String password) throws Exception {
-        ResultActions result = obtainToken(username, password);
+
+    private String obtainAccessToken() throws Exception {
+        ResultActions result = obtainToken();
         // @formatter:on
         String resultString = result.andReturn().getResponse().getContentAsString();
         JacksonJsonParser jsonParser = new JacksonJsonParser();
@@ -80,7 +76,7 @@ public class OAuth2ClientCredentialsTest {
 
     @Test
     public void accessResourceWhenUseLowerAuthorityAccessTokenThenOk() throws Exception {
-        String accessToken = this.obtainAccessToken("louis", "louis");
+        String accessToken = this.obtainAccessToken();
 
         // @formatter:off
         ResultActions result = mockMvc.perform(get("/api/account/authority-names")
