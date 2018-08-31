@@ -39,8 +39,9 @@ import javax.servlet.http.HttpSession;
  * Client credentials grant
  * Implicit grant
  * 
- * 
- * Refer 
+ *
+ * Refer
+ * http://spring.io/guides/tutorials/spring-boot-oauth2/
  * https://dazito.com/java/spring-boot-and-oauth2-with-jdbc
  * https://stackoverflow.com/questions/49197111/migration-to-spring-boot-2-security-encoded-password-does-not-look-like-bcrypt?noredirect=1&lq=1
  * http://projects.spring.io/spring-security-oauth/docs/oauth2.html
@@ -51,6 +52,7 @@ import javax.servlet.http.HttpSession;
  * https://docs.spring.io/spring-security/site/docs/current/reference/html/csrf.html
  * https://segmentfault.com/a/1190000012309216
  * https://alexbilbie.com/guide-to-oauth-2-grants/
+ * https://github.com/keets2012/Auth-service
  */
 @Configuration
 public class UaaConfiguration {
