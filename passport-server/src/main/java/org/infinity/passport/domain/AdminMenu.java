@@ -18,36 +18,29 @@ import java.io.Serializable;
 @Document(collection = "AdminMenu")
 public class AdminMenu extends AbstractAuditableDomain implements Serializable {
 
-    private static final long  serialVersionUID = 1L;
-
-    public static final String FIELD_LEVEL      = "level";
-
-    public static final String FIELD_SEQUENCE = "sequence";
+    private static final long   serialVersionUID = 1L;
+    public static final  String ROOT_PATH        = "ROOT";
+    public static final  String FIELD_LEVEL      = "level";
+    public static final  String FIELD_SEQUENCE   = "sequence";
 
     // 主键不要定义为Long型，因为定义为Long型的字段如果超过16位的话在前端页面O会显示为0
     @Id
-    private String             id;
-
+    private String  id;
     @NotNull
     @Size(min = 1, max = 20)
     @Indexed
-    private String             appName;
-
+    private String  appName;
     @NotNull
     @Size(min = 1, max = 50)
-    private String             adminMenuName;
-
-    private String             adminMenuChineseText;
-
+    private String  name;
+    private String  label;
     @Field(FIELD_LEVEL)
     private Integer level;
-
-    private String             link;
-
+    private String  url;
     @Field(FIELD_SEQUENCE)
     private Integer sequence;
-
-    private String             parentMenuId;
+    private String  parentId;
+    private String  parentNamePath;
 
     public AdminMenu() {
         super();
@@ -55,24 +48,27 @@ public class AdminMenu extends AbstractAuditableDomain implements Serializable {
 
     /**
      * Constructor for creating operation
+     *
      * @param appName
-     * @param adminMenuName
-     * @param adminMenuChineseText
+     * @param name
+     * @param label
      * @param level
-     * @param link
+     * @param url
      * @param sequence
      * @param parentMenuId
+     * @param parentNamePath
      */
-    public AdminMenu(String appName, String adminMenuName, String adminMenuChineseText, Integer level, String link,
-            Integer sequence, String parentMenuId) {
+    public AdminMenu(String appName, String name, String label, Integer level, String url,
+                     Integer sequence, String parentMenuId, String parentNamePath) {
         super();
         this.appName = appName;
-        this.adminMenuName = adminMenuName;
-        this.adminMenuChineseText = adminMenuChineseText;
+        this.name = name;
+        this.label = label;
         this.level = level;
-        this.link = link;
+        this.url = url;
         this.sequence = sequence;
-        this.parentMenuId = parentMenuId;
+        this.parentId = parentMenuId;
+        this.parentNamePath = parentNamePath;
     }
 
     public String getId() {
@@ -91,20 +87,20 @@ public class AdminMenu extends AbstractAuditableDomain implements Serializable {
         this.appName = appName;
     }
 
-    public String getAdminMenuName() {
-        return adminMenuName;
+    public String getName() {
+        return name;
     }
 
-    public void setAdminMenuName(String adminMenuName) {
-        this.adminMenuName = adminMenuName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getAdminMenuChineseText() {
-        return adminMenuChineseText;
+    public String getLabel() {
+        return label;
     }
 
-    public void setAdminMenuChineseText(String adminMenuChineseText) {
-        this.adminMenuChineseText = adminMenuChineseText;
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     public Integer getLevel() {
@@ -115,12 +111,12 @@ public class AdminMenu extends AbstractAuditableDomain implements Serializable {
         this.level = level;
     }
 
-    public String getLink() {
-        return link;
+    public String getUrl() {
+        return url;
     }
 
-    public void setLink(String link) {
-        this.link = link;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public Integer getSequence() {
@@ -131,12 +127,20 @@ public class AdminMenu extends AbstractAuditableDomain implements Serializable {
         this.sequence = sequence;
     }
 
-    public String getParentMenuId() {
-        return parentMenuId;
+    public String getParentId() {
+        return parentId;
     }
 
-    public void setParentMenuId(String parentMenuId) {
-        this.parentMenuId = parentMenuId;
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
+    }
+
+    public String getParentNamePath() {
+        return parentNamePath;
+    }
+
+    public void setParentNamePath(String parentNamePath) {
+        this.parentNamePath = parentNamePath;
     }
 
     @Override
@@ -153,17 +157,19 @@ public class AdminMenu extends AbstractAuditableDomain implements Serializable {
         AdminMenu other = (AdminMenu) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
                 && (this.getAppName() == null ? other.getAppName() == null
-                        : this.getAppName().equals(other.getAppName()))
-                && (this.getAdminMenuName() == null ? other.getAdminMenuName() == null
-                        : this.getAdminMenuName().equals(other.getAdminMenuName()))
-                && (this.getAdminMenuChineseText() == null ? other.getAdminMenuChineseText() == null
-                        : this.getAdminMenuChineseText().equals(other.getAdminMenuChineseText()))
+                : this.getAppName().equals(other.getAppName()))
+                && (this.getName() == null ? other.getName() == null
+                : this.getName().equals(other.getName()))
+                && (this.getLabel() == null ? other.getLabel() == null
+                : this.getLabel().equals(other.getLabel()))
                 && (this.getLevel() == null ? other.getLevel() == null : this.getLevel().equals(other.getLevel()))
-                && (this.getLink() == null ? other.getLink() == null : this.getLink().equals(other.getLink()))
+                && (this.getUrl() == null ? other.getUrl() == null : this.getUrl().equals(other.getUrl()))
                 && (this.getSequence() == null ? other.getSequence() == null
-                        : this.getSequence().equals(other.getSequence()))
-                && (this.getParentMenuId() == null ? other.getParentMenuId() == null
-                        : this.getParentMenuId().equals(other.getParentMenuId()));
+                : this.getSequence().equals(other.getSequence()))
+                && (this.getParentId() == null ? other.getParentId() == null
+                : this.getParentId().equals(other.getParentId()))
+                && (this.getParentNamePath() == null ? other.getParentNamePath() == null
+                : this.getParentNamePath().equals(other.getParentNamePath()));
     }
 
     @Override
@@ -172,12 +178,13 @@ public class AdminMenu extends AbstractAuditableDomain implements Serializable {
         int result = 1;
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
         result = prime * result + ((getAppName() == null) ? 0 : getAppName().hashCode());
-        result = prime * result + ((getAdminMenuName() == null) ? 0 : getAdminMenuName().hashCode());
-        result = prime * result + ((getAdminMenuChineseText() == null) ? 0 : getAdminMenuChineseText().hashCode());
+        result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
+        result = prime * result + ((getLabel() == null) ? 0 : getLabel().hashCode());
         result = prime * result + ((getLevel() == null) ? 0 : getLevel().hashCode());
-        result = prime * result + ((getLink() == null) ? 0 : getLink().hashCode());
+        result = prime * result + ((getUrl() == null) ? 0 : getUrl().hashCode());
         result = prime * result + ((getSequence() == null) ? 0 : getSequence().hashCode());
-        result = prime * result + ((getParentMenuId() == null) ? 0 : getParentMenuId().hashCode());
+        result = prime * result + ((getParentId() == null) ? 0 : getParentId().hashCode());
+        result = prime * result + ((getParentNamePath() == null) ? 0 : getParentNamePath().hashCode());
         return result;
     }
 

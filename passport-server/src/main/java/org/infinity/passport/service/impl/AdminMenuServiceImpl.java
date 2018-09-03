@@ -25,10 +25,10 @@ public class AdminMenuServiceImpl implements AdminMenuService {
     private GroupedKeysTree<AdminMenu> groupAdminMenu(List<AdminMenu> menus) {
         GroupedKeysTree<AdminMenu> tree = new GroupedKeysTree<>();
         menus.forEach((menu) -> {
-            if (StringUtils.isEmpty(menu.getParentMenuId())) {
+            if (StringUtils.isEmpty(menu.getParentId())) {
                 tree.insert(menu, "" + menu.getSequence());
             } else {
-                tree.insert(menu, "" + this.getParentIdSeqMap().get(menu.getParentMenuId()), "" + menu.getSequence());
+                tree.insert(menu, "" + this.getParentIdSeqMap().get(menu.getParentId()), "" + menu.getSequence());
             }
         });
         return tree;
@@ -37,10 +37,10 @@ public class AdminMenuServiceImpl implements AdminMenuService {
     private GroupedKeysTree<AdminMenuDTO> groupAdminMenuDTO(List<AdminMenuDTO> menus) {
         GroupedKeysTree<AdminMenuDTO> tree = new GroupedKeysTree<>();
         menus.forEach((menu) -> {
-            if (StringUtils.isEmpty(menu.getParentMenuId())) {
+            if (StringUtils.isEmpty(menu.getParentId())) {
                 tree.insert(menu, "" + menu.getSequence());
             } else {
-                tree.insert(menu, "" + this.getParentIdSeqMap().get(menu.getParentMenuId()), "" + menu.getSequence());
+                tree.insert(menu, "" + this.getParentIdSeqMap().get(menu.getParentId()), "" + menu.getSequence());
             }
         });
         return tree;

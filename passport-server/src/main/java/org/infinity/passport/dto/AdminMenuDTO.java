@@ -1,15 +1,13 @@
 package org.infinity.passport.dto;
 
-import java.io.Serializable;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import org.infinity.passport.domain.base.AbstractAuditableDomain;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
-
-import org.infinity.passport.domain.base.AbstractAuditableDomain;
-
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import java.io.Serializable;
 
 @ApiModel("管理系统菜单DTO")
 public class AdminMenuDTO extends AbstractAuditableDomain implements Serializable {
@@ -17,51 +15,46 @@ public class AdminMenuDTO extends AbstractAuditableDomain implements Serializabl
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty("管理菜单ID")
-    private String            id;
-
+    private String  id;
     @ApiModelProperty("应用名称")
-    private String            appName;
-
+    private String  appName;
     @Size(min = 1, max = 100)
     @ApiModelProperty("管理菜单名")
-    private String            adminMenuName;
-
+    private String  name;
     @Size(min = 1, max = 100)
     @ApiModelProperty("管理菜单中文文本")
-    private String            adminMenuChineseText;
-
+    private String  label;
     @ApiModelProperty("菜单层级")
-    private Integer           level;
-
+    private Integer level;
     @Size(max = 4000)
     @ApiModelProperty("菜单链接地址")
-    private String            link;
-
+    private String  url;
     @Min(1)
     @Max(999)
     @ApiModelProperty("菜单排序序号")
-    private Integer           sequence;
-
+    private Integer sequence;
     @ApiModelProperty("父菜单ID")
-    private String            parentMenuId;
-
+    private String  parentId;
+    @ApiModelProperty("父菜单路径")
+    private String  parentNamePath;
     @ApiModelProperty("是否选中")
-    private boolean           checked;
+    private boolean checked;
 
     public AdminMenuDTO() {
     }
 
-    public AdminMenuDTO(String id, String appName, String adminMenuName, String adminMenuChineseText, Integer level,
-            String link, Integer sequence, String parentMenuId, boolean checked) {
+    public AdminMenuDTO(String id, String appName, String name, String label, Integer level,
+                        String url, Integer sequence, String parentId, String parentNamePath, boolean checked) {
         super();
         this.id = id;
         this.appName = appName;
-        this.adminMenuName = adminMenuName;
-        this.adminMenuChineseText = adminMenuChineseText;
+        this.name = name;
+        this.label = label;
         this.level = level;
-        this.link = link;
+        this.url = url;
         this.sequence = sequence;
-        this.parentMenuId = parentMenuId;
+        this.parentId = parentId;
+        this.parentNamePath = parentNamePath;
         this.checked = checked;
     }
 
@@ -81,28 +74,28 @@ public class AdminMenuDTO extends AbstractAuditableDomain implements Serializabl
         this.appName = appName;
     }
 
-    public String getAdminMenuName() {
-        return adminMenuName;
+    public String getName() {
+        return name;
     }
 
-    public void setAdminMenuName(String adminMenuName) {
-        this.adminMenuName = adminMenuName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getAdminMenuChineseText() {
-        return adminMenuChineseText;
+    public String getLabel() {
+        return label;
     }
 
-    public void setAdminMenuChineseText(String adminMenuChineseText) {
-        this.adminMenuChineseText = adminMenuChineseText;
+    public void setLabel(String label) {
+        this.label = label;
     }
 
-    public String getLink() {
-        return link;
+    public String getUrl() {
+        return url;
     }
 
-    public void setLink(String link) {
-        this.link = link;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public Integer getSequence() {
@@ -113,12 +106,12 @@ public class AdminMenuDTO extends AbstractAuditableDomain implements Serializabl
         this.sequence = sequence;
     }
 
-    public String getParentMenuId() {
-        return parentMenuId;
+    public String getParentId() {
+        return parentId;
     }
 
-    public void setParentMenuId(String parentMenuId) {
-        this.parentMenuId = parentMenuId;
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
     }
 
     public Integer getLevel() {
@@ -127,6 +120,14 @@ public class AdminMenuDTO extends AbstractAuditableDomain implements Serializabl
 
     public void setLevel(Integer level) {
         this.level = level;
+    }
+
+    public String getParentNamePath() {
+        return parentNamePath;
+    }
+
+    public void setParentNamePath(String parentNamePath) {
+        this.parentNamePath = parentNamePath;
     }
 
     public boolean isChecked() {
@@ -139,8 +140,17 @@ public class AdminMenuDTO extends AbstractAuditableDomain implements Serializabl
 
     @Override
     public String toString() {
-        return "AdminMenuDTO [id=" + id + ", adminMenuName=" + adminMenuName + ", adminMenuChineseText="
-                + adminMenuChineseText + ", level=" + level + ", link=" + link + ", sequence=" + sequence
-                + ", parentMenuId=" + parentMenuId + ", checked=" + checked + "]";
+        return "AdminMenuDTO{" +
+                "id='" + id + '\'' +
+                ", appName='" + appName + '\'' +
+                ", name='" + name + '\'' +
+                ", label='" + label + '\'' +
+                ", level=" + level +
+                ", url='" + url + '\'' +
+                ", sequence=" + sequence +
+                ", parentId='" + parentId + '\'' +
+                ", parentNamePath='" + parentNamePath + '\'' +
+                ", checked=" + checked +
+                '}';
     }
 }

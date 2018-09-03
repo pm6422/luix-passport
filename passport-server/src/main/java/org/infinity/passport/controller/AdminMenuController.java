@@ -69,7 +69,7 @@ public class AdminMenuController {
                 });
         adminMenuRepository.save(AdminMenu.of(dto));
         return ResponseEntity.status(HttpStatus.CREATED).headers(
-                httpHeaderCreator.createSuccessHeader("notification.admin.menu.created", dto.getAdminMenuName()))
+                httpHeaderCreator.createSuccessHeader("notification.admin.menu.created", dto.getName()))
                 .build();
     }
 
@@ -126,7 +126,7 @@ public class AdminMenuController {
 
         adminMenuRepository.save(AdminMenu.of(dto));
         return ResponseEntity.ok().headers(
-                httpHeaderCreator.createSuccessHeader("notification.admin.menu.updated", dto.getAdminMenuName()))
+                httpHeaderCreator.createSuccessHeader("notification.admin.menu.updated", dto.getName()))
                 .build();
     }
 
@@ -141,11 +141,11 @@ public class AdminMenuController {
         AdminMenu adminMenu = adminMenuRepository.findById(id).orElseThrow(() -> new NoDataException(id));
         adminMenuRepository.deleteById(id);
         return ResponseEntity.ok().headers(
-                httpHeaderCreator.createSuccessHeader("notification.admin.menu.deleted", adminMenu.getAdminMenuName()))
+                httpHeaderCreator.createSuccessHeader("notification.admin.menu.deleted", adminMenu.getName()))
                 .build();
     }
 
-    @ApiOperation(value = "导入管理菜单", notes = "输入文件格式：每行先后appName,adminMenuName,adminMenuChineseText,level,link,sequence数列，列之间使用tab分隔，行之间使用回车换行")
+    @ApiOperation(value = "导入管理菜单", notes = "输入文件格式：每行先后appName,name,label,level,url,sequence数列，列之间使用tab分隔，行之间使用回车换行")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功导入")})
     @PostMapping(value = "/api/admin-menu/menus/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Secured({Authority.ADMIN})
@@ -159,7 +159,7 @@ public class AdminMenuController {
                 String[] lineParts = line.split("\t");
 
                 AdminMenu entity = new AdminMenu(lineParts[0], lineParts[1], lineParts[2],
-                        Integer.parseInt(lineParts[3]), lineParts[4], Integer.parseInt(lineParts[5]), null);
+                        Integer.parseInt(lineParts[3]), lineParts[4], Integer.parseInt(lineParts[5]), null, null);
                 list.add(entity);
             }
         }

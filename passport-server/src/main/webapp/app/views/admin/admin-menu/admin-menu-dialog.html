@@ -17,31 +17,33 @@
         </div>
         <div class="form-group">
             <label class="control-label">菜单名称</label>
-            <input type="text" class="form-control" name="adminMenuName" ng-model="vm.entity.adminMenuName" required ng-maxlength="45">
-            <div ng-show="editForm.adminMenuName.$invalid">
-                <p class="help-block" ng-show="editForm.adminMenuName.$error.required">
+            <input type="text" class="form-control" name="name" ng-model="vm.entity.name" required ng-maxlength="45">
+            <div ng-show="editForm.name.$invalid">
+                <p class="help-block" ng-show="editForm.name.$error.required">
                     必填字段
                 </p>
-                <p class="help-block" ng-show="editForm.adminMenuName.$error.maxlength" translate-value-max="45">
+                <p class="help-block" ng-show="editForm.name.$error.maxlength" translate-value-max="45">
                     最大长度为45个字符
                 </p>
             </div>
         </div>
         <div class="form-group">
             <label class="control-label">菜单中文文本</label>
-            <input type="text" class="form-control" name="adminMenuChineseText" ng-model="vm.entity.adminMenuChineseText" required ng-maxlength="100">
-            <div ng-show="editForm.adminMenuChineseText.$invalid">
-                <p class="help-block" ng-show="editForm.adminMenuChineseText.$error.required">
+            <input type="text" class="form-control" name="label" ng-model="vm.entity.label" required ng-maxlength="100">
+            <div ng-show="editForm.label.$invalid">
+                <p class="help-block" ng-show="editForm.label.$error.required">
                     必填字段
                 </p>
-                <p class="help-block" ng-show="editForm.adminMenuChineseText.$error.maxlength" translate-value-max="100">
+                <p class="help-block" ng-show="editForm.label.$error.maxlength" translate-value-max="100">
                     最大长度为100个字符
                 </p>
             </div>
         </div>
         <div class="form-group">
             <label class="control-label">父菜单</label>
-            <select class="form-control" ng-model="vm.entity.parentMenuId" name="parentMenuId" ng-options="item.id as item.adminMenuChineseText for item in vm.parentMenus" ng-disabled="vm.entity.appName == null">
+            <select class="form-control" ng-model="vm.entity.parentId" name="parentId"
+                    ng-options="item.id as item.label for item in vm.parentMenus"
+                    ng-disabled="vm.entity.appName == null">
                 <option value="">请选择...</option>
             </select>
         </div>
@@ -56,7 +58,8 @@
         </div>
         <div class="form-group">
             <label class="control-label">功能地址</label>
-            <input type="text" class="form-control" name="link" ng-model="vm.entity.link" ng-disabled="vm.entity.parentMenuId == null">
+            <input type="text" class="form-control" name="url" ng-model="vm.entity.url"
+                   ng-disabled="vm.entity.parentId == null">
         </div>
     </div>
     <div class="modal-footer">

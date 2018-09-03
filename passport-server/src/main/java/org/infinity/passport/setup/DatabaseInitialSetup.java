@@ -1,24 +1,16 @@
 package org.infinity.passport.setup;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.concurrent.TimeUnit;
-
-import org.infinity.passport.domain.AdminMenu;
-import org.infinity.passport.domain.App;
-import org.infinity.passport.domain.AppAuthority;
-import org.infinity.passport.domain.Authority;
-import org.infinity.passport.domain.AuthorityAdminMenu;
-import org.infinity.passport.domain.MongoOAuth2ClientDetails;
-import org.infinity.passport.domain.User;
-import org.infinity.passport.domain.UserAuthority;
+import com.github.mongobee.changeset.ChangeLog;
+import com.github.mongobee.changeset.ChangeSet;
+import org.infinity.passport.domain.*;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.github.mongobee.changeset.ChangeLog;
-import com.github.mongobee.changeset.ChangeSet;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Creates the initial database
@@ -134,52 +126,52 @@ public class DatabaseInitialSetup {
     @ChangeSet(order = "04", author = "Louis", id = "addAuthorityAdminMenu")
     public void addAuthorityAdminMenu(MongoTemplate mongoTemplate) {
 
-        AdminMenu userAuthority = new AdminMenu(APP_NAME, "user-authority", "用户权限", 1, "user-authority", 100, null);
+        AdminMenu userAuthority = new AdminMenu(APP_NAME, "user-authority", "用户权限", 1, "user-authority", 100, null, AdminMenu.ROOT_PATH);
         mongoTemplate.save(userAuthority);
 
         AdminMenu authorityList = new AdminMenu(APP_NAME, "authority-list", "权限", 2, "user-authority.authority-list",
-                101, userAuthority.getId());
+                101, userAuthority.getId(), AdminMenu.ROOT_PATH + "," + userAuthority.getName());
         mongoTemplate.save(authorityList);
 
         AdminMenu userList = new AdminMenu(APP_NAME, "user-list", "用户", 2, "user-authority.user-list", 102,
-                userAuthority.getId());
+                userAuthority.getId(), AdminMenu.ROOT_PATH + "," + userAuthority.getName());
         mongoTemplate.save(userList);
 
-        AdminMenu app = new AdminMenu(APP_NAME, "app", "应用系统", 1, "app", 200, null);
+        AdminMenu app = new AdminMenu(APP_NAME, "app", "应用系统", 1, "app", 200, null, AdminMenu.ROOT_PATH);
         mongoTemplate.save(app);
 
-        AdminMenu appList = new AdminMenu(APP_NAME, "app-list", "应用", 2, "app.app-list", 201, app.getId());
+        AdminMenu appList = new AdminMenu(APP_NAME, "app-list", "应用", 2, "app.app-list", 201, app.getId(), AdminMenu.ROOT_PATH + "," + app.getName());
         mongoTemplate.save(appList);
 
         AdminMenu adminMenuAuthority = new AdminMenu(APP_NAME, "admin-menu-authority", "菜单权限", 1,
-                "admin-menu-authority", 300, null);
+                "admin-menu-authority", 300, null, AdminMenu.ROOT_PATH);
         mongoTemplate.save(adminMenuAuthority);
 
         AdminMenu adminMenuList = new AdminMenu(APP_NAME, "admin-menu-list", "管理菜单", 2,
-                "admin-menu-authority.admin-menu-list", 301, adminMenuAuthority.getId());
+                "admin-menu-authority.admin-menu-list", 301, adminMenuAuthority.getId(), AdminMenu.ROOT_PATH + "," + adminMenuAuthority.getName());
         mongoTemplate.save(adminMenuList);
 
         AdminMenu authorityAdminMenu = new AdminMenu(APP_NAME, "authority-admin-menu", "权限管理菜单", 2,
-                "admin-menu-authority.authority-admin-menu", 302, adminMenuAuthority.getId());
+                "admin-menu-authority.authority-admin-menu", 302, adminMenuAuthority.getId(), AdminMenu.ROOT_PATH + "," + adminMenuAuthority.getName());
         mongoTemplate.save(authorityAdminMenu);
 
-        AdminMenu security = new AdminMenu(APP_NAME, "security", "安全信息", 1, "security", 400, null);
+        AdminMenu security = new AdminMenu(APP_NAME, "security", "安全信息", 1, "security", 400, null, AdminMenu.ROOT_PATH);
         mongoTemplate.save(security);
 
         AdminMenu oAuth2ClientDetails = new AdminMenu(APP_NAME, "oauth2-client-list", "单点登录客户端", 2,
-                "security.oauth2-client-list", 401, security.getId());
+                "security.oauth2-client-list", 401, security.getId(), AdminMenu.ROOT_PATH + "," + security.getName());
         mongoTemplate.save(oAuth2ClientDetails);
 
         AdminMenu oAuth2AccessTokenDetails = new AdminMenu(APP_NAME, "oauth2-access-token-list", "访问令牌", 2,
-                "security.oauth2-access-token-list", 402, security.getId());
+                "security.oauth2-access-token-list", 402, security.getId(), AdminMenu.ROOT_PATH + "," + security.getName());
         mongoTemplate.save(oAuth2AccessTokenDetails);
 
         AdminMenu oAuth2RefreshTokenDetails = new AdminMenu(APP_NAME, "oauth2-refresh-token-list", "刷新令牌", 2,
-                "security.oauth2-refresh-token-list", 403, security.getId());
+                "security.oauth2-refresh-token-list", 403, security.getId(), AdminMenu.ROOT_PATH + "," + security.getName());
         mongoTemplate.save(oAuth2RefreshTokenDetails);
 
         AdminMenu oAuth2ApprovalDetails = new AdminMenu(APP_NAME, "oauth2-approval-list", "登录授权", 2,
-                "security.oauth2-approval-list", 404, security.getId());
+                "security.oauth2-approval-list", 404, security.getId(), AdminMenu.ROOT_PATH + "," + security.getName());
         mongoTemplate.save(oAuth2ApprovalDetails);
 
         //AuthorityAdminMenu
