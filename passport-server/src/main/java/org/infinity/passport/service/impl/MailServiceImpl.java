@@ -1,10 +1,5 @@
 package org.infinity.passport.service.impl;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Locale;
-
-import javax.mail.internet.MimeMessage;
-
 import org.infinity.passport.domain.User;
 import org.infinity.passport.service.MailService;
 import org.slf4j.Logger;
@@ -18,6 +13,10 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
+
+import javax.mail.internet.MimeMessage;
+import java.nio.charset.StandardCharsets;
+import java.util.Locale;
 
 /**
  * Service for sending emails.
@@ -57,7 +56,7 @@ public class MailServiceImpl implements MailService {
         try {
             MimeMessageHelper message = new MimeMessageHelper(mimeMessage, isMultipart, StandardCharsets.UTF_8.name());
             message.setTo(to);
-            message.setFrom(mailProperties.getUsername());
+            message.setFrom(mailProperties.getUsername(), "InfinityTeam");
             message.setSubject(subject);
             message.setText(content, isHtml);
             javaMailSender.send(mimeMessage);
