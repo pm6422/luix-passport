@@ -29,14 +29,15 @@ public class RequestExecutionTimeFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
+        String method = ((HttpServletRequest) request).getMethod();
         threadLocalStartTime.set(System.currentTimeMillis());
-        LOGGER.info("Processing request [{}] ==>==>==>==>==>==>==>==>==>==>==>==>==>==>==>==>",
+        LOGGER.info("Processing {} request [{}] ==>==>==>==>==>==>==>==>==>==>==>==>==>==>==>==>", method,
                 ((HttpServletRequest) request).getRequestURI());
         chain.doFilter(request, response);
         if (threadLocalStartTime.get() != null) {
             long executionTime = System.currentTimeMillis() - threadLocalStartTime.get();
             threadLocalStartTime.remove();
-            LOGGER.info("Processed request [{}] <==<==<==<==<==<==<==<==<==<==<==<==<==<==<==",
+            LOGGER.info("Processed {} request [{}] <==<==<==<==<==<==<==<==<==<==<==<==<==<==<==", method,
                     ((HttpServletRequest) request).getRequestURI());
             LOGGER.info("Processed request in {} ms", executionTime);
         }
