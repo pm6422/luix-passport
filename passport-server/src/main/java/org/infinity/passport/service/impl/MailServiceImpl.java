@@ -45,7 +45,6 @@ public class MailServiceImpl implements MailService {
     /**
      * System default email address that sends the e-mails.
      */
-    // private String from;
     @Async
     @Override
     public void sendEmail(String to, String subject, String content, boolean isMultipart, boolean isHtml) {
