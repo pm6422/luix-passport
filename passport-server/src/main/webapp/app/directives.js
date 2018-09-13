@@ -17,7 +17,7 @@ angular
     .directive('treeView', treeView)
     .directive('jhiAlert', jhiAlert)
     .directive('jhiAlertError', jhiAlertError)
-    
+
     .directive('vectorMap', vectorMap)
     .directive('sparkline', sparkline)
     .directive('icheck', icheck)
@@ -844,7 +844,7 @@ function icheck($timeout) {
 
                 $scope.$watch($attrs['ngModel'], function(newValue){
                     $(element).iCheck('update');
-                })
+                });
 
                 return $(element).iCheck({
                     checkboxClass: 'icheckbox_square-green',
