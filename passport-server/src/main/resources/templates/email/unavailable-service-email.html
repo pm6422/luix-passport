@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${app}">Unavailable</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="http://passport2.deepbrain.ai/content/css/mail-style.css" media="all" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<table class="body-wrap">
+    <tr>
+        <td></td>
+        <td class="container" width="600">
+            <div class="content">
+                <table class="main" width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td class="alert alert-bad">
+                            Unavailable Service Found
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="content-wrap">
+                            <table width="100%" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td class="content-block">
+                                        Dear Application Owner:
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="content-block">
+                                        The nodes of application <strong th:text="${app}"></strong> which are
+                                        temporarily unavailable now list below:
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="content-block">
+                                        <span th:each="node: ${nodes}">
+                                            <text th:text="${node}"></text><br/>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="content-block">
+                                        <p>
+                                            <em>Sincerely, </em>
+                                            <br/>
+                                            <em>DeepBrain Team</em>
+                                            <br/>
+                                            <em>Sent Server: <span th:text="${sentServer}"></span></em>
+                                            <br/>
+                                            <em>Sent Server IP: <span th:text="${sentServerIp}"></span></em>
+                                            <br/>
+                                            <em>Sent Time: <span th:text="${sentTime}"></span></em>
+                                            <br/>
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                <div class="footer">
+                    <table width="100%">
+                        <tr>
+                            <td class="aligncenter content-block">www.deepbrain.ai</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </td>
+        <td></td>
+    </tr>
+</table>
+</body>
+</html>
