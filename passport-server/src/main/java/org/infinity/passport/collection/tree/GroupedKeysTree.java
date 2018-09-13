@@ -1,5 +1,6 @@
 package org.infinity.passport.collection.tree;
 
+import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.CharUtils;
@@ -11,10 +12,7 @@ import org.springframework.util.Assert;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * 由于子节点是由数组存储，数据插入涉及到数组拷贝，因此不适合存储千万以上的数据。千万以上数据检索还是很快，但是插入有些慢。
@@ -255,7 +253,22 @@ public class GroupedKeysTree<T> implements Serializable {
         for (int i = 0; i < newKeys.length; i++) {
             node = node.getChild(newKeys[i]);
             if (StringUtils.equals(node.getKey(), newKeys[i]) && CollectionUtils.isNotEmpty(node.getDataSet()) && i == newKeys.length - 1) {
-                node.addData(data);
+                if (node.getDataSet().size() >= 1) {
+                    node.setDataSet(Sets.newHashSet(data));
+                }
+            }
+        }
+    }
+
+    public void update(Set<T> dataSet, String... keys) {
+        String[] newKeys = removeNullKeys(keys);
+        GroupedKeysTreeNode<T> node = root;
+        for (int i = 0; i < newKeys.length; i++) {
+            node = node.getChild(newKeys[i]);
+            if (StringUtils.equals(node.getKey(), newKeys[i]) && CollectionUtils.isNotEmpty(node.getDataSet()) && i == newKeys.length - 1) {
+                if (node.getDataSet().size() >= 1) {
+                    node.setDataSet(dataSet);
+                }
             }
         }
     }
