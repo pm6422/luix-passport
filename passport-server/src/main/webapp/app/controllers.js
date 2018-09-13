@@ -2178,7 +2178,7 @@ function OAuth2ClientListController($state, AlertUtils, ParseLinksUtils, PAGINAT
 /**
  * OAuth2ClientDialogController
  */
-function OAuth2ClientDialogController ($state, $stateParams, $uibModalInstance, OAuth2ClientService, entity) {
+function OAuth2ClientDialogController($scope, $state, $stateParams, $uibModalInstance, OAuth2ClientService, entity) {
     var vm = this;
 
     vm.pageTitle = $state.current.data.pageTitle;
@@ -2193,9 +2193,26 @@ function OAuth2ClientDialogController ($state, $stateParams, $uibModalInstance, 
     if (vm.mode == 'create') {
         vm.entity.redirect_uri.push("");
     }
+
+    $scope.$watch('vm.entity.scope', function (newValue) {
+        if (newValue) {
+            if (_.isArray(newValue)) {
+                vm.entity.scopeArray = newValue;
+            } else {
+                vm.entity.scopeArray = newValue.split(',');
+            }
+        }
+        else {
+            vm.entity.scopeArray = [];
+        }
+    });
+    vm.entity.scopeArray = vm.entity.scope;
     
     function save () {
         vm.isSaving = true;
+
+        vm.entity.autoapprove = _.intersection(vm.entity.autoapprove, vm.entity.scopeArray);
+
         if (vm.mode == 'edit') {
             OAuth2ClientService.update(vm.entity, onSaveSuccess, onSaveError);
         } else {

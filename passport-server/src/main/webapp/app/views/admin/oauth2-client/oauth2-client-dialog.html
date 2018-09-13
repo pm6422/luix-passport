@@ -1,12 +1,14 @@
 <form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation-directive>
     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="vm.cancel()">&times;</button>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="vm.cancel()">&times;
+        </button>
         <h4 class="modal-title">{{vm.pageTitle}}</h4>
     </div>
     <div class="modal-body">
         <div class="form-group">
             <label class="control-label">Client ID</label>
-            <input type="text" class="form-control" name="clientId" ng-model="vm.entity.client_id" ng-maxlength="50" ng-disabled="vm.mode == 'edit'">
+            <input type="text" class="form-control" name="clientId" ng-model="vm.entity.client_id" ng-maxlength="50"
+                   ng-disabled="vm.mode == 'edit'">
             <div ng-show="editForm.clientId.$invalid">
                 <p class="help-block" ng-show="editForm.clientId.$error.maxlength" translate-value-max="50">
                     <small>最大长度为50个字符</small>
@@ -21,11 +23,13 @@
         </div>
         <div class="form-group">
             <label class="control-label">Resource IDs</label>
-            <input type="text" class="form-control" name="resourceIds" ng-model="vm.entity.resource_ids" ng-maxlength="50">
+            <input type="text" class="form-control" name="resourceIds" ng-model="vm.entity.resource_ids"
+                   ng-maxlength="50">
         </div>
         <div class="form-group">
             <label class="control-label">Raw Client Secret</label>
-            <input type="text" class="form-control" name="rawClientSecret" ng-model="vm.entity.raw_client_secret" ng-maxlength="50">
+            <input type="text" class="form-control" name="rawClientSecret" ng-model="vm.entity.raw_client_secret"
+                   ng-maxlength="50">
             <div ng-show="editForm.rawClientSecret.$invalid">
                 <p class="help-block" ng-show="editForm.rawClientSecret.$error.maxlength" translate-value-max="50">
                     <small>最大长度为50个字符</small>
@@ -48,8 +52,17 @@
             </div>
         </div>
         <div class="form-group">
+            <label class="control-label">Auto Approve Scopes</label>
+            <div class="control-label">
+                <label ng-repeat="s in vm.entity.scopeArray">
+                    <input type="checkbox" checklist-model="vm.entity.autoapprove" checklist-value="s"/>&nbsp;&nbsp;{{s}}&nbsp;&nbsp;
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
             <label class="control-label">Authorized Grant Types</label>
-            <input type="text" class="form-control" name="authorizedGrantTypes" ng-model="vm.entity.authorized_grant_types" ng-maxlength="100">
+            <input type="text" class="form-control" name="authorizedGrantTypes"
+                   ng-model="vm.entity.authorized_grant_types" ng-maxlength="100">
             <div>
                 <p class="label label-info">
                     <span class="fa fa-exclamation-circle" aria-hidden="true"></span>
@@ -81,27 +94,25 @@
                 </p>
             </div>
             <div ng-show="editForm.authorizedGrantTypes.$invalid">
-                <p class="help-block" ng-show="editForm.authorizedGrantTypes.$error.maxlength" translate-value-max="100">
+                <p class="help-block" ng-show="editForm.authorizedGrantTypes.$error.maxlength"
+                   translate-value-max="100">
                     最大长度为100个字符
                 </p>
             </div>
         </div>
         <div class="form-group">
             <label class="control-label">Client Redirect URI</label>
-            <a tooltip-placement="right" uib-tooltip="登录验证成功重定向地址"><i class="fa fa-question"></i></a>
             <div ng-repeat="v in vm.entity.redirect_uri track by $index">
                 <div class="input-group">
-                    <input type="text" name="redirectUri[]" class="form-control"
-                           ng-model="vm.entity.redirect_uri[$index]"
+                    <input type="text" name="redirectUri" class="form-control" ng-model="vm.entity.redirect_uri[$index]"
                            placeholder="客户端重定向地址" required>
                     <span class="input-group-btn">
-                        <button type="button" class="btn btn-danger" ng-click="vm.delUri($index)">
-                            <i class="fa fa-minus"></i>
-                        </button>
+                        <button type="button" class="btn btn-danger" ng-click="vm.delUri($index)"><i
+                                class="fa fa-minus"></i></button>
                     </span>
                 </div>
-                <div ng-show="editForm.redirectUri[$index].$invalid">
-                    <p class="help-block" ng-show="editForm.redirectUri[$index].$error.required">
+                <div ng-show="editForm.redirectUri.$invalid">
+                    <p class="help-block" ng-show="editForm.redirectUri.$error.required">
                         必填字段
                     </p>
                 </div>
@@ -118,8 +129,12 @@
         <div class="row"/>
         <div class="form-group">
             <label class="control-label">Authorities</label>
-            <input type="text" class="form-control" name="authorities" ng-model="vm.entity.authorities" ng-maxlength="100">
+            <input type="text" class="form-control" name="authorities" ng-model="vm.entity.authorities"
+                   ng-maxlength="100" required>
             <div ng-show="editForm.authorities.$invalid">
+                <p class="help-block" ng-show="editForm.authorities.$error.required">
+                    必填字段
+                </p>
                 <p class="help-block" ng-show="editForm.authorities.$error.maxlength" translate-value-max="100">
                     <small>最大长度为100个字符</small>
                 </p>
@@ -127,27 +142,23 @@
         </div>
         <div class="form-group">
             <label class="control-label">Access Token Validity in Seconds</label>
-            <input type="number" class="form-control" name="accessTokenValidity" ng-model="vm.entity.access_token_validity">
+            <input type="number" class="form-control" name="accessTokenValidity"
+                   ng-model="vm.entity.access_token_validity">
         </div>
         <div class="form-group">
             <label class="control-label">Refresh Token Validity in Seconds</label>
-            <input type="number" class="form-control" name="refreshTokenValidity" ng-model="vm.entity.refresh_token_validity">
+            <input type="number" class="form-control" name="refreshTokenValidity"
+                   ng-model="vm.entity.refresh_token_validity">
         </div>
         <div class="form-group">
             <label class="control-label">Additional Information</label>
-            <input type="text" class="form-control" name="additionalInformation" ng-model="vm.entity.additional_information" ng-maxlength="100">
+            <input type="text" class="form-control" name="additionalInformation"
+                   ng-model="vm.entity.additional_information" ng-maxlength="100">
             <div ng-show="editForm.additionalInformation.$invalid">
-                <p class="help-block" ng-show="editForm.additionalInformation.$error.maxlength" translate-value-max="100">
+                <p class="help-block" ng-show="editForm.additionalInformation.$error.maxlength"
+                   translate-value-max="100">
                     <small>最大长度为100个字符</small>
                 </p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label">Auto Approve Scopes</label>
-            <div class="control-label">
-                <label ng-repeat="s in vm.entity.scope">
-                    <input type="checkbox" checklist-model="vm.entity.autoapprove" checklist-value="s"/>&nbsp;&nbsp;{{s}}&nbsp;&nbsp;
-                </label>
             </div>
         </div>
     </div>

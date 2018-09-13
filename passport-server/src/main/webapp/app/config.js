@@ -1096,14 +1096,14 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                             client_id: null,
                             resource_ids: null,
                             client_secret: null,
-                            scope: ['read', 'write'],
+                            scope: null,
                             authorized_grant_types: 'authorization_code,password,refresh_token',
                             redirect_uri: [],
-                            authorities: [],
+                            authorities: null,
                             access_token_validity: null,
                             refresh_token_validity: null,
                             additional_information: '{}',
-                            autoapprove: ['read', 'write']
+                            autoapprove: []
                         }
                     }
                 }).result.then(function () {
