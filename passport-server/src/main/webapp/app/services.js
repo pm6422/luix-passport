@@ -68,8 +68,8 @@ function StateHandler($rootScope, $state, $sessionStorage, $window, Authenticati
             }
         });
 
-        var stateChangeSuccess = $rootScope.$on('$stateChangeSuccess',  function(event, toState, toParams, fromState, fromParams) {
-            var titleKey = APP_NAME ;
+        var stateChangeSuccess = $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+            var titleKey = APP_NAME;
 
             // Set the page title key to the one configured in state or use default one
             if (toState.data.pageTitle) {
@@ -77,7 +77,7 @@ function StateHandler($rootScope, $state, $sessionStorage, $window, Authenticati
             }
             $window.document.title = titleKey;
         });
-        
+
         var cleanHttpErrorListener = $rootScope.$on('smartcloudserviceApp.httpError', function (event, httpResponse) {
             var i;
             event.stopPropagation();
@@ -85,43 +85,43 @@ function StateHandler($rootScope, $state, $sessionStorage, $window, Authenticati
                 // connection refused, server not reachable
                 case 0:
                     AlertUtils.error('Server not reachable');
-	                break;
-	            case 400:
-	                var errorHeader = httpResponse.headers('X-Error-Message');
-	                if (errorHeader) {
-	                    AlertUtils.error(decodeURIComponent(errorHeader), { param : decodeURIComponent(errorHeader)});
-	                } else if (httpResponse.data && httpResponse.data.fieldErrors) {
-	                    for (i = 0; i < httpResponse.data.fieldErrors.length; i++) {
-	                        var fieldError = httpResponse.data.fieldErrors[i];
-	                        AlertUtils.error(fieldError.defaultMessage);
-	                    }
-	                } else if (httpResponse.data && httpResponse.data.message) {
-	                    AlertUtils.error(httpResponse.data.message);
-	                } else {
-	                    AlertUtils.error(httpResponse.data);
-	                }
-	                break;
-	            case 404:
-	                AlertUtils.error('Not found');
-	                break;
-	            default:
-	                if (httpResponse.data && httpResponse.data.message) {
-	                    AlertUtils.error(httpResponse.data.message);
-	                } else {
+                    break;
+                case 400:
+                    var errorHeader = httpResponse.headers('X-Error-Message');
+                    if (errorHeader) {
+                        AlertUtils.error(decodeURIComponent(errorHeader), {param: decodeURIComponent(errorHeader)});
+                    } else if (httpResponse.data && httpResponse.data.fieldErrors) {
+                        for (i = 0; i < httpResponse.data.fieldErrors.length; i++) {
+                            var fieldError = httpResponse.data.fieldErrors[i];
+                            AlertUtils.error(fieldError.defaultMessage);
+                        }
+                    } else if (httpResponse.data && httpResponse.data.message) {
+                        AlertUtils.error(httpResponse.data.message);
+                    } else {
+                        AlertUtils.error(httpResponse.data);
+                    }
+                    break;
+                case 404:
+                    AlertUtils.error('Not found');
+                    break;
+                default:
+                    if (httpResponse.data && httpResponse.data.message) {
+                        AlertUtils.error(httpResponse.data.message);
+                    } else {
 //	                    $state.go('error', {errorMessage: angular.toJson(httpResponse) });
-	                    $state.go('error', {errorMessage: httpResponse });
-	                }
-	            }
+                        $state.go('error', {errorMessage: httpResponse});
+                    }
+            }
         });
 
         $rootScope.$on('$destroy', function () {
-            if(angular.isDefined(stateChangeStart) && stateChangeStart !== null){
+            if (angular.isDefined(stateChangeStart) && stateChangeStart !== null) {
                 stateChangeStart();
             }
-            if(angular.isDefined(stateChangeSuccess) && stateChangeSuccess !== null){
+            if (angular.isDefined(stateChangeSuccess) && stateChangeSuccess !== null) {
                 stateChangeSuccess();
             }
-            if(angular.isDefined(cleanHttpErrorListener) && cleanHttpErrorListener !== null){
+            if (angular.isDefined(cleanHttpErrorListener) && cleanHttpErrorListener !== null) {
                 cleanHttpErrorListener();
             }
         });
@@ -130,7 +130,7 @@ function StateHandler($rootScope, $state, $sessionStorage, $window, Authenticati
 /**
  * Base64Utils
  */
-function Base64Utils () {
+function Base64Utils() {
     var keyStr = 'ABCDEFGHIJKLMNOP' +
         'QRSTUVWXYZabcdef' +
         'ghijklmnopqrstuv' +
@@ -138,11 +138,11 @@ function Base64Utils () {
         '=';
 
     return {
-        decode : decode,
-        encode : encode
+        decode: decode,
+        encode: encode
     };
 
-    function encode (input) {
+    function encode(input) {
         var output = '',
             chr1, chr2, chr3 = '',
             enc1, enc2, enc3, enc4 = '',
@@ -176,7 +176,7 @@ function Base64Utils () {
         return output;
     }
 
-    function decode (input) {
+    function decode(input) {
         var output = '',
             chr1, chr2, chr3 = '',
             enc1, enc2, enc3, enc4 = '',
@@ -214,12 +214,12 @@ function Base64Utils () {
 /**
  * ParseLinksUtils
  */
-function ParseLinksUtils () {
+function ParseLinksUtils() {
     return {
-        parse : parse
+        parse: parse
     };
 
-    function parse (header) {
+    function parse(header) {
         if (header.length === 0) {
             throw new Error('input must not be of zero length');
         }
@@ -237,10 +237,12 @@ function ParseLinksUtils () {
             var queryString = {};
             url.replace(
                 new RegExp('([^?=&]+)(=([^&]*))?', 'g'),
-                function($0, $1, $2, $3) { queryString[$1] = $3; }
+                function ($0, $1, $2, $3) {
+                    queryString[$1] = $3;
+                }
             );
             var page = queryString.page;
-            if( angular.isString(page) ) {
+            if (angular.isString(page)) {
                 page = parseInt(page);
             }
             var name = section[1].replace(/rel="(.*)"/, '$1').trim();
@@ -253,16 +255,16 @@ function ParseLinksUtils () {
 /**
  * PaginationUtils
  */
-function PaginationUtils () {
+function PaginationUtils() {
     return {
-        parseAscending : parseAscending,
-        parsePage : parsePage,
-        parsePredicate : parsePredicate
+        parseAscending: parseAscending,
+        parsePage: parsePage,
+        parsePredicate: parsePredicate
     };
 
-    function parseAscending (sort) {
+    function parseAscending(sort) {
         var sortArray = sort.split(',');
-        if (sortArray.length > 1){
+        if (sortArray.length > 1) {
             return sort.split(',').slice(-1)[0] === 'asc';
         } else {
             // default to true if no sort defined
@@ -271,14 +273,14 @@ function PaginationUtils () {
     }
 
     // query params are strings, and need to be parsed
-    function parsePage (page) {
+    function parsePage(page) {
         return parseInt(page);
     }
 
     // sort can be in the format `id,asc` or `id`
-    function parsePredicate (sort) {
+    function parsePredicate(sort) {
         var sortArray = sort.split(',');
-        if (sortArray.length > 1){
+        if (sortArray.length > 1) {
             sortArray.pop();
         }
         return sortArray.join(',');
@@ -287,12 +289,12 @@ function PaginationUtils () {
 /**
  * AlertUtils
  */
-function AlertUtils (SweetAlert, toaster, APP_NAME) {
+function AlertUtils(SweetAlert, toaster, APP_NAME) {
     return {
         success: success,
         error: error,
         warning: warning,
-        createDeleteConfirmation : createDeleteConfirmation,
+        createDeleteConfirmation: createDeleteConfirmation,
         createResetPasswordConfirmation: createResetPasswordConfirmation
     };
 
@@ -307,8 +309,8 @@ function AlertUtils (SweetAlert, toaster, APP_NAME) {
     function warning(msg, params, position) {
         toaster.warning(APP_NAME, msg);
     }
-    
-    function createDeleteConfirmation (alerText, confirmDelete) {
+
+    function createDeleteConfirmation(alerText, confirmDelete) {
         SweetAlert.swal({
             title: '确定删除?',
             text: alerText ? alerText : '',
@@ -322,8 +324,8 @@ function AlertUtils (SweetAlert, toaster, APP_NAME) {
             closeOnCancel: true
         }, confirmDelete);
     }
-    
-    function createResetPasswordConfirmation (alerText, confirmReset) {
+
+    function createResetPasswordConfirmation(alerText, confirmReset) {
         SweetAlert.swal({
             title: '确定重置密码?',
             text: alerText ? alerText : '',
@@ -341,15 +343,15 @@ function AlertUtils (SweetAlert, toaster, APP_NAME) {
 /**
  * DateUtils
  */
-function DateUtils ($filter) {
+function DateUtils($filter) {
     return {
-        convertDateTimeFromServer : convertDateTimeFromServer,
-        convertLocalDateFromServer : convertLocalDateFromServer,
-        convertLocalDateToServer : convertLocalDateToServer,
-        dateformat : dateformat
+        convertDateTimeFromServer: convertDateTimeFromServer,
+        convertLocalDateFromServer: convertLocalDateFromServer,
+        convertLocalDateToServer: convertLocalDateToServer,
+        dateformat: dateformat
     };
 
-    function convertDateTimeFromServer (date) {
+    function convertDateTimeFromServer(date) {
         if (date) {
             return new Date(date);
         } else {
@@ -357,7 +359,7 @@ function DateUtils ($filter) {
         }
     }
 
-    function convertLocalDateFromServer (date) {
+    function convertLocalDateFromServer(date) {
         if (date) {
             var dateString = date.split('-');
             return new Date(dateString[0], dateString[1] - 1, dateString[2]);
@@ -365,7 +367,7 @@ function DateUtils ($filter) {
         return null;
     }
 
-    function convertLocalDateToServer (date) {
+    function convertLocalDateToServer(date) {
         if (date) {
             return $filter('date')(date, 'yyyy-MM-dd');
         } else {
@@ -373,14 +375,14 @@ function DateUtils ($filter) {
         }
     }
 
-    function dateformat () {
+    function dateformat() {
         return 'yyyy-MM-dd';
     }
 }
 /**
  * DataUtils
  */
-function DataUtils ($window) {
+function DataUtils($window) {
     return {
         abbreviate: abbreviate,
         byteSize: byteSize,
@@ -388,7 +390,7 @@ function DataUtils ($window) {
         toBase64: toBase64
     };
 
-    function abbreviate (text) {
+    function abbreviate(text) {
         if (!angular.isString(text)) {
             return '';
         }
@@ -398,7 +400,7 @@ function DataUtils ($window) {
         return text ? (text.substring(0, 15) + '...' + text.slice(-10)) : '';
     }
 
-    function byteSize (base64String) {
+    function byteSize(base64String) {
         if (!angular.isString(base64String)) {
             return '';
         }
@@ -428,11 +430,11 @@ function DataUtils ($window) {
         return formatAsBytes(size(base64String));
     }
 
-    function openFile (type, data) {
+    function openFile(type, data) {
         $window.open('data:' + type + ';base64,' + data, '_blank', 'height=300,width=400');
     }
 
-    function toBase64 (file, cb) {
+    function toBase64(file, cb) {
         var fileReader = new FileReader();
         fileReader.readAsDataURL(file);
         fileReader.onload = function (e) {
@@ -448,13 +450,13 @@ function ProfileService($q, $http, $localStorage) {
     var dataPromise;
 
     return {
-        getProfileInfo : getProfileInfo
+        getProfileInfo: getProfileInfo
     };
 
     function getProfileInfo() {
         if (angular.isUndefined(dataPromise)) {
-            dataPromise = $http.get('open-api/profile-info').then(function(result) {
-            if (result.data.activeProfiles) {
+            dataPromise = $http.get('open-api/profile-info').then(function (result) {
+                if (result.data.activeProfiles) {
                     return result.data;
                 }
             });
@@ -467,7 +469,7 @@ function ProfileService($q, $http, $localStorage) {
  */
 function PasswordService($resource) {
     var service = $resource('api/account/password', {}, {
-        'update': { method:'PUT' }
+        'update': {method: 'PUT'}
     });
 
     return service;
@@ -844,18 +846,20 @@ function LoggerService($resource) {
 /**
  * AccountService
  */
-function AccountService ($resource) {
+function AccountService($resource) {
     var service = $resource('api/account/:extension', {}, {
-        'get': { method: 'GET', params: {extension: 'user'},
+        'get': {
+            method: 'GET', params: {extension: 'user'},
             interceptor: {
-                response: function(response) {
+                response: function (response) {
                     // expose response
                     return response;
                 }
             }
         },
-        'save': { method: 'POST', params: {extension: 'user'}},
-        'update': { method: 'PUT', params: {extension: 'user'}
+        'save': {method: 'POST', params: {extension: 'user'}},
+        'update': {
+            method: 'PUT', params: {extension: 'user'}
         },
         'queryAuthorityNames': {method: 'GET', isArray: true, params: {extension: 'authority-names'}}
     });
@@ -864,15 +868,15 @@ function AccountService ($resource) {
 /**
  * RegisterService
  */
-function RegisterService ($resource) {
+function RegisterService($resource) {
     return $resource('open-api/account/register', {}, {});
 }
 /**
  * ActivateService
  */
-function ActivateService ($resource) {
+function ActivateService($resource) {
     return $resource('open-api/account/activate/:key', {}, {
-        'get': { method: 'GET', params: {}, isArray: false}
+        'get': {method: 'GET', params: {}, isArray: false}
     });
 }
 /**
@@ -891,12 +895,12 @@ function PrincipalService($q, $http, AccountService, TrackerService) {
         isIdentityResolved: isIdentityResolved
     };
 
-    function authenticate (identity) {
+    function authenticate(identity) {
         _identity = identity;
         _authenticated = identity !== null;
     }
 
-    function hasAnyAuthority (authorities) {
+    function hasAnyAuthority(authorities) {
         if (!_authenticated || !_identity || !_identity.authorities) {
             return false;
         }
@@ -910,19 +914,19 @@ function PrincipalService($q, $http, AccountService, TrackerService) {
         return false;
     }
 
-    function hasAuthority (authority) {
+    function hasAuthority(authority) {
         if (!_authenticated) {
             return $q.when(false);
         }
 
-        return this.identity().then(function(_id) {
+        return this.identity().then(function (_id) {
             return _id.authorities && _id.authorities.indexOf(authority) !== -1;
-        }, function(){
+        }, function () {
             return false;
         });
     }
 
-    function identity (force) {
+    function identity(force) {
         var deferred = $q.defer();
 
         if (force === true) {
@@ -939,42 +943,42 @@ function PrincipalService($q, $http, AccountService, TrackerService) {
 
         // retrieve the identity data from the server, update the identity object, and then resolve.
 //      AccountService.get({}, getAccountThen, getAccountCatch);
-        $http.get('open-api/account/user').then(function(response) {
+        $http.get('open-api/account/user').then(function (response) {
             if (response.data.userName) {
                 getAccountThen(response);
             } else {
                 getAccountCatch();
             }
         }, getAccountCatch);
-        
-        function getAccountThen (response) {
+
+        function getAccountThen(response) {
             _identity = response.data;
             _authenticated = true;
             deferred.resolve(_identity);
             TrackerService.connect();
         }
 
-        function getAccountCatch () {
+        function getAccountCatch() {
             _identity = null;
             _authenticated = false;
             deferred.resolve(_identity);
         }
-        
+
         return deferred.promise;
     }
 
-    function isAuthenticated () {
+    function isAuthenticated() {
         return _authenticated;
     }
 
-    function isIdentityResolved () {
+    function isIdentityResolved() {
         return angular.isDefined(_identity);
     }
 }
 /**
  * AuthServerService
  */
-function AuthServerService ($http, $localStorage, Base64Utils, APP_NAME) {
+function AuthServerService($http, $localStorage, Base64Utils, APP_NAME) {
     return {
         getToken: getToken,
         getAccessToken: getAccessToken,
@@ -983,25 +987,25 @@ function AuthServerService ($http, $localStorage, Base64Utils, APP_NAME) {
         logout: logout
     };
 
-    function getToken () {
+    function getToken() {
         return $localStorage.authenticationToken;
     }
-    
-    function getAccessToken () {
+
+    function getAccessToken() {
         return $localStorage.authenticationToken != null ? $localStorage.authenticationToken.access_token : null;
     }
-    
-    function getRefreshToken () {
+
+    function getRefreshToken() {
         return $localStorage.authenticationToken != null ? $localStorage.authenticationToken.refresh_token : null;
     }
     
     function login(credentials, successCallback, errorCallback) {
-        $http.get('open-api/oauth2-client/internal-client').then(function(response) {
+        $http.get('open-api/oauth2-client/internal-client').then(function (response) {
             var data = 'username=' + encodeURIComponent(credentials.userName)
-            + '&password=' + encodeURIComponent(credentials.password)
-            + '&grant_type=password'
-            + '&client_id=' + response.data.first
-            + '&client_secret=' + response.data.second;
+                + '&password=' + encodeURIComponent(credentials.password)
+                + '&grant_type=password'
+                + '&client_id=' + response.data.first
+                + '&client_secret=' + response.data.second;
 
             return $http.post('oauth/token', data, {
                 headers: {
@@ -1020,8 +1024,8 @@ function AuthServerService ($http, $localStorage, Base64Utils, APP_NAME) {
         });
     }
 
-    function logout () {
-        $http.post('api/account/logout').then(function() {
+    function logout() {
+        $http.post('api/account/logout').then(function () {
             delete $localStorage.authenticationToken;
         });
     }
@@ -1029,7 +1033,7 @@ function AuthServerService ($http, $localStorage, Base64Utils, APP_NAME) {
 /**
  * AuthenticationService
  */
-function AuthenticationService ($rootScope, $state, $sessionStorage, $q, $location, PrincipalService, AuthServerService) {
+function AuthenticationService($rootScope, $state, $sessionStorage, $q, $location, PrincipalService, AuthServerService) {
     return {
         authorize: authorize,
         getPreviousState: getPreviousState,
@@ -1039,12 +1043,12 @@ function AuthenticationService ($rootScope, $state, $sessionStorage, $q, $locati
         storePreviousState: storePreviousState
     };
 
-    function authorize (force, authThen) {
-        return PrincipalService.identity(force).then(function(account) {
+    function authorize(force, authThen) {
+        return PrincipalService.identity(force).then(function (account) {
             var isAuthenticated = PrincipalService.isAuthenticated();
-            
+
             // Callback function
-            if(authThen) {
+            if (authThen) {
                 authThen();
             }
 
@@ -1078,7 +1082,7 @@ function AuthenticationService ($rootScope, $state, $sessionStorage, $q, $locati
 //                    });
 //                }
 //            }
-            
+
             if ($rootScope.toState.data.authorities && $rootScope.toState.data.authorities.length > 0 && !PrincipalService.hasAnyAuthority($rootScope.toState.data.authorities)) {
                 if (isAuthenticated) {
                     // user is signed in but not authorized for desired state
@@ -1090,7 +1094,7 @@ function AuthenticationService ($rootScope, $state, $sessionStorage, $q, $locati
                     storePreviousState($rootScope.toState.name, $rootScope.toStateParams);
 
                     // now, send them to the signin state so they can log in
-                    $state.go('accessdenied').then(function() {
+                    $state.go('accessdenied').then(function () {
                         $state.go('login');
                     });
                 }
@@ -1098,21 +1102,21 @@ function AuthenticationService ($rootScope, $state, $sessionStorage, $q, $locati
         });
     }
 
-    function login (credentials, successCallback, errorCallback) {
+    function login(credentials, successCallback, errorCallback) {
         var that = this;
         AuthServerService.login(credentials,
-                function (data) {
-                    PrincipalService.identity(true).then(function(account) {
-                        successCallback(data);
-                    });
-                },
-                function (data) {
-                    that.logout();
-                    errorCallback(data);
+            function (data) {
+                PrincipalService.identity(true).then(function (account) {
+                    successCallback(data);
                 });
+            },
+            function (data) {
+                that.logout();
+                errorCallback(data);
+            });
     }
 
-    function logout () {
+    function logout() {
         AuthServerService.logout();
         PrincipalService.authenticate(null);
     }
@@ -1127,7 +1131,7 @@ function AuthenticationService ($rootScope, $state, $sessionStorage, $q, $locati
     }
 
     function storePreviousState(previousStateName, previousStateParams) {
-        var previousState = { 'name': previousStateName, 'params': previousStateParams };
+        var previousState = {'name': previousStateName, 'params': previousStateParams};
         $sessionStorage.previousState = previousState;
     }
 }
@@ -1137,11 +1141,12 @@ function AuthenticationService ($rootScope, $state, $sessionStorage, $q, $locati
 function AuthorityAdminMenuService($resource) {
     return $resource('api/authority-admin-menu/:extension', {}, {
         'query': {method: 'GET', params: {extension: 'authority-menus'}},
-        'queryLinks': { method : 'GET', isArray : true, params : { extension : 'authority-links' }},
+        'queryLinks': {method: 'GET', isArray: true, params: {extension: 'authority-links'}},
         'queryMenusByAuthorityName': {method: 'GET', params: {extension: 'menu-info'}},
-        'updateAuthorityMenus': { method : 'PUT', isArray : true, params : { extension : 'update-authority-menus' },
-            interceptor : {
-                response : function(response) {
+        'updateAuthorityMenus': {
+            method: 'PUT', isArray: true, params: {extension: 'update-authority-menus'},
+            interceptor: {
+                response: function (response) {
                     return response;
                 }
             }
@@ -1151,10 +1156,10 @@ function AuthorityAdminMenuService($resource) {
 /**
  * AppService
  */
-function AppService ($resource) {
+function AppService($resource) {
     var service = $resource('api/app/apps/:extension', {}, {
-        'query': { method: 'GET', isArray: true},
-        'queryAll': { method: 'GET', isArray: true, params : { extension : 'all' }},
+        'query': {method: 'GET', isArray: true},
+        'queryAll': {method: 'GET', isArray: true, params: {extension: 'all'}},
         'get': {
             method: 'GET',
             transformResponse: function (data) {
@@ -1162,19 +1167,19 @@ function AppService ($resource) {
                 return data;
             }
         },
-        'save': { method: 'POST' },
-        'update': { method: 'PUT' },
-        'del':{ method: 'DELETE' }
+        'save': {method: 'POST'},
+        'update': {method: 'PUT'},
+        'del': {method: 'DELETE'}
     });
     return service;
 }
 /**
  * AuthorityService
  */
-function AuthorityService ($resource) {
+function AuthorityService($resource) {
     var service = $resource('api/authority/authorities/:extension', {}, {
-        'query': { method: 'GET', isArray: true},
-        'queryAll': { method: 'GET', isArray: true, params: {extension: 'all'}},
+        'query': {method: 'GET', isArray: true},
+        'queryAll': {method: 'GET', isArray: true, params: {extension: 'all'}},
         'get': {
             method: 'GET',
             transformResponse: function (data) {
@@ -1182,19 +1187,19 @@ function AuthorityService ($resource) {
                 return data;
             }
         },
-        'save': { method: 'POST' },
-        'update': { method: 'PUT' },
-        'del':{ method: 'DELETE' }
+        'save': {method: 'POST'},
+        'update': {method: 'PUT'},
+        'del': {method: 'DELETE'}
     });
     return service;
 }
 /**
  * AppAuthorityService
  */
-function AppAuthorityService ($resource) {
+function AppAuthorityService($resource) {
     var service = $resource('api/app-authority/:extension/:id', {}, {
-        'query': { method: 'GET', isArray: true, params: {extension: 'app-authorities'}},
-        'queryByAppName': { method: 'GET', isArray: true, params: {extension: 'app-name'}},
+        'query': {method: 'GET', isArray: true, params: {extension: 'app-authorities'}},
+        'queryByAppName': {method: 'GET', isArray: true, params: {extension: 'app-name'}},
         'get': {
             method: 'GET',
             transformResponse: function (data) {
@@ -1203,18 +1208,18 @@ function AppAuthorityService ($resource) {
             },
             params: {extension: 'app-authorities'}
         },
-        'save': { method: 'POST', params: {extension: 'app-authorities'}},
-        'update': { method: 'PUT', params: {extension: 'app-authorities'}},
-        'del':{ method: 'DELETE', params: {extension: 'app-authorities'}}
+        'save': {method: 'POST', params: {extension: 'app-authorities'}},
+        'update': {method: 'PUT', params: {extension: 'app-authorities'}},
+        'del': {method: 'DELETE', params: {extension: 'app-authorities'}}
     });
     return service;
 }
 /**
  * UserService
  */
-function UserService ($resource) {
+function UserService($resource) {
     var service = $resource('api/user/users/:userName', {}, {
-        'query': { method: 'GET', isArray: true},
+        'query': {method: 'GET', isArray: true},
         'get': {
             method: 'GET',
             transformResponse: function (data) {
@@ -1222,19 +1227,20 @@ function UserService ($resource) {
                 return data;
             }
         },
-        'save': { method: 'POST' },
-        'update': { method: 'PUT' },
-        'del':{ method: 'DELETE' },
-        'resetPassword': { method: 'PUT' , params: {userName: '@userName'} }
+        'save': {method: 'POST'},
+        'update': {method: 'PUT'},
+        'del': {method: 'DELETE'},
+        'resetPassword': {method: 'PUT', params: {userName: '@userName'}}
     });
     return service;
 }
+
 /**
  * OAuth2ClientService
  */
-function OAuth2ClientService ($resource) {
+function OAuth2ClientService($resource) {
     var service = $resource('api/oauth2-client/clients/:id', {}, {
-        'query': { method: 'GET', isArray: true },
+        'query': {method: 'GET', isArray: true},
         'get': {
             method: 'GET',
             transformResponse: function (data) {
@@ -1242,18 +1248,19 @@ function OAuth2ClientService ($resource) {
                 return data;
             }
         },
-        'save': { method: 'POST' },
-        'update': { method: 'PUT' },
-        'del':{ method: 'DELETE' }
+        'save': {method: 'POST'},
+        'update': {method: 'PUT'},
+        'del': {method: 'DELETE'}
     });
     return service;
 }
+
 /**
  * OAuth2AccessTokenService
  */
-function OAuth2AccessTokenService ($resource) {
+function OAuth2AccessTokenService($resource) {
     var service = $resource('api/oauth2-access-token/tokens/:id', {}, {
-        'query': { method: 'GET', isArray: true },
+        'query': {method: 'GET', isArray: true},
         'get': {
             method: 'GET',
             transformResponse: function (data) {
@@ -1261,16 +1268,17 @@ function OAuth2AccessTokenService ($resource) {
                 return data;
             }
         },
-        'del':{ method: 'DELETE' }
+        'del': {method: 'DELETE'}
     });
     return service;
 }
+
 /**
  * OAuth2RefreshTokenService
  */
-function OAuth2RefreshTokenService ($resource) {
+function OAuth2RefreshTokenService($resource) {
     var service = $resource('api/oauth2-refresh-token/tokens/:id', {}, {
-        'query': { method: 'GET', isArray: true },
+        'query': {method: 'GET', isArray: true},
         'get': {
             method: 'GET',
             transformResponse: function (data) {
@@ -1278,16 +1286,17 @@ function OAuth2RefreshTokenService ($resource) {
                 return data;
             }
         },
-        'del':{ method: 'DELETE' }
+        'del': {method: 'DELETE'}
     });
     return service;
 }
+
 /**
  * OAuth2ApprovalService
  */
-function OAuth2ApprovalService ($resource) {
+function OAuth2ApprovalService($resource) {
     var service = $resource('api/oauth2-approval/approvals/:id', {}, {
-        'query': { method: 'GET', isArray: true },
+        'query': {method: 'GET', isArray: true},
         'get': {
             method: 'GET',
             transformResponse: function (data) {
@@ -1295,30 +1304,30 @@ function OAuth2ApprovalService ($resource) {
                 return data;
             }
         },
-        'del':{ method: 'DELETE' }
+        'del': {method: 'DELETE'}
     });
     return service;
 }
 /**
  * AdminMenuService
  */
-function AdminMenuService ($resource, APP_NAME) {
+function AdminMenuService($resource, APP_NAME) {
     var service = $resource('api/admin-menu/:extension/:app/:id', {}, {
-        'query': { method: 'GET', isArray: true, params: { extension: 'menus' }},
-        'queryParentMenu': { method: 'GET', isArray: true, params: { extension: 'parent-menus', id: 1 }},
+        'query': {method: 'GET', isArray: true, params: {extension: 'menus'}},
+        'queryParentMenu': {method: 'GET', isArray: true, params: {extension: 'parent-menus', id: 1}},
         'get': {
             method: 'GET',
             transformResponse: function (data) {
                 data = angular.fromJson(data);
                 return data;
             },
-            params: { extension: 'menus' }
+            params: {extension: 'menus'}
         },
-        'save': { method: 'POST', params: { extension: 'menus' } },
-        'update': { method: 'PUT', params: { extension: 'menus' } },
-        'del':{ method: 'DELETE', params: { extension: 'menus' } },
-        'raiseSeq': { method: 'GET', params: {extension: 'raise-seq'} },
-        'lowerSeq': { method: 'GET', params: {extension: 'lower-seq'} }
+        'save': {method: 'POST', params: {extension: 'menus'}},
+        'update': {method: 'PUT', params: {extension: 'menus'}},
+        'del': {method: 'DELETE', params: {extension: 'menus'}},
+        'raiseSeq': {method: 'GET', params: {extension: 'raise-seq'}},
+        'lowerSeq': {method: 'GET', params: {extension: 'lower-seq'}}
     });
     return service;
 }
