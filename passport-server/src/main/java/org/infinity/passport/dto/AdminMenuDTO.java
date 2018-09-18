@@ -22,7 +22,7 @@ public class AdminMenuDTO extends AbstractAuditableDomain implements Serializabl
     @ApiModelProperty("管理菜单名")
     private String  name;
     @Size(min = 1, max = 100)
-    @ApiModelProperty("管理菜单中文文本")
+    @ApiModelProperty("管理菜单显示文本")
     private String  label;
     @ApiModelProperty("菜单层级")
     private Integer level;

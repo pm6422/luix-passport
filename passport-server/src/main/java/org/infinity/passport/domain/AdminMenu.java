@@ -55,11 +55,11 @@ public class AdminMenu extends AbstractAuditableDomain implements Serializable {
      * @param level
      * @param url
      * @param sequence
-     * @param parentMenuId
+     * @param parentId
      * @param parentNamePath
      */
     public AdminMenu(String appName, String name, String label, Integer level, String url,
-                     Integer sequence, String parentMenuId, String parentNamePath) {
+                     Integer sequence, String parentId, String parentNamePath) {
         super();
         this.appName = appName;
         this.name = name;
@@ -67,7 +67,7 @@ public class AdminMenu extends AbstractAuditableDomain implements Serializable {
         this.level = level;
         this.url = url;
         this.sequence = sequence;
-        this.parentId = parentMenuId;
+        this.parentId = parentId;
         this.parentNamePath = parentNamePath;
     }
 
