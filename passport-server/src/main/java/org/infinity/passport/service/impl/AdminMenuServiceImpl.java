@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 @Service
@@ -81,36 +82,24 @@ public class AdminMenuServiceImpl implements AdminMenuService {
     }
 
     @Override
-    public Map<String, Integer> getParentIdSeqMap() {
-        return adminMenuRepository.findByLevel(1).stream().collect(Collectors.toMap(AdminMenu::getId, AdminMenu::getSequence));
+    public void raiseSeq(String id) {
+        this.adjustSeq(id, -1, this::compareRaiseSeq);
     }
 
-    @Override
-    public void raiseSeq(String id) {
-        AdminMenu current = adminMenuRepository.findById(id).orElseThrow(() -> new NoDataException(id));
-        List<AdminMenu> existings = adminMenuRepository.findByAppNameAndLevelOrderBySequenceAsc(current.getAppName(),
-                current.getLevel());
-        if (CollectionUtils.isNotEmpty(existings) && existings.size() == 1) {
-            return;
-        }
-        LinkedList<AdminMenu> linkedList = new LinkedList<>(existings);
-        int currentIndex = linkedList.indexOf(current);
-
-        if (!linkedList.getFirst().equals(current)) {
-            // Raise sequence
-            linkedList.remove(currentIndex);
-            linkedList.add(currentIndex - 1, current);
-        }
-
-        // Re-set the ask precedence
-        for (int i = 0; i < linkedList.size(); i++) {
-            linkedList.get(i).setSequence(linkedList.get(i).getLevel() + i);
-        }
-        adminMenuRepository.saveAll(linkedList);
+    private boolean compareRaiseSeq(LinkedList<AdminMenu> linkedList, AdminMenu current) {
+        return !linkedList.getFirst().equals(current);
     }
 
     @Override
     public void lowerSeq(String id) {
+        this.adjustSeq(id, 1, this::compareLowerSeq);
+    }
+
+    private boolean compareLowerSeq(LinkedList<AdminMenu> linkedList, AdminMenu current) {
+        return !linkedList.getLast().equals(current);
+    }
+
+    private void adjustSeq(String id, int moveIndex, BiFunction<LinkedList<AdminMenu>, AdminMenu, Boolean> func) {
         AdminMenu current = adminMenuRepository.findById(id).orElseThrow(() -> new NoDataException(id));
         List<AdminMenu> existings = adminMenuRepository.findByAppNameAndLevelOrderBySequenceAsc(current.getAppName(),
                 current.getLevel());
@@ -120,10 +109,10 @@ public class AdminMenuServiceImpl implements AdminMenuService {
         LinkedList<AdminMenu> linkedList = new LinkedList<>(existings);
         int currentIndex = linkedList.indexOf(current);
 
-        if (!linkedList.getLast().equals(current)) {
+        if (func.apply(linkedList, current)) {
             // Lower sequence
             linkedList.remove(currentIndex);
-            linkedList.add(currentIndex + 1, current);
+            linkedList.add(currentIndex + moveIndex, current);
         }
 
         // Re-set the ask precedence
@@ -132,4 +121,6 @@ public class AdminMenuServiceImpl implements AdminMenuService {
         }
         adminMenuRepository.saveAll(linkedList);
     }
+
+
 }
