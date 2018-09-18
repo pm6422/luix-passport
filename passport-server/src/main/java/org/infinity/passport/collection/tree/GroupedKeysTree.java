@@ -136,7 +136,7 @@ public class GroupedKeysTree<T> implements Serializable {
 
     public List<T> commonPrefixSearch(String... keys) {
         if (nodeSize == 0) {
-            return null;
+            return Collections.emptyList();
         }
 
         String[] newKeys = removeNullKeys(keys);
