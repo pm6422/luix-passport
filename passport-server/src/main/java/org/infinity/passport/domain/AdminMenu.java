@@ -75,8 +75,8 @@ public class AdminMenu extends AbstractAuditableDomain implements Serializable {
         return id;
     }
 
-    public void setId(String adminMenuId) {
-        this.id = adminMenuId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getAppName() {
