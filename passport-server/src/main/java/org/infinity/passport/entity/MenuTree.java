@@ -1,6 +1,9 @@
-package org.infinity.passport.collection.tree;
+package org.infinity.passport.entity;
+
+import org.apache.commons.collections.CollectionUtils;
 
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.List;
 
 public class MenuTree implements Serializable {
@@ -42,6 +45,20 @@ public class MenuTree implements Serializable {
             }
         }
         return parentNode;
+    }
+
+    public void sort() {
+        if (nodeSize == 0) {
+            return;
+        }
+        this.sort(root, Comparator.comparing(node -> node.getSequence()));
+    }
+
+    private void sort(MenuTreeNode node, Comparator<MenuTreeNode> comparator) {
+        if (CollectionUtils.isNotEmpty(node.getChildren())) {
+            node.getChildren().sort(comparator);
+            node.getChildren().forEach(child -> this.sort(child, comparator));
+        }
     }
 
     public List<MenuTreeNode> getChildren() {

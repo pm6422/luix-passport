@@ -3,12 +3,11 @@ package org.infinity.passport.controller;
 import com.codahale.metrics.annotation.Timed;
 import io.swagger.annotations.*;
 import org.apache.commons.collections.CollectionUtils;
-import org.infinity.passport.collection.tree.GroupedKeysTree;
 import org.infinity.passport.domain.AdminMenu;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.AuthorityAdminMenu;
 import org.infinity.passport.dto.AdminAuthorityMenusDTO;
-import org.infinity.passport.dto.AdminMenuDTO;
+import org.infinity.passport.entity.MenuTreeNode;
 import org.infinity.passport.repository.AdminMenuRepository;
 import org.infinity.passport.repository.AuthorityAdminMenuRepository;
 import org.infinity.passport.service.AdminMenuService;
@@ -56,14 +55,14 @@ public class AuthorityAdminMenuController {
     @GetMapping("/api/authority-admin-menu/authority-menus")
     @Secured({Authority.USER})
     @Timed
-    public ResponseEntity<GroupedKeysTree<AdminMenu>> findByAppName(
+    public ResponseEntity<List<MenuTreeNode>> findByAppName(
             @ApiParam(value = "应用名称", required = true) @RequestParam(value = "appName", required = true) String appName) {
         List<String> allEnabledAuthorities = authorityService.findAllAuthorityNames(true);
         List<String> userEnabledAuthorities = SecurityUtils.getCurrentUserRoles().parallelStream()
                 .filter(userAuthority -> allEnabledAuthorities.contains(userAuthority.getAuthority()))
                 .map(GrantedAuthority::getAuthority).collect(Collectors.toList());
 
-        GroupedKeysTree<AdminMenu> results = adminMenuService.getAuthorityMenus(appName, userEnabledAuthorities);
+        List<MenuTreeNode> results = adminMenuService.getAuthorityMenus(appName, userEnabledAuthorities);
         return ResponseEntity.ok(results);
     }
 
@@ -88,10 +87,10 @@ public class AuthorityAdminMenuController {
     @GetMapping("/api/authority-admin-menu/menu-info")
     @Secured({Authority.ADMIN})
     @Timed
-    public ResponseEntity<GroupedKeysTree<AdminMenuDTO>> findMenus(
+    public ResponseEntity<List<MenuTreeNode>> findMenus(
             @ApiParam(value = "应用名称", required = true) @RequestParam(value = "appName", required = true) String appName,
             @ApiParam(value = "权限名称", required = true) @RequestParam(value = "authorityName", required = true) String authorityName) {
-        GroupedKeysTree<AdminMenuDTO> results = adminMenuService.getAllAuthorityMenus(appName, authorityName);
+        List<MenuTreeNode> results = adminMenuService.getAllAuthorityMenus(appName, authorityName);
         return ResponseEntity.ok(results);
     }
 

@@ -42,8 +42,10 @@
                         <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="control-label">菜单</label>
-                                    <tree-view tree-data="vm.allMenus" text-field="adminMenuChineseText" value-field='id' check-field="checked" 
-                                        children-field="subItems" item-clicked="itemClicked($item)" item-checked-changed="itemCheckedChanged($item)" can-checked="true" >
+                                    <tree-view tree-data="vm.allMenus" text-field="label" value-field='id'
+                                               check-field="checked"
+                                               children-field="children" item-clicked="itemClicked($item)"
+                                               item-checked-changed="itemCheckedChanged($item)" can-checked="true">
                                     </tree-view>
                                 </div>
                             </div>

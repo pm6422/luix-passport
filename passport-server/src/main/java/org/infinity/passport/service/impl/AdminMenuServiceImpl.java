@@ -1,10 +1,11 @@
 package org.infinity.passport.service.impl;
 
+import com.codahale.metrics.annotation.Timed;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.infinity.passport.collection.tree.GroupedKeysTree;
 import org.infinity.passport.domain.AdminMenu;
 import org.infinity.passport.dto.AdminMenuDTO;
+import org.infinity.passport.entity.MenuTree;
+import org.infinity.passport.entity.MenuTreeNode;
 import org.infinity.passport.repository.AdminMenuRepository;
 import org.infinity.passport.service.AdminMenuService;
 import org.infinity.passport.service.AuthorityAdminMenuService;
@@ -22,47 +23,24 @@ public class AdminMenuServiceImpl implements AdminMenuService {
     @Autowired
     private AuthorityAdminMenuService authorityAdminMenuService;
 
-    private GroupedKeysTree<AdminMenu> groupAdminMenu(List<AdminMenu> menus) {
-        GroupedKeysTree<AdminMenu> tree = new GroupedKeysTree<>();
-        menus.forEach((menu) -> {
-            if (StringUtils.isEmpty(menu.getParentId())) {
-                tree.insert(menu, "" + menu.getSequence());
-            } else {
-                tree.insert(menu, "" + this.getParentIdSeqMap().get(menu.getParentId()), "" + menu.getSequence());
-            }
-        });
-        return tree;
-    }
-
-    private GroupedKeysTree<AdminMenuDTO> groupAdminMenuDTO(List<AdminMenuDTO> menus) {
-        GroupedKeysTree<AdminMenuDTO> tree = new GroupedKeysTree<>();
-        menus.forEach((menu) -> {
-            if (StringUtils.isEmpty(menu.getParentId())) {
-                tree.insert(menu, "" + menu.getSequence());
-            } else {
-                tree.insert(menu, "" + this.getParentIdSeqMap().get(menu.getParentId()), "" + menu.getSequence());
-            }
-        });
-        return tree;
-    }
-
     @Override
-    public GroupedKeysTree<AdminMenuDTO> getAllAuthorityMenus(String appName, String enabledAuthority) {
+    public List<MenuTreeNode> getAllAuthorityMenus(String appName, String enabledAuthority) {
         Set<String> adminMenuIds = authorityAdminMenuService.findAdminMenuIdSetByAuthorityNameIn(Arrays.asList(enabledAuthority));
         List<AdminMenuDTO> allAdminMenus = adminMenuRepository.findByAppName(appName).stream().map(menu -> {
-            AdminMenuDTO DTO = menu.asDTO();
+            AdminMenuDTO dto = menu.asDTO();
             if (adminMenuIds.contains(menu.getId())) {
-                DTO.setChecked(true);
+                dto.setChecked(true);
             }
-            return DTO;
+            return dto;
         }).collect(Collectors.toList());
         return this.groupAdminMenuDTO(allAdminMenus);
     }
 
     @Override
-    public GroupedKeysTree<AdminMenu> getAuthorityMenus(String appName, List<String> enabledAuthorities) {
+    @Timed
+    public List<MenuTreeNode> getAuthorityMenus(String appName, List<String> enabledAuthorities) {
         if (CollectionUtils.isEmpty(enabledAuthorities)) {
-            return null;
+            return Collections.emptyList();
         }
 
         Set<String> adminMenuIds = authorityAdminMenuService.findAdminMenuIdSetByAuthorityNameIn(enabledAuthorities);
@@ -70,7 +48,21 @@ public class AdminMenuServiceImpl implements AdminMenuService {
             List<AdminMenu> adminMenus = adminMenuRepository.findByAppNameAndIdIn(appName, adminMenuIds);
             return this.groupAdminMenu(adminMenus);
         }
-        return null;
+        return Collections.emptyList();
+    }
+
+    private List<MenuTreeNode> groupAdminMenuDTO(List<AdminMenuDTO> menus) {
+        MenuTree tree = new MenuTree();
+        menus.forEach(menu -> tree.insert(menu.asNode()));
+        tree.sort();
+        return tree.getChildren();
+    }
+
+    private List<MenuTreeNode> groupAdminMenu(List<AdminMenu> menus) {
+        MenuTree tree = new MenuTree();
+        menus.forEach(menu -> tree.insert(menu.asNode()));
+        tree.sort();
+        return tree.getChildren();
     }
 
     @Override

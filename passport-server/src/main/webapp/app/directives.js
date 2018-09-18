@@ -525,112 +525,115 @@ function passwordStrengthBarDirective() {
  */
 function treeView() {
     return {
-		  restrict: 'E',
-		  templateUrl: '/treeView.html',
-		  scope: {
-			  treeData: '=',
-			  canChecked: '=',
-			  textField: '@',
-			  checkField: '@',
-			  childrenField: '@',
-			  itemClicked: '&',
-			  itemCheckedChanged: '&',
-			  itemTemplateUrl: '@'
-		  },
-		 controller:['$scope', function($scope){
-			 $scope.itemExpended = function(item, $event){
-				 item.$$isExpend = ! item.$$isExpend;
-				 $event.stopPropagation();
-			 };
-			 $scope.getItemIcon = function(item){
-				 var isLeaf = $scope.isLeaf(item);
-				 
-				 if(isLeaf){
-					 return 'fa fa-leaf';
-				 }
-				 return item.$$isExpend ? 'fa fa-minus': 'fa fa-plus';	 
-			 };
-			 
-			 $scope.isLeaf = function(item){
-				return !item.subItems || !item.subItems.length; 
-			 };
-			 
-			 $scope.warpCallback = function(callback, item, $event){
-				  ($scope[callback] || angular.noop)({
-					 $item:item,
-					 $event:$event
-				 });
-			 };
-		 }],
-		 link:function(scope,element,attrs){
-			 scope.isCheck=function(treeData,item){
-				//子选项被选中,对应父选项选中
-				var check=attrs.checkField;
-				var checkValue=attrs.valueField;
-				var children=attrs.childrenField;
-				
-				var isCheck=item[check];
-				var id=item[checkValue];
-				if(isCheck){
-					for(var i=0;i<treeData.length;i++){
-						if(id==treeData[i][checkValue]){
-							break;
-						}
-						if(treeData[i][children]){
-							isParentCheck(id,treeData[i][children],treeData[i],checkValue,check)
-						}
-					}
-				}
-				//子项都未被选中
-				if(!isCheck){
-					for(var i=0;i<treeData.length;i++){
-						if(id==treeData[i][checkValue]){
-							break;
-						}
-						if(treeData[i][children]){
-							isParentUnCheck(id,treeData[i][children],treeData[i],checkValue,check)
-						}
-					}
-				}
-				//父项被选中，子项也被选中
-				item[children]=changeCheck(item[children],isCheck,check,children);
-             };
-			 function isParentUnCheck(id,subItems,parent,checkValue,check){
-				 var flag=true;
-				 var isEqual=false;
-				 for(var i=0;i<subItems.length;i++){
-					 //有被选中的子项
-					 if(subItems[i][check]){
-						 flag=false;
-					 }
-					 //子项在父项中
-					 if(subItems[i][checkValue]==id){
-						 isEqual=true;
-					  }
-					}
-				 if(isEqual && flag) {
-					 parent[check]=false;
-				 }
-			 }
-			 function isParentCheck(id,subItems,parent,checkValue,check){
-				 for(var i=0;i<subItems.length;i++){
-					 if(subItems[i][checkValue]==id){
-						 parent[check]=true;
-					 }
-					}
-			 }
-			 //子元素 全选、全不选
-			 function changeCheck(items,isCheck,check,children){
-				 if(items){
-					   for(var i=0;i<items.length;i++){
-						   items[i][check]=isCheck;
-							changeCheck(items[i][children],isCheck);
-						}
-					}
-				  return items;
-			 }
-		 }
-	 };
+        restrict: 'E',
+        templateUrl: '/treeView.html',
+        scope: {
+            treeData: '=',
+            canChecked: '=',
+            textField: '@',
+            checkField: '@',
+            childrenField: '@',
+            itemClicked: '&',
+            itemCheckedChanged: '&',
+            itemTemplateUrl: '@'
+        },
+        controller: ['$scope', function ($scope) {
+            $scope.itemExpended = function (item, $event) {
+                item.$$isExpend = !item.$$isExpend;
+                $event.stopPropagation();
+            };
+            $scope.getItemIcon = function (item) {
+                var isLeaf = $scope.isLeaf(item);
+
+                if (isLeaf) {
+                    return 'fa fa-leaf';
+                }
+                return item.$$isExpend ? 'fa fa-minus' : 'fa fa-plus';
+            };
+
+            $scope.isLeaf = function (item) {
+                return !item.children || !item.children.length;
+            };
+
+            $scope.warpCallback = function (callback, item, $event) {
+                ($scope[callback] || angular.noop)({
+                    $item: item,
+                    $event: $event
+                });
+            };
+        }],
+        link: function (scope, element, attrs) {
+            scope.isCheck = function (treeData, item) {
+                //子选项被选中,对应父选项选中
+                var check = attrs.checkField;
+                var checkValue = attrs.valueField;
+                var children = attrs.childrenField;
+
+                var isCheck = item[check];
+                var id = item[checkValue];
+                if (isCheck) {
+                    for (var i = 0; i < treeData.length; i++) {
+                        if (id == treeData[i][checkValue]) {
+                            break;
+                        }
+                        if (treeData[i][children]) {
+                            isParentCheck(id, treeData[i][children], treeData[i], checkValue, check)
+                        }
+                    }
+                }
+                //子项都未被选中
+                if (!isCheck) {
+                    for (var i = 0; i < treeData.length; i++) {
+                        if (id == treeData[i][checkValue]) {
+                            break;
+                        }
+                        if (treeData[i][children]) {
+                            isParentUnCheck(id, treeData[i][children], treeData[i], checkValue, check)
+                        }
+                    }
+                }
+                //父项被选中，子项也被选中
+                item[children] = changeCheck(item[children], isCheck, check, children);
+            };
+
+            function isParentUnCheck(id, children, parent, checkValue, check) {
+                var flag = true;
+                var isEqual = false;
+                for (var i = 0; i < children.length; i++) {
+                    //有被选中的子项
+                    if (children[i][check]) {
+                        flag = false;
+                    }
+                    //子项在父项中
+                    if (children[i][checkValue] == id) {
+                        isEqual = true;
+                    }
+                }
+                if (isEqual && flag) {
+                    parent[check] = false;
+                }
+            }
+
+            function isParentCheck(id, children, parent, checkValue, check) {
+                for (var i = 0; i < children.length; i++) {
+                    if (children[i][checkValue] == id) {
+                        parent[check] = true;
+                    }
+                }
+            }
+
+            //子元素 全选、全不选
+            function changeCheck(items, isCheck, check, children) {
+                if (items) {
+                    for (var i = 0; i < items.length; i++) {
+                        items[i][check] = isCheck;
+                        changeCheck(items[i][children], isCheck);
+                    }
+                }
+                return items;
+            }
+        }
+    };
 }
 /**
  * does not work

@@ -200,8 +200,8 @@ function LeftSidebarController($scope, $state, $element, $timeout, APP_NAME, Aut
     function init() {
         if (PrincipalService.isAuthenticated() == true) {
             AuthorityAdminMenuService.query({appName: APP_NAME}, function (response) {
-                if (response.root && !response.root.terminate) {
-                    vm.groups = response.root.children;
+                if (response) {
+                    vm.groups = response;
                     // Call the metsiMenu plugin and plug it to sidebar navigation
                     $timeout(function () {
                         $element.metisMenu();
@@ -2077,40 +2077,21 @@ function AuthorityAdminMenuController($state, AuthorityAdminMenuService, AppAuth
     }
 
     function searchMenus() {
+        vm.allMenus = [];
         if (vm.criteria.authorityName) {
             AuthorityAdminMenuService.queryMenusByAuthorityName({
                 appName: vm.criteria.appName,
                 authorityName: vm.criteria.authorityName
             }, function (response) {
-                vm.allMenus = [];
-                if (!response.root.terminate) {
-                    for (var i = 0; i < response.root.children.length; i++) {
-                        var menu = {};
-                        menu = response.root.children[i].firstData;
-                        menu.subItems = [];
-
-                        angular.forEach(response.root.children[i].children, function (val, key) {
-                            var subMenu = {};
-                            subMenu = val.firstData;
-                            menu.subItems.push(subMenu);
-                        });
-                        vm.allMenus.push(menu);
-                    }
-                }
-            }, function (errorResponse) {
-                vm.allMenus = [];
+                vm.allMenus = response;
             });
-        }
-        else {
-            vm.allMenus = [];
         }
     }
 
     function save() {
         vm.isSaving = true;
         if (vm.criteria.appName && vm.criteria.authorityName) {
-            var adminMenuIds = [];
-            adminMenuIds = getAllCheckIds(vm.allMenus, adminMenuIds);
+            var adminMenuIds = getAllCheckIds(vm.allMenus, []);
             AuthorityAdminMenuService.updateAuthorityMenus({
                     appName: vm.criteria.appName,
                     authorityName: vm.criteria.authorityName,
@@ -2129,8 +2110,8 @@ function AuthorityAdminMenuController($state, AuthorityAdminMenuService, AppAuth
             if (allMenus[i].checked) {
                 adminMenuIds.push(allMenus[i].id);
             }
-            if (allMenus[i].subItems) {
-                getAllCheckIds(allMenus[i].subItems, adminMenuIds);
+            if (allMenus[i].children) {
+                getAllCheckIds(allMenus[i].children, adminMenuIds);
             }
         }
         return adminMenuIds;
