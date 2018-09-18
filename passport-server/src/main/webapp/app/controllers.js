@@ -1990,7 +1990,7 @@ function AdminMenuListController($state, AlertUtils, ParseLinksUtils, PAGINATION
             });
     }
 
-    function lowerSeq(app, id) {
+    function lowerSeq(id) {
         AdminMenuService.lowerSeq({id: id},
             function () {
                 vm.loadAll()

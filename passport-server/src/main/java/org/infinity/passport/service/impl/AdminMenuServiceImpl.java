@@ -6,6 +6,7 @@ import org.infinity.passport.domain.AdminMenu;
 import org.infinity.passport.dto.AdminMenuDTO;
 import org.infinity.passport.entity.MenuTree;
 import org.infinity.passport.entity.MenuTreeNode;
+import org.infinity.passport.exception.NoDataException;
 import org.infinity.passport.repository.AdminMenuRepository;
 import org.infinity.passport.service.AdminMenuService;
 import org.infinity.passport.service.AuthorityAdminMenuService;
@@ -86,33 +87,49 @@ public class AdminMenuServiceImpl implements AdminMenuService {
 
     @Override
     public void raiseSeq(String id) {
-        //        AdminMenu current = adminMenuRepository.findById(id).orElseThrow(() -> new NoDataException(id));
-        //        List<AdminMenu> existings = adminMenuRepository.findByAppNameAndLevelOrderBySequenceAsc(current.getAppName(),
-        //                current.getLevel());
-        //        if (CollectionUtils.isNotEmpty(existings) && existings.size() == 1) {
-        //            return;
-        //        }
-        //        LinkedList<AdminMenu> linkedList = new LinkedList<>(existings);
-        //        int currentIndex = linkedList.indexOf(current);
-        //
-        //        if (!linkedList.getLast().equals(current)) {
-        //            // Raise sequence
-        //            linkedList.remove(currentIndex);
-        //            linkedList.add(currentIndex - 1, current);
-        //        }
-        //
-        //        // Re-set the ask precedence
-        //        for (int i = 0; i < linkedList.size(); i++) {
-        //            linkedList.get(i).setSequence(linkedList.get(i).getLevel() + i);
-        //        }
+        AdminMenu current = adminMenuRepository.findById(id).orElseThrow(() -> new NoDataException(id));
+        List<AdminMenu> existings = adminMenuRepository.findByAppNameAndLevelOrderBySequenceAsc(current.getAppName(),
+                current.getLevel());
+        if (CollectionUtils.isNotEmpty(existings) && existings.size() == 1) {
+            return;
+        }
+        LinkedList<AdminMenu> linkedList = new LinkedList<>(existings);
+        int currentIndex = linkedList.indexOf(current);
 
-        //        this.updateAll(linkedList);
+        if (!linkedList.getFirst().equals(current)) {
+            // Raise sequence
+            linkedList.remove(currentIndex);
+            linkedList.add(currentIndex - 1, current);
+        }
 
+        // Re-set the ask precedence
+        for (int i = 0; i < linkedList.size(); i++) {
+            linkedList.get(i).setSequence(linkedList.get(i).getLevel() + i);
+        }
+        adminMenuRepository.saveAll(linkedList);
     }
 
     @Override
     public void lowerSeq(String id) {
-        // TODO Auto-generated method stub
+        AdminMenu current = adminMenuRepository.findById(id).orElseThrow(() -> new NoDataException(id));
+        List<AdminMenu> existings = adminMenuRepository.findByAppNameAndLevelOrderBySequenceAsc(current.getAppName(),
+                current.getLevel());
+        if (CollectionUtils.isNotEmpty(existings) && existings.size() == 1) {
+            return;
+        }
+        LinkedList<AdminMenu> linkedList = new LinkedList<>(existings);
+        int currentIndex = linkedList.indexOf(current);
 
+        if (!linkedList.getLast().equals(current)) {
+            // Lower sequence
+            linkedList.remove(currentIndex);
+            linkedList.add(currentIndex + 1, current);
+        }
+
+        // Re-set the ask precedence
+        for (int i = 0; i < linkedList.size(); i++) {
+            linkedList.get(i).setSequence(linkedList.get(i).getLevel() + i);
+        }
+        adminMenuRepository.saveAll(linkedList);
     }
 }
