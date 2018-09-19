@@ -33,10 +33,7 @@ public class MenuTree implements Serializable {
     }
 
     private MenuTreeNode insert(MenuTreeNode parentNode, MenuTreeNode node) {
-        if (node.getParentId() == null) {
-            parentNode.addChild(node);
-            nodeSize++;
-        } else if (node.getParentId().equals(parentNode.getId())) {
+        if (node.getParentId() == null || node.getParentId().equals(parentNode.getId())) {
             parentNode.addChild(node);
             nodeSize++;
         } else {

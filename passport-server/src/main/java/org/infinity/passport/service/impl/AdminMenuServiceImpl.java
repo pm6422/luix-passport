@@ -83,26 +83,25 @@ public class AdminMenuServiceImpl implements AdminMenuService {
 
     @Override
     public void raiseSeq(String id) {
-        this.adjustSeq(id, -1, this::compareRaiseSeq);
+        this.adjustSeq(id, -1, this::isNotHead);
     }
 
-    private boolean compareRaiseSeq(LinkedList<AdminMenu> linkedList, AdminMenu current) {
+    private boolean isNotHead(LinkedList<AdminMenu> linkedList, AdminMenu current) {
         return !linkedList.getFirst().equals(current);
     }
 
     @Override
     public void lowerSeq(String id) {
-        this.adjustSeq(id, 1, this::compareLowerSeq);
+        this.adjustSeq(id, 1, this::isNotTail);
     }
 
-    private boolean compareLowerSeq(LinkedList<AdminMenu> linkedList, AdminMenu current) {
+    private boolean isNotTail(LinkedList<AdminMenu> linkedList, AdminMenu current) {
         return !linkedList.getLast().equals(current);
     }
 
     private void adjustSeq(String id, int moveIndex, BiFunction<LinkedList<AdminMenu>, AdminMenu, Boolean> func) {
         AdminMenu current = adminMenuRepository.findById(id).orElseThrow(() -> new NoDataException(id));
-        List<AdminMenu> existings = adminMenuRepository.findByAppNameAndLevelOrderBySequenceAsc(current.getAppName(),
-                current.getLevel());
+        List<AdminMenu> existings = adminMenuRepository.findByAppNameAndLevelOrderBySequenceAsc(current.getAppName(), current.getLevel());
         if (CollectionUtils.isNotEmpty(existings) && existings.size() == 1) {
             return;
         }
@@ -110,14 +109,13 @@ public class AdminMenuServiceImpl implements AdminMenuService {
         int currentIndex = linkedList.indexOf(current);
 
         if (func.apply(linkedList, current)) {
-            // Lower sequence
             linkedList.remove(currentIndex);
             linkedList.add(currentIndex + moveIndex, current);
         }
 
-        // Re-set the ask precedence
+        // Re-set the sequence
         for (int i = 0; i < linkedList.size(); i++) {
-            linkedList.get(i).setSequence(linkedList.get(i).getLevel() + i);
+            linkedList.get(i).setSequence(i);
         }
         adminMenuRepository.saveAll(linkedList);
     }
