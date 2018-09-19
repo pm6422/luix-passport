@@ -72,10 +72,12 @@
                             <td colspan="12" class="text-center">
                                 <strong>
                                     <item-count-component page="vm.page" total="vm.totalItems"
-                                                          items-per-page="vm.itemsPerPage"></item-count-component>
+                                                          items-per-page="vm.itemsPerPage">
+                                    </item-count-component>
                                 </strong>
                                 <uib-pagination class="pagination-sm m-xs" total-items="vm.totalItems"
-                                                ng-model="vm.page" ng-change="vm.transition()"></uib-pagination>
+                                                ng-model="vm.page" ng-change="vm.transition()">
+                                </uib-pagination>
                             </td>
                         </tr>
                         </tfoot>
