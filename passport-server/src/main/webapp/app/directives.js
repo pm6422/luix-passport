@@ -505,23 +505,23 @@ function passwordStrengthBarDirective() {
  * <tree-view tree-data="allMenus" text-field="label" value-field='adminMenuId' check-field="check" children-field="children" item-clicked="itemClicked($item)" item-checked-changed="itemCheckedChanged($item)" can-checked="true" ></tree-view>
  * 树形模板
  *<script type="text/ng-template" id="/treeView.html">
-        <ul class="tree-view">
-               <li ng-repeat="item in treeData" ng-include="itemTemplateUrl || '/treeItem.html'" ></li>
-           </ul>
-    </script>
-	
-    <script type="text/ng-template" id="/treeItem.html">
-	<i ng-click="itemExpended(item, $event);" class="{{getItemIcon(item)}}"></i>
+ <ul class="tree-view">
+ <li ng-repeat="item in treeData" ng-include="itemTemplateUrl || '/treeItem.html'" ></li>
+ </ul>
+ </script>
 
-      <input type="checkbox" ng-model="item[checkField]" class="check-box" ng-if="canChecked"  ng-checked="item[checkField]"  ng-click="isCheck(treeData,item)" ng-change="warpCallback('itemCheckedChanged', item, $event);">
-        <span class='text-field' ng-click="warpCallback('itemClicked', item, $event);">{{item[textField]}}</span>
-        <ul ng-if="!isLeaf(item)"
-		ng-show="item.$$isExpend"
-		>
-           <li ng-repeat="item in item[childrenField]" ng-include="itemTemplateUrl || '/treeItem.html'">
-           </li>
-       </ul>
-    </script>
+ <script type="text/ng-template" id="/treeItem.html">
+ <i ng-click="itemExpended(item, $event);" class="{{getItemIcon(item)}}"></i>
+
+ <input type="checkbox" ng-model="item[checkField]" class="check-box" ng-if="canChecked"  ng-checked="item[checkField]"  ng-click="isCheck(treeData,item)" ng-change="warpCallback('itemCheckedChanged', item, $event);">
+ <span class='text-field' ng-click="warpCallback('itemClicked', item, $event);">{{item[textField]}}</span>
+ <ul ng-if="!isLeaf(item)"
+ ng-show="item.$$isExpend"
+ >
+ <li ng-repeat="item in item[childrenField]" ng-include="itemTemplateUrl || '/treeItem.html'">
+ </li>
+ </ul>
+ </script>
  */
 function treeView() {
     return {

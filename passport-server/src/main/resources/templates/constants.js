@@ -6,9 +6,10 @@
         .module('smartcloudserviceApp')
         .constant('APP_NAME', '@project.name@')
         .constant('VERSION', '@project.version@')
+        .constant('COMPANY_NAME', '义语智能科技（上海）有限公司')
         .constant('PAGINATION_CONSTANTS', {
             'itemsPerPage': 10
          })
-//        .constant('ENV', '@mvn.profiles.active@')
+        //        .constant('ENV', '@mvn.profiles.active@')
         .constant('DEBUG_INFO_ENABLED', true);
 })();

@@ -24,60 +24,64 @@
                 <div class="ibox-content">
                     <table class="table table-bordered">
                         <thead>
-                            <tr>
-                                <th>参数名称</th>
-                                <th>参数值</th>
-                            </tr>
+                        <tr>
+                            <th>参数名称</th>
+                            <th>参数值</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>刷新令牌ID:</td>
-                                <td>{{vm.entity.id}}</td>
-                            </tr>
-                            <tr>
-                                <td>客户端ID:</td>
-                                <td>{{vm.entity.clientId}}</td>
-                            </tr>
-                            <tr>
-                                <td>用户名:</td>
-                                <td>{{vm.entity.userName}}</td>
-                            </tr>
-                            <tr>
-                                <td>scope:</td>
-                                <td>
-                                    <ul class="list-unstyled m-b-none">
-                                        <li ng-repeat="item in vm.entity.authentication.oauth2Request.scope"><span>{{item}}</span></li>
-                                    </ul>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>授权类型:</td>
-                                <td>{{vm.entity.authentication.oauth2Request.grantType}}</td>
-                            </tr>
-                            <tr>
-                                <td>过期时间:</td>
-                                <td>{{vm.entity.expiration | date:'yyyy/MM/dd HH:mm:ss' }}</td>
-                            </tr>
-                            <tr>
-                                <td>是否过期:</td>
-                                <td>{{!vm.entity.authentication.principal.accountNonExpired}}</td>
-                            </tr>
-                            <tr>
-                                <td>是否验证:</td>
-                                <td>{{vm.entity.authentication.authenticated}}</td>
-                            </tr>
-                            <tr>
-                                <td>权限:</td>
-                                <td>
-                                    <ul class="list-unstyled m-b-none">
-                                        <li ng-repeat="auth in vm.entity.authentication.authorities"><span>{{auth['authority']}}</span></li>
-                                    </ul>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>修改时间:</td>
-                                <td>{{vm.entity.modifiedTime | date:'yyyy/MM/dd HH:mm:ss'}}</td>
-                            </tr>
+                        <tr>
+                            <td>刷新令牌ID:</td>
+                            <td>{{vm.entity.id}}</td>
+                        </tr>
+                        <tr>
+                            <td>客户端ID:</td>
+                            <td>{{vm.entity.clientId}}</td>
+                        </tr>
+                        <tr>
+                            <td>用户名:</td>
+                            <td>{{vm.entity.userName}}</td>
+                        </tr>
+                        <tr>
+                            <td>scope:</td>
+                            <td>
+                                <ul class="list-unstyled m-b-none">
+                                    <li ng-repeat="item in vm.entity.authentication.oauth2Request.scope">
+                                        <span>{{item}}</span>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>授权类型:</td>
+                            <td>{{vm.entity.authentication.oauth2Request.grantType}}</td>
+                        </tr>
+                        <tr>
+                            <td>过期时间:</td>
+                            <td>{{vm.entity.expiration | date:'yyyy/MM/dd HH:mm:ss' }}</td>
+                        </tr>
+                        <tr>
+                            <td>是否过期:</td>
+                            <td>{{!vm.entity.authentication.principal.accountNonExpired}}</td>
+                        </tr>
+                        <tr>
+                            <td>是否验证:</td>
+                            <td>{{vm.entity.authentication.authenticated}}</td>
+                        </tr>
+                        <tr>
+                            <td>权限:</td>
+                            <td>
+                                <ul class="list-unstyled m-b-none">
+                                    <li ng-repeat="auth in vm.entity.authentication.authorities">
+                                        <span>{{auth['authority']}}</span>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>修改时间:</td>
+                            <td>{{vm.entity.modifiedTime | date:'yyyy/MM/dd HH:mm:ss'}}</td>
+                        </tr>
                         </tbody>
                     </table>
                     <div class="text-right">

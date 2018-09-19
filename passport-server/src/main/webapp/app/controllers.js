@@ -61,13 +61,14 @@ angular
  * Contains several global data used in different view
  *
  */
-function MainController($http, $scope, $state, AuthenticationService, PrincipalService, AuthorityAdminMenuService, AlertUtils, APP_NAME) {
+function MainController($http, $rootScope, $scope, $state, AuthenticationService, PrincipalService, AuthorityAdminMenuService, AlertUtils, APP_NAME, COMPANY_NAME) {
     var main = this;
     main.account = null;
     main.isAuthenticated = null;
     main.links = [];
     main.selectedLink = null;
     main.selectLink = selectLink;
+    $rootScope.companyName = COMPANY_NAME;
 
     // Authenticate user whether has logged in
     AuthenticationService.authorize(false, getAccount);
@@ -1924,7 +1925,7 @@ function AdminMenuListController($state, AlertUtils, ParseLinksUtils, PAGINATION
     vm.del = del;
     vm.raiseSeq = raiseSeq;
     vm.lowerSeq = lowerSeq;
-    
+
     vm.loadAll();
 
     function loadAll() {

@@ -7,7 +7,8 @@
         <div class="form-group">
             <label class="control-label">用户名</label>
             <a tooltip-placement="right" uib-tooltip="系统登录用户名"><i class="fa fa-question"></i></a>
-            <input type="text" class="form-control" name="userName" ng-model="vm.entity.userName" ng-disabled="vm.mode=='edit'" required ng-minlength=1 ng-maxlength=50 ng-pattern="/^[a-z0-9]*$/">
+            <input type="text" class="form-control" name="userName" ng-model="vm.entity.userName"
+                   ng-disabled="vm.mode=='edit'" required ng-minlength=1 ng-maxlength=50 ng-pattern="/^[a-z0-9]*$/">
             <div ng-show="editForm.userName.$invalid">
                 <p class="help-block" ng-show="editForm.userName.$error.required">
                     必填字段

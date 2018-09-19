@@ -27,15 +27,17 @@
             <div class="ibox">
                 <div class="ibox-content">
                     <table class="table table-condensed table-striped table-bordered table-responsive"
-                        style="table-layout:fixed" ng-hide="filteredConfig.length == 0">
+                           style="table-layout:fixed" ng-hide="filteredConfig.length == 0">
                         <thead>
                         <tr>
-                            <th ng-click="predicate = 'prefix'; reverse=!reverse" class="col-sm-4"><span>Path</span></th>
+                            <th ng-click="predicate = 'prefix'; reverse=!reverse" class="col-sm-4">
+                                <span>Path</span>
+                            </th>
                             <th class="col-sm-1">Time</th>
                             <th class="col-sm-7">Response</th>
                         </tr>
                         </thead>
-                
+
                         <tr ng-repeat="entry in filtered = (vm.items | filter:filter | orderBy:predicate:reverse)">
                             <td><span>{{entry.request.uri}}</span></td>
                             <td><span>{{entry.timestamp | date:'yyyy/MM/dd HH:mm:ss'}}</span></td>
@@ -50,7 +52,7 @@
                         </tr>
                     </table>
                 </div>
-           </div>
+            </div>
         </div>
     </div>
 </div>

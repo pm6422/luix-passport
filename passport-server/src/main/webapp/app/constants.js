@@ -6,6 +6,7 @@
         .module('smartcloudserviceApp')
         .constant('APP_NAME', 'PassportServer')
         .constant('VERSION', '1.0.0')
+        .constant('COMPANY_NAME', '义语智能科技（上海）有限公司')
         .constant('PAGINATION_CONSTANTS', {
             'itemsPerPage': 10
          })

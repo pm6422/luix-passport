@@ -1041,7 +1041,8 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
             }
         })
         .state('security.oauth2-client-list', {
-            url: '/oauth2-client-list?page&sort&clientId', /** The stateParam name 'clientId' cannot be identical to the stateParam name 'id' of view or edit state */
+            url: '/oauth2-client-list?page&sort&clientId',
+            /** The stateParam name 'clientId' cannot be identical to the stateParam name 'id' of view or edit state */
             views: {
                 'content@': {
                     templateUrl: 'app/views/admin/oauth2-client/oauth2-client-list.html',
@@ -1157,7 +1158,8 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
             }
         })
         .state('security.oauth2-access-token-list', {
-            url: '/oauth2-access-token-list?page&sort&tokenId&clientId&userName&refreshToken', /** The stateParam name 'tokenId' cannot be identical to the stateParam name 'id' of view or edit state */
+            url: '/oauth2-access-token-list?page&sort&tokenId&clientId&userName&refreshToken',
+            /** The stateParam name 'tokenId' cannot be identical to the stateParam name 'id' of view or edit state */
             views: {
                 'content@': {
                     templateUrl: 'app/views/admin/oauth2-access-token/oauth2-access-token-list.html',
@@ -1216,7 +1218,8 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
             }
         })
         .state('security.oauth2-refresh-token-list', {
-            url: '/oauth2-refresh-token-list?page&sort&tokenId&clientId&userName', /** The stateParam name 'tokenId' cannot be identical to the stateParam name 'id' of view or edit state */
+            url: '/oauth2-refresh-token-list?page&sort&tokenId&clientId&userName',
+            /** The stateParam name 'tokenId' cannot be identical to the stateParam name 'id' of view or edit state */
             views: {
                 'content@': {
                     templateUrl: 'app/views/admin/oauth2-refresh-token/oauth2-refresh-token-list.html',
@@ -1274,7 +1277,8 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
             }
         })
         .state('security.oauth2-approval-list', {
-            url: '/oauth2-approval-list?page&sort&approvalId&clientId&userName', /** The stateParam name 'approvalId' cannot be identical to the stateParam name 'id' of view or edit state */
+            url: '/oauth2-approval-list?page&sort&approvalId&clientId&userName',
+            /** The stateParam name 'approvalId' cannot be identical to the stateParam name 'id' of view or edit state */
             views: {
                 'content@': {
                     templateUrl: 'app/views/admin/oauth2-approval/oauth2-approval-list.html',
@@ -1350,7 +1354,7 @@ function pagerConfig(uibPagerConfig, PAGINATION_CONSTANTS) {
 function httpConfig($urlRouterProvider, $httpProvider, httpRequestInterceptorCacheBusterProvider, $urlMatcherFactoryProvider) {
     //Cache everything except rest api requests
     httpRequestInterceptorCacheBusterProvider.setMatchlist([/.*api.*/, /.*protected.*/], true);
-    
+
     $httpProvider.interceptors.push('alertErrorHandlerInterceptor');
     $httpProvider.interceptors.push('authExpiredInterceptor');
     $httpProvider.interceptors.push('authInterceptor');

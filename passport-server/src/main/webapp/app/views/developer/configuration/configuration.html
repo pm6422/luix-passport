@@ -19,28 +19,32 @@
             <div class="ibox">
                 <div class="ibox-content">
                     <label ng-hide="filteredConfig.length == 0">Spring configuration</label>
-                    <table class="table table-condensed table-striped table-bordered table-responsive" style="table-layout:fixed" ng-hide="filteredConfig.length == 0">
+                    <table class="table table-condensed table-striped table-bordered table-responsive"
+                           style="table-layout:fixed" ng-hide="filteredConfig.length == 0">
                         <thead>
-                            <tr>
-                                <th ng-click="predicate = 'prefix'; reverse=!reverse" class="col-sm-4">Prefix</th>
-                                <th class="col-sm-8">Properties</th>
-                            </tr>
+                        <tr>
+                            <th ng-click="predicate = 'prefix'; reverse=!reverse" class="col-sm-4">Prefix</th>
+                            <th class="col-sm-8">Properties</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="entry in filteredConfig = (vm.configuration | filter:filter | orderBy:predicate:reverse)">
-                                <td>{{entry.prefix}}</td>
-                                <td>
-                                    <div class="row" ng-repeat="(key, value) in entry.properties">
-                                        <div class="col-md-4">{{key}}</div>
-                                        <div class="col-md-8"><span class="pull-right label label-primary break">{{value}}</span></div>
+                        <tr ng-repeat="entry in filteredConfig = (vm.configuration | filter:filter | orderBy:predicate:reverse)">
+                            <td>{{entry.prefix}}</td>
+                            <td>
+                                <div class="row" ng-repeat="(key, value) in entry.properties">
+                                    <div class="col-md-4">{{key}}</div>
+                                    <div class="col-md-8">
+                                        <span class="pull-right label label-primary break">{{value}}</span>
                                     </div>
-                                </td>
-                            </tr>
+                                </div>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
                     <div ng-repeat="(key, value) in vm.allConfiguration">
                         <label ng-hide="filtered.length == 0"><span>{{key}}</span></label>
-                        <table class="table table-condensed table-striped table-bordered table-responsive" style="table-layout:fixed" ng-hide="filtered.length == 0">
+                        <table class="table table-condensed table-striped table-bordered table-responsive"
+                               style="table-layout:fixed" ng-hide="filtered.length == 0">
                             <thead>
                                 <tr>
                                     <th class="col-sm-4">Property</th>
@@ -50,7 +54,9 @@
                             <tbody>
                                 <tr ng-repeat="item in filtered = (value | filter:filter)">
                                     <td class="break">{{item.key}}</td>
-                                    <td class="break"><span class="pull-right label label-primary break">{{item.val}}</span></td>
+                                    <td class="break">
+                                        <span class="pull-right label label-primary break">{{item.val}}</span>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
