@@ -9,9 +9,10 @@
         </div>
         <form role="search" class="navbar-form-custom" autocomplete="off">
             <div class="form-group">
-                <input type="text" id="top-search" name="top-search" placeholder="{{ 'SEARCH' | translate }}" 
-                class="form-control" ng-model="main.selectedLink" uib-typeahead="item as item.adminMenuChineseText for item in main.links | filter:$viewValue | limitTo:5"  
-                typeahead-on-select="main.selectLink($item, $model, $label, $event)">
+                <input type="text" id="top-search" name="top-search" placeholder="{{ 'SEARCH' | translate }}"
+                       class="form-control" ng-model="main.selectedLink"
+                       uib-typeahead="item as item.label for item in main.links | filter:$viewValue | limitTo:5"
+                       typeahead-on-select="main.selectLink($item, $model, $label, $event)">
             </div>
         </form>
         <ul class="nav navbar-top-links navbar-right">

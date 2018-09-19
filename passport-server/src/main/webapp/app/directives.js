@@ -502,7 +502,7 @@ function passwordStrengthBarDirective() {
  *  item-checked-changed：checkbox选中状态改变回调函数
  *  can-checked：是否显示checkbox多选框
  * 使用示例
- * <tree-view tree-data="allMenus" text-field="adminMenuChineseText" value-field='adminMenuId' check-field="check" children-field="subItems" item-clicked="itemClicked($item)" item-checked-changed="itemCheckedChanged($item)" can-checked="true" ></tree-view>
+ * <tree-view tree-data="allMenus" text-field="label" value-field='adminMenuId' check-field="check" children-field="children" item-clicked="itemClicked($item)" item-checked-changed="itemCheckedChanged($item)" can-checked="true" ></tree-view>
  * 树形模板
  *<script type="text/ng-template" id="/treeView.html">
         <ul class="tree-view">

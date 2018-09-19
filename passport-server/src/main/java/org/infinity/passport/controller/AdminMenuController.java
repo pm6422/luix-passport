@@ -159,7 +159,7 @@ public class AdminMenuController {
                 String[] lineParts = line.split("\t");
 
                 AdminMenu entity = new AdminMenu(lineParts[0], lineParts[1], lineParts[2],
-                        Integer.parseInt(lineParts[3]), lineParts[4], Integer.parseInt(lineParts[5]), null, null);
+                        Integer.parseInt(lineParts[3]), lineParts[4], Integer.parseInt(lineParts[5]), null);
                 list.add(entity);
             }
         }

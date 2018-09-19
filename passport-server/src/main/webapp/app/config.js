@@ -974,12 +974,12 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                     resolve: {
                         entity: {
                             id: null,
-                            adminMenuName: null,
-                            adminMenuChineseText: null,
+                            name: null,
+                            label: null,
                             level: null,
-                            link: null,
+                            url: null,
                             sequence: null,
-                            parentMenuId: null,
+                            parentId: null,
                             appName: null
                         }
                     }

@@ -20,7 +20,6 @@ import java.io.Serializable;
 public class AdminMenu extends AbstractAuditableDomain implements Serializable {
 
     private static final long   serialVersionUID = 1L;
-    public static final  String ROOT_PATH        = "ROOT";
     public static final  String FIELD_LEVEL      = "level";
     public static final  String FIELD_SEQUENCE   = "sequence";
 
@@ -41,7 +40,6 @@ public class AdminMenu extends AbstractAuditableDomain implements Serializable {
     @Field(FIELD_SEQUENCE)
     private Integer sequence;
     private String  parentId;
-    private String  parentNamePath;
 
     public AdminMenu() {
         super();
@@ -57,10 +55,9 @@ public class AdminMenu extends AbstractAuditableDomain implements Serializable {
      * @param url
      * @param sequence
      * @param parentId
-     * @param parentNamePath
      */
     public AdminMenu(String appName, String name, String label, Integer level, String url,
-                     Integer sequence, String parentId, String parentNamePath) {
+                     Integer sequence, String parentId) {
         super();
         this.appName = appName;
         this.name = name;
@@ -69,7 +66,6 @@ public class AdminMenu extends AbstractAuditableDomain implements Serializable {
         this.url = url;
         this.sequence = sequence;
         this.parentId = parentId;
-        this.parentNamePath = parentNamePath;
     }
 
     public String getId() {
@@ -136,14 +132,6 @@ public class AdminMenu extends AbstractAuditableDomain implements Serializable {
         this.parentId = parentId;
     }
 
-    public String getParentNamePath() {
-        return parentNamePath;
-    }
-
-    public void setParentNamePath(String parentNamePath) {
-        this.parentNamePath = parentNamePath;
-    }
-
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -168,9 +156,7 @@ public class AdminMenu extends AbstractAuditableDomain implements Serializable {
                 && (this.getSequence() == null ? other.getSequence() == null
                 : this.getSequence().equals(other.getSequence()))
                 && (this.getParentId() == null ? other.getParentId() == null
-                : this.getParentId().equals(other.getParentId()))
-                && (this.getParentNamePath() == null ? other.getParentNamePath() == null
-                : this.getParentNamePath().equals(other.getParentNamePath()));
+                : this.getParentId().equals(other.getParentId()));
     }
 
     @Override
@@ -185,7 +171,6 @@ public class AdminMenu extends AbstractAuditableDomain implements Serializable {
         result = prime * result + ((getUrl() == null) ? 0 : getUrl().hashCode());
         result = prime * result + ((getSequence() == null) ? 0 : getSequence().hashCode());
         result = prime * result + ((getParentId() == null) ? 0 : getParentId().hashCode());
-        result = prime * result + ((getParentNamePath() == null) ? 0 : getParentNamePath().hashCode());
         return result;
     }
 

@@ -119,6 +119,4 @@ public class AdminMenuServiceImpl implements AdminMenuService {
         }
         adminMenuRepository.saveAll(linkedList);
     }
-
-
 }

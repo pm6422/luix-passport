@@ -37,8 +37,6 @@ public class AdminMenuDTO extends AbstractAuditableDomain implements Serializabl
     private Integer sequence;
     @ApiModelProperty("父菜单ID")
     private String  parentId;
-    @ApiModelProperty("父菜单路径")
-    private String  parentNamePath;
     @ApiModelProperty("是否选中")
     private boolean checked;
 
@@ -46,7 +44,7 @@ public class AdminMenuDTO extends AbstractAuditableDomain implements Serializabl
     }
 
     public AdminMenuDTO(String id, String appName, String name, String label, Integer level,
-                        String url, Integer sequence, String parentId, String parentNamePath, boolean checked) {
+                        String url, Integer sequence, String parentId, boolean checked) {
         super();
         this.id = id;
         this.appName = appName;
@@ -56,7 +54,6 @@ public class AdminMenuDTO extends AbstractAuditableDomain implements Serializabl
         this.url = url;
         this.sequence = sequence;
         this.parentId = parentId;
-        this.parentNamePath = parentNamePath;
         this.checked = checked;
     }
 
@@ -124,14 +121,6 @@ public class AdminMenuDTO extends AbstractAuditableDomain implements Serializabl
         this.level = level;
     }
 
-    public String getParentNamePath() {
-        return parentNamePath;
-    }
-
-    public void setParentNamePath(String parentNamePath) {
-        this.parentNamePath = parentNamePath;
-    }
-
     public boolean isChecked() {
         return checked;
     }
@@ -157,7 +146,6 @@ public class AdminMenuDTO extends AbstractAuditableDomain implements Serializabl
                 ", url='" + url + '\'' +
                 ", sequence=" + sequence +
                 ", parentId='" + parentId + '\'' +
-                ", parentNamePath='" + parentNamePath + '\'' +
                 ", checked=" + checked +
                 '}';
     }
