@@ -98,7 +98,7 @@ function MainController($http, $scope, $state, AuthenticationService, PrincipalS
     }
 
     function selectLink($item, $model, $label, $event) {
-        $state.go(main.selectedLink.link);
+        $state.go(main.selectedLink.url);
     }
 }
 /**
