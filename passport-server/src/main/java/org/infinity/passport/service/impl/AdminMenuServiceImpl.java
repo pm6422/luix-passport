@@ -54,16 +54,12 @@ public class AdminMenuServiceImpl implements AdminMenuService {
     }
 
     private List<MenuTreeNode> groupAdminMenuDTO(List<AdminMenuDTO> menus) {
-        MenuTree tree = new MenuTree();
-        menus.forEach(menu -> tree.insert(menu.asNode()));
-        tree.sort();
+        MenuTree tree = new MenuTree(menus.stream().map(menu -> menu.asNode()).collect(Collectors.toList()));
         return tree.getChildren();
     }
 
     private List<MenuTreeNode> groupAdminMenu(List<AdminMenu> menus) {
-        MenuTree tree = new MenuTree();
-        menus.forEach(menu -> tree.insert(menu.asNode()));
-        tree.sort();
+        MenuTree tree = new MenuTree(menus.stream().map(menu -> menu.asNode()).collect(Collectors.toList()));
         return tree.getChildren();
     }
 
