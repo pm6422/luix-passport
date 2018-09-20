@@ -20,13 +20,13 @@ public class DatabaseInitialSetup {
 
     private static final String APP_NAME = "PassportServer";
 
-    @ChangeSet(order = "01", author = "Louis", id = "addApps")
+    @ChangeSet(order = "01", author = "Louis", id = "addApps", runAlways = true)
     public void addApps(MongoTemplate mongoTemplate) {
         App app = new App(APP_NAME, true);
         mongoTemplate.save(app);
     }
 
-    @ChangeSet(order = "02", author = "Louis", id = "addAuthorities")
+    @ChangeSet(order = "02", author = "Louis", id = "addAuthorities", runAlways = true)
     public void addAuthorities(MongoTemplate mongoTemplate) {
         mongoTemplate.save(new Authority(Authority.USER, true, true));
         mongoTemplate.save(new Authority(Authority.ADMIN, true, true));
@@ -39,7 +39,7 @@ public class DatabaseInitialSetup {
         mongoTemplate.save(new AppAuthority(APP_NAME, Authority.ANONYMOUS));
     }
 
-    @ChangeSet(order = "03", author = "Louis", id = "addUserAndAuthories")
+    @ChangeSet(order = "03", author = "Louis", id = "addUserAndAuthories", runAlways = true)
     public void addUserAndAuthories(MongoTemplate mongoTemplate) {
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         // Creates 'user' user and corresponding authorities
@@ -123,7 +123,7 @@ public class DatabaseInitialSetup {
         mongoTemplate.save(new UserAuthority(developerRoleUser.getId(), Authority.DEVELOPER));
     }
 
-    @ChangeSet(order = "04", author = "Louis", id = "addAuthorityAdminMenu")
+    @ChangeSet(order = "04", author = "Louis", id = "addAuthorityAdminMenu", runAlways = true)
     public void addAuthorityAdminMenu(MongoTemplate mongoTemplate) {
 
         AdminMenu userAuthority = new AdminMenu(APP_NAME, "user-authority", "用户权限", 1, "user-authority", 100, null);
@@ -202,7 +202,7 @@ public class DatabaseInitialSetup {
         mongoTemplate.save(AuthorityAdminMenu.of(Authority.ADMIN, oAuth2ApprovalDetails.getId()));
     }
 
-    @ChangeSet(order = "05", author = "Louis", id = "addOAuth2ClientDetails")
+    @ChangeSet(order = "05", author = "Louis", id = "addOAuth2ClientDetails", runAlways = true)
     public void addOAuth2ClientDetails(MongoTemplate mongoTemplate) {
         MongoOAuth2ClientDetails oAuth2ClientDetails = new MongoOAuth2ClientDetails();
         oAuth2ClientDetails.setClientId(MongoOAuth2ClientDetails.INTERNAL_CLIENT_ID);
