@@ -53,6 +53,8 @@ import javax.servlet.http.HttpSession;
  * https://segmentfault.com/a/1190000012309216
  * https://alexbilbie.com/guide-to-oauth-2-grants/
  * https://github.com/keets2012/Auth-service
+ * https://aaronparecki.com/oauth-2-simplified/
+ * https://developers.google.com/identity/protocols/OAuth2
  */
 @Configuration
 public class UaaConfiguration {

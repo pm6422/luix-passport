@@ -8723,3 +8723,144 @@ body.md-skin {
     margin: 0;
   }
 }
+
+/* Sections
+------------------------- */
+section p {
+    color: #aeaeae;
+    font-size: 13px;
+}
+
+.services {
+    padding-top: 60px;
+}
+
+.services h2 {
+    font-size: 20px;
+    letter-spacing: -1px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.features-block {
+    margin-top: 40px;
+}
+
+.features-text {
+    margin-top: 40px;
+}
+
+.features small {
+    color: #1ab394;
+}
+
+.features h2 {
+    font-size: 18px;
+    margin-top: 5px;
+}
+
+.features-text-alone {
+    margin: 40px 0;
+}
+
+.features-text-alone h1 {
+    font-weight: 200;
+}
+
+.features-icon {
+    color: #1ab394;
+    font-size: 40px;
+}
+
+.navy-section {
+    margin-top: 60px;
+    background: #1ab394;
+    color: #fff;
+    padding: 20px 0;
+}
+
+.gray-section {
+    background: #f4f4f4;
+    margin-top: 60px;
+}
+
+.team-member {
+    text-align: center;
+}
+
+.team-member img {
+    margin: auto;
+}
+
+.social-icon a {
+    background: #1ab394;
+    color: #fff;
+    padding: 4px 8px;
+    height: 28px;
+    width: 28px;
+    display: block;
+    border-radius: 50px;
+}
+
+.social-icon a:hover {
+    background: #17a185;
+}
+
+.img-small {
+    height: 88px;
+    width: 88px;
+}
+
+.pricing-plan {
+    margin: 20px 30px 0 30px;
+    border-radius: 4px;
+}
+
+.pricing-plan.selected {
+    transform: scale(1.1);
+    background: #f4f4f4;
+}
+
+.pricing-plan li {
+    padding: 10px 16px;
+    border-top: 1px solid #e7eaec;
+    text-align: center;
+    color: #aeaeae;
+}
+
+.pricing-plan .pricing-price span {
+    font-weight: 700;
+    color: #1ab394;
+}
+
+li.pricing-desc {
+    font-size: 13px;
+    border-top: none;
+    padding: 20px 16px;
+}
+
+li.pricing-title {
+    background: #1ab394;
+    color: #fff;
+    padding: 10px;
+    border-radius: 4px 4px 0 0;
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.medium-icon {
+    font-size: 56px;
+}
+
+.features .medium-icon {
+    color: #1ab394;
+}
+
+/* Contact
+------------------------- */
+.contact {
+    background-image: url('../img/landing/world_map.png');
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    margin-top: 60px;
+}

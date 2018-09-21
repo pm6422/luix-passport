@@ -104,7 +104,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
             controllerAs: 'vm',
             data: {
                 pageTitle: '登录',
-                specialClass: 'gray-bg login-background-img'
+                specialClass: 'gray-bg'
             }
         })
         .state('register', {
