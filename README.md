@@ -25,6 +25,7 @@ mvn
 ```
 cd passport-client
 mvn
+```
 
 
 
