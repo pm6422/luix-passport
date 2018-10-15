@@ -15,5 +15,16 @@ login page and using Mongo DB as datastore.
 
 ## Setup
 
+## Run Passport Server
+```
+cd passport-server
+mvn
+```
+
+## Run Passport Client
+```
+cd passport-client
+mvn
+
 
 
