@@ -39,7 +39,7 @@ mvn
 
 ## 环境要求(Requirements)
 
-- Java 1.8+
+- Java 8+
 - Maven 3.0+
 
 ## 主要依赖(Major dependencies)
