@@ -12,8 +12,7 @@ public class MenuTreeNode extends AdminMenuDTO implements Serializable {
     private              List<MenuTreeNode> children         = new ArrayList<>();
 
     public MenuTreeNode() {
-        this(null, null, null, null, null, null,
-                null, null, false, new ArrayList<>());
+        super();
     }
 
     private MenuTreeNode(String id, String appName, String name, String label, Integer level, String url,
