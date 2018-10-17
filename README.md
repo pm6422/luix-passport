@@ -13,7 +13,7 @@
 
 本项目采用嵌入式MongoDB，原因是本例用作Demo，便于安装应用和还原数据库。大家在实际应用中可以替换成自己的MongoDB。
 
-另外本项目采用国外最新的技术栈，可以用作前后端学习资料。
+另外本项目采用国外最新的技术栈，也可以用作前后端学习资料。
 
 This projects provides you a basic auth2 server and client configuration powered by Spring Boot 2 with the ability to plug custom 
 login page and using Mongo DB as datastore.
