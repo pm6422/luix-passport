@@ -26,9 +26,9 @@ import java.util.Date;
 
 @SpringBootApplication
 @EnableConfigurationProperties({ ApplicationProperties.class })
-public class PassportLauncher implements WebMvcConfigurer {
+public class PassportServerLauncher implements WebMvcConfigurer {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(PassportLauncher.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PassportServerLauncher.class);
 
     @Autowired
     private Environment         env;
@@ -41,7 +41,7 @@ public class PassportLauncher implements WebMvcConfigurer {
      * @throws IOException 
      */
     public static void main(String[] args) throws IOException {
-        SpringApplication app = new SpringApplication(PassportLauncher.class);
+        SpringApplication app = new SpringApplication(PassportServerLauncher.class);
         Environment env = app.run(args).getEnvironment();
         printServerInfo(env);
     }
