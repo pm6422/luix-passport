@@ -1,6 +1,6 @@
 # Passport
 ## 概述(Overview)
-本项目是以SpringBoot2为基础的标准OAuth2服务端程序，使用本项目可以快速创建企业内部的OAuth2服务器。其他基于Web，手机App客户端可以使用本服务端做统一安全认证。
+本项目是以SpringBoot2为基础的标准OAuth2服务端程序，使用本项目可以快速创建企业内部的OAuth2服务器。其他Web或手机客户端可以使用本服务端做统一安全认证。
 该服务端提供authorization_code，password，client_credentials，implicit等授权模式，适用于各种不同的使用场景。
 
 本系统支持分布式多节点部署，分布式环境下session共享并没有使用常见的redis方案，而是采用了MongoDB存储。其优点是方便查看和管理session信息。
