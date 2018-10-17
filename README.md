@@ -15,7 +15,7 @@
 
 另外本项目采用国外最新的技术栈，也可以用作前后端学习资料。
 
-This projects provides you a basic auth2 server and client configuration powered by Spring Boot 2 with the ability to plug custom 
+This project provides you a basic auth2 server and client configuration powered by Spring Boot 2 with the ability to plug custom 
 login page and using Mongo DB as datastore.
 
 ## 应用运行(Run)
