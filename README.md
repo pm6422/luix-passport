@@ -1,5 +1,5 @@
 # Passport
-
+![image](https://raw.githubusercontent.com/pm6422/passport/master/passport-server/src/main/webapp/content/img/oauth_logo.png)
 ## 概述(Overview)
 本项目是以SpringBoot2为基础的标准OAuth2服务端程序，使用本项目可以快速创建公司内部的OAuth2服务器。其他基于Web，手机App客户端可以使用本服务端做统一安全认证。
 该服务端提供authorization_code，password，client_credentials，implicit等授权模式，适用于各种不同的使用场景。
@@ -19,21 +19,8 @@
 This projects provides you a basic auth2 server and client configuration powered by Spring Boot 2 with the ability to plug custom 
 login page and using Mongo DB as datastore.
 
-## 环境要求(Requirements)
-
-- Java 1.8+
-- Maven 3.0+
-
-## 主要依赖(Major dependencies)
-- SpringBoot 2.0.4
-- Swagger and Springfox
-- Spring boot starter actuator
-- Spring boot starter data mongodb
-- Spring boot starter security
-- Spring security oauth2
-
 ## 应用运行(Run)
-本项目包含服务器端(passport-server)和客户端(passport-client)两个子模块。由于本项目采用嵌入式内存数据库，不需要依赖外部数据库，因此可以做到==不修改一行代码就可以完成应用启动==。
+本项目包含服务器端(passport-server)和客户端(passport-client)两个子模块。由于本项目采用嵌入式内存数据库，不需要依赖外部数据库，因此可以做到**不修改一行代码就可以完成应用启动**。
 
 另外应用在第一次启动过程中会自动下载嵌入式数据库并自动完成安装，无需人工介入。下载过程中会使用到国外AWS服务器，有可能有部分人下载比较慢，请耐心等待，有条件的可以翻墙。
 
@@ -50,6 +37,29 @@ mvn
 cd passport-client
 mvn
 ```
+
+## 环境要求(Requirements)
+
+- Java 1.8+
+- Maven 3.0+
+
+## 主要依赖(Major dependencies)
+- Spring Boot 2.0.4
+- Swagger and Springfox
+- Spring boot starter actuator
+- Spring boot starter data mongodb
+- Spring boot starter security
+- Spring security oauth2
+
+## 系统截图(Screenshots)
+![image](https://raw.githubusercontent.com/pm6422/passport/master/passport-server/images/01.png)
+![image](https://raw.githubusercontent.com/pm6422/passport/master/passport-server/images/02.png)
+![image](https://raw.githubusercontent.com/pm6422/passport/master/passport-server/images/03.png)
+![image](https://raw.githubusercontent.com/pm6422/passport/master/passport-server/images/04.png)
+![image](https://raw.githubusercontent.com/pm6422/passport/master/passport-server/images/05.png)
+![image](https://raw.githubusercontent.com/pm6422/passport/master/passport-server/images/06.png)
+![image](https://raw.githubusercontent.com/pm6422/passport/master/passport-server/images/07.png)
+![image](https://raw.githubusercontent.com/pm6422/passport/master/passport-server/images/08.png)
 
 
 
