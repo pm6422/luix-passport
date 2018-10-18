@@ -16,7 +16,7 @@ import java.util.Set;
 @Repository
 public interface AdminMenuRepository extends MongoRepository<AdminMenu, String> {
 
-    Optional<AdminMenu> findOneByAppNameAndSequence(String appName, Integer sequence);
+    Optional<AdminMenu> findOneByAppNameAndLevelAndSequence(String appName, Integer level, Integer sequence);
 
     List<AdminMenu> findByAppNameAndIdIn(String appName, Set<String> ids);
 

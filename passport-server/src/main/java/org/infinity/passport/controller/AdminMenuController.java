@@ -60,7 +60,7 @@ public class AdminMenuController {
     public ResponseEntity<Void> create(
             @ApiParam(value = "菜单信息", required = true) @Valid @RequestBody AdminMenuDTO dto) {
         LOGGER.debug("REST request to create admin menu: {}", dto);
-        adminMenuRepository.findOneByAppNameAndSequence(dto.getAppName(), dto.getSequence())
+        adminMenuRepository.findOneByAppNameAndLevelAndSequence(dto.getAppName(), dto.getLevel(), dto.getSequence())
                 .ifPresent((existingEntity) -> {
                     throw new FieldValidationException("adminMenuDTO", "appName+sequence",
                             MessageFormat.format("appName: {0}, sequence: {1}", dto.getAppName(), dto.getSequence()),
