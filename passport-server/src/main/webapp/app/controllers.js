@@ -2019,7 +2019,7 @@ function AdminMenuDialogController($state, $stateParams, $uibModalInstance, Admi
     function save() {
         vm.isSaving = true;
         vm.entity.level = 1;
-        if (vm.entity.parentMenuId) {
+        if (vm.entity.parentId) {
             vm.entity.level = 2;
         }
         if (vm.mode == 'edit') {
