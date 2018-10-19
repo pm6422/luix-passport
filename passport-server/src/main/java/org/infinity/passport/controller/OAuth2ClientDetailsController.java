@@ -84,11 +84,12 @@ public class OAuth2ClientDetailsController {
     public ResponseEntity<List<MongoOAuth2ClientDetailsDTO>> find(Pageable pageable,
                                                                   @ApiParam(value = "客户端ID", required = false) @RequestParam(value = "clientId", required = false) String clientId)
             throws URISyntaxException {
-        Query query = Query.query(Criteria.where("clientId").is(clientId)).with(pageable);// Note: the field name
+        Query query = Query.query(Criteria.where("clientId").is(clientId));
+        long totalCount = mongoTemplate.count(query, MongoOAuth2ClientDetails.class);
+        query.with(pageable);// Note: the field name
         Page<MongoOAuth2ClientDetails> clientDetails = StringUtils.isEmpty(clientId)
                 ? oAuth2ClientDetailsRepository.findAll(pageable)
-                : new PageImpl<MongoOAuth2ClientDetails>(mongoTemplate.find(query, MongoOAuth2ClientDetails.class),
-                pageable, mongoTemplate.count(query, MongoOAuth2ClientDetails.class));
+                : new PageImpl<>(mongoTemplate.find(query, MongoOAuth2ClientDetails.class), pageable, totalCount);
         List<MongoOAuth2ClientDetailsDTO> DTOs = clientDetails.getContent().stream()
                 .map(entity -> entity.asDTO()).collect(Collectors.toList());
         HttpHeaders headers = PaginationUtils.generatePaginationHttpHeaders(clientDetails,

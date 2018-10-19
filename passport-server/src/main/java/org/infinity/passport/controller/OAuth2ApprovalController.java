@@ -66,11 +66,11 @@ public class OAuth2ApprovalController {
         if (StringUtils.isNotEmpty(userName)) {
             query.addCriteria(Criteria.where("userId").is(userName));
         }
-
+        long totalCount = mongoTemplate.count(query, MongoOAuth2Approval.class);
+        query.with(pageable);
         //        oAuth2ApprovalRepository.findAll(Example.of(probe), pageable); I dont know why this statement does not work
         Page<MongoOAuth2Approval> approvals = new PageImpl<MongoOAuth2Approval>(
-                mongoTemplate.find(query, MongoOAuth2Approval.class), pageable,
-                mongoTemplate.count(query, MongoOAuth2Approval.class));
+                mongoTemplate.find(query, MongoOAuth2Approval.class), pageable, totalCount);
 
         List<MongoOAuth2ApprovalDTO> DTOs = approvals.getContent().stream().map(entity -> entity.asDTO())
                 .collect(Collectors.toList());
