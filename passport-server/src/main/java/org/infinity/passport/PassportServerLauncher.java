@@ -25,20 +25,20 @@ import java.util.Arrays;
 import java.util.Date;
 
 @SpringBootApplication
-@EnableConfigurationProperties({ ApplicationProperties.class })
+@EnableConfigurationProperties({ApplicationProperties.class})
 public class PassportServerLauncher implements WebMvcConfigurer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PassportServerLauncher.class);
 
     @Autowired
-    private Environment         env;
+    private Environment env;
 
     /**
      * Entrance method which used to run the application. Spring profiles can be configured with a program arguments
      * --spring.profiles.active=your-active-profile
-     * 
+     *
      * @param args
-     * @throws IOException 
+     * @throws IOException
      */
     public static void main(String[] args) throws IOException {
         SpringApplication app = new SpringApplication(PassportServerLauncher.class);
@@ -54,11 +54,13 @@ public class PassportServerLauncher implements WebMvcConfigurer {
                 env.getProperty("server.port"),
                 StringUtils.defaultString(env.getProperty("server.servlet.context-path")),
                 StringUtils.isEmpty(env.getProperty("server.ssl.key-store")) ? "http" : "https",
-                ApplicationConstants.SERVER_IP, env.getProperty("server.port"),
+                ApplicationConstants.SERVER_IP,
+                env.getProperty("server.port"),
                 StringUtils.defaultString(env.getProperty("server.servlet.context-path")),
                 org.springframework.util.StringUtils.arrayToCommaDelimitedString(env.getActiveProfiles()),
-                env.getProperty("PID"), Charset.defaultCharset(), env.getProperty("LOG_PATH") + "-"
-                        + DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.format(new Date()) + ".log");
+                env.getProperty("PID"),
+                Charset.defaultCharset(),
+                env.getProperty("LOG_PATH") + "-" + DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.format(new Date()) + ".log");
     }
 
     @PostConstruct
@@ -67,9 +69,9 @@ public class PassportServerLauncher implements WebMvcConfigurer {
         Arrays.asList(env.getActiveProfiles()).stream()
                 .filter(activeProfile -> !ArrayUtils.contains(ApplicationConstants.AVAILABLE_PROFILES, activeProfile))
                 .findFirst().ifPresent((activeProfile) -> {
-                    LOGGER.error("Misconfigured application with an illegal profile '{}'!", activeProfile);
-                    System.exit(0);
-                });
+            LOGGER.error("Misconfigured application with an illegal profile '{}'!", activeProfile);
+            System.exit(0);
+        });
     }
 
     @Override
