@@ -18,9 +18,6 @@ https://github.com/pm6422/passport
 
 另外本项目采用国外最新的技术栈，也可以用作前后端学习资料。
 
-This project provides you a basic auth2 server and client configuration powered by Spring Boot 2 with the ability to plug custom 
-login page and using Mongo DB as datastore.
-
 ## 应用运行(Run)
 本项目包含服务器端(passport-server)和客户端(passport-client)两个子模块。由于本项目采用嵌入式内存数据库，不需要依赖外部数据库，因此可以做到**不修改一行代码就可以完成应用启动**。
 
