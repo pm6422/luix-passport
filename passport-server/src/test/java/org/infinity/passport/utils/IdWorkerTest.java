@@ -28,6 +28,7 @@ public class IdWorkerTest {
     @Test
     public void testConcurrency() throws InterruptedException {
         int threadNum = 1000;
+        // 需要将future存储到列表之后然后遍历获取结果，而不是得到一个future就进行get
         List<Future<Long>> futures = new ArrayList<>(threadNum);
         List<Long> results = new ArrayList<>(threadNum);
         IdWorker idWorker = new IdWorker(10, 10);
