@@ -24,7 +24,7 @@ class IdWorkerThread implements Callable<Long> {
     }
 }
 
-public class IdWorkerTest {
+public class IdWorkerThreadSafeTest {
     @Test
     public void testConcurrency() throws InterruptedException {
         int threadNum = 1000;
