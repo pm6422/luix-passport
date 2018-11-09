@@ -8,23 +8,20 @@ import java.util.concurrent.*;
 import java.util.stream.IntStream;
 
 class IdWorkerThread implements Callable<Long> {
-    private IdWorker       idWorker;
-    private CountDownLatch countDownLatch;
+    private IdWorker idWorker;
 
-    public IdWorkerThread(IdWorker idWorker, CountDownLatch countDownLatch) {
+    public IdWorkerThread(IdWorker idWorker) {
         this.idWorker = idWorker;
-        this.countDownLatch = countDownLatch;
     }
 
     @Override
     public Long call() {
-        long l = idWorker.nextId();
-        countDownLatch.countDown();
-        return l;
+        return idWorker.nextId();
     }
 }
 
 public class IdWorkerThreadSafeTest {
+
     @Test
     public void testConcurrency() throws InterruptedException {
         int threadNum = 1000;
@@ -33,12 +30,12 @@ public class IdWorkerThreadSafeTest {
         List<Long> results = new ArrayList<>(threadNum);
         IdWorker idWorker = new IdWorker(10, 10);
         ExecutorService threadPool = Executors.newFixedThreadPool(100);
-        CountDownLatch countDownLatch = new CountDownLatch(threadNum);
         IntStream.range(0, threadNum).forEach(i -> {
-            Future<Long> future = threadPool.submit(new IdWorkerThread(idWorker, countDownLatch));
+            Future<Long> future = threadPool.submit(new IdWorkerThread(idWorker));
             futures.add(future);
         });
-        countDownLatch.await();
+        // shutdown
+        threadPool.shutdown();
         futures.forEach(future -> {
             try {
                 Long result = future.get();
