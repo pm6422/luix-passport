@@ -19,7 +19,7 @@ https://github.com/pm6422/passport
 另外本项目采用国外最新的技术栈，也可以用作前后端学习资料。
 
 ## 应用配置(Configuration)
-同时可以使用外部MongoDB，只需要按照以下三步骤操作即可：
+同时可以使用外部MongoDB，只需要按照以下两步骤操作即可：
 
 1. 配置文件中增加如下配置，配置文件指的是application-XXX.yml。
 ```
@@ -32,33 +32,6 @@ spring:
 2. pom.xml中删除嵌入式Mongo的依赖
 ```
 <dependency>
-    <groupId>com.github.mongobee</groupId>
-    <artifactId>mongobee</artifactId>
-    <version>${mongobee.version}</version>
-    <exclusions>
-        <exclusion>
-            <artifactId>mongo-java-driver</artifactId>
-            <groupId>org.mongodb</groupId>
-        </exclusion>
-        <exclusion>
-            <artifactId>spring-beans</artifactId>
-            <groupId>org.springframework</groupId>
-        </exclusion>
-        <exclusion>
-            <artifactId>spring-context</artifactId>
-            <groupId>org.springframework</groupId>
-        </exclusion>
-        <exclusion>
-            <artifactId>spring-data-mongodb</artifactId>
-            <groupId>org.springframework.data</groupId>
-        </exclusion>
-        <exclusion>
-            <artifactId>slf4j-api</artifactId>
-            <groupId>org.slf4j</groupId>
-        </exclusion>
-    </exclusions>
-</dependency>
-<dependency>
     <groupId>de.flapdoodle.embed</groupId>
     <artifactId>de.flapdoodle.embed.mongo</artifactId>
     <exclusions>
@@ -68,21 +41,6 @@ spring:
         </exclusion>
     </exclusions>
 </dependency>
-```
-3. MongoConfiguration.java文件删除mongobee代码：
-```
-@Bean
-public Mongobee mongobee(MongoClient mongoClient, MongoTemplate mongoTemplate) {
-    LOGGER.debug("Configuring Mongobee");
-    Mongobee mongobee = new Mongobee(mongoClient);
-    // For embedded mongo
-    mongobee.setDbName(mongoClient.listDatabaseNames().first());
-    mongobee.setMongoTemplate(mongoTemplate);
-    mongobee.setChangeLogsScanPackage(DatabaseInitialSetup.class.getPackage().getName());
-    mongobee.setEnabled(true);
-    LOGGER.debug("Configured Mongobee");
-    return mongobee;
-}
 ```
 
 ## 应用运行(Run)
