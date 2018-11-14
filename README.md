@@ -18,7 +18,7 @@ https://github.com/pm6422/passport
 
 另外本项目采用国外最新的技术栈，也可以用作前后端学习资料。
 
-## 应用配置
+## 应用配置(Configuration)
 同时可以使用外部MongoDB，只需要按照以下三步骤操作即可：
 
 1. 配置文件中增加如下配置，配置文件指的是application-XXX.yml。
