@@ -18,6 +18,73 @@ https://github.com/pm6422/passport
 
 另外本项目采用国外最新的技术栈，也可以用作前后端学习资料。
 
+## 应用配置
+同时可以使用外部MongoDB，只需要按照以下三步骤操作即可：
+
+1. 配置文件中只需要增加如下配置，配置文件指的是application-XXX.yml。
+```
+spring:
+    data:
+        mongodb:
+            database: dbname
+            uri: mongodb://username:passport@ip:port/dbname
+```
+2. pom.xml中删除嵌入式Mongo的依赖
+```
+<dependency>
+    <groupId>com.github.mongobee</groupId>
+    <artifactId>mongobee</artifactId>
+    <version>${mongobee.version}</version>
+    <exclusions>
+        <exclusion>
+            <artifactId>mongo-java-driver</artifactId>
+            <groupId>org.mongodb</groupId>
+        </exclusion>
+        <exclusion>
+            <artifactId>spring-beans</artifactId>
+            <groupId>org.springframework</groupId>
+        </exclusion>
+        <exclusion>
+            <artifactId>spring-context</artifactId>
+            <groupId>org.springframework</groupId>
+        </exclusion>
+        <exclusion>
+            <artifactId>spring-data-mongodb</artifactId>
+            <groupId>org.springframework.data</groupId>
+        </exclusion>
+        <exclusion>
+            <artifactId>slf4j-api</artifactId>
+            <groupId>org.slf4j</groupId>
+        </exclusion>
+    </exclusions>
+</dependency>
+<dependency>
+    <groupId>de.flapdoodle.embed</groupId>
+    <artifactId>de.flapdoodle.embed.mongo</artifactId>
+    <exclusions>
+        <exclusion>
+            <artifactId>slf4j-api</artifactId>
+            <groupId>org.slf4j</groupId>
+        </exclusion>
+    </exclusions>
+</dependency>
+```
+3. MongoConfiguration.java文件删除mongobee代码：
+```
+@Bean
+public Mongobee mongobee(MongoClient mongoClient, MongoTemplate mongoTemplate) {
+    LOGGER.debug("Configuring Mongobee");
+    Mongobee mongobee = new Mongobee(mongoClient);
+    // For embedded mongo
+    mongobee.setDbName(mongoClient.listDatabaseNames().first());
+    mongobee.setMongoTemplate(mongoTemplate);
+    mongobee.setChangeLogsScanPackage(DatabaseInitialSetup.class.getPackage().getName());
+    mongobee.setEnabled(true);
+    LOGGER.debug("Configured Mongobee");
+    return mongobee;
+}
+```
+
 ## 应用运行(Run)
 本项目包含服务器端(passport-server)和客户端(passport-client)两个子模块。由于本项目采用嵌入式内存数据库，不需要依赖外部数据库，因此可以做到**不修改一行代码就可以完成应用启动**。
 
