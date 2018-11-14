@@ -21,7 +21,7 @@ https://github.com/pm6422/passport
 ## 应用配置
 同时可以使用外部MongoDB，只需要按照以下三步骤操作即可：
 
-1. 配置文件中只需要增加如下配置，配置文件指的是application-XXX.yml。
+1. 配置文件中增加如下配置，配置文件指的是application-XXX.yml。
 ```
 spring:
     data:
