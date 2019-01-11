@@ -2,7 +2,7 @@ package org.infinity.passport.controller;
 
 import com.codahale.metrics.annotation.Timed;
 import io.swagger.annotations.*;
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.infinity.passport.domain.AdminMenu;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.AuthorityAdminMenu;

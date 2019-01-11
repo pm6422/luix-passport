@@ -1,7 +1,7 @@
 package org.infinity.passport.service.impl;
 
 import com.codahale.metrics.annotation.Timed;
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.infinity.passport.domain.AdminMenu;
 import org.infinity.passport.dto.AdminMenuDTO;
 import org.infinity.passport.entity.MenuTree;

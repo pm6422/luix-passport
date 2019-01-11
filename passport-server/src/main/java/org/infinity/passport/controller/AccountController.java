@@ -3,7 +3,7 @@ package org.infinity.passport.controller;
 import com.codahale.metrics.annotation.Timed;
 import com.google.common.collect.ImmutableMap;
 import io.swagger.annotations.*;
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.User;
