@@ -148,7 +148,7 @@
         <dependency>
             <groupId>de.javakaffee</groupId>
             <artifactId>kryo-serializers</artifactId>
-            <version>0.37</version>
+            <version>0.43</version>
         </dependency>
         <!-- metrics -->
         <dependency>
