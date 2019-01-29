@@ -1,12 +1,12 @@
 package org.infinity.passport.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.validator.constraints.Email;
 import org.infinity.passport.domain.base.AbstractAuditableDomain;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;

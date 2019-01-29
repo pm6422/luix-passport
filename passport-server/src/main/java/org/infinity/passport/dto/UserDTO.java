@@ -1,18 +1,16 @@
 package org.infinity.passport.dto;
 
-import java.io.Serializable;
-import java.util.Set;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
-
-import org.hibernate.validator.constraints.Email;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.infinity.passport.domain.User;
 import org.infinity.passport.domain.base.AbstractAuditableDomain;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.util.Set;
 
 /**
  * A DTO representing a user, with his authorities.
