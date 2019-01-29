@@ -34,5 +34,5 @@ public @interface DistributedLockAnnotation {
      *
      * @return
      */
-    boolean requireReleaseLock() default true;
+    boolean requireUnlock() default true;
 }
