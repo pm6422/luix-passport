@@ -15,11 +15,18 @@ public @interface DistributedLockAnnotation {
     String AROUND = "@annotation(" + ApplicationConstants.BASE_PACKAGE + ".lock.annotation.DistributedLockAnnotation)";
 
     /**
-     * Expiration
+     * the maximum time to acquire the lock
      *
      * @return
      */
-    long expiration() default 30;
+    long waitTime() default 1;
+
+    /**
+     * the maximum life time of cache
+     *
+     * @return
+     */
+    long keepAliveTime() default 30;
 
     /**
      * Time Unit
