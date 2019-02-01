@@ -13,6 +13,8 @@ import java.util.Arrays;
 
 /**
  * Aspect for logging execution of service and controller Spring components.
+ * Spring AOP中Aspect的高级用法
+ * https://www.toutiao.com/i6603273843035341316/
  */
 @Aspect
 @Profile("!" + ApplicationConstants.SPRING_PROFILE_NO_AOP_LOGGING)
