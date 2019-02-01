@@ -18,7 +18,7 @@ import static org.springframework.core.annotation.AnnotationUtils.getAnnotation;
  */
 @Aspect
 @Configuration
-public class ExecutionSwitchPointCutConfiguration {
+public class ExecutionSwitchAspect {
 
     @Autowired
     private Environment env;

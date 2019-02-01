@@ -1,7 +1,5 @@
 package org.infinity.passport.config;
 
-import java.util.Arrays;
-
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -12,15 +10,17 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.util.StopWatch;
 
+import java.util.Arrays;
+
 /**
  * Aspect for logging execution of service Spring components.
  */
 @Aspect
 @Profile(ApplicationConstants.SPRING_PROFILE_SERVICE_METRICS)
 @Configuration
-public class ServiceMetricsPointCutConfiguration {
+public class ServiceMetricsAspect {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceMetricsPointCutConfiguration.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceMetricsAspect.class);
 
     @Pointcut("within(" + ApplicationConstants.BASE_PACKAGE + ".service.impl.*)")
     public void servicePointcut() {
