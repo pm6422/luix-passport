@@ -57,7 +57,8 @@ public class TestControllerTest {
         });
 
         threadPool.shutdown();
-        if (threadPool.awaitTermination(2, TimeUnit.SECONDS)) {
+        // Blocks until all tasks have completed execution after a shutdown request
+        if (threadPool.awaitTermination(1, TimeUnit.HOURS)) {
             watch.stop();
             LOGGER.debug("Total: {} s", watch.getTotalTimeMillis() / 1000);
             LOGGER.debug("Mean: {} ms", watch.getTotalTimeMillis() / requestCount);
