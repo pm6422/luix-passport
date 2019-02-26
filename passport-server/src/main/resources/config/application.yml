@@ -111,7 +111,7 @@ application:
         license-url: http://www.apache.org/licenses/LICENSE-2.0.html
         host: 
     ribbon:
-        # comma seperated list of profiles to show a ribbon on the GUI
+        # comma separated list of profiles to show a ribbon on the GUI
         display-on-active-profiles: dev,test,demo,preprod
     user-audit-event:
         enabled: true
