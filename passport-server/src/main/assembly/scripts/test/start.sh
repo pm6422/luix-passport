@@ -7,8 +7,8 @@ cd `dirname $0`
 #------------------------------------------------------------------------------------------------------------
 appDir=../lib
 appName="${project.build.finalName}.${project.packaging}"
-serverPort=${server.port}
-profiles="${mvn.profiles.active}"
+serverPort=${app.server.port}
+profiles="${spring.profiles.active}"
 appStartLog="../start.log"
 appStartedIndicatorText="Application is running"
 
@@ -16,13 +16,27 @@ appStartedIndicatorText="Application is running"
 # Check the existing process
 #------------------------------------------------------------------------------------------------------------
 function checkProcess() {
+    echo "Starting the $appName"
     PIDS=`ps -ef | grep java | grep "$appName" | awk '{print $2}'`
-    
+
     if [ -n "$PIDS" ]; then
         echo "Start failure: The $appName already started!"
         echo "PID: $PIDS"
         exit 1
     fi
+
+    COUNT=0
+    while [ $COUNT -lt 20 ]; do
+        SERVER_PORT_COUNT=`netstat -tln | grep -w $serverPort | wc -l`
+        sync;sync;sync
+        sleep 2
+        sync;sync;sync
+        if [[ $SERVER_PORT_COUNT -lt 1 ]]; then
+            break
+        fi
+        echo "Waiting to stop $((${COUNT}+1)) times..."
+        let COUNT++
+    done
 }
 
 #------------------------------------------------------------------------------------------------------------
@@ -36,15 +50,11 @@ function deleteStartLog() {
 }
 
 #------------------------------------------------------------------------------------------------------------
-# Start the application
+# Run the application
 #------------------------------------------------------------------------------------------------------------
-function startApp() {
-    JAVA_JMX_OPTS=""
-    JAVA_DEBUG_OPTS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
-    JAVA_MEM_OPTS="-XX:+UseG1GC -XX:MaxGCPauseMillis=100 -XX:+ParallelRefProcEnabled -Xss256K"
-    echo -e "Starting the $appName"
-    echo "Starting command: nohup java $JAVA_MEM_OPTS -jar $appDir/$appName --logging.level.ROOT=INFO --spring.profiles.active=$profiles --server.port=$serverPort >> $appStartLog 2>&1 &\n"
-    . /etc/profile
+function runApp() {
+    JAVA_CMD="nohup java -jar $appDir/$appName --logging.level.ROOT=INFO --spring.profiles.active=$profiles --server.port=$serverPort >> $appStartLog 2>&1 &"
+    echo "Command: $JAVA_CMD"
     nohup java $JAVA_MEM_OPTS -jar $appDir/$appName --logging.level.ROOT=INFO --spring.profiles.active=$profiles --server.port=$serverPort >> $appStartLog 2>&1 &
 }
 
@@ -60,6 +70,7 @@ function displayStartLog(){
                     pkill tail
                 fi
         done
+    echo "Started the $appName"
 }
 
 #------------------------------------------------------------------------------------------------------------
@@ -67,5 +78,5 @@ function displayStartLog(){
 #------------------------------------------------------------------------------------------------------------
 checkProcess
 deleteStartLog
-startApp
+runApp
 displayStartLog
