@@ -40,13 +40,10 @@ function checkProcess() {
 }
 
 #------------------------------------------------------------------------------------------------------------
-# Delete start log file
+# Clear or create start log file
 #------------------------------------------------------------------------------------------------------------
-function deleteStartLog() {
-    if [ -f "$appStartLog" ]; then
-        rm -rf "$appStartLog"
-        echo "Deleted start log"
-    fi
+function clearStartLog() {
+    echo "" > $appStartLog
 }
 
 #------------------------------------------------------------------------------------------------------------
@@ -77,6 +74,6 @@ function displayStartLog(){
 # Execute functions
 #------------------------------------------------------------------------------------------------------------
 checkProcess
-deleteStartLog
+clearStartLog
 runApp
 displayStartLog
