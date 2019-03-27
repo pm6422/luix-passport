@@ -35,7 +35,7 @@ function stopApp() {
             echo -e "\nStopped the $appName"
             exit 0
         fi
-        echo -n "Trying to stop $((${COUNT}+1)) times..."
+        echo "Trying to stop $((${COUNT}+1)) times..."
         let COUNT++
     done
 
