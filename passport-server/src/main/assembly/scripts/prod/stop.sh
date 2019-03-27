@@ -32,7 +32,7 @@ function stopApp() {
         sleep 2
         sync;sync;sync
         if [[ -z "$PID" ]]; then
-            echo -e "\nStopped the $appName"
+            echo "Stopped the $appName"
             exit 0
         fi
         echo "Trying to stop $((${COUNT}+1)) times..."
@@ -48,9 +48,9 @@ function stopApp() {
     fi
     PID3=`ps -ef | grep java | grep -v "grep" | grep "$serverPort" | awk '{print $2}'`
     if [[ -z $PID3 ]];then
-        echo -e "\nStopped the $appName"
+        echo "Stopped the $appName"
     else 
-        echo -e "\nFailed to stopped the $appName"
+        echo "Failed to stopped the $appName"
     fi
 
 }
