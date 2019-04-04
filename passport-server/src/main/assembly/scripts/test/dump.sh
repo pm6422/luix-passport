@@ -17,54 +17,54 @@ fi
 
 echo -e "Dumping the $APP_NAME ...\c"
 for PID in $PIDS ; do
-	jstack $PID > $DUMP_DIR/jstack-$PID.dump 2>&1
+	jstack $PID > $DUMP_DIR/jstack-$PID.txt 2>&1
 	echo -e ".\c"
-	jinfo $PID > $DUMP_DIR/jinfo-$PID.dump 2>&1
+	jinfo $PID > $DUMP_DIR/jinfo-$PID.txt 2>&1
 	echo -e ".\c"
-	jstat -gcutil $PID > $DUMP_DIR/jstat-gcutil-$PID.dump 2>&1
+	jstat -gcutil $PID > $DUMP_DIR/jstat-gcutil-$PID.txt 2>&1
 	echo -e ".\c"
-	jstat -gccapacity $PID > $DUMP_DIR/jstat-gccapacity-$PID.dump 2>&1
+	jstat -gccapacity $PID > $DUMP_DIR/jstat-gccapacity-$PID.txt 2>&1
 	echo -e ".\c"
-	jmap $PID > $DUMP_DIR/jmap-$PID.dump 2>&1
+	jmap $PID > $DUMP_DIR/jmap-$PID.txt 2>&1
 	echo -e ".\c"
-	jmap -heap $PID > $DUMP_DIR/jmap-heap-$PID.dump 2>&1
+	jmap -heap $PID > $DUMP_DIR/jmap-heap-$PID.txt 2>&1
 	echo -e ".\c"
-	jmap -histo $PID > $DUMP_DIR/jmap-histo-$PID.dump 2>&1
+	jmap -histo $PID > $DUMP_DIR/jmap-histo-$PID.txt 2>&1
 	echo -e ".\c"
 	if [ -r /usr/sbin/lsof ]; then
-	/usr/sbin/lsof -p $PID > $DUMP_DIR/lsof-$PID.dump
+	/usr/sbin/lsof -p $PID > $DUMP_DIR/lsof-$PID.txt
 	echo -e ".\c"
 	fi
 done
 
 if [ -r /bin/netstat ]; then
-/bin/netstat -an > $DUMP_DIR/netstat.dump 2>&1
+/bin/netstat -an > $DUMP_DIR/netstat.txt 2>&1
 echo -e ".\c"
 fi
 if [ -r /usr/bin/iostat ]; then
-/usr/bin/iostat > $DUMP_DIR/iostat.dump 2>&1
+/usr/bin/iostat > $DUMP_DIR/iostat.txt 2>&1
 echo -e ".\c"
 fi
 if [ -r /usr/bin/mpstat ]; then
-/usr/bin/mpstat > $DUMP_DIR/mpstat.dump 2>&1
+/usr/bin/mpstat > $DUMP_DIR/mpstat.txt 2>&1
 echo -e ".\c"
 fi
 if [ -r /usr/bin/vmstat ]; then
-/usr/bin/vmstat > $DUMP_DIR/vmstat.dump 2>&1
+/usr/bin/vmstat > $DUMP_DIR/vmstat.txt 2>&1
 echo -e ".\c"
 fi
 if [ -r /usr/bin/free ]; then
-/usr/bin/free -t > $DUMP_DIR/free.dump 2>&1
+/usr/bin/free -t > $DUMP_DIR/free.txt 2>&1
 echo -e ".\c"
 fi
 if [ -r /usr/bin/sar ]; then
-/usr/bin/sar > $DUMP_DIR/sar.dump 2>&1
+/usr/bin/sar > $DUMP_DIR/sar.txt 2>&1
 echo -e ".\c"
 fi
 if [ -r /usr/bin/uptime ]; then
-/usr/bin/uptime > $DUMP_DIR/uptime.dump 2>&1
+/usr/bin/uptime > $DUMP_DIR/uptime.txt 2>&1
 echo -e ".\c"
 fi
 
 echo "OK!"
-echo "DUMP: $DUMP_DIR"
+echo "Dump Directory: $DUMP_DIR"
