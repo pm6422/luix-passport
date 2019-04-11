@@ -3,7 +3,6 @@ package org.infinity.passport.config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.InetAddress;
 import java.util.Locale;
 
 /**
@@ -28,17 +27,4 @@ public final class ApplicationConstants {
             SPRING_PROFILE_SERVICE_METRICS};
     public static final  String   SCHEDULE_LOG_PATTERN           = "########################Schedule executed: {}########################";
     public static final  Locale   SYSTEM_LOCALE                  = Locale.SIMPLIFIED_CHINESE;
-    public static final  String   SERVER_IP;
-
-    static {
-        String ip = "";
-        try {
-            ip = InetAddress.getLocalHost().getHostAddress();
-        } catch (Exception e) {
-            ip = "";
-            LOGGER.error("Cannot acquire system IP!, please check network configuration on your server.");
-            System.exit(0);
-        }
-        SERVER_IP = ip;
-    }
 }

@@ -322,7 +322,7 @@ function FooterController($http, PrincipalService) {
         .then(function (result) {
             if (result) {
                 $http({
-                    url: 'api/system/ip',
+                    url: 'api/system/internet-ip',
                     method: 'GET',
                     transformResponse: [function (data) {
                         return data;

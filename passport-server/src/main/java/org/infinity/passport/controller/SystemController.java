@@ -3,9 +3,9 @@ package org.infinity.passport.controller;
 import com.github.mongobee.Mongobee;
 import com.github.mongobee.exception.MongobeeException;
 import io.swagger.annotations.Api;
-import org.infinity.passport.config.ApplicationConstants;
 import org.infinity.passport.config.ApplicationProperties;
 import org.infinity.passport.domain.Authority;
+import org.infinity.passport.utils.NetworkIpUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.UnknownHostException;
 
 @RestController
 @Api(tags = "系统")
@@ -39,10 +40,10 @@ public class SystemController {
         response.sendRedirect(applicationProperties.getScheduler().getAdminUrl());
     }
 
-    @GetMapping("/api/system/ip")
+    @GetMapping("/api/system/internet-ip")
     @Secured(Authority.DEVELOPER)
-    public ResponseEntity<String> getIp() {
-        return ResponseEntity.ok(ApplicationConstants.SERVER_IP);
+    public ResponseEntity<String> getInternetIp() throws UnknownHostException {
+        return ResponseEntity.ok(NetworkIpUtils.INTERNET_IP);
     }
 
     @GetMapping("/open-api/system/reset-database")

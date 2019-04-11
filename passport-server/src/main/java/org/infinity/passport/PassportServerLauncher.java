@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.infinity.passport.config.ApplicationConstants;
 import org.infinity.passport.config.ApplicationProperties;
+import org.infinity.passport.utils.NetworkIpUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +55,7 @@ public class PassportServerLauncher implements WebMvcConfigurer {
                 env.getProperty("server.port"),
                 StringUtils.defaultString(env.getProperty("server.servlet.context-path")),
                 StringUtils.isEmpty(env.getProperty("server.ssl.key-store")) ? "http" : "https",
-                ApplicationConstants.SERVER_IP,
+                NetworkIpUtils.INTERNET_IP,
                 env.getProperty("server.port"),
                 StringUtils.defaultString(env.getProperty("server.servlet.context-path")),
                 org.springframework.util.StringUtils.arrayToCommaDelimitedString(env.getActiveProfiles()),
