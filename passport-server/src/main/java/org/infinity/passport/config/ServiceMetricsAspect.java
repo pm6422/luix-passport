@@ -3,7 +3,6 @@ package org.infinity.passport.config;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
@@ -22,11 +21,7 @@ public class ServiceMetricsAspect {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceMetricsAspect.class);
 
-    @Pointcut("within(" + ApplicationConstants.BASE_PACKAGE + ".service.impl.*)")
-    public void servicePointcut() {
-    }
-
-    @Around("servicePointcut()")
+    @Around("within(" + ApplicationConstants.BASE_PACKAGE + ".service.impl.*)")
     public Object serviceAround(ProceedingJoinPoint joinPoint) throws Throwable {
         try {
             StopWatch stopWatch = new StopWatch();
