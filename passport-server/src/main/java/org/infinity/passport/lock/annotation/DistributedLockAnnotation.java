@@ -41,5 +41,5 @@ public @interface DistributedLockAnnotation {
      *
      * @return
      */
-    boolean requireUnlock() default true;
+    boolean requireUnlock() default false;
 }
