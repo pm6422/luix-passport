@@ -92,9 +92,9 @@ application:
         cache: # Used by the CachingHttpHeadersFilter
             timeToLiveInDays: 31
     async:
-        core-pool-size: 2
-        max-pool-size: 50
-        queue-capacity: 10000
+        core-pool-size: 5
+        max-pool-size: 32 # 生产环境CPU是32线程
+        queue-capacity: 1000
     swagger:
         api:
             title: Passport Server API
