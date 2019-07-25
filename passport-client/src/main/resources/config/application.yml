@@ -54,7 +54,7 @@ logging:
     config: classpath:config/logback-spring.xml
     path: ${user.home}${file.separator}Log${file.separator}${info.artifact.id}${file.separator}${info.artifact.id}
     level:
-        ROOT: DEBUG
+        root: DEBUG
         ${info.project.package}: DEBUG
 security:
     oauth2:

@@ -50,9 +50,9 @@ function clearStartLog() {
 # Run the application
 #------------------------------------------------------------------------------------------------------------
 function runApp() {
-    JAVA_CMD="nohup java -jar $appDir/$appName --logging.level.ROOT=INFO --spring.profiles.active=$profiles --server.port=$serverPort >> $appStartLog 2>&1 &"
+    JAVA_CMD="nohup java -jar $appDir/$appName --logging.level.root=INFO --spring.profiles.active=$profiles --server.port=$serverPort >> $appStartLog 2>&1 &"
     echo "Command: $JAVA_CMD"
-    nohup java $JAVA_MEM_OPTS -jar $appDir/$appName --logging.level.ROOT=INFO --spring.profiles.active=$profiles --server.port=$serverPort >> $appStartLog 2>&1 &
+    nohup java $JAVA_MEM_OPTS -jar $appDir/$appName --logging.level.root=INFO --spring.profiles.active=$profiles --server.port=$serverPort >> $appStartLog 2>&1 &
 }
 
 #------------------------------------------------------------------------------------------------------------
