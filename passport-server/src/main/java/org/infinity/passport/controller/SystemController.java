@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.UnknownHostException;
 
 @RestController
 @Api(tags = "系统")
@@ -42,8 +41,14 @@ public class SystemController {
 
     @GetMapping("/api/system/internet-ip")
     @Secured(Authority.DEVELOPER)
-    public ResponseEntity<String> getInternetIp() throws UnknownHostException {
+    public ResponseEntity<String> getInternetIp() {
         return ResponseEntity.ok(NetworkIpUtils.INTERNET_IP);
+    }
+
+    @GetMapping("/api/system/intranet-ip")
+    @Secured(Authority.DEVELOPER)
+    public ResponseEntity<String> getIntranetIp(){
+        return ResponseEntity.ok(NetworkIpUtils.INTRANET_IP);
     }
 
     @GetMapping("/open-api/system/reset-database")
