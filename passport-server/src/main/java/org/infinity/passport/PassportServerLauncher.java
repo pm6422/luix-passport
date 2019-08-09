@@ -52,6 +52,7 @@ public class PassportServerLauncher implements WebMvcConfigurer {
                 Charset.defaultCharset());
         LOGGER.info(appBanner, env.getProperty("spring.application.name"),
                 StringUtils.isEmpty(env.getProperty("server.ssl.key-store")) ? "http" : "https",
+                NetworkIpUtils.INTRANET_IP,
                 env.getProperty("server.port"),
                 StringUtils.defaultString(env.getProperty("server.servlet.context-path")),
                 StringUtils.isEmpty(env.getProperty("server.ssl.key-store")) ? "http" : "https",
