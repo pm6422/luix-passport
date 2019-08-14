@@ -16,37 +16,37 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public class ApplicationProperties {
 
-    private final Directory            directory            = new Directory();
+    private final Directory directory = new Directory();
 
-    private final Async                async                = new Async();
+    private final Async async = new Async();
 
-    private final Http                 http                 = new Http();
+    private final Http http = new Http();
 
-    private final Swagger              swagger              = new Swagger();
+    private final Swagger swagger = new Swagger();
 
-    private final Metrics              metrics              = new Metrics();
+    private final Metrics metrics = new Metrics();
 
-    private final Zookeeper            zookeeper            = new Zookeeper();
+    private final Zookeeper zookeeper = new Zookeeper();
 
-    private final Redis                redis                = new Redis();
+    private final Redis redis = new Redis();
 
-    private final Scheduler            scheduler            = new Scheduler();
+    private final Scheduler scheduler = new Scheduler();
 
-    private final Logging              logging              = new Logging();
+    private final Logging logging = new Logging();
 
-    private final Ribbon               ribbon               = new Ribbon();
+    private final Ribbon ribbon = new Ribbon();
 
     private final HttpClientConnection httpClientConnection = new HttpClientConnection();
 
-    private final UserAuditEvent       userAuditEvent       = new UserAuditEvent();
+    private final UserAuditEvent userAuditEvent = new UserAuditEvent();
 
-    private final Jenkins              jenkins              = new Jenkins();
+    private final Jenkins jenkins = new Jenkins();
 
-    private final FileFtp              fileFtp              = new FileFtp();
+    private final FileFtp fileFtp = new FileFtp();
 
-    private final Url                  url                  = new Url();
+    private final Url url = new Url();
 
-    private String                     cachePrefix;
+    private final Cache cache = new Cache();
 
     public Directory getDirectory() {
         return directory;
@@ -108,20 +108,16 @@ public class ApplicationProperties {
         return url;
     }
 
-    public String getCachePrefix() {
-        return cachePrefix;
-    }
-
-    public void setCachePrefix(String cachePrefix) {
-        this.cachePrefix = cachePrefix;
+    public Cache getCache() {
+        return cache;
     }
 
     public static class Directory {
-        private String config    = "classpath:config";
+        private String config = "classpath:config";
 
         private String templates = "classpath:templates";
 
-        private String data      = "classpath:data";
+        private String data = "classpath:data";
 
         public String getConfig() {
             return config;
@@ -150,9 +146,9 @@ public class ApplicationProperties {
 
     public static class Async {
 
-        private int corePoolSize  = 2;
+        private int corePoolSize = 2;
 
-        private int maxPoolSize   = 50;
+        private int maxPoolSize = 50;
 
         private int queueCapacity = 10000;
 
@@ -205,25 +201,25 @@ public class ApplicationProperties {
 
     public static class Swagger {
 
-        private static Api     api     = new Api();
+        private static Api api = new Api();
 
         private static OpenApi openApi = new OpenApi();
 
-        private String         version;
+        private String version;
 
-        private String         termsOfServiceUrl;
+        private String termsOfServiceUrl;
 
-        private String         contactName;
+        private String contactName;
 
-        private String         contactUrl;
+        private String contactUrl;
 
-        private String         contactEmail;
+        private String contactEmail;
 
-        private String         license;
+        private String license;
 
-        private String         licenseUrl;
+        private String licenseUrl;
 
-        private String         host;
+        private String host;
 
         public Api getApi() {
             return api;
@@ -344,13 +340,13 @@ public class ApplicationProperties {
 
     public static class Metrics {
 
-        private final Jmx      jmx      = new Jmx();
+        private final Jmx jmx = new Jmx();
 
-        private final Spark    spark    = new Spark();
+        private final Spark spark = new Spark();
 
         private final Graphite graphite = new Graphite();
 
-        private final Logs     logs     = new Logs();
+        private final Logs logs = new Logs();
 
         public Jmx getJmx() {
             return jmx;
@@ -385,9 +381,9 @@ public class ApplicationProperties {
 
             private boolean enabled = false;
 
-            private String  host    = "localhost";
+            private String host = "localhost";
 
-            private int     port    = 9999;
+            private int port = 9999;
 
             public boolean isEnabled() {
                 return enabled;
@@ -418,11 +414,11 @@ public class ApplicationProperties {
 
             private boolean enabled = false;
 
-            private String  host    = "localhost";
+            private String host = "localhost";
 
-            private int     port    = 2003;
+            private int port = 2003;
 
-            private String  prefix  = "";
+            private String prefix = "";
 
             public boolean isEnabled() {
                 return enabled;
@@ -459,9 +455,9 @@ public class ApplicationProperties {
 
         public static class Logs {
 
-            private boolean enabled         = false;
+            private boolean enabled = false;
 
-            private int     reportFrequency = 60;
+            private int reportFrequency = 60;
 
             public int getReportFrequency() {
                 return reportFrequency;
@@ -551,13 +547,13 @@ public class ApplicationProperties {
 
         public static class Logstash {
 
-            private boolean enabled   = false;
+            private boolean enabled = false;
 
-            private String  host      = "localhost";
+            private String host = "localhost";
 
-            private int     port      = 5000;
+            private int port = 5000;
 
-            private int     queueSize = 512;
+            private int queueSize = 512;
 
             public boolean isEnabled() {
                 return enabled;
@@ -709,5 +705,18 @@ public class ApplicationProperties {
     }
 
     public static class Url {
+    }
+
+    public static class Cache {
+
+        private String cachePrefix;
+
+        public String getCachePrefix() {
+            return cachePrefix;
+        }
+
+        public void setCachePrefix(String cachePrefix) {
+            this.cachePrefix = cachePrefix;
+        }
     }
 }

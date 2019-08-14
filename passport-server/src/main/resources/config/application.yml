@@ -118,4 +118,5 @@ application:
     http-client-connection:
         global-retry-count: 1
         global-read-timeout-in-seconds: 3
-    cache-prefix: ${spring.application.name}_
+    cache: # Cache configuration
+        cache-prefix: ${spring.application.name}_
