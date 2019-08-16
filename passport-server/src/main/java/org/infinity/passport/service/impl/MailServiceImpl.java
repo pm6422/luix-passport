@@ -24,44 +24,38 @@ import java.util.Locale;
 @Service
 public class MailServiceImpl implements MailService {
 
-    private static final Logger  LOGGER   = LoggerFactory.getLogger(MailServiceImpl.class);
-
-    private static final String  USER     = "user";
-
-    private static final String  BASE_URL = "baseUrl";
-
+    private static final Logger               LOGGER   = LoggerFactory.getLogger(MailServiceImpl.class);
+    private static final String               USER     = "user";
+    private static final String               BASE_URL = "baseUrl";
     @Autowired
-    private MailProperties       mailProperties;
-
+    private              MailProperties       mailProperties;
     @Autowired
-    private JavaMailSenderImpl   javaMailSender;
-
+    private              JavaMailSenderImpl   javaMailSender;
     @Autowired
-    private MessageSource        messageSource;
-
+    private              MessageSource        messageSource;
     @Autowired
-    private SpringTemplateEngine templateEngine;
+    private              SpringTemplateEngine templateEngine;
 
     /**
      * System default email address that sends the e-mails.
      */
     @Async
     @Override
-    public void sendEmail(String to, String subject, String content, boolean isMultipart, boolean isHtml) {
+    public void sendEmail(String[] sendTo, String subject, String content, boolean isMultipart, boolean isHtml) {
         LOGGER.debug("Send e-mail[multipart '{}' and html '{}'] to '{}' with subject '{}' and content={}", isMultipart,
-                isHtml, to, subject, content);
+                isHtml, sendTo, subject, content);
         // Prepare message using a Spring helper
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         try {
             MimeMessageHelper message = new MimeMessageHelper(mimeMessage, isMultipart, StandardCharsets.UTF_8.name());
-            message.setTo(to);
+            message.setTo(sendTo);
             message.setFrom(mailProperties.getUsername(), "InfinityTeam");
             message.setSubject(subject);
             message.setText(content, isHtml);
             javaMailSender.send(mimeMessage);
-            LOGGER.debug("Sent e-mail to User '{}'", to);
+            LOGGER.debug("Sent e-mail to User '{}'", sendTo);
         } catch (Exception e) {
-            LOGGER.warn("E-mail could not be sent to user '{}', exception is: {}", to, e.getMessage());
+            LOGGER.warn("E-mail could not be sent to user '{}', exception is: {}", sendTo, e.getMessage());
         }
     }
 
@@ -74,7 +68,7 @@ public class MailServiceImpl implements MailService {
         context.setVariable(BASE_URL, baseUrl);
         String content = templateEngine.process(templateName, context);
         String subject = messageSource.getMessage(titleKey, null, locale);
-        sendEmail(user.getEmail(), subject, content, false, true);
+        sendEmail(new String[]{user.getEmail()}, subject, content, false, true);
     }
 
     @Async

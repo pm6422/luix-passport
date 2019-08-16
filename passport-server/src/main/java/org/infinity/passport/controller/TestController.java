@@ -97,7 +97,7 @@ public class TestController {
     @Secured(Authority.DEVELOPER)
     @Timed
     public ResponseEntity<Void> testEmail() {
-        mailService.sendEmail("pm6422@126.com", "test", "test", false, false);
+        mailService.sendEmail(new String[]{"pm6422@126.com", "pm6422@gmail.com"}, "test", "test", false, false);
         return ResponseEntity.ok().build();
     }
 
