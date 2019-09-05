@@ -2,6 +2,8 @@ package org.infinity.passport.config.oauth2;
 
 import org.infinity.passport.domain.MongoOAuth2ClientDetails;
 import org.infinity.passport.repository.OAuth2ClientDetailsRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.*;
@@ -15,16 +17,19 @@ import java.util.Optional;
 @Service
 public class MongoClientDetailsService implements ClientDetailsService, ClientRegistrationService {
 
+    private static final Logger                        LOGGER = LoggerFactory.getLogger(MongoClientDetailsService.class);
     @Autowired
-    private PasswordEncoder               passwordEncoder;
-
+    private              PasswordEncoder               passwordEncoder;
     @Autowired
-    private OAuth2ClientDetailsRepository oAuth2ClientDetailsRepository;
+    private              OAuth2ClientDetailsRepository oAuth2ClientDetailsRepository;
 
     @Override
     public ClientDetails loadClientByClientId(String clientId) throws ClientRegistrationException {
         MongoOAuth2ClientDetails mongoClientDetails = oAuth2ClientDetailsRepository.findById(clientId)
-                .orElseThrow(() -> new NoSuchClientException("No client with requested id: " + clientId));
+                .orElseThrow(() -> {
+                    LOGGER.error("No client with requested id: " + clientId);
+                    return new NoSuchClientException("No client with requested id: " + clientId);
+                });
         return mongoClientDetails;
     }
 
