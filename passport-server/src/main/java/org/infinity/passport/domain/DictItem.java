@@ -157,7 +157,7 @@ public class DictItem extends AbstractAuditableDomain implements Serializable {
         return dto;
     }
 
-    public static DictItem of(Dict dto) {
+    public static DictItem of(DictItemDTO dto) {
         DictItem target = new DictItem();
         BeanUtils.copyProperties(dto, target);
         return target;
