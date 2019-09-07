@@ -1,12 +1,14 @@
 package org.infinity.passport.domain;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,20 +18,23 @@ import java.util.Map;
 @Document(collection = "PersistentAuditEvent")
 public class PersistentAuditEvent implements Serializable {
 
-    private static final long   serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     @Id
     @Field("event_id")
-    private String              id;
+    private String id;
 
     @NotNull
-    private String              principal;
+    private String principal;
 
-    private Instant             auditEventDate;
+    private Instant auditEventDate;
     @Field("event_type")
-    private String              auditEventType;
+    private String  auditEventType;
 
-    private Map<String, String> data             = new HashMap<>();
+    private Map<String, String> data = new HashMap<>();
+
+    @Indexed(expireAfterSeconds = 0)//Expire Documents at a Specific Clock Time
+    private Date expiration;
 
     public String getId() {
         return id;
@@ -69,5 +74,13 @@ public class PersistentAuditEvent implements Serializable {
 
     public void setData(Map<String, String> data) {
         this.data = data;
+    }
+
+    public Date getExpiration() {
+        return expiration;
+    }
+
+    public void setExpiration(Date expiration) {
+        this.expiration = expiration;
     }
 }

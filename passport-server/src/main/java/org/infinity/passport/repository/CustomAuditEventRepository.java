@@ -1,10 +1,6 @@
 package org.infinity.passport.repository;
 
-import java.time.Instant;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import org.apache.commons.lang3.time.DateUtils;
 import org.infinity.passport.component.AuditEventConverter;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.PersistentAuditEvent;
@@ -15,6 +11,12 @@ import org.springframework.boot.actuate.audit.AuditEventRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.Instant;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * An implementation of Spring Boot's AuditEventRepository.
@@ -61,6 +63,8 @@ public class CustomAuditEventRepository implements AuditEventRepository {
             persistentAuditEvent.setAuditEventDate(event.getTimestamp());
             Map<String, String> eventData = auditEventConverter.convertDataToStrings(event.getData());
             persistentAuditEvent.setData(truncate(eventData));
+            // Automatically delete after 3 months
+            persistentAuditEvent.setExpiration(DateUtils.addMonths(new Date(), 3));
             persistenceAuditEventRepository.save(persistentAuditEvent);
         }
     }
