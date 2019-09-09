@@ -184,4 +184,20 @@ public class AdminMenuController {
     public void lowerSeq(@ApiParam(value = "菜单ID", required = true) @PathVariable String id) {
         adminMenuService.lowerSeq(id);
     }
+
+    @ApiOperation("复制管理菜单")
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功复制")})
+    @GetMapping("/api/admin-menu/copy-menus")
+    @Secured({Authority.ADMIN})
+    @Timed
+    public ResponseEntity<Void> copyMenus(@ApiParam(value = "源应用名称", required = true, defaultValue = "DeepBrainPassport") @RequestParam(value = "sourceAppName", required = true) String sourceAppName,
+                                          @ApiParam(value = "目标应用名称", required = true) @RequestParam(value = "targetAppName", required = true) String targetAppName) {
+        List<AdminMenu> sourceMenus = adminMenuRepository.findByAppName(sourceAppName);
+        sourceMenus.forEach(menu -> {
+            menu.setAppName(targetAppName);
+            menu.setId(null);
+        });
+        adminMenuRepository.saveAll(sourceMenus);
+        return ResponseEntity.ok().build();
+    }
 }
