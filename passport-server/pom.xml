@@ -623,6 +623,7 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <!-- Executable war cannot be unzipped -->
                     <executable>true</executable>
                     <fork>true</fork>
                     <!--
