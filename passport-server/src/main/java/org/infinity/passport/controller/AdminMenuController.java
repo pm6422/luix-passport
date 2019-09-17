@@ -164,7 +164,7 @@ public class AdminMenuController {
             }
         }
         adminMenuRepository.insert(list);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(null);
     }
 
     @ApiOperation("根据菜单ID提高管理菜单顺序")
@@ -198,6 +198,6 @@ public class AdminMenuController {
             menu.setId(null);
         });
         adminMenuRepository.saveAll(sourceMenus);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(null);
     }
 }

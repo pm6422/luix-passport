@@ -89,7 +89,7 @@ public class TestController {
 
         userRepository.deleteById(user2.getId());
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(null);
     }
 
     @ApiOperation("测试发送邮件功能")
@@ -98,7 +98,7 @@ public class TestController {
     @Timed
     public ResponseEntity<Void> testEmail() {
         mailService.sendEmail(new String[]{"pm6422@126.com", "pm6422@gmail.com"}, "test", "test", false, false);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(null);
     }
 
 

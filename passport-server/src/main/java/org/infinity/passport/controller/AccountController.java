@@ -80,7 +80,7 @@ public class AccountController {
             return ResponseEntity.ok(
                     StringUtils.substringAfter(token.toLowerCase(), OAuth2AccessToken.BEARER_TYPE.toLowerCase()).trim());
         }
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(null);
     }
 
     @ApiOperation(value = "验证当前用户是否已经登录，理论上不会返回false，因为未登录则会出错", notes = "登录成功返回当前用户名", response = String.class)
@@ -189,7 +189,7 @@ public class AccountController {
     @Timed
     public ResponseEntity<Void> activateAccount(@ApiParam(value = "激活码", required = true) @PathVariable String key) {
         userService.activateRegistration(key).orElseThrow(() -> new NoDataException(key));
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(null);
     }
 
     @ApiOperation("获取权限值列表")
