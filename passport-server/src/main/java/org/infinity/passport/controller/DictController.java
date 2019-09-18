@@ -49,8 +49,8 @@ public class DictController {
     public ResponseEntity<Void> create(@ApiParam(value = "数据字典信息", required = true) @Valid @RequestBody DictDTO dto) {
         LOGGER.debug("REST request to create dict: {}", dto);
         dictRepository.findOneByDictCode(dto.getDictCode()).ifPresent((existingEntity) -> {
-            throw new FieldValidationException("dictDTO", "dictCode", dto.getDictName(), "error.dict.exists",
-                    dto.getDictName());
+            throw new FieldValidationException("dictDTO", "dictCode", dto.getDictCode(), "error.dict.exists",
+                    dto.getDictCode());
         });
         dictRepository.save(Dict.of(dto));
         return ResponseEntity.status(HttpStatus.CREATED)
