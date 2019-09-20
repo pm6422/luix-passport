@@ -18,9 +18,9 @@ angular
     .controller('ResetPasswordController', ResetPasswordController)
     .controller('PasswordController', PasswordController)
     .controller('MetricsController', MetricsController)
-    .controller('MetricsModalController', MetricsModalController)
+    .controller('MetricsDialogController', MetricsDialogController)
     .controller('HealthController', HealthController)
-    .controller('HealthModalController', HealthModalController)
+    .controller('HealthDialogController', HealthDialogController)
     .controller('ConfigurationController', ConfigurationController)
     .controller('BeansController', BeansController)
     .controller('MappingsController', MappingsController)
@@ -755,7 +755,7 @@ function MetricsController($state, $scope, $uibModal, MetricsService, metrics) {
         MetricsService.threadDump().then(function (data) {
             $uibModal.open({
                 templateUrl: 'app/views/developer/metrics/metrics.modal.html',
-                controller: 'MetricsModalController',
+                controller: 'MetricsDialogController',
                 controllerAs: 'vm',
                 size: 'lg',
                 resolve: {
@@ -769,10 +769,10 @@ function MetricsController($state, $scope, $uibModal, MetricsService, metrics) {
 }
 
 /**
- * MetricsModalController
+ * MetricsDialogController
  *
  */
-function MetricsModalController($uibModalInstance, threadDump) {
+function MetricsDialogController($uibModalInstance, threadDump) {
     var vm = this;
 
     vm.cancel = cancel;
@@ -851,7 +851,7 @@ function HealthController($state, HealthService, $uibModal) {
     function showHealth(health) {
         $uibModal.open({
             templateUrl: 'app/views/developer/health/health.modal.html',
-            controller: 'HealthModalController',
+            controller: 'HealthDialogController',
             controllerAs: 'vm',
             size: 'lg',
             resolve: {
@@ -869,7 +869,7 @@ function HealthController($state, HealthService, $uibModal) {
     }
 }
 
-function HealthModalController($uibModalInstance, currentHealth, baseName, subSystemName) {
+function HealthDialogController($uibModalInstance, currentHealth, baseName, subSystemName) {
     var vm = this;
 
     vm.cancel = cancel;
