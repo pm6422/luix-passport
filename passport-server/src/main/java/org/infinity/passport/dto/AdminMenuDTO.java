@@ -4,7 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.infinity.passport.domain.base.AbstractAuditableDomain;
 import org.infinity.passport.entity.MenuTreeNode;
-import org.springframework.beans.BeanUtils;
+import org.springframework.cglib.beans.BeanCopier;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -131,7 +131,8 @@ public class AdminMenuDTO extends AbstractAuditableDomain implements Serializabl
 
     public MenuTreeNode asNode() {
         MenuTreeNode dto = new MenuTreeNode();
-        BeanUtils.copyProperties(this, dto);
+        BeanCopier beanCopier = BeanCopier.create(AdminMenuDTO.class, MenuTreeNode.class, false);
+        beanCopier.copy(this, dto, null);
         return dto;
     }
 

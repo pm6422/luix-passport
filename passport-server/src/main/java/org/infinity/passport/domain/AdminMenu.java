@@ -3,7 +3,7 @@ package org.infinity.passport.domain;
 import org.infinity.passport.domain.base.AbstractAuditableDomain;
 import org.infinity.passport.dto.AdminMenuDTO;
 import org.infinity.passport.entity.MenuTreeNode;
-import org.springframework.beans.BeanUtils;
+import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -176,19 +176,22 @@ public class AdminMenu extends AbstractAuditableDomain implements Serializable {
 
     public AdminMenuDTO asDTO() {
         AdminMenuDTO dto = new AdminMenuDTO();
-        BeanUtils.copyProperties(this, dto);
+        BeanCopier beanCopier = BeanCopier.create(AdminMenu.class, AdminMenuDTO.class, false);
+        beanCopier.copy(this, dto, null);
         return dto;
     }
 
     public MenuTreeNode asNode() {
         MenuTreeNode dto = new MenuTreeNode();
-        BeanUtils.copyProperties(this, dto);
+        BeanCopier beanCopier = BeanCopier.create(AdminMenu.class, MenuTreeNode.class, false);
+        beanCopier.copy(this, dto, null);
         return dto;
     }
 
     public static AdminMenu of(AdminMenuDTO dto) {
         AdminMenu dest = new AdminMenu();
-        BeanUtils.copyProperties(dto, dest);
+        BeanCopier beanCopier = BeanCopier.create(AdminMenuDTO.class, AdminMenu.class, false);
+        beanCopier.copy(dto, dest, null);
         return dest;
     }
 }
