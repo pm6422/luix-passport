@@ -1,8 +1,5 @@
 package org.infinity.passport.service.impl;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.infinity.passport.domain.User;
 import org.infinity.passport.exception.UserDisabledException;
 import org.infinity.passport.exception.UserNotActivatedException;
@@ -18,21 +15,21 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * Authenticate a user from the database.
  */
 @Service
-public class SpringSecurityUserDetailsServiceImpl
-        implements org.springframework.security.core.userdetails.UserDetailsService {
+public class SpringSecurityUserDetailsServiceImpl implements org.springframework.security.core.userdetails.UserDetailsService {
 
-    private static final Logger     LOGGER = LoggerFactory.getLogger(SpringSecurityUserDetailsServiceImpl.class);
-
+    private static final Logger                  LOGGER = LoggerFactory.getLogger(SpringSecurityUserDetailsServiceImpl.class);
     @Autowired
-    @Lazy // Use to fix circular dependencies problems on some machines(CentOS 7)
-    private UserService             userService;
-
+    @Lazy // Use to fix dependencies problems on some machines(CentOS 7)
+    private              UserService             userService;
     @Autowired
-    private UserAuthorityRepository userAuthorityRepository;
+    private              UserAuthorityRepository userAuthorityRepository;
 
     @Override
     // @Transactional
