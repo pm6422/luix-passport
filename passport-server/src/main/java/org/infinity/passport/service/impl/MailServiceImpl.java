@@ -11,6 +11,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
@@ -53,7 +54,7 @@ public class MailServiceImpl implements MailService {
             message.setSubject(subject);
             message.setText(content, isHtml);
             javaMailSender.send(mimeMessage);
-            LOGGER.debug("Sent e-mail to User '{}'", sendTo);
+            LOGGER.debug("Sent e-mail to User '{}'", StringUtils.arrayToCommaDelimitedString(sendTo));
         } catch (Exception e) {
             LOGGER.warn("E-mail could not be sent to user '{}', exception is: {}", sendTo, e.getMessage());
         }
