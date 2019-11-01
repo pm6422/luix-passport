@@ -21,7 +21,7 @@
                 </p>
                 <p class="help-block" ng-show="editForm.userName.$error.pattern">
                     只可以包含小写字母和数字
-                 </p>
+                </p>
             </div>
         </div>
         <div class="form-group">
@@ -29,7 +29,7 @@
             <input type="text" class="form-control" name="firstName" ng-model="vm.entity.firstName" ng-maxlength="50">
             <div ng-show="editForm.firstName.$invalid">
                 <p class="help-block" ng-show="editForm.firstName.$error.maxlength">
-                   最大长度为50个字符
+                    最大长度为50个字符
                 </p>
             </div>
         </div>
@@ -54,7 +54,7 @@
                 </p>
                 <p class="help-block" ng-show="editForm.email.$error.email">
                     Email格式不正确
-                 </p>
+                </p>
             </div>
         </div>
         <div class="form-group">
@@ -88,16 +88,6 @@
             <select class="form-control" multiple name="authority" ng-model="vm.entity.authorities"
                     ng-options="authority for authority in vm.authorities">
             </select>
-        </div>
-        <div class="form-group">
-            <label class="control-label">头像地址</label>
-            <input type="text" class="form-control" name="avatarImageUrl"
-                   ng-model="vm.entity.avatarImageUrl" ng-maxlength="100">
-            <div ng-show="editForm.avatarImageUrl.$invalid">
-                <p class="help-block" ng-show="editForm.avatarImageUrl.$error.maxlength" translate-value-max="100">
-                    最大长度为100个字符
-                </p>
-            </div>
         </div>
         <div class="form-group">
             <label class="control-label">是否可用</label>
