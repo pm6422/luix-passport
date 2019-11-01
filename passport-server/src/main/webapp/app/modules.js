@@ -21,7 +21,8 @@
         'toaster',                       // AngularJS Toaster
         'angles',                        // AngularJS Chart JS
         'jsonFormatter',                 // AngularJS JSON formatter
-        'checklist-model'
+        'checklist-model',
+        'ngFileUpload'
     ])
     .run(run);
     
