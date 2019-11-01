@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.Objects;
 
 /**
  * Spring Data MongoDB collection for the User entity.
@@ -65,8 +66,7 @@ public class User extends AbstractAuditableDomain implements Serializable {
 
     private Instant            resetTime;
 
-    @Size(max = 256)
-    private String             avatarImageUrl;
+    private Boolean hasProfilePhoto;
 
     private Boolean            enabled;
 
@@ -86,12 +86,10 @@ public class User extends AbstractAuditableDomain implements Serializable {
      * @param activationKey
      * @param resetKey
      * @param resetTime
-     * @param avatarImageUrl
      * @param enabled
      */
     public User(String userName, String firstName, String lastName, String email, String mobileNo, String passwordHash,
-            Boolean activated, String activationKey, String resetKey, Instant resetTime, String avatarImageUrl,
-            Boolean enabled) {
+                Boolean activated, String activationKey, String resetKey, Instant resetTime, Boolean enabled) {
         super();
         this.userName = userName;
         this.firstName = firstName;
@@ -103,7 +101,6 @@ public class User extends AbstractAuditableDomain implements Serializable {
         this.activationKey = activationKey;
         this.resetKey = resetKey;
         this.resetTime = resetTime;
-        this.avatarImageUrl = avatarImageUrl;
         this.enabled = enabled;
     }
 
@@ -195,12 +192,12 @@ public class User extends AbstractAuditableDomain implements Serializable {
         this.resetTime = resetTime;
     }
 
-    public String getAvatarImageUrl() {
-        return avatarImageUrl;
+    public Boolean getHasProfilePhoto() {
+        return hasProfilePhoto;
     }
 
-    public void setAvatarImageUrl(String avatarImageUrl) {
-        this.avatarImageUrl = avatarImageUrl;
+    public void setHasProfilePhoto(Boolean hasProfilePhoto) {
+        this.hasProfilePhoto = hasProfilePhoto;
     }
 
     public Boolean getEnabled() {
@@ -212,81 +209,50 @@ public class User extends AbstractAuditableDomain implements Serializable {
     }
 
     @Override
-    public boolean equals(Object that) {
-        if (this == that) {
-            return true;
-        }
-        if (that == null) {
-            return false;
-        }
-        if (getClass() != that.getClass()) {
-            return false;
-        }
-        User other = (User) that;
-        return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-                && (this.getUserName() == null ? other.getUserName() == null
-                        : this.getUserName().equals(other.getUserName()))
-                && (this.getFirstName() == null ? other.getFirstName() == null
-                        : this.getFirstName().equals(other.getFirstName()))
-                && (this.getLastName() == null ? other.getLastName() == null
-                        : this.getLastName().equals(other.getLastName()))
-                && (this.getEmail() == null ? other.getEmail() == null : this.getEmail().equals(other.getEmail()))
-                && (this.getMobileNo() == null ? other.getMobileNo() == null
-                        : this.getMobileNo().equals(other.getMobileNo()))
-                && (this.getPasswordHash() == null ? other.getPasswordHash() == null
-                        : this.getPasswordHash().equals(other.getPasswordHash()))
-                && (this.getActivated() == null ? other.getActivated() == null
-                        : this.getActivated().equals(other.getActivated()))
-                && (this.getActivationKey() == null ? other.getActivationKey() == null
-                        : this.getActivationKey().equals(other.getActivationKey()))
-                && (this.getResetKey() == null ? other.getResetKey() == null
-                        : this.getResetKey().equals(other.getResetKey()))
-                && (this.getResetTime() == null ? other.getResetTime() == null
-                        : this.getResetTime().equals(other.getResetTime()))
-                && (this.getAvatarImageUrl() == null ? other.getAvatarImageUrl() == null
-                        : this.getAvatarImageUrl().equals(other.getAvatarImageUrl()))
-                && (this.enabled == null ? other.enabled == null : this.enabled.equals(other.enabled))
-                && (this.getCreatedTime() == null ? other.getCreatedTime() == null
-                        : this.getCreatedTime().equals(other.getCreatedTime()))
-                && (this.getCreatedBy() == null ? other.getCreatedBy() == null
-                        : this.getCreatedBy().equals(other.getCreatedBy()))
-                && (this.getModifiedTime() == null ? other.getModifiedTime() == null
-                        : this.getModifiedTime().equals(other.getModifiedTime()))
-                && (this.getModifiedBy() == null ? other.getModifiedBy() == null
-                        : this.getModifiedBy().equals(other.getModifiedBy()));
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id) &&
+                Objects.equals(userName, user.userName) &&
+                Objects.equals(firstName, user.firstName) &&
+                Objects.equals(lastName, user.lastName) &&
+                Objects.equals(email, user.email) &&
+                Objects.equals(mobileNo, user.mobileNo) &&
+                Objects.equals(passwordHash, user.passwordHash) &&
+                Objects.equals(activated, user.activated) &&
+                Objects.equals(activationKey, user.activationKey) &&
+                Objects.equals(resetKey, user.resetKey) &&
+                Objects.equals(resetTime, user.resetTime) &&
+                Objects.equals(hasProfilePhoto, user.hasProfilePhoto) &&
+                Objects.equals(enabled, user.enabled);
     }
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-        result = prime * result + ((getUserName() == null) ? 0 : getUserName().hashCode());
-        result = prime * result + ((getFirstName() == null) ? 0 : getFirstName().hashCode());
-        result = prime * result + ((getLastName() == null) ? 0 : getLastName().hashCode());
-        result = prime * result + ((getEmail() == null) ? 0 : getEmail().hashCode());
-        result = prime * result + ((getMobileNo() == null) ? 0 : getMobileNo().hashCode());
-        result = prime * result + ((getPasswordHash() == null) ? 0 : getPasswordHash().hashCode());
-        result = prime * result + ((getActivated() == null) ? 0 : getActivated().hashCode());
-        result = prime * result + ((getActivationKey() == null) ? 0 : getActivationKey().hashCode());
-        result = prime * result + ((getResetKey() == null) ? 0 : getResetKey().hashCode());
-        result = prime * result + ((getResetTime() == null) ? 0 : getResetTime().hashCode());
-        result = prime * result + ((getAvatarImageUrl() == null) ? 0 : getAvatarImageUrl().hashCode());
-        result = prime * result + ((enabled == null) ? 0 : enabled.hashCode());
-        result = prime * result + ((getCreatedTime() == null) ? 0 : getCreatedTime().hashCode());
-        result = prime * result + ((getCreatedBy() == null) ? 0 : getCreatedBy().hashCode());
-        result = prime * result + ((getModifiedTime() == null) ? 0 : getModifiedTime().hashCode());
-        result = prime * result + ((getModifiedBy() == null) ? 0 : getModifiedBy().hashCode());
-        return result;
+        return Objects.hash(id, userName, firstName, lastName, email, mobileNo, passwordHash, activated, activationKey, resetKey, resetTime, hasProfilePhoto, enabled);
     }
 
     @Override
     public String toString() {
-        return "User [id=" + id + ", userName=" + userName + ", firstName=" + firstName + ", lastName=" + lastName
-                + ", email=" + email + ", mobileNo=" + mobileNo + ", passwordHash=" + passwordHash + ", activated="
-                + activated + ", activationKey=" + activationKey + ", resetKey=" + resetKey + ", resetTime=" + resetTime
-                + ", avatarImageUrl=" + avatarImageUrl + ", enabled=" + enabled + ", createdTime="
-                + super.getCreatedTime() + ", createdBy=" + super.getCreatedBy() + ", modifiedTime="
-                + super.getModifiedTime() + ", modifiedBy=" + super.getModifiedBy() + "]";
+        return "User{" +
+                "id='" + id + '\'' +
+                ", userName='" + userName + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", mobileNo='" + mobileNo + '\'' +
+                ", passwordHash='" + passwordHash + '\'' +
+                ", activated=" + activated +
+                ", activationKey='" + activationKey + '\'' +
+                ", resetKey='" + resetKey + '\'' +
+                ", resetTime=" + resetTime +
+                ", hasProfilePhoto=" + hasProfilePhoto +
+                ", enabled=" + enabled +
+                ", createdBy='" + getCreatedBy() + '\'' +
+                ", createdTime=" + getCreatedTime() +
+                ", modifiedBy='" + getModifiedBy() + '\'' +
+                ", modifiedTime=" + getModifiedTime() +
+                '}';
     }
 }
