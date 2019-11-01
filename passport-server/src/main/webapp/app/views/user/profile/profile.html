@@ -82,14 +82,36 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label" for="avatarImageUrl">头像地址</label>
-                        <input type="input" class="form-control" id="avatarImageUrl" name="avatarImageUrl"
-                               ng-model="vm.profileAccount.avatarImageUrl" ng-maxlength=100>
-                        <div ng-show="form.avatarImageUrl.$dirty && form.avatarImageUrl.$invalid">
-                            <p class="help-block" ng-show="form.avatarImageUrl.$error.maxlength">
-                                最小长度为100个字符
-                            </p>
+                        <label class="control-label">上传新头像</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-value="vm.file.name" readonly="readonly">
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-primary" ng-model="vm.file" name="file"
+                                        ngf-select ngf-pattern="'image/*'" ngf-accept="'image/*'" ngf-max-size="3MB">
+                                    <span class="fa fa-file-archive-o"></span>&nbsp;
+                                    <span>选择</span>
+                                </button>
+                                <button type="button" class="btn btn-warning" ng-click="vm.upload(vm.file)"
+                                        ng-disabled="!vm.file || vm.uploading">
+                                    <span class="fa fa-upload"></span>&nbsp;
+                                    <span>上传</span>
+                                </button>
+                            </span>
                         </div>
+                    </div>
+                    <div class="form-group" ng-show="vm.file">
+                        <label class="control-label">上传进度</label>
+                        <uib-progressbar value="vm.uploadProgress" type="warning" class="progress-striped">
+                            {{vm.uploadProgress}}%
+                        </uib-progressbar>
+                    </div>
+                    <div class="form-group">
+                        <img ngf-thumbnail="vm.file" class="thumb" style="width:100px">
+                        <input type="button" class="btn btn-default btn-sm" ng-click="vm.file = null" ng-show="vm.file"
+                               value="删除"></input>
+                    </div>
+                    <div class="form-group" ng-show="!vm.file">
+                        <img class="thumb" ng-src="{{vm.profilePhotoUrl}}" style="width:100px">
                     </div>
                 </div>
                 <div class="col-md-8 col-md-offset-2">
