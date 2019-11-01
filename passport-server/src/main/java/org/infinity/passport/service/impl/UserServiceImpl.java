@@ -66,8 +66,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User insert(String userName, String rawPassword, String firstName, String lastName, String email,
-            String mobileNo, String activationKey, Boolean activated, String avatarImageUrl, Boolean enabled,
-            String resetKey, Instant resetTime, Set<String> authorityNames) {
+                       String mobileNo, String activationKey, Boolean activated, Boolean enabled,
+                       String resetKey, Instant resetTime, Set<String> authorityNames) {
         User newUser = new User();
         newUser.setUserName(userName.toLowerCase());
         newUser.setPasswordHash(passwordEncoder.encode(rawPassword));
@@ -77,7 +77,6 @@ public class UserServiceImpl implements UserService {
         newUser.setEmail(email.toLowerCase());
         newUser.setActivated(activated);
         newUser.setActivationKey(activationKey);
-        newUser.setAvatarImageUrl(avatarImageUrl);
         newUser.setResetKey(resetKey);
         newUser.setResetTime(resetTime);
         newUser.setEnabled(enabled);
@@ -103,7 +102,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void update(String userName, String firstName, String lastName, String email, String mobileNo,
-            String modifiedBy, Boolean activated, String avatarImageUrl, Boolean enabled, Set<String> authorityNames) {
+                       String modifiedBy, Boolean activated, Boolean enabled, Set<String> authorityNames) {
         userRepository.findOneByUserName(userName.toLowerCase()).ifPresent(user -> {
             user.setFirstName(firstName);
             user.setLastName(lastName);
@@ -112,7 +111,6 @@ public class UserServiceImpl implements UserService {
             user.setModifiedBy(modifiedBy);
             user.setModifiedTime(Instant.now());
             user.setActivated(activated);
-            user.setAvatarImageUrl(avatarImageUrl);
             user.setEnabled(enabled);
             userRepository.save(user);
             LOGGER.debug("Updated user: {}", user);
