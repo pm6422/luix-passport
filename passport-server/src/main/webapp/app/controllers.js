@@ -369,7 +369,8 @@ function ProfileController($state, PrincipalService, AccountService, AuthServerS
             mobileNo: parseInt(account.mobileNo),
             firstName: account.firstName,
             lastName: account.lastName,
-            userName: account.userName
+            userName: account.userName,
+            hasProfilePhoto: account.hasProfilePhoto
         };
     };
 
