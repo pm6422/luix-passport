@@ -56,6 +56,8 @@ public class UserDTO extends AbstractAuditableDomain implements Serializable {
     @Size(min = 11, max = 13)
     private String              mobileNo;
 
+    private Boolean hasProfilePhoto;
+
     @Size(max = 256)
     private String              avatarImageUrl;
 
@@ -151,6 +153,14 @@ public class UserDTO extends AbstractAuditableDomain implements Serializable {
         this.avatarImageUrl = avatarImageUrl;
     }
 
+    public Boolean getHasProfilePhoto() {
+        return hasProfilePhoto;
+    }
+
+    public void setHasProfilePhoto(Boolean hasProfilePhoto) {
+        this.hasProfilePhoto = hasProfilePhoto;
+    }
+
     public Boolean getEnabled() {
         return enabled;
     }
@@ -169,8 +179,17 @@ public class UserDTO extends AbstractAuditableDomain implements Serializable {
 
     @Override
     public String toString() {
-        return "UserDTO [id=" + id + ", userName=" + userName + ", firstName=" + firstName + ", lastName=" + lastName
-                + ", email=" + email + ", activated=" + activated + ", mobileNo=" + mobileNo + ", avatarImageUrl="
-                + avatarImageUrl + ", enabled=" + enabled + ", authorities=" + authorities + "]";
+        return "UserDTO{" +
+                "id='" + id + '\'' +
+                ", userName='" + userName + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", activated=" + activated +
+                ", mobileNo='" + mobileNo + '\'' +
+                ", hasProfilePhoto='" + hasProfilePhoto + '\'' +
+                ", enabled=" + enabled +
+                ", authorities=" + authorities +
+                '}';
     }
 }
