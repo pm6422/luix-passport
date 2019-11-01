@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.User;
 import org.infinity.passport.domain.UserAuthority;
+import org.infinity.passport.domain.UserProfilePhoto;
 import org.infinity.passport.dto.ManagedUserDTO;
 import org.infinity.passport.dto.ResetKeyAndPasswordDTO;
 import org.infinity.passport.dto.UserDTO;
@@ -16,9 +17,11 @@ import org.infinity.passport.exception.LoginUserNotExistException;
 import org.infinity.passport.exception.NoAuthorityException;
 import org.infinity.passport.exception.NoDataException;
 import org.infinity.passport.repository.UserAuthorityRepository;
+import org.infinity.passport.repository.UserProfilePhotoRepository;
 import org.infinity.passport.repository.UserRepository;
 import org.infinity.passport.service.AuthorityService;
 import org.infinity.passport.service.MailService;
+import org.infinity.passport.service.UserProfilePhotoService;
 import org.infinity.passport.service.UserService;
 import org.infinity.passport.utils.HttpHeaderCreator;
 import org.infinity.passport.utils.RandomUtils;
@@ -39,6 +42,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
@@ -54,21 +58,25 @@ import static javax.servlet.http.HttpServletResponse.*;
 @Api(tags = "账号管理")
 public class AccountController {
 
-    private static final Logger                  LOGGER = LoggerFactory.getLogger(AccountController.class);
+    private static final Logger                     LOGGER = LoggerFactory.getLogger(AccountController.class);
     @Autowired
-    private              UserService             userService;
+    private              UserService                userService;
     @Autowired
-    private              UserRepository          userRepository;
+    private              UserRepository             userRepository;
     @Autowired
-    private              UserAuthorityRepository userAuthorityRepository;
+    private              UserAuthorityRepository    userAuthorityRepository;
     @Autowired
-    private              AuthorityService        authorityService;
+    private              UserProfilePhotoRepository userProfilePhotoRepository;
     @Autowired
-    private              MailService             mailService;
+    private              UserProfilePhotoService    userProfilePhotoService;
     @Autowired
-    private              HttpHeaderCreator       httpHeaderCreator;
+    private              AuthorityService           authorityService;
     @Autowired
-    private              TokenStore              tokenStore;
+    private              MailService                mailService;
+    @Autowired
+    private              HttpHeaderCreator          httpHeaderCreator;
+    @Autowired
+    private              TokenStore                 tokenStore;
 
     @ApiOperation(value = "获取访问令牌", notes = "登录成功返回当前访问令牌", response = String.class)
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
@@ -169,7 +177,7 @@ public class AccountController {
         User newUser = userService.insert(managedUserDTO.getUserName(), managedUserDTO.getPassword(),
                 managedUserDTO.getFirstName(), managedUserDTO.getLastName(), managedUserDTO.getEmail(),
                 managedUserDTO.getMobileNo(), RandomUtils.generateActivationKey(), false,
-                managedUserDTO.getAvatarImageUrl(), true, null, null, null);
+                true, null, null, null);
         String baseUrl = request.getScheme() + // "http"
                 "://" + // "://"
                 request.getServerName() + // "myhost"
@@ -230,7 +238,6 @@ public class AccountController {
         currentUser.setLastName(userDTO.getLastName());
         currentUser.setEmail(userDTO.getEmail());
         currentUser.setMobileNo(userDTO.getMobileNo());
-        currentUser.setAvatarImageUrl(userDTO.getAvatarImageUrl());
         currentUser.setModifiedBy(SecurityUtils.getCurrentUserName());
         userRepository.save(currentUser);
         return ResponseEntity.ok()
@@ -287,11 +294,35 @@ public class AccountController {
 
     @ApiOperation("上传用户头像")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功上传")})
-    @PostMapping("/api/account/avatar/upload")
+    @PostMapping("/api/account/profile-photo/upload")
     @Secured({Authority.USER})
     @Timed
-    public ResponseEntity<Void> uploadAvatar(@ApiParam(value = "文件描述", required = true) @RequestPart String description,
-                                             @ApiParam(value = "用户头像文件", required = true) @RequestPart MultipartFile file) {
-        return ResponseEntity.ok(null);
+    public void uploadProfilePhoto(@ApiParam(value = "文件描述", required = true) @RequestPart String description,
+                                   @ApiParam(value = "用户头像文件", required = true) @RequestPart MultipartFile file) throws IOException {
+        UserProfilePhoto existingPhoto = userProfilePhotoRepository.findByUserName(SecurityUtils.getCurrentUserName());
+        if (existingPhoto == null) {
+            userProfilePhotoService.insert(SecurityUtils.getCurrentUserName(), file);
+            userRepository.findOneByUserName(SecurityUtils.getCurrentUserName()).ifPresent((user) -> {
+                // update hasProfilePhoto to true
+                user.setHasProfilePhoto(true);
+                userRepository.save(user);
+            });
+        } else {
+            userProfilePhotoService.update(existingPhoto.getId(), existingPhoto.getUserName(), file);
+        }
+    }
+
+    @ApiOperation("获取用户头像")
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
+    @GetMapping("/api/account/profile-photo")
+    @Secured({Authority.USER})
+    @Timed
+    public ResponseEntity<byte[]> getProfilePhoto() {
+        byte[] bytes = null;
+        UserProfilePhoto existingPhoto = userProfilePhotoRepository.findByUserName(SecurityUtils.getCurrentUserName());
+        if (existingPhoto != null) {
+            bytes = existingPhoto.getProfilePhoto().getData();
+        }
+        return ResponseEntity.ok(bytes);
     }
 }
