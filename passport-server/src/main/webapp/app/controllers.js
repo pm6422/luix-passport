@@ -61,7 +61,7 @@ angular
  * Contains several global data used in different view
  *
  */
-function MainController($http, $rootScope, $scope, $state, AuthenticationService, PrincipalService, AuthorityAdminMenuService, AlertUtils, APP_NAME, COMPANY_NAME) {
+function MainController($http, $rootScope, $scope, $state, AuthenticationService, PrincipalService, AuthorityAdminMenuService, AuthServerService, AlertUtils, APP_NAME, COMPANY_NAME) {
     var main = this;
     main.account = null;
     main.isAuthenticated = null;
@@ -90,6 +90,12 @@ function MainController($http, $rootScope, $scope, $state, AuthenticationService
     function getAccount() {
         PrincipalService.identity().then(function (account) {
             main.account = account;
+
+            var authToken = AuthServerService.getToken();
+            if (authToken) {
+                main.account.profilePhotoUrl = '/api/account/profile-photo?access_token=' + authToken.access_token;
+            }
+
             main.isAuthenticated = PrincipalService.isAuthenticated;
 
             if (account) {
@@ -336,13 +342,22 @@ function FooterController($http, PrincipalService) {
 /**
  * ProfileController
  */
-function ProfileController($state, PrincipalService, AccountService) {
+function ProfileController($state, PrincipalService, AccountService, AuthServerService, Upload) {
     var vm = this;
 
     vm.pageTitle = $state.current.data.pageTitle;
     vm.save = save;
     vm.isSaving = false;
     vm.profileAccount = null;
+    vm.file = null;
+    vm.uploading = false;
+    vm.uploadProgress = 0;
+    vm.upload = upload;
+
+    var authToken = AuthServerService.getToken();
+    if (authToken) {
+        vm.profilePhotoUrl = '/api/account/profile-photo?access_token=' + authToken.access_token;
+    }
 
     /**
      * Store the 'profile account' in a separate variable, and not in the shared 'account' variable.
@@ -354,8 +369,7 @@ function ProfileController($state, PrincipalService, AccountService) {
             mobileNo: parseInt(account.mobileNo),
             firstName: account.firstName,
             lastName: account.lastName,
-            userName: account.userName,
-            avatarImageUrl: account.avatarImageUrl
+            userName: account.userName
         };
     };
 
@@ -375,6 +389,30 @@ function ProfileController($state, PrincipalService, AccountService) {
             function (response) {
                 vm.isSaving = false;
             });
+    }
+
+    function upload(file) {
+        if (file) {
+            vm.uploading = true;
+            vm.uploadProgress = 30;
+            Upload.upload({
+                url: '/api/account/profile-photo/upload',
+                // the 'file' must match the parameter of backend
+                data: {file: file, description: "user profile"},
+                disableProgress: false
+            }).then(function (resp) {
+                vm.uploadProgress = 100;
+                vm.uploading = false;
+            }, function (resp) {
+                // if (resp.status > 0)
+                //     vm.errorMsg = resp.status + ': ' + resp.data;
+                vm.uploading = false;
+            }, function (evt) {
+                // does not work
+                vm.uploadProgress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+                vm.uploading = false;
+            });
+        }
     }
 }
 /**
@@ -1752,13 +1790,18 @@ function UserDialogController($state, $stateParams, $uibModalInstance, UserServi
 /**
  * UserDetailsController
  */
-function UserDetailsController($state, $stateParams, entity) {
+function UserDetailsController($state, $stateParams, entity, AuthServerService) {
     var vm = this;
 
     vm.pageTitle = $state.current.data.pageTitle;
     vm.parentPageTitle = $state.$current.parent.data.pageTitle;
     vm.grandfatherPageTitle = $state.$current.parent.parent.data.pageTitle;
     vm.entity = entity;
+
+    var authToken = AuthServerService.getToken();
+    if (authToken) {
+        vm.entity.profilePhotoUrl = '/api/user/profile-photo/' + vm.entity.userName + '?access_token=' + authToken.access_token;
+    }
 }
 
 /**
