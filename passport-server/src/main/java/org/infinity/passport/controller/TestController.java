@@ -50,7 +50,6 @@ public class TestController {
         user1.setActivationKey(null);
         user1.setResetKey(null);
         user1.setResetTime(null);
-        user1.setAvatarImageUrl(null);
         user1.setEnabled(true);
 
         User result = userRepository.save(user1);
@@ -76,7 +75,6 @@ public class TestController {
         user2.setActivationKey(null);
         user2.setResetKey(null);
         user2.setResetTime(null);
-        user2.setAvatarImageUrl(null);
         user2.setEnabled(true);
         user2.setModifiedBy("AAAA");
 
