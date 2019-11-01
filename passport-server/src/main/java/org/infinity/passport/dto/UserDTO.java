@@ -58,9 +58,6 @@ public class UserDTO extends AbstractAuditableDomain implements Serializable {
 
     private Boolean hasProfilePhoto;
 
-    @Size(max = 256)
-    private String              avatarImageUrl;
-
     @ApiModelProperty(value = "是否可用")
     private Boolean             enabled          = false;
 
@@ -72,11 +69,11 @@ public class UserDTO extends AbstractAuditableDomain implements Serializable {
 
     public UserDTO(User user, Set<String> authorities) {
         this(user.getId(), user.getUserName(), user.getFirstName(), user.getLastName(), user.getEmail(),
-                user.getActivated(), user.getMobileNo(), user.getAvatarImageUrl(), user.getEnabled(), authorities);
+                user.getActivated(), user.getMobileNo(), user.getHasProfilePhoto(), user.getEnabled(), authorities);
     }
 
     public UserDTO(String id, String userName, String firstName, String lastName, String email, Boolean activated,
-            String mobileNo, String avatarImageUrl, Boolean enabled, Set<String> authorities) {
+                   String mobileNo, Boolean hasProfilePhoto, Boolean enabled, Set<String> authorities) {
         this.id = id;
         this.userName = userName;
         this.firstName = firstName;
@@ -84,7 +81,7 @@ public class UserDTO extends AbstractAuditableDomain implements Serializable {
         this.email = email;
         this.activated = activated;
         this.mobileNo = mobileNo;
-        this.avatarImageUrl = avatarImageUrl;
+        this.hasProfilePhoto = hasProfilePhoto;
         this.enabled = enabled;
         this.authorities = authorities;
     }
@@ -143,14 +140,6 @@ public class UserDTO extends AbstractAuditableDomain implements Serializable {
 
     public void setMobileNo(String mobileNo) {
         this.mobileNo = mobileNo;
-    }
-
-    public String getAvatarImageUrl() {
-        return avatarImageUrl;
-    }
-
-    public void setAvatarImageUrl(String avatarImageUrl) {
-        this.avatarImageUrl = avatarImageUrl;
     }
 
     public Boolean getHasProfilePhoto() {
