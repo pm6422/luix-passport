@@ -55,7 +55,6 @@ public class DatabaseInitialSetup {
         userRoleUser.setActivationKey(null);
         userRoleUser.setResetKey(null);
         userRoleUser.setResetTime(null);
-        userRoleUser.setAvatarImageUrl(null);
         userRoleUser.setEnabled(true);
         mongoTemplate.save(userRoleUser);
 
@@ -74,7 +73,6 @@ public class DatabaseInitialSetup {
         adminRoleUser.setActivationKey(null);
         adminRoleUser.setResetKey(null);
         adminRoleUser.setResetTime(null);
-        adminRoleUser.setAvatarImageUrl(null);
         adminRoleUser.setEnabled(true);
         mongoTemplate.save(adminRoleUser);
 
@@ -94,7 +92,6 @@ public class DatabaseInitialSetup {
         adminRoleSystemUser.setActivationKey(null);
         adminRoleSystemUser.setResetKey(null);
         adminRoleSystemUser.setResetTime(null);
-        adminRoleSystemUser.setAvatarImageUrl(null);
         adminRoleSystemUser.setEnabled(true);
         mongoTemplate.save(adminRoleSystemUser);
 
@@ -114,7 +111,6 @@ public class DatabaseInitialSetup {
         developerRoleUser.setActivationKey(null);
         developerRoleUser.setResetKey(null);
         developerRoleUser.setResetTime(null);
-        developerRoleUser.setAvatarImageUrl(null);
         developerRoleUser.setEnabled(true);
         mongoTemplate.save(developerRoleUser);
 
