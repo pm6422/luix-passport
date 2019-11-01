@@ -4,10 +4,10 @@
             <li class="nav-header">
                 <div class="profile-element" uib-dropdown>
                     <div class="text-center">
-                        <img alt="image" class="img-circle" style="width:50px" ng-src="{{main.account.avatarImageUrl}}"
-                             ng-show="main.account.avatarImageUrl"/>
+                        <img alt="image" class="img-circle" style="width:50px" ng-src="{{main.account.profilePhotoUrl}}"
+                             ng-show="main.account.hasProfilePhoto"/>
                         <img alt="image" class="img-circle" style="width:50px" ng-src="content/img/profile_small.png"
-                             ng-hide="main.account.avatarImageUrl"/>
+                             ng-hide="main.account.hasProfilePhoto"/>
                     </div>
                     <a uib-dropdown-toggle>
                         <span class="clear forum-info">
