@@ -6,12 +6,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.User;
 import org.infinity.passport.domain.UserAuthority;
+import org.infinity.passport.domain.UserProfilePhoto;
 import org.infinity.passport.dto.ManagedUserDTO;
 import org.infinity.passport.dto.UserDTO;
 import org.infinity.passport.exception.FieldValidationException;
 import org.infinity.passport.exception.NoAuthorityException;
 import org.infinity.passport.exception.NoDataException;
 import org.infinity.passport.repository.UserAuthorityRepository;
+import org.infinity.passport.repository.UserProfilePhotoRepository;
 import org.infinity.passport.repository.UserRepository;
 import org.infinity.passport.security.AjaxLogoutSuccessHandler;
 import org.infinity.passport.service.MailService;
@@ -52,20 +54,22 @@ import static javax.servlet.http.HttpServletResponse.*;
 @Api(tags = "用户管理")
 public class UserController {
 
-    private static final Logger                   LOGGER           = LoggerFactory.getLogger(UserController.class);
+    private static final Logger                     LOGGER           = LoggerFactory.getLogger(UserController.class);
     @Autowired
-    private              UserRepository           userRepository;
+    private              UserRepository             userRepository;
     @Autowired
-    private              UserAuthorityRepository  userAuthorityRepository;
+    private              UserProfilePhotoRepository userProfilePhotoRepository;
     @Autowired
-    private              UserService              userService;
+    private              UserAuthorityRepository    userAuthorityRepository;
     @Autowired
-    private              MailService              mailService;
+    private              UserService                userService;
     @Autowired
-    private              AjaxLogoutSuccessHandler ajaxLogoutSuccessHandler;
+    private              MailService                mailService;
     @Autowired
-    private              HttpHeaderCreator        httpHeaderCreator;
-    private static final String                   DEFAULT_PASSWORD = "123456";
+    private              AjaxLogoutSuccessHandler   ajaxLogoutSuccessHandler;
+    @Autowired
+    private              HttpHeaderCreator          httpHeaderCreator;
+    private static final String                     DEFAULT_PASSWORD = "123456";
 
     @ApiOperation(value = "创建新用户并发送激活邮件", response = String.class)
     @ApiResponses(value = {@ApiResponse(code = SC_CREATED, message = "成功创建"),
@@ -93,7 +97,7 @@ public class UserController {
 
         User newUser = userService.insert(dto.getUserName(), DEFAULT_PASSWORD, dto.getFirstName(), dto.getLastName(),
                 dto.getEmail().toLowerCase(), dto.getMobileNo(), RandomUtils.generateActivationKey(),
-                dto.getActivated(), dto.getAvatarImageUrl(), dto.getEnabled(), RandomUtils.generateResetKey(),
+                dto.getActivated(), dto.getEnabled(), RandomUtils.generateResetKey(),
                 Instant.now(), dto.getAuthorities());
         String baseUrl = request.getScheme() + // "http"
                 "://" + // "://"
@@ -175,7 +179,7 @@ public class UserController {
 
         userService.update(dto.getUserName().toLowerCase(), dto.getFirstName(), dto.getLastName(),
                 dto.getEmail().toLowerCase(), dto.getMobileNo(), SecurityUtils.getCurrentUserName(), dto.getActivated(),
-                dto.getAvatarImageUrl(), dto.getEnabled(), dto.getAuthorities());
+                dto.getEnabled(), dto.getAuthorities());
         //
         if (dto.getUserName().equals(SecurityUtils.getCurrentUserName())) {
             // Remove access token from Redis if authorities of current user
@@ -207,12 +211,25 @@ public class UserController {
     @PutMapping("/api/user/users/{userName:[_'.@a-z0-9-]+}")
     @Secured({Authority.ADMIN})
     @Timed
-    public ResponseEntity<String> resetPassword(
-            @ApiParam(value = "用户名", required = true) @PathVariable String userName) {
+    public ResponseEntity<String> resetPassword(@ApiParam(value = "用户名", required = true) @PathVariable String userName) {
         LOGGER.debug("REST reset the password of user: {}", userName);
         userService.changePassword(userName, DEFAULT_PASSWORD);
         HttpHeaders headers = httpHeaderCreator.createSuccessHeader("notification.password.reset.to.default",
                 DEFAULT_PASSWORD);
         return ResponseEntity.ok().headers(headers).body(DEFAULT_PASSWORD);
+    }
+
+    @ApiOperation("获取用户头像")
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
+    @GetMapping("/api/user/profile-photo/{userName:[_'.@a-z0-9-]+}")
+    @Secured({Authority.USER})
+    @Timed
+    public ResponseEntity<byte[]> getProfilePhoto(@ApiParam(value = "用户名", required = true) @PathVariable String userName) {
+        byte[] bytes = null;
+        UserProfilePhoto existingPhoto = userProfilePhotoRepository.findByUserName(userName);
+        if (existingPhoto != null) {
+            bytes = existingPhoto.getProfilePhoto().getData();
+        }
+        return ResponseEntity.ok(bytes);
     }
 }
