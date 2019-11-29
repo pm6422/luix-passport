@@ -301,14 +301,14 @@ public class AccountController {
                                    @ApiParam(value = "用户头像文件", required = true) @RequestPart MultipartFile file) throws IOException {
         UserProfilePhoto existingPhoto = userProfilePhotoRepository.findByUserName(SecurityUtils.getCurrentUserName());
         if (existingPhoto == null) {
-            userProfilePhotoService.insert(SecurityUtils.getCurrentUserName(), file);
+            userProfilePhotoService.insert(SecurityUtils.getCurrentUserName(), file.getBytes());
             userRepository.findOneByUserName(SecurityUtils.getCurrentUserName()).ifPresent((user) -> {
                 // update hasProfilePhoto to true
                 user.setHasProfilePhoto(true);
                 userRepository.save(user);
             });
         } else {
-            userProfilePhotoService.update(existingPhoto.getId(), existingPhoto.getUserName(), file);
+            userProfilePhotoService.update(existingPhoto.getId(), existingPhoto.getUserName(), file.getBytes());
         }
     }
 

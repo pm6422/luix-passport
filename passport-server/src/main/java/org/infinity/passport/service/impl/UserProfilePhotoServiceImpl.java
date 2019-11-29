@@ -7,9 +7,6 @@ import org.infinity.passport.repository.UserProfilePhotoRepository;
 import org.infinity.passport.service.UserProfilePhotoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
 
 @Service
 public class UserProfilePhotoServiceImpl implements UserProfilePhotoService {
@@ -18,21 +15,21 @@ public class UserProfilePhotoServiceImpl implements UserProfilePhotoService {
     private UserProfilePhotoRepository userProfilePhotoRepository;
 
     @Override
-    public UserProfilePhoto insert(String userName, MultipartFile file) throws IOException {
+    public UserProfilePhoto insert(String userName, byte[] photoData) {
         UserProfilePhoto photo = new UserProfilePhoto(userName);
-        photo.setProfilePhoto(new Binary(BsonBinarySubType.BINARY, file.getBytes()));
+        photo.setProfilePhoto(new Binary(BsonBinarySubType.BINARY, photoData));
         photo = userProfilePhotoRepository.insert(photo);
         return photo;
     }
 
     @Override
-    public void update(String id, String userName, MultipartFile file) throws IOException {
+    public void update(String id, String userName, byte[] photoData) {
         UserProfilePhoto existingPhoto = userProfilePhotoRepository.findById(id).get();
         if (existingPhoto == null) {
             return;
         }
         existingPhoto.setUserName(userName);
-        existingPhoto.setProfilePhoto(new Binary(BsonBinarySubType.BINARY, file.getBytes()));
+        existingPhoto.setProfilePhoto(new Binary(BsonBinarySubType.BINARY, photoData));
         userProfilePhotoRepository.save(existingPhoto);
     }
 }
