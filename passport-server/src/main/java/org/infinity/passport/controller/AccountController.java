@@ -299,16 +299,18 @@ public class AccountController {
     @Timed
     public void uploadProfilePhoto(@ApiParam(value = "文件描述", required = true) @RequestPart String description,
                                    @ApiParam(value = "用户头像文件", required = true) @RequestPart MultipartFile file) throws IOException {
-        UserProfilePhoto existingPhoto = userProfilePhotoRepository.findByUserName(SecurityUtils.getCurrentUserName());
-        if (existingPhoto == null) {
+        Optional<UserProfilePhoto> existingPhoto = userProfilePhotoRepository.findByUserName(SecurityUtils.getCurrentUserName());
+        if (existingPhoto.isPresent()) {
+            // Update if existing
+            userProfilePhotoService.update(existingPhoto.get().getId(), existingPhoto.get().getUserName(), file.getBytes());
+        } else {
+            // Insert if not existing
             userProfilePhotoService.insert(SecurityUtils.getCurrentUserName(), file.getBytes());
             userRepository.findOneByUserName(SecurityUtils.getCurrentUserName()).ifPresent((user) -> {
                 // update hasProfilePhoto to true
                 user.setHasProfilePhoto(true);
                 userRepository.save(user);
             });
-        } else {
-            userProfilePhotoService.update(existingPhoto.getId(), existingPhoto.getUserName(), file.getBytes());
         }
     }
 
@@ -318,11 +320,8 @@ public class AccountController {
     @Secured({Authority.USER})
     @Timed
     public ResponseEntity<byte[]> getProfilePhoto() {
-        byte[] bytes = null;
-        UserProfilePhoto existingPhoto = userProfilePhotoRepository.findByUserName(SecurityUtils.getCurrentUserName());
-        if (existingPhoto != null) {
-            bytes = existingPhoto.getProfilePhoto().getData();
-        }
-        return ResponseEntity.ok(bytes);
+        Optional<UserProfilePhoto> userProfilePhoto = userProfilePhotoRepository.findByUserName(SecurityUtils.getCurrentUserName());
+        return userProfilePhoto.map(photo -> ResponseEntity.ok(photo.getProfilePhoto().getData()))
+                .orElse(ResponseEntity.ok(null));
     }
 }

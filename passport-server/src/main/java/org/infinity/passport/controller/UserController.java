@@ -225,11 +225,8 @@ public class UserController {
     @Secured({Authority.USER})
     @Timed
     public ResponseEntity<byte[]> getProfilePhoto(@ApiParam(value = "用户名", required = true) @PathVariable String userName) {
-        byte[] bytes = null;
-        UserProfilePhoto existingPhoto = userProfilePhotoRepository.findByUserName(userName);
-        if (existingPhoto != null) {
-            bytes = existingPhoto.getProfilePhoto().getData();
-        }
-        return ResponseEntity.ok(bytes);
+        Optional<UserProfilePhoto> userProfilePhoto = userProfilePhotoRepository.findByUserName(userName);
+        return userProfilePhoto.map(photo -> ResponseEntity.ok(photo.getProfilePhoto().getData()))
+                .orElse(ResponseEntity.ok(null));
     }
 }
