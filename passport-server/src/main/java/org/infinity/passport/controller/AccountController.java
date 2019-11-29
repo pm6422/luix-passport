@@ -39,6 +39,7 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -319,9 +320,11 @@ public class AccountController {
     @GetMapping("/api/account/profile-photo")
     @Secured({Authority.USER})
     @Timed
-    public ResponseEntity<byte[]> getProfilePhoto() {
-        Optional<UserProfilePhoto> userProfilePhoto = userProfilePhotoRepository.findByUserName(SecurityUtils.getCurrentUserName());
-        return userProfilePhoto.map(photo -> ResponseEntity.ok(photo.getProfilePhoto().getData()))
-                .orElse(ResponseEntity.ok(null));
+    public ModelAndView getProfilePhoto() {
+        // @RestController下使用return forwardUrl; 不好使
+        String forwardUrl = "forward:".concat(UserController.GET_PROFILE_PHOTO_URL).concat(SecurityUtils.getCurrentUserName());
+        LOGGER.info(forwardUrl);
+        ModelAndView mav = new ModelAndView(forwardUrl);
+        return mav;
     }
 }

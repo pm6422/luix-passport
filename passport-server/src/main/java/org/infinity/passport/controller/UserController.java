@@ -219,9 +219,10 @@ public class UserController {
         return ResponseEntity.ok().headers(headers).body(DEFAULT_PASSWORD);
     }
 
+    public static final String GET_PROFILE_PHOTO_URL = "/api/user/profile-photo/";
     @ApiOperation("获取用户头像")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
-    @GetMapping("/api/user/profile-photo/{userName:[_'.@a-z0-9-]+}")
+    @GetMapping(GET_PROFILE_PHOTO_URL + "{userName:[_'.@a-z0-9-]+}")
     @Secured({Authority.USER})
     @Timed
     public ResponseEntity<byte[]> getProfilePhoto(@ApiParam(value = "用户名", required = true) @PathVariable String userName) {
