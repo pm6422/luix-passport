@@ -59,15 +59,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String getPasswordHash(String rawPassword) {
-        Assert.hasText(rawPassword, "it must not be null, empty, or blank");
-        return passwordEncoder.encode(rawPassword);
-    }
-
-    @Override
     public User insert(String userName, String rawPassword, String firstName, String lastName, String email,
                        String mobileNo, String activationKey, Boolean activated, Boolean enabled,
-                       String resetKey, Instant resetTime, Set<String> authorityNames) {
+                       String remarks, String resetKey, Instant resetTime, Set<String> authorityNames) {
         User newUser = new User();
         newUser.setUserName(userName.toLowerCase());
         newUser.setPasswordHash(passwordEncoder.encode(rawPassword));
@@ -102,7 +96,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void update(String userName, String firstName, String lastName, String email, String mobileNo,
-                       String modifiedBy, Boolean activated, Boolean enabled, Set<String> authorityNames) {
+                       String modifiedBy, Boolean activated, Boolean enabled, String remarks, Set<String> authorityNames) {
         userRepository.findOneByUserName(userName.toLowerCase()).ifPresent(user -> {
             user.setFirstName(firstName);
             user.setLastName(lastName);

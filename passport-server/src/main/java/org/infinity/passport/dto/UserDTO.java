@@ -54,26 +54,29 @@ public class UserDTO extends AbstractAuditableDomain implements Serializable {
     @NotNull
     @Pattern(regexp = "^(13[0-9]|15[012356789]|17[03678]|18[0-9]|14[57])[0-9]{8}$")
     @Size(min = 11, max = 13)
-    private String              mobileNo;
+    private String mobileNo;
 
     private Boolean hasProfilePhoto;
 
     @ApiModelProperty(value = "是否可用")
-    private Boolean             enabled          = false;
+    private Boolean enabled = false;
+
+    @ApiModelProperty(value = "备注")
+    private String remarks;
 
     @ApiModelProperty(value = "权限名称")
-    private Set<String>         authorities;
+    private Set<String> authorities;
 
     public UserDTO() {
     }
 
     public UserDTO(User user, Set<String> authorities) {
         this(user.getId(), user.getUserName(), user.getFirstName(), user.getLastName(), user.getEmail(),
-                user.getActivated(), user.getMobileNo(), user.getHasProfilePhoto(), user.getEnabled(), authorities);
+                user.getActivated(), user.getMobileNo(), user.getHasProfilePhoto(), user.getEnabled(), user.getRemarks(), authorities);
     }
 
     public UserDTO(String id, String userName, String firstName, String lastName, String email, Boolean activated,
-                   String mobileNo, Boolean hasProfilePhoto, Boolean enabled, Set<String> authorities) {
+                   String mobileNo, Boolean hasProfilePhoto, Boolean enabled, String remarks, Set<String> authorities) {
         this.id = id;
         this.userName = userName;
         this.firstName = firstName;
@@ -83,6 +86,7 @@ public class UserDTO extends AbstractAuditableDomain implements Serializable {
         this.mobileNo = mobileNo;
         this.hasProfilePhoto = hasProfilePhoto;
         this.enabled = enabled;
+        this.remarks = remarks;
         this.authorities = authorities;
     }
 
@@ -158,6 +162,14 @@ public class UserDTO extends AbstractAuditableDomain implements Serializable {
         this.enabled = enabled;
     }
 
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
     public Set<String> getAuthorities() {
         return authorities;
     }
@@ -178,6 +190,7 @@ public class UserDTO extends AbstractAuditableDomain implements Serializable {
                 ", mobileNo='" + mobileNo + '\'' +
                 ", hasProfilePhoto='" + hasProfilePhoto + '\'' +
                 ", enabled=" + enabled +
+                ", remarks=" + remarks +
                 ", authorities=" + authorities +
                 '}';
     }

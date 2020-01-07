@@ -97,7 +97,7 @@ public class UserController {
 
         User newUser = userService.insert(dto.getUserName(), DEFAULT_PASSWORD, dto.getFirstName(), dto.getLastName(),
                 dto.getEmail().toLowerCase(), dto.getMobileNo(), RandomUtils.generateActivationKey(),
-                dto.getActivated(), dto.getEnabled(), RandomUtils.generateResetKey(),
+                dto.getActivated(), dto.getEnabled(), dto.getRemarks(), RandomUtils.generateResetKey(),
                 Instant.now(), dto.getAuthorities());
         String baseUrl = request.getScheme() + // "http"
                 "://" + // "://"
@@ -179,7 +179,7 @@ public class UserController {
 
         userService.update(dto.getUserName().toLowerCase(), dto.getFirstName(), dto.getLastName(),
                 dto.getEmail().toLowerCase(), dto.getMobileNo(), SecurityUtils.getCurrentUserName(), dto.getActivated(),
-                dto.getEnabled(), dto.getAuthorities());
+                dto.getEnabled(), dto.getRemarks(), dto.getAuthorities());
         //
         if (dto.getUserName().equals(SecurityUtils.getCurrentUserName())) {
             // Remove access token from Redis if authorities of current user

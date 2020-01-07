@@ -27,7 +27,8 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label class="control-label" for="login">用户</label>
-                                <input type="text" name="login" class="form-control" placeholder="根据用户名/Email/手机号进行模糊搜索"
+                                <input type="text" id="login" name="login" class="form-control"
+                                       placeholder="根据用户名/Email/手机号进行模糊搜索"
                                        ng-model="vm.criteria.login" ng-keydown="vm.checkPressEnter($event)">
                             </div>
                         </div>
@@ -40,6 +41,7 @@
                                 <th sort-by-directive="mobileNo"><span>手机号</span> <span class="fa fa-sort"></span></th>
                                 <th sort-by-directive="activated"><span>是否激活</span> <span class="fa fa-sort"></span></th>
                                 <th sort-by-directive="enabled"><span>是否可用</span> <span class="fa fa-sort"></span></th>
+                                <th sort-by-directive="remarks"><span>备注</span> <span class="fa fa-sort"></span></th>
                                 <th sort-by-directive="modifiedTime"><span>修改时间</span> <span class="fa fa-sort"></span></th>
                                 <th>当前用户</th>
                                 <th>操作</th>
@@ -62,6 +64,7 @@
                                     <span class="label label-primary" ng-click="vm.setEnabled(entity, false)" ng-show="entity.enabled"
                                           style="cursor: pointer;">可用</span>
                                 </td>
+                                <td>{{entity.remarks}}</td>
                                 <td>{{entity.modifiedTime | date:'yyyy/MM/dd HH:mm:ss'}}</td>
                                 <td><i class="fa fa-check text-navy" ng-show="vm.currentAccount.userName==entity.userName"></i></td>
                                 <td>

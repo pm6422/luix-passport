@@ -12,14 +12,12 @@ public interface UserService {
 
     void changePassword(String userName, String newRawPassword);
 
-    String getPasswordHash(String rawPassword);
-
     User insert(String userName, String rawPassword, String firstName, String lastName, String email, String mobileNo,
-                String activationKey, Boolean activated, Boolean enabled, String resetKey,
+                String activationKey, Boolean activated, Boolean enabled, String remarks, String resetKey,
                 Instant resetTime, Set<String> authorityNames);
 
     void update(String userName, String firstName, String lastName, String email, String mobileNo, String modifiedBy,
-                Boolean activated, Boolean enabled, Set<String> authorityNames);
+                Boolean activated, Boolean enabled, String remarks, Set<String> authorityNames);
 
     Optional<User> findOneByUserName(String userName);
 

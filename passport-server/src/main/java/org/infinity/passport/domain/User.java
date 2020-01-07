@@ -62,13 +62,15 @@ public class User extends AbstractAuditableDomain implements Serializable {
 
     @Size(max = 20)
     @JsonIgnore
-    private String             resetKey;
+    private String resetKey;
 
-    private Instant            resetTime;
+    private Instant resetTime;
 
     private Boolean hasProfilePhoto;
 
-    private Boolean            enabled;
+    private Boolean enabled;
+
+    private String remarks;
 
     public User() {
         super();
@@ -76,6 +78,7 @@ public class User extends AbstractAuditableDomain implements Serializable {
 
     /**
      * Constructor for creating operation
+     *
      * @param userName
      * @param firstName
      * @param lastName
@@ -87,9 +90,10 @@ public class User extends AbstractAuditableDomain implements Serializable {
      * @param resetKey
      * @param resetTime
      * @param enabled
+     * @param remarks
      */
     public User(String userName, String firstName, String lastName, String email, String mobileNo, String passwordHash,
-                Boolean activated, String activationKey, String resetKey, Instant resetTime, Boolean enabled) {
+                Boolean activated, String activationKey, String resetKey, Instant resetTime, Boolean enabled, String remarks) {
         super();
         this.userName = userName;
         this.firstName = firstName;
@@ -102,6 +106,7 @@ public class User extends AbstractAuditableDomain implements Serializable {
         this.resetKey = resetKey;
         this.resetTime = resetTime;
         this.enabled = enabled;
+        this.remarks = remarks;
     }
 
     public String getId() {
@@ -208,6 +213,14 @@ public class User extends AbstractAuditableDomain implements Serializable {
         this.enabled = enabled;
     }
 
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -225,12 +238,13 @@ public class User extends AbstractAuditableDomain implements Serializable {
                 Objects.equals(resetKey, user.resetKey) &&
                 Objects.equals(resetTime, user.resetTime) &&
                 Objects.equals(hasProfilePhoto, user.hasProfilePhoto) &&
-                Objects.equals(enabled, user.enabled);
+                Objects.equals(enabled, user.enabled) &&
+                Objects.equals(remarks, user.remarks);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userName, firstName, lastName, email, mobileNo, passwordHash, activated, activationKey, resetKey, resetTime, hasProfilePhoto, enabled);
+        return Objects.hash(id, userName, firstName, lastName, email, mobileNo, passwordHash, activated, activationKey, resetKey, resetTime, hasProfilePhoto, enabled, remarks);
     }
 
     @Override
@@ -249,6 +263,7 @@ public class User extends AbstractAuditableDomain implements Serializable {
                 ", resetTime=" + resetTime +
                 ", hasProfilePhoto=" + hasProfilePhoto +
                 ", enabled=" + enabled +
+                ", remarks=" + remarks +
                 ", createdBy='" + getCreatedBy() + '\'' +
                 ", createdTime=" + getCreatedTime() +
                 ", modifiedBy='" + getModifiedBy() + '\'' +

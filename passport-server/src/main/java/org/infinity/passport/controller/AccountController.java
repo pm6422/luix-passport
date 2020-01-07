@@ -178,7 +178,7 @@ public class AccountController {
         User newUser = userService.insert(managedUserDTO.getUserName(), managedUserDTO.getPassword(),
                 managedUserDTO.getFirstName(), managedUserDTO.getLastName(), managedUserDTO.getEmail(),
                 managedUserDTO.getMobileNo(), RandomUtils.generateActivationKey(), false,
-                true, null, null, null);
+                true, null, null, null, null);
         String baseUrl = request.getScheme() + // "http"
                 "://" + // "://"
                 request.getServerName() + // "myhost"
