@@ -31,12 +31,10 @@
         <generated.asciidoc.directory>${project.build.directory}/asciidoc/generated</generated.asciidoc.directory>
         <jacoco-maven-plugin.version>0.7.9</jacoco-maven-plugin.version>
         <java.version>1.8</java.version>
-        <mapstruct.version>1.2.0.Final</mapstruct.version>
 
         <!-- Plugin versions -->
         <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
         <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
-        <maven-eclipse-plugin.version>2.10</maven-eclipse-plugin.version>
         <maven-enforcer-plugin.version>3.0.0-M2</maven-enforcer-plugin.version>
         <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
         <maven-surefire-plugin.version>2.22.0</maven-surefire-plugin.version>
@@ -400,28 +398,6 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <annotationProcessorPaths>
-                        <path>
-                            <groupId>org.mapstruct</groupId>
-                            <artifactId>mapstruct-processor</artifactId>
-                            <version>${mapstruct.version}</version>
-                        </path>
-
-                    </annotationProcessorPaths>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-eclipse-plugin</artifactId>
-                <configuration>
-                    <downloadSources>true</downloadSources>
-                    <downloadJavadocs>true</downloadJavadocs>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
                 <executions>
                     <execution>
@@ -582,35 +558,6 @@
                         <exclude>**/Abstract*.java</exclude>
                     </excludes>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>${jacoco-maven-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>pre-unit-tests</id>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                        <configuration>
-                            <!-- Sets the path to the file which contains the execution data. -->
-                            <destFile>${project.testresult.directory}/coverage/jacoco/jacoco.exec</destFile>
-                        </configuration>
-                    </execution>
-                    <!-- Ensures that the code coverage report for unit tests is created after unit tests have been run -->
-                    <execution>
-                        <id>post-unit-test</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                        <configuration>
-                            <dataFile>${project.testresult.directory}/coverage/jacoco/jacoco.exec</dataFile>
-                            <outputDirectory>${project.testresult.directory}/coverage/jacoco</outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
