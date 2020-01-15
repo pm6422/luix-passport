@@ -48,7 +48,7 @@
         <project.testresult.directory>${project.build.directory}/test-results</project.testresult.directory>
         <run.addResources>false</run.addResources>
         <sortpom-maven-plugin.version>2.5.0</sortpom-maven-plugin.version>
-        <spring-boot.version>2.0.3.RELEASE</spring-boot.version>
+        <spring-boot.version>2.0.4.RELEASE</spring-boot.version>
         <springfox.version>2.5.0</springfox.version>
     </properties>
 

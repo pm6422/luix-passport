@@ -8,7 +8,7 @@
 # ===================================================================
 # Standard Spring Boot properties.
 # Full reference is available at:
-# https://docs.spring.io/spring-boot/docs/2.0.3.RELEASE/reference/html/common-application-properties.html
+# https://docs.spring.io/spring-boot/docs/2.0.4.RELEASE/reference/html/common-application-properties.html
 # ===================================================================
 management: # Management http server configuration, used by ManagementServerProperties
     endpoints:
