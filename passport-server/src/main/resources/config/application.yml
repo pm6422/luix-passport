@@ -60,10 +60,6 @@ spring:
             enabled: true
             max-file-size: 30MB
             max-request-size: 30MB
-    security:
-        oauth2:
-            resource:
-                filter-order: 101 # The order of the filter chain used to authenticate tokens. Note: it must be greater than 100.
     session: # used by MongoOperationsSessionRepository
         store-type: MONGODB
         mongodb:
