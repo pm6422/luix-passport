@@ -1,13 +1,12 @@
 package org.infinity.passport.entity;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import org.infinity.passport.config.ApplicationConstants;
+
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
-
-import org.infinity.passport.config.ApplicationConstants;
-
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel("Profile信息")
 public class ProfileInfo implements Serializable {
@@ -26,7 +25,7 @@ public class ProfileInfo implements Serializable {
     @ApiModelProperty(value = "是否禁止Swagger")
     private boolean           swaggerDisabled  = false;
 
-    public ProfileInfo(String[] activeProfiles, String ribbonEnv, String oAuth2ClientId, String oAuth2ClientSecret) {
+    public ProfileInfo(String[] activeProfiles, String ribbonEnv) {
         this.activeProfiles = activeProfiles;
         this.ribbonEnv = ribbonEnv;
 
