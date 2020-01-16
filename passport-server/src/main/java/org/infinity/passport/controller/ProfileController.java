@@ -4,7 +4,6 @@ import com.codahale.metrics.annotation.Timed;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.infinity.passport.config.ApplicationProperties;
-import org.infinity.passport.domain.MongoOAuth2ClientDetails;
 import org.infinity.passport.entity.ProfileInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -30,9 +29,7 @@ public class ProfileController {
     @GetMapping("/open-api/profile-info")
     @Timed
     public ResponseEntity<ProfileInfo> getProfileInfo() {
-        ProfileInfo profileInfo = new ProfileInfo(env.getActiveProfiles(), getRibbonEnv(),
-                MongoOAuth2ClientDetails.INTERNAL_CLIENT_ID,
-                MongoOAuth2ClientDetails.INTERNAL_RAW_CLIENT_SECRET);
+        ProfileInfo profileInfo = new ProfileInfo(env.getActiveProfiles(), getRibbonEnv());
         return ResponseEntity.ok(profileInfo);
     }
 
