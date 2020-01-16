@@ -4,8 +4,6 @@
 angular
     .module('smartcloudserviceApp')
     .controller('MainController', MainController)
-    .controller('ApiResponseTimeController', ApiResponseTimeController)
-    .controller('ApiAccessController', ApiAccessController)
     .controller('LeftSidebarController', LeftSidebarController)
     .controller('ErrorPageController', ErrorPageController)
     .controller('LoginController', LoginController)
@@ -107,89 +105,6 @@ function MainController($http, $rootScope, $scope, $state, AuthenticationService
     function selectLink($item, $model, $label, $event) {
         $state.go(main.selectedLink.url);
     }
-}
-/**
- * ApiResponseTimeController
- */
-function ApiResponseTimeController() {
-    var vm = this;
-
-    /**
-     * Options for Line chart
-     */
-    vm.lineOptions = {
-        scaleShowGridLines: true,
-        scaleGridLineColor: 'rgba(0,0,0,.05)',
-        scaleGridLineWidth: 1,
-        bezierCurve: true,
-        bezierCurveTension: 0.4,
-        pointDot: true,
-        pointDotRadius: 4,
-        pointDotStrokeWidth: 1,
-        pointHitDetectionRadius: 20,
-        datasetStroke: true,
-        datasetStrokeWidth: 2,
-        datasetFill: true
-    };
-
-    /**
-     * Data for Line chart
-     */
-    vm.lineData = {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-        datasets: [
-            {
-                label: 'Example dataset',
-                fillColor: 'rgba(26,179,148,0.5)',
-                strokeColor: 'rgba(26,179,148,0.7)',
-                pointColor: 'rgba(26,179,148,1)',
-                pointStrokeColor: '#fff',
-                pointHighlightFill: '#fff',
-                pointHighlightStroke: 'rgba(26,179,148,1)',
-                data: [28, 48, 40, 19, 86, 27, 90]
-            }
-        ]
-    };
-}
-function ApiAccessController() {
-    var vm = this;
-
-    /**
-     * Options for Line chart
-     */
-    vm.lineOptions = {
-        scaleShowGridLines: true,
-        scaleGridLineColor: 'rgba(0,0,0,.05)',
-        scaleGridLineWidth: 1,
-        bezierCurve: true,
-        bezierCurveTension: 0.4,
-        pointDot: true,
-        pointDotRadius: 4,
-        pointDotStrokeWidth: 1,
-        pointHitDetectionRadius: 20,
-        datasetStroke: true,
-        datasetStrokeWidth: 2,
-        datasetFill: true
-    };
-
-    /**
-     * Data for Line chart
-     */
-    this.lineData = {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-        datasets: [
-            {
-                label: 'Example dataset',
-                fillColor: 'rgba(26,179,148,0.5)',
-                strokeColor: 'rgba(26,179,148,0.7)',
-                pointColor: 'rgba(26,179,148,1)',
-                pointStrokeColor: '#fff',
-                pointHighlightFill: '#fff',
-                pointHighlightStroke: 'rgba(26,179,148,1)',
-                data: [3265, 3159, 2830, 2281, 2756, 2355, 1940]
-            }
-        ]
-    };
 }
 /**
  * LeftSidebarController
