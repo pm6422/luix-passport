@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozermapper.github.io/schema/bean-mapping"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://dozermapper.github.io/schema/bean-mapping http://dozermapper.github.io/schema/bean-mapping.xsd">
+
+    <mapping map-id="class-to-map">
+        <class-a>org.infinity.passport.domain.User</class-a>
+        <class-b>java.util.HashMap</class-b>
+        <field>
+            <a>userName</a>
+            <b key="fullName">this</b>
+        </field>
+    </mapping>
+</mappings>

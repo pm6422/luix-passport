@@ -85,6 +85,8 @@ logging:
     level:
         root: DEBUG
         ${info.project.package}: DEBUG
+dozer:
+    mapping-files: classpath:mappings/class-to-class.xml,classpath:mappings/map-to-class.xml,classpath:mappings/class-to-map.xml
 # ===================================================================
 # Application specific properties
 # ===================================================================
