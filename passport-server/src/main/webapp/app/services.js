@@ -526,7 +526,7 @@ function HealthService($rootScope, $http) {
     };
 
     function checkHealth() {
-        return $http.get('management/health').then(function (response) {
+        return $http.get('health').then(function (response) {
             return response.data;
         });
     }
@@ -998,7 +998,7 @@ function AuthServerService($http, $localStorage, Base64Utils, APP_NAME) {
     function getRefreshToken() {
         return $localStorage.authenticationToken != null ? $localStorage.authenticationToken.refresh_token : null;
     }
-    
+
     function login(credentials, successCallback, errorCallback) {
         $http.get('open-api/oauth2-client/internal-client').then(function (response) {
             var data = 'username=' + encodeURIComponent(credentials.userName)

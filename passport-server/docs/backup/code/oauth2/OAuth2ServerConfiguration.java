@@ -103,7 +103,7 @@ public class OAuth2ServerConfiguration {
                     // Do not need authentication
                     .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                     .antMatchers("/swagger-resources/configuration/ui").permitAll()
-                    .antMatchers("/management/health").permitAll()
+                    .antMatchers("/health").permitAll()
                     // Need authentication
                     .antMatchers("/api/**").authenticated()
                     // Need 'DEVELOPER' authority
