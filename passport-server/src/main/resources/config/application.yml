@@ -13,7 +13,7 @@
 management: # Management http server configuration, used by ManagementServerProperties
     endpoints:
         web:
-            base-path: /management
+            base-path: /
             exposure:
                 include: ['configprops', 'env', 'health', 'info', 'threaddump', 'beans', 'mappings', 'httptrace', 'shutdown', 'auditevents', 'loggers', 'scheduledtasks']
     endpoint:
@@ -70,7 +70,7 @@ spring:
         password: 35H-UHR-9dH-8G9-FG3
     banner:
         location: classpath:config/banner-company.txt
-server: 
+server:
     # It can be overridden by `--server.port` value passed in the commandline or `-Dserver.port` set in `JAVA_OPTS`
     port: @app.server.port@
     servlet:
@@ -112,7 +112,7 @@ application:
         contact-email: pm6422@126.com
         license: 1.0
         license-url: http://www.apache.org/licenses/LICENSE-2.0.html
-        host: 
+        host:
     ribbon:
         # comma separated list of profiles to show a ribbon on the GUI
         display-on-active-profiles: dev,test,demo,preprod
