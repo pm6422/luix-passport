@@ -1,8 +1,5 @@
 package org.infinity.passport.config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.Locale;
 
 /**
@@ -10,7 +7,6 @@ import java.util.Locale;
  */
 public final class ApplicationConstants {
 
-    private static final Logger   LOGGER                         = LoggerFactory.getLogger(ApplicationConstants.class);
     public static final  String   BASE_PACKAGE                   = "org.infinity.passport";
     // Spring profile
     public static final  String   SPRING_PROFILES_ACTIVE         = "spring.profiles.active";
