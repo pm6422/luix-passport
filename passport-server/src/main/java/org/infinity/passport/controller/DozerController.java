@@ -47,7 +47,7 @@ public class DozerController {
     @Secured({Authority.USER})
     @Timed
     public ResponseEntity<User> mapToClass() {
-        Map from = new HashMap();
+        Map<String, String> from = new HashMap<String, String>();
         from.put("firstName", "louis");
         User to = dozerMapper.map(from, User.class, "map-to-class");
         assertEquals("liu", to.getLastName());
@@ -59,10 +59,11 @@ public class DozerController {
     @GetMapping("/api/dozer/class-to-map")
     @Secured({Authority.USER})
     @Timed
-    public ResponseEntity<Map> classToMap() {
+    public ResponseEntity<Map<String, String>> classToMap() {
         User from = new User();
         from.setUserName("userNameValue");
-        Map<?, ?> to = dozerMapper.map(from, HashMap.class, "class-to-map");
+        @SuppressWarnings("unchecked")
+        Map<String, String> to = dozerMapper.map(from, HashMap.class, "class-to-map");
         assertEquals("userNameValue", to.get("fullName"));
         return ResponseEntity.ok(to);
     }
