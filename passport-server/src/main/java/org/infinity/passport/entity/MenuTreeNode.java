@@ -15,21 +15,6 @@ public class MenuTreeNode extends AdminMenuDTO implements Serializable {
         super();
     }
 
-    private MenuTreeNode(String id, String appName, String name, String label, Integer level, String url,
-                         Integer sequence, String parentId, boolean checked, List<MenuTreeNode> children) {
-        super();
-        setId(id);
-        setAppName(appName);
-        setName(name);
-        setLabel(label);
-        setLevel(level);
-        setUrl(url);
-        setSequence(sequence);
-        setParentId(parentId);
-        setChecked(false);
-        this.children = children;
-    }
-
     public List<MenuTreeNode> getChildren() {
         return children;
     }
