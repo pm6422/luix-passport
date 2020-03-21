@@ -16,34 +16,8 @@ spring:
             enabled: true # disable on prod environment
         livereload:
             enabled: false # we use gulp + BrowserSync for livereload
-    mail: # specific mail property, used by MailProperties
-        host: smtp.exmail.qq.com
-        username: admin@pm6422.org
-        password: 35H-UHR-9dH-8G9-FG3
     thymeleaf:
         cache: false
 # ===================================================================
 # Application specific properties
 # ===================================================================
-
-application:
-    metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
-        jmx.enabled: true
-        spark:
-            enabled: false
-            host: localhost
-            port: 9999
-        graphite:
-            enabled: false
-            host: localhost
-            port: 2003
-            prefix: smartcloudservice
-        logs: # Reports Dropwizard metrics in the logs
-            enabled: false
-            report-frequency: 60 # in seconds
-    logging:
-        logstash: # Forward logs to logstash over a socket, used by LoggingConfiguration
-            enabled: false
-            host: localhost
-            port: 5000
-            queueSize: 512
