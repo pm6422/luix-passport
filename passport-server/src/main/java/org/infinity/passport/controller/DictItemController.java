@@ -1,6 +1,5 @@
 package org.infinity.passport.controller;
 
-import com.codahale.metrics.annotation.Timed;
 import io.swagger.annotations.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.infinity.passport.domain.Authority;
@@ -61,7 +60,6 @@ public class DictItemController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "字典code不存在或相同的字典code和字典项已存在")})
     @PostMapping("/api/dict-item/items")
     @Secured(Authority.DEVELOPER)
-    @Timed
     public ResponseEntity<Void> create(
             @ApiParam(value = "数据字典项信息", required = true) @Valid @RequestBody DictItemDTO dto) {
         LOGGER.debug("REST request to create dict item: {}", dto);
@@ -89,7 +87,6 @@ public class DictItemController {
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/dict-item/items")
     @Secured(Authority.DEVELOPER)
-    @Timed
     public ResponseEntity<List<DictItemDTO>> find(Pageable pageable,
                                                   @ApiParam(value = "字典代码", required = false) @RequestParam(value = "dictCode", required = false) String dictCode,
                                                   @ApiParam(value = "字典项名称", required = false) @RequestParam(value = "dictItemName", required = false) String dictItemName)
@@ -111,7 +108,6 @@ public class DictItemController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "字典项不存在")})
     @GetMapping("/api/dict-item/items/{id}")
     @Secured({Authority.USER})
-    @Timed
     public ResponseEntity<DictItemDTO> findById(
             @ApiParam(value = "数据字典项ID", required = true) @PathVariable String id) {
         LOGGER.debug("REST request to get dict item : {}", id);
@@ -123,7 +119,6 @@ public class DictItemController {
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/dict-item/dict-code/{dictCode}")
     @Secured({Authority.USER})
-    @Timed
     public ResponseEntity<List<DictItemDTO>> findByDictCode(
             @ApiParam(value = "字典编号", required = true) @PathVariable String dictCode) {
         LOGGER.debug("REST request to get dict item : {}", dictCode);
@@ -142,7 +137,6 @@ public class DictItemController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "字典项不存在")})
     @PutMapping("/api/dict-item/items")
     @Secured(Authority.DEVELOPER)
-    @Timed
     public ResponseEntity<Void> update(
             @ApiParam(value = "新的数据字典项信息", required = true) @Valid @RequestBody DictItemDTO dto) {
         LOGGER.debug("REST request to update dict item: {}", dto);
@@ -159,7 +153,6 @@ public class DictItemController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "字典项不存在")})
     @DeleteMapping("/api/dict-item/items/{id}")
     @Secured(Authority.DEVELOPER)
-    @Timed
     public ResponseEntity<Void> delete(@ApiParam(value = "数据字典项ID", required = true) @PathVariable String id) {
         LOGGER.debug("REST request to delete dict item: {}", id);
         DictItem dictItem = dictItemRepository.findById(id).orElseThrow(() -> new NoDataException(id));

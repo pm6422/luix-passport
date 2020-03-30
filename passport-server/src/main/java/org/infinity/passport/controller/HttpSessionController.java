@@ -1,6 +1,5 @@
 package org.infinity.passport.controller;
 
-import com.codahale.metrics.annotation.Timed;
 import io.swagger.annotations.*;
 import org.apache.commons.lang3.StringUtils;
 import org.infinity.passport.domain.Authority;
@@ -42,7 +41,6 @@ public class HttpSessionController {
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/http-session/sessions")
     @Secured({Authority.DEVELOPER})
-    @Timed
     public ResponseEntity<List<HttpSession>> find(Pageable pageable,
                                                   @ApiParam(value = "用户名称", required = false) @RequestParam(value = "principal", required = false) String principal) throws URISyntaxException {
         Page<HttpSession> sessions = StringUtils.isEmpty(principal) ? httpSessionRepository.findAll(pageable) : httpSessionRepository.findByPrincipal(pageable, principal);
@@ -54,7 +52,6 @@ public class HttpSessionController {
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功删除"), @ApiResponse(code = SC_BAD_REQUEST, message = "Http会话信息不存在")})
     @DeleteMapping("/api/http-session/sessions/{id}")
     @Secured({Authority.DEVELOPER})
-    @Timed
     public ResponseEntity<Void> delete(@ApiParam(value = "Http会话ID", required = true) @PathVariable String id) {
         LOGGER.debug("REST request to delete http session: {}", id);
         httpSessionRepository.findById(id).orElseThrow(() -> new NoDataException(id));

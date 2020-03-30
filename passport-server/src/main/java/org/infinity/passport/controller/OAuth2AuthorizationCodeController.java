@@ -1,6 +1,5 @@
 package org.infinity.passport.controller;
 
-import com.codahale.metrics.annotation.Timed;
 import io.swagger.annotations.*;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.MongoOAuth2AuthorizationCode;
@@ -51,7 +50,6 @@ public class OAuth2AuthorizationCodeController {
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/oauth2-authorization-code/codes")
     @Secured(Authority.ADMIN)
-    @Timed
     public ResponseEntity<List<MongoOAuth2AuthorizationCodeDTO>> find(Pageable pageable,
                                                                       @ApiParam(value = "授权码ID", required = false) @RequestParam(value = "authorizationCodelId", required = false) String authorizationCodelId,
                                                                       @ApiParam(value = "授权码", required = false) @RequestParam(value = "code", required = false) String code)
@@ -73,7 +71,6 @@ public class OAuth2AuthorizationCodeController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "授权码信息信息不存在")})
     @GetMapping("/api/oauth2-authorization-code/codes/{id}")
     @Secured({Authority.ADMIN})
-    @Timed
     public ResponseEntity<MongoOAuth2AuthorizationCodeDTO> findById(
             @ApiParam(value = "授权码信息ID", required = true) @PathVariable String id) {
         MongoOAuth2AuthorizationCode entity = oAuth2AuthorizationCodeRepository.findById(id)
@@ -86,7 +83,6 @@ public class OAuth2AuthorizationCodeController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "授权码信息信息不存在")})
     @DeleteMapping("/api/oauth2-authorization-code/codes/{id}")
     @Secured(Authority.ADMIN)
-    @Timed
     public ResponseEntity<Void> delete(@ApiParam(value = "授权码信息ID", required = true) @PathVariable String id) {
         LOGGER.debug("REST request to delete oauth2 authorization code: {}", id);
         oAuth2AuthorizationCodeRepository.findById(id).orElseThrow(() -> new NoDataException(id));

@@ -1,6 +1,5 @@
 package org.infinity.passport.controller;
 
-import com.codahale.metrics.annotation.Timed;
 import io.swagger.annotations.*;
 import org.apache.commons.lang3.StringUtils;
 import org.infinity.passport.domain.Authority;
@@ -50,7 +49,6 @@ public class OAuth2ApprovalController {
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/oauth2-approval/approvals")
     @Secured(Authority.ADMIN)
-    @Timed
     public ResponseEntity<List<MongoOAuth2ApprovalDTO>> find(Pageable pageable,
                                                              @ApiParam(value = "授权ID", required = false) @RequestParam(value = "approvalId", required = false) String approvalId,
                                                              @ApiParam(value = "客户端ID", required = false) @RequestParam(value = "clientId", required = false) String clientId,
@@ -84,7 +82,6 @@ public class OAuth2ApprovalController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "授权信息信息不存在")})
     @GetMapping("/api/oauth2-approval/approvals/{id}")
     @Secured({Authority.ADMIN})
-    @Timed
     public ResponseEntity<MongoOAuth2ApprovalDTO> findById(
             @ApiParam(value = "授权信息ID", required = true) @PathVariable String id) {
         MongoOAuth2Approval entity = oAuth2ApprovalRepository.findById(id).orElseThrow(() -> new NoDataException(id));
@@ -96,7 +93,6 @@ public class OAuth2ApprovalController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "授权信息信息不存在")})
     @DeleteMapping("/api/oauth2-approval/approvals/{id}")
     @Secured(Authority.ADMIN)
-    @Timed
     public ResponseEntity<Void> delete(@ApiParam(value = "授权信息ID", required = true) @PathVariable String id) {
         LOGGER.debug("REST request to delete oauth2 approval: {}", id);
         oAuth2ApprovalRepository.findById(id).orElseThrow(() -> new NoDataException(id));

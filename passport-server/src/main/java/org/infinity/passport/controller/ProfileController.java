@@ -1,6 +1,5 @@
 package org.infinity.passport.controller;
 
-import com.codahale.metrics.annotation.Timed;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.infinity.passport.config.ApplicationProperties;
@@ -27,7 +26,6 @@ public class ProfileController {
 
     @ApiOperation("获取系统Profile")
     @GetMapping("/open-api/profile-info")
-    @Timed
     public ResponseEntity<ProfileInfo> getProfileInfo() {
         ProfileInfo profileInfo = new ProfileInfo(env.getActiveProfiles(), getRibbonEnv());
         return ResponseEntity.ok(profileInfo);

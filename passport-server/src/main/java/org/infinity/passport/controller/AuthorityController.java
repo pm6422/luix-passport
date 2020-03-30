@@ -1,6 +1,5 @@
 package org.infinity.passport.controller;
 
-import com.codahale.metrics.annotation.Timed;
 import io.swagger.annotations.*;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.dto.AuthorityDTO;
@@ -43,7 +42,6 @@ public class AuthorityController {
     @ApiResponses(value = {@ApiResponse(code = SC_CREATED, message = "成功创建")})
     @PostMapping("/api/authority/authorities")
     @Secured({Authority.ADMIN})
-    @Timed
     public ResponseEntity<Void> create(
             @ApiParam(value = "权限信息", required = true) @Valid @RequestBody AuthorityDTO dto) {
         LOGGER.debug("REST request to create authority: {}", dto);
@@ -57,7 +55,6 @@ public class AuthorityController {
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/authority/authorities")
     @Secured({Authority.ADMIN})
-    @Timed
     public ResponseEntity<List<AuthorityDTO>> find(Pageable pageable) throws URISyntaxException {
         Page<Authority> authorities = authorityRepository.findAll(pageable);
         List<AuthorityDTO> DTOs = authorities.getContent().stream().map(auth -> auth.asDTO())
@@ -70,7 +67,6 @@ public class AuthorityController {
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/authority/authorities/all")
     @Secured({Authority.ADMIN})
-    @Timed
     public ResponseEntity<List<AuthorityDTO>> findAll() {
         List<AuthorityDTO> authDTOs = authorityRepository.findAll().stream().map(entity -> entity.asDTO())
                 .collect(Collectors.toList());
@@ -82,7 +78,6 @@ public class AuthorityController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "权限信息不存在")})
     @GetMapping("/api/authority/authorities/{name}")
     @Secured({Authority.ADMIN})
-    @Timed
     public ResponseEntity<AuthorityDTO> findById(
             @ApiParam(value = "权限名称", required = true) @PathVariable String name) {
         Authority authority = authorityRepository.findById(name).orElseThrow(() -> new NoDataException(name));
@@ -94,7 +89,6 @@ public class AuthorityController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "权限信息不存在")})
     @PutMapping("/api/authority/authorities")
     @Secured({Authority.ADMIN})
-    @Timed
     public ResponseEntity<Void> update(
             @ApiParam(value = "新的权限信息", required = true) @Valid @RequestBody AuthorityDTO dto) {
         LOGGER.debug("REST request to update authority: {}", dto);
@@ -110,7 +104,6 @@ public class AuthorityController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "权限信息不存在")})
     @DeleteMapping("/api/authority/authorities/{name}")
     @Secured({Authority.ADMIN})
-    @Timed
     public ResponseEntity<Void> delete(@ApiParam(value = "权限名称", required = true) @PathVariable String name) {
         LOGGER.debug("REST request to delete authority: {}", name);
         authorityRepository.findById(name).orElseThrow(() -> new NoDataException(name));

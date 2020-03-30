@@ -1,6 +1,5 @@
 package org.infinity.passport.controller;
 
-import com.codahale.metrics.annotation.Timed;
 import io.swagger.annotations.*;
 import org.apache.commons.lang3.StringUtils;
 import org.infinity.passport.domain.Authority;
@@ -76,7 +75,6 @@ public class UserController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "账号已注册")})
     @PostMapping("/api/user/users")
     @Secured({Authority.ADMIN})
-    @Timed
     public ResponseEntity<String> create(@ApiParam(value = "用户信息", required = true) @Valid @RequestBody UserDTO dto,
                                          HttpServletRequest request) {
         LOGGER.debug("REST request to create user: {}", dto);
@@ -117,7 +115,6 @@ public class UserController {
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/user/users")
     @Secured({Authority.ADMIN})
-    @Timed
     public ResponseEntity<List<ManagedUserDTO>> find(Pageable pageable,
                                                      @ApiParam(value = "查询条件", required = false) @RequestParam(value = "login", required = false) String login)
             throws URISyntaxException {
@@ -134,7 +131,6 @@ public class UserController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "用户不存在或账号无权限")})
     @GetMapping("/api/user/users/{userName:[_'.@a-z0-9-]+}")
     @Secured({Authority.ADMIN})
-    @Timed
     public ResponseEntity<ManagedUserDTO> findByName(
             @ApiParam(value = "用户名", required = true) @PathVariable String userName) {
         User entity = userService.findOneByUserName(userName).orElseThrow(() -> new NoDataException(userName));
@@ -153,7 +149,6 @@ public class UserController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "已激活用户无法变成未激活状态")})
     @PutMapping("/api/user/users")
     @Secured({Authority.ADMIN})
-    @Timed
     public ResponseEntity<Void> update(@ApiParam(value = "新的用户信息", required = true) @Valid @RequestBody UserDTO dto,
                                        HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         LOGGER.debug("REST request to update user: {}", dto);
@@ -195,7 +190,6 @@ public class UserController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "用户不存在")})
     @DeleteMapping("/api/user/users/{userName:[_'.@a-z0-9-]+}")
     @Secured({Authority.ADMIN})
-    @Timed
     public ResponseEntity<Void> delete(@ApiParam(value = "用户名", required = true) @PathVariable String userName) {
         LOGGER.debug("REST request to delete user: {}", userName);
         User user = userService.findOneByUserName(userName).orElseThrow(() -> new NoDataException(userName));
@@ -210,7 +204,6 @@ public class UserController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "用户不存在或账号无权限")})
     @PutMapping("/api/user/users/{userName:[_'.@a-z0-9-]+}")
     @Secured({Authority.ADMIN})
-    @Timed
     public ResponseEntity<String> resetPassword(@ApiParam(value = "用户名", required = true) @PathVariable String userName) {
         LOGGER.debug("REST reset the password of user: {}", userName);
         userService.changePassword(userName, DEFAULT_PASSWORD);
@@ -224,7 +217,6 @@ public class UserController {
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping(GET_PROFILE_PHOTO_URL + "{userName:[_'.@a-z0-9-]+}")
     @Secured({Authority.USER})
-    @Timed
     public ResponseEntity<byte[]> getProfilePhoto(@ApiParam(value = "用户名", required = true) @PathVariable String userName) {
         Optional<UserProfilePhoto> userProfilePhoto = userProfilePhotoRepository.findByUserName(userName);
         return userProfilePhoto.map(photo -> ResponseEntity.ok(photo.getProfilePhoto().getData()))

@@ -1,6 +1,5 @@
 package org.infinity.passport.controller;
 
-import com.codahale.metrics.annotation.Timed;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -37,7 +36,6 @@ public class UserAuditEventController {
     @ApiOperation("获取用户审计事件分页列表")
     @GetMapping("/api/user-audit-event/user-audit-events")
     @Secured(Authority.DEVELOPER)
-    @Timed
     public ResponseEntity<List<PersistentAuditEvent>> getUserAuditEvents(Pageable pageable,
             @ApiParam(value = "开始日期", required = false) @RequestParam(value = "from", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date from,
             @ApiParam(value = "结束日期", required = false) @RequestParam(value = "to", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date to)

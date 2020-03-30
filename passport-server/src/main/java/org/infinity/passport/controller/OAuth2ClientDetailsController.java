@@ -1,6 +1,5 @@
 package org.infinity.passport.controller;
 
-import com.codahale.metrics.annotation.Timed;
 import io.swagger.annotations.*;
 import org.apache.commons.lang3.StringUtils;
 import org.infinity.passport.domain.Authority;
@@ -59,7 +58,6 @@ public class OAuth2ClientDetailsController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "字典名已存在")})
     @PostMapping("/api/oauth2-client/clients")
     @Secured(Authority.ADMIN)
-    @Timed
     public ResponseEntity<Void> create(
             @ApiParam(value = "单点登录客户端信息", required = true) @Valid @RequestBody MongoOAuth2ClientDetailsDTO dto) {
         LOGGER.debug("REST create oauth client detail: {}", dto);
@@ -80,7 +78,6 @@ public class OAuth2ClientDetailsController {
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/oauth2-client/clients")
     @Secured(Authority.ADMIN)
-    @Timed
     public ResponseEntity<List<MongoOAuth2ClientDetailsDTO>> find(Pageable pageable,
                                                                   @ApiParam(value = "客户端ID", required = false) @RequestParam(value = "clientId", required = false) String clientId)
             throws URISyntaxException {
@@ -102,7 +99,6 @@ public class OAuth2ClientDetailsController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "单点登录客户端信息不存在")})
     @GetMapping("/api/oauth2-client/clients/{id}")
     @Secured({Authority.ADMIN})
-    @Timed
     public ResponseEntity<MongoOAuth2ClientDetailsDTO> findById(
             @ApiParam(value = "客户端ID", required = true) @PathVariable String id) {
         MongoOAuth2ClientDetails entity = oAuth2ClientDetailsRepository.findById(id)
@@ -114,7 +110,6 @@ public class OAuth2ClientDetailsController {
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取"),
             @ApiResponse(code = SC_BAD_REQUEST, message = "单点登录客户端信息不存在")})
     @GetMapping("/open-api/oauth2-client/internal-client")
-    @Timed
     public ResponseEntity<Pair<String, String>> findInternalClient() {
         return ResponseEntity.ok(Pair.of(MongoOAuth2ClientDetails.INTERNAL_CLIENT_ID,
                 MongoOAuth2ClientDetails.INTERNAL_RAW_CLIENT_SECRET));
@@ -125,7 +120,6 @@ public class OAuth2ClientDetailsController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "单点登录客户端信息不存在")})
     @PutMapping("/api/oauth2-client/clients")
     @Secured(Authority.ADMIN)
-    @Timed
     public ResponseEntity<Void> update(
             @ApiParam(value = "新的单点登录客户端信息", required = true) @Valid @RequestBody MongoOAuth2ClientDetailsDTO dto) {
         LOGGER.debug("REST request to update oauth client detail: {}", dto);
@@ -143,7 +137,6 @@ public class OAuth2ClientDetailsController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "单点登录客户端信息不存在")})
     @DeleteMapping("/api/oauth2-client/clients/{id}")
     @Secured(Authority.ADMIN)
-    @Timed
     public ResponseEntity<Void> delete(@ApiParam(value = "客户端ID", required = true) @PathVariable String id) {
         LOGGER.debug("REST request to delete oauth client detail: {}", id);
         oAuth2ClientDetailsRepository.findById(id).orElseThrow(() -> new NoDataException(id));

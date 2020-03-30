@@ -1,6 +1,5 @@
 package org.infinity.passport.controller;
 
-import com.codahale.metrics.annotation.Timed;
 import io.swagger.annotations.*;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.MongoOAuth2AccessToken;
@@ -41,7 +40,6 @@ public class OAuth2AccessTokenController {
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/oauth2-access-token/tokens")
     @Secured(Authority.ADMIN)
-    @Timed
     public ResponseEntity<List<MongoOAuth2AccessTokenDTO>> find(Pageable pageable,
                                                                 @ApiParam(value = "访问令牌ID", required = false) @RequestParam(value = "tokenId", required = false) String tokenId,
                                                                 @ApiParam(value = "客户端ID", required = false) @RequestParam(value = "clientId", required = false) String clientId,
@@ -65,7 +63,6 @@ public class OAuth2AccessTokenController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "访问令牌信息不存在")})
     @GetMapping("/api/oauth2-access-token/tokens/{id}")
     @Secured({Authority.ADMIN})
-    @Timed
     public ResponseEntity<MongoOAuth2AccessTokenDTO> findById(
             @ApiParam(value = "访问令牌ID", required = true) @PathVariable String id) {
         MongoOAuth2AccessToken entity = oAuth2AccessTokenRepository.findById(id)
@@ -78,7 +75,6 @@ public class OAuth2AccessTokenController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "访问令牌信息不存在")})
     @DeleteMapping("/api/oauth2-access-token/tokens/{id}")
     @Secured(Authority.ADMIN)
-    @Timed
     public ResponseEntity<Void> delete(@ApiParam(value = "访问令牌ID", required = true) @PathVariable String id) {
         LOGGER.debug("REST request to delete oauth2 access token: {}", id);
         oAuth2AccessTokenRepository.findById(id).orElseThrow(() -> new NoDataException(id));

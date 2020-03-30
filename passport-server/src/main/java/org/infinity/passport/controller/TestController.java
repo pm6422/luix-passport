@@ -1,6 +1,5 @@
 package org.infinity.passport.controller;
 
-import com.codahale.metrics.annotation.Timed;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.infinity.passport.domain.Authority;
@@ -36,7 +35,6 @@ public class TestController {
     @ApiOperation("测试审计功能")
     @GetMapping("/api/test/user-audit")
     @Secured(Authority.DEVELOPER)
-    @Timed
     public ResponseEntity<Void> testAudit() {
         User user1 = new User();
         user1.setUserName("test");
@@ -93,7 +91,6 @@ public class TestController {
     @ApiOperation("测试发送邮件功能")
     @GetMapping("/api/test/email")
     @Secured(Authority.DEVELOPER)
-    @Timed
     public ResponseEntity<Void> testEmail() {
         mailService.sendEmail(new String[]{"pm6422@126.com", "pm6422@gmail.com"}, "test", "test", false, false);
         return ResponseEntity.ok(null);
@@ -108,7 +105,6 @@ public class TestController {
      */
     @ApiOperation("测试Request线程安全")
     @GetMapping("/open-api/test/threadsafe")
-    @Timed
     public void testThreadSafe(@RequestParam(value = "key", required = true) String key) throws InterruptedException {
         Set<String> keys = new HashSet<>();
         if (keys.contains(key)) {

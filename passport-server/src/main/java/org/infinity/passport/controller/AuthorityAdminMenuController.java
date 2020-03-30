@@ -1,6 +1,5 @@
 package org.infinity.passport.controller;
 
-import com.codahale.metrics.annotation.Timed;
 import io.swagger.annotations.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.infinity.passport.domain.AdminMenu;
@@ -54,7 +53,6 @@ public class AuthorityAdminMenuController {
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/authority-admin-menu/authority-menus")
     @Secured({Authority.USER})
-    @Timed
     public ResponseEntity<List<MenuTreeNode>> findByAppName(
             @ApiParam(value = "应用名称", required = true) @RequestParam(value = "appName", required = true) String appName) {
         List<String> allEnabledAuthorities = authorityService.findAllAuthorityNames(true);
@@ -70,7 +68,6 @@ public class AuthorityAdminMenuController {
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/authority-admin-menu/authority-links")
     @Secured({Authority.USER})
-    @Timed
     public ResponseEntity<List<AdminMenu>> findAuthorityLinks(
             @ApiParam(value = "应用名称", required = true) @RequestParam(value = "appName", required = true) String appName) {
         List<String> allEnabledAuthorities = authorityService.findAllAuthorityNames(true);
@@ -86,7 +83,6 @@ public class AuthorityAdminMenuController {
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/authority-admin-menu/menu-info")
     @Secured({Authority.ADMIN})
-    @Timed
     public ResponseEntity<List<MenuTreeNode>> findMenus(
             @ApiParam(value = "应用名称", required = true) @RequestParam(value = "appName", required = true) String appName,
             @ApiParam(value = "权限名称", required = true) @RequestParam(value = "authorityName", required = true) String authorityName) {
@@ -98,7 +94,6 @@ public class AuthorityAdminMenuController {
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功更新"), @ApiResponse(code = SC_BAD_REQUEST, message = "权限信息不存在")})
     @PutMapping("/api/authority-admin-menu/update-authority-menus")
     @Secured({Authority.ADMIN})
-    @Timed
     public ResponseEntity<Void> update(
             @ApiParam(value = "新的权限菜单信息", required = true) @Valid @RequestBody AdminAuthorityMenusDTO dto) {
         LOGGER.debug("REST request to update admin authority menus: {}", dto);
