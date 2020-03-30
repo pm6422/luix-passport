@@ -1,6 +1,5 @@
 package org.infinity.passport.controller;
 
-import com.codahale.metrics.annotation.Timed;
 import io.swagger.annotations.*;
 import org.infinity.passport.domain.App;
 import org.infinity.passport.domain.AppAuthority;
@@ -52,7 +51,6 @@ public class AppController {
     @ApiResponses(value = {@ApiResponse(code = SC_CREATED, message = "成功创建")})
     @PostMapping("/api/app/apps")
     @Secured({Authority.ADMIN})
-    @Timed
     public ResponseEntity<Void> create(@ApiParam(value = "应用信息", required = true) @Valid @RequestBody AppDTO dto) {
         LOGGER.debug("REST request to create app: {}", dto);
         appService.insert(dto.getName(), dto.getEnabled(), dto.getAuthorities());
@@ -64,7 +62,6 @@ public class AppController {
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/app/apps")
     @Secured({Authority.ADMIN})
-    @Timed
     public ResponseEntity<List<AppDTO>> find(Pageable pageable) throws URISyntaxException {
         Page<App> apps = appRepository.findAll(pageable);
         List<AppDTO> DTOs = apps.getContent().stream().map(entity -> entity.asDTO()).collect(Collectors.toList());
@@ -76,7 +73,6 @@ public class AppController {
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/app/apps/all")
     @Secured({Authority.ADMIN})
-    @Timed
     public ResponseEntity<List<AppDTO>> findAll() {
         List<AppDTO> appDTOs = appRepository.findAll().stream().map(app -> app.asDTO()).collect(Collectors.toList());
         return ResponseEntity.ok(appDTOs);
@@ -87,7 +83,6 @@ public class AppController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "应用信息不存在")})
     @GetMapping("/api/app/apps/{name}")
     @Secured({Authority.ADMIN})
-    @Timed
     public ResponseEntity<AppDTO> findById(@ApiParam(value = "应用名称", required = true) @PathVariable String name) {
         App app = appRepository.findById(name).get();
         List<AppAuthority> appAuthorities = appAuthorityRepository.findByAppName(name);
@@ -101,7 +96,6 @@ public class AppController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "应用信息不存在")})
     @PutMapping("/api/app/apps")
     @Secured({Authority.ADMIN})
-    @Timed
     public ResponseEntity<Void> update(@ApiParam(value = "新的应用信息", required = true) @Valid @RequestBody AppDTO dto) {
         LOGGER.debug("REST request to update app: {}", dto);
         appRepository.findById(dto.getName()).orElseThrow(() -> new NoDataException(dto.getName()));
@@ -115,7 +109,6 @@ public class AppController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "应用信息不存在")})
     @DeleteMapping("/api/app/apps/{name}")
     @Secured({Authority.ADMIN})
-    @Timed
     public ResponseEntity<Void> delete(@ApiParam(value = "应用名称", required = true) @PathVariable String name) {
         LOGGER.debug("REST request to delete app: {}", name);
         appRepository.findById(name).orElseThrow(() -> new NoDataException(name));
