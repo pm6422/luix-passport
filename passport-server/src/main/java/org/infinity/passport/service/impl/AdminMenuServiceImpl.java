@@ -1,6 +1,5 @@
 package org.infinity.passport.service.impl;
 
-import com.codahale.metrics.annotation.Timed;
 import org.apache.commons.collections4.CollectionUtils;
 import org.infinity.passport.domain.AdminMenu;
 import org.infinity.passport.dto.AdminMenuDTO;
@@ -39,7 +38,6 @@ public class AdminMenuServiceImpl implements AdminMenuService {
     }
 
     @Override
-    @Timed
     public List<MenuTreeNode> getAuthorityMenus(String appName, List<String> enabledAuthorities) {
         if (CollectionUtils.isEmpty(enabledAuthorities)) {
             return Collections.emptyList();
