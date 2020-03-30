@@ -45,7 +45,7 @@
         <project.testresult.directory>${project.build.directory}/test-results</project.testresult.directory>
         <run.addResources>false</run.addResources>
         <sortpom-maven-plugin.version>2.5.0</sortpom-maven-plugin.version>
-        <springfox.version>2.5.0</springfox.version>
+        <springfox.version>2.9.2</springfox.version>
     </properties>
 
     <!--
@@ -173,7 +173,25 @@
                     <artifactId>mapstruct</artifactId>
                     <groupId>org.mapstruct</groupId>
                 </exclusion>
+                <exclusion>
+                    <artifactId>swagger-models</artifactId>
+                    <groupId>io.swagger</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>swagger-annotations</artifactId>
+                    <groupId>io.swagger</groupId>
+                </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>1.5.21</version>
+        </dependency>
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-models</artifactId>
+            <version>1.5.21</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
