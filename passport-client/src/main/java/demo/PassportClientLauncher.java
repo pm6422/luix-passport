@@ -36,10 +36,10 @@ public class PassportClientLauncher extends WebSecurityConfigurerAdapter {
     public static void main(String[] args) throws IOException {
         SpringApplication app = new SpringApplication(PassportClientLauncher.class);
         Environment env = app.run(args).getEnvironment();
-        printServerInfo(env);
+        printAppInfo(env);
     }
 
-    private static void printServerInfo(Environment env) throws IOException {
+    private static void printAppInfo(Environment env) throws IOException {
         String appBanner = StreamUtils.copyToString(new ClassPathResource("config/banner-app.txt").getInputStream(),
                 Charset.defaultCharset());
         LOGGER.info(appBanner, env.getProperty("spring.application.name"),

@@ -3,12 +3,8 @@
 #
 # This configuration will be overridden by the Spring profile you use,
 # for example application-dev.yml if you use the "dev" profile.
-# ===================================================================
-
-# ===================================================================
-# Standard Spring Boot properties.
 # Full reference is available at:
-# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# https://docs.spring.io/spring-boot/docs/2.2.5.RELEASE/reference/html/appendix-application-properties.html
 # ===================================================================
 info: # These configuration can be exported to Environment, accessing URL /info can get these properties
     artifact:
@@ -40,10 +36,7 @@ spring:
         location: classpath:config/banner-company.txt
     aop:
         proxy-target-class: true
-    devtools:
-        restart:
-            enabled: true
-server: 
+server:
     # It can be overridden by `--server.port` value passed in the commandline or `-Dserver.port` set in `JAVA_OPTS`
     port: @app.server.port@
     servlet:
@@ -52,20 +45,25 @@ server:
                 name: ${info.artifact.name}
 logging:
     config: classpath:config/logback-spring.xml
-    path: ${user.home}${file.separator}Log${file.separator}${info.artifact.id}${file.separator}${info.artifact.id}
+    file:
+        path: ${user.home}${file.separator}Log${file.separator}${info.artifact.id}${file.separator}${info.artifact.id}
     level:
         root: DEBUG
         ${info.project.package}: DEBUG
 security:
     oauth2:
-        client: # used by OAuth2ClientProperties
-            accessTokenUri: ${zuul.routes.sso-server.url}/oauth/token
-            userAuthorizationUri: ${zuul.routes.sso-server.url}/oauth/authorize
+        client: # used by org.springframework.boot.autoconfigure.security.oauth2.OAuth2ClientProperties
             clientId: internal-client
             clientSecret: 65G-HD9-4PD-j9F-HP5
+            accessTokenUri: ${zuul.routes.sso-server.url}/oauth/token
+            userAuthorizationUri: ${zuul.routes.sso-server.url}/oauth/authorize
         resource:
             userInfoUri: ${zuul.routes.sso-server-account-open-api.url}/user
 zuul:
+#    add-proxy-headers: true
+    sensitiveHeaders: Cookie,Set-Cookie # Note: sensitiveHeaders: Cookie is very important
+#    ignoredPatterns: /**/health/**,/**/mappings/**
+#    ignored-services: "*"
     routes:
         sso-server:
             url: http://127.0.0.1:9010
