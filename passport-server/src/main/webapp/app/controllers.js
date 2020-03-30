@@ -87,6 +87,9 @@ function MainController($http, $rootScope, $scope, $state, AuthenticationService
 
     function getAccount() {
         PrincipalService.identity().then(function (account) {
+            if (account == null) {
+                return;
+            }
             main.account = account;
 
             var authToken = AuthServerService.getToken();
@@ -1473,7 +1476,7 @@ function AuthorityListController($state, AlertUtils, ParseLinksUtils, PAGINATION
     }
 
     function checkPressEnter($event) {
-        //按下enter键重新查询数据 
+        //按下enter键重新查询数据
         if ($event.keyCode == 13) {
             vm.transition();
         }
@@ -1565,7 +1568,7 @@ function UserListController($state, AlertUtils, ParseLinksUtils, PAGINATION_CONS
     vm.criteria = criteria;
     vm.del = del;
     vm.resetPassword = resetPassword;
-    
+
     vm.loadAll();
 
     PrincipalService.identity().then(function (account) {
@@ -1615,7 +1618,7 @@ function UserListController($state, AlertUtils, ParseLinksUtils, PAGINATION_CONS
     }
 
     function checkPressEnter($event) {
-        //按下enter键重新查询数据 
+        //按下enter键重新查询数据
         if ($event.keyCode == 13) {
             vm.transition();
         }
@@ -1780,7 +1783,7 @@ function AppListController($state, AlertUtils, ParseLinksUtils, PAGINATION_CONST
     }
 
     function checkPressEnter($event) {
-        //按下enter键重新查询数据 
+        //按下enter键重新查询数据
         if ($event.keyCode == 13) {
             vm.transition();
         }
@@ -1924,7 +1927,7 @@ function AdminMenuListController($state, AlertUtils, ParseLinksUtils, PAGINATION
     }
 
     function checkPressEnter($event) {
-        //按下enter键重新查询数据 
+        //按下enter键重新查询数据
         if ($event.keyCode == 13) {
             vm.transition();
         }
@@ -2139,7 +2142,7 @@ function OAuth2ClientListController($state, AlertUtils, ParseLinksUtils, PAGINAT
     }
 
     function checkPressEnter($event) {
-        //按下enter键重新查询数据 
+        //按下enter键重新查询数据
         if ($event.keyCode == 13) {
             vm.transition();
         }
@@ -2263,7 +2266,7 @@ function OAuth2AccessTokenListController($state, AlertUtils, ParseLinksUtils, PA
     vm.criteria = criteria;
     vm.del = del;
     vm.goRefreshToken = goRefreshToken;
-    
+
     vm.loadAll();
 
     function loadAll() {
@@ -2309,7 +2312,7 @@ function OAuth2AccessTokenListController($state, AlertUtils, ParseLinksUtils, PA
     }
 
     function checkPressEnter($event) {
-        //按下enter键重新查询数据 
+        //按下enter键重新查询数据
         if ($event.keyCode == 13) {
             vm.transition();
         }
@@ -2411,7 +2414,7 @@ function OAuth2RefreshTokenListController($state, AlertUtils, ParseLinksUtils, P
     }
 
     function checkPressEnter($event) {
-        //按下enter键重新查询数据 
+        //按下enter键重新查询数据
         if ($event.keyCode == 13) {
             vm.transition();
         }
@@ -2508,7 +2511,7 @@ function OAuth2ApprovalListController($state, AlertUtils, ParseLinksUtils, PAGIN
     }
 
     function checkPressEnter($event) {
-        //按下enter键重新查询数据 
+        //按下enter键重新查询数据
         if ($event.keyCode == 13) {
             vm.transition();
         }
