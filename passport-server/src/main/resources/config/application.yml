@@ -3,23 +3,21 @@
 #
 # This configuration will be overridden by the Spring profile you use,
 # for example application-dev.yml if you use the "dev" profile.
-# ===================================================================
-
-# ===================================================================
-# Standard Spring Boot properties.
 # Full reference is available at:
-# https://docs.spring.io/spring-boot/docs/2.0.4.RELEASE/reference/html/common-application-properties.html
+# https://docs.spring.io/spring-boot/docs/2.2.5.RELEASE/reference/html/appendix-application-properties.html
 # ===================================================================
 management: # Management http server configuration, used by ManagementServerProperties
     endpoints:
         web:
-            base-path: /
-            exposure:
-                include: ['configprops', 'env', 'health', 'info', 'threaddump', 'beans', 'mappings', 'httptrace', 'shutdown', 'auditevents', 'loggers', 'scheduledtasks']
+            base-path: /management
+            exposure: # Refer to https://docs.spring.io/spring-boot/docs/2.2.5.RELEASE/reference/html/production-ready-features.html
+                include: ['configprops', 'env', 'health', 'info', 'beans', 'mappings', 'httptrace', 'shutdown', 'auditevents', 'scheduledtasks', 'loggers', 'prometheus', 'threaddump']
     endpoint:
         health: # used by HealthEndpointProperties, Note: it will show health details if it has the access token by Ajax
             enabled: true
             show-details: WHEN_AUTHORIZED
+        httptrace:
+            enabled: true
         shutdown:
             enabled: true # explicitly enable
     health:
@@ -28,7 +26,29 @@ management: # Management http server configuration, used by ManagementServerProp
         mongo:
             enabled: true
     metrics:
-        enabled: false # http://micrometer.io/ is disabled by default, as we use http://metrics.dropwizard.io/ instead
+        export:
+            # Prometheus is the default metrics backend
+            prometheus:
+                enabled: true
+                step: 60
+        enable:
+            http: true
+            jvm: true
+            logback: true
+            process: true
+            system: true
+        distribution:
+            percentiles-histogram:
+                all: true
+            percentiles:
+                all: 0, 0.5, 0.75, 0.95, 0.99, 1.0
+        tags:
+            application: ${spring.application.name}
+        web:
+            server:
+                request:
+                    autotime:
+                        enabled: true
 info: # These configuration can be exported to Environment, accessing URL /info can get these properties
     artifact:
         id: @project.artifactId@
@@ -45,7 +65,6 @@ spring:
         # Either way, it can be overridden by `--spring.profiles.active` value passed in the commandline or `-Dspring.profiles.active` set in `JAVA_OPTS`
         active: @spring.profiles.active@
     messages:
-        # Do not add the prefix classpath:, please refer to MessageSourceAutoConfiguration.getResources(ClassLoader classLoader, String name)
         # TODO: basename only support the first massage resource for now.
         basename: i18n/messages_zh_CN,i18n/messages_en_US
         fallback-to-system-locale: false
@@ -53,6 +72,17 @@ spring:
         favicon:
             enabled: false
         locale: zh_CN
+    task:
+        execution:
+            thread-name-prefix: ${spring.application.name}-task-
+            pool:
+                core-size: 5
+                max-size: 32 # 生产环境CPU是32线程
+                queue-capacity: 1000
+        scheduling:
+            thread-name-prefix: ${spring.application.name}-scheduling-
+            pool:
+                size: 2
     thymeleaf: #ThymeleafAutoConfiguration
         mode: HTML
     servlet:
@@ -70,6 +100,12 @@ spring:
         password: 35H-UHR-9dH-8G9-FG3
     banner:
         location: classpath:config/banner-company.txt
+    output:
+        ansi:
+            console-available: true # Configures the ANSI output
+    data:
+        mongodb:
+            auto-index-creation: false
 server:
     # It can be overridden by `--server.port` value passed in the commandline or `-Dserver.port` set in `JAVA_OPTS`
     port: @app.server.port@
@@ -81,12 +117,11 @@ server:
             # and this statement can effect spring session, used by SessionProperties
 logging:
     config: classpath:config/logback-spring.xml
-    path: ${user.home}${file.separator}Log${file.separator}${info.artifact.id}${file.separator}${info.artifact.id}
+    file:
+      path: ${user.home}${file.separator}Log${file.separator}${info.artifact.id}${file.separator}${info.artifact.id}
     level:
         root: DEBUG
         ${info.project.package}: DEBUG
-dozer:
-    mapping-files: classpath:mappings/class-to-class.xml,classpath:mappings/map-to-class.xml,classpath:mappings/class-to-map.xml
 # ===================================================================
 # Application specific properties
 # ===================================================================
@@ -94,10 +129,6 @@ application:
     http:
         cache: # Used by the CachingHttpHeadersFilter
             timeToLiveInDays: 31
-    async:
-        core-pool-size: 5
-        max-pool-size: 32 # 生产环境CPU是32线程
-        queue-capacity: 1000
     swagger:
         api:
             title: Passport Server API
