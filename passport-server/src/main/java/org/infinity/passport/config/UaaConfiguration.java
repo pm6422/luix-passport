@@ -33,15 +33,16 @@ import javax.servlet.http.HttpSession;
 
 /**
  * OAuth 2.0 Grants list below
- * Authorization code grant
- * Password grant
- * Refresh token grant
- * Client credentials grant
- * Implicit grant
+ * - Authorization code grant
+ * - Password grant
+ * - Refresh token grant
+ * - Client credentials grant
+ * - Implicit grant
  * 
  *
  * Refer
- * http://spring.io/guides/tutorials/spring-boot-oauth2/
+ * https://github.com/spring-projects/spring-security-oauth/issues/1676
+ * https://spring.io/guides/tutorials/spring-security-and-angular-js/#_sso_with_oauth2_angular_js_and_spring_security_part_v
  * https://dazito.com/java/spring-boot-and-oauth2-with-jdbc
  * https://stackoverflow.com/questions/49197111/migration-to-spring-boot-2-security-encoded-password-does-not-look-like-bcrypt?noredirect=1&lq=1
  * http://projects.spring.io/spring-security-oauth/docs/oauth2.html
