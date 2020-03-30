@@ -1,6 +1,5 @@
 package org.infinity.passport.controller;
 
-import com.codahale.metrics.annotation.Timed;
 import io.swagger.annotations.*;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -56,7 +55,6 @@ public class AdminMenuController {
     @ApiResponses(value = {@ApiResponse(code = SC_CREATED, message = "成功创建")})
     @PostMapping("/api/admin-menu/menus")
     @Secured({Authority.ADMIN})
-    @Timed
     public ResponseEntity<Void> create(
             @ApiParam(value = "菜单信息", required = true) @Valid @RequestBody AdminMenuDTO dto) {
         LOGGER.debug("REST request to create admin menu: {}", dto);
@@ -77,7 +75,6 @@ public class AdminMenuController {
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/admin-menu/menus")
     @Secured({Authority.ADMIN})
-    @Timed
     public ResponseEntity<List<AdminMenuDTO>> find(Pageable pageable,
                                                    @ApiParam(value = "应用名称", required = false) @RequestParam(value = "appName", required = false) String appName)
             throws URISyntaxException {
@@ -94,7 +91,6 @@ public class AdminMenuController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "菜单不存在")})
     @GetMapping("/api/admin-menu/menus/{id}")
     @Secured({Authority.ADMIN})
-    @Timed
     public ResponseEntity<AdminMenuDTO> findById(@ApiParam(value = "菜单ID", required = true) @PathVariable String id) {
         AdminMenu entity = adminMenuRepository.findById(id).orElseThrow(() -> new NoDataException(id));
         return ResponseEntity.ok(entity.asDTO());
@@ -104,7 +100,6 @@ public class AdminMenuController {
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/admin-menu/parent-menus/{appName}/{level:[0-9]+}")
     @Secured({Authority.ADMIN})
-    @Timed
     public ResponseEntity<List<AdminMenuDTO>> findAllParentMenu(
             @ApiParam(value = "应用名称", required = true) @PathVariable String appName,
             @ApiParam(value = "菜单级别", required = true) @PathVariable Integer level) {
@@ -118,7 +113,6 @@ public class AdminMenuController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "菜单不存在")})
     @PutMapping("/api/admin-menu/menus")
     @Secured({Authority.ADMIN})
-    @Timed
     public ResponseEntity<Void> update(
             @ApiParam(value = "新的菜单信息", required = true) @Valid @RequestBody AdminMenuDTO dto) {
         LOGGER.debug("REST request to update admin menu: {}", dto);
@@ -135,7 +129,6 @@ public class AdminMenuController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "菜单不存在")})
     @DeleteMapping("/api/admin-menu/menus/{id}")
     @Secured({Authority.ADMIN})
-    @Timed
     public ResponseEntity<Void> delete(@ApiParam(value = "菜单ID", required = true) @PathVariable String id) {
         LOGGER.debug("REST request to delete admin menu: {}", id);
         AdminMenu adminMenu = adminMenuRepository.findById(id).orElseThrow(() -> new NoDataException(id));
@@ -149,7 +142,6 @@ public class AdminMenuController {
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功导入")})
     @PostMapping(value = "/api/admin-menu/menus/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Secured({Authority.ADMIN})
-    @Timed
     public ResponseEntity<Void> importData(@ApiParam(value = "文件", required = true) @RequestPart MultipartFile file)
             throws IOException {
         List<String> lines = IOUtils.readLines(file.getInputStream(), StandardCharsets.UTF_8);
@@ -171,7 +163,6 @@ public class AdminMenuController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "成功操作")})
     @GetMapping("/api/admin-menu/raise-seq/{id}")
     @Secured({Authority.ADMIN})
-    @Timed
     public void raiseSeq(@ApiParam(value = "菜单ID", required = true) @PathVariable String id) {
         adminMenuService.raiseSeq(id);
     }
@@ -180,7 +171,6 @@ public class AdminMenuController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "成功操作")})
     @GetMapping("/api/admin-menu/lower-seq/{id}")
     @Secured({Authority.ADMIN})
-    @Timed
     public void lowerSeq(@ApiParam(value = "菜单ID", required = true) @PathVariable String id) {
         adminMenuService.lowerSeq(id);
     }
@@ -189,7 +179,6 @@ public class AdminMenuController {
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功复制")})
     @GetMapping("/api/admin-menu/copy-menus")
     @Secured({Authority.ADMIN})
-    @Timed
     public ResponseEntity<Void> copyMenus(@ApiParam(value = "源应用名称", required = true, defaultValue = "DeepBrainPassport") @RequestParam(value = "sourceAppName", required = true) String sourceAppName,
                                           @ApiParam(value = "目标应用名称", required = true) @RequestParam(value = "targetAppName", required = true) String targetAppName) {
         List<AdminMenu> sourceMenus = adminMenuRepository.findByAppName(sourceAppName);

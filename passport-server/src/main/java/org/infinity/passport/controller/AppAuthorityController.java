@@ -1,6 +1,5 @@
 package org.infinity.passport.controller;
 
-import com.codahale.metrics.annotation.Timed;
 import io.swagger.annotations.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.infinity.passport.domain.AppAuthority;
@@ -52,7 +51,6 @@ public class AppAuthorityController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "字典名已存在")})
     @PostMapping("/api/app-authority/app-authorities")
     @Secured({Authority.ADMIN})
-    @Timed
     public ResponseEntity<Void> create(
             @ApiParam(value = "应用权限信息", required = true) @Valid @RequestBody AppAuthorityDTO dto) {
         LOGGER.debug("REST request to create app authority: {}", dto);
@@ -76,7 +74,6 @@ public class AppAuthorityController {
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/app-authority/app-authorities")
     @Secured({Authority.ADMIN})
-    @Timed
     public ResponseEntity<List<AppAuthorityDTO>> find(Pageable pageable,
                                                       @ApiParam(value = "应用名称", required = false) @RequestParam(value = "appName", required = false) String appName,
                                                       @ApiParam(value = "权限名称", required = false) @RequestParam(value = "authorityName", required = false) String authorityName)
@@ -95,7 +92,6 @@ public class AppAuthorityController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "应用权限不存在")})
     @GetMapping("/api/app-authority/app-authorities/{id}")
     @Secured({Authority.DEVELOPER, Authority.USER})
-    @Timed
     public ResponseEntity<AppAuthorityDTO> findById(
             @ApiParam(value = "字典编号", required = true) @PathVariable String id) {
         LOGGER.debug("REST request to get app authority : {}", id);
@@ -107,7 +103,6 @@ public class AppAuthorityController {
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/app-authority/app-name/{appName}")
     @Secured({Authority.ADMIN})
-    @Timed
     public ResponseEntity<List<AppAuthorityDTO>> findByApp(
             @ApiParam(value = "应用名称", required = true) @PathVariable String appName) {
         LOGGER.debug("REST request to get app authorities : {}", appName);
@@ -124,7 +119,6 @@ public class AppAuthorityController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "应用权限不存在")})
     @PutMapping("/api/app-authority/app-authorities")
     @Secured({Authority.ADMIN})
-    @Timed
     public ResponseEntity<Void> update(
             @ApiParam(value = "新的应用权限信息", required = true) @Valid @RequestBody AppAuthorityDTO dto) {
         LOGGER.debug("REST request to update app authority: {}", dto);
@@ -140,7 +134,6 @@ public class AppAuthorityController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "应用权限不存在")})
     @DeleteMapping("/api/app-authority/app-authorities/{id}")
     @Secured({Authority.ADMIN})
-    @Timed
     public ResponseEntity<Void> delete(@ApiParam(value = "字典编号", required = true) @PathVariable String id) {
         LOGGER.debug("REST request to delete app authority: {}", id);
         AppAuthority appAuthority = appAuthorityRepository.findById(id).orElseThrow(() -> new NoDataException(id));
