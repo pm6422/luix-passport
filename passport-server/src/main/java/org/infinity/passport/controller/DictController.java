@@ -1,6 +1,5 @@
 package org.infinity.passport.controller;
 
-import com.codahale.metrics.annotation.Timed;
 import io.swagger.annotations.*;
 import org.apache.commons.lang3.StringUtils;
 import org.infinity.passport.domain.Authority;
@@ -45,7 +44,6 @@ public class DictController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "字典名已存在")})
     @PostMapping("/api/dict/dicts")
     @Secured(Authority.DEVELOPER)
-    @Timed
     public ResponseEntity<Void> create(@ApiParam(value = "数据字典信息", required = true) @Valid @RequestBody DictDTO dto) {
         LOGGER.debug("REST request to create dict: {}", dto);
         dictRepository.findOneByDictCode(dto.getDictCode()).ifPresent((existingEntity) -> {
@@ -61,7 +59,6 @@ public class DictController {
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/dict/dicts")
     @Secured(Authority.DEVELOPER)
-    @Timed
     public ResponseEntity<List<DictDTO>> find(Pageable pageable,
                                               @ApiParam(value = "字典名称", required = false) @RequestParam(value = "dictName", required = false) String dictName)
             throws URISyntaxException {
@@ -77,7 +74,6 @@ public class DictController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "数据字典不存在")})
     @GetMapping("/api/dict/dicts/{id}")
     @Secured({Authority.DEVELOPER, Authority.USER})
-    @Timed
     public ResponseEntity<DictDTO> findById(@ApiParam(value = "字典编号", required = true) @PathVariable String id) {
         Dict entity = dictRepository.findById(id).orElseThrow(() -> new NoDataException(id));
         return ResponseEntity.ok(entity.asDTO());
@@ -87,7 +83,6 @@ public class DictController {
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/dict/all")
     @Secured({Authority.DEVELOPER, Authority.USER})
-    @Timed
     public ResponseEntity<List<DictDTO>> findByEnabled(
             @ApiParam(value = "是否可用,null代表全部", required = false, allowableValues = "false,true,null") @RequestParam(value = "enabled", required = false) Boolean enabled) {
         List<Dict> dicts = new ArrayList<Dict>();
@@ -105,7 +100,6 @@ public class DictController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "数据字典不存在")})
     @PutMapping("/api/dict/dicts")
     @Secured(Authority.DEVELOPER)
-    @Timed
     public ResponseEntity<Void> update(@ApiParam(value = "新的数据字典信息", required = true) @Valid @RequestBody DictDTO dto) {
         LOGGER.debug("REST request to update dict: {}", dto);
         dictRepository.findById(dto.getId()).orElseThrow(() -> new NoDataException(dto.getId()));
@@ -119,7 +113,6 @@ public class DictController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "数据字典不存在")})
     @DeleteMapping("/api/dict/dicts/{id}")
     @Secured(Authority.DEVELOPER)
-    @Timed
     public ResponseEntity<Void> delete(@ApiParam(value = "字典编号", required = true) @PathVariable String id) {
         LOGGER.debug("REST request to delete dict: {}", id);
         Dict dict = dictRepository.findById(id).orElseThrow(() -> new NoDataException(id));
