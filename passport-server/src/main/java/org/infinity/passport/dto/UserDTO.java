@@ -56,6 +56,7 @@ public class UserDTO extends AbstractAuditableDomain implements Serializable {
     @Size(min = 11, max = 13)
     private String mobileNo;
 
+    @ApiModelProperty(value = "是否包含个人头像")
     private Boolean hasProfilePhoto;
 
     @ApiModelProperty(value = "是否可用")
