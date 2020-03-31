@@ -65,7 +65,6 @@ spring:
         # Either way, it can be overridden by `--spring.profiles.active` value passed in the commandline or `-Dspring.profiles.active` set in `JAVA_OPTS`
         active: @spring.profiles.active@
     messages:
-        # TODO: basename only support the first massage resource for now.
         basename: i18n/messages_zh_CN,i18n/messages_en_US
         fallback-to-system-locale: false
     mvc:

@@ -23,7 +23,6 @@ spring:
         active: @spring.profiles.active@
     messages:
         # Do not add the prefix classpath:, please refer to MessageSourceAutoConfiguration.getResources(ClassLoader classLoader, String name)
-        # TODO: basename only support the first massage resource for now.
         basename: i18n/messages_zh_CN,i18n/messages_en_US
         fallback-to-system-locale: false
     mvc:
