@@ -156,23 +156,15 @@ public class ApplicationProperties {
 
     public static class Swagger {
 
-        private static Api api = new Api();
+        private Api api = new Api();
 
-        private static OpenApi openApi = new OpenApi();
+        private OpenApi openApi = new OpenApi();
 
         private String version;
 
-        private String termsOfServiceUrl;
-
         private String contactName;
 
-        private String contactUrl;
-
         private String contactEmail;
-
-        private String license;
-
-        private String licenseUrl;
 
         private String host;
 
@@ -192,14 +184,6 @@ public class ApplicationProperties {
             this.version = version;
         }
 
-        public String getTermsOfServiceUrl() {
-            return termsOfServiceUrl;
-        }
-
-        public void setTermsOfServiceUrl(String termsOfServiceUrl) {
-            this.termsOfServiceUrl = termsOfServiceUrl;
-        }
-
         public String getContactName() {
             return contactName;
         }
@@ -208,36 +192,12 @@ public class ApplicationProperties {
             this.contactName = contactName;
         }
 
-        public String getContactUrl() {
-            return contactUrl;
-        }
-
-        public void setContactUrl(String contactUrl) {
-            this.contactUrl = contactUrl;
-        }
-
         public String getContactEmail() {
             return contactEmail;
         }
 
         public void setContactEmail(String contactEmail) {
             this.contactEmail = contactEmail;
-        }
-
-        public String getLicense() {
-            return license;
-        }
-
-        public void setLicense(String license) {
-            this.license = license;
-        }
-
-        public String getLicenseUrl() {
-            return licenseUrl;
-        }
-
-        public void setLicenseUrl(String licenseUrl) {
-            this.licenseUrl = licenseUrl;
         }
 
         public String getHost() {
