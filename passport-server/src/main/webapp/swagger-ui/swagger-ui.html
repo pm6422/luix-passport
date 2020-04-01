@@ -48,7 +48,7 @@
                     if (authToken) {
                         req.headers['Authorization'] = "Bearer " + authToken;
                     } else {
-                        alert('Please login!');
+                        alert('Please login before accessing the Swagger!');
                     }
 
                     return req;
