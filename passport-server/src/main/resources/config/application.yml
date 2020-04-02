@@ -137,7 +137,6 @@ application:
             description: Passport Server 开放接口文档
         version: @project.version@
         contact-name: Louis
-        contact-url: http://www.infinity.org
         contact-email: pm6422@126.com
         host:
     ribbon:

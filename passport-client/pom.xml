@@ -188,9 +188,6 @@
                         <goals>
                             <goal>testResources</goal>
                         </goals>
-                        <configuration>
-                            <useDefaultDelimiters>false</useDefaultDelimiters>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
