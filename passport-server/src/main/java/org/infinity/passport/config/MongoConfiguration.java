@@ -91,7 +91,7 @@ public class MongoConfiguration {
     public void initIndicesAfterStartup() {
         if (mongoMappingContext instanceof MongoMappingContext) {
             for (BasicMongoPersistentEntity<?> persistentEntity : mongoMappingContext.getPersistentEntities()) {
-                Class clazz = persistentEntity.getType();
+                Class<?> clazz = persistentEntity.getType();
                 if (clazz.isAnnotationPresent(Document.class)) {
                     MongoPersistentEntityIndexResolver resolver = new MongoPersistentEntityIndexResolver(mongoMappingContext);
                     IndexOperations indexOps = mongoTemplate().indexOps(clazz);

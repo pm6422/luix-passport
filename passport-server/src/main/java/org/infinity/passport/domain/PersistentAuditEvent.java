@@ -1,6 +1,5 @@
 package org.infinity.passport.domain;
 
- import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.springframework.data.annotation.Id;

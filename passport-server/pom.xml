@@ -45,7 +45,7 @@
         <project.testresult.directory>${project.build.directory}/test-results</project.testresult.directory>
         <run.addResources>false</run.addResources>
         <sortpom-maven-plugin.version>2.5.0</sortpom-maven-plugin.version>
-        <springfox.version>2.9.2</springfox.version>
+        <springfox.version>2.5.0</springfox.version>
     </properties>
 
     <!--
@@ -96,6 +96,14 @@
                     <artifactId>slf4j-api</artifactId>
                     <groupId>org.slf4j</groupId>
                 </exclusion>
+                <exclusion>
+                    <artifactId>guava</artifactId>
+                    <groupId>com.google.guava</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>javassist</artifactId>
+                    <groupId>org.javassist</groupId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
@@ -130,11 +138,6 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>de.javakaffee</groupId>
-            <artifactId>kryo-serializers</artifactId>
-            <version>0.43</version>
-        </dependency>
-        <dependency>
             <groupId>io.dropwizard.metrics</groupId>
             <artifactId>metrics-core</artifactId>
         </dependency>
@@ -151,7 +154,7 @@
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-staticdocs</artifactId>
-            <version>2.6.0</version>
+            <version>2.6.1</version>
             <scope>test</scope>
             <exclusions>
                 <exclusion>
@@ -161,6 +164,22 @@
                 <exclusion>
                     <artifactId>joda-time</artifactId>
                     <groupId>joda-time</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>guava</artifactId>
+                    <groupId>com.google.guava</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>swagger-models</artifactId>
+                    <groupId>io.swagger</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>commons-io</artifactId>
+                    <groupId>commons-io</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>jsr305</artifactId>
+                    <groupId>com.google.code.findbugs</groupId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -173,25 +192,7 @@
                     <artifactId>mapstruct</artifactId>
                     <groupId>org.mapstruct</groupId>
                 </exclusion>
-                <exclusion>
-                    <artifactId>swagger-models</artifactId>
-                    <groupId>io.swagger</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>swagger-annotations</artifactId>
-                    <groupId>io.swagger</groupId>
-                </exclusion>
             </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>io.swagger</groupId>
-            <artifactId>swagger-annotations</artifactId>
-            <version>1.5.21</version>
-        </dependency>
-        <dependency>
-            <groupId>io.swagger</groupId>
-            <artifactId>swagger-models</artifactId>
-            <version>1.5.21</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -243,10 +244,6 @@
                 </exclusion>
             </exclusions>
             <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-loader-tools</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
