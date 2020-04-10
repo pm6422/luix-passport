@@ -25,13 +25,13 @@ public class LoggingAspect {
     @Around("within(" + ApplicationConstants.BASE_PACKAGE + ".service..*) || within(" + ApplicationConstants.BASE_PACKAGE + ".controller..*)")
     public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Enter: {}.{}() with argument[s] = {}", joinPoint.getSignature().getDeclaringTypeName(),
+            LOGGER.debug("Accessing {}.{}() with argument[s] = {}", joinPoint.getSignature().getDeclaringTypeName(),
                     joinPoint.getSignature().getName(), Arrays.toString(joinPoint.getArgs()));
         }
         try {
             Object result = joinPoint.proceed();
             if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("Exit: {}.{}() with result = {}", joinPoint.getSignature().getDeclaringTypeName(),
+                LOGGER.debug("Accessed {}.{}() with result = {}", joinPoint.getSignature().getDeclaringTypeName(),
                         joinPoint.getSignature().getName(), result);
             }
             return result;
