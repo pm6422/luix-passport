@@ -1,16 +1,9 @@
 package org.infinity.passport.controller.advice;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang3.StringUtils;
 import org.infinity.passport.config.ApplicationConstants;
 import org.infinity.passport.dto.ParameterizedErrorDTO;
-import org.infinity.passport.exception.CustomParameterizedException;
-import org.infinity.passport.exception.FieldValidationException;
-import org.infinity.passport.exception.LoginUserNotExistException;
-import org.infinity.passport.exception.NoAuthorityException;
-import org.infinity.passport.exception.NoDataException;
+import org.infinity.passport.exception.*;
 import org.infinity.passport.utils.HttpHeaderCreator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +21,9 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Controller advice to translate the server side exceptions to client-friendly json structures.
  */
@@ -37,10 +33,10 @@ public class ExceptionTranslatorAdvice {
     private static final Logger LOGGER = LoggerFactory.getLogger(ExceptionTranslatorAdvice.class);
 
     @Autowired
-    private MessageSource       messageSource;
+    private MessageSource messageSource;
 
     @Autowired
-    private HttpHeaderCreator   httpHeaderCreator;
+    private HttpHeaderCreator httpHeaderCreator;
 
     /**
      * JSR 303 Bean Validation Warn handler
@@ -94,9 +90,9 @@ public class ExceptionTranslatorAdvice {
     @ResponseBody
     public ResponseEntity<ParameterizedErrorDTO> processLoginUserNotExistError(LoginUserNotExistException ex) {
         String errorMessage = messageSource.getMessage(ErrorCodeConstants.ERROR_LOGIN_USER_NOT_EXIST,
-                new Object[] { ex.getUserName() }, ApplicationConstants.SYSTEM_LOCALE);
+                new Object[]{ex.getUserName()}, ApplicationConstants.SYSTEM_LOCALE);
         ex.setMessage(errorMessage);
-        LogUtils.error(errorMessage);
+        LOGGER.error(errorMessage);
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR).headers(httpHeaderCreator
                         .createErrorHeader(ErrorCodeConstants.ERROR_LOGIN_USER_NOT_EXIST, ex.getUserName()))
@@ -110,9 +106,9 @@ public class ExceptionTranslatorAdvice {
     @ResponseBody
     public ResponseEntity<ParameterizedErrorDTO> processNoAuthorityError(NoAuthorityException ex) {
         String errorMessage = messageSource.getMessage(ErrorCodeConstants.ERROR_NO_AUTHORITIES,
-                new Object[] { ex.getUserName() }, ApplicationConstants.SYSTEM_LOCALE);
+                new Object[]{ex.getUserName()}, ApplicationConstants.SYSTEM_LOCALE);
         ex.setMessage(errorMessage);
-        LogUtils.error(errorMessage);
+        LOGGER.error(errorMessage);
         return ResponseEntity.badRequest()
                 .headers(httpHeaderCreator.createErrorHeader(ErrorCodeConstants.ERROR_NO_AUTHORITIES, ex.getUserName()))
                 .body(ex.getErrorDTO());
@@ -125,9 +121,9 @@ public class ExceptionTranslatorAdvice {
     @ResponseBody
     public ResponseEntity<ParameterizedErrorDTO> processDataNotExistError(NoDataException ex) {
         String errorMessage = messageSource.getMessage(ErrorCodeConstants.ERROR_DATA_NOT_EXIST,
-                new Object[] { ex.getId() }, ApplicationConstants.SYSTEM_LOCALE);
+                new Object[]{ex.getId()}, ApplicationConstants.SYSTEM_LOCALE);
         ex.setMessage(errorMessage);
-        LogUtils.error(errorMessage);
+        LOGGER.error(errorMessage);
         return ResponseEntity.badRequest()
                 .headers(httpHeaderCreator.createErrorHeader(ErrorCodeConstants.ERROR_DATA_NOT_EXIST, ex.getId()))
                 .body(ex.getErrorDTO());
@@ -139,7 +135,7 @@ public class ExceptionTranslatorAdvice {
     @ExceptionHandler(CustomParameterizedException.class)
     @ResponseBody
     public ResponseEntity<ParameterizedErrorDTO> processCustomParameterizedError(CustomParameterizedException ex) {
-        LogUtils.error(ex.getMessage());
+        LOGGER.error(ex.getMessage());
         return ResponseEntity.badRequest().headers(httpHeaderCreator.createErrorHeader(ex.getCode(), ex.getParams()))
                 .body(ex.getErrorDTO());
     }
@@ -180,7 +176,7 @@ public class ExceptionTranslatorAdvice {
     public ResponseEntity<ErrorDTO> processConcurencyException(ConcurrencyFailureException ex) {
         String errorMessage = messageSource.getMessage(ErrorCodeConstants.ERROR_CONCURRENCY_EXCEPTION, null,
                 ApplicationConstants.SYSTEM_LOCALE);
-        LogUtils.error(ex, errorMessage);
+        LOGGER.error(errorMessage, ex);
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .headers(httpHeaderCreator.createErrorHeader(ErrorCodeConstants.ERROR_CONCURRENCY_EXCEPTION))
                 .body(new ErrorDTO(ErrorCodeConstants.ERROR_CONCURRENCY_EXCEPTION, errorMessage));
@@ -194,7 +190,7 @@ public class ExceptionTranslatorAdvice {
     public ResponseEntity<ErrorDTO> processException(Throwable throwable) {
         String errorMessage = messageSource.getMessage(ErrorCodeConstants.ERROR_SYSTEM_EXCEPTION, null,
                 ApplicationConstants.SYSTEM_LOCALE);
-        LogUtils.error(throwable, errorMessage);
+        LOGGER.error(errorMessage, throwable);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .headers(httpHeaderCreator.createErrorHeader(ErrorCodeConstants.ERROR_SYSTEM_EXCEPTION))
                 .body(new ErrorDTO(ErrorCodeConstants.ERROR_SYSTEM_EXCEPTION, errorMessage));
@@ -205,7 +201,7 @@ public class ExceptionTranslatorAdvice {
         for (FieldError fieldError : fieldErrors) {
             String defaultMessage = StringUtils.isEmpty(fieldError.getDefaultMessage())
                     ? messageSource.getMessage(fieldError.getCodes()[0], fieldError.getArguments(),
-                            ApplicationConstants.SYSTEM_LOCALE)
+                    ApplicationConstants.SYSTEM_LOCALE)
                     : fieldError.getDefaultMessage();
             FieldError newFieldError = new FieldError(fieldError.getObjectName(), fieldError.getField(),
                     fieldError.getRejectedValue(), true, fieldError.getCodes(), fieldError.getArguments(),

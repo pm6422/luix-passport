@@ -19,7 +19,7 @@ import java.util.List;
 public class ProfileController {
 
     @Autowired
-    private Environment           env;
+    private Environment env;
 
     @Autowired
     private ApplicationProperties applicationProperties;
@@ -27,7 +27,7 @@ public class ProfileController {
     @ApiOperation("获取系统Profile")
     @GetMapping("/open-api/profile-info")
     public ResponseEntity<ProfileInfo> getProfileInfo() {
-        ProfileInfo profileInfo = new ProfileInfo(env.getActiveProfiles(), getRibbonEnv());
+        ProfileInfo profileInfo = new ProfileInfo(env.getActiveProfiles(), applicationProperties.getSwagger().isEnabled(), getRibbonEnv());
         return ResponseEntity.ok(profileInfo);
     }
 

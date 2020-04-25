@@ -5,8 +5,8 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 
 import java.util.Arrays;
 
@@ -16,7 +16,7 @@ import java.util.Arrays;
  * https://www.toutiao.com/i6603273843035341316/
  */
 @Aspect
-@Profile("!" + ApplicationConstants.SPRING_PROFILE_NO_AOP_LOGGING)
+@ConditionalOnProperty(prefix = "application.aop-logging", value = "enable", havingValue = "true")
 @Configuration
 public class LoggingAspect {
 
