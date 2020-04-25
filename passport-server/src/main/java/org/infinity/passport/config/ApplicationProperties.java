@@ -20,6 +20,8 @@ public class ApplicationProperties {
     private final Directory            directory            = new Directory();
     private final Http                 http                 = new Http();
     private final Swagger              swagger              = new Swagger();
+    private final AopLogging           aopLogging           = new AopLogging();
+    private final ServiceMetrics       serviceMetrics       = new ServiceMetrics();
     private final Zookeeper            zookeeper            = new Zookeeper();
     private final Redis                redis                = new Redis();
     private final Scheduler            scheduler            = new Scheduler();
@@ -70,6 +72,16 @@ public class ApplicationProperties {
             private String title;
             private String description;
         }
+    }
+
+    @Data
+    public static class AopLogging {
+        private boolean enabled;
+    }
+
+    @Data
+    public static class ServiceMetrics {
+        private boolean enabled;
     }
 
     @Data
