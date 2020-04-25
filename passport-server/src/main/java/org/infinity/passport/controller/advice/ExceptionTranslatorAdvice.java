@@ -12,7 +12,6 @@ import org.infinity.passport.exception.LoginUserNotExistException;
 import org.infinity.passport.exception.NoAuthorityException;
 import org.infinity.passport.exception.NoDataException;
 import org.infinity.passport.utils.HttpHeaderCreator;
-import org.infinity.passport.utils.LogUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -41,7 +41,7 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
         LOGGER.info("Configuring web application");
         EnumSet<DispatcherType> disps = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD,
                 DispatcherType.ASYNC);
-        if (env.acceptsProfiles(Profiles.of(ApplicationConstants.SPRING_PROFILE_PRODUCTION))) {
+        if (env.acceptsProfiles(Profiles.of(ApplicationConstants.SPRING_PROFILE_PROD))) {
             initCachingHttpHeadersFilter(servletContext, disps);
         }
         LOGGER.info("Configured web application");

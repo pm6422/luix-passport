@@ -30,7 +30,7 @@ public class ProfileInfo implements Serializable {
         this.ribbonEnv = ribbonEnv;
 
         List<String> springBootProfiles = Arrays.asList(activeProfiles);
-        if (springBootProfiles.contains(ApplicationConstants.SPRING_PROFILE_PRODUCTION)) {
+        if (springBootProfiles.contains(ApplicationConstants.SPRING_PROFILE_PROD)) {
             this.inProduction = true;
         }
         if (springBootProfiles.contains(ApplicationConstants.SPRING_PROFILE_NO_SWAGGER)) {
