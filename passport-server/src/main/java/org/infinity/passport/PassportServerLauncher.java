@@ -68,6 +68,7 @@ public class PassportServerLauncher implements WebMvcConfigurer {
     @PostConstruct
     private void validateProfiles() {
         Assert.notEmpty(env.getActiveProfiles(), "No Spring profile configured.");
+        Assert.isTrue(env.getActiveProfiles().length == 1, "Multiple profiles are not allowed!");
         Arrays.asList(env.getActiveProfiles()).stream()
                 .filter(activeProfile -> !ArrayUtils.contains(ApplicationConstants.AVAILABLE_PROFILES, activeProfile))
                 .findFirst().ifPresent((activeProfile) -> {
