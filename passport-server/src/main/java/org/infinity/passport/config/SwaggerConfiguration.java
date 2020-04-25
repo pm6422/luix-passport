@@ -30,7 +30,7 @@ import static springfox.documentation.builders.PathSelectors.regex;
  */
 @Configuration
 @EnableSwagger2
-@ConditionalOnProperty(prefix = "application.swagger", value = "enable", havingValue = "true")
+@ConditionalOnProperty(prefix = "application.swagger", value = "enabled", havingValue = "true")
 public class SwaggerConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SwaggerConfiguration.class);

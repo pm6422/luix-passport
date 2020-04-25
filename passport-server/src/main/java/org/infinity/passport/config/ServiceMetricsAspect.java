@@ -15,7 +15,7 @@ import java.util.Arrays;
  * Aspect for logging execution of service Spring components.
  */
 @Aspect
-@ConditionalOnProperty(prefix = "application.service-metrics", value = "enable", havingValue = "true")
+@ConditionalOnProperty(prefix = "application.service-metrics", value = "enabled", havingValue = "true")
 @Configuration
 public class ServiceMetricsAspect {
 

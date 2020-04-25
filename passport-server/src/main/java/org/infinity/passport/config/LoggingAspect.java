@@ -16,7 +16,7 @@ import java.util.Arrays;
  * https://www.toutiao.com/i6603273843035341316/
  */
 @Aspect
-@ConditionalOnProperty(prefix = "application.aop-logging", value = "enable", havingValue = "true")
+@ConditionalOnProperty(prefix = "application.aop-logging", value = "enabled", havingValue = "true")
 @Configuration
 public class LoggingAspect {
 
