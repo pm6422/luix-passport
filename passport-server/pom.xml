@@ -40,8 +40,6 @@
         <maven.version>3.0.0</maven.version>
         <mongobee.version>0.13</mongobee.version>
         <problem-spring-web.version>0.25.2</problem-spring-web.version>
-        <profile.no-aop-logging />
-        <profile.no-swagger />
         <project.testresult.directory>${project.build.directory}/test-results</project.testresult.directory>
         <run.addResources>false</run.addResources>
         <sortpom-maven-plugin.version>2.5.0</sortpom-maven-plugin.version>
@@ -592,35 +590,21 @@
     -->
     <profiles>
         <profile>
-            <id>no-swagger</id>
-            <properties>
-                <profile.no-swagger>,no-swagger</profile.no-swagger>
-            </properties>
-        </profile>
-        <profile>
-            <id>no-aop-logging</id>
-            <properties>
-                <profile.no-aop-logging>,no-aop-logging</profile.no-aop-logging>
-            </properties>
-        </profile>
-        <profile>
             <id>test</id>
             <!-- default Spring profiles -->
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <mvn.profiles.active>test</mvn.profiles.active>
                 <server.port>${app.server.port}</server.port>
-                <spring.profiles.active>test${profile.no-swagger}${profile.no-aop-logging}</spring.profiles.active>
+                <spring.profiles.active>test</spring.profiles.active>
             </properties>
         </profile>
         <profile>
             <id>prod</id>
             <properties>
-                <mvn.profiles.active>prod</mvn.profiles.active>
                 <server.port>${app.server.port}</server.port>
-                <spring.profiles.active>prod${profile.no-swagger}${profile.no-aop-logging}</spring.profiles.active>
+                <spring.profiles.active>prod</spring.profiles.active>
             </properties>
         </profile>
     </profiles>
