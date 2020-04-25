@@ -229,21 +229,18 @@
         <profile>
             <id>test</id>
             <activation>
+                <!-- default Spring profiles -->
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <mvn.profiles.active>test</mvn.profiles.active>
                 <server.port>${app.server.port}</server.port>
-                <!-- default Spring profiles -->
                 <spring.profiles.active>test</spring.profiles.active>
             </properties>
         </profile>
         <profile>
             <id>prod</id>
             <properties>
-                <mvn.profiles.active>prod</mvn.profiles.active>
                 <server.port>${app.server.port}</server.port>
-                <!-- default Spring profiles -->
                 <spring.profiles.active>prod</spring.profiles.active>
             </properties>
         </profile>

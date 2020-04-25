@@ -19,7 +19,7 @@
         </fileSet>
         <fileSet>
             <outputDirectory>${file.separator}bin</outputDirectory>
-            <directory>src/main/assembly/scripts/${mvn.profiles.active}</directory>
+            <directory>src/main/assembly/scripts/${spring.profiles.active}</directory>
             <filtered>true</filtered>
             <fileMode>0755</fileMode>
         </fileSet>
