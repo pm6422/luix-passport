@@ -39,8 +39,8 @@ public class DatabaseInitialSetup {
         mongoTemplate.save(new AppAuthority(APP_NAME, Authority.ANONYMOUS));
     }
 
-    @ChangeSet(order = "03", author = "Louis", id = "addUserAndAuthories", runAlways = true)
-    public void addUserAndAuthories(MongoTemplate mongoTemplate) {
+    @ChangeSet(order = "03", author = "Louis", id = "addUserAndAuthorities", runAlways = true)
+    public void addUserAndAuthorities(MongoTemplate mongoTemplate) {
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         // Creates 'user' user and corresponding authorities
         User userRoleUser = new User();
