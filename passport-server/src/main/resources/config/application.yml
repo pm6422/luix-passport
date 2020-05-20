@@ -129,6 +129,7 @@ application:
         cache: # Used by the CachingHttpHeadersFilter
             timeToLiveInDays: 31
     swagger:
+        enabled: true
         api:
             title: Passport Server API
             description: Passport Server 接口文档

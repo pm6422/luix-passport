@@ -208,7 +208,7 @@ function NavbarController($rootScope, $scope, $translate, $state, Authentication
 
     ProfileService.getProfileInfo().then(function (response) {
         vm.inProduction = response.inProduction;
-        vm.swaggerDisabled = response.swaggerDisabled;
+        vm.swaggerEnabled = response.swaggerEnabled;
     });
 
     vm.logout = logout;
