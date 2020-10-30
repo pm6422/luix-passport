@@ -171,7 +171,7 @@ public class ExceptionTranslatorAdvice {
      */
     @ExceptionHandler(ConcurrencyFailureException.class)
     @ResponseBody
-    public ResponseEntity<ErrorDTO> processConcurencyException(ConcurrencyFailureException ex) {
+    public ResponseEntity<ErrorDTO> processConcurrencyException(ConcurrencyFailureException ex) {
         String errorMessage = messageSource.getMessage(ErrorCodeConstants.ERROR_CONCURRENCY_EXCEPTION, null,
                 ApplicationConstants.SYSTEM_LOCALE);
         log.error(errorMessage, ex);
