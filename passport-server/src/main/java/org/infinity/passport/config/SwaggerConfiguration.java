@@ -1,12 +1,9 @@
 package org.infinity.passport.config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.service.ApiInfo;
@@ -30,54 +27,43 @@ import static springfox.documentation.builders.PathSelectors.regex;
 @Configuration
 @EnableSwagger2
 @ConditionalOnProperty(prefix = "application.swagger", value = "enabled", havingValue = "true")
+@Slf4j
 public class SwaggerConfiguration {
+    private static final String                DEFAULT_API_INCLUDE_PATTERN      = "/api/.*";
+    private static final String                DEFAULT_OPEN_API_INCLUDE_PATTERN = "/open-api/.*";
+    private final        ApplicationProperties applicationProperties;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SwaggerConfiguration.class);
-
-    @Autowired
-    private ApplicationProperties applicationProperties;
-
-    public static final String DEFAULT_API_INCLUDE_PATTERN = "/api/.*";
-
-    public static final String DEFAULT_OPEN_API_INCLUDE_PATTERN = "/open-api/.*";
+    public SwaggerConfiguration(ApplicationProperties applicationProperties) {
+        this.applicationProperties = applicationProperties;
+    }
 
     @Bean
     public Docket apiDocket() {
-        LOGGER.debug("Building Swagger API docket");
-        Docket docket = new Docket(DocumentationType.SWAGGER_2).groupName("api-group").apiInfo(apiInfo())
-                .forCodeGeneration(true);
-        if (System.getProperty("specified.uri.scheme.host") != null
-                && "true".equals(System.getProperty("specified.uri.scheme.host"))) {
-            docket.host(applicationProperties.getSwagger().getHost());
-        }
-        docket.genericModelSubstitutes(ResponseEntity.class)
-                .ignoredParameterTypes(Pageable.class)
-                .ignoredParameterTypes(java.sql.Date.class)
-                .directModelSubstitute(java.time.LocalDate.class, java.sql.Date.class)
-                .directModelSubstitute(java.time.ZonedDateTime.class, Date.class)
-                .directModelSubstitute(java.time.LocalDateTime.class, Date.class).select()
-                .paths(regex(DEFAULT_API_INCLUDE_PATTERN)).build();
-        LOGGER.debug("Built Swagger API docket");
-        return docket;
+        return createDocket("api-group", DEFAULT_API_INCLUDE_PATTERN);
     }
 
     @Bean
     public Docket openApiDocket() {
-        LOGGER.debug("Building Swagger Open API docket");
-        Docket docket = new Docket(DocumentationType.SWAGGER_2).groupName("open-api-group").apiInfo(openApiInfo())
+        return createDocket("open-api-group", DEFAULT_OPEN_API_INCLUDE_PATTERN);
+    }
+
+    private Docket createDocket(String groupName, String path) {
+        log.debug("Building Swagger API docket with group [{}]", groupName);
+        Docket docket = new Docket(DocumentationType.SWAGGER_2).groupName(groupName).apiInfo(apiInfo())
                 .forCodeGeneration(true);
         if (System.getProperty("specified.uri.scheme.host") != null
                 && "true".equals(System.getProperty("specified.uri.scheme.host"))) {
             docket.host(applicationProperties.getSwagger().getHost());
         }
         docket.genericModelSubstitutes(ResponseEntity.class)
-                .ignoredParameterTypes(Pageable.class)
                 .ignoredParameterTypes(java.sql.Date.class)
                 .directModelSubstitute(java.time.LocalDate.class, java.sql.Date.class)
                 .directModelSubstitute(java.time.ZonedDateTime.class, Date.class)
-                .directModelSubstitute(java.time.LocalDateTime.class, Date.class).select()
-                .paths(regex(DEFAULT_OPEN_API_INCLUDE_PATTERN)).build();
-        LOGGER.debug("Built Swagger Open API docket");
+                .directModelSubstitute(java.time.LocalDateTime.class, Date.class)
+                .select()
+                .paths(regex(path))
+                .build();
+        log.debug("Built Swagger API docket with group [{}]", groupName);
         return docket;
     }
 
@@ -86,26 +72,11 @@ public class SwaggerConfiguration {
                 null,
                 applicationProperties.getSwagger().getContactEmail());
 
-        ApiInfo apiInfo = new ApiInfoBuilder()
+        return new ApiInfoBuilder()
                 .title(applicationProperties.getSwagger().getApi().getTitle())
                 .description(applicationProperties.getSwagger().getApi().getDescription())
                 .version(applicationProperties.getSwagger().getVersion())
                 .contact(contact)
                 .build();
-        return apiInfo;
-    }
-
-    private ApiInfo openApiInfo() {
-        Contact contact = new Contact(applicationProperties.getSwagger().getContactName(),
-                null,
-                applicationProperties.getSwagger().getContactEmail());
-
-        ApiInfo apiInfo = new ApiInfoBuilder()
-                .title(applicationProperties.getSwagger().getOpenApi().getTitle())
-                .description(applicationProperties.getSwagger().getOpenApi().getDescription())
-                .version(applicationProperties.getSwagger().getVersion())
-                .contact(contact)
-                .build();
-        return apiInfo;
     }
 }

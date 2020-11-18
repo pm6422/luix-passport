@@ -60,7 +60,7 @@ public class PageableParameterBuilderPlugin implements ParameterBuilderPlugin {
 
             List<Parameter> parameters = newArrayList(
                     context.parameterBuilder().parameterType("query").name("page").modelRef(intModel)
-                            .description("请求的页码(从0开始)").build(),
+                            .description("页码(从0开始)").build(),
                     context.parameterBuilder().parameterType("query").name("size").modelRef(intModel)
                             .description("每页大小").build(),
                     context.parameterBuilder().parameterType("query").name("sort").modelRef(stringModel)
