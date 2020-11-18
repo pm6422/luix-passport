@@ -144,6 +144,7 @@ application:
         enabled: true
     service-metrics:
         enabled: true
+        slowExecutionThreshold: 300 # unit: ms
     ribbon:
         # comma separated list of profiles to show a ribbon on the GUI
         display-on-active-profiles: dev,test,demo,preprod

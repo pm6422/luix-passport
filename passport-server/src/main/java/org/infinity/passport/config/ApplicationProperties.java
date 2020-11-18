@@ -82,6 +82,7 @@ public class ApplicationProperties {
     @Data
     public static class ServiceMetrics {
         private boolean enabled;
+        private int     slowExecutionThreshold;
     }
 
     @Data

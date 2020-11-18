@@ -8,6 +8,7 @@ import java.util.Locale;
 public final class ApplicationConstants {
 
     public static final String   BASE_PACKAGE        = "org.infinity.passport";
+    public static final String   CONTROLLER_PACKAGE  = BASE_PACKAGE + ".controller.";
     public static final String   SPRING_PROFILE_TEST = "test";
     public static final String   SPRING_PROFILE_PROD = "prod";
     public static final String[] AVAILABLE_PROFILES  = new String[]{SPRING_PROFILE_TEST, SPRING_PROFILE_PROD};
