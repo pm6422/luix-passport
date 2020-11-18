@@ -65,7 +65,7 @@ public class PageableParameterBuilderPlugin implements ParameterBuilderPlugin {
                     context.parameterBuilder().parameterType("query").name("size").modelRef(intModel)
                             .description("每页大小").build(),
                     context.parameterBuilder().parameterType("query").name("sort").modelRef(stringModel)
-                            .allowMultiple(true).description("排序方式(默认为升序): property,asc 或 property,desc")
+                            .allowMultiple(true).description("排序方式(默认为升序),例如:field1,asc或field2,desc")
                             .build());
 
             context.getOperationContext().operationBuilder().parameters(parameters);
