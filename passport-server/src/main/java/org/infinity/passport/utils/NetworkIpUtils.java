@@ -8,6 +8,7 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.UnknownHostException;
 import java.util.Enumeration;
+import java.util.Objects;
 
 public class NetworkIpUtils {
 
@@ -39,13 +40,13 @@ public class NetworkIpUtils {
     private static String getInternetIp() {
         try {
             Enumeration<NetworkInterface> networks = NetworkInterface.getNetworkInterfaces();
-            InetAddress ip = null;
+            InetAddress ip;
             Enumeration<InetAddress> addrs;
             while (networks.hasMoreElements()) {
                 addrs = networks.nextElement().getInetAddresses();
                 while (addrs.hasMoreElements()) {
                     ip = addrs.nextElement();
-                    if (ip != null && ip instanceof Inet4Address && !ip.isSiteLocalAddress()
+                    if (ip instanceof Inet4Address && !ip.isSiteLocalAddress()
                             && !ip.getHostAddress().equals(INTRANET_IP)) {
                         return ip.getHostAddress();
                     }
@@ -63,8 +64,8 @@ public class NetworkIpUtils {
      * Get real client IP
      * Refer https://www.toutiao.com/i6629650361244189198/
      *
-     * @param request
-     * @return
+     * @param request http servlet request object
+     * @return real request client ip
      */
     public static String getRealClientIp(HttpServletRequest request) {
         String ipAddress = request.getHeader("x-forwarded-for");
@@ -84,7 +85,7 @@ public class NetworkIpUtils {
                 } catch (UnknownHostException e) {
                     e.printStackTrace();
                 }
-                ipAddress = inet.getHostAddress();
+                ipAddress = Objects.requireNonNull(inet).getHostAddress();
             }
         }
         //对于通过多个代理的情况，第一个IP为客户端真实IP,多个IP按照','分割
