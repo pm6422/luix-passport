@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -21,8 +22,7 @@ public interface PersistenceAuditEventRepository extends MongoRepository<Persist
 
     List<PersistentAuditEvent> findByPrincipalAndAuditEventDateAfter(String principal, Instant after);
 
-    List<PersistentAuditEvent> findByPrincipalAndAuditEventDateAfterAndAuditEventType(String principle, Instant after,
-            String type);
+    List<PersistentAuditEvent> findByPrincipalAndAuditEventDateAfterAndAuditEventType(String principle, Instant after, String type);
 
-    Page<PersistentAuditEvent> findByAuditEventDateBetween(Pageable pageable, Instant fromDate, Instant toDate);
+    Page<PersistentAuditEvent> findByAuditEventDateBetween(Pageable pageable, LocalDate fromDate, LocalDate toDate);
 }
