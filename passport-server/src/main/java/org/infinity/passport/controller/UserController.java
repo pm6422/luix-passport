@@ -18,7 +18,6 @@ import org.infinity.passport.security.AjaxLogoutSuccessHandler;
 import org.infinity.passport.service.MailService;
 import org.infinity.passport.service.UserService;
 import org.infinity.passport.utils.HttpHeaderCreator;
-import org.infinity.passport.utils.PaginationUtils;
 import org.infinity.passport.utils.RandomUtils;
 import org.infinity.passport.utils.SecurityUtils;
 import org.slf4j.Logger;
@@ -45,6 +44,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static javax.servlet.http.HttpServletResponse.*;
+import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
 
 /**
  * REST controller for managing users.
@@ -122,7 +122,7 @@ public class UserController {
                 : userService.findByLogin(pageable, login);
         List<ManagedUserDTO> DTOs = users.getContent().stream().map(entity -> new ManagedUserDTO(entity, null))
                 .collect(Collectors.toList());
-        HttpHeaders headers = PaginationUtils.generatePaginationHttpHeaders(users, "/api/user/users");
+        HttpHeaders headers = generatePageHeaders(users, "/api/user/users");
         return ResponseEntity.ok().headers(headers).body(DTOs);
     }
 
@@ -213,6 +213,7 @@ public class UserController {
     }
 
     public static final String GET_PROFILE_PHOTO_URL = "/api/user/profile-photo/";
+
     @ApiOperation("获取用户头像")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping(GET_PROFILE_PHOTO_URL + "{userName:[_'.@a-z0-9-]+}")

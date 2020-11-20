@@ -1,19 +1,21 @@
 package org.infinity.passport.utils;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-
 import org.infinity.passport.config.ApplicationConstants;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
 @Component
 public class HttpHeaderCreator {
 
-    @Autowired
-    private MessageSource messageSource;
+    private final MessageSource messageSource;
+
+    public HttpHeaderCreator(MessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
 
     public HttpHeaders createSuccessHeader(String code, Object... args) {
         HttpHeaders headers = new HttpHeaders();

@@ -12,7 +12,6 @@ import org.infinity.passport.repository.DictRepository;
 import org.infinity.passport.service.DictItemService;
 import org.infinity.passport.service.DictService;
 import org.infinity.passport.utils.HttpHeaderCreator;
-import org.infinity.passport.utils.PaginationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +32,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static javax.servlet.http.HttpServletResponse.*;
+import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
 
 @RestController
 @Api(tags = "数据字典项")
@@ -99,7 +99,7 @@ public class DictItemController {
             dto.setDictName(dictCodeDictNameMap.get(dto.getDictCode()));
             return entity.asDTO();
         }).collect(Collectors.toList());
-        HttpHeaders headers = PaginationUtils.generatePaginationHttpHeaders(dictItems, "/api/dict-item/items");
+        HttpHeaders headers = generatePageHeaders(dictItems, "/api/dict-item/items");
         return ResponseEntity.ok().headers(headers).body(DTOs);
     }
 

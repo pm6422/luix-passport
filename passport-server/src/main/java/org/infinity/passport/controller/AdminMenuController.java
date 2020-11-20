@@ -11,7 +11,6 @@ import org.infinity.passport.exception.NoDataException;
 import org.infinity.passport.repository.AdminMenuRepository;
 import org.infinity.passport.service.AdminMenuService;
 import org.infinity.passport.utils.HttpHeaderCreator;
-import org.infinity.passport.utils.PaginationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +34,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static javax.servlet.http.HttpServletResponse.*;
+import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
 
 /**
  * REST controller for managing the admin menu.
@@ -82,7 +82,7 @@ public class AdminMenuController {
                 : adminMenuRepository.findByAppName(pageable, appName);
         List<AdminMenuDTO> DTOs = adminMenus.getContent().stream().map(entity -> entity.asDTO())
                 .collect(Collectors.toList());
-        HttpHeaders headers = PaginationUtils.generatePaginationHttpHeaders(adminMenus, "/api/admin-menu/menus");
+        HttpHeaders headers = generatePageHeaders(adminMenus, "/api/admin-menu/menus");
         return ResponseEntity.ok().headers(headers).body(DTOs);
     }
 

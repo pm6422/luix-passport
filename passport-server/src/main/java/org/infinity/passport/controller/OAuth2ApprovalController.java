@@ -8,7 +8,6 @@ import org.infinity.passport.dto.MongoOAuth2ApprovalDTO;
 import org.infinity.passport.exception.NoDataException;
 import org.infinity.passport.repository.OAuth2ApprovalRepository;
 import org.infinity.passport.utils.HttpHeaderCreator;
-import org.infinity.passport.utils.PaginationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +28,7 @@ import java.util.stream.Collectors;
 
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static javax.servlet.http.HttpServletResponse.SC_OK;
+import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
 
 @RestController
 @Api(tags = "登录授权信息")
@@ -72,8 +72,7 @@ public class OAuth2ApprovalController {
 
         List<MongoOAuth2ApprovalDTO> DTOs = approvals.getContent().stream().map(entity -> entity.asDTO())
                 .collect(Collectors.toList());
-        HttpHeaders headers = PaginationUtils.generatePaginationHttpHeaders(approvals,
-                "/api/oauth2-approval/approvals");
+        HttpHeaders headers = generatePageHeaders(approvals, "/api/oauth2-approval/approvals");
         return ResponseEntity.ok().headers(headers).body(DTOs);
     }
 

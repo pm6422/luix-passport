@@ -9,7 +9,6 @@ import org.infinity.passport.exception.FieldValidationException;
 import org.infinity.passport.exception.NoDataException;
 import org.infinity.passport.repository.DictRepository;
 import org.infinity.passport.utils.HttpHeaderCreator;
-import org.infinity.passport.utils.PaginationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +27,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static javax.servlet.http.HttpServletResponse.*;
+import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
 
 @RestController
 @Api(tags = "数据字典")
@@ -65,7 +65,7 @@ public class DictController {
         Page<Dict> dicts = StringUtils.isEmpty(dictName) ? dictRepository.findAll(pageable)
                 : dictRepository.findByDictName(pageable, dictName);
         List<DictDTO> DTOs = dicts.getContent().stream().map(entity -> entity.asDTO()).collect(Collectors.toList());
-        HttpHeaders headers = PaginationUtils.generatePaginationHttpHeaders(dicts, "/api/dict/dicts");
+        HttpHeaders headers = generatePageHeaders(dicts, "/api/dict/dicts");
         return ResponseEntity.ok().headers(headers).body(DTOs);
     }
 

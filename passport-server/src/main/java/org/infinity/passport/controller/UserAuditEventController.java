@@ -6,7 +6,6 @@ import io.swagger.annotations.ApiParam;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.PersistentAuditEvent;
 import org.infinity.passport.repository.PersistenceAuditEventRepository;
-import org.infinity.passport.utils.PaginationUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -20,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.util.List;
+
+import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
 
 /**
  * REST controller for managing the user audit events.
@@ -41,7 +42,7 @@ public class UserAuditEventController {
                                                                          @ApiParam(value = "开始日期") @RequestParam(value = "from", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
                                                                          @ApiParam(value = "结束日期") @RequestParam(value = "to", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) throws URISyntaxException {
         Page<PersistentAuditEvent> userAuditEvents = persistenceAuditEventRepository.findByAuditEventDateBetween(pageable, from, to);
-        HttpHeaders headers = PaginationUtils.generatePaginationHttpHeaders(userAuditEvents, "/api/user-audit-event/user-audit-events");
+        HttpHeaders headers = generatePageHeaders(userAuditEvents, "/api/user-audit-event/user-audit-events");
         return ResponseEntity.ok().headers(headers).body(userAuditEvents.getContent());
     }
 }

@@ -7,7 +7,6 @@ import org.infinity.passport.domain.HttpSession;
 import org.infinity.passport.exception.NoDataException;
 import org.infinity.passport.repository.HttpSessionRepository;
 import org.infinity.passport.utils.HttpHeaderCreator;
-import org.infinity.passport.utils.PaginationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +22,7 @@ import java.util.List;
 
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static javax.servlet.http.HttpServletResponse.SC_OK;
+import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
 
 /**
  * REST controller for managing http sessions.
@@ -44,7 +44,7 @@ public class HttpSessionController {
     public ResponseEntity<List<HttpSession>> find(Pageable pageable,
                                                   @ApiParam(value = "用户名称", required = false) @RequestParam(value = "principal", required = false) String principal) throws URISyntaxException {
         Page<HttpSession> sessions = StringUtils.isEmpty(principal) ? httpSessionRepository.findAll(pageable) : httpSessionRepository.findByPrincipal(pageable, principal);
-        HttpHeaders headers = PaginationUtils.generatePaginationHttpHeaders(sessions, "/api/http-session/sessions");
+        HttpHeaders headers = generatePageHeaders(sessions, "/api/http-session/sessions");
         return ResponseEntity.ok().headers(headers).body(sessions.getContent());
     }
 

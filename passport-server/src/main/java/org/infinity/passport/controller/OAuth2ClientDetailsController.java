@@ -9,7 +9,6 @@ import org.infinity.passport.exception.FieldValidationException;
 import org.infinity.passport.exception.NoDataException;
 import org.infinity.passport.repository.OAuth2ClientDetailsRepository;
 import org.infinity.passport.utils.HttpHeaderCreator;
-import org.infinity.passport.utils.PaginationUtils;
 import org.infinity.passport.utils.RandomUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +33,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static javax.servlet.http.HttpServletResponse.*;
+import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
 
 @RestController
 @Api(tags = "单点登录客户端信息")
@@ -89,8 +89,7 @@ public class OAuth2ClientDetailsController {
                 : new PageImpl<>(mongoTemplate.find(query, MongoOAuth2ClientDetails.class), pageable, totalCount);
         List<MongoOAuth2ClientDetailsDTO> DTOs = clientDetails.getContent().stream()
                 .map(entity -> entity.asDTO()).collect(Collectors.toList());
-        HttpHeaders headers = PaginationUtils.generatePaginationHttpHeaders(clientDetails,
-                "/api/oauth2-client/clients");
+        HttpHeaders headers = generatePageHeaders(clientDetails, "/api/oauth2-client/clients");
         return ResponseEntity.ok().headers(headers).body(DTOs);
     }
 

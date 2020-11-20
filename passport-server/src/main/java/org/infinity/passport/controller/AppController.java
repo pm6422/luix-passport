@@ -10,7 +10,6 @@ import org.infinity.passport.repository.AppAuthorityRepository;
 import org.infinity.passport.repository.AppRepository;
 import org.infinity.passport.service.AppService;
 import org.infinity.passport.utils.HttpHeaderCreator;
-import org.infinity.passport.utils.PaginationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +28,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static javax.servlet.http.HttpServletResponse.*;
+import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
 
 /**
  * REST controller for managing apps.
@@ -65,7 +65,7 @@ public class AppController {
     public ResponseEntity<List<AppDTO>> find(Pageable pageable) throws URISyntaxException {
         Page<App> apps = appRepository.findAll(pageable);
         List<AppDTO> DTOs = apps.getContent().stream().map(entity -> entity.asDTO()).collect(Collectors.toList());
-        HttpHeaders headers = PaginationUtils.generatePaginationHttpHeaders(apps, "/api/app/apps");
+        HttpHeaders headers = generatePageHeaders(apps, "/api/app/apps");
         return ResponseEntity.ok().headers(headers).body(DTOs);
     }
 

@@ -7,7 +7,6 @@ import org.infinity.passport.dto.MongoOAuth2RefreshTokenDTO;
 import org.infinity.passport.exception.NoDataException;
 import org.infinity.passport.repository.OAuth2RefreshTokenRepository;
 import org.infinity.passport.utils.HttpHeaderCreator;
-import org.infinity.passport.utils.PaginationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +24,7 @@ import java.util.stream.Collectors;
 
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static javax.servlet.http.HttpServletResponse.SC_OK;
+import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
 
 @RestController
 @Api(tags = "刷新令牌信息")
@@ -54,7 +54,7 @@ public class OAuth2RefreshTokenController {
         Page<MongoOAuth2RefreshToken> tokens = oAuth2RefreshTokenRepository.findAll(Example.of(probe), pageable);
         List<MongoOAuth2RefreshTokenDTO> DTOs = tokens.getContent().stream().map(entity -> entity.asDTO())
                 .collect(Collectors.toList());
-        HttpHeaders headers = PaginationUtils.generatePaginationHttpHeaders(tokens, "/api/oauth2-refresh-token/tokens");
+        HttpHeaders headers = generatePageHeaders(tokens, "/api/oauth2-refresh-token/tokens");
         return ResponseEntity.ok().headers(headers).body(DTOs);
     }
 
