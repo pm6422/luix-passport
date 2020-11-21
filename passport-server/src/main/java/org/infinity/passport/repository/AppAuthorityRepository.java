@@ -15,9 +15,9 @@ import java.util.Optional;
 @Repository
 public interface AppAuthorityRepository extends MongoRepository<AppAuthority, String> {
 
-    Page<AppAuthority> findByAuthorityName(Pageable pageable, String authorityName);
-
     List<AppAuthority> findByAppName(String appName);
+
+    Page<AppAuthority> findByAuthorityName(Pageable pageable, String authorityName);
 
     Page<AppAuthority> findByAppName(Pageable pageable, String appName);
 
