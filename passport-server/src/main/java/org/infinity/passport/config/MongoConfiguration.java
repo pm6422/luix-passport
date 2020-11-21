@@ -35,9 +35,12 @@ import java.util.List;
 public class MongoConfiguration {
 
     @Autowired
-    private MongoMappingContext mongoMappingContext;
-    @Autowired
-    private MongoDbFactory      mongoDbFactory;
+    private       MongoMappingContext mongoMappingContext;
+    private final MongoDbFactory      mongoDbFactory;
+
+    public MongoConfiguration(MongoDbFactory mongoDbFactory) {
+        this.mongoDbFactory = mongoDbFactory;
+    }
 
     @Bean
     public ValidatingMongoEventListener validatingMongoEventListener() {
