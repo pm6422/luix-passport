@@ -4,7 +4,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.infinity.passport.domain.base.AbstractAuditableDomain;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
@@ -20,9 +19,6 @@ import java.io.Serializable;
 public class UserAuthority extends AbstractAuditableDomain implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    @Id
-    private String id;
 
     private String userId;
 

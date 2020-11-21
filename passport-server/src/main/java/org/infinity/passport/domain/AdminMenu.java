@@ -7,7 +7,6 @@ import org.infinity.passport.domain.base.AbstractAuditableDomain;
 import org.infinity.passport.dto.AdminMenuDTO;
 import org.infinity.passport.entity.MenuTreeNode;
 import org.springframework.cglib.beans.BeanCopier;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -28,9 +27,6 @@ public class AdminMenu extends AbstractAuditableDomain implements Serializable {
     public static final  String FIELD_LEVEL      = "level";
     public static final  String FIELD_SEQUENCE   = "sequence";
 
-    // 主键不要定义为Long型，因为定义为Long型的字段如果超过16位的话在前端页面会显示为0
-    @Id
-    private String  id;
     @NotNull
     @Size(min = 1, max = 20)
     @Indexed

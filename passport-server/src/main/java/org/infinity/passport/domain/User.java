@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.infinity.passport.domain.base.AbstractAuditableDomain;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -31,9 +30,6 @@ public class User extends AbstractAuditableDomain implements Serializable {
     public static final String FIELD_EMAIL = "email";
 
     public static final String FIELD_MOBILE_NO = "mobileNo";
-
-    @Id
-    private String id;
 
     @NotNull
     @Size(min = 1, max = 50)

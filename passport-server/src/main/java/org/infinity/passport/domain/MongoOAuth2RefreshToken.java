@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import org.infinity.passport.domain.base.AbstractAuditableDomain;
 import org.infinity.passport.dto.MongoOAuth2RefreshTokenDTO;
 import org.springframework.beans.BeanUtils;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.oauth2.common.DefaultExpiringOAuth2RefreshToken;
@@ -23,8 +22,6 @@ import java.util.Date;
 public class MongoOAuth2RefreshToken extends AbstractAuditableDomain implements Serializable {
 
     private static final long                 serialVersionUID = 1L;
-    @Id
-    private              String               id;
     private              String               userName;
     private              String               clientId;
     private              OAuth2RefreshToken   oAuth2RefreshToken;
