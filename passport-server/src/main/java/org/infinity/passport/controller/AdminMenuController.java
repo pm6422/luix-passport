@@ -11,7 +11,7 @@ import org.infinity.passport.exception.FieldValidationException;
 import org.infinity.passport.exception.NoDataException;
 import org.infinity.passport.repository.AdminMenuRepository;
 import org.infinity.passport.service.AdminMenuService;
-import org.infinity.passport.utils.HttpHeaderCreator;
+import org.infinity.passport.component.HttpHeaderCreator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -104,9 +104,9 @@ public class AdminMenuController {
     public ResponseEntity<List<AdminMenuDTO>> findAllParentMenu(
             @ApiParam(value = "应用名称", required = true) @PathVariable String appName,
             @ApiParam(value = "菜单级别", required = true) @PathVariable Integer level) {
-        List<AdminMenuDTO> dtos = adminMenuRepository.findByAppNameAndLevel(appName, level).stream()
+        List<AdminMenuDTO> all = adminMenuRepository.findByAppNameAndLevel(appName, level).stream()
                 .map(AdminMenu::asDTO).collect(Collectors.toList());
-        return ResponseEntity.ok(dtos);
+        return ResponseEntity.ok(all);
     }
 
     @ApiOperation("更新菜单")

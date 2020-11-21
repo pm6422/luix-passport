@@ -12,7 +12,7 @@ import org.infinity.passport.repository.AdminMenuRepository;
 import org.infinity.passport.repository.AuthorityAdminMenuRepository;
 import org.infinity.passport.service.AdminMenuService;
 import org.infinity.passport.service.AuthorityService;
-import org.infinity.passport.utils.HttpHeaderCreator;
+import org.infinity.passport.component.HttpHeaderCreator;
 import org.infinity.passport.utils.SecurityUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;

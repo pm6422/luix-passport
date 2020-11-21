@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.infinity.passport.utils.NetworkIpUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.env.Environment;
@@ -18,8 +17,11 @@ import java.util.Date;
 @Component
 @Slf4j
 public class PrintAppInfoApplicationRunner implements ApplicationRunner {
-    @Autowired
-    private Environment env;
+    private final Environment env;
+
+    public PrintAppInfoApplicationRunner(Environment env) {
+        this.env = env;
+    }
 
     @Override
     public void run(ApplicationArguments args) throws Exception {

@@ -12,7 +12,7 @@ import org.infinity.passport.repository.DictItemRepository;
 import org.infinity.passport.repository.DictRepository;
 import org.infinity.passport.service.DictItemService;
 import org.infinity.passport.service.DictService;
-import org.infinity.passport.utils.HttpHeaderCreator;
+import org.infinity.passport.component.HttpHeaderCreator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;

@@ -7,7 +7,7 @@ import org.infinity.passport.domain.MongoOAuth2AuthorizationCode;
 import org.infinity.passport.dto.MongoOAuth2AuthorizationCodeDTO;
 import org.infinity.passport.exception.NoDataException;
 import org.infinity.passport.repository.OAuth2AuthorizationCodeRepository;
-import org.infinity.passport.utils.HttpHeaderCreator;
+import org.infinity.passport.component.HttpHeaderCreator;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

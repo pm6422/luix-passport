@@ -41,10 +41,10 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
     @Override
     public void onStartup(ServletContext servletContext) {
         LOGGER.info("Configuring web application");
-        EnumSet<DispatcherType> disps = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD,
+        EnumSet<DispatcherType> types = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD,
                 DispatcherType.ASYNC);
         if (env.acceptsProfiles(Profiles.of(ApplicationConstants.SPRING_PROFILE_PROD))) {
-            initCachingHttpHeadersFilter(servletContext, disps);
+            initCachingHttpHeadersFilter(servletContext, types);
         }
         LOGGER.info("Configured web application");
     }
@@ -106,13 +106,13 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
     /**
      * Initializes the caching HTTP Headers Filter.
      */
-    private void initCachingHttpHeadersFilter(ServletContext servletContext, EnumSet<DispatcherType> disps) {
+    private void initCachingHttpHeadersFilter(ServletContext servletContext, EnumSet<DispatcherType> types) {
         LOGGER.debug("Registering Caching HTTP Headers Filter");
         FilterRegistration.Dynamic cachingHttpHeadersFilter = servletContext.addFilter("cachingHttpHeadersFilter",
                 new CachingHttpHeadersFilter(applicationProperties));
-        cachingHttpHeadersFilter.addMappingForUrlPatterns(disps, true, "/i18n/*");
-        cachingHttpHeadersFilter.addMappingForUrlPatterns(disps, true, "/content/*");
-        cachingHttpHeadersFilter.addMappingForUrlPatterns(disps, true, "/app/*");
+        cachingHttpHeadersFilter.addMappingForUrlPatterns(types, true, "/i18n/*");
+        cachingHttpHeadersFilter.addMappingForUrlPatterns(types, true, "/content/*");
+        cachingHttpHeadersFilter.addMappingForUrlPatterns(types, true, "/app/*");
         cachingHttpHeadersFilter.setAsyncSupported(true);
         LOGGER.debug("Registered Caching HTTP Headers Filter");
     }

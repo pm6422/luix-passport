@@ -36,11 +36,11 @@ public class NetworkIpUtils {
         try {
             Enumeration<NetworkInterface> networks = NetworkInterface.getNetworkInterfaces();
             InetAddress ip;
-            Enumeration<InetAddress> addrs;
+            Enumeration<InetAddress> address;
             while (networks.hasMoreElements()) {
-                addrs = networks.nextElement().getInetAddresses();
-                while (addrs.hasMoreElements()) {
-                    ip = addrs.nextElement();
+                address = networks.nextElement().getInetAddresses();
+                while (address.hasMoreElements()) {
+                    ip = address.nextElement();
                     if (ip instanceof Inet4Address && !ip.isSiteLocalAddress()
                             && !ip.getHostAddress().equals(INTRANET_IP)) {
                         return ip.getHostAddress();

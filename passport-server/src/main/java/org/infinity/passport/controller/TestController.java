@@ -47,7 +47,7 @@ public class TestController {
         log.debug(user1.toString());
 
         result.setEnabled(false);
-        result.setModifiedBy("QQQQQQ");// Current account will override this value
+        result.setModifiedBy("hello");// Current account will override this value
         result = userRepository.save(result);
         log.debug(result.toString());
 

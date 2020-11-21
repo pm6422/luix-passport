@@ -11,8 +11,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface ExecutionSwitch {
 
-    String AROUND = "@annotation(" + ApplicationConstants.BASE_PACKAGE
-            + ".annotation.ExecutionSwitch)";
+    String AROUND = "@annotation(" + ApplicationConstants.BASE_PACKAGE + ".annotation.ExecutionSwitch)";
 
     String on();
 }

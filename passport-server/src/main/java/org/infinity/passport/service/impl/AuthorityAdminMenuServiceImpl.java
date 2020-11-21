@@ -23,5 +23,4 @@ public class AuthorityAdminMenuServiceImpl implements AuthorityAdminMenuService 
         return authorityAdminMenuRepository.findByAuthorityNameIn(authorityNames).stream()
                 .map(AuthorityAdminMenu::getAdminMenuId).collect(Collectors.toSet());
     }
-
 }

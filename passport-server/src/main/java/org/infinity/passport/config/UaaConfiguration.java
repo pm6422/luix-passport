@@ -5,6 +5,8 @@ import org.infinity.passport.config.oauth2.MongoAuthorizationCodeServices;
 import org.infinity.passport.config.oauth2.MongoClientDetailsService;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.security.AjaxLogoutSuccessHandler;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -26,6 +28,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.servlet.view.RedirectView;
 import org.zalando.problem.spring.web.advice.security.SecurityProblemSupport;
 
+import javax.annotation.Nonnull;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -135,7 +138,9 @@ public class UaaConfiguration {
                                                 AuthenticationManager authenticationManager,
                                                 TokenStore tokenStore,
                                                 MongoApprovalStore approvalStore,
-                                                UserDetailsService userDetailsService,
+                                                @Autowired
+                                                @Qualifier("springSecurityUserDetailsServiceImpl")
+                                                        UserDetailsService userDetailsService,
                                                 MongoAuthorizationCodeServices authorizationCodeServices) {
             this.clientDetailsService = clientDetailsService;
             this.authenticationManager = authenticationManager;
@@ -165,7 +170,7 @@ public class UaaConfiguration {
             // Use to logout
             endpoints.addInterceptor(new HandlerInterceptorAdapter() {
                 @Override
-                public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
+                public void postHandle(@Nonnull HttpServletRequest request, @Nonnull HttpServletResponse response, @Nonnull Object handler,
                                        ModelAndView modelAndView) {
                     if (modelAndView != null && modelAndView.getView() instanceof RedirectView) {
                         RedirectView redirect = (RedirectView) modelAndView.getView();

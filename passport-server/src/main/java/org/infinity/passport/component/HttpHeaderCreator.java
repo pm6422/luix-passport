@@ -1,4 +1,4 @@
-package org.infinity.passport.utils;
+package org.infinity.passport.component;
 
 import org.infinity.passport.config.ApplicationConstants;
 import org.springframework.context.MessageSource;

@@ -251,7 +251,7 @@ final class SnowFlakeIdGenerator {
     /**
      * System Clock
      * <p>
-     * 利用ScheduledExecutorService实现高并发场景下System.curentTimeMillis()的性能问题的优化.
+     * 利用ScheduledExecutorService实现高并发场景下System.currentTimeMillis()的性能问题的优化.
      */
     enum SystemClock {
         INSTANCE(1);

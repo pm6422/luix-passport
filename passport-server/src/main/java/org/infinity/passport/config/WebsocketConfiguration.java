@@ -16,6 +16,7 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 import org.springframework.web.socket.server.HandshakeInterceptor;
 import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
 
+import javax.annotation.Nonnull;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,11 +37,11 @@ public class WebsocketConfiguration implements WebSocketMessageBrokerConfigurer 
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         // @formatter:off
         registry
-            .addEndpoint("/websocket/app-health", "/websocket/tracker")
-            .setAllowedOrigins("*")
-            .setHandshakeHandler(defaultHandshakeHandler())
-            .withSockJS()
-            .setInterceptors(httpSessionHandshakeInterceptor());
+                .addEndpoint("/websocket/app-health", "/websocket/tracker")
+                .setAllowedOrigins("*")
+                .setHandshakeHandler(defaultHandshakeHandler())
+                .withSockJS()
+                .setInterceptors(httpSessionHandshakeInterceptor());
         // @formatter:on
     }
 
@@ -49,8 +50,8 @@ public class WebsocketConfiguration implements WebSocketMessageBrokerConfigurer 
         return new HandshakeInterceptor() {
 
             @Override
-            public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response,
-                                           WebSocketHandler wsHandler, Map<String, Object> attributes) {
+            public boolean beforeHandshake(@Nonnull ServerHttpRequest request, @Nonnull ServerHttpResponse response,
+                                           @Nonnull WebSocketHandler wsHandler, @Nonnull Map<String, Object> attributes) {
                 if (request instanceof ServletServerHttpRequest) {
                     ServletServerHttpRequest servletRequest = (ServletServerHttpRequest) request;
                     attributes.put(IP_ADDRESS, servletRequest.getRemoteAddress());
@@ -59,8 +60,8 @@ public class WebsocketConfiguration implements WebSocketMessageBrokerConfigurer 
             }
 
             @Override
-            public void afterHandshake(ServerHttpRequest request, ServerHttpResponse response,
-                    WebSocketHandler wsHandler, Exception exception) {
+            public void afterHandshake(@Nonnull ServerHttpRequest request, @Nonnull ServerHttpResponse response,
+                                       @Nonnull WebSocketHandler wsHandler, Exception exception) {
             }
         };
     }
@@ -68,8 +69,8 @@ public class WebsocketConfiguration implements WebSocketMessageBrokerConfigurer 
     private DefaultHandshakeHandler defaultHandshakeHandler() {
         return new DefaultHandshakeHandler() {
             @Override
-            protected Principal determineUser(ServerHttpRequest request, WebSocketHandler wsHandler,
-                    Map<String, Object> attributes) {
+            protected Principal determineUser(@Nonnull ServerHttpRequest request, @Nonnull WebSocketHandler wsHandler,
+                                              @Nonnull Map<String, Object> attributes) {
                 Principal principal = request.getPrincipal();
                 if (principal == null) {
                     Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();

@@ -29,9 +29,7 @@ final class ShortIdGenerator {
 
     private static long lastTimestamp = -1L;
 
-    private       long sequence     = 0L;
-    private final long workerId     = 0L;
-    private final long datacenterId = 0L;
+    private long sequence = 0L;
 
     /**
      * @return 12 bits length，like：306554419571
@@ -55,10 +53,11 @@ final class ShortIdGenerator {
         }
         lastTimestamp = timestamp;
         // ID偏移组合生成最终的ID，并返回ID
-        long nextId = ((timestamp - twepoch) << timestampLeftShift) | (datacenterId << datacenterIdShift)
-                | (workerId << workerIdShift) | sequence;
 
-        return nextId;
+        long workerId = 0L;
+        long datacenterId = 0L;
+        return ((timestamp - twepoch) << timestampLeftShift) | (datacenterId << datacenterIdShift)
+                | (workerId << workerIdShift) | sequence;
     }
 
     private long tilNextMillis(final long lastTimestamp) {

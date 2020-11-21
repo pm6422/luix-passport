@@ -7,7 +7,7 @@ import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.HttpSession;
 import org.infinity.passport.exception.NoDataException;
 import org.infinity.passport.repository.HttpSessionRepository;
-import org.infinity.passport.utils.HttpHeaderCreator;
+import org.infinity.passport.component.HttpHeaderCreator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;

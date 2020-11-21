@@ -5,6 +5,7 @@ import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.task.AsyncTaskExecutor;
 
+import javax.annotation.Nonnull;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 
@@ -21,12 +22,12 @@ public class ExceptionHandlingAsyncTaskExecutor implements AsyncTaskExecutor, In
     }
 
     @Override
-    public void execute(Runnable task) {
+    public void execute(@Nonnull Runnable task) {
         executor.execute(createWrappedRunnable(task));
     }
 
     @Override
-    public void execute(Runnable task, long startTimeout) {
+    public void execute(@Nonnull Runnable task, long startTimeout) {
         executor.execute(createWrappedRunnable(task), startTimeout);
     }
 
@@ -56,12 +57,14 @@ public class ExceptionHandlingAsyncTaskExecutor implements AsyncTaskExecutor, In
     }
 
     @Override
-    public Future<?> submit(Runnable task) {
+    @Nonnull
+    public Future<?> submit(@Nonnull Runnable task) {
         return executor.submit(createWrappedRunnable(task));
     }
 
     @Override
-    public <T> Future<T> submit(Callable<T> task) {
+    @Nonnull
+    public <T> Future<T> submit(@Nonnull Callable<T> task) {
         return executor.submit(createCallable(task));
     }
 

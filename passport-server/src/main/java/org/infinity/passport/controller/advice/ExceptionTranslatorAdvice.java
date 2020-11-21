@@ -5,7 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.infinity.passport.config.ApplicationConstants;
 import org.infinity.passport.dto.ParameterizedErrorDTO;
 import org.infinity.passport.exception.*;
-import org.infinity.passport.utils.HttpHeaderCreator;
+import org.infinity.passport.component.HttpHeaderCreator;
 import org.springframework.context.MessageSource;
 import org.springframework.dao.ConcurrencyFailureException;
 import org.springframework.http.HttpStatus;

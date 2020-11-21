@@ -4,6 +4,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.TimeZone;
 
+import javax.annotation.Nonnull;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,13 +29,15 @@ public class AngularCookieLocaleResolver extends CookieLocaleResolver {
     private static final Logger LOGGER = LoggerFactory.getLogger(AngularCookieLocaleResolver.class);
 
     @Override
-    public Locale resolveLocale(HttpServletRequest request) {
+    @Nonnull
+    public Locale resolveLocale(@Nonnull HttpServletRequest request) {
         parseLocaleCookieIfNecessary(request);
         return (Locale) request.getAttribute(LOCALE_REQUEST_ATTRIBUTE_NAME);
     }
 
     @Override
-    public LocaleContext resolveLocaleContext(final HttpServletRequest request) {
+    @Nonnull
+    public LocaleContext resolveLocaleContext(@Nonnull final HttpServletRequest request) {
         parseLocaleCookieIfNecessary(request);
         return new TimeZoneAwareLocaleContext() {
             @Override
@@ -50,7 +53,7 @@ public class AngularCookieLocaleResolver extends CookieLocaleResolver {
     }
 
     @Override
-    public void addCookie(HttpServletResponse response, String cookieValue) {
+    public void addCookie(@Nonnull HttpServletResponse response, @Nonnull String cookieValue) {
         // Mandatory cookie modification for angular to support the locale switching on the server side.
         cookieValue = "%22" + cookieValue + "%22";
         super.addCookie(response, cookieValue);

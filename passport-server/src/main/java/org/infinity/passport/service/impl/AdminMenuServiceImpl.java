@@ -97,11 +97,11 @@ public class AdminMenuServiceImpl implements AdminMenuService {
 
     private void adjustSeq(String id, int moveIndex, BiFunction<LinkedList<AdminMenu>, AdminMenu, Boolean> func) {
         AdminMenu current = adminMenuRepository.findById(id).orElseThrow(() -> new NoDataException(id));
-        List<AdminMenu> existings = adminMenuRepository.findByAppNameAndLevelOrderBySequenceAsc(current.getAppName(), current.getLevel());
-        if (CollectionUtils.isNotEmpty(existings) && existings.size() == 1) {
+        List<AdminMenu> existingList = adminMenuRepository.findByAppNameAndLevelOrderBySequenceAsc(current.getAppName(), current.getLevel());
+        if (CollectionUtils.isNotEmpty(existingList) && existingList.size() == 1) {
             return;
         }
-        LinkedList<AdminMenu> linkedList = new LinkedList<>(existings);
+        LinkedList<AdminMenu> linkedList = new LinkedList<>(existingList);
         int currentIndex = linkedList.indexOf(current);
 
         if (func.apply(linkedList, current)) {
