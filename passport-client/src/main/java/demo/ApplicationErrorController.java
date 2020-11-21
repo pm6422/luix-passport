@@ -1,10 +1,5 @@
 package demo;
 
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
@@ -17,6 +12,9 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
+
 /**
  * Basic Controller which is called for unhandled errors
  */
@@ -26,13 +24,16 @@ public class ApplicationErrorController implements ErrorController {
     /**
      * Error Attributes in the Application
      */
-    @Autowired
-    private ErrorAttributes     errorAttributes;
+    private final ErrorAttributes errorAttributes;
 
     /**
      * The error mapping URL
      */
     private final static String ERROR_PATH = "/error";
+
+    public ApplicationErrorController(ErrorAttributes errorAttributes) {
+        this.errorAttributes = errorAttributes;
+    }
 
     /**
      * Returns the path of the error page.
@@ -46,8 +47,9 @@ public class ApplicationErrorController implements ErrorController {
 
     /**
      * Supports the HTML Error View
-     * @param request
-     * @return
+     *
+     * @param request http servlet request
+     * @return ModelAndView
      */
     @RequestMapping(value = ERROR_PATH, produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView errorHtml(HttpServletRequest request) {
@@ -56,16 +58,16 @@ public class ApplicationErrorController implements ErrorController {
 
     /**
      * Supports other formats like JSON, XML
-     * @param request
-     * @return
+     *
+     * @param request http servlet request
+     * @return error information
      */
-    @RequestMapping(value = ERROR_PATH, produces = { MediaType.APPLICATION_JSON_VALUE,
-            MediaType.APPLICATION_XML_VALUE })
+    @RequestMapping(value = ERROR_PATH, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     @ResponseBody
     public ResponseEntity<Map<String, Object>> error(HttpServletRequest request) {
         Map<String, Object> body = getErrorAttributes(request, getTraceParameter(request));
         HttpStatus status = getStatus(request);
-        return new ResponseEntity<Map<String, Object>>(body, status);
+        return new ResponseEntity<>(body, status);
     }
 
     private boolean getTraceParameter(HttpServletRequest request) {
@@ -87,6 +89,7 @@ public class ApplicationErrorController implements ErrorController {
             try {
                 return HttpStatus.valueOf(statusCode);
             } catch (Exception ex) {
+                // leave blank intentionally
             }
         }
         return HttpStatus.INTERNAL_SERVER_ERROR;
