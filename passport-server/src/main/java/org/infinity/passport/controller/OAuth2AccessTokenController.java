@@ -1,15 +1,13 @@
 package org.infinity.passport.controller;
 
 import io.swagger.annotations.*;
+import lombok.extern.slf4j.Slf4j;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.MongoOAuth2AccessToken;
 import org.infinity.passport.dto.MongoOAuth2AccessTokenDTO;
 import org.infinity.passport.exception.NoDataException;
 import org.infinity.passport.repository.OAuth2AccessTokenRepository;
 import org.infinity.passport.utils.HttpHeaderCreator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,23 +26,27 @@ import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
 
 @RestController
 @Api(tags = "访问令牌信息")
+@Slf4j
 public class OAuth2AccessTokenController {
 
-    private static final Logger                      LOGGER = LoggerFactory.getLogger(OAuth2AccessTokenController.class);
-    @Autowired
-    private              OAuth2AccessTokenRepository oAuth2AccessTokenRepository;
-    @Autowired
-    private              HttpHeaderCreator           httpHeaderCreator;
+    private final OAuth2AccessTokenRepository oAuth2AccessTokenRepository;
+    private final HttpHeaderCreator           httpHeaderCreator;
+
+    public OAuth2AccessTokenController(OAuth2AccessTokenRepository oAuth2AccessTokenRepository,
+                                       HttpHeaderCreator httpHeaderCreator) {
+        this.oAuth2AccessTokenRepository = oAuth2AccessTokenRepository;
+        this.httpHeaderCreator = httpHeaderCreator;
+    }
 
     @ApiOperation("获取访问令牌信息分页列表")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/oauth2-access-token/tokens")
     @Secured(Authority.ADMIN)
     public ResponseEntity<List<MongoOAuth2AccessTokenDTO>> find(Pageable pageable,
-                                                                @ApiParam(value = "访问令牌ID", required = false) @RequestParam(value = "tokenId", required = false) String tokenId,
-                                                                @ApiParam(value = "客户端ID", required = false) @RequestParam(value = "clientId", required = false) String clientId,
-                                                                @ApiParam(value = "用户名", required = false) @RequestParam(value = "userName", required = false) String userName,
-                                                                @ApiParam(value = "刷新令牌", required = false) @RequestParam(value = "refreshToken", required = false) String refreshToken)
+                                                                @ApiParam(value = "访问令牌ID") @RequestParam(value = "tokenId", required = false) String tokenId,
+                                                                @ApiParam(value = "客户端ID") @RequestParam(value = "clientId", required = false) String clientId,
+                                                                @ApiParam(value = "用户名") @RequestParam(value = "userName", required = false) String userName,
+                                                                @ApiParam(value = "刷新令牌") @RequestParam(value = "refreshToken", required = false) String refreshToken)
             throws URISyntaxException {
         MongoOAuth2AccessToken probe = new MongoOAuth2AccessToken();
         probe.setId(tokenId);
@@ -52,7 +54,7 @@ public class OAuth2AccessTokenController {
         probe.setUserName(userName);
         probe.setRefreshToken(refreshToken);
         Page<MongoOAuth2AccessToken> tokens = oAuth2AccessTokenRepository.findAll(Example.of(probe), pageable);
-        List<MongoOAuth2AccessTokenDTO> DTOs = tokens.getContent().stream().map(entity -> entity.asDTO())
+        List<MongoOAuth2AccessTokenDTO> DTOs = tokens.getContent().stream().map(MongoOAuth2AccessToken::asDTO)
                 .collect(Collectors.toList());
         HttpHeaders headers = generatePageHeaders(tokens, "/api/oauth2-access-token/tokens");
         return ResponseEntity.ok().headers(headers).body(DTOs);
@@ -76,7 +78,7 @@ public class OAuth2AccessTokenController {
     @DeleteMapping("/api/oauth2-access-token/tokens/{id}")
     @Secured(Authority.ADMIN)
     public ResponseEntity<Void> delete(@ApiParam(value = "访问令牌ID", required = true) @PathVariable String id) {
-        LOGGER.debug("REST request to delete oauth2 access token: {}", id);
+        log.debug("REST request to delete oauth2 access token: {}", id);
         oAuth2AccessTokenRepository.findById(id).orElseThrow(() -> new NoDataException(id));
         oAuth2AccessTokenRepository.deleteById(id);
         return ResponseEntity.ok()

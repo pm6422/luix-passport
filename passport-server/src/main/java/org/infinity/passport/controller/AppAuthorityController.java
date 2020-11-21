@@ -1,6 +1,7 @@
 package org.infinity.passport.controller;
 
 import io.swagger.annotations.*;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.infinity.passport.domain.AppAuthority;
 import org.infinity.passport.domain.Authority;
@@ -10,9 +11,6 @@ import org.infinity.passport.exception.NoDataException;
 import org.infinity.passport.repository.AppAuthorityRepository;
 import org.infinity.passport.service.AppAuthorityService;
 import org.infinity.passport.utils.HttpHeaderCreator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -36,15 +34,18 @@ import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
  */
 @RestController
 @Api(tags = "应用权限")
+@Slf4j
 public class AppAuthorityController {
 
-    private static final Logger                 LOGGER = LoggerFactory.getLogger(AppAuthorityController.class);
-    @Autowired
-    private              AppAuthorityRepository appAuthorityRepository;
-    @Autowired
-    private              AppAuthorityService    appAuthorityService;
-    @Autowired
-    private              HttpHeaderCreator      httpHeaderCreator;
+    private final AppAuthorityRepository appAuthorityRepository;
+    private final AppAuthorityService    appAuthorityService;
+    private final HttpHeaderCreator      httpHeaderCreator;
+
+    public AppAuthorityController(AppAuthorityRepository appAuthorityRepository, AppAuthorityService appAuthorityService, HttpHeaderCreator httpHeaderCreator) {
+        this.appAuthorityRepository = appAuthorityRepository;
+        this.appAuthorityService = appAuthorityService;
+        this.httpHeaderCreator = httpHeaderCreator;
+    }
 
     @ApiOperation("创建应用权限")
     @ApiResponses(value = {@ApiResponse(code = SC_CREATED, message = "成功创建"),
@@ -53,7 +54,7 @@ public class AppAuthorityController {
     @Secured({Authority.ADMIN})
     public ResponseEntity<Void> create(
             @ApiParam(value = "应用权限信息", required = true) @Valid @RequestBody AppAuthorityDTO dto) {
-        LOGGER.debug("REST request to create app authority: {}", dto);
+        log.debug("REST request to create app authority: {}", dto);
         appAuthorityRepository.findOneByAppNameAndAuthorityName(dto.getAppName(), dto.getAuthorityName())
                 .ifPresent((existingEntity) -> {
                     throw new FieldValidationException("appAuthorityDTO", "appName+authorityName",
@@ -75,12 +76,12 @@ public class AppAuthorityController {
     @GetMapping("/api/app-authority/app-authorities")
     @Secured({Authority.ADMIN})
     public ResponseEntity<List<AppAuthorityDTO>> find(Pageable pageable,
-                                                      @ApiParam(value = "应用名称", required = false) @RequestParam(value = "appName", required = false) String appName,
-                                                      @ApiParam(value = "权限名称", required = false) @RequestParam(value = "authorityName", required = false) String authorityName)
+                                                      @ApiParam(value = "应用名称") @RequestParam(value = "appName", required = false) String appName,
+                                                      @ApiParam(value = "权限名称") @RequestParam(value = "authorityName", required = false) String authorityName)
             throws URISyntaxException {
         Page<AppAuthority> appAuthorities = appAuthorityService.findByAppNameAndAuthorityNameCombinations(pageable,
                 appName, authorityName);
-        List<AppAuthorityDTO> DTOs = appAuthorities.getContent().stream().map(entity -> entity.asDTO())
+        List<AppAuthorityDTO> DTOs = appAuthorities.getContent().stream().map(AppAuthority::asDTO)
                 .collect(Collectors.toList());
         HttpHeaders headers = generatePageHeaders(appAuthorities, "/api/app-authority/app-authorities");
         return ResponseEntity.ok().headers(headers).body(DTOs);
@@ -93,7 +94,7 @@ public class AppAuthorityController {
     @Secured({Authority.DEVELOPER, Authority.USER})
     public ResponseEntity<AppAuthorityDTO> findById(
             @ApiParam(value = "字典编号", required = true) @PathVariable String id) {
-        LOGGER.debug("REST request to get app authority : {}", id);
+        log.debug("REST request to get app authority : {}", id);
         AppAuthority entity = appAuthorityRepository.findById(id).orElseThrow(() -> new NoDataException(id));
         return ResponseEntity.ok(entity.asDTO());
     }
@@ -104,12 +105,12 @@ public class AppAuthorityController {
     @Secured({Authority.ADMIN})
     public ResponseEntity<List<AppAuthorityDTO>> findByApp(
             @ApiParam(value = "应用名称", required = true) @PathVariable String appName) {
-        LOGGER.debug("REST request to get app authorities : {}", appName);
+        log.debug("REST request to get app authorities : {}", appName);
         List<AppAuthority> appAuthorities = appAuthorityRepository.findByAppName(appName);
         if (CollectionUtils.isEmpty(appAuthorities)) {
             return ResponseEntity.ok(Collections.emptyList());
         }
-        List<AppAuthorityDTO> items = appAuthorities.stream().map(item -> item.asDTO()).collect(Collectors.toList());
+        List<AppAuthorityDTO> items = appAuthorities.stream().map(AppAuthority::asDTO).collect(Collectors.toList());
         return ResponseEntity.ok(items);
     }
 
@@ -120,7 +121,7 @@ public class AppAuthorityController {
     @Secured({Authority.ADMIN})
     public ResponseEntity<Void> update(
             @ApiParam(value = "新的应用权限信息", required = true) @Valid @RequestBody AppAuthorityDTO dto) {
-        LOGGER.debug("REST request to update app authority: {}", dto);
+        log.debug("REST request to update app authority: {}", dto);
         appAuthorityRepository.findById(dto.getId()).orElseThrow(() -> new NoDataException(dto.getId()));
         appAuthorityRepository.save(AppAuthority.of(dto));
         return ResponseEntity.ok().headers(
@@ -134,10 +135,10 @@ public class AppAuthorityController {
     @DeleteMapping("/api/app-authority/app-authorities/{id}")
     @Secured({Authority.ADMIN})
     public ResponseEntity<Void> delete(@ApiParam(value = "字典编号", required = true) @PathVariable String id) {
-        LOGGER.debug("REST request to delete app authority: {}", id);
+        log.debug("REST request to delete app authority: {}", id);
         AppAuthority appAuthority = appAuthorityRepository.findById(id).orElseThrow(() -> new NoDataException(id));
         appAuthorityRepository.deleteById(id);
-        LOGGER.info("Deleted app authority");
+        log.info("Deleted app authority");
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("notification.app.authority.deleted",
                 appAuthority.getAuthorityName())).build();
     }

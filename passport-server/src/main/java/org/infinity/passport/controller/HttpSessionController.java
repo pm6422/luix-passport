@@ -1,15 +1,13 @@
 package org.infinity.passport.controller;
 
 import io.swagger.annotations.*;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.HttpSession;
 import org.infinity.passport.exception.NoDataException;
 import org.infinity.passport.repository.HttpSessionRepository;
 import org.infinity.passport.utils.HttpHeaderCreator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -29,20 +27,23 @@ import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
  */
 @RestController
 @Api(tags = "Http会话")
+@Slf4j
 public class HttpSessionController {
 
-    private static final Logger                LOGGER = LoggerFactory.getLogger(HttpSessionController.class);
-    @Autowired
-    private              HttpSessionRepository httpSessionRepository;
-    @Autowired
-    private              HttpHeaderCreator     httpHeaderCreator;
+    private final HttpSessionRepository httpSessionRepository;
+    private final HttpHeaderCreator     httpHeaderCreator;
+
+    public HttpSessionController(HttpSessionRepository httpSessionRepository, HttpHeaderCreator httpHeaderCreator) {
+        this.httpSessionRepository = httpSessionRepository;
+        this.httpHeaderCreator = httpHeaderCreator;
+    }
 
     @ApiOperation("获取Http会话列表")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/http-session/sessions")
     @Secured({Authority.DEVELOPER})
     public ResponseEntity<List<HttpSession>> find(Pageable pageable,
-                                                  @ApiParam(value = "用户名称", required = false) @RequestParam(value = "principal", required = false) String principal) throws URISyntaxException {
+                                                  @ApiParam(value = "用户名称") @RequestParam(value = "principal", required = false) String principal) throws URISyntaxException {
         Page<HttpSession> sessions = StringUtils.isEmpty(principal) ? httpSessionRepository.findAll(pageable) : httpSessionRepository.findByPrincipal(pageable, principal);
         HttpHeaders headers = generatePageHeaders(sessions, "/api/http-session/sessions");
         return ResponseEntity.ok().headers(headers).body(sessions.getContent());
@@ -53,7 +54,7 @@ public class HttpSessionController {
     @DeleteMapping("/api/http-session/sessions/{id}")
     @Secured({Authority.DEVELOPER})
     public ResponseEntity<Void> delete(@ApiParam(value = "Http会话ID", required = true) @PathVariable String id) {
-        LOGGER.debug("REST request to delete http session: {}", id);
+        log.debug("REST request to delete http session: {}", id);
         httpSessionRepository.findById(id).orElseThrow(() -> new NoDataException(id));
         httpSessionRepository.deleteById(id);
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("notification.http.session.deleted", id)).build();

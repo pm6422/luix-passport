@@ -1,6 +1,7 @@
 package org.infinity.passport.controller;
 
 import io.swagger.annotations.*;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.Dict;
@@ -9,9 +10,6 @@ import org.infinity.passport.exception.FieldValidationException;
 import org.infinity.passport.exception.NoDataException;
 import org.infinity.passport.repository.DictRepository;
 import org.infinity.passport.utils.HttpHeaderCreator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -22,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,13 +28,16 @@ import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
 
 @RestController
 @Api(tags = "数据字典")
+@Slf4j
 public class DictController {
 
-    private static final Logger            LOGGER = LoggerFactory.getLogger(DictController.class);
-    @Autowired
-    private              DictRepository    dictRepository;
-    @Autowired
-    private              HttpHeaderCreator httpHeaderCreator;
+    private final DictRepository    dictRepository;
+    private final HttpHeaderCreator httpHeaderCreator;
+
+    public DictController(DictRepository dictRepository, HttpHeaderCreator httpHeaderCreator) {
+        this.dictRepository = dictRepository;
+        this.httpHeaderCreator = httpHeaderCreator;
+    }
 
     @ApiOperation("创建数据字典")
     @ApiResponses(value = {@ApiResponse(code = SC_CREATED, message = "成功创建"),
@@ -45,7 +45,7 @@ public class DictController {
     @PostMapping("/api/dict/dicts")
     @Secured(Authority.DEVELOPER)
     public ResponseEntity<Void> create(@ApiParam(value = "数据字典信息", required = true) @Valid @RequestBody DictDTO dto) {
-        LOGGER.debug("REST request to create dict: {}", dto);
+        log.debug("REST request to create dict: {}", dto);
         dictRepository.findOneByDictCode(dto.getDictCode()).ifPresent((existingEntity) -> {
             throw new FieldValidationException("dictDTO", "dictCode", dto.getDictCode(), "error.dict.exists",
                     dto.getDictCode());
@@ -60,11 +60,11 @@ public class DictController {
     @GetMapping("/api/dict/dicts")
     @Secured(Authority.DEVELOPER)
     public ResponseEntity<List<DictDTO>> find(Pageable pageable,
-                                              @ApiParam(value = "字典名称", required = false) @RequestParam(value = "dictName", required = false) String dictName)
+                                              @ApiParam(value = "字典名称") @RequestParam(value = "dictName", required = false) String dictName)
             throws URISyntaxException {
         Page<Dict> dicts = StringUtils.isEmpty(dictName) ? dictRepository.findAll(pageable)
                 : dictRepository.findByDictName(pageable, dictName);
-        List<DictDTO> DTOs = dicts.getContent().stream().map(entity -> entity.asDTO()).collect(Collectors.toList());
+        List<DictDTO> DTOs = dicts.getContent().stream().map(Dict::asDTO).collect(Collectors.toList());
         HttpHeaders headers = generatePageHeaders(dicts, "/api/dict/dicts");
         return ResponseEntity.ok().headers(headers).body(DTOs);
     }
@@ -84,14 +84,14 @@ public class DictController {
     @GetMapping("/api/dict/all")
     @Secured({Authority.DEVELOPER, Authority.USER})
     public ResponseEntity<List<DictDTO>> findByEnabled(
-            @ApiParam(value = "是否可用,null代表全部", required = false, allowableValues = "false,true,null") @RequestParam(value = "enabled", required = false) Boolean enabled) {
-        List<Dict> dicts = new ArrayList<Dict>();
+            @ApiParam(value = "是否可用,null代表全部", allowableValues = "false,true,null") @RequestParam(value = "enabled", required = false) Boolean enabled) {
+        List<Dict> dicts;
         if (enabled == null) {
             dicts = dictRepository.findAll();
         } else {
             dicts = dictRepository.findByEnabled(enabled);
         }
-        List<DictDTO> dictDTOs = dicts.stream().map(dict -> dict.asDTO()).collect(Collectors.toList());
+        List<DictDTO> dictDTOs = dicts.stream().map(Dict::asDTO).collect(Collectors.toList());
         return ResponseEntity.ok(dictDTOs);
     }
 
@@ -101,7 +101,7 @@ public class DictController {
     @PutMapping("/api/dict/dicts")
     @Secured(Authority.DEVELOPER)
     public ResponseEntity<Void> update(@ApiParam(value = "新的数据字典信息", required = true) @Valid @RequestBody DictDTO dto) {
-        LOGGER.debug("REST request to update dict: {}", dto);
+        log.debug("REST request to update dict: {}", dto);
         dictRepository.findById(dto.getId()).orElseThrow(() -> new NoDataException(dto.getId()));
         dictRepository.save(Dict.of(dto));
         return ResponseEntity.ok()
@@ -114,7 +114,7 @@ public class DictController {
     @DeleteMapping("/api/dict/dicts/{id}")
     @Secured(Authority.DEVELOPER)
     public ResponseEntity<Void> delete(@ApiParam(value = "字典编号", required = true) @PathVariable String id) {
-        LOGGER.debug("REST request to delete dict: {}", id);
+        log.debug("REST request to delete dict: {}", id);
         Dict dict = dictRepository.findById(id).orElseThrow(() -> new NoDataException(id));
         dictRepository.deleteById(id);
         return ResponseEntity.ok()

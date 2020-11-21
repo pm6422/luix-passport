@@ -121,11 +121,8 @@ public class AccountController {
     @GetMapping("/api/account/user")
     @Secured({Authority.USER})
     public ResponseEntity<UserDTO> getCurrentUser() {
-        Optional<User> user = userService.findOneByUserName(SecurityUtils.getCurrentUserName());
-        if (!user.isPresent()) {
-            throw new NoDataException("No current user!");
-        }
-        List<UserAuthority> userAuthorities = userAuthorityRepository.findByUserId(user.get().getId());
+        User user = userService.findOneByUserName(SecurityUtils.getCurrentUserName()).orElseThrow(() -> new NoDataException(SecurityUtils.getCurrentUserName()));
+        List<UserAuthority> userAuthorities = userAuthorityRepository.findByUserId(user.getId());
 
         if (CollectionUtils.isEmpty(userAuthorities)) {
             throw new NoAuthorityException(SecurityUtils.getCurrentUserName());
@@ -134,7 +131,7 @@ public class AccountController {
                 .collect(Collectors.toSet());
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-User-Signed-In", "true");
-        return ResponseEntity.ok().headers(headers).body(new UserDTO(user.get(), authorities));
+        return ResponseEntity.ok().headers(headers).body(new UserDTO(user, authorities));
     }
 
     @ApiOperation("根据访问令牌信息获取绑定的用户信息")

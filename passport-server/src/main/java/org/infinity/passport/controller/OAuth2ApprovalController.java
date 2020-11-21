@@ -1,6 +1,7 @@
 package org.infinity.passport.controller;
 
 import io.swagger.annotations.*;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.MongoOAuth2Approval;
@@ -8,9 +9,6 @@ import org.infinity.passport.dto.MongoOAuth2ApprovalDTO;
 import org.infinity.passport.exception.NoDataException;
 import org.infinity.passport.repository.OAuth2ApprovalRepository;
 import org.infinity.passport.utils.HttpHeaderCreator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -32,27 +30,31 @@ import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
 
 @RestController
 @Api(tags = "登录授权信息")
+@Slf4j
 public class OAuth2ApprovalController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(OAuth2ApprovalController.class);
+    private final OAuth2ApprovalRepository oAuth2ApprovalRepository;
 
-    @Autowired
-    private OAuth2ApprovalRepository oAuth2ApprovalRepository;
+    private final MongoTemplate mongoTemplate;
 
-    @Autowired
-    private MongoTemplate mongoTemplate;
+    private final HttpHeaderCreator httpHeaderCreator;
 
-    @Autowired
-    private HttpHeaderCreator httpHeaderCreator;
+    public OAuth2ApprovalController(OAuth2ApprovalRepository oAuth2ApprovalRepository,
+                                    MongoTemplate mongoTemplate,
+                                    HttpHeaderCreator httpHeaderCreator) {
+        this.oAuth2ApprovalRepository = oAuth2ApprovalRepository;
+        this.mongoTemplate = mongoTemplate;
+        this.httpHeaderCreator = httpHeaderCreator;
+    }
 
     @ApiOperation("获取授权信息信息分页列表")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/oauth2-approval/approvals")
     @Secured(Authority.ADMIN)
     public ResponseEntity<List<MongoOAuth2ApprovalDTO>> find(Pageable pageable,
-                                                             @ApiParam(value = "授权ID", required = false) @RequestParam(value = "approvalId", required = false) String approvalId,
-                                                             @ApiParam(value = "客户端ID", required = false) @RequestParam(value = "clientId", required = false) String clientId,
-                                                             @ApiParam(value = "用户名", required = false) @RequestParam(value = "userName", required = false) String userName)
+                                                             @ApiParam(value = "授权ID") @RequestParam(value = "approvalId", required = false) String approvalId,
+                                                             @ApiParam(value = "客户端ID") @RequestParam(value = "clientId", required = false) String clientId,
+                                                             @ApiParam(value = "用户名") @RequestParam(value = "userName", required = false) String userName)
             throws URISyntaxException {
         Query query = new Query();
         if (StringUtils.isNotEmpty(approvalId)) {
@@ -67,10 +69,10 @@ public class OAuth2ApprovalController {
         long totalCount = mongoTemplate.count(query, MongoOAuth2Approval.class);
         query.with(pageable);
         //        oAuth2ApprovalRepository.findAll(Example.of(probe), pageable); I dont know why this statement does not work
-        Page<MongoOAuth2Approval> approvals = new PageImpl<MongoOAuth2Approval>(
+        Page<MongoOAuth2Approval> approvals = new PageImpl<>(
                 mongoTemplate.find(query, MongoOAuth2Approval.class), pageable, totalCount);
 
-        List<MongoOAuth2ApprovalDTO> DTOs = approvals.getContent().stream().map(entity -> entity.asDTO())
+        List<MongoOAuth2ApprovalDTO> DTOs = approvals.getContent().stream().map(MongoOAuth2Approval::asDTO)
                 .collect(Collectors.toList());
         HttpHeaders headers = generatePageHeaders(approvals, "/api/oauth2-approval/approvals");
         return ResponseEntity.ok().headers(headers).body(DTOs);
@@ -93,7 +95,7 @@ public class OAuth2ApprovalController {
     @DeleteMapping("/api/oauth2-approval/approvals/{id}")
     @Secured(Authority.ADMIN)
     public ResponseEntity<Void> delete(@ApiParam(value = "授权信息ID", required = true) @PathVariable String id) {
-        LOGGER.debug("REST request to delete oauth2 approval: {}", id);
+        log.debug("REST request to delete oauth2 approval: {}", id);
         oAuth2ApprovalRepository.findById(id).orElseThrow(() -> new NoDataException(id));
         oAuth2ApprovalRepository.deleteById(id);
         return ResponseEntity.ok()

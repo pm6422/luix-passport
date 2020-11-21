@@ -1,6 +1,7 @@
 package org.infinity.passport.controller;
 
 import io.swagger.annotations.*;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.DictItem;
@@ -12,9 +13,6 @@ import org.infinity.passport.repository.DictRepository;
 import org.infinity.passport.service.DictItemService;
 import org.infinity.passport.service.DictService;
 import org.infinity.passport.utils.HttpHeaderCreator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -36,24 +34,26 @@ import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
 
 @RestController
 @Api(tags = "数据字典项")
+@Slf4j
 public class DictItemController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DictItemController.class);
+    private final DictRepository dictRepository;
 
-    @Autowired
-    private DictRepository dictRepository;
+    private final DictService dictService;
 
-    @Autowired
-    private DictService dictService;
+    private final DictItemRepository dictItemRepository;
 
-    @Autowired
-    private DictItemRepository dictItemRepository;
+    private final DictItemService dictItemService;
 
-    @Autowired
-    private DictItemService dictItemService;
+    private final HttpHeaderCreator httpHeaderCreator;
 
-    @Autowired
-    private HttpHeaderCreator httpHeaderCreator;
+    public DictItemController(DictRepository dictRepository, DictService dictService, DictItemRepository dictItemRepository, DictItemService dictItemService, HttpHeaderCreator httpHeaderCreator) {
+        this.dictRepository = dictRepository;
+        this.dictService = dictService;
+        this.dictItemRepository = dictItemRepository;
+        this.dictItemService = dictItemService;
+        this.httpHeaderCreator = httpHeaderCreator;
+    }
 
     @ApiOperation("创建数据字典项")
     @ApiResponses(value = {@ApiResponse(code = SC_CREATED, message = "成功创建"),
@@ -62,7 +62,7 @@ public class DictItemController {
     @Secured(Authority.DEVELOPER)
     public ResponseEntity<Void> create(
             @ApiParam(value = "数据字典项信息", required = true) @Valid @RequestBody DictItemDTO dto) {
-        LOGGER.debug("REST request to create dict item: {}", dto);
+        log.debug("REST request to create dict item: {}", dto);
         // 判断dictCode是否存在
         dictRepository.findOneByDictCode(dto.getDictCode())
                 .orElseThrow(() -> new FieldValidationException("dictItemDTO", "dictCode", dto.getDictCode(),
@@ -88,8 +88,8 @@ public class DictItemController {
     @GetMapping("/api/dict-item/items")
     @Secured(Authority.DEVELOPER)
     public ResponseEntity<List<DictItemDTO>> find(Pageable pageable,
-                                                  @ApiParam(value = "字典代码", required = false) @RequestParam(value = "dictCode", required = false) String dictCode,
-                                                  @ApiParam(value = "字典项名称", required = false) @RequestParam(value = "dictItemName", required = false) String dictItemName)
+                                                  @ApiParam(value = "字典代码") @RequestParam(value = "dictCode", required = false) String dictCode,
+                                                  @ApiParam(value = "字典项名称") @RequestParam(value = "dictItemName", required = false) String dictItemName)
             throws URISyntaxException {
         Page<DictItem> dictItems = dictItemService.findByDictCodeAndDictItemNameCombinations(pageable, dictCode,
                 dictItemName);
@@ -110,7 +110,7 @@ public class DictItemController {
     @Secured({Authority.USER})
     public ResponseEntity<DictItemDTO> findById(
             @ApiParam(value = "数据字典项ID", required = true) @PathVariable String id) {
-        LOGGER.debug("REST request to get dict item : {}", id);
+        log.debug("REST request to get dict item : {}", id);
         DictItem entity = dictItemRepository.findById(id).orElseThrow(() -> new NoDataException(id));
         return ResponseEntity.ok(entity.asDTO());
     }
@@ -121,13 +121,13 @@ public class DictItemController {
     @Secured({Authority.USER})
     public ResponseEntity<List<DictItemDTO>> findByDictCode(
             @ApiParam(value = "字典编号", required = true) @PathVariable String dictCode) {
-        LOGGER.debug("REST request to get dict item : {}", dictCode);
+        log.debug("REST request to get dict item : {}", dictCode);
         // 根据dictCode查询数据字典项信息
         List<DictItem> dictItems = dictItemRepository.findByDictCode(dictCode);
         if (CollectionUtils.isEmpty(dictItems)) {
             return ResponseEntity.ok(Collections.emptyList());
         }
-        List<DictItemDTO> dictItemDTOs = dictItems.stream().map(dictItem -> dictItem.asDTO())
+        List<DictItemDTO> dictItemDTOs = dictItems.stream().map(DictItem::asDTO)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(dictItemDTOs);
     }
@@ -139,7 +139,7 @@ public class DictItemController {
     @Secured(Authority.DEVELOPER)
     public ResponseEntity<Void> update(
             @ApiParam(value = "新的数据字典项信息", required = true) @Valid @RequestBody DictItemDTO dto) {
-        LOGGER.debug("REST request to update dict item: {}", dto);
+        log.debug("REST request to update dict item: {}", dto);
         dictItemRepository.findById(dto.getId()).orElseThrow(() -> new NoDataException(dto.getId()));
         dictItemService.update(dto.getId(), dto.getDictCode(), dto.getDictItemCode(), dto.getDictItemName(),
                 dto.getRemark(), dto.getEnabled());
@@ -154,7 +154,7 @@ public class DictItemController {
     @DeleteMapping("/api/dict-item/items/{id}")
     @Secured(Authority.DEVELOPER)
     public ResponseEntity<Void> delete(@ApiParam(value = "数据字典项ID", required = true) @PathVariable String id) {
-        LOGGER.debug("REST request to delete dict item: {}", id);
+        log.debug("REST request to delete dict item: {}", id);
         DictItem dictItem = dictItemRepository.findById(id).orElseThrow(() -> new NoDataException(id));
         dictItemRepository.deleteById(id);
         return ResponseEntity.ok().headers(

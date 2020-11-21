@@ -1,14 +1,12 @@
 package org.infinity.passport.controller;
 
 import io.swagger.annotations.*;
+import lombok.extern.slf4j.Slf4j;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.dto.AuthorityDTO;
 import org.infinity.passport.exception.NoDataException;
 import org.infinity.passport.repository.AuthorityRepository;
 import org.infinity.passport.utils.HttpHeaderCreator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -30,13 +28,16 @@ import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
  */
 @RestController
 @Api(tags = "权限管理")
+@Slf4j
 public class AuthorityController {
 
-    private static final Logger              LOGGER = LoggerFactory.getLogger(AuthorityController.class);
-    @Autowired
-    private              AuthorityRepository authorityRepository;
-    @Autowired
-    private              HttpHeaderCreator   httpHeaderCreator;
+    private final AuthorityRepository authorityRepository;
+    private final HttpHeaderCreator   httpHeaderCreator;
+
+    public AuthorityController(AuthorityRepository authorityRepository, HttpHeaderCreator httpHeaderCreator) {
+        this.authorityRepository = authorityRepository;
+        this.httpHeaderCreator = httpHeaderCreator;
+    }
 
     @ApiOperation("创建权限")
     @ApiResponses(value = {@ApiResponse(code = SC_CREATED, message = "成功创建")})
@@ -44,7 +45,7 @@ public class AuthorityController {
     @Secured({Authority.ADMIN})
     public ResponseEntity<Void> create(
             @ApiParam(value = "权限信息", required = true) @Valid @RequestBody AuthorityDTO dto) {
-        LOGGER.debug("REST request to create authority: {}", dto);
+        log.debug("REST request to create authority: {}", dto);
         authorityRepository.insert(Authority.of(dto));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .headers(httpHeaderCreator.createSuccessHeader("notification.authority.created", dto.getName()))
@@ -57,7 +58,7 @@ public class AuthorityController {
     @Secured({Authority.ADMIN})
     public ResponseEntity<List<AuthorityDTO>> find(Pageable pageable) throws URISyntaxException {
         Page<Authority> authorities = authorityRepository.findAll(pageable);
-        List<AuthorityDTO> DTOs = authorities.getContent().stream().map(auth -> auth.asDTO())
+        List<AuthorityDTO> DTOs = authorities.getContent().stream().map(Authority::asDTO)
                 .collect(Collectors.toList());
         HttpHeaders headers = generatePageHeaders(authorities, "/api/authority/authorities");
         return ResponseEntity.ok().headers(headers).body(DTOs);
@@ -68,7 +69,7 @@ public class AuthorityController {
     @GetMapping("/api/authority/authorities/all")
     @Secured({Authority.ADMIN})
     public ResponseEntity<List<AuthorityDTO>> findAll() {
-        List<AuthorityDTO> authDTOs = authorityRepository.findAll().stream().map(entity -> entity.asDTO())
+        List<AuthorityDTO> authDTOs = authorityRepository.findAll().stream().map(Authority::asDTO)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(authDTOs);
     }
@@ -91,7 +92,7 @@ public class AuthorityController {
     @Secured({Authority.ADMIN})
     public ResponseEntity<Void> update(
             @ApiParam(value = "新的权限信息", required = true) @Valid @RequestBody AuthorityDTO dto) {
-        LOGGER.debug("REST request to update authority: {}", dto);
+        log.debug("REST request to update authority: {}", dto);
         authorityRepository.findById(dto.getName()).orElseThrow(() -> new NoDataException(dto.getName()));
         authorityRepository.save(Authority.of(dto));
         return ResponseEntity.ok()
@@ -105,7 +106,7 @@ public class AuthorityController {
     @DeleteMapping("/api/authority/authorities/{name}")
     @Secured({Authority.ADMIN})
     public ResponseEntity<Void> delete(@ApiParam(value = "权限名称", required = true) @PathVariable String name) {
-        LOGGER.debug("REST request to delete authority: {}", name);
+        log.debug("REST request to delete authority: {}", name);
         authorityRepository.findById(name).orElseThrow(() -> new NoDataException(name));
         authorityRepository.deleteById(name);
         return ResponseEntity.ok()
