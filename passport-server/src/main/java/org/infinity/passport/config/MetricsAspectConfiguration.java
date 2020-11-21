@@ -13,17 +13,18 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Aspect for logging execution of Spring controller components.
+ * Aspect for logging execution of Spring components.
  */
 @Aspect
 @ConditionalOnProperty(prefix = "application.service-metrics", value = "enabled", havingValue = "true")
 @Configuration
 @Slf4j
-public class ControllerMetricsAspectConfiguration {
+public class MetricsAspectConfiguration {
 
-    private final ApplicationProperties applicationProperties;
+    private static final String                SERVICE_PACKAGE = "within(" + ApplicationConstants.BASE_PACKAGE + ".service..*)";
+    private final        ApplicationProperties applicationProperties;
 
-    public ControllerMetricsAspectConfiguration(ApplicationProperties applicationProperties) {
+    public MetricsAspectConfiguration(ApplicationProperties applicationProperties) {
         this.applicationProperties = applicationProperties;
     }
 
@@ -35,7 +36,7 @@ public class ControllerMetricsAspectConfiguration {
      * @throws Throwable if exception occurs
      */
     @Around("execution(@(org.springframework.web.bind.annotation.*Mapping) * *(..))")
-    public Object serviceAround(ProceedingJoinPoint joinPoint) throws Throwable {
+    public Object controllerAround(ProceedingJoinPoint joinPoint) throws Throwable {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         Object result = joinPoint.proceed();
@@ -48,6 +49,20 @@ public class ControllerMetricsAspectConfiguration {
             // Store execution time to each http header
             response.setHeader("ELAPSED", "" + elapsed + "ms");
         }
+        if (elapsed > applicationProperties.getServiceMetrics().getSlowExecutionThreshold()) {
+            log.warn("Found slow running method {}.{}() over {} ms",
+                    joinPoint.getSignature().getDeclaringType().getSimpleName(), joinPoint.getSignature().getName(), elapsed);
+        }
+        return result;
+    }
+
+    @Around(SERVICE_PACKAGE)
+    public Object serviceAround(ProceedingJoinPoint joinPoint) throws Throwable {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        Object result = joinPoint.proceed();
+        stopWatch.stop();
+        long elapsed = stopWatch.getTotalTimeMillis();
         if (elapsed > applicationProperties.getServiceMetrics().getSlowExecutionThreshold()) {
             log.warn("Found slow running method {}.{}() over {} ms",
                     joinPoint.getSignature().getDeclaringType().getSimpleName(), joinPoint.getSignature().getName(), elapsed);
