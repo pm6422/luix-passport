@@ -9,7 +9,6 @@ import org.infinity.passport.exception.NoDataException;
 import org.infinity.passport.repository.AdminMenuRepository;
 import org.infinity.passport.service.AdminMenuService;
 import org.infinity.passport.service.AuthorityAdminMenuService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -19,14 +18,17 @@ import java.util.stream.Collectors;
 @Service
 public class AdminMenuServiceImpl implements AdminMenuService {
 
-    @Autowired
-    private AdminMenuRepository       adminMenuRepository;
-    @Autowired
-    private AuthorityAdminMenuService authorityAdminMenuService;
+    private final AdminMenuRepository       adminMenuRepository;
+    private final AuthorityAdminMenuService authorityAdminMenuService;
+
+    public AdminMenuServiceImpl(AdminMenuRepository adminMenuRepository, AuthorityAdminMenuService authorityAdminMenuService) {
+        this.adminMenuRepository = adminMenuRepository;
+        this.authorityAdminMenuService = authorityAdminMenuService;
+    }
 
     @Override
     public List<MenuTreeNode> getAllAuthorityMenus(String appName, String enabledAuthority) {
-        Set<String> adminMenuIds = authorityAdminMenuService.findAdminMenuIdSetByAuthorityNameIn(Arrays.asList(enabledAuthority));
+        Set<String> adminMenuIds = authorityAdminMenuService.findAdminMenuIdSetByAuthorityNameIn(Collections.singletonList(enabledAuthority));
         List<AdminMenuDTO> allAdminMenus = adminMenuRepository.findByAppName(appName).stream().map(menu -> {
             AdminMenuDTO dto = menu.asDTO();
             if (adminMenuIds.contains(menu.getId())) {
@@ -52,12 +54,12 @@ public class AdminMenuServiceImpl implements AdminMenuService {
     }
 
     private List<MenuTreeNode> groupAdminMenuDTO(List<AdminMenuDTO> menus) {
-        MenuTree tree = new MenuTree(menus.stream().map(menu -> menu.asNode()).collect(Collectors.toList()));
+        MenuTree tree = new MenuTree(menus.stream().map(AdminMenuDTO::asNode).collect(Collectors.toList()));
         return tree.getChildren();
     }
 
     private List<MenuTreeNode> groupAdminMenu(List<AdminMenu> menus) {
-        MenuTree tree = new MenuTree(menus.stream().map(menu -> menu.asNode()).collect(Collectors.toList()));
+        MenuTree tree = new MenuTree(menus.stream().map(AdminMenu::asNode).collect(Collectors.toList()));
         return tree.getChildren();
     }
 

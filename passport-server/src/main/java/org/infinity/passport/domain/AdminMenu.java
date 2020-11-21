@@ -1,5 +1,7 @@
 package org.infinity.passport.domain;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.infinity.passport.domain.base.AbstractAuditableDomain;
 import org.infinity.passport.dto.AdminMenuDTO;
 import org.infinity.passport.entity.MenuTreeNode;
@@ -17,13 +19,14 @@ import java.io.Serializable;
  * Spring Data MongoDB collection for the AdminMenu entity.
  */
 @Document(collection = "AdminMenu")
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class AdminMenu extends AbstractAuditableDomain implements Serializable {
-
     private static final long   serialVersionUID = 1L;
     public static final  String FIELD_LEVEL      = "level";
     public static final  String FIELD_SEQUENCE   = "sequence";
 
-    // 主键不要定义为Long型，因为定义为Long型的字段如果超过16位的话在前端页面O会显示为0
+    // 主键不要定义为Long型，因为定义为Long型的字段如果超过16位的话在前端页面会显示为0
     @Id
     private String  id;
     @NotNull
@@ -45,17 +48,6 @@ public class AdminMenu extends AbstractAuditableDomain implements Serializable {
         super();
     }
 
-    /**
-     * Constructor for creating operation
-     *
-     * @param appName
-     * @param name
-     * @param label
-     * @param level
-     * @param url
-     * @param sequence
-     * @param parentId
-     */
     public AdminMenu(String appName, String name, String label, Integer level, String url,
                      Integer sequence, String parentId) {
         super();
@@ -66,112 +58,6 @@ public class AdminMenu extends AbstractAuditableDomain implements Serializable {
         this.url = url;
         this.sequence = sequence;
         this.parentId = parentId;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getAppName() {
-        return appName;
-    }
-
-    public void setAppName(String appName) {
-        this.appName = appName;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getLabel() {
-        return label;
-    }
-
-    public void setLabel(String label) {
-        this.label = label;
-    }
-
-    public Integer getLevel() {
-        return level;
-    }
-
-    public void setLevel(Integer level) {
-        this.level = level;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public Integer getSequence() {
-        return sequence;
-    }
-
-    public void setSequence(Integer sequence) {
-        this.sequence = sequence;
-    }
-
-    public String getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(String parentId) {
-        this.parentId = parentId;
-    }
-
-    @Override
-    public boolean equals(Object that) {
-        if (this == that) {
-            return true;
-        }
-        if (that == null) {
-            return false;
-        }
-        if (getClass() != that.getClass()) {
-            return false;
-        }
-        AdminMenu other = (AdminMenu) that;
-        return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-                && (this.getAppName() == null ? other.getAppName() == null
-                : this.getAppName().equals(other.getAppName()))
-                && (this.getName() == null ? other.getName() == null
-                : this.getName().equals(other.getName()))
-                && (this.getLabel() == null ? other.getLabel() == null
-                : this.getLabel().equals(other.getLabel()))
-                && (this.getLevel() == null ? other.getLevel() == null : this.getLevel().equals(other.getLevel()))
-                && (this.getUrl() == null ? other.getUrl() == null : this.getUrl().equals(other.getUrl()))
-                && (this.getSequence() == null ? other.getSequence() == null
-                : this.getSequence().equals(other.getSequence()))
-                && (this.getParentId() == null ? other.getParentId() == null
-                : this.getParentId().equals(other.getParentId()));
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-        result = prime * result + ((getAppName() == null) ? 0 : getAppName().hashCode());
-        result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
-        result = prime * result + ((getLabel() == null) ? 0 : getLabel().hashCode());
-        result = prime * result + ((getLevel() == null) ? 0 : getLevel().hashCode());
-        result = prime * result + ((getUrl() == null) ? 0 : getUrl().hashCode());
-        result = prime * result + ((getSequence() == null) ? 0 : getSequence().hashCode());
-        result = prime * result + ((getParentId() == null) ? 0 : getParentId().hashCode());
-        return result;
     }
 
     public AdminMenuDTO asDTO() {

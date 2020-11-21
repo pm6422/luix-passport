@@ -1,5 +1,7 @@
 package org.infinity.passport.domain;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.infinity.passport.domain.base.AbstractAuditableDomain;
 import org.infinity.passport.dto.MongoOAuth2RefreshTokenDTO;
 import org.springframework.beans.BeanUtils;
@@ -14,6 +16,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Document(collection = "MongoOAuth2RefreshToken")
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class MongoOAuth2RefreshToken extends AbstractAuditableDomain implements Serializable {
 
     private static final long                 serialVersionUID = 1L;
@@ -39,77 +43,9 @@ public class MongoOAuth2RefreshToken extends AbstractAuditableDomain implements 
         this.authentication = authentication;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getClientId() {
-        return clientId;
-    }
-
-    public void setClientId(String clientId) {
-        this.clientId = clientId;
-    }
-
-    public OAuth2RefreshToken getoAuth2RefreshToken() {
-        return oAuth2RefreshToken;
-    }
-
-    public void setoAuth2RefreshToken(OAuth2RefreshToken oAuth2RefreshToken) {
-        this.oAuth2RefreshToken = oAuth2RefreshToken;
-    }
-
-    public Date getExpiration() {
-        return expiration;
-    }
-
-    public void setExpiration(Date expiration) {
-        this.expiration = expiration;
-    }
-
-    public OAuth2Authentication getAuthentication() {
-        return authentication;
-    }
-
-    public void setAuthentication(OAuth2Authentication authentication) {
-        this.authentication = authentication;
-    }
-
-
     public MongoOAuth2RefreshTokenDTO asDTO() {
         MongoOAuth2RefreshTokenDTO dest = new MongoOAuth2RefreshTokenDTO();
         BeanUtils.copyProperties(this, dest);
         return dest;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        MongoOAuth2RefreshToken that = (MongoOAuth2RefreshToken) o;
-
-        return id != null ? id.equals(that.id) : that.id == null;
-    }
-
-    @Override
-    public int hashCode() {
-        return id != null ? id.hashCode() : 0;
     }
 }

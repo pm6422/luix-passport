@@ -4,7 +4,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.infinity.passport.domain.AppAuthority;
 import org.infinity.passport.repository.AppAuthorityRepository;
 import org.infinity.passport.service.AppAuthorityService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -12,12 +11,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class AppAuthorityServiceImpl implements AppAuthorityService {
 
-    @Autowired
-    private AppAuthorityRepository appAuthorityRepository;
+    private final AppAuthorityRepository appAuthorityRepository;
+
+    public AppAuthorityServiceImpl(AppAuthorityRepository appAuthorityRepository) {
+        this.appAuthorityRepository = appAuthorityRepository;
+    }
 
     @Override
     public Page<AppAuthority> findByAppNameAndAuthorityNameCombinations(Pageable pageable, String appName,
-            String authorityName) {
+                                                                        String authorityName) {
         if (StringUtils.isEmpty(appName) && StringUtils.isEmpty(authorityName)) {
             return appAuthorityRepository.findAll(pageable);
         } else if (StringUtils.isNotEmpty(appName) && StringUtils.isNotEmpty(authorityName)) {

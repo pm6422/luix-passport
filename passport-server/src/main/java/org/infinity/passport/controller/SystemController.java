@@ -3,10 +3,10 @@ package org.infinity.passport.controller;
 import com.github.mongobee.Mongobee;
 import com.github.mongobee.exception.MongobeeException;
 import io.swagger.annotations.Api;
+import lombok.extern.slf4j.Slf4j;
 import org.infinity.passport.config.ApplicationProperties;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.utils.NetworkIpUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -18,14 +18,18 @@ import java.io.IOException;
 
 @RestController
 @Api(tags = "系统")
+@Slf4j
 public class SystemController {
 
-    @Autowired
-    private ApplicationProperties applicationProperties;
-    @Autowired
-    private Mongobee              mongobee;
-    @Autowired
-    private MongoTemplate         mongoTemplate;
+    private final ApplicationProperties applicationProperties;
+    private final Mongobee              mongobee;
+    private final MongoTemplate         mongoTemplate;
+
+    public SystemController(ApplicationProperties applicationProperties, Mongobee mongobee, MongoTemplate mongoTemplate) {
+        this.applicationProperties = applicationProperties;
+        this.mongobee = mongobee;
+        this.mongoTemplate = mongoTemplate;
+    }
 
     @GetMapping("/api/system/redis-admin")
     @Secured(Authority.DEVELOPER)
@@ -47,7 +51,7 @@ public class SystemController {
 
     @GetMapping("/api/system/intranet-ip")
     @Secured(Authority.DEVELOPER)
-    public ResponseEntity<String> getIntranetIp(){
+    public ResponseEntity<String> getIntranetIp() {
         return ResponseEntity.ok(NetworkIpUtils.INTRANET_IP);
     }
 

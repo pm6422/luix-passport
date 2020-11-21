@@ -1,5 +1,7 @@
 package org.infinity.passport.domain;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.infinity.passport.dto.MongoOAuth2ApprovalDTO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.Id;
@@ -10,12 +12,14 @@ import org.springframework.security.oauth2.provider.approval.Approval;
 import java.io.Serializable;
 
 @Document(collection = "MongoOAuth2Approval")
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class MongoOAuth2Approval extends Approval implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    private String            id;
+    private String id;
 
     @PersistenceConstructor
     public MongoOAuth2Approval() {
@@ -36,22 +40,4 @@ public class MongoOAuth2Approval extends Approval implements Serializable {
         return dest;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        MongoOAuth2Approval that = (MongoOAuth2Approval) o;
-
-        return id != null ? id.equals(that.id) : that.id == null;
-    }
-
-    @Override
-    public int hashCode() {
-        return id != null ? id.hashCode() : 0;
-    }
 }

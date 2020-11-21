@@ -1,6 +1,7 @@
 package org.infinity.passport.entity;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.infinity.passport.dto.AdminMenuDTO;
 
 import java.io.Serializable;
 import java.util.Comparator;
@@ -9,13 +10,13 @@ import java.util.List;
 public class MenuTree implements Serializable {
 
     private static final long         serialVersionUID = 1L;
-    private              int          nodeSize         = 0;
-    private              MenuTreeNode root             = new MenuTreeNode();
+    private       int          nodeSize = 0;
+    private final MenuTreeNode root     = new MenuTreeNode();
 
     public MenuTree(List<MenuTreeNode> list) {
         list.sort(Comparator.comparing(MenuTreeNode::getLevel));
         list.forEach(node -> this.insert(root, node));
-        this.sort(root, Comparator.comparing(node -> node.getSequence()));
+        this.sort(root, Comparator.comparing(AdminMenuDTO::getSequence));
     }
 
     public int getNodeSize() {
@@ -26,7 +27,7 @@ public class MenuTree implements Serializable {
         return root;
     }
 
-    private MenuTreeNode insert(MenuTreeNode parentNode, MenuTreeNode node) {
+    private void insert(MenuTreeNode parentNode, MenuTreeNode node) {
         if (node.getParentId() == null || node.getParentId().equals(parentNode.getId())) {
             parentNode.addChild(node);
             nodeSize++;
@@ -35,7 +36,6 @@ public class MenuTree implements Serializable {
                 this.insert(child, node);
             }
         }
-        return parentNode;
     }
 
     private void sort(MenuTreeNode node, Comparator<MenuTreeNode> comparator) {

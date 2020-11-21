@@ -13,7 +13,6 @@ import org.infinity.passport.dto.ManagedUserDTO;
 import org.infinity.passport.dto.ResetKeyAndPasswordDTO;
 import org.infinity.passport.dto.UserDTO;
 import org.infinity.passport.exception.FieldValidationException;
-import org.infinity.passport.exception.LoginUserNotExistException;
 import org.infinity.passport.exception.NoAuthorityException;
 import org.infinity.passport.exception.NoDataException;
 import org.infinity.passport.repository.UserAuthorityRepository;
@@ -219,28 +218,10 @@ public class AccountController {
     @PutMapping("/api/account/user")
     @Secured({Authority.USER})
     public ResponseEntity<Void> updateCurrentAccount(
-            @ApiParam(value = "新的用户信息", required = true) @Valid @RequestBody UserDTO userDTO) {
-        User currentUser = userService.findOneByUserName(SecurityUtils.getCurrentUserName())
-                .orElseThrow(() -> new LoginUserNotExistException(SecurityUtils.getCurrentUserName()));
-
-        Optional<User> existingUser = userService.findOneByEmail(userDTO.getEmail());
-        if (existingUser.isPresent() && (!existingUser.get().getUserName().equalsIgnoreCase(userDTO.getUserName()))) {
-            throw new FieldValidationException("userDTO", "email", userDTO.getEmail(),
-                    "error.registration.email.exists", userDTO.getEmail());
-        }
-        existingUser = userService.findOneByMobileNo(userDTO.getMobileNo());
-        if (existingUser.isPresent() && (!existingUser.get().getUserName().equalsIgnoreCase(userDTO.getUserName()))) {
-            throw new FieldValidationException("userDTO", "mobileNo", userDTO.getMobileNo(),
-                    "error.registration.mobile.exists", userDTO.getMobileNo());
-        }
-        currentUser.setFirstName(userDTO.getFirstName());
-        currentUser.setLastName(userDTO.getLastName());
-        currentUser.setEmail(userDTO.getEmail());
-        currentUser.setMobileNo(userDTO.getMobileNo());
-        currentUser.setModifiedBy(SecurityUtils.getCurrentUserName());
-        userRepository.save(currentUser);
+            @ApiParam(value = "新的用户信息", required = true) @Valid @RequestBody UserDTO dto) {
+        userService.updateWithCheck(dto);
         return ResponseEntity.ok()
-                .headers(httpHeaderCreator.createSuccessHeader("notification.user.updated", userDTO.getUserName()))
+                .headers(httpHeaderCreator.createSuccessHeader("notification.user.updated", dto.getUserName()))
                 .build();
     }
 

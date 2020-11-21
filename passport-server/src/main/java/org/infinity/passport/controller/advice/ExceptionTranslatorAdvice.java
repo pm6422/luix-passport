@@ -10,6 +10,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.dao.ConcurrencyFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -139,18 +140,18 @@ public class ExceptionTranslatorAdvice {
                 .body(ex.getErrorDTO());
     }
 
-//    /**
-//     * Spring security access denied handler
-//     */
-//    @ExceptionHandler(AccessDeniedException.class)
-//    @ResponseBody
-//    public ResponseEntity<ErrorDTO> processAccessDeniedException(AccessDeniedException ex) {
-//        String warnMessage = ex.getMessage();
-//        log.warn(warnMessage);
-//        return ResponseEntity.status(HttpStatus.FORBIDDEN)
-//                .headers(httpHeaderCreator.createErrorHeader(ErrorCodeConstants.WARN_ACCESS_DENIED))
-//                .body(new ErrorDTO(ErrorCodeConstants.WARN_ACCESS_DENIED, warnMessage));
-//    }
+    /**
+     * Spring security access denied handler
+     */
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseBody
+    public ResponseEntity<ErrorDTO> processAccessDeniedException(AccessDeniedException ex) {
+        String warnMessage = ex.getMessage();
+        log.warn(warnMessage);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .headers(httpHeaderCreator.createErrorHeader(ErrorCodeConstants.WARN_ACCESS_DENIED))
+                .body(new ErrorDTO(ErrorCodeConstants.WARN_ACCESS_DENIED, warnMessage));
+    }
 
     /**
      * Method not supported handler

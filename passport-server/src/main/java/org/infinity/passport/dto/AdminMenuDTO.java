@@ -43,20 +43,6 @@ public class AdminMenuDTO extends AbstractAuditableDomain implements Serializabl
     public AdminMenuDTO() {
     }
 
-    public AdminMenuDTO(String id, String appName, String name, String label, Integer level,
-                        String url, Integer sequence, String parentId, boolean checked) {
-        super();
-        this.id = id;
-        this.appName = appName;
-        this.name = name;
-        this.label = label;
-        this.level = level;
-        this.url = url;
-        this.sequence = sequence;
-        this.parentId = parentId;
-        this.checked = checked;
-    }
-
     public String getId() {
         return id;
     }

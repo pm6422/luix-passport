@@ -23,7 +23,7 @@ public class ProfileInfo implements Serializable {
     private boolean inProduction = false;
 
     @ApiModelProperty(value = "是否启用Swagger")
-    private boolean swaggerEnabled = true;
+    private boolean swaggerEnabled;
 
     public ProfileInfo(String[] activeProfiles, boolean swaggerEnabled, String ribbonEnv) {
         this.activeProfiles = activeProfiles;

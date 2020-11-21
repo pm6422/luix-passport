@@ -1,6 +1,7 @@
 package org.infinity.passport.service;
 
 import org.infinity.passport.domain.User;
+import org.infinity.passport.dto.UserDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -15,6 +16,8 @@ public interface UserService {
     User insert(String userName, String rawPassword, String firstName, String lastName, String email, String mobileNo,
                 String activationKey, Boolean activated, Boolean enabled, String remarks, String resetKey,
                 Instant resetTime, Set<String> authorityNames);
+
+    void updateWithCheck(UserDTO dto);
 
     void update(String userName, String firstName, String lastName, String email, String mobileNo, String modifiedBy,
                 Boolean activated, Boolean enabled, String remarks, Set<String> authorityNames);

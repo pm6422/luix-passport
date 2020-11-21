@@ -1,13 +1,11 @@
 package org.infinity.passport.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.infinity.passport.domain.User;
 import org.infinity.passport.exception.UserDisabledException;
 import org.infinity.passport.exception.UserNotActivatedException;
 import org.infinity.passport.repository.UserAuthorityRepository;
 import org.infinity.passport.service.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,19 +20,22 @@ import java.util.stream.Collectors;
  * Authenticate a user from the database.
  */
 @Service
+@Slf4j
 public class SpringSecurityUserDetailsServiceImpl implements org.springframework.security.core.userdetails.UserDetailsService {
 
-    private static final Logger                  LOGGER = LoggerFactory.getLogger(SpringSecurityUserDetailsServiceImpl.class);
-    @Autowired
-    @Lazy // Use to fix dependencies problems on some machines(CentOS 7)
-    private              UserService             userService;
-    @Autowired
-    private              UserAuthorityRepository userAuthorityRepository;
+    private final UserService             userService;
+    private final UserAuthorityRepository userAuthorityRepository;
+
+    // Use @Lazy to fix dependencies problems
+    public SpringSecurityUserDetailsServiceImpl(@Lazy UserService userService, UserAuthorityRepository userAuthorityRepository) {
+        this.userService = userService;
+        this.userAuthorityRepository = userAuthorityRepository;
+    }
 
     @Override
     // @Transactional
     public UserDetails loadUserByUsername(final String login) {
-        LOGGER.debug("Authenticating {}", login);
+        log.debug("Authenticating {}", login);
         User userFromDatabase = userService.findOneByLogin(login)
                 .orElseThrow(() -> new UsernameNotFoundException("User " + login + " was not found in the database"));
 

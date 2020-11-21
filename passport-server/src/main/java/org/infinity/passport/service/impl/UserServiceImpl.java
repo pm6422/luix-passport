@@ -1,18 +1,20 @@
 package org.infinity.passport.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.User;
 import org.infinity.passport.domain.UserAuthority;
 import org.infinity.passport.dto.ManagedUserDTO;
+import org.infinity.passport.dto.UserDTO;
+import org.infinity.passport.exception.FieldValidationException;
+import org.infinity.passport.exception.NoDataException;
 import org.infinity.passport.repository.UserAuthorityRepository;
 import org.infinity.passport.repository.UserRepository;
 import org.infinity.passport.service.UserService;
 import org.infinity.passport.utils.RandomUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.infinity.passport.utils.SecurityUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,22 +28,24 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 @Service
+@Slf4j
 public class UserServiceImpl implements UserService {
 
-    private static final Logger     LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
+    private final UserRepository userRepository;
 
-    @Autowired
-    private UserRepository          userRepository;
+    private final UserAuthorityRepository userAuthorityRepository;
 
-    @Autowired
-    private UserAuthorityRepository userAuthorityRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private PasswordEncoder         passwordEncoder;
+    public UserServiceImpl(UserRepository userRepository, UserAuthorityRepository userAuthorityRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.userAuthorityRepository = userAuthorityRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     // private void removeUserToken(User user) {
     // String clientId =
-    // applicationProperties.getSecurity().getAuthentication().getOauth().getClientid();
+    // applicationProperties.getSecurity().getAuthentication().getOauth().getClientId();
     // tokenStore.findTokensByClientIdAndUserName(clientId,
     // user.getUserName()).stream()
     // .forEach(token -> tokenStore.removeAccessToken(token));
@@ -54,7 +58,7 @@ public class UserServiceImpl implements UserService {
         userRepository.findOneByUserName(userName).ifPresent(user -> {
             user.setPasswordHash(passwordEncoder.encode(newRawPassword));
             userRepository.save(user);
-            LOGGER.debug("Changed password for User: {}", user);
+            log.debug("Changed password for User: {}", user);
         });
     }
 
@@ -85,13 +89,38 @@ public class UserServiceImpl implements UserService {
         if (CollectionUtils.isEmpty(authorityNames)) {
             userAuthorityRepository.insert(new UserAuthority(newUser.getId(), Authority.USER));
         } else {
-            authorityNames.forEach(authorityName -> {
-                userAuthorityRepository.insert(new UserAuthority(newUser.getId(), authorityName));
-            });
+            authorityNames.forEach(authorityName -> userAuthorityRepository.insert(new UserAuthority(newUser.getId(), authorityName)));
         }
 
-        LOGGER.debug("Created Information for User: {}", newUser);
+        log.debug("Created Information for User: {}", newUser);
         return newUser;
+    }
+
+    @Override
+    public void updateWithCheck(UserDTO dto) {
+        Optional<User> existingUser = findOneByUserName(dto.getUserName());
+
+        if (!existingUser.isPresent()) {
+            throw new NoDataException(dto.getUserName());
+        }
+        existingUser = findOneByEmail(dto.getEmail());
+        if (existingUser.isPresent() && (!existingUser.get().getUserName().equalsIgnoreCase(dto.getUserName()))) {
+            throw new FieldValidationException("userDTO", "email", dto.getEmail(), "error.registration.email.exists",
+                    dto.getEmail());
+        }
+        existingUser = findOneByMobileNo(dto.getMobileNo());
+        if (existingUser.isPresent() && (!existingUser.get().getUserName().equalsIgnoreCase(dto.getUserName()))) {
+            throw new FieldValidationException("userDTO", "mobileNo", dto.getMobileNo(),
+                    "error.registration.mobile.exists", dto.getMobileNo());
+        }
+        if (existingUser.isPresent() && !Boolean.TRUE.equals(dto.getActivated())
+                && Boolean.TRUE.equals(existingUser.get().getActivated())) {
+            throw new FieldValidationException("userDTO", "activated", "error.change.active.to.inactive");
+        }
+
+        update(dto.getUserName().toLowerCase(), dto.getFirstName(), dto.getLastName(),
+                dto.getEmail().toLowerCase(), dto.getMobileNo(), SecurityUtils.getCurrentUserName(), dto.getActivated(),
+                dto.getEnabled(), dto.getRemarks(), dto.getAuthorities());
     }
 
     @Override
@@ -107,14 +136,12 @@ public class UserServiceImpl implements UserService {
             user.setActivated(activated);
             user.setEnabled(enabled);
             userRepository.save(user);
-            LOGGER.debug("Updated user: {}", user);
+            log.debug("Updated user: {}", user);
 
             if (CollectionUtils.isNotEmpty(authorityNames)) {
                 userAuthorityRepository.deleteByUserId(user.getId());
-                authorityNames.forEach(authorityName -> {
-                    userAuthorityRepository.insert(new UserAuthority(user.getId(), authorityName));
-                });
-                LOGGER.debug("Updated user authorities");
+                authorityNames.forEach(authorityName -> userAuthorityRepository.insert(new UserAuthority(user.getId(), authorityName)));
+                log.debug("Updated user authorities");
             }
         });
     }
@@ -156,7 +183,7 @@ public class UserServiceImpl implements UserService {
             user.setActivated(true);
             user.setActivationKey(null);
             userRepository.save(user);
-            LOGGER.debug("Activated user: {}", user);
+            log.debug("Activated user: {}", user);
             return user;
         });
     }
@@ -167,7 +194,7 @@ public class UserServiceImpl implements UserService {
             user.setResetKey(RandomUtils.generateResetKey());
             user.setResetTime(Instant.now());
             userRepository.save(user);
-            LOGGER.debug("Requested reset user password for reset key {}", resetKey);
+            log.debug("Requested reset user password for reset key {}", resetKey);
             return user;
         });
     }
@@ -181,7 +208,7 @@ public class UserServiceImpl implements UserService {
                     user.setResetKey(null);
                     user.setResetTime(null);
                     userRepository.save(user);
-                    LOGGER.debug("Reset user password for reset key {}", resetKey);
+                    log.debug("Reset user password for reset key {}", resetKey);
                     return user;
                 });
     }

@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
 
@@ -207,12 +208,12 @@ public class DatabaseInitialSetup {
                 new BCryptPasswordEncoder().encode(MongoOAuth2ClientDetails.INTERNAL_RAW_CLIENT_SECRET));
         oAuth2ClientDetails.setScope(Arrays.asList("read", "write"));
         // It will auto approve if autoApproveScopes exactly match the scopes.
-        oAuth2ClientDetails.setAutoApproveScopes(Arrays.asList("read"));
+        oAuth2ClientDetails.setAutoApproveScopes(Collections.singletonList("read"));
         oAuth2ClientDetails.setAuthorizedGrantTypes(
                 Arrays.asList("password", "authorization_code", "refresh_token", "client_credentials"));
         // Note: localhost and 127.0.0.1 must be save twice.
         oAuth2ClientDetails.setRegisteredRedirectUri(
-                new HashSet<String>(Arrays.asList("http://127.0.0.1:8010/login", "http://localhost:8010/login")));
+                new HashSet<>(Arrays.asList("http://127.0.0.1:8010/login", "http://localhost:8010/login")));
         oAuth2ClientDetails.setAccessTokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(7));
         oAuth2ClientDetails.setRefreshTokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(7));
         // 这个authority还不知道其作用

@@ -40,9 +40,6 @@ public class ManagedUserDTO extends UserDTO {
     @ApiModelProperty(value = "修改用户")
     private String            modifiedBy;
 
-    public ManagedUserDTO() {
-    }
-
     public ManagedUserDTO(User user, Set<String> authorities) {
         super(user, authorities);
         this.password = null;

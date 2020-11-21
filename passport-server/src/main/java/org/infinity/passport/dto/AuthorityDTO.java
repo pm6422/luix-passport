@@ -22,9 +22,6 @@ public class AuthorityDTO implements Serializable {
     @ApiModelProperty(value = "是否可用")
     private Boolean           enabled;
 
-    public AuthorityDTO() {
-    }
-
     public AuthorityDTO(String name, Boolean systemLevel, Boolean enabled) {
         super();
         this.name = name;

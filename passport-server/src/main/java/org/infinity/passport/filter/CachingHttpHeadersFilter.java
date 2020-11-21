@@ -17,7 +17,7 @@ public class CachingHttpHeadersFilter implements Filter {
 
     private long                  CACHE_TIME_TO_LIVE = TimeUnit.DAYS.toMillis(1461L);
 
-    private ApplicationProperties applicationProperties;
+    private final ApplicationProperties applicationProperties;
 
     public CachingHttpHeadersFilter(ApplicationProperties applicationProperties) {
         this.applicationProperties = applicationProperties;

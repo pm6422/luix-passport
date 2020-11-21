@@ -58,7 +58,7 @@ public class MongoTokenStore implements TokenStore {
 
     @Override
     public OAuth2AccessToken readAccessToken(String tokenValue) {
-        return oAuth2AccessTokenRepository.findById(tokenValue).map(MongoOAuth2AccessToken::getoAuth2AccessToken)
+        return oAuth2AccessTokenRepository.findById(tokenValue).map(MongoOAuth2AccessToken::getOAuth2AccessToken)
                 .orElse(null);
     }
 
@@ -74,7 +74,7 @@ public class MongoTokenStore implements TokenStore {
 
     @Override
     public OAuth2RefreshToken readRefreshToken(String tokenValue) {
-        return oAuth2RefreshTokenRepository.findById(tokenValue).map(MongoOAuth2RefreshToken::getoAuth2RefreshToken)
+        return oAuth2RefreshTokenRepository.findById(tokenValue).map(MongoOAuth2RefreshToken::getOAuth2RefreshToken)
                 .orElse(null);
     }
 
@@ -101,7 +101,7 @@ public class MongoTokenStore implements TokenStore {
     public OAuth2AccessToken getAccessToken(OAuth2Authentication authentication) {
         MongoOAuth2AccessToken token = oAuth2AccessTokenRepository
                 .findByAuthenticationId(authenticationKeyGenerator.extractKey(authentication));
-        return token == null ? null : token.getoAuth2AccessToken();
+        return token == null ? null : token.getOAuth2AccessToken();
     }
 
     @Override
@@ -119,7 +119,7 @@ public class MongoTokenStore implements TokenStore {
     private Collection<OAuth2AccessToken> extractAccessTokens(List<MongoOAuth2AccessToken> tokens) {
         List<OAuth2AccessToken> accessTokens = new ArrayList<>();
         for (MongoOAuth2AccessToken token : tokens) {
-            accessTokens.add(token.getoAuth2AccessToken());
+            accessTokens.add(token.getOAuth2AccessToken());
         }
         return accessTokens;
     }

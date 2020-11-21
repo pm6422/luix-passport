@@ -40,7 +40,7 @@ public class TestControllerTest {
     public void testThreadSafe() throws InterruptedException {
         StopWatch watch = new StopWatch();
         watch.start();
-        int requestCount = 1000;
+        int requestCount = 2000;
         int threadPoolSize = 20;
         ExecutorService threadPool = Executors.newFixedThreadPool(threadPoolSize);
 

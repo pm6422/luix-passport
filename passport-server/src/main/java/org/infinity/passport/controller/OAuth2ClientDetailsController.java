@@ -10,7 +10,7 @@ import org.infinity.passport.exception.FieldValidationException;
 import org.infinity.passport.exception.NoDataException;
 import org.infinity.passport.repository.OAuth2ClientDetailsRepository;
 import org.infinity.passport.utils.HttpHeaderCreator;
-import org.infinity.passport.utils.RandomUtils;
+import org.infinity.passport.utils.id.IdGenerator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -63,12 +63,12 @@ public class OAuth2ClientDetailsController {
     public ResponseEntity<Void> create(
             @ApiParam(value = "单点登录客户端信息", required = true) @Valid @RequestBody MongoOAuth2ClientDetailsDTO dto) {
         log.debug("REST create oauth client detail: {}", dto);
-        dto.setClientId(StringUtils.defaultIfEmpty(dto.getClientId(), RandomUtils.generateId()));
+        dto.setClientId(StringUtils.defaultIfEmpty(dto.getClientId(), "" + IdGenerator.generateSnowFlakeId()));
         oAuth2ClientDetailsRepository.findById(dto.getClientId()).ifPresent((existingEntity) -> {
             throw new FieldValidationException("oAuth2ClientDetailsDTO", "clientId", dto.getClientId(),
                     "error.oauth2.client.id.exists", dto.getClientId());
         });
-        dto.setRawClientSecret(StringUtils.defaultIfEmpty(dto.getClientSecret(), RandomUtils.generateId()));
+        dto.setRawClientSecret(StringUtils.defaultIfEmpty(dto.getClientSecret(), "" + IdGenerator.generateSnowFlakeId()));
         dto.setClientSecret(passwordEncoder.encode(dto.getRawClientSecret()));
         oAuth2ClientDetailsRepository.save(MongoOAuth2ClientDetails.of(dto));
         return ResponseEntity.status(HttpStatus.CREATED)

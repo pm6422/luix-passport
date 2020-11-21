@@ -23,9 +23,6 @@ public class AppDTO implements Serializable {
     @ApiModelProperty(value = "权限名称")
     private Set<String>       authorities;
 
-    public AppDTO() {
-    }
-
     public AppDTO(String name, Boolean enabled) {
         super();
         this.name = name;

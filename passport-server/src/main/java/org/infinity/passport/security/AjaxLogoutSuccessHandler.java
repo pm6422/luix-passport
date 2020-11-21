@@ -1,7 +1,6 @@
 package org.infinity.passport.security;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.token.TokenStore;
@@ -19,8 +18,11 @@ import javax.servlet.http.HttpServletResponse;
 public class AjaxLogoutSuccessHandler extends AbstractAuthenticationTargetUrlRequestHandler
         implements LogoutSuccessHandler {
 
-    @Autowired
-    private TokenStore tokenStore;
+    private final TokenStore tokenStore;
+
+    public AjaxLogoutSuccessHandler(TokenStore tokenStore) {
+        this.tokenStore = tokenStore;
+    }
 
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {

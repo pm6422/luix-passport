@@ -1,5 +1,7 @@
 package org.infinity.passport.domain;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -11,29 +13,26 @@ import java.io.Serializable;
  * Spring Data MongoDB collection for the AuthorityAdminMenu entity.
  */
 @Document(collection = "AuthorityAdminMenu")
+@Data
+@EqualsAndHashCode
 public class AuthorityAdminMenu implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    private String            id;
+    private String id;
 
     @NotNull
     @Size(min = 1, max = 20)
-    private String            authorityName;
+    private String authorityName;
 
     @NotNull
-    private String            adminMenuId;
+    private String adminMenuId;
 
     public AuthorityAdminMenu() {
         super();
     }
 
-    /**
-     * Constructor for creating operation
-     * @param authorityName
-     * @param adminMenuId
-     */
     public AuthorityAdminMenu(String authorityName, String adminMenuId) {
         super();
         this.authorityName = authorityName;
@@ -42,56 +41,5 @@ public class AuthorityAdminMenu implements Serializable {
 
     public static AuthorityAdminMenu of(String authorityName, String adminMenuId) {
         return new AuthorityAdminMenu(authorityName, adminMenuId);
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getAuthorityName() {
-        return authorityName;
-    }
-
-    public void setAuthorityName(String authorityName) {
-        this.authorityName = authorityName;
-    }
-
-    public String getAdminMenuId() {
-        return adminMenuId;
-    }
-
-    public void setAdminMenuId(String adminMenuId) {
-        this.adminMenuId = adminMenuId;
-    }
-
-    @Override
-    public boolean equals(Object that) {
-        if (this == that) {
-            return true;
-        }
-        if (that == null) {
-            return false;
-        }
-        if (getClass() != that.getClass()) {
-            return false;
-        }
-        AuthorityAdminMenu other = (AuthorityAdminMenu) that;
-        return (this.getAuthorityName() == null ? other.getAuthorityName() == null
-                : this.getAuthorityName().equals(other.getAuthorityName()))
-                && (this.getAdminMenuId() == null ? other.getAdminMenuId() == null
-                        : this.getAdminMenuId().equals(other.getAdminMenuId()));
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((getAuthorityName() == null) ? 0 : getAuthorityName().hashCode());
-        result = prime * result + ((getAdminMenuId() == null) ? 0 : getAdminMenuId().hashCode());
-        return result;
     }
 }

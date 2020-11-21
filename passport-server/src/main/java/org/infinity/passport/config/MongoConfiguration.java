@@ -8,10 +8,10 @@ import org.infinity.passport.config.oauth2.OAuth2AuthenticationReadConverter;
 import org.infinity.passport.config.oauth2.OAuth2GrantedAuthorityTokenReadConverter;
 import org.infinity.passport.config.oauth2.OAuth2RefreshTokenReadConverter;
 import org.infinity.passport.setup.DatabaseInitialSetup;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.mongodb.MongoDbFactory;
@@ -34,11 +34,12 @@ import java.util.List;
 @Slf4j
 public class MongoConfiguration {
 
-    @Autowired
-    private       MongoMappingContext mongoMappingContext;
+    private final MongoMappingContext mongoMappingContext;
     private final MongoDbFactory      mongoDbFactory;
 
-    public MongoConfiguration(MongoDbFactory mongoDbFactory) {
+    // Use @Lazy to fix dependencies problems
+    public MongoConfiguration(@Lazy MongoMappingContext mongoMappingContext, MongoDbFactory mongoDbFactory) {
+        this.mongoMappingContext = mongoMappingContext;
         this.mongoDbFactory = mongoDbFactory;
     }
 
