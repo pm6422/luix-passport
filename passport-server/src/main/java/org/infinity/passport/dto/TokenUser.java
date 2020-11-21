@@ -2,12 +2,14 @@ package org.infinity.passport.dto;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Set;
 
 @Data
 @EqualsAndHashCode
+@NoArgsConstructor
 public class TokenUser implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -23,9 +25,5 @@ public class TokenUser implements Serializable {
     private Boolean enabled;
 
     private Set<String> authorities;
-
-    public TokenUser() {
-        super();
-    }
 
 }

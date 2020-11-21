@@ -2,6 +2,7 @@ package org.infinity.passport.domain;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import org.infinity.passport.dto.MongoOAuth2AuthorizationCodeDTO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.Id;
@@ -14,6 +15,7 @@ import java.io.Serializable;
 @Document(collection = "MongoOAuth2AuthorizationCode")
 @Data
 @EqualsAndHashCode
+@NoArgsConstructor
 public class MongoOAuth2AuthorizationCode implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -25,9 +27,6 @@ public class MongoOAuth2AuthorizationCode implements Serializable {
 
     private OAuth2Authentication authentication;
 
-    public MongoOAuth2AuthorizationCode() {
-        super();
-    }
 
     @PersistenceConstructor
     public MongoOAuth2AuthorizationCode(String code, OAuth2Authentication authentication) {

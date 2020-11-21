@@ -2,6 +2,7 @@ package org.infinity.passport.dto;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
@@ -10,13 +11,14 @@ import java.io.Serializable;
  */
 @Data
 @EqualsAndHashCode
+@NoArgsConstructor
 public class ParameterizedErrorDTO implements Serializable {
 
     private static final long serialVersionUID = -2060518823145626799L;
 
-    private final String message;
+    private String message;
 
-    private final Object[] params;
+    private Object[] params;
 
     public ParameterizedErrorDTO(String message, Object... params) {
         this.message = message;

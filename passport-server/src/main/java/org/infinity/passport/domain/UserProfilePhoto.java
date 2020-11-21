@@ -2,6 +2,7 @@ package org.infinity.passport.domain;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import org.bson.types.Binary;
 import org.infinity.passport.domain.base.AbstractAuditableDomain;
 import org.springframework.data.annotation.Id;
@@ -18,6 +19,7 @@ import java.io.Serializable;
 @Document(collection = "UserProfilePhoto")
 @Data
 @EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
 public class UserProfilePhoto extends AbstractAuditableDomain implements Serializable {
 
     private static final long serialVersionUID = -8375847941374800940L;

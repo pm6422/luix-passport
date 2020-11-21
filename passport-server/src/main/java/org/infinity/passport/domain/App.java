@@ -2,6 +2,7 @@ package org.infinity.passport.domain;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import org.infinity.passport.dto.AppDTO;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -15,6 +16,7 @@ import java.io.Serializable;
 @Document(collection = "App")
 @Data
 @EqualsAndHashCode
+@NoArgsConstructor
 public class App implements Serializable {
     private static final long serialVersionUID = 1L;
 

@@ -2,6 +2,7 @@ package org.infinity.passport.domain;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import org.infinity.passport.domain.base.AbstractAuditableDomain;
 import org.infinity.passport.dto.MongoOAuth2RefreshTokenDTO;
 import org.springframework.beans.BeanUtils;
@@ -18,6 +19,7 @@ import java.util.Date;
 @Document(collection = "MongoOAuth2RefreshToken")
 @Data
 @EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
 public class MongoOAuth2RefreshToken extends AbstractAuditableDomain implements Serializable {
 
     private static final long                 serialVersionUID = 1L;
@@ -29,10 +31,6 @@ public class MongoOAuth2RefreshToken extends AbstractAuditableDomain implements 
     @Indexed(expireAfterSeconds = 0)//Expire Documents at a Specific Clock Time
     private              Date                 expiration;
     private              OAuth2Authentication authentication;
-
-    public MongoOAuth2RefreshToken() {
-        super();
-    }
 
     public MongoOAuth2RefreshToken(OAuth2RefreshToken oAuth2RefreshToken, OAuth2Authentication authentication) {
         this.id = oAuth2RefreshToken.getValue();

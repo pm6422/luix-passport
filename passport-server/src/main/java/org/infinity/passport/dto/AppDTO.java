@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Set;
@@ -14,6 +15,7 @@ import java.util.Set;
 @ApiModel("应用DTO")
 @Data
 @EqualsAndHashCode
+@NoArgsConstructor
 public class AppDTO implements Serializable {
 
     private static final long serialVersionUID = 6131756179263179005L;

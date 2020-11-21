@@ -3,6 +3,7 @@ package org.infinity.passport.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import org.infinity.passport.domain.base.AbstractAuditableDomain;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -20,6 +21,7 @@ import java.time.Instant;
 @Document(collection = "User")
 @Data
 @EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
 public class User extends AbstractAuditableDomain implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -74,10 +76,6 @@ public class User extends AbstractAuditableDomain implements Serializable {
     private Boolean enabled;
 
     private String remarks;
-
-    public User() {
-        super();
-    }
 
     public User(String userName, String firstName, String lastName, String email, String mobileNo, String passwordHash,
                 Boolean activated, String activationKey, String resetKey, Instant resetTime, Boolean enabled, String remarks) {

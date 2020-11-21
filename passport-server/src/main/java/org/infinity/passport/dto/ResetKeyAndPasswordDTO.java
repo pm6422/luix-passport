@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -12,6 +13,7 @@ import java.io.Serializable;
 @ApiModel("重置密码DTO")
 @Data
 @EqualsAndHashCode
+@NoArgsConstructor
 public class ResetKeyAndPasswordDTO implements Serializable {
 
     private static final long serialVersionUID = -6442194590613017034L;
@@ -25,6 +27,4 @@ public class ResetKeyAndPasswordDTO implements Serializable {
     @Size(min = ManagedUserDTO.RAW_PASSWORD_MIN_LENGTH, max = ManagedUserDTO.RAW_PASSWORD_MAX_LENGTH)
     private String newPassword;
 
-    public ResetKeyAndPasswordDTO() {
-    }
 }

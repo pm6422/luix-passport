@@ -2,6 +2,7 @@ package org.infinity.passport.domain;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import org.infinity.passport.domain.base.AbstractAuditableDomain;
 import org.infinity.passport.dto.AdminMenuDTO;
 import org.infinity.passport.entity.MenuTreeNode;
@@ -21,6 +22,7 @@ import java.io.Serializable;
 @Document(collection = "AdminMenu")
 @Data
 @EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
 public class AdminMenu extends AbstractAuditableDomain implements Serializable {
     private static final long   serialVersionUID = 1L;
     public static final  String FIELD_LEVEL      = "level";
@@ -43,10 +45,6 @@ public class AdminMenu extends AbstractAuditableDomain implements Serializable {
     @Field(FIELD_SEQUENCE)
     private Integer sequence;
     private String  parentId;
-
-    public AdminMenu() {
-        super();
-    }
 
     public AdminMenu(String appName, String name, String label, Integer level, String url,
                      Integer sequence, String parentId) {

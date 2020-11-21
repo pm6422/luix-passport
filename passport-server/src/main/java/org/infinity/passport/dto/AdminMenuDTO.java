@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import org.infinity.passport.domain.base.AbstractAuditableDomain;
 import org.infinity.passport.entity.MenuTreeNode;
 import org.springframework.cglib.beans.BeanCopier;
@@ -16,6 +17,7 @@ import java.io.Serializable;
 @ApiModel("管理系统菜单DTO")
 @Data
 @EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
 public class AdminMenuDTO extends AbstractAuditableDomain implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -43,9 +45,6 @@ public class AdminMenuDTO extends AbstractAuditableDomain implements Serializabl
     private String  parentId;
     @ApiModelProperty("是否选中")
     private boolean checked;
-
-    public AdminMenuDTO() {
-    }
 
     public MenuTreeNode asNode() {
         MenuTreeNode dto = new MenuTreeNode();

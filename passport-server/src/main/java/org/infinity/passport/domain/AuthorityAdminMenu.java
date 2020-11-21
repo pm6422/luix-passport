@@ -2,6 +2,7 @@ package org.infinity.passport.domain;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -15,6 +16,7 @@ import java.io.Serializable;
 @Document(collection = "AuthorityAdminMenu")
 @Data
 @EqualsAndHashCode
+@NoArgsConstructor
 public class AuthorityAdminMenu implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -28,10 +30,6 @@ public class AuthorityAdminMenu implements Serializable {
 
     @NotNull
     private String adminMenuId;
-
-    public AuthorityAdminMenu() {
-        super();
-    }
 
     public AuthorityAdminMenu(String authorityName, String adminMenuId) {
         super();

@@ -2,6 +2,7 @@ package org.infinity.passport.domain;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import org.infinity.passport.dto.AppAuthorityDTO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.Id;
@@ -16,6 +17,7 @@ import java.io.Serializable;
 @Document(collection = "AppAuthority")
 @Data
 @EqualsAndHashCode
+@NoArgsConstructor
 public class AppAuthority implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -28,10 +30,6 @@ public class AppAuthority implements Serializable {
 
     @Size(max = 50)
     private String authorityName;
-
-    public AppAuthority() {
-        super();
-    }
 
     public AppAuthority(String appName, String authorityName) {
         this.appName = appName;

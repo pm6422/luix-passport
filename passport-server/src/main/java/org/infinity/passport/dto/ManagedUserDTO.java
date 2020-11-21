@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import org.infinity.passport.domain.User;
 
 import javax.validation.constraints.NotNull;
@@ -17,6 +18,7 @@ import java.util.Set;
 @ApiModel("用户扩展DTO")
 @Data
 @EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
 public class ManagedUserDTO extends UserDTO {
 
     private static final long serialVersionUID = -8095593058946091229L;
@@ -41,6 +43,30 @@ public class ManagedUserDTO extends UserDTO {
 
     @ApiModelProperty(value = "修改用户")
     private String modifiedBy;
+
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public Instant getCreatedTime() {
+        return createdTime;
+    }
+
+    @Override
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    @Override
+    public Instant getModifiedTime() {
+        return modifiedTime;
+    }
+
+    @Override
+    public String getModifiedBy() {
+        return modifiedBy;
+    }
 
     public ManagedUserDTO(User user, Set<String> authorities) {
         super(user, authorities);
