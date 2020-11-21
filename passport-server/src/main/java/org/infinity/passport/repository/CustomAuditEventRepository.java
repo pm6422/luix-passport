@@ -2,6 +2,7 @@ package org.infinity.passport.repository;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.DateUtils;
+import org.infinity.passport.annotation.ExecutionSwitch;
 import org.infinity.passport.component.AuditEventConverter;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.PersistentAuditEvent;
@@ -51,9 +52,9 @@ public class CustomAuditEventRepository implements AuditEventRepository {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @ExecutionSwitch(on = "application.user-audit-event.enabled")
     public void add(AuditEvent event) {
         if (!AUTHORIZATION_FAILURE.equals(event.getType()) && !Authority.ANONYMOUS.equals(event.getPrincipal())) {
-
             PersistentAuditEvent persistentAuditEvent = new PersistentAuditEvent();
             persistentAuditEvent.setPrincipal(event.getPrincipal());
             persistentAuditEvent.setAuditEventType(event.getType());

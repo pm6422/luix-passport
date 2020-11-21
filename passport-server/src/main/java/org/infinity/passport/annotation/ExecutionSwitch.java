@@ -1,7 +1,5 @@
 package org.infinity.passport.annotation;
 
-import org.infinity.passport.config.ApplicationConstants;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -11,7 +9,8 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface ExecutionSwitch {
 
-    String AROUND = "@annotation(" + ApplicationConstants.BASE_PACKAGE + ".annotation.ExecutionSwitch)";
-
+    /**
+     * Switch on when the specified property value is 'true'
+     */
     String on();
 }

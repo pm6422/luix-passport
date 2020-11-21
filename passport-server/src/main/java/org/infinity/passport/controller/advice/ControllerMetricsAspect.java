@@ -14,8 +14,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 
-import static org.infinity.passport.config.ApplicationConstants.CONTROLLER_PACKAGE;
-
 /**
  * Aspect for logging execution of Spring components.
  */
@@ -31,7 +29,14 @@ public class ControllerMetricsAspect {
         this.applicationProperties = applicationProperties;
     }
 
-    @Around("within(" + CONTROLLER_PACKAGE + "*)")
+    /**
+     * Refer to http://www.imooc.com/article/297283
+     *
+     * @param joinPoint join point
+     * @return return value
+     * @throws Throwable if exception occurs
+     */
+    @Around("execution(@(org.springframework.web.bind.annotation.*Mapping) * *(..))")
     public Object serviceAround(ProceedingJoinPoint joinPoint) throws Throwable {
         try {
             StopWatch stopWatch = new StopWatch();

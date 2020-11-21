@@ -2,6 +2,7 @@ package org.infinity.passport.controller;
 
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
+import org.infinity.passport.component.HttpHeaderCreator;
 import org.infinity.passport.domain.App;
 import org.infinity.passport.domain.AppAuthority;
 import org.infinity.passport.domain.Authority;
@@ -10,7 +11,6 @@ import org.infinity.passport.exception.NoDataException;
 import org.infinity.passport.repository.AppAuthorityRepository;
 import org.infinity.passport.repository.AppRepository;
 import org.infinity.passport.service.AppService;
-import org.infinity.passport.component.HttpHeaderCreator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
