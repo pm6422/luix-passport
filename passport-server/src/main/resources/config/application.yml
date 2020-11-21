@@ -140,8 +140,6 @@ application:
         contact-name: Louis
         contact-email: pm6422@126.com
         host:
-    aop-logging:
-        enabled: true
     service-metrics:
         enabled: true
         slowExecutionThreshold: 300 # unit: ms

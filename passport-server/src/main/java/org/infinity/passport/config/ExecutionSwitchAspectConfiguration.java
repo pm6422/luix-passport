@@ -12,11 +12,11 @@ import org.springframework.core.env.Environment;
  */
 @Aspect
 @Configuration
-public class ExecutionSwitchAspect {
+public class ExecutionSwitchAspectConfiguration {
 
     private final Environment env;
 
-    public ExecutionSwitchAspect(Environment env) {
+    public ExecutionSwitchAspectConfiguration(Environment env) {
         this.env = env;
     }
 
