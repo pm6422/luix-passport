@@ -1206,23 +1206,23 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_tags_85">2.84.5. Tags</a></li>
 </ul>
 </li>
-<li><a href="#_根据用户名删除用户">2.85. 根据用户名删除用户</a>
+<li><a href="#_根据用户名重置密码">2.85. 根据用户名重置密码</a>
 <ul class="sectlevel3">
-<li><a href="#_description_17">2.85.1. Description</a></li>
-<li><a href="#_parameters_73">2.85.2. Parameters</a></li>
-<li><a href="#_responses_85">2.85.3. Responses</a></li>
-<li><a href="#_consumes_85">2.85.4. Consumes</a></li>
-<li><a href="#_produces_85">2.85.5. Produces</a></li>
-<li><a href="#_tags_86">2.85.6. Tags</a></li>
+<li><a href="#_parameters_73">2.85.1. Parameters</a></li>
+<li><a href="#_responses_85">2.85.2. Responses</a></li>
+<li><a href="#_consumes_85">2.85.3. Consumes</a></li>
+<li><a href="#_produces_85">2.85.4. Produces</a></li>
+<li><a href="#_tags_86">2.85.5. Tags</a></li>
 </ul>
 </li>
-<li><a href="#_根据用户名重置密码">2.86. 根据用户名重置密码</a>
+<li><a href="#_根据用户名删除用户">2.86. 根据用户名删除用户</a>
 <ul class="sectlevel3">
-<li><a href="#_parameters_74">2.86.1. Parameters</a></li>
-<li><a href="#_responses_86">2.86.2. Responses</a></li>
-<li><a href="#_consumes_86">2.86.3. Consumes</a></li>
-<li><a href="#_produces_86">2.86.4. Produces</a></li>
-<li><a href="#_tags_87">2.86.5. Tags</a></li>
+<li><a href="#_description_17">2.86.1. Description</a></li>
+<li><a href="#_parameters_74">2.86.2. Parameters</a></li>
+<li><a href="#_responses_86">2.86.3. Responses</a></li>
+<li><a href="#_consumes_86">2.86.4. Consumes</a></li>
+<li><a href="#_produces_86">2.86.5. Produces</a></li>
+<li><a href="#_tags_87">2.86.6. Tags</a></li>
 </ul>
 </li>
 <li><a href="#_根据用户名检索用户信息">2.87. 根据用户名检索用户信息</a>
@@ -11064,135 +11064,14 @@ BasePath: /</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_根据用户名删除用户"><a class="anchor" href="#_根据用户名删除用户"></a><a class="link" href="#_根据用户名删除用户">2.85. 根据用户名删除用户</a></h3>
-<div class="listingblock">
-<div class="content">
-<pre>DELETE /api/user/users/{userName}</pre>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_description_17"><a class="anchor" href="#_description_17"></a><a class="link" href="#_description_17">2.85.1. Description</a></h4>
-<div class="paragraph">
-<p>数据有可能被其他数据所引用，删除之后可能出现一些问题</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_parameters_73"><a class="anchor" href="#_parameters_73"></a><a class="link" href="#_parameters_73">2.85.2. Parameters</a></h4>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 16.6666%;">
-<col style="width: 16.6666%;">
-<col style="width: 16.6666%;">
-<col style="width: 16.6666%;">
-<col style="width: 16.6666%;">
-<col style="width: 16.667%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Description</th>
-<th class="tableblock halign-left valign-top">Required</th>
-<th class="tableblock halign-left valign-top">Schema</th>
-<th class="tableblock halign-left valign-top">Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">PathParameter</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">userName</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">用户名</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect3">
-<h4 id="_responses_85"><a class="anchor" href="#_responses_85"></a><a class="link" href="#_responses_85">2.85.3. Responses</a></h4>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">HTTP Code</th>
-<th class="tableblock halign-left valign-top">Description</th>
-<th class="tableblock halign-left valign-top">Schema</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">200</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">成功删除</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">204</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">400</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">用户不存在</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">401</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Unauthorized</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">403</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Forbidden</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect3">
-<h4 id="_consumes_85"><a class="anchor" href="#_consumes_85"></a><a class="link" href="#_consumes_85">2.85.4. Consumes</a></h4>
-<div class="ulist">
-<ul>
-<li>
-<p>application/json</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_produces_85"><a class="anchor" href="#_produces_85"></a><a class="link" href="#_produces_85">2.85.5. Produces</a></h4>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>/</strong></p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_tags_86"><a class="anchor" href="#_tags_86"></a><a class="link" href="#_tags_86">2.85.6. Tags</a></h4>
-<div class="ulist">
-<ul>
-<li>
-<p>用户管理</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_根据用户名重置密码"><a class="anchor" href="#_根据用户名重置密码"></a><a class="link" href="#_根据用户名重置密码">2.86. 根据用户名重置密码</a></h3>
+<h3 id="_根据用户名重置密码"><a class="anchor" href="#_根据用户名重置密码"></a><a class="link" href="#_根据用户名重置密码">2.85. 根据用户名重置密码</a></h3>
 <div class="listingblock">
 <div class="content">
 <pre>PUT /api/user/users/{userName}</pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_parameters_74"><a class="anchor" href="#_parameters_74"></a><a class="link" href="#_parameters_74">2.86.1. Parameters</a></h4>
+<h4 id="_parameters_73"><a class="anchor" href="#_parameters_73"></a><a class="link" href="#_parameters_73">2.85.1. Parameters</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 16.6666%;">
@@ -11225,7 +11104,7 @@ BasePath: /</p>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_responses_86"><a class="anchor" href="#_responses_86"></a><a class="link" href="#_responses_86">2.86.2. Responses</a></h4>
+<h4 id="_responses_85"><a class="anchor" href="#_responses_85"></a><a class="link" href="#_responses_85">2.85.2. Responses</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -11274,7 +11153,7 @@ BasePath: /</p>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_consumes_86"><a class="anchor" href="#_consumes_86"></a><a class="link" href="#_consumes_86">2.86.3. Consumes</a></h4>
+<h4 id="_consumes_85"><a class="anchor" href="#_consumes_85"></a><a class="link" href="#_consumes_85">2.85.3. Consumes</a></h4>
 <div class="ulist">
 <ul>
 <li>
@@ -11284,7 +11163,7 @@ BasePath: /</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_produces_86"><a class="anchor" href="#_produces_86"></a><a class="link" href="#_produces_86">2.86.4. Produces</a></h4>
+<h4 id="_produces_85"><a class="anchor" href="#_produces_85"></a><a class="link" href="#_produces_85">2.85.4. Produces</a></h4>
 <div class="ulist">
 <ul>
 <li>
@@ -11294,7 +11173,128 @@ BasePath: /</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_tags_87"><a class="anchor" href="#_tags_87"></a><a class="link" href="#_tags_87">2.86.5. Tags</a></h4>
+<h4 id="_tags_86"><a class="anchor" href="#_tags_86"></a><a class="link" href="#_tags_86">2.85.5. Tags</a></h4>
+<div class="ulist">
+<ul>
+<li>
+<p>用户管理</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_根据用户名删除用户"><a class="anchor" href="#_根据用户名删除用户"></a><a class="link" href="#_根据用户名删除用户">2.86. 根据用户名删除用户</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre>DELETE /api/user/users/{userName}</pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_description_17"><a class="anchor" href="#_description_17"></a><a class="link" href="#_description_17">2.86.1. Description</a></h4>
+<div class="paragraph">
+<p>数据有可能被其他数据所引用，删除之后可能出现一些问题</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_parameters_74"><a class="anchor" href="#_parameters_74"></a><a class="link" href="#_parameters_74">2.86.2. Parameters</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.667%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Required</th>
+<th class="tableblock halign-left valign-top">Schema</th>
+<th class="tableblock halign-left valign-top">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PathParameter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">userName</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">用户名</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_responses_86"><a class="anchor" href="#_responses_86"></a><a class="link" href="#_responses_86">2.86.3. Responses</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">HTTP Code</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Schema</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">200</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">成功删除</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">204</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">400</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">用户不存在</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">401</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unauthorized</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">403</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Forbidden</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_consumes_86"><a class="anchor" href="#_consumes_86"></a><a class="link" href="#_consumes_86">2.86.4. Consumes</a></h4>
+<div class="ulist">
+<ul>
+<li>
+<p>application/json</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_produces_86"><a class="anchor" href="#_produces_86"></a><a class="link" href="#_produces_86">2.86.5. Produces</a></h4>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>/</strong></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_tags_87"><a class="anchor" href="#_tags_87"></a><a class="link" href="#_tags_87">2.86.6. Tags</a></h4>
 <div class="ulist">
 <ul>
 <li>

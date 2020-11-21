@@ -35,20 +35,19 @@ public class MongoClientDetailsService implements ClientDetailsService, ClientRe
 
     @Override
     public void addClientDetails(ClientDetails clientDetails) throws ClientAlreadyExistsException {
-        Optional<MongoOAuth2ClientDetails> mongoClientDetails = oAuth2ClientDetailsRepository.findById(clientDetails.getClientId());
-        if (mongoClientDetails.isPresent()) {
-            throw new ClientAlreadyExistsException("Client already exists: " + clientDetails.getClientId());
-        }
-        //todo: logic problem
-        saveClientDetails(mongoClientDetails.get(), clientDetails);
+        oAuth2ClientDetailsRepository.findById(clientDetails.getClientId()).ifPresent((existingEntity) -> {
+            throw new ClientAlreadyExistsException("Client already exists with ID: " + clientDetails.getClientId());
+        });
+        saveClientDetails(new MongoOAuth2ClientDetails(), clientDetails);
     }
 
     @Override
     public void updateClientDetails(ClientDetails clientDetails) throws NoSuchClientException {
-        if (!oAuth2ClientDetailsRepository.findById(clientDetails.getClientId()).isPresent()) {
-            throw new NoSuchClientException("No client found with id = " + clientDetails.getClientId());
+        Optional<MongoOAuth2ClientDetails> mongoClientDetails = oAuth2ClientDetailsRepository.findById(clientDetails.getClientId());
+        if (!mongoClientDetails.isPresent()) {
+            throw new NoSuchClientException("No client found with ID: " + clientDetails.getClientId());
         }
-        saveClientDetails(new MongoOAuth2ClientDetails(), clientDetails);
+        saveClientDetails(mongoClientDetails.get(), clientDetails);
     }
 
     @Override
