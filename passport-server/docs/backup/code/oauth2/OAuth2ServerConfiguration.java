@@ -39,9 +39,8 @@ import org.infinity.passport.spi.model.Authority;
  * Refer http://projects.spring.io/spring-security-oauth/docs/oauth2.html
  */
 @Configuration
+@Slf4j
 public class OAuth2ServerConfiguration {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(OAuth2ServerConfiguration.class);
 
     @Value("${spring.application.name}" + "_")
     private String              appName;
@@ -52,17 +51,17 @@ public class OAuth2ServerConfiguration {
 
     @Bean
     public TokenStore tokenStore() {
-        LOGGER.debug("Creating JDBC token store");
+        log.debug("Creating JDBC token store");
         JdbcTokenStore jdbcTokenStore = new JdbcTokenStore(mysqlDataSource);
-        LOGGER.debug("Created JDBC token store");
+        log.debug("Created JDBC token store");
         return jdbcTokenStore;
     }
 
     @Bean
     public AuthorizationCodeServices authorizationCodeServices() {
-        LOGGER.debug("Creating JDBC authorization code services");
+        log.debug("Creating JDBC authorization code services");
         JdbcAuthorizationCodeServices authorizationCodeServices = new JdbcAuthorizationCodeServices(mysqlDataSource);
-        LOGGER.debug("Created JDBC authorization code services");
+        log.debug("Created JDBC authorization code services");
         return authorizationCodeServices;
     }
 

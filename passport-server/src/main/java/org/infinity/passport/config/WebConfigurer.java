@@ -1,8 +1,7 @@
 package org.infinity.passport.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.infinity.passport.filter.CachingHttpHeadersFilter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.server.MimeMappings;
 import org.springframework.boot.web.server.WebServerFactory;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
@@ -28,8 +27,8 @@ import static java.net.URLDecoder.decode;
  * Web application configuration
  */
 @Configuration
+@Slf4j
 public class WebConfigurer implements ServletContextInitializer, WebServerFactoryCustomizer<WebServerFactory> {
-    private static final Logger                LOGGER = LoggerFactory.getLogger(WebConfigurer.class);
     private final        Environment           env;
     private final        ApplicationProperties applicationProperties;
 
@@ -40,13 +39,13 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
 
     @Override
     public void onStartup(ServletContext servletContext) {
-        LOGGER.info("Configuring web application");
+        log.info("Configuring web application");
         EnumSet<DispatcherType> types = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD,
                 DispatcherType.ASYNC);
         if (env.acceptsProfiles(Profiles.of(ApplicationConstants.SPRING_PROFILE_PROD))) {
             initCachingHttpHeadersFilter(servletContext, types);
         }
-        LOGGER.info("Configured web application");
+        log.info("Configured web application");
     }
 
     /**
@@ -107,13 +106,13 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
      * Initializes the caching HTTP Headers Filter.
      */
     private void initCachingHttpHeadersFilter(ServletContext servletContext, EnumSet<DispatcherType> types) {
-        LOGGER.debug("Registering Caching HTTP Headers Filter");
+        log.debug("Registering Caching HTTP Headers Filter");
         FilterRegistration.Dynamic cachingHttpHeadersFilter = servletContext.addFilter("cachingHttpHeadersFilter",
                 new CachingHttpHeadersFilter(applicationProperties));
         cachingHttpHeadersFilter.addMappingForUrlPatterns(types, true, "/i18n/*");
         cachingHttpHeadersFilter.addMappingForUrlPatterns(types, true, "/content/*");
         cachingHttpHeadersFilter.addMappingForUrlPatterns(types, true, "/app/*");
         cachingHttpHeadersFilter.setAsyncSupported(true);
-        LOGGER.debug("Registered Caching HTTP Headers Filter");
+        log.debug("Registered Caching HTTP Headers Filter");
     }
 }

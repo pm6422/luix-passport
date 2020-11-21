@@ -1,10 +1,9 @@
 package org.infinity.passport.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -24,12 +23,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
+@Slf4j
 public class TestControllerTest {
 
-    private static final Logger                LOGGER = LoggerFactory.getLogger(TestControllerTest.class);
     @Autowired
-    private              WebApplicationContext context;
-    private              MockMvc               mockMvc;
+    private WebApplicationContext context;
+    private MockMvc               mockMvc;
 
     @Before
     public void setUp() {
@@ -44,25 +43,23 @@ public class TestControllerTest {
         int threadPoolSize = 20;
         ExecutorService threadPool = Executors.newFixedThreadPool(threadPoolSize);
 
-        IntStream.range(0, requestCount).forEach(i -> {
-            threadPool.execute(() -> {
-                LOGGER.debug("Active thread count: {}", Thread.activeCount());
-                String key = UUID.randomUUID().toString().replaceAll("-", "");
-                try {
-                    this.mockMvc.perform(get("/open-api/test/threadsafe?key=" + key).accept(MediaType.APPLICATION_JSON));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            });
-        });
+        IntStream.range(0, requestCount).forEach(i -> threadPool.execute(() -> {
+            log.debug("Active thread count: {}", Thread.activeCount());
+            String key = UUID.randomUUID().toString().replaceAll("-", "");
+            try {
+                this.mockMvc.perform(get("/open-api/test/threadsafe?key=" + key).accept(MediaType.APPLICATION_JSON));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }));
 
         threadPool.shutdown();
         // Blocks until all tasks have completed execution after a shutdown request
         if (threadPool.awaitTermination(1, TimeUnit.HOURS)) {
             watch.stop();
-            LOGGER.debug("Total: {} s", watch.getTotalTimeMillis() / 1000);
-            LOGGER.debug("Mean: {} ms", watch.getTotalTimeMillis() / requestCount);
-            LOGGER.debug("TPS: {}", requestCount / (watch.getTotalTimeMillis() / 1000));
+            log.debug("Total: {} s", watch.getTotalTimeMillis() / 1000);
+            log.debug("Mean: {} ms", watch.getTotalTimeMillis() / requestCount);
+            log.debug("TPS: {}", requestCount / (watch.getTotalTimeMillis() / 1000));
         }
     }
 }

@@ -1,11 +1,10 @@
 package org.infinity.passport.repository;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.DateUtils;
 import org.infinity.passport.component.AuditEventConverter;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.PersistentAuditEvent;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.boot.actuate.audit.AuditEventRepository;
 import org.springframework.stereotype.Repository;
@@ -22,24 +21,22 @@ import java.util.Map;
  * An implementation of Spring Boot's AuditEventRepository.
  */
 @Repository
+@Slf4j
 public class CustomAuditEventRepository implements AuditEventRepository {
 
-    private static final Logger                   LOGGER                       = LoggerFactory
-            .getLogger(CustomAuditEventRepository.class);
-
-    private static final String                   AUTHORIZATION_FAILURE        = "AUTHORIZATION_FAILURE";
+    private static final String AUTHORIZATION_FAILURE = "AUTHORIZATION_FAILURE";
 
     /**
      * Should be the same as in Liquibase migration.
      */
-    protected static final int                    EVENT_DATA_COLUMN_MAX_LENGTH = 255;
+    protected static final int EVENT_DATA_COLUMN_MAX_LENGTH = 255;
 
     private final PersistenceAuditEventRepository persistenceAuditEventRepository;
 
-    private final AuditEventConverter             auditEventConverter;
+    private final AuditEventConverter auditEventConverter;
 
     public CustomAuditEventRepository(PersistenceAuditEventRepository persistenceAuditEventRepository,
-            AuditEventConverter auditEventConverter) {
+                                      AuditEventConverter auditEventConverter) {
 
         this.persistenceAuditEventRepository = persistenceAuditEventRepository;
         this.auditEventConverter = auditEventConverter;
@@ -82,7 +79,7 @@ public class CustomAuditEventRepository implements AuditEventRepository {
                     int length = value.length();
                     if (length > EVENT_DATA_COLUMN_MAX_LENGTH) {
                         value = value.substring(0, EVENT_DATA_COLUMN_MAX_LENGTH);
-                        LOGGER.warn(
+                        log.warn(
                                 "Event data for {} too long ({}) has been truncated to {}. Consider increasing column width.",
                                 entry.getKey(), length, EVENT_DATA_COLUMN_MAX_LENGTH);
                     }

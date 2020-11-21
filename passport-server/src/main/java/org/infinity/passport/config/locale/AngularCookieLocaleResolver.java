@@ -1,32 +1,29 @@
 package org.infinity.passport.config.locale;
 
-import java.util.Locale;
-import java.util.Objects;
-import java.util.TimeZone;
-
-import javax.annotation.Nonnull;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.i18n.LocaleContext;
 import org.springframework.context.i18n.TimeZoneAwareLocaleContext;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.util.WebUtils;
 
+import javax.annotation.Nonnull;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.TimeZone;
+
 /**
  * Angular cookie saved the locale with a double quote (%22en%22).
  * So the default CookieLocaleResolver#StringUtils.parseLocaleString(localePart)
  * is not able to parse the locale.
- *
+ * <p>
  * This class will check if a double quote has been added, if so it will remove it.
  */
+@Slf4j
 public class AngularCookieLocaleResolver extends CookieLocaleResolver {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(AngularCookieLocaleResolver.class);
 
     @Override
     @Nonnull
@@ -82,8 +79,8 @@ public class AngularCookieLocaleResolver extends CookieLocaleResolver {
                 if (timeZonePart != null) {
                     timeZone = StringUtils.parseTimeZoneString(timeZonePart);
                 }
-                if (LOGGER.isTraceEnabled()) {
-                    LOGGER.trace("Parsed cookie value [" + cookie.getValue() + "] into locale '" + locale + "'"
+                if (log.isTraceEnabled()) {
+                    log.trace("Parsed cookie value [" + cookie.getValue() + "] into locale '" + locale + "'"
                             + (timeZone != null ? " and time zone '" + timeZone.getID() + "'" : ""));
                 }
             }
