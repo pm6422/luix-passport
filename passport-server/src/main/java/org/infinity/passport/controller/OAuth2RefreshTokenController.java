@@ -2,12 +2,12 @@ package org.infinity.passport.controller;
 
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
+import org.infinity.passport.component.HttpHeaderCreator;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.MongoOAuth2RefreshToken;
 import org.infinity.passport.dto.MongoOAuth2RefreshTokenDTO;
 import org.infinity.passport.exception.NoDataException;
 import org.infinity.passport.repository.OAuth2RefreshTokenRepository;
-import org.infinity.passport.component.HttpHeaderCreator;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -66,8 +66,7 @@ public class OAuth2RefreshTokenController {
     @Secured({Authority.ADMIN})
     public ResponseEntity<MongoOAuth2RefreshTokenDTO> findById(
             @ApiParam(value = "刷新令牌ID", required = true) @PathVariable String id) {
-        MongoOAuth2RefreshToken entity = oAuth2RefreshTokenRepository.findById(id)
-                .orElseThrow(() -> new NoDataException(id));
+        MongoOAuth2RefreshToken entity = oAuth2RefreshTokenRepository.findById(id).orElseThrow(() -> new NoDataException(id));
         return ResponseEntity.ok(entity.asDTO());
     }
 

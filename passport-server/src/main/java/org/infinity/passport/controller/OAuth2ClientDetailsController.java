@@ -102,8 +102,7 @@ public class OAuth2ClientDetailsController {
     @Secured({Authority.ADMIN})
     public ResponseEntity<MongoOAuth2ClientDetailsDTO> findById(
             @ApiParam(value = "客户端ID", required = true) @PathVariable String id) {
-        MongoOAuth2ClientDetails entity = oAuth2ClientDetailsRepository.findById(id)
-                .orElseThrow(() -> new NoDataException(id));
+        MongoOAuth2ClientDetails entity = oAuth2ClientDetailsRepository.findById(id).orElseThrow(() -> new NoDataException(id));
         return ResponseEntity.ok(entity.asDTO());
     }
 
@@ -124,8 +123,7 @@ public class OAuth2ClientDetailsController {
     public ResponseEntity<Void> update(
             @ApiParam(value = "新的单点登录客户端信息", required = true) @Valid @RequestBody MongoOAuth2ClientDetailsDTO dto) {
         log.debug("REST request to update oauth client detail: {}", dto);
-        oAuth2ClientDetailsRepository.findById(dto.getClientId())
-                .orElseThrow(() -> new NoDataException(dto.getClientId()));
+        oAuth2ClientDetailsRepository.findById(dto.getClientId()).orElseThrow(() -> new NoDataException(dto.getClientId()));
         oAuth2ClientDetailsRepository.save(MongoOAuth2ClientDetails.of(dto));
         return ResponseEntity.ok()
                 .headers(httpHeaderCreator.createSuccessHeader("notification.oauth2.client.updated", dto.getClientId()))

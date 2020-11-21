@@ -32,7 +32,8 @@ public class OAuth2AuthorizationCodeController {
     private final OAuth2AuthorizationCodeRepository oAuth2AuthorizationCodeRepository;
     private final HttpHeaderCreator                 httpHeaderCreator;
 
-    public OAuth2AuthorizationCodeController(OAuth2AuthorizationCodeRepository oAuth2AuthorizationCodeRepository, HttpHeaderCreator httpHeaderCreator) {
+    public OAuth2AuthorizationCodeController(OAuth2AuthorizationCodeRepository oAuth2AuthorizationCodeRepository,
+                                             HttpHeaderCreator httpHeaderCreator) {
         this.oAuth2AuthorizationCodeRepository = oAuth2AuthorizationCodeRepository;
         this.httpHeaderCreator = httpHeaderCreator;
     }
@@ -58,8 +59,7 @@ public class OAuth2AuthorizationCodeController {
         MongoOAuth2AuthorizationCode probe = new MongoOAuth2AuthorizationCode();
         probe.setId(authorizationCodeId);
         probe.setCode(code);
-        Page<MongoOAuth2AuthorizationCode> codes = oAuth2AuthorizationCodeRepository.findAll(Example.of(probe),
-                pageable);
+        Page<MongoOAuth2AuthorizationCode> codes = oAuth2AuthorizationCodeRepository.findAll(Example.of(probe), pageable);
         List<MongoOAuth2AuthorizationCodeDTO> DTOs = codes.getContent().stream().map(MongoOAuth2AuthorizationCode::asDTO)
                 .collect(Collectors.toList());
         HttpHeaders headers = generatePageHeaders(codes, "/api/oauth2-authorization-code/codes");
@@ -73,8 +73,7 @@ public class OAuth2AuthorizationCodeController {
     @Secured({Authority.ADMIN})
     public ResponseEntity<MongoOAuth2AuthorizationCodeDTO> findById(
             @ApiParam(value = "授权码信息ID", required = true) @PathVariable String id) {
-        MongoOAuth2AuthorizationCode entity = oAuth2AuthorizationCodeRepository.findById(id)
-                .orElseThrow(() -> new NoDataException(id));
+        MongoOAuth2AuthorizationCode entity = oAuth2AuthorizationCodeRepository.findById(id).orElseThrow(() -> new NoDataException(id));
         return ResponseEntity.ok(entity.asDTO());
     }
 

@@ -41,7 +41,9 @@ public class AppAuthorityController {
     private final AppAuthorityService    appAuthorityService;
     private final HttpHeaderCreator      httpHeaderCreator;
 
-    public AppAuthorityController(AppAuthorityRepository appAuthorityRepository, AppAuthorityService appAuthorityService, HttpHeaderCreator httpHeaderCreator) {
+    public AppAuthorityController(AppAuthorityRepository appAuthorityRepository,
+                                  AppAuthorityService appAuthorityService,
+                                  HttpHeaderCreator httpHeaderCreator) {
         this.appAuthorityRepository = appAuthorityRepository;
         this.appAuthorityService = appAuthorityService;
         this.httpHeaderCreator = httpHeaderCreator;
@@ -81,8 +83,7 @@ public class AppAuthorityController {
             throws URISyntaxException {
         Page<AppAuthority> appAuthorities = appAuthorityService.findByAppNameAndAuthorityNameCombinations(pageable,
                 appName, authorityName);
-        List<AppAuthorityDTO> DTOs = appAuthorities.getContent().stream().map(AppAuthority::asDTO)
-                .collect(Collectors.toList());
+        List<AppAuthorityDTO> DTOs = appAuthorities.getContent().stream().map(AppAuthority::asDTO).collect(Collectors.toList());
         HttpHeaders headers = generatePageHeaders(appAuthorities, "/api/app-authority/app-authorities");
         return ResponseEntity.ok().headers(headers).body(DTOs);
     }

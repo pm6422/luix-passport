@@ -3,6 +3,7 @@ package org.infinity.passport.controller;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.infinity.passport.component.HttpHeaderCreator;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.User;
 import org.infinity.passport.domain.UserAuthority;
@@ -18,7 +19,6 @@ import org.infinity.passport.repository.UserRepository;
 import org.infinity.passport.security.AjaxLogoutSuccessHandler;
 import org.infinity.passport.service.MailService;
 import org.infinity.passport.service.UserService;
-import org.infinity.passport.component.HttpHeaderCreator;
 import org.infinity.passport.utils.RandomUtils;
 import org.infinity.passport.utils.SecurityUtils;
 import org.springframework.data.domain.Page;
@@ -59,7 +59,13 @@ public class UserController {
     private final        HttpHeaderCreator          httpHeaderCreator;
     private static final String                     DEFAULT_PASSWORD = "123456";
 
-    public UserController(UserRepository userRepository, UserProfilePhotoRepository userProfilePhotoRepository, UserAuthorityRepository userAuthorityRepository, UserService userService, MailService mailService, AjaxLogoutSuccessHandler ajaxLogoutSuccessHandler, HttpHeaderCreator httpHeaderCreator) {
+    public UserController(UserRepository userRepository,
+                          UserProfilePhotoRepository userProfilePhotoRepository,
+                          UserAuthorityRepository userAuthorityRepository,
+                          UserService userService,
+                          MailService mailService,
+                          AjaxLogoutSuccessHandler ajaxLogoutSuccessHandler,
+                          HttpHeaderCreator httpHeaderCreator) {
         this.userRepository = userRepository;
         this.userProfilePhotoRepository = userProfilePhotoRepository;
         this.userAuthorityRepository = userAuthorityRepository;

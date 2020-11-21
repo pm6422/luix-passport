@@ -90,8 +90,7 @@ public class AppController {
     public ResponseEntity<AppDTO> findById(@ApiParam(value = "应用名称", required = true) @PathVariable String name) {
         App app = appRepository.findById(name).orElseThrow(() -> new NoDataException(name));
         List<AppAuthority> appAuthorities = appAuthorityRepository.findByAppName(name);
-        Set<String> authorities = appAuthorities.stream().map(AppAuthority::getAuthorityName)
-                .collect(Collectors.toSet());
+        Set<String> authorities = appAuthorities.stream().map(AppAuthority::getAuthorityName).collect(Collectors.toSet());
         return ResponseEntity.ok(new AppDTO(name, app.getEnabled(), authorities));
     }
 

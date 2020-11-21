@@ -47,7 +47,11 @@ public class DictItemController {
 
     private final HttpHeaderCreator httpHeaderCreator;
 
-    public DictItemController(DictRepository dictRepository, DictService dictService, DictItemRepository dictItemRepository, DictItemService dictItemService, HttpHeaderCreator httpHeaderCreator) {
+    public DictItemController(DictRepository dictRepository,
+                              DictService dictService,
+                              DictItemRepository dictItemRepository,
+                              DictItemService dictItemService,
+                              HttpHeaderCreator httpHeaderCreator) {
         this.dictRepository = dictRepository;
         this.dictService = dictService;
         this.dictItemRepository = dictItemRepository;

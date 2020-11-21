@@ -126,8 +126,7 @@ public class AccountController {
         if (CollectionUtils.isEmpty(userAuthorities)) {
             throw new NoAuthorityException(SecurityUtils.getCurrentUserName());
         }
-        Set<String> authorities = userAuthorities.stream().map(UserAuthority::getAuthorityName)
-                .collect(Collectors.toSet());
+        Set<String> authorities = userAuthorities.stream().map(UserAuthority::getAuthorityName).collect(Collectors.toSet());
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-User-Signed-In", "true");
         return ResponseEntity.ok().headers(headers).body(new UserDTO(user, authorities));
@@ -248,7 +247,11 @@ public class AccountController {
             @ApiParam(value = "电子邮件", required = true) @RequestBody String email, HttpServletRequest request) {
         User user = userService.requestPasswordReset(email, RandomUtils.generateResetKey()).orElseThrow(
                 () -> new FieldValidationException("email", "email", email, "error.email.not.exist", email));
-        String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
+        String baseUrl = request.getScheme()
+                + "://"
+                + request.getServerName()
+                + ":"
+                + request.getServerPort()
                 + request.getContextPath();
         mailService.sendPasswordResetMail(user, baseUrl);
         return ResponseEntity.ok()

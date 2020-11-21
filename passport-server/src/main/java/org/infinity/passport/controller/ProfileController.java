@@ -36,7 +36,6 @@ public class ProfileController {
     private String getRibbonEnv() {
         String[] activeProfiles = env.getActiveProfiles();
         String[] displayOnActiveProfiles = applicationProperties.getRibbon().getDisplayOnActiveProfiles();
-
         if (displayOnActiveProfiles == null) {
             return null;
         }

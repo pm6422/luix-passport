@@ -4,6 +4,7 @@ import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.infinity.passport.component.HttpHeaderCreator;
 import org.infinity.passport.domain.AdminMenu;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.dto.AdminMenuDTO;
@@ -11,7 +12,6 @@ import org.infinity.passport.exception.FieldValidationException;
 import org.infinity.passport.exception.NoDataException;
 import org.infinity.passport.repository.AdminMenuRepository;
 import org.infinity.passport.service.AdminMenuService;
-import org.infinity.passport.component.HttpHeaderCreator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -46,7 +46,9 @@ public class AdminMenuController {
     private final AdminMenuService    adminMenuService;
     private final HttpHeaderCreator   httpHeaderCreator;
 
-    public AdminMenuController(AdminMenuRepository adminMenuRepository, AdminMenuService adminMenuService, HttpHeaderCreator httpHeaderCreator) {
+    public AdminMenuController(AdminMenuRepository adminMenuRepository,
+                               AdminMenuService adminMenuService,
+                               HttpHeaderCreator httpHeaderCreator) {
         this.adminMenuRepository = adminMenuRepository;
         this.adminMenuService = adminMenuService;
         this.httpHeaderCreator = httpHeaderCreator;
@@ -118,7 +120,6 @@ public class AdminMenuController {
             @ApiParam(value = "新的菜单信息", required = true) @Valid @RequestBody AdminMenuDTO dto) {
         log.debug("REST request to update admin menu: {}", dto);
         adminMenuRepository.findById(dto.getId()).orElseThrow(() -> new NoDataException(dto.getId()));
-
         adminMenuRepository.save(AdminMenu.of(dto));
         return ResponseEntity.ok().headers(
                 httpHeaderCreator.createSuccessHeader("notification.admin.menu.updated", dto.getName()))
@@ -143,14 +144,12 @@ public class AdminMenuController {
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功导入")})
     @PostMapping(value = "/api/admin-menu/menus/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Secured({Authority.ADMIN})
-    public void importData(@ApiParam(value = "文件", required = true) @RequestPart MultipartFile file)
-            throws IOException {
+    public void importData(@ApiParam(value = "文件", required = true) @RequestPart MultipartFile file) throws IOException {
         List<String> lines = IOUtils.readLines(file.getInputStream(), StandardCharsets.UTF_8);
         List<AdminMenu> list = new ArrayList<>();
         for (String line : lines) {
             if (StringUtils.isNotEmpty(line)) {
                 String[] lineParts = line.split("\t");
-
                 AdminMenu entity = new AdminMenu(lineParts[0], lineParts[1], lineParts[2],
                         Integer.parseInt(lineParts[3]), lineParts[4], Integer.parseInt(lineParts[5]), null);
                 list.add(entity);
