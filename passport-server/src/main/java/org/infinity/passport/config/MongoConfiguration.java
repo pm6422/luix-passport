@@ -89,7 +89,7 @@ public class MongoConfiguration {
 
     @EventListener(ApplicationReadyEvent.class)
     public void initIndicesAfterStartup() {
-        if (mongoMappingContext instanceof MongoMappingContext) {
+        if (mongoMappingContext != null) {
             for (BasicMongoPersistentEntity<?> persistentEntity : mongoMappingContext.getPersistentEntities()) {
                 Class<?> clazz = persistentEntity.getType();
                 if (clazz.isAnnotationPresent(Document.class)) {

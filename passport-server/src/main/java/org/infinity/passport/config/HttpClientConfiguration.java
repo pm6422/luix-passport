@@ -75,7 +75,7 @@ public class HttpClientConfiguration {
         return restTemplate;
     }
 
-    class SecurityHeaderClientHttpRequestInterceptor implements ClientHttpRequestInterceptor {
+    static class SecurityHeaderClientHttpRequestInterceptor implements ClientHttpRequestInterceptor {
         @Override
         public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution)
                 throws IOException {

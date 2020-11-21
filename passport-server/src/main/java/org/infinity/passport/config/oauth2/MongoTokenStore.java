@@ -4,7 +4,6 @@ import org.infinity.passport.domain.MongoOAuth2AccessToken;
 import org.infinity.passport.domain.MongoOAuth2RefreshToken;
 import org.infinity.passport.repository.OAuth2AccessTokenRepository;
 import org.infinity.passport.repository.OAuth2RefreshTokenRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2RefreshToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -28,13 +27,16 @@ import java.util.Objects;
 @Component
 public class MongoTokenStore implements TokenStore {
 
-    @Autowired
-    private OAuth2AccessTokenRepository oAuth2AccessTokenRepository;
+    private final OAuth2AccessTokenRepository oAuth2AccessTokenRepository;
 
-    @Autowired
-    private OAuth2RefreshTokenRepository oAuth2RefreshTokenRepository;
+    private final OAuth2RefreshTokenRepository oAuth2RefreshTokenRepository;
 
-    private AuthenticationKeyGenerator authenticationKeyGenerator = new DefaultAuthenticationKeyGenerator();
+    private final AuthenticationKeyGenerator authenticationKeyGenerator = new DefaultAuthenticationKeyGenerator();
+
+    public MongoTokenStore(OAuth2AccessTokenRepository oAuth2AccessTokenRepository, OAuth2RefreshTokenRepository oAuth2RefreshTokenRepository) {
+        this.oAuth2AccessTokenRepository = oAuth2AccessTokenRepository;
+        this.oAuth2RefreshTokenRepository = oAuth2RefreshTokenRepository;
+    }
 
     @Override
     public OAuth2Authentication readAuthentication(OAuth2AccessToken token) {
@@ -62,9 +64,7 @@ public class MongoTokenStore implements TokenStore {
 
     @Override
     public void removeAccessToken(OAuth2AccessToken token) {
-        oAuth2AccessTokenRepository.findById(token.getValue()).ifPresent((existingToken) -> {
-            oAuth2AccessTokenRepository.delete(existingToken);
-        });
+        oAuth2AccessTokenRepository.findById(token.getValue()).ifPresent(oAuth2AccessTokenRepository::delete);
     }
 
     @Override
@@ -86,9 +86,7 @@ public class MongoTokenStore implements TokenStore {
 
     @Override
     public void removeRefreshToken(OAuth2RefreshToken token) {
-        oAuth2RefreshTokenRepository.findById(token.getValue()).ifPresent((existingToken) -> {
-            oAuth2RefreshTokenRepository.delete(existingToken);
-        });
+        oAuth2RefreshTokenRepository.findById(token.getValue()).ifPresent(oAuth2RefreshTokenRepository::delete);
     }
 
     @Override

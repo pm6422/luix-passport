@@ -1,28 +1,28 @@
 package org.infinity.passport.config.oauth2;
 
+import lombok.extern.slf4j.Slf4j;
+import org.infinity.passport.domain.MongoOAuth2Approval;
+import org.infinity.passport.repository.OAuth2ApprovalRepository;
+import org.springframework.security.oauth2.provider.approval.Approval;
+import org.springframework.security.oauth2.provider.approval.ApprovalStore;
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.infinity.passport.domain.MongoOAuth2Approval;
-import org.infinity.passport.repository.OAuth2ApprovalRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.oauth2.provider.approval.Approval;
-import org.springframework.security.oauth2.provider.approval.ApprovalStore;
-import org.springframework.stereotype.Component;
-
 @Component
+@Slf4j
 public class MongoApprovalStore implements ApprovalStore {
 
-    private final Log                logger                    = LogFactory.getLog(getClass());
+    private final OAuth2ApprovalRepository oAuth2ApprovalRepository;
 
-    @Autowired
-    private OAuth2ApprovalRepository oAuth2ApprovalRepository;
+    private boolean handleRevocationsAsExpiry = false;
 
-    private boolean                  handleRevocationsAsExpiry = false;
+    public MongoApprovalStore(OAuth2ApprovalRepository oAuth2ApprovalRepository) {
+        this.oAuth2ApprovalRepository = oAuth2ApprovalRepository;
+    }
 
     public void setHandleRevocationsAsExpiry(boolean handleRevocationsAsExpiry) {
         this.handleRevocationsAsExpiry = handleRevocationsAsExpiry;
@@ -30,7 +30,7 @@ public class MongoApprovalStore implements ApprovalStore {
 
     @Override
     public boolean addApprovals(Collection<Approval> approvals) {
-        logger.debug(String.format("adding approvals: [%s]", approvals));
+        log.debug(String.format("adding approvals: [%s]", approvals));
 
         for (final Approval approval : approvals) {
             List<MongoOAuth2Approval> mongoDBApprovals = this.oAuth2ApprovalRepository
@@ -48,7 +48,7 @@ public class MongoApprovalStore implements ApprovalStore {
     }
 
     private void updateApproval(final MongoOAuth2Approval mongoDBApproval, final Approval approval) {
-        logger.debug(String.format("refreshing approval: [%s]", approval));
+        log.debug(String.format("refreshing approval: [%s]", approval));
 
         mongoDBApproval.setExpiresAt(approval.getExpiresAt());
         mongoDBApproval
@@ -63,7 +63,7 @@ public class MongoApprovalStore implements ApprovalStore {
 
     @Override
     public boolean revokeApprovals(Collection<Approval> approvals) {
-        logger.debug(String.format("Revoking approvals: [%s]", approvals));
+        log.debug(String.format("Revoking approvals: [%s]", approvals));
         boolean success = true;
 
         for (final Approval approval : approvals) {

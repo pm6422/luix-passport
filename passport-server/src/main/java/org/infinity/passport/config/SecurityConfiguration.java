@@ -1,6 +1,5 @@
 package org.infinity.passport.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -16,17 +15,19 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * If any class extends WebSecurityConfigurerAdapter, the auto-configuration of spring security will don't work.
- * 
+ * <p>
  * Refer
  * https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-Security-2.0
- *
  */
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private UserDetailsService userDetailsService;
+    private final UserDetailsService userDetailsService;
+
+    public SecurityConfiguration(UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
 
     @Bean
     @Override
@@ -48,13 +49,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) {
         // @formatter:off
         web
-            .ignoring()
-            .antMatchers(HttpMethod.OPTIONS, "/**")
-            .antMatchers("/app/**/*.{js,html}")
-            .antMatchers("/content/**")
-            .antMatchers("/open-api/**")
-            .antMatchers("/favicon.png") // Note: it will cause authorization failure if loss this statement.
-            .antMatchers("/swagger-ui/swagger-ui.html");
+                .ignoring()
+                .antMatchers(HttpMethod.OPTIONS, "/**")
+                .antMatchers("/app/**/*.{js,html}")
+                .antMatchers("/content/**")
+                .antMatchers("/open-api/**")
+                .antMatchers("/favicon.png") // Note: it will cause authorization failure if loss this statement.
+                .antMatchers("/swagger-ui/swagger-ui.html");
         // @formatter:on
     }
 

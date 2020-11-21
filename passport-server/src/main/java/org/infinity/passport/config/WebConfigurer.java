@@ -3,7 +3,6 @@ package org.infinity.passport.config;
 import org.infinity.passport.filter.CachingHttpHeadersFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.server.MimeMappings;
 import org.springframework.boot.web.server.WebServerFactory;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
@@ -31,10 +30,13 @@ import static java.net.URLDecoder.decode;
 @Configuration
 public class WebConfigurer implements ServletContextInitializer, WebServerFactoryCustomizer<WebServerFactory> {
     private static final Logger                LOGGER = LoggerFactory.getLogger(WebConfigurer.class);
-    @Autowired
-    private              Environment           env;
-    @Autowired
-    private              ApplicationProperties applicationProperties;
+    private final        Environment           env;
+    private final        ApplicationProperties applicationProperties;
+
+    public WebConfigurer(Environment env, ApplicationProperties applicationProperties) {
+        this.env = env;
+        this.applicationProperties = applicationProperties;
+    }
 
     @Override
     public void onStartup(ServletContext servletContext) {

@@ -1,10 +1,8 @@
 package org.infinity.passport.config.oauth2;
 
+import lombok.extern.slf4j.Slf4j;
 import org.infinity.passport.domain.MongoOAuth2ClientDetails;
 import org.infinity.passport.repository.OAuth2ClientDetailsRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.*;
 import org.springframework.security.oauth2.provider.client.BaseClientDetails;
@@ -15,31 +13,33 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class MongoClientDetailsService implements ClientDetailsService, ClientRegistrationService {
 
-    private static final Logger                        LOGGER = LoggerFactory.getLogger(MongoClientDetailsService.class);
-    @Autowired
-    private              PasswordEncoder               passwordEncoder;
-    @Autowired
-    private              OAuth2ClientDetailsRepository oAuth2ClientDetailsRepository;
+    private final PasswordEncoder               passwordEncoder;
+    private final OAuth2ClientDetailsRepository oAuth2ClientDetailsRepository;
+
+    public MongoClientDetailsService(PasswordEncoder passwordEncoder, OAuth2ClientDetailsRepository oAuth2ClientDetailsRepository) {
+        this.passwordEncoder = passwordEncoder;
+        this.oAuth2ClientDetailsRepository = oAuth2ClientDetailsRepository;
+    }
 
     @Override
     public ClientDetails loadClientByClientId(String clientId) throws ClientRegistrationException {
-        MongoOAuth2ClientDetails mongoClientDetails = oAuth2ClientDetailsRepository.findById(clientId)
+        return oAuth2ClientDetailsRepository.findById(clientId)
                 .orElseThrow(() -> {
-                    LOGGER.error("No client with requested id: " + clientId);
+                    log.error("No client with requested id: " + clientId);
                     return new NoSuchClientException("No client with requested id: " + clientId);
                 });
-        return mongoClientDetails;
     }
 
     @Override
     public void addClientDetails(ClientDetails clientDetails) throws ClientAlreadyExistsException {
-        Optional<MongoOAuth2ClientDetails> mongoClientDetails = oAuth2ClientDetailsRepository
-                .findById(clientDetails.getClientId());
+        Optional<MongoOAuth2ClientDetails> mongoClientDetails = oAuth2ClientDetailsRepository.findById(clientDetails.getClientId());
         if (mongoClientDetails.isPresent()) {
             throw new ClientAlreadyExistsException("Client already exists: " + clientDetails.getClientId());
         }
+        //todo: logic problem
         saveClientDetails(mongoClientDetails.get(), clientDetails);
     }
 

@@ -13,7 +13,6 @@ public class OAuth2GrantedAuthorityTokenReadConverter implements Converter<Docum
 
     @Override
     public GrantedAuthority convert(Document source) {
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority((String) source.get("role"));
-        return authority;
+        return new SimpleGrantedAuthority((String) source.get("role"));
     }
 }

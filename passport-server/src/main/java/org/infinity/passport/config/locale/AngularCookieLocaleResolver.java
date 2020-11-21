@@ -1,6 +1,7 @@
 package org.infinity.passport.config.locale;
 
 import java.util.Locale;
+import java.util.Objects;
 import java.util.TimeZone;
 
 import javax.servlet.http.Cookie;
@@ -58,7 +59,7 @@ public class AngularCookieLocaleResolver extends CookieLocaleResolver {
     private void parseLocaleCookieIfNecessary(HttpServletRequest request) {
         if (request.getAttribute(LOCALE_REQUEST_ATTRIBUTE_NAME) == null) {
             // Retrieve and parse cookie value.
-            Cookie cookie = WebUtils.getCookie(request, getCookieName());
+            Cookie cookie = WebUtils.getCookie(request, Objects.requireNonNull(getCookieName()));
             Locale locale = null;
             TimeZone timeZone = null;
             if (cookie != null) {

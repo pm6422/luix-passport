@@ -5,7 +5,6 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.infinity.passport.annotation.ExecutionSwitch;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
@@ -20,8 +19,11 @@ import static org.springframework.core.annotation.AnnotationUtils.getAnnotation;
 @Configuration
 public class ExecutionSwitchAspect {
 
-    @Autowired
-    private Environment env;
+    private final Environment env;
+
+    public ExecutionSwitchAspect(Environment env) {
+        this.env = env;
+    }
 
     @Around(ExecutionSwitch.AROUND)
     public void switchAround(ProceedingJoinPoint joinPoint) throws Throwable {
@@ -35,7 +37,7 @@ public class ExecutionSwitchAspect {
             // Proceed to execute method
             joinPoint.proceed();
         } else {
-            if (env.getProperty(sw.on()).equals("true")) {
+            if ("true".equals(env.getProperty(sw.on()))) {
                 // Proceed to execute method
                 joinPoint.proceed();
             }

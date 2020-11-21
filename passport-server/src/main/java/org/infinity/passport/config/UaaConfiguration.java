@@ -5,7 +5,6 @@ import org.infinity.passport.config.oauth2.MongoAuthorizationCodeServices;
 import org.infinity.passport.config.oauth2.MongoClientDetailsService;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.security.AjaxLogoutSuccessHandler;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -30,6 +29,7 @@ import org.zalando.problem.spring.web.advice.security.SecurityProblemSupport;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.Objects;
 
 /**
  * OAuth 2.0 Grants list below
@@ -38,8 +38,8 @@ import javax.servlet.http.HttpSession;
  * - Refresh token grant
  * - Client credentials grant
  * - Implicit grant
- * 
- *
+ * <p>
+ * <p>
  * Refer
  * https://github.com/spring-projects/spring-security-oauth/issues/1676
  * https://spring.io/guides/tutorials/spring-security-and-angular-js/#_sso_with_oauth2_angular_js_and_spring_security_part_v
@@ -68,42 +68,45 @@ public class UaaConfiguration {
     @Import(SecurityProblemSupport.class)
     protected static class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
 
-        @Autowired
-        private SecurityProblemSupport   problemSupport;
+        private final SecurityProblemSupport problemSupport;
 
-        @Autowired
-        private AjaxLogoutSuccessHandler ajaxLogoutSuccessHandler;
+        private final AjaxLogoutSuccessHandler ajaxLogoutSuccessHandler;
+
+        public ResourceServerConfiguration(SecurityProblemSupport problemSupport, AjaxLogoutSuccessHandler ajaxLogoutSuccessHandler) {
+            this.problemSupport = problemSupport;
+            this.ajaxLogoutSuccessHandler = ajaxLogoutSuccessHandler;
+        }
 
         @Override
         public void configure(HttpSecurity http) throws Exception {
             // @formatter:off
             http
-                .exceptionHandling()
-                .accessDeniedHandler(problemSupport)
-                .authenticationEntryPoint((request, response, authException) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Access Denied"))
-            .and()
-                .formLogin() // formLogin should be explicitly declared here
-            .and()
-                .sessionManagement() // For authorize.html and AuthorizationEndpoint.java refer @SessionAttributes
-                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-            .and()
-                .logout() // Logout is handled by LogoutFilter
-                .logoutUrl("/api/account/logout") // For the logout behavior of OAuth2 password grant
-                .logoutSuccessHandler(ajaxLogoutSuccessHandler) // It need to delete access token if u want to logout other clients simultaneously
-            .and()
-                .headers()
-                .frameOptions()
-                .disable()
-            .and()
-                .authorizeRequests()
-                // Do not need authentication
-                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .requestMatchers(EndpointRequest.to("health")).permitAll()
-                // Need authentication
-                .antMatchers("/api/**").authenticated()
-                // Need 'DEVELOPER' authority
-                .antMatchers("/v2/api-docs/**").hasAuthority(Authority.DEVELOPER)
-                .requestMatchers(EndpointRequest.toAnyEndpoint()).hasAuthority(Authority.DEVELOPER);
+                    .exceptionHandling()
+                    .accessDeniedHandler(problemSupport)
+                    .authenticationEntryPoint((request, response, authException) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Access Denied"))
+                    .and()
+                    .formLogin() // formLogin should be explicitly declared here
+                    .and()
+                    .sessionManagement() // For authorize.html and AuthorizationEndpoint.java refer @SessionAttributes
+                    .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                    .and()
+                    .logout() // Logout is handled by LogoutFilter
+                    .logoutUrl("/api/account/logout") // For the logout behavior of OAuth2 password grant
+                    .logoutSuccessHandler(ajaxLogoutSuccessHandler) // It need to delete access token if u want to logout other clients simultaneously
+                    .and()
+                    .headers()
+                    .frameOptions()
+                    .disable()
+                    .and()
+                    .authorizeRequests()
+                    // Do not need authentication
+                    .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                    .requestMatchers(EndpointRequest.to("health")).permitAll()
+                    // Need authentication
+                    .antMatchers("/api/**").authenticated()
+                    // Need 'DEVELOPER' authority
+                    .antMatchers("/v2/api-docs/**").hasAuthority(Authority.DEVELOPER)
+                    .requestMatchers(EndpointRequest.toAnyEndpoint()).hasAuthority(Authority.DEVELOPER);
             // @formatter:on
         }
     }
@@ -116,23 +119,31 @@ public class UaaConfiguration {
     @EnableAuthorizationServer
     protected static class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
 
-        @Autowired
-        private MongoClientDetailsService      clientDetailsService;
+        private final MongoClientDetailsService clientDetailsService;
 
-        @Autowired
-        private AuthenticationManager          authenticationManager;
+        private final AuthenticationManager authenticationManager;
 
-        @Autowired
-        private TokenStore                     tokenStore;
+        private final TokenStore tokenStore;
 
-        @Autowired
-        private MongoApprovalStore             approvalStore;
+        private final MongoApprovalStore approvalStore;
 
-        @Autowired
-        private UserDetailsService             userDetailsService;
+        private final UserDetailsService userDetailsService;
 
-        @Autowired
-        private MongoAuthorizationCodeServices authorizationCodeServices;
+        private final MongoAuthorizationCodeServices authorizationCodeServices;
+
+        public AuthorizationServerConfiguration(MongoClientDetailsService clientDetailsService,
+                                                AuthenticationManager authenticationManager,
+                                                TokenStore tokenStore,
+                                                MongoApprovalStore approvalStore,
+                                                UserDetailsService userDetailsService,
+                                                MongoAuthorizationCodeServices authorizationCodeServices) {
+            this.clientDetailsService = clientDetailsService;
+            this.authenticationManager = authenticationManager;
+            this.tokenStore = tokenStore;
+            this.approvalStore = approvalStore;
+            this.userDetailsService = userDetailsService;
+            this.authorizationCodeServices = authorizationCodeServices;
+        }
 
         @Override
         public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
@@ -145,11 +156,11 @@ public class UaaConfiguration {
             // 如果没有userDetailsService在使用refresh token刷新access token时报错
             // @formatter:off
             endpoints
-                .authenticationManager(authenticationManager)
-                .tokenStore(tokenStore)
-                .approvalStore(approvalStore)
-                .userDetailsService(userDetailsService)
-                .authorizationCodeServices(authorizationCodeServices);
+                    .authenticationManager(authenticationManager)
+                    .tokenStore(tokenStore)
+                    .approvalStore(approvalStore)
+                    .userDetailsService(userDetailsService)
+                    .authorizationCodeServices(authorizationCodeServices);
             // @formatter:on
             // Use to logout
             endpoints.addInterceptor(new HandlerInterceptorAdapter() {
@@ -159,7 +170,7 @@ public class UaaConfiguration {
                     if (modelAndView != null && modelAndView.getView() instanceof RedirectView) {
                         RedirectView redirect = (RedirectView) modelAndView.getView();
                         String url = redirect.getUrl();
-                        if (url.contains("code=") || url.contains("error=")) {
+                        if (Objects.requireNonNull(url).contains("code=") || url.contains("error=")) {
                             HttpSession session = request.getSession(false);
                             if (session != null) {
                                 session.invalidate();
