@@ -10,7 +10,6 @@ import org.infinity.passport.domain.UserAuthority;
 import org.infinity.passport.domain.UserProfilePhoto;
 import org.infinity.passport.dto.ManagedUserDTO;
 import org.infinity.passport.dto.UserDTO;
-import org.infinity.passport.exception.FieldValidationException;
 import org.infinity.passport.exception.NoAuthorityException;
 import org.infinity.passport.exception.NoDataException;
 import org.infinity.passport.repository.UserAuthorityRepository;
@@ -83,21 +82,6 @@ public class UserController {
     public ResponseEntity<String> create(@ApiParam(value = "用户信息", required = true) @Valid @RequestBody UserDTO dto,
                                          HttpServletRequest request) {
         log.debug("REST request to create user: {}", dto);
-        userService.findOneByUserName(dto.getUserName()).ifPresent((existingEntity) -> {
-            throw new FieldValidationException("userDTO", "userName", dto.getUserName(),
-                    "error.registration.user.exists", dto.getUserName());
-        });
-
-        userService.findOneByEmail(dto.getEmail()).ifPresent((existingEntity) -> {
-            throw new FieldValidationException("userDTO", "email", dto.getEmail(),
-                    "error.registration.email.exists", dto.getEmail());
-        });
-
-        userService.findOneByMobileNo(dto.getMobileNo()).ifPresent((existingEntity) -> {
-            throw new FieldValidationException("userDTO", "mobileNo", dto.getMobileNo(),
-                    "error.registration.mobile.exists", dto.getMobileNo());
-        });
-
         User newUser = userService.insert(dto.getUserName(), DEFAULT_PASSWORD, dto.getFirstName(), dto.getLastName(),
                 dto.getEmail().toLowerCase(), dto.getMobileNo(), RandomUtils.generateActivationKey(),
                 dto.getActivated(), dto.getEnabled(), dto.getRemarks(), RandomUtils.generateResetKey(),

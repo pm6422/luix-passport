@@ -1,6 +1,5 @@
 package org.infinity.passport.service.impl;
 
-import org.infinity.passport.domain.AdminMenu;
 import org.infinity.passport.domain.Dict;
 import org.infinity.passport.repository.DictRepository;
 import org.infinity.passport.service.DictService;

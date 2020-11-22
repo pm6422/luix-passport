@@ -28,9 +28,7 @@ public class AppServiceImpl implements AppService {
     public App insert(String name, Boolean enabled, Set<String> authorityNames) {
         App newApp = new App(name, enabled);
         appRepository.save(newApp);
-
         authorityNames.forEach(authorityName -> appAuthorityRepository.insert(new AppAuthority(newApp.getName(), authorityName)));
-
         log.debug("Created Information for app: {}", newApp);
         return newApp;
     }

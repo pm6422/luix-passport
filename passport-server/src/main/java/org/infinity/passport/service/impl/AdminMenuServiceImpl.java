@@ -2,7 +2,6 @@ package org.infinity.passport.service.impl;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.infinity.passport.domain.AdminMenu;
-import org.infinity.passport.domain.AppAuthority;
 import org.infinity.passport.dto.AdminMenuDTO;
 import org.infinity.passport.entity.MenuTree;
 import org.infinity.passport.entity.MenuTreeNode;
@@ -26,7 +25,8 @@ public class AdminMenuServiceImpl implements AdminMenuService {
     private final AdminMenuRepository       adminMenuRepository;
     private final AuthorityAdminMenuService authorityAdminMenuService;
 
-    public AdminMenuServiceImpl(AdminMenuRepository adminMenuRepository, AuthorityAdminMenuService authorityAdminMenuService) {
+    public AdminMenuServiceImpl(AdminMenuRepository adminMenuRepository,
+                                AuthorityAdminMenuService authorityAdminMenuService) {
         this.adminMenuRepository = adminMenuRepository;
         this.authorityAdminMenuService = authorityAdminMenuService;
     }
@@ -59,11 +59,11 @@ public class AdminMenuServiceImpl implements AdminMenuService {
         }
 
         Set<String> adminMenuIds = authorityAdminMenuService.findAdminMenuIdSetByAuthorityNameIn(enabledAuthorities);
-        if (CollectionUtils.isNotEmpty(adminMenuIds)) {
-            List<AdminMenu> adminMenus = adminMenuRepository.findByAppNameAndIdIn(appName, adminMenuIds);
-            return this.groupAdminMenu(adminMenus);
+        if (CollectionUtils.isEmpty(adminMenuIds)) {
+            return Collections.emptyList();
         }
-        return Collections.emptyList();
+        List<AdminMenu> adminMenus = adminMenuRepository.findByAppNameAndIdIn(appName, adminMenuIds);
+        return this.groupAdminMenu(adminMenus);
     }
 
     private List<MenuTreeNode> groupAdminMenuDTO(List<AdminMenuDTO> menus) {
