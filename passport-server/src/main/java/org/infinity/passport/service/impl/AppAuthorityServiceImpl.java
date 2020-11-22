@@ -1,9 +1,10 @@
 package org.infinity.passport.service.impl;
 
-import org.apache.commons.lang3.StringUtils;
 import org.infinity.passport.domain.AppAuthority;
 import org.infinity.passport.repository.AppAuthorityRepository;
 import org.infinity.passport.service.AppAuthorityService;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -18,16 +19,10 @@ public class AppAuthorityServiceImpl implements AppAuthorityService {
     }
 
     @Override
-    public Page<AppAuthority> findByAppNameAndAuthorityNameCombinations(Pageable pageable, String appName,
-                                                                        String authorityName) {
-        if (StringUtils.isEmpty(appName) && StringUtils.isEmpty(authorityName)) {
-            return appAuthorityRepository.findAll(pageable);
-        } else if (StringUtils.isNotEmpty(appName) && StringUtils.isNotEmpty(authorityName)) {
-            return appAuthorityRepository.findByAppNameAndAuthorityName(pageable, appName, authorityName);
-        } else if (StringUtils.isNotEmpty(appName) && StringUtils.isEmpty(authorityName)) {
-            return appAuthorityRepository.findByAppName(pageable, appName);
-        } else {
-            return appAuthorityRepository.findByAuthorityName(pageable, authorityName);
-        }
+    public Page<AppAuthority> find(Pageable pageable, String appName, String authorityName) {
+        // Ignore query parameter if it has a null value
+        ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreNullValues();
+        Example<AppAuthority> queryExample = Example.of(new AppAuthority(appName, authorityName), matcher);
+        return appAuthorityRepository.findAll(queryExample, pageable);
     }
 }

@@ -81,8 +81,7 @@ public class AppAuthorityController {
                                                       @ApiParam(value = "应用名称") @RequestParam(value = "appName", required = false) String appName,
                                                       @ApiParam(value = "权限名称") @RequestParam(value = "authorityName", required = false) String authorityName)
             throws URISyntaxException {
-        Page<AppAuthority> appAuthorities = appAuthorityService.findByAppNameAndAuthorityNameCombinations(pageable,
-                appName, authorityName);
+        Page<AppAuthority> appAuthorities = appAuthorityService.find(pageable, appName, authorityName);
         List<AppAuthorityDTO> DTOs = appAuthorities.getContent().stream().map(AppAuthority::asDTO).collect(Collectors.toList());
         HttpHeaders headers = generatePageHeaders(appAuthorities, "/api/app-authority/app-authorities");
         return ResponseEntity.ok().headers(headers).body(DTOs);
