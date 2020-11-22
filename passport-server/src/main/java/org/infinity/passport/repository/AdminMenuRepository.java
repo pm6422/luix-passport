@@ -24,8 +24,6 @@ public interface AdminMenuRepository extends MongoRepository<AdminMenu, String> 
 
     List<AdminMenu> findByAppName(String appName);
 
-    Page<AdminMenu> findByAppName(Pageable pageable, String appName);
-
     List<AdminMenu> findByAppNameAndLevel(String appName, Integer level);
 
     List<AdminMenu> findByLevel(Integer level);

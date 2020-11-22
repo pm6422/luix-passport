@@ -55,7 +55,6 @@ public class DictItemServiceImpl implements DictItemService {
         probe.setDictItemName(dictItemName);
         // Ignore query parameter if it has a null value
         ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreNullValues();
-        Example<DictItem> queryExample = Example.of(probe, matcher);
-        return dictItemRepository.findAll(queryExample, pageable);
+        return dictItemRepository.findAll(Example.of(probe, matcher), pageable);
     }
 }

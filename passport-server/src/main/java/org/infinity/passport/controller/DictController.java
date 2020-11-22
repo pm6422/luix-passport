@@ -2,14 +2,14 @@ package org.infinity.passport.controller;
 
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
+import org.infinity.passport.component.HttpHeaderCreator;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.Dict;
 import org.infinity.passport.dto.DictDTO;
 import org.infinity.passport.exception.FieldValidationException;
 import org.infinity.passport.exception.NoDataException;
 import org.infinity.passport.repository.DictRepository;
-import org.infinity.passport.component.HttpHeaderCreator;
+import org.infinity.passport.service.DictService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -32,10 +32,14 @@ import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
 public class DictController {
 
     private final DictRepository    dictRepository;
+    private final DictService dictService;
     private final HttpHeaderCreator httpHeaderCreator;
 
-    public DictController(DictRepository dictRepository, HttpHeaderCreator httpHeaderCreator) {
+    public DictController(DictRepository dictRepository,
+                          DictService dictService,
+                          HttpHeaderCreator httpHeaderCreator) {
         this.dictRepository = dictRepository;
+        this.dictService =dictService;
         this.httpHeaderCreator = httpHeaderCreator;
     }
 
@@ -62,8 +66,7 @@ public class DictController {
     public ResponseEntity<List<DictDTO>> find(Pageable pageable,
                                               @ApiParam(value = "字典名称") @RequestParam(value = "dictName", required = false) String dictName)
             throws URISyntaxException {
-        Page<Dict> dicts = StringUtils.isEmpty(dictName) ? dictRepository.findAll(pageable)
-                : dictRepository.findByDictName(pageable, dictName);
+        Page<Dict> dicts = dictService.find(pageable, dictName);
         List<DictDTO> DTOs = dicts.getContent().stream().map(Dict::asDTO).collect(Collectors.toList());
         HttpHeaders headers = generatePageHeaders(dicts, "/api/dict/dicts");
         return ResponseEntity.ok().headers(headers).body(DTOs);

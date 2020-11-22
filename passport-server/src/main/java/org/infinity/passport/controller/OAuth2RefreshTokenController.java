@@ -3,12 +3,14 @@ package org.infinity.passport.controller;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.infinity.passport.component.HttpHeaderCreator;
+import org.infinity.passport.domain.AdminMenu;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.MongoOAuth2RefreshToken;
 import org.infinity.passport.dto.MongoOAuth2RefreshTokenDTO;
 import org.infinity.passport.exception.NoDataException;
 import org.infinity.passport.repository.OAuth2RefreshTokenRepository;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -52,7 +54,9 @@ public class OAuth2RefreshTokenController {
         probe.setId(tokenId);
         probe.setClientId(clientId);
         probe.setUserName(userName);
-        Page<MongoOAuth2RefreshToken> tokens = oAuth2RefreshTokenRepository.findAll(Example.of(probe), pageable);
+        // Ignore query parameter if it has a null value
+        ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreNullValues();
+        Page<MongoOAuth2RefreshToken> tokens = oAuth2RefreshTokenRepository.findAll(Example.of(probe, matcher), pageable);
         List<MongoOAuth2RefreshTokenDTO> DTOs = tokens.getContent().stream().map(MongoOAuth2RefreshToken::asDTO)
                 .collect(Collectors.toList());
         HttpHeaders headers = generatePageHeaders(tokens, "/api/oauth2-refresh-token/tokens");

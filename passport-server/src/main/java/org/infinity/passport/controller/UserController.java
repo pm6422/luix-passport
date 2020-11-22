@@ -89,8 +89,8 @@ public class UserController {
         });
 
         userService.findOneByEmail(dto.getEmail()).ifPresent((existingEntity) -> {
-            throw new FieldValidationException("userDTO", "email", dto.getEmail(), "error.registration.email.exists",
-                    dto.getEmail());
+            throw new FieldValidationException("userDTO", "email", dto.getEmail(),
+                    "error.registration.email.exists", dto.getEmail());
         });
 
         userService.findOneByMobileNo(dto.getMobileNo()).ifPresent((existingEntity) -> {

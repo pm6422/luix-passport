@@ -81,10 +81,8 @@ public class AdminMenuController {
     public ResponseEntity<List<AdminMenuDTO>> find(Pageable pageable,
                                                    @ApiParam(value = "应用名称") @RequestParam(value = "appName", required = false) String appName)
             throws URISyntaxException {
-        Page<AdminMenu> adminMenus = StringUtils.isEmpty(appName) ? adminMenuRepository.findAll(pageable)
-                : adminMenuRepository.findByAppName(pageable, appName);
-        List<AdminMenuDTO> DTOs = adminMenus.getContent().stream().map(AdminMenu::asDTO)
-                .collect(Collectors.toList());
+        Page<AdminMenu> adminMenus = adminMenuService.find(pageable, appName);
+        List<AdminMenuDTO> DTOs = adminMenus.getContent().stream().map(AdminMenu::asDTO).collect(Collectors.toList());
         HttpHeaders headers = generatePageHeaders(adminMenus, "/api/admin-menu/menus");
         return ResponseEntity.ok().headers(headers).body(DTOs);
     }

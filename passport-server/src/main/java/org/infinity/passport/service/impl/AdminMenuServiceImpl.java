@@ -2,6 +2,7 @@ package org.infinity.passport.service.impl;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.infinity.passport.domain.AdminMenu;
+import org.infinity.passport.domain.AppAuthority;
 import org.infinity.passport.dto.AdminMenuDTO;
 import org.infinity.passport.entity.MenuTree;
 import org.infinity.passport.entity.MenuTreeNode;
@@ -9,6 +10,10 @@ import org.infinity.passport.exception.NoDataException;
 import org.infinity.passport.repository.AdminMenuRepository;
 import org.infinity.passport.service.AdminMenuService;
 import org.infinity.passport.service.AuthorityAdminMenuService;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -24,6 +29,14 @@ public class AdminMenuServiceImpl implements AdminMenuService {
     public AdminMenuServiceImpl(AdminMenuRepository adminMenuRepository, AuthorityAdminMenuService authorityAdminMenuService) {
         this.adminMenuRepository = adminMenuRepository;
         this.authorityAdminMenuService = authorityAdminMenuService;
+    }
+
+    @Override
+    public Page<AdminMenu> find(Pageable pageable, String appName) {
+        // Ignore query parameter if it has a null value
+        ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreNullValues();
+        Example<AdminMenu> queryExample = Example.of(new AdminMenu(appName), matcher);
+        return adminMenuRepository.findAll(queryExample, pageable);
     }
 
     @Override

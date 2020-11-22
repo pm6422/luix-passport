@@ -42,6 +42,10 @@ public class AdminMenu extends AbstractAuditableDomain implements Serializable {
     private Integer sequence;
     private String  parentId;
 
+    public AdminMenu(@NotNull @Size(min = 1, max = 20) String appName) {
+        this.appName = appName;
+    }
+
     public AdminMenu(String appName, String name, String label, Integer level, String url,
                      Integer sequence, String parentId) {
         super();

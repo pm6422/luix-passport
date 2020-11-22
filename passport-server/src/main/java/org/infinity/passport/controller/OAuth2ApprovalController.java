@@ -3,12 +3,12 @@ package org.infinity.passport.controller;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.infinity.passport.component.HttpHeaderCreator;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.MongoOAuth2Approval;
 import org.infinity.passport.dto.MongoOAuth2ApprovalDTO;
 import org.infinity.passport.exception.NoDataException;
 import org.infinity.passport.repository.OAuth2ApprovalRepository;
-import org.infinity.passport.component.HttpHeaderCreator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -68,7 +68,6 @@ public class OAuth2ApprovalController {
         }
         long totalCount = mongoTemplate.count(query, MongoOAuth2Approval.class);
         query.with(pageable);
-        //        oAuth2ApprovalRepository.findAll(Example.of(probe), pageable); I dont know why this statement does not work
         Page<MongoOAuth2Approval> approvals = new PageImpl<>(
                 mongoTemplate.find(query, MongoOAuth2Approval.class), pageable, totalCount);
 
