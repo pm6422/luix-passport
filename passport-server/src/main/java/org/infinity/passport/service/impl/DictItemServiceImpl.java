@@ -1,11 +1,12 @@
 package org.infinity.passport.service.impl;
 
-import org.apache.commons.lang3.StringUtils;
 import org.infinity.passport.domain.DictItem;
 import org.infinity.passport.exception.NoDataException;
 import org.infinity.passport.repository.DictItemRepository;
 import org.infinity.passport.service.DictItemService;
 import org.infinity.passport.service.DictService;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -48,16 +49,13 @@ public class DictItemServiceImpl implements DictItemService {
     }
 
     @Override
-    public Page<DictItem> findByDictCodeAndDictItemNameCombinations(Pageable pageable, String dictCode,
-                                                                    String dictItemName) {
-        if (StringUtils.isEmpty(dictCode) && StringUtils.isEmpty(dictItemName)) {
-            return dictItemRepository.findAll(pageable);
-        } else if (StringUtils.isNotEmpty(dictCode) && StringUtils.isNotEmpty(dictItemName)) {
-            return dictItemRepository.findByDictCodeAndDictItemName(pageable, dictCode, dictItemName);
-        } else if (StringUtils.isNotEmpty(dictCode) && StringUtils.isEmpty(dictItemName)) {
-            return dictItemRepository.findByDictCode(pageable, dictCode);
-        } else {
-            return dictItemRepository.findByDictItemName(pageable, dictItemName);
-        }
+    public Page<DictItem> find(Pageable pageable, String dictCode, String dictItemName) {
+        DictItem probe = new DictItem();
+        probe.setDictCode(dictCode);
+        probe.setDictItemName(dictItemName);
+        // Ignore query parameter if it has a null value
+        ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreNullValues();
+        Example<DictItem> queryExample = Example.of(probe, matcher);
+        return dictItemRepository.findAll(queryExample, pageable);
     }
 }

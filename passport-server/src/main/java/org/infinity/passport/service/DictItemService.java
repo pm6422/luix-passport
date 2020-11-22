@@ -10,5 +10,5 @@ public interface DictItemService {
 
     void update(String id, String dictCode, String dictItemCode, String dictItemName, String remark, Boolean enabled);
 
-    Page<DictItem> findByDictCodeAndDictItemNameCombinations(Pageable pageable, String dictCode, String dictItemName);
+    Page<DictItem> find(Pageable pageable, String dictCode, String dictItemName);
 }
