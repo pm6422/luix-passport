@@ -5,6 +5,7 @@ import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.infinity.passport.component.HttpHeaderCreator;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.User;
 import org.infinity.passport.domain.UserAuthority;
@@ -22,7 +23,6 @@ import org.infinity.passport.service.AuthorityService;
 import org.infinity.passport.service.MailService;
 import org.infinity.passport.service.UserProfilePhotoService;
 import org.infinity.passport.service.UserService;
-import org.infinity.passport.component.HttpHeaderCreator;
 import org.infinity.passport.utils.RandomUtils;
 import org.infinity.passport.utils.SecurityUtils;
 import org.springframework.http.HttpHeaders;
@@ -163,18 +163,6 @@ public class AccountController {
     public ResponseEntity<Void> registerAccount(
             @ApiParam(value = "用户信息", required = true) @Valid @RequestBody ManagedUserDTO managedUserDTO,
             HttpServletRequest request) {
-        if (userService.findOneByUserName(managedUserDTO.getUserName()).isPresent()) {
-            throw new FieldValidationException("userDTO", "userName", managedUserDTO.getUserName(),
-                    "error.registration.user.exists", managedUserDTO.getUserName());
-        }
-        if (userService.findOneByEmail(managedUserDTO.getEmail()).isPresent()) {
-            throw new FieldValidationException("userDTO", "email", managedUserDTO.getEmail(),
-                    "error.registration.email.exists", managedUserDTO.getEmail());
-        }
-        if (userService.findOneByMobileNo(managedUserDTO.getMobileNo()).isPresent()) {
-            throw new FieldValidationException("userDTO", "mobileNo", managedUserDTO.getMobileNo(),
-                    "error.registration.mobile.exists", managedUserDTO.getMobileNo());
-        }
         User newUser = userService.insert(managedUserDTO.getUserName(), managedUserDTO.getPassword(),
                 managedUserDTO.getFirstName(), managedUserDTO.getLastName(), managedUserDTO.getEmail(),
                 managedUserDTO.getMobileNo(), RandomUtils.generateActivationKey(), false,
@@ -205,8 +193,7 @@ public class AccountController {
     @Secured({Authority.USER})
     public ResponseEntity<List<String>> getAuthorityNames(
             @ApiParam(value = "是否可用,null代表全部", allowableValues = "false,true,null") @RequestParam(value = "enabled", required = false) Boolean enabled) {
-        List<String> authorities = enabled == null ? authorityService.findAllAuthorityNames()
-                : authorityService.findAllAuthorityNames(enabled);
+        List<String> authorities = authorityService.find(enabled).stream().map(Authority::getName).collect(Collectors.toList());
         return ResponseEntity.ok(authorities);
     }
 
@@ -229,11 +216,7 @@ public class AccountController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "密码不正确")})
     @PutMapping("/api/account/password")
     @Secured({Authority.USER})
-    public ResponseEntity<Void> changePassword(
-            @ApiParam(value = "新密码", required = true) @RequestBody String newPassword) {
-        if (!userService.checkValidPasswordLength(newPassword)) {
-            throw new FieldValidationException("password", "password", "error.incorrect.password.length");
-        }
+    public ResponseEntity<Void> changePassword(@ApiParam(value = "新密码", required = true) @RequestBody String newPassword) {
         userService.changePassword(SecurityUtils.getCurrentUserName(), newPassword);
         return ResponseEntity.ok()
                 .headers(httpHeaderCreator.createSuccessHeader("notification.password.changed")).build();

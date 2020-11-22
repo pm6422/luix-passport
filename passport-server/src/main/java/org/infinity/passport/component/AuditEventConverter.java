@@ -1,15 +1,12 @@
 package org.infinity.passport.component;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.infinity.passport.domain.PersistentAuditEvent;
 import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class AuditEventConverter {
@@ -18,27 +15,23 @@ public class AuditEventConverter {
      * Convert a list of PersistentAuditEvent to a list of AuditEvent
      *
      * @param persistentAuditEvents the list to convert
-     * @return the converted list.
+     * @return the converted list
      */
-    public List<AuditEvent> convertToAuditEvent(Iterable<PersistentAuditEvent> persistentAuditEvents) {
-        if (persistentAuditEvents == null) {
+    public List<AuditEvent> convertToAuditEvent(List<PersistentAuditEvent> persistentAuditEvents) {
+        if (Objects.isNull(persistentAuditEvents)) {
             return Collections.emptyList();
         }
-        List<AuditEvent> auditEvents = new ArrayList<>();
-        for (PersistentAuditEvent persistentAuditEvent : persistentAuditEvents) {
-            auditEvents.add(convertToAuditEvent(persistentAuditEvent));
-        }
-        return auditEvents;
+        return persistentAuditEvents.stream().map(x -> convertToAuditEvent(x)).collect(Collectors.toList());
     }
 
     /**
      * Convert a PersistentAuditEvent to an AuditEvent
      *
      * @param persistentAuditEvent the event to convert
-     * @return the converted list.
+     * @return the converted list
      */
-    public AuditEvent convertToAuditEvent(PersistentAuditEvent persistentAuditEvent) {
-        if (persistentAuditEvent == null) {
+    private AuditEvent convertToAuditEvent(PersistentAuditEvent persistentAuditEvent) {
+        if (Objects.isNull(persistentAuditEvent)) {
             return null;
         }
         return new AuditEvent(persistentAuditEvent.getAuditEventDate(), persistentAuditEvent.getPrincipal(),
@@ -51,15 +44,11 @@ public class AuditEventConverter {
      * @param data the data to convert
      * @return a map of String, Object
      */
-    public Map<String, Object> convertDataToObjects(Map<String, String> data) {
-        Map<String, Object> results = new HashMap<>();
-
-        if (data != null) {
-            for (Map.Entry<String, String> entry : data.entrySet()) {
-                results.put(entry.getKey(), entry.getValue());
-            }
+    private Map<String, Object> convertDataToObjects(Map<String, String> data) {
+        if (Objects.isNull(data)) {
+            return Collections.emptyMap();
         }
-        return results;
+        return data.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     /**
@@ -70,25 +59,25 @@ public class AuditEventConverter {
      * @return a map of String, String
      */
     public Map<String, String> convertDataToStrings(Map<String, Object> data) {
-        Map<String, String> results = new HashMap<>();
-
-        if (data != null) {
-            for (Map.Entry<String, Object> entry : data.entrySet()) {
-                Object object = entry.getValue();
-
-                // Extract the data that will be saved.
-                if (object instanceof WebAuthenticationDetails) {
-                    WebAuthenticationDetails authenticationDetails = (WebAuthenticationDetails) object;
-                    results.put("remoteAddress", authenticationDetails.getRemoteAddress());
-                    results.put("sessionId", authenticationDetails.getSessionId());
-                } else if (object != null) {
-                    results.put(entry.getKey(), object.toString());
-                } else {
-                    results.put(entry.getKey(), "null");
-                }
-            }
+        if (Objects.isNull(data)) {
+            return Collections.emptyMap();
         }
 
+        Map<String, String> results = new HashMap<>();
+        for (Map.Entry<String, Object> entry : data.entrySet()) {
+            Object object = entry.getValue();
+
+            // Extract the data that will be saved.
+            if (object instanceof WebAuthenticationDetails) {
+                WebAuthenticationDetails authenticationDetails = (WebAuthenticationDetails) object;
+                results.put("remoteAddress", authenticationDetails.getRemoteAddress());
+                results.put("sessionId", authenticationDetails.getSessionId());
+            } else if (object != null) {
+                results.put(entry.getKey(), object.toString());
+            } else {
+                results.put(entry.getKey(), "null");
+            }
+        }
         return results;
     }
 }

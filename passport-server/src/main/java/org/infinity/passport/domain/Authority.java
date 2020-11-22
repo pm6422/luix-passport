@@ -41,6 +41,10 @@ public class Authority implements Serializable {
 
     private Boolean enabled;
 
+    public Authority(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
     public Authority(String name, Boolean systemLevel, Boolean enabled) {
         super();
         this.name = name;

@@ -55,6 +55,10 @@ public class UserServiceImpl implements UserService {
     public void changePassword(String userName, String newRawPassword) {
         Assert.hasText(userName, "it must not be null, empty, or blank");
         Assert.hasText(newRawPassword, "it must not be null, empty, or blank");
+
+        if (!checkValidPasswordLength(newRawPassword)) {
+            throw new FieldValidationException("password", "password", "error.incorrect.password.length");
+        }
         userRepository.findOneByUserName(userName).ifPresent(user -> {
             user.setPasswordHash(passwordEncoder.encode(newRawPassword));
             userRepository.save(user);
@@ -66,6 +70,20 @@ public class UserServiceImpl implements UserService {
     public User insert(String userName, String rawPassword, String firstName, String lastName, String email,
                        String mobileNo, String activationKey, Boolean activated, Boolean enabled,
                        String remarks, String resetKey, Instant resetTime, Set<String> authorityNames) {
+
+        if (findOneByUserName(userName).isPresent()) {
+            throw new FieldValidationException("userDTO", "userName", userName,
+                    "error.registration.user.exists", userName);
+        }
+        if (findOneByEmail(email).isPresent()) {
+            throw new FieldValidationException("userDTO", "email", email,
+                    "error.registration.email.exists", email);
+        }
+        if (findOneByMobileNo(mobileNo).isPresent()) {
+            throw new FieldValidationException("userDTO", "mobileNo", mobileNo,
+                    "error.registration.mobile.exists", mobileNo);
+        }
+
         User newUser = new User();
         newUser.setUserName(userName.toLowerCase());
         newUser.setPasswordHash(passwordEncoder.encode(rawPassword));

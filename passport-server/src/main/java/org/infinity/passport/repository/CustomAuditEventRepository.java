@@ -45,7 +45,7 @@ public class CustomAuditEventRepository implements AuditEventRepository {
 
     @Override
     public List<AuditEvent> find(String principal, Instant after, String type) {
-        Iterable<PersistentAuditEvent> persistentAuditEvents = persistenceAuditEventRepository
+        List<PersistentAuditEvent> persistentAuditEvents = persistenceAuditEventRepository
                 .findByPrincipalAndAuditEventDateAfterAndAuditEventType(principal, after, type);
         return auditEventConverter.convertToAuditEvent(persistentAuditEvents);
     }
