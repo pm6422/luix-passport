@@ -5,6 +5,7 @@ import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.infinity.passport.component.HttpHeaderCreator;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.User;
@@ -25,8 +26,11 @@ import org.infinity.passport.service.UserProfilePhotoService;
 import org.infinity.passport.service.UserService;
 import org.infinity.passport.utils.RandomUtils;
 import org.infinity.passport.utils.SecurityUtils;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.GrantedAuthority;
@@ -41,6 +45,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -55,16 +60,16 @@ import static javax.servlet.http.HttpServletResponse.*;
 @Api(tags = "账号管理")
 @Slf4j
 public class AccountController {
-
-    private final UserService                userService;
-    private final UserRepository             userRepository;
-    private final UserAuthorityRepository    userAuthorityRepository;
-    private final UserProfilePhotoRepository userProfilePhotoRepository;
-    private final UserProfilePhotoService    userProfilePhotoService;
-    private final AuthorityService           authorityService;
-    private final MailService                mailService;
-    private final HttpHeaderCreator          httpHeaderCreator;
-    private final TokenStore                 tokenStore;
+    private static final FastDateFormat             DATETIME_FORMAT = FastDateFormat.getInstance("yyyy-MM-dd-HH-mm-ss");
+    private final        UserService                userService;
+    private final        UserRepository             userRepository;
+    private final        UserAuthorityRepository    userAuthorityRepository;
+    private final        UserProfilePhotoRepository userProfilePhotoRepository;
+    private final        UserProfilePhotoService    userProfilePhotoService;
+    private final        AuthorityService           authorityService;
+    private final        MailService                mailService;
+    private final        HttpHeaderCreator          httpHeaderCreator;
+    private final        TokenStore                 tokenStore;
 
     public AccountController(UserService userService,
                              UserRepository userRepository,
@@ -264,10 +269,10 @@ public class AccountController {
         log.debug("upload file with name {} and description {}", file.getOriginalFilename(), description);
         Optional<UserProfilePhoto> existingPhoto = userProfilePhotoRepository.findByUserName(SecurityUtils.getCurrentUserName());
         if (existingPhoto.isPresent()) {
-            // Update if existing
+            // Update if exists
             userProfilePhotoService.update(existingPhoto.get().getId(), existingPhoto.get().getUserName(), file.getBytes());
         } else {
-            // Insert if not existing
+            // Insert if not exists
             userProfilePhotoService.insert(SecurityUtils.getCurrentUserName(), file.getBytes());
             userRepository.findOneByUserName(SecurityUtils.getCurrentUserName()).ifPresent((user) -> {
                 // update hasProfilePhoto to true
@@ -275,6 +280,24 @@ public class AccountController {
                 userRepository.save(user);
             });
         }
+    }
+
+    @ApiOperation("下载用户头像")
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功上传")})
+    @GetMapping("/api/account/profile-photo/download")
+    @Secured({Authority.USER})
+    public ResponseEntity<Resource> downloadProfilePhoto() {
+        Optional<UserProfilePhoto> existingPhoto = userProfilePhotoRepository.findByUserName(SecurityUtils.getCurrentUserName());
+        if (!existingPhoto.isPresent()) {
+            return ResponseEntity.ok().body(null);
+        }
+        ByteArrayResource resource = new ByteArrayResource(existingPhoto.get().getProfilePhoto().getData());
+        String fileName = "profile-" + DATETIME_FORMAT.format(new Date()) + ".jpg";
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName)
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .contentLength(existingPhoto.get().getProfilePhoto().getData().length)
+                .body(resource);
     }
 
     @ApiOperation("获取用户头像")
