@@ -6,14 +6,18 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;
 import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.ParameterBuilder;
+import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.util.Arrays;
 import java.util.Date;
 
+import static org.infinity.passport.config.ApplicationConstants.GLOBAL_HEADER_REQUESTER_ID;
 import static springfox.documentation.builders.PathSelectors.regex;
 
 /**
@@ -55,6 +59,24 @@ public class SwaggerConfiguration {
                 && "true".equals(System.getProperty("specified.uri.scheme.host"))) {
             docket.host(applicationProperties.getSwagger().getHost());
         }
+
+        // Add global parameters for all the API
+        ParameterBuilder requesterParamBuilder = new ParameterBuilder();
+        requesterParamBuilder.name(GLOBAL_HEADER_REQUESTER_ID)
+                .description("请求方ID(全局参数)")
+                .modelRef(new ModelRef("string"))
+                .parameterType("header")
+                .required(false)
+                .build();
+
+//        ParameterBuilder tokenParamBuilder = new ParameterBuilder();
+//        tokenParamBuilder.name("x-access-token")
+//                .description("令牌")
+//                .modelRef(new ModelRef("string"))
+//                .parameterType("header")
+//                .required(false)
+//                .build();
+
         docket.genericModelSubstitutes(ResponseEntity.class)
                 .ignoredParameterTypes(java.sql.Date.class)
                 .directModelSubstitute(java.time.LocalDate.class, java.sql.Date.class)
@@ -62,7 +84,8 @@ public class SwaggerConfiguration {
                 .directModelSubstitute(java.time.LocalDateTime.class, Date.class)
                 .select()
                 .paths(regex(path))
-                .build();
+                .build()
+                .globalOperationParameters(Arrays.asList(requesterParamBuilder.build()));
         log.debug("Built Swagger API docket with group [{}]", groupName);
         return docket;
     }
