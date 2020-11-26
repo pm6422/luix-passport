@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
 import org.infinity.passport.component.HttpHeaderCreator;
@@ -37,12 +38,14 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.Date;
@@ -60,7 +63,7 @@ import static javax.servlet.http.HttpServletResponse.*;
 @Api(tags = "账号管理")
 @Slf4j
 public class AccountController {
-    private static final FastDateFormat             DATETIME_FORMAT = FastDateFormat.getInstance("yyyy-MM-dd-HH-mm-ss");
+    private static final FastDateFormat             DATETIME_FORMAT = FastDateFormat.getInstance("yyyyMMdd-HHmmss");
     private final        UserService                userService;
     private final        UserRepository             userRepository;
     private final        UserAuthorityRepository    userAuthorityRepository;
@@ -298,6 +301,10 @@ public class AccountController {
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .contentLength(existingPhoto.get().getProfilePhoto().getData().length)
                 .body(resource);
+
+//        String path = System.getProperty("user.home") + File.separator + "fileName.txt";
+//        File outFile = ResourceUtils.getFile(path);
+//        FileUtils.writeLines(outFile, strList);
     }
 
     @ApiOperation("获取用户头像")
