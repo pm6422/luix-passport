@@ -40,8 +40,8 @@ public class OAuth2RefreshTokenController {
         this.httpHeaderCreator = httpHeaderCreator;
     }
 
-    @ApiOperation("分页查询刷新令牌列表")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
+    @ApiOperation("分页检索刷新令牌列表")
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/oauth2-refresh-token/tokens")
     @Secured(Authority.ADMIN)
     public ResponseEntity<List<MongoOAuth2RefreshTokenDTO>> find(Pageable pageable,
@@ -63,7 +63,7 @@ public class OAuth2RefreshTokenController {
     }
 
     @ApiOperation("根据ID检索刷新令牌")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取"),
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索"),
             @ApiResponse(code = SC_BAD_REQUEST, message = "刷新令牌不存在")})
     @GetMapping("/api/oauth2-refresh-token/tokens/{id}")
     @Secured({Authority.ADMIN})

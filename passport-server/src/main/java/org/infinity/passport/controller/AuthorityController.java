@@ -52,8 +52,8 @@ public class AuthorityController {
                 .build();
     }
 
-    @ApiOperation("分页查询权限列表")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
+    @ApiOperation("分页检索权限列表")
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/authority/authorities")
     @Secured({Authority.ADMIN})
     public ResponseEntity<List<AuthorityDTO>> find(Pageable pageable) throws URISyntaxException {
@@ -64,8 +64,8 @@ public class AuthorityController {
         return ResponseEntity.ok().headers(headers).body(DTOs);
     }
 
-    @ApiOperation("获取所有权限")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
+    @ApiOperation("检索所有权限")
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/authority/authorities/all")
     @Secured({Authority.ADMIN})
     public ResponseEntity<List<AuthorityDTO>> findAll() {
@@ -75,7 +75,7 @@ public class AuthorityController {
     }
 
     @ApiOperation("根据名称检索权限信息")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取"),
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索"),
             @ApiResponse(code = SC_BAD_REQUEST, message = "权限信息不存在")})
     @GetMapping("/api/authority/authorities/{name}")
     @Secured({Authority.ADMIN})

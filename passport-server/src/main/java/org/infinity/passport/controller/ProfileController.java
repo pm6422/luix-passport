@@ -26,7 +26,7 @@ public class ProfileController {
         this.applicationProperties = applicationProperties;
     }
 
-    @ApiOperation("获取系统Profile")
+    @ApiOperation("检索系统Profile")
     @GetMapping("/open-api/profile-info")
     public ResponseEntity<ProfileInfo> getProfileInfo() {
         ProfileInfo profileInfo = new ProfileInfo(env.getActiveProfiles(), applicationProperties.getSwagger().isEnabled(), getRibbonEnv());

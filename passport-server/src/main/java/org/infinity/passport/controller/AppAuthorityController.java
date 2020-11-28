@@ -73,8 +73,8 @@ public class AppAuthorityController {
                 .build();
     }
 
-    @ApiOperation("分页查询应用权限列表")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
+    @ApiOperation("分页检索应用权限列表")
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/app-authority/app-authorities")
     @Secured({Authority.ADMIN})
     public ResponseEntity<List<AppAuthorityDTO>> find(Pageable pageable,
@@ -88,7 +88,7 @@ public class AppAuthorityController {
     }
 
     @ApiOperation("根据ID检索应用权限")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取"),
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索"),
             @ApiResponse(code = SC_BAD_REQUEST, message = "应用权限不存在")})
     @GetMapping("/api/app-authority/app-authorities/{id}")
     @Secured({Authority.DEVELOPER, Authority.USER})
@@ -100,7 +100,7 @@ public class AppAuthorityController {
     }
 
     @ApiOperation("根据名称检索应用权限")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/app-authority/app-name/{appName}")
     @Secured({Authority.ADMIN})
     public ResponseEntity<List<AppAuthorityDTO>> findByApp(

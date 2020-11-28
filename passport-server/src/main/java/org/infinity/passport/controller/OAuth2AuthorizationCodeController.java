@@ -48,8 +48,8 @@ public class OAuth2AuthorizationCodeController {
      * @return code list
      * @throws URISyntaxException if exception occurs
      */
-    @ApiOperation("分页查询授权码列表")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
+    @ApiOperation("分页检索授权码列表")
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/oauth2-authorization-code/codes")
     @Secured(Authority.ADMIN)
     public ResponseEntity<List<MongoOAuth2AuthorizationCodeDTO>> find(Pageable pageable,
@@ -67,7 +67,7 @@ public class OAuth2AuthorizationCodeController {
     }
 
     @ApiOperation("根据ID检索授权码")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取"),
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索"),
             @ApiResponse(code = SC_BAD_REQUEST, message = "授权码不存在")})
     @GetMapping("/api/oauth2-authorization-code/codes/{id}")
     @Secured({Authority.ADMIN})

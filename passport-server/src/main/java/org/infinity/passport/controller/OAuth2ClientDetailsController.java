@@ -76,8 +76,8 @@ public class OAuth2ClientDetailsController {
                 .build();
     }
 
-    @ApiOperation("分页查询单点登录客户端列表")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
+    @ApiOperation("分页检索单点登录客户端列表")
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/oauth2-client/clients")
     @Secured(Authority.ADMIN)
     public ResponseEntity<List<MongoOAuth2ClientDetailsDTO>> find(Pageable pageable,
@@ -96,7 +96,7 @@ public class OAuth2ClientDetailsController {
     }
 
     @ApiOperation("根据ID检索单点登录客户端")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取"),
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索"),
             @ApiResponse(code = SC_BAD_REQUEST, message = "单点登录客户端不存在")})
     @GetMapping("/api/oauth2-client/clients/{id}")
     @Secured({Authority.ADMIN})
@@ -106,8 +106,8 @@ public class OAuth2ClientDetailsController {
         return ResponseEntity.ok(entity.asDTO());
     }
 
-    @ApiOperation("获取内部单点登录客户端")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取"),
+    @ApiOperation("检索内部单点登录客户端")
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索"),
             @ApiResponse(code = SC_BAD_REQUEST, message = "单点登录客户端不存在")})
     @GetMapping("/open-api/oauth2-client/internal-client")
     public ResponseEntity<Pair<String, String>> findInternalClient() {

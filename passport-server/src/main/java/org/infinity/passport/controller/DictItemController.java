@@ -71,7 +71,7 @@ public class DictItemController {
         dictRepository.findOneByDictCode(dto.getDictCode())
                 .orElseThrow(() -> new FieldValidationException("dictItemDTO", "dictCode", dto.getDictCode(),
                         "error.dict.not.exist", dto.getDictCode()));
-        // 根据dictItemCode与dictCode查询记录是否存在
+        // 根据dictItemCode与dictCode检索记录是否存在
         List<DictItem> existingDictItems = dictItemRepository.findByDictCodeAndDictItemCode(dto.getDictCode(),
                 dto.getDictItemCode());
         if (CollectionUtils.isNotEmpty(existingDictItems)) {
@@ -87,8 +87,8 @@ public class DictItemController {
                 .build();
     }
 
-    @ApiOperation("分页查询数据字典项列表")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
+    @ApiOperation("分页检索数据字典项列表")
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/dict-item/items")
     @Secured(Authority.DEVELOPER)
     public ResponseEntity<List<DictItemDTO>> find(Pageable pageable,
@@ -107,7 +107,7 @@ public class DictItemController {
     }
 
     @ApiOperation("根据ID检索数据字典项")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取"),
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索"),
             @ApiResponse(code = SC_BAD_REQUEST, message = "字典项不存在")})
     @GetMapping("/api/dict-item/items/{id}")
     @Secured({Authority.USER})
@@ -119,13 +119,13 @@ public class DictItemController {
     }
 
     @ApiOperation("根据数据字典代码检索数据字典项")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/dict-item/dict-code/{dictCode}")
     @Secured({Authority.USER})
     public ResponseEntity<List<DictItemDTO>> findByDictCode(
             @ApiParam(value = "字典编号", required = true) @PathVariable String dictCode) {
         log.debug("REST request to get dict item : {}", dictCode);
-        // 根据dictCode查询数据字典项
+        // 根据dictCode检索数据字典项
         List<DictItem> dictItems = dictItemRepository.findByDictCode(dictCode);
         if (CollectionUtils.isEmpty(dictItems)) {
             return ResponseEntity.ok(Collections.emptyList());
@@ -151,7 +151,7 @@ public class DictItemController {
                 .build();
     }
 
-    @ApiOperation(value = "根据数据字典编号与字典项编号删除数据字典", notes = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
+    @ApiOperation(value = "根据ID删除数据字典项", notes = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功删除"),
             @ApiResponse(code = SC_BAD_REQUEST, message = "字典项不存在")})
     @DeleteMapping("/api/dict-item/items/{id}")

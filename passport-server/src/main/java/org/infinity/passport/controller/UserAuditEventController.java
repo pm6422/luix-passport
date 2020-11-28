@@ -36,7 +36,7 @@ public class UserAuditEventController {
     }
 
     /**
-     * 分页查询用户审计事件列表
+     * 分页检索用户审计事件列表
      *
      * @param pageable 分页信息
      * @param from     开始日期 Instant反序列化会发生错误，所以使用LocalDate
@@ -44,7 +44,7 @@ public class UserAuditEventController {
      * @return 分页信息
      * @throws URISyntaxException if exception occurs
      */
-    @ApiOperation("分页查询用户审计事件列表")
+    @ApiOperation("分页检索用户审计事件列表")
     @GetMapping("/api/user-audit-event/user-audit-events")
     @Secured(Authority.DEVELOPER)
     public ResponseEntity<List<PersistentAuditEvent>> getUserAuditEvents(Pageable pageable,

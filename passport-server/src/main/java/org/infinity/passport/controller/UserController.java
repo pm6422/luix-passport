@@ -100,12 +100,12 @@ public class UserController {
                 .status(HttpStatus.CREATED).headers(headers).body(DEFAULT_PASSWORD);
     }
 
-    @ApiOperation("分页查询用户列表")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
+    @ApiOperation("分页检索用户列表")
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/user/users")
     @Secured({Authority.ADMIN})
     public ResponseEntity<List<ManagedUserDTO>> find(Pageable pageable,
-                                                     @ApiParam(value = "查询条件") @RequestParam(value = "login", required = false) String login)
+                                                     @ApiParam(value = "检索条件") @RequestParam(value = "login", required = false) String login)
             throws URISyntaxException {
         Page<User> users = StringUtils.isEmpty(login) ? userRepository.findAll(pageable)
                 : userService.findByLogin(pageable, login);
@@ -116,7 +116,7 @@ public class UserController {
     }
 
     @ApiOperation("根据用户名检索用户")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取"),
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索"),
             @ApiResponse(code = SC_BAD_REQUEST, message = "用户不存在或账号无权限")})
     @GetMapping("/api/user/users/{userName:[_'.@a-z0-9-]+}")
     @Secured({Authority.ADMIN})
@@ -181,8 +181,8 @@ public class UserController {
 
     public static final String GET_PROFILE_PHOTO_URL = "/api/user/profile-photo/";
 
-    @ApiOperation("获取用户头像")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
+    @ApiOperation("检索用户头像")
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping(GET_PROFILE_PHOTO_URL + "{userName:[_'.@a-z0-9-]+}")
     @Secured({Authority.USER})
     public ResponseEntity<byte[]> getProfilePhoto(@ApiParam(value = "用户名", required = true) @PathVariable String userName) {

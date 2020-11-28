@@ -54,8 +54,8 @@ public class AuthorityAdminMenuController {
         this.httpHeaderCreator = httpHeaderCreator;
     }
 
-    @ApiOperation("查询当前用户权限关联的菜单")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
+    @ApiOperation("检索当前用户权限关联的菜单")
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/authority-admin-menu/authority-menus")
     @Secured({Authority.USER})
     public ResponseEntity<List<MenuTreeNode>> findByAppName(
@@ -69,8 +69,8 @@ public class AuthorityAdminMenuController {
         return ResponseEntity.ok(results);
     }
 
-    @ApiOperation("查询当前用户权限关联的链接")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
+    @ApiOperation("检索当前用户权限关联的链接")
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/authority-admin-menu/authority-links")
     @Secured({Authority.USER})
     public ResponseEntity<List<AdminMenu>> findAuthorityLinks(
@@ -84,8 +84,8 @@ public class AuthorityAdminMenuController {
         return ResponseEntity.ok(results);
     }
 
-    @ApiOperation("根据权限名称查看菜单信息")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
+    @ApiOperation("根据权限名称检索菜单信息")
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/authority-admin-menu/menu-info")
     @Secured({Authority.ADMIN})
     public ResponseEntity<List<MenuTreeNode>> findMenus(

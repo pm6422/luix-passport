@@ -38,8 +38,8 @@ public class HttpSessionController {
         this.httpHeaderCreator = httpHeaderCreator;
     }
 
-    @ApiOperation("获取Http会话列表")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
+    @ApiOperation("分页检索Http会话列表")
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/http-session/sessions")
     @Secured({Authority.DEVELOPER})
     public ResponseEntity<List<HttpSession>> find(Pageable pageable,

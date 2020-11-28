@@ -62,8 +62,8 @@ public class AppController {
                 .headers(httpHeaderCreator.createSuccessHeader("notification.app.created", dto.getName())).build();
     }
 
-    @ApiOperation("分页查询应用列表")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
+    @ApiOperation("分页检索应用列表")
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/app/apps")
     @Secured({Authority.ADMIN})
     public ResponseEntity<List<AppDTO>> find(Pageable pageable) throws URISyntaxException {
@@ -73,8 +73,8 @@ public class AppController {
         return ResponseEntity.ok().headers(headers).body(DTOs);
     }
 
-    @ApiOperation("获取所有应用")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
+        @ApiOperation("检索所有应用")
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/app/apps/all")
     @Secured({Authority.ADMIN})
     public ResponseEntity<List<AppDTO>> findAll() {
@@ -83,7 +83,7 @@ public class AppController {
     }
 
     @ApiOperation("根据名称检索应用")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取"),
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索"),
             @ApiResponse(code = SC_BAD_REQUEST, message = "应用不存在")})
     @GetMapping("/api/app/apps/{name}")
     @Secured({Authority.ADMIN})

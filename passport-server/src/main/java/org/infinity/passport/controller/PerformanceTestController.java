@@ -29,7 +29,7 @@ public class PerformanceTestController {
     public PerformanceTestController(Environment env) {
         this.env = env;
     }
-    // 自动注入request，Spring并没有注入一个request对象，而是注入了一个代理（proxy）；当Bean中需要使用request对象时，通过该代理获取request对象。
+    // 自动注入request，Spring并没有注入一个request对象，而是注入了一个代理（proxy）；当Bean中需要使用request对象时，通过该代理检索request对象。
     // 代理的实现参见AutowireUtils的内部类ObjectFactoryDelegatingInvocationHandler
     // 当我们调用request的方法method时，实际上是调用了由objectFactory.getObject()生成的对象的method方法；objectFactory.getObject()生成的对象才是真正的request对象。
     // 发现objectFactory的类型为WebApplicationContextUtils的内部类RequestObjectFactory

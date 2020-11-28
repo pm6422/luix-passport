@@ -94,8 +94,8 @@ public class AccountController {
         this.tokenStore = tokenStore;
     }
 
-    @ApiOperation(value = "获取访问令牌", notes = "登录成功返回当前访问令牌", response = String.class)
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
+    @ApiOperation(value = "检索访问令牌", notes = "登录成功返回当前访问令牌", response = String.class)
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/account/access-token")
     public ResponseEntity<String> getAccessToken(HttpServletRequest request) {
         String token = request.getHeader("authorization");
@@ -106,24 +106,24 @@ public class AccountController {
         return ResponseEntity.ok(StringUtils.EMPTY);
     }
 
-    @ApiOperation(value = "验证当前用户是否已经登录，理论上不会返回false，因为未登录则会出错", notes = "登录成功返回当前用户名", response = String.class)
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
+    @ApiOperation(value = "验证当前用户是否已经登录", notes = "理论上不会返回false，因为未登录则会出错，登录成功返回当前用户名", response = String.class)
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/account/authenticate")
     public ResponseEntity<String> isAuthenticated(HttpServletRequest request) {
         log.debug("REST request to check if the current user is authenticated");
         return ResponseEntity.ok(request.getRemoteUser());
     }
 
-    @ApiOperation(value = "获取登录的用户,用于SSO客户端调用，理论上不会返回null，因为未登录则会出错", notes = "登录成功返回当前用户")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
+    @ApiOperation(value = "检索登录的用户", notes = "用于SSO客户端调用，理论上不会返回null，因为未登录则会出错，登录成功返回当前用户")
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/account/principal")
     public ResponseEntity<Principal> getPrincipal(Principal user) {
         log.debug("REST request to get current user if the user is authenticated");
         return ResponseEntity.ok(user);
     }
 
-    @ApiOperation("获取当前用户")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取"),
+    @ApiOperation("检索当前用户")
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索"),
             @ApiResponse(code = SC_BAD_REQUEST, message = "账号无权限")})
     @GetMapping("/api/account/user")
     @Secured({Authority.USER})
@@ -140,8 +140,8 @@ public class AccountController {
         return ResponseEntity.ok().headers(headers).body(new UserDTO(user, authorities));
     }
 
-    @ApiOperation("根据访问令牌获取绑定的用户")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
+    @ApiOperation("根据访问令牌检索绑定的用户")
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/open-api/account/user")
     public ResponseEntity<Object> getTokenUser(HttpServletRequest request) {
         String token = request.getHeader("authorization");
@@ -195,8 +195,8 @@ public class AccountController {
         userService.activateRegistration(key).orElseThrow(() -> new NoDataException(key));
     }
 
-    @ApiOperation("获取权限值列表")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
+    @ApiOperation("检索权限值列表")
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/account/authority-names")
     @Secured({Authority.USER})
     public ResponseEntity<List<String>> getAuthorityNames(
@@ -307,8 +307,8 @@ public class AccountController {
 //        FileUtils.writeLines(outFile, strList);
     }
 
-    @ApiOperation("获取用户头像")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
+    @ApiOperation("检索用户头像")
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/account/profile-photo")
     @Secured({Authority.USER})
     public ModelAndView getProfilePhoto() {

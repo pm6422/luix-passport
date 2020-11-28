@@ -74,8 +74,8 @@ public class AdminMenuController {
                 .build();
     }
 
-    @ApiOperation("分页查询菜单列表")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
+    @ApiOperation("分页检索菜单列表")
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/admin-menu/menus")
     @Secured({Authority.ADMIN})
     public ResponseEntity<List<AdminMenuDTO>> find(Pageable pageable,
@@ -87,8 +87,8 @@ public class AdminMenuController {
         return ResponseEntity.ok().headers(headers).body(DTOs);
     }
 
-    @ApiOperation("根据ID查询菜单")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取"),
+    @ApiOperation("根据ID检索菜单")
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索"),
             @ApiResponse(code = SC_BAD_REQUEST, message = "菜单不存在")})
     @GetMapping("/api/admin-menu/menus/{id}")
     @Secured({Authority.ADMIN})
@@ -97,8 +97,8 @@ public class AdminMenuController {
         return ResponseEntity.ok(entity.asDTO());
     }
 
-    @ApiOperation("查询父类菜单")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
+    @ApiOperation("检索父类菜单")
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/admin-menu/parent-menus/{appName}/{level:[0-9]+}")
     @Secured({Authority.ADMIN})
     public ResponseEntity<List<AdminMenuDTO>> findAllParentMenu(
@@ -156,7 +156,7 @@ public class AdminMenuController {
         adminMenuRepository.insert(list);
     }
 
-    @ApiOperation("根据ID提高管理菜单顺序")
+    @ApiOperation("根据ID提升管理菜单顺序")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "成功操作")})
     @GetMapping("/api/admin-menu/raise-seq/{id}")
     @Secured({Authority.ADMIN})

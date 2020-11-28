@@ -38,8 +38,8 @@ public class OAuth2AccessTokenController {
         this.httpHeaderCreator = httpHeaderCreator;
     }
 
-    @ApiOperation("分页查询访问令牌列表")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
+    @ApiOperation("分页检索访问令牌列表")
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/oauth2-access-token/tokens")
     @Secured(Authority.ADMIN)
     public ResponseEntity<List<MongoOAuth2AccessTokenDTO>> find(Pageable pageable,
@@ -61,7 +61,7 @@ public class OAuth2AccessTokenController {
     }
 
     @ApiOperation("根据ID检索访问令牌")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取"),
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索"),
             @ApiResponse(code = SC_BAD_REQUEST, message = "访问令牌不存在")})
     @GetMapping("/api/oauth2-access-token/tokens/{id}")
     @Secured({Authority.ADMIN})

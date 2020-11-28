@@ -59,8 +59,8 @@ public class DictController {
                 .headers(httpHeaderCreator.createSuccessHeader("notification.dict.created", dto.getDictName())).build();
     }
 
-    @ApiOperation("分页查询数据字典列表")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
+    @ApiOperation("分页检索数据字典列表")
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/dict/dicts")
     @Secured(Authority.DEVELOPER)
     public ResponseEntity<List<DictDTO>> find(Pageable pageable,
@@ -72,18 +72,8 @@ public class DictController {
         return ResponseEntity.ok().headers(headers).body(DTOs);
     }
 
-    @ApiOperation("根据ID检索数据字典")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "数据字典不存在")})
-    @GetMapping("/api/dict/dicts/{id}")
-    @Secured({Authority.DEVELOPER, Authority.USER})
-    public ResponseEntity<DictDTO> findById(@ApiParam(value = "字典编号", required = true) @PathVariable String id) {
-        Dict entity = dictRepository.findById(id).orElseThrow(() -> new NoDataException(id));
-        return ResponseEntity.ok(entity.asDTO());
-    }
-
-    @ApiOperation("根据是否可用获取数据字典")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
+    @ApiOperation("根据是否可用检索数据字典列表")
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/dict/all")
     @Secured({Authority.DEVELOPER, Authority.USER})
     public ResponseEntity<List<DictDTO>> findByEnabled(
@@ -96,6 +86,16 @@ public class DictController {
         }
         List<DictDTO> dictDTOs = dicts.stream().map(Dict::asDTO).collect(Collectors.toList());
         return ResponseEntity.ok(dictDTOs);
+    }
+
+    @ApiOperation("根据ID检索数据字典")
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索"),
+            @ApiResponse(code = SC_BAD_REQUEST, message = "数据字典不存在")})
+    @GetMapping("/api/dict/dicts/{id}")
+    @Secured({Authority.DEVELOPER, Authority.USER})
+    public ResponseEntity<DictDTO> findById(@ApiParam(value = "字典编号", required = true) @PathVariable String id) {
+        Dict entity = dictRepository.findById(id).orElseThrow(() -> new NoDataException(id));
+        return ResponseEntity.ok(entity.asDTO());
     }
 
     @ApiOperation("更新数据字典")
