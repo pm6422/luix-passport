@@ -14,7 +14,5 @@ public interface AuthorityAdminMenuRepository extends MongoRepository<AuthorityA
 
     List<AuthorityAdminMenu> findByAuthorityNameIn(List<String> authorityNames);
 
-    List<AuthorityAdminMenu> findByAuthorityName(String authorityName);
-
     void deleteByAuthorityNameAndAdminMenuIdIn(String authorityName, List<String> adminMenuIds);
 }

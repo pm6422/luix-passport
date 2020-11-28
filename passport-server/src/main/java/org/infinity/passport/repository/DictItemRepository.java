@@ -14,7 +14,5 @@ import java.util.List;
 @Repository
 public interface DictItemRepository extends MongoRepository<DictItem, String> {
 
-    List<DictItem> findByDictCode(String dictCode);
-
     List<DictItem> findByDictCodeAndDictItemCode(String dictCode, String dictItemCode);
 }

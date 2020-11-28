@@ -15,8 +15,6 @@ public interface UserAuthorityRepository extends MongoRepository<UserAuthority, 
 
     List<UserAuthority> findByUserId(String userId);
 
-    Optional<UserAuthority> findOneByUserIdAndAuthorityName(String userId, String authorityName);
-
     void deleteByUserId(String userId);
 
 }

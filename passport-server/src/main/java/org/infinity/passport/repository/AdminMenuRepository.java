@@ -1,8 +1,6 @@
 package org.infinity.passport.repository;
 
 import org.infinity.passport.domain.AdminMenu;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
@@ -25,8 +23,6 @@ public interface AdminMenuRepository extends MongoRepository<AdminMenu, String> 
     List<AdminMenu> findByAppName(String appName);
 
     List<AdminMenu> findByAppNameAndLevel(String appName, Integer level);
-
-    List<AdminMenu> findByLevel(Integer level);
 
     List<AdminMenu> findByAppNameAndLevelOrderBySequenceAsc(String appName, Integer level);
 

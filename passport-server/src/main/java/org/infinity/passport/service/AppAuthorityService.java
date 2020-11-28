@@ -6,7 +6,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface AppAuthorityService {
 
-    Page<AppAuthority> find(Pageable pageable, String appName,
-                            String authorityName);
+    Page<AppAuthority> find(Pageable pageable, String appName, String authorityName);
 
 }

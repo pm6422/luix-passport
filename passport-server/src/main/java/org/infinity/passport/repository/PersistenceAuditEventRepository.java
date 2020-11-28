@@ -16,12 +16,6 @@ import java.util.List;
 @Repository
 public interface PersistenceAuditEventRepository extends MongoRepository<PersistentAuditEvent, String> {
 
-    List<PersistentAuditEvent> findByPrincipal(String principal);
-
-    List<PersistentAuditEvent> findByAuditEventDateAfter(Instant after);
-
-    List<PersistentAuditEvent> findByPrincipalAndAuditEventDateAfter(String principal, Instant after);
-
     List<PersistentAuditEvent> findByPrincipalAndAuditEventDateAfterAndAuditEventType(String principle, Instant after, String type);
 
     Page<PersistentAuditEvent> findByAuditEventDateBetween(Pageable pageable, LocalDate fromDate, LocalDate toDate);

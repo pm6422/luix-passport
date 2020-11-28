@@ -12,5 +12,4 @@ import java.util.List;
 @Repository
 public interface AppRepository extends MongoRepository<App, String> {
 
-    List<App> findByEnabled(Boolean enabled);
 }
