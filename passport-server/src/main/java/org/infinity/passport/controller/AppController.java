@@ -73,15 +73,6 @@ public class AppController {
         return ResponseEntity.ok().headers(headers).body(DTOs);
     }
 
-        @ApiOperation("检索所有应用")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
-    @GetMapping("/api/app/apps/all")
-    @Secured({Authority.ADMIN})
-    public ResponseEntity<List<AppDTO>> findAll() {
-        List<AppDTO> appDTOs = appRepository.findAll().stream().map(App::asDTO).collect(Collectors.toList());
-        return ResponseEntity.ok(appDTOs);
-    }
-
     @ApiOperation("根据名称检索应用")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索"),
             @ApiResponse(code = SC_BAD_REQUEST, message = "应用不存在")})

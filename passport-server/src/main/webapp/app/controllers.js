@@ -1871,7 +1871,7 @@ function AdminMenuListController($state, AlertUtils, ParseLinksUtils, PAGINATION
 
     vm.pageTitle = $state.current.data.pageTitle;
     vm.parentPageTitle = $state.$current.parent.data.pageTitle;
-    vm.apps = AppService.queryAll();
+    vm.apps = AppService.query();
     vm.links = null;
     vm.loadAll = loadAll;
     vm.loadPage = loadPage;
@@ -1969,7 +1969,7 @@ function AdminMenuDialogController($state, $stateParams, $uibModalInstance, Admi
 
     vm.pageTitle = $state.current.data.pageTitle;
     vm.mode = $state.current.data.mode;
-    vm.apps = AppService.queryAll();
+    vm.apps = AppService.query();
     vm.searchParentMenus = searchParentMenus;
     vm.entity = entity;
     vm.isSaving = false;
@@ -2022,7 +2022,7 @@ function AuthorityAdminMenuController($state, AuthorityAdminMenuService, AppAuth
 
     vm.pageTitle = $state.current.data.pageTitle;
     vm.parentPageTitle = $state.$current.parent.data.pageTitle;
-    vm.apps = AppService.queryAll();
+    vm.apps = AppService.query();
     vm.authorities = [];
     vm.allMenus = [];
     vm.isSaving = false;

@@ -1159,7 +1159,6 @@ function AuthorityAdminMenuService($resource) {
 function AppService($resource) {
     var service = $resource('api/app/apps/:extension', {}, {
         'query': {method: 'GET', isArray: true},
-        'queryAll': {method: 'GET', isArray: true, params: {extension: 'all'}},
         'get': {
             method: 'GET',
             transformResponse: function (data) {
