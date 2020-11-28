@@ -15,11 +15,7 @@ import java.util.Collection;
 /**
  * Utility class for Spring Security.
  */
-public final class SecurityUtils {
-
-    private SecurityUtils() {
-    }
-
+public abstract class SecurityUtils {
     /**
      * Return the current user, or throws an exception, if the user is not
      * authenticated yet.
@@ -91,8 +87,7 @@ public final class SecurityUtils {
      * Servlet API
      * </p>
      *
-     * @param role
-     *            the authority to check
+     * @param role the authority to check
      * @return true if the current user has the authority, false otherwise
      */
     public static boolean isCurrentUserInRole(String role) {

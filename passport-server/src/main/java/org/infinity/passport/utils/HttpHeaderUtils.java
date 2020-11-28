@@ -9,7 +9,7 @@ import java.net.URISyntaxException;
 /**
  * Utility class for generate http header.
  */
-public class HttpHeaderUtils {
+public abstract class HttpHeaderUtils {
     /**
      * Generate pagination http header
      * <p>

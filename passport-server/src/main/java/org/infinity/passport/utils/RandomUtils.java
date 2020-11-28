@@ -2,12 +2,9 @@ package org.infinity.passport.utils;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
-public final class RandomUtils {
+public abstract class RandomUtils {
 
     private static final int LENGTH = 20;
-
-    private RandomUtils() {
-    }
 
     /**
      * Generates a password.

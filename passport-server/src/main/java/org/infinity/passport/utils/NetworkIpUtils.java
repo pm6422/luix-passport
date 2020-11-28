@@ -5,13 +5,10 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.Enumeration;
 
-public class NetworkIpUtils {
+public abstract class NetworkIpUtils {
 
     public static final String INTRANET_IP = getIntranetIp(); // 内网IP
     public static final String INTERNET_IP = getInternetIp(); // 外网IP
-
-    private NetworkIpUtils() {
-    }
 
     /**
      * 获得内网IP
