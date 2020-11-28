@@ -720,7 +720,6 @@ function DictService($resource) {
 function DictItemService($resource) {
     var service = $resource('api/dict-item/:extension/:id', {}, {
         'query': {method: 'GET', isArray: true, params: {extension: 'items'}},
-        'queryByDictCode': {method: 'GET', isArray: true, params: {extension: 'dict-code'}},
         'get': {
             method: 'GET',
             transformResponse: function (data) {

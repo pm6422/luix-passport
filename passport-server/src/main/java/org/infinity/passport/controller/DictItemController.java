@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URISyntaxException;
 import java.text.MessageFormat;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -116,23 +115,6 @@ public class DictItemController {
         log.debug("REST request to get dict item : {}", id);
         DictItem entity = dictItemRepository.findById(id).orElseThrow(() -> new NoDataException(id));
         return ResponseEntity.ok(entity.asDTO());
-    }
-
-    @ApiOperation("根据数据字典代码检索数据字典项")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
-    @GetMapping("/api/dict-item/dict-code/{dictCode}")
-    @Secured({Authority.USER})
-    public ResponseEntity<List<DictItemDTO>> findByDictCode(
-            @ApiParam(value = "字典编号", required = true) @PathVariable String dictCode) {
-        log.debug("REST request to get dict item : {}", dictCode);
-        // 根据dictCode检索数据字典项
-        List<DictItem> dictItems = dictItemRepository.findByDictCode(dictCode);
-        if (CollectionUtils.isEmpty(dictItems)) {
-            return ResponseEntity.ok(Collections.emptyList());
-        }
-        List<DictItemDTO> dictItemDTOs = dictItems.stream().map(DictItem::asDTO)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(dictItemDTOs);
     }
 
     @ApiOperation("更新数据字典项")
