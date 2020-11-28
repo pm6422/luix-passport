@@ -34,7 +34,7 @@ import static javax.servlet.http.HttpServletResponse.*;
 import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
 
 @RestController
-@Api(tags = "单点登录客户端信息")
+@Api(tags = "单点登录客户端")
 @Slf4j
 public class OAuth2ClientDetailsController {
 
@@ -55,13 +55,13 @@ public class OAuth2ClientDetailsController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @ApiOperation("创建单点登录客户端信息")
+    @ApiOperation("创建单点登录客户端")
     @ApiResponses(value = {@ApiResponse(code = SC_CREATED, message = "成功创建"),
             @ApiResponse(code = SC_BAD_REQUEST, message = "字典名已存在")})
     @PostMapping("/api/oauth2-client/clients")
     @Secured(Authority.ADMIN)
     public ResponseEntity<Void> create(
-            @ApiParam(value = "单点登录客户端信息", required = true) @Valid @RequestBody MongoOAuth2ClientDetailsDTO dto) {
+            @ApiParam(value = "单点登录客户端", required = true) @Valid @RequestBody MongoOAuth2ClientDetailsDTO dto) {
         log.debug("REST create oauth client detail: {}", dto);
         dto.setClientId(StringUtils.defaultIfEmpty(dto.getClientId(), "" + IdGenerator.generateSnowFlakeId()));
         oAuth2ClientDetailsRepository.findById(dto.getClientId()).ifPresent((existingEntity) -> {
@@ -76,7 +76,7 @@ public class OAuth2ClientDetailsController {
                 .build();
     }
 
-    @ApiOperation("获取单点登录客户端信息分页列表")
+    @ApiOperation("分页查询单点登录客户端列表")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/oauth2-client/clients")
     @Secured(Authority.ADMIN)
@@ -95,9 +95,9 @@ public class OAuth2ClientDetailsController {
         return ResponseEntity.ok().headers(headers).body(DTOs);
     }
 
-    @ApiOperation("根据客户端ID检索单点登录客户端信息")
+    @ApiOperation("根据ID检索单点登录客户端")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "单点登录客户端信息不存在")})
+            @ApiResponse(code = SC_BAD_REQUEST, message = "单点登录客户端不存在")})
     @GetMapping("/api/oauth2-client/clients/{id}")
     @Secured({Authority.ADMIN})
     public ResponseEntity<MongoOAuth2ClientDetailsDTO> findById(
@@ -106,22 +106,22 @@ public class OAuth2ClientDetailsController {
         return ResponseEntity.ok(entity.asDTO());
     }
 
-    @ApiOperation("获取内部检索单点登录客户端信息")
+    @ApiOperation("获取内部单点登录客户端")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "单点登录客户端信息不存在")})
+            @ApiResponse(code = SC_BAD_REQUEST, message = "单点登录客户端不存在")})
     @GetMapping("/open-api/oauth2-client/internal-client")
     public ResponseEntity<Pair<String, String>> findInternalClient() {
         return ResponseEntity.ok(Pair.of(MongoOAuth2ClientDetails.INTERNAL_CLIENT_ID,
                 MongoOAuth2ClientDetails.INTERNAL_RAW_CLIENT_SECRET));
     }
 
-    @ApiOperation("更新单点登录客户端信息")
+    @ApiOperation("更新单点登录客户端")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功更新"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "单点登录客户端信息不存在")})
+            @ApiResponse(code = SC_BAD_REQUEST, message = "单点登录客户端不存在")})
     @PutMapping("/api/oauth2-client/clients")
     @Secured(Authority.ADMIN)
     public ResponseEntity<Void> update(
-            @ApiParam(value = "新的单点登录客户端信息", required = true) @Valid @RequestBody MongoOAuth2ClientDetailsDTO dto) {
+            @ApiParam(value = "新的单点登录客户端", required = true) @Valid @RequestBody MongoOAuth2ClientDetailsDTO dto) {
         log.debug("REST request to update oauth client detail: {}", dto);
         oAuth2ClientDetailsRepository.findById(dto.getClientId()).orElseThrow(() -> new NoDataException(dto.getClientId()));
         oAuth2ClientDetailsRepository.save(MongoOAuth2ClientDetails.of(dto));
@@ -131,9 +131,9 @@ public class OAuth2ClientDetailsController {
 
     }
 
-    @ApiOperation(value = "根据客户端ID删除单点登录客户端信息", notes = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
+    @ApiOperation(value = "根据ID删除单点登录客户端", notes = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功删除"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "单点登录客户端信息不存在")})
+            @ApiResponse(code = SC_BAD_REQUEST, message = "单点登录客户端不存在")})
     @DeleteMapping("/api/oauth2-client/clients/{id}")
     @Secured(Authority.ADMIN)
     public ResponseEntity<Void> delete(@ApiParam(value = "客户端ID", required = true) @PathVariable String id) {

@@ -25,7 +25,7 @@ import static javax.servlet.http.HttpServletResponse.SC_OK;
 import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
 
 @RestController
-@Api(tags = "登录授权码信息")
+@Api(tags = "登录授权码")
 @Slf4j
 public class OAuth2AuthorizationCodeController {
 
@@ -48,7 +48,7 @@ public class OAuth2AuthorizationCodeController {
      * @return code list
      * @throws URISyntaxException if exception occurs
      */
-    @ApiOperation("获取授权码信息信息分页列表")
+    @ApiOperation("分页查询授权码列表")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/oauth2-authorization-code/codes")
     @Secured(Authority.ADMIN)
@@ -66,23 +66,23 @@ public class OAuth2AuthorizationCodeController {
         return ResponseEntity.ok().headers(headers).body(DTOs);
     }
 
-    @ApiOperation("根据授权码信息ID检索授权码信息信息")
+    @ApiOperation("根据ID检索授权码")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "授权码信息信息不存在")})
+            @ApiResponse(code = SC_BAD_REQUEST, message = "授权码不存在")})
     @GetMapping("/api/oauth2-authorization-code/codes/{id}")
     @Secured({Authority.ADMIN})
     public ResponseEntity<MongoOAuth2AuthorizationCodeDTO> findById(
-            @ApiParam(value = "授权码信息ID", required = true) @PathVariable String id) {
+            @ApiParam(value = "授权码ID", required = true) @PathVariable String id) {
         MongoOAuth2AuthorizationCode entity = oAuth2AuthorizationCodeRepository.findById(id).orElseThrow(() -> new NoDataException(id));
         return ResponseEntity.ok(entity.asDTO());
     }
 
-    @ApiOperation(value = "根据授权码信息ID删除授权码信息信息", notes = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
+    @ApiOperation(value = "根据ID删除授权码", notes = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功删除"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "授权码信息信息不存在")})
+            @ApiResponse(code = SC_BAD_REQUEST, message = "授权码不存在")})
     @DeleteMapping("/api/oauth2-authorization-code/codes/{id}")
     @Secured(Authority.ADMIN)
-    public ResponseEntity<Void> delete(@ApiParam(value = "授权码信息ID", required = true) @PathVariable String id) {
+    public ResponseEntity<Void> delete(@ApiParam(value = "授权码ID", required = true) @PathVariable String id) {
         log.debug("REST request to delete oauth2 authorization code: {}", id);
         oAuth2AuthorizationCodeRepository.findById(id).orElseThrow(() -> new NoDataException(id));
         oAuth2AuthorizationCodeRepository.deleteById(id);

@@ -52,7 +52,7 @@ public class AuthorityController {
                 .build();
     }
 
-    @ApiOperation("获取权限列表")
+    @ApiOperation("分页查询权限列表")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/authority/authorities")
     @Secured({Authority.ADMIN})
@@ -74,7 +74,7 @@ public class AuthorityController {
         return ResponseEntity.ok(authDTOs);
     }
 
-    @ApiOperation("根据权限名称检索权限信息")
+    @ApiOperation("根据名称检索权限信息")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取"),
             @ApiResponse(code = SC_BAD_REQUEST, message = "权限信息不存在")})
     @GetMapping("/api/authority/authorities/{name}")
@@ -100,7 +100,7 @@ public class AuthorityController {
                 .build();
     }
 
-    @ApiOperation(value = "根据权限名称删除权限信息", notes = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
+    @ApiOperation(value = "根据名称删除权限信息", notes = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功删除"),
             @ApiResponse(code = SC_BAD_REQUEST, message = "权限信息不存在")})
     @DeleteMapping("/api/authority/authorities/{name}")

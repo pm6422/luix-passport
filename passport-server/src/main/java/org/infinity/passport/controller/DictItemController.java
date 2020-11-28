@@ -65,7 +65,7 @@ public class DictItemController {
     @PostMapping("/api/dict-item/items")
     @Secured(Authority.DEVELOPER)
     public ResponseEntity<Void> create(
-            @ApiParam(value = "数据字典项信息", required = true) @Valid @RequestBody DictItemDTO dto) {
+            @ApiParam(value = "数据字典项", required = true) @Valid @RequestBody DictItemDTO dto) {
         log.debug("REST request to create dict item: {}", dto);
         // 判断dictCode是否存在
         dictRepository.findOneByDictCode(dto.getDictCode())
@@ -87,7 +87,7 @@ public class DictItemController {
                 .build();
     }
 
-    @ApiOperation("获取数据字典项分页列表")
+    @ApiOperation("分页查询数据字典项列表")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/dict-item/items")
     @Secured(Authority.DEVELOPER)
@@ -106,7 +106,7 @@ public class DictItemController {
         return ResponseEntity.ok().headers(headers).body(DTOs);
     }
 
-    @ApiOperation("根据数据字典项ID检索数据字典项信息")
+    @ApiOperation("根据ID检索数据字典项")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取"),
             @ApiResponse(code = SC_BAD_REQUEST, message = "字典项不存在")})
     @GetMapping("/api/dict-item/items/{id}")
@@ -118,14 +118,14 @@ public class DictItemController {
         return ResponseEntity.ok(entity.asDTO());
     }
 
-    @ApiOperation("根据数据字典代码检索数据字典项信息")
+    @ApiOperation("根据数据字典代码检索数据字典项")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/dict-item/dict-code/{dictCode}")
     @Secured({Authority.USER})
     public ResponseEntity<List<DictItemDTO>> findByDictCode(
             @ApiParam(value = "字典编号", required = true) @PathVariable String dictCode) {
         log.debug("REST request to get dict item : {}", dictCode);
-        // 根据dictCode查询数据字典项信息
+        // 根据dictCode查询数据字典项
         List<DictItem> dictItems = dictItemRepository.findByDictCode(dictCode);
         if (CollectionUtils.isEmpty(dictItems)) {
             return ResponseEntity.ok(Collections.emptyList());
@@ -135,13 +135,13 @@ public class DictItemController {
         return ResponseEntity.ok(dictItemDTOs);
     }
 
-    @ApiOperation("更新数据字典项信息")
+    @ApiOperation("更新数据字典项")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功更新"),
             @ApiResponse(code = SC_BAD_REQUEST, message = "字典项不存在")})
     @PutMapping("/api/dict-item/items")
     @Secured(Authority.DEVELOPER)
     public ResponseEntity<Void> update(
-            @ApiParam(value = "新的数据字典项信息", required = true) @Valid @RequestBody DictItemDTO dto) {
+            @ApiParam(value = "新的数据字典项", required = true) @Valid @RequestBody DictItemDTO dto) {
         log.debug("REST request to update dict item: {}", dto);
         dictItemRepository.findById(dto.getId()).orElseThrow(() -> new NoDataException(dto.getId()));
         dictItemService.update(dto.getId(), dto.getDictCode(), dto.getDictItemCode(), dto.getDictItemName(),
@@ -151,7 +151,7 @@ public class DictItemController {
                 .build();
     }
 
-    @ApiOperation(value = "根据数据字典编号与字典项编号删除数据字典信息", notes = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
+    @ApiOperation(value = "根据数据字典编号与字典项编号删除数据字典", notes = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功删除"),
             @ApiResponse(code = SC_BAD_REQUEST, message = "字典项不存在")})
     @DeleteMapping("/api/dict-item/items/{id}")

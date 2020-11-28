@@ -79,7 +79,7 @@ public class UserController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "账号已注册")})
     @PostMapping("/api/user/users")
     @Secured({Authority.ADMIN})
-    public ResponseEntity<String> create(@ApiParam(value = "用户信息", required = true) @Valid @RequestBody UserDTO dto,
+    public ResponseEntity<String> create(@ApiParam(value = "用户", required = true) @Valid @RequestBody UserDTO dto,
                                          HttpServletRequest request) {
         log.debug("REST request to create user: {}", dto);
         User newUser = userService.insert(dto.getUserName(), DEFAULT_PASSWORD, dto.getFirstName(), dto.getLastName(),
@@ -100,7 +100,7 @@ public class UserController {
                 .status(HttpStatus.CREATED).headers(headers).body(DEFAULT_PASSWORD);
     }
 
-    @ApiOperation("获取用户信息分页列表")
+    @ApiOperation("分页查询用户列表")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/user/users")
     @Secured({Authority.ADMIN})
@@ -115,7 +115,7 @@ public class UserController {
         return ResponseEntity.ok().headers(headers).body(DTOs);
     }
 
-    @ApiOperation("根据用户名检索用户信息")
+    @ApiOperation("根据用户名检索用户")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取"),
             @ApiResponse(code = SC_BAD_REQUEST, message = "用户不存在或账号无权限")})
     @GetMapping("/api/user/users/{userName:[_'.@a-z0-9-]+}")
@@ -130,7 +130,7 @@ public class UserController {
         return ResponseEntity.ok(new ManagedUserDTO(entity, authorities));
     }
 
-    @ApiOperation("更新用户信息")
+    @ApiOperation("更新用户")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功更新"),
             @ApiResponse(code = SC_BAD_REQUEST, message = "用户不存在"),
             @ApiResponse(code = SC_BAD_REQUEST, message = "账号已注册"),
@@ -138,7 +138,7 @@ public class UserController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "已激活用户无法变成未激活状态")})
     @PutMapping("/api/user/users")
     @Secured({Authority.ADMIN})
-    public ResponseEntity<Void> update(@ApiParam(value = "新的用户信息", required = true) @Valid @RequestBody UserDTO dto,
+    public ResponseEntity<Void> update(@ApiParam(value = "新的用户", required = true) @Valid @RequestBody UserDTO dto,
                                        HttpServletRequest request, HttpServletResponse response) {
         log.debug("REST request to update user: {}", dto);
         userService.updateWithCheck(dto);

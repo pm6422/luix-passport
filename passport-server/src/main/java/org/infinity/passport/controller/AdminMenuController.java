@@ -59,7 +59,7 @@ public class AdminMenuController {
     @PostMapping("/api/admin-menu/menus")
     @Secured({Authority.ADMIN})
     public ResponseEntity<Void> create(
-            @ApiParam(value = "菜单信息", required = true) @Valid @RequestBody AdminMenuDTO dto) {
+            @ApiParam(value = "菜单", required = true) @Valid @RequestBody AdminMenuDTO dto) {
         log.debug("REST request to create admin menu: {}", dto);
         adminMenuRepository.findOneByAppNameAndLevelAndSequence(dto.getAppName(), dto.getLevel(), dto.getSequence())
                 .ifPresent((existingEntity) -> {
@@ -74,7 +74,7 @@ public class AdminMenuController {
                 .build();
     }
 
-    @ApiOperation("获取菜单信息分页列表")
+    @ApiOperation("分页查询菜单列表")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/admin-menu/menus")
     @Secured({Authority.ADMIN})
@@ -87,7 +87,7 @@ public class AdminMenuController {
         return ResponseEntity.ok().headers(headers).body(DTOs);
     }
 
-    @ApiOperation("根据菜单ID查询菜单")
+    @ApiOperation("根据ID查询菜单")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取"),
             @ApiResponse(code = SC_BAD_REQUEST, message = "菜单不存在")})
     @GetMapping("/api/admin-menu/menus/{id}")
@@ -115,7 +115,7 @@ public class AdminMenuController {
     @PutMapping("/api/admin-menu/menus")
     @Secured({Authority.ADMIN})
     public ResponseEntity<Void> update(
-            @ApiParam(value = "新的菜单信息", required = true) @Valid @RequestBody AdminMenuDTO dto) {
+            @ApiParam(value = "新的菜单", required = true) @Valid @RequestBody AdminMenuDTO dto) {
         log.debug("REST request to update admin menu: {}", dto);
         adminMenuRepository.findById(dto.getId()).orElseThrow(() -> new NoDataException(dto.getId()));
         adminMenuRepository.save(AdminMenu.of(dto));
@@ -124,7 +124,7 @@ public class AdminMenuController {
                 .build();
     }
 
-    @ApiOperation("根据应用名称和菜单ID删除管理菜单")
+    @ApiOperation("根据ID删除管理菜单")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功删除"),
             @ApiResponse(code = SC_BAD_REQUEST, message = "菜单不存在")})
     @DeleteMapping("/api/admin-menu/menus/{id}")
@@ -156,7 +156,7 @@ public class AdminMenuController {
         adminMenuRepository.insert(list);
     }
 
-    @ApiOperation("根据菜单ID提高管理菜单顺序")
+    @ApiOperation("根据ID提高管理菜单顺序")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "成功操作")})
     @GetMapping("/api/admin-menu/raise-seq/{id}")
     @Secured({Authority.ADMIN})
@@ -164,7 +164,7 @@ public class AdminMenuController {
         adminMenuService.raiseSeq(id);
     }
 
-    @ApiOperation("根据菜单ID降低管理菜单顺序")
+    @ApiOperation("根据ID降低管理菜单顺序")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "成功操作")})
     @GetMapping("/api/admin-menu/lower-seq/{id}")
     @Secured({Authority.ADMIN})

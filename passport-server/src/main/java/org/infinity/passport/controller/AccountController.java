@@ -122,7 +122,7 @@ public class AccountController {
         return ResponseEntity.ok(user);
     }
 
-    @ApiOperation("获取当前用户信息")
+    @ApiOperation("获取当前用户")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取"),
             @ApiResponse(code = SC_BAD_REQUEST, message = "账号无权限")})
     @GetMapping("/api/account/user")
@@ -140,7 +140,7 @@ public class AccountController {
         return ResponseEntity.ok().headers(headers).body(new UserDTO(user, authorities));
     }
 
-    @ApiOperation("根据访问令牌信息获取绑定的用户信息")
+    @ApiOperation("根据访问令牌获取绑定的用户")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/open-api/account/user")
     public ResponseEntity<Object> getTokenUser(HttpServletRequest request) {
@@ -169,7 +169,7 @@ public class AccountController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "账号已注册")})
     @PostMapping("/open-api/account/register")
     public ResponseEntity<Void> registerAccount(
-            @ApiParam(value = "用户信息", required = true) @Valid @RequestBody ManagedUserDTO managedUserDTO,
+            @ApiParam(value = "用户", required = true) @Valid @RequestBody ManagedUserDTO managedUserDTO,
             HttpServletRequest request) {
         User newUser = userService.insert(managedUserDTO.getUserName(), managedUserDTO.getPassword(),
                 managedUserDTO.getFirstName(), managedUserDTO.getLastName(), managedUserDTO.getEmail(),
@@ -205,14 +205,14 @@ public class AccountController {
         return ResponseEntity.ok(authorities);
     }
 
-    @ApiOperation("更新当前用户信息")
+    @ApiOperation("更新当前用户")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功更新"),
             @ApiResponse(code = SC_BAD_REQUEST, message = "用户未登录或账号已注册"),
-            @ApiResponse(code = SC_INTERNAL_SERVER_ERROR, message = "登录用户信息已经不存在")})
+            @ApiResponse(code = SC_INTERNAL_SERVER_ERROR, message = "登录用户已经不存在")})
     @PutMapping("/api/account/user")
     @Secured({Authority.USER})
     public ResponseEntity<Void> updateCurrentAccount(
-            @ApiParam(value = "新的用户信息", required = true) @Valid @RequestBody UserDTO dto) {
+            @ApiParam(value = "新的用户", required = true) @Valid @RequestBody UserDTO dto) {
         userService.updateWithCheck(dto);
         return ResponseEntity.ok()
                 .headers(httpHeaderCreator.createSuccessHeader("notification.user.updated", dto.getUserName()))
@@ -254,7 +254,7 @@ public class AccountController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "重置码无效或已过期")})
     @PostMapping("/open-api/account/reset-password/finish")
     public ResponseEntity<Void> finishPasswordReset(
-            @ApiParam(value = "重置码及新密码信息", required = true) @Valid @RequestBody ResetKeyAndPasswordDTO resetKeyAndPasswordDTO) {
+            @ApiParam(value = "重置码及新密码", required = true) @Valid @RequestBody ResetKeyAndPasswordDTO resetKeyAndPasswordDTO) {
         userService.completePasswordReset(resetKeyAndPasswordDTO.getNewPassword(), resetKeyAndPasswordDTO.getKey())
                 .orElseThrow(() -> new FieldValidationException("resetKeyAndPasswordDTO", "key",
                         resetKeyAndPasswordDTO.getKey(), "error.invalid.reset.key"));

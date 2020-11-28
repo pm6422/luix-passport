@@ -3,7 +3,6 @@ package org.infinity.passport.controller;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.infinity.passport.component.HttpHeaderCreator;
-import org.infinity.passport.domain.AdminMenu;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.MongoOAuth2RefreshToken;
 import org.infinity.passport.dto.MongoOAuth2RefreshTokenDTO;
@@ -41,7 +40,7 @@ public class OAuth2RefreshTokenController {
         this.httpHeaderCreator = httpHeaderCreator;
     }
 
-    @ApiOperation("获取刷新令牌信息分页列表")
+    @ApiOperation("分页查询刷新令牌列表")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/oauth2-refresh-token/tokens")
     @Secured(Authority.ADMIN)
@@ -63,9 +62,9 @@ public class OAuth2RefreshTokenController {
         return ResponseEntity.ok().headers(headers).body(DTOs);
     }
 
-    @ApiOperation("根据刷新令牌ID检索刷新令牌信息")
+    @ApiOperation("根据ID检索刷新令牌")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "刷新令牌信息不存在")})
+            @ApiResponse(code = SC_BAD_REQUEST, message = "刷新令牌不存在")})
     @GetMapping("/api/oauth2-refresh-token/tokens/{id}")
     @Secured({Authority.ADMIN})
     public ResponseEntity<MongoOAuth2RefreshTokenDTO> findById(
@@ -74,9 +73,9 @@ public class OAuth2RefreshTokenController {
         return ResponseEntity.ok(entity.asDTO());
     }
 
-    @ApiOperation(value = "根据刷新令牌ID删除刷新令牌信息", notes = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
+    @ApiOperation(value = "根据ID删除刷新令牌", notes = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功删除"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "刷新令牌信息不存在")})
+            @ApiResponse(code = SC_BAD_REQUEST, message = "刷新令牌不存在")})
     @DeleteMapping("/api/oauth2-refresh-token/tokens/{id}")
     @Secured(Authority.ADMIN)
     public ResponseEntity<Void> delete(@ApiParam(value = "刷新令牌ID", required = true) @PathVariable String id) {

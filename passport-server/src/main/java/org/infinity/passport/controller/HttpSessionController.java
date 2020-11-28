@@ -49,7 +49,7 @@ public class HttpSessionController {
         return ResponseEntity.ok().headers(headers).body(sessions.getContent());
     }
 
-    @ApiOperation(value = "根据Http会话ID删除Http会话信息", notes = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
+    @ApiOperation(value = "根据ID删除Http会话", notes = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功删除"), @ApiResponse(code = SC_BAD_REQUEST, message = "Http会话信息不存在")})
     @DeleteMapping("/api/http-session/sessions/{id}")
     @Secured({Authority.DEVELOPER})

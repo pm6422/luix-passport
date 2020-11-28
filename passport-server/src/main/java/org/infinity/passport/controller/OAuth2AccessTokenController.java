@@ -25,7 +25,7 @@ import static javax.servlet.http.HttpServletResponse.SC_OK;
 import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
 
 @RestController
-@Api(tags = "访问令牌信息")
+@Api(tags = "访问令牌")
 @Slf4j
 public class OAuth2AccessTokenController {
 
@@ -38,7 +38,7 @@ public class OAuth2AccessTokenController {
         this.httpHeaderCreator = httpHeaderCreator;
     }
 
-    @ApiOperation("获取访问令牌信息分页列表")
+    @ApiOperation("分页查询访问令牌列表")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/oauth2-access-token/tokens")
     @Secured(Authority.ADMIN)
@@ -60,9 +60,9 @@ public class OAuth2AccessTokenController {
         return ResponseEntity.ok().headers(headers).body(DTOs);
     }
 
-    @ApiOperation("根据访问令牌ID检索访问令牌信息")
+    @ApiOperation("根据ID检索访问令牌")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "访问令牌信息不存在")})
+            @ApiResponse(code = SC_BAD_REQUEST, message = "访问令牌不存在")})
     @GetMapping("/api/oauth2-access-token/tokens/{id}")
     @Secured({Authority.ADMIN})
     public ResponseEntity<MongoOAuth2AccessTokenDTO> findById(
@@ -72,9 +72,9 @@ public class OAuth2AccessTokenController {
         return ResponseEntity.ok(entity.asDTO());
     }
 
-    @ApiOperation(value = "根据访问令牌ID删除访问令牌信息", notes = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
+    @ApiOperation(value = "根据ID删除访问令牌", notes = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功删除"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "访问令牌信息不存在")})
+            @ApiResponse(code = SC_BAD_REQUEST, message = "访问令牌不存在")})
     @DeleteMapping("/api/oauth2-access-token/tokens/{id}")
     @Secured(Authority.ADMIN)
     public ResponseEntity<Void> delete(@ApiParam(value = "访问令牌ID", required = true) @PathVariable String id) {

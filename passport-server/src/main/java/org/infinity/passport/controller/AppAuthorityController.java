@@ -55,7 +55,7 @@ public class AppAuthorityController {
     @PostMapping("/api/app-authority/app-authorities")
     @Secured({Authority.ADMIN})
     public ResponseEntity<Void> create(
-            @ApiParam(value = "应用权限信息", required = true) @Valid @RequestBody AppAuthorityDTO dto) {
+            @ApiParam(value = "应用权限", required = true) @Valid @RequestBody AppAuthorityDTO dto) {
         log.debug("REST request to create app authority: {}", dto);
         appAuthorityRepository.findOneByAppNameAndAuthorityName(dto.getAppName(), dto.getAuthorityName())
                 .ifPresent((existingEntity) -> {
@@ -73,7 +73,7 @@ public class AppAuthorityController {
                 .build();
     }
 
-    @ApiOperation("获取应用权限分页列表")
+    @ApiOperation("分页查询应用权限列表")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/app-authority/app-authorities")
     @Secured({Authority.ADMIN})
@@ -87,7 +87,7 @@ public class AppAuthorityController {
         return ResponseEntity.ok().headers(headers).body(DTOs);
     }
 
-    @ApiOperation("根据字典ID检索应用权限信息")
+    @ApiOperation("根据ID检索应用权限")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取"),
             @ApiResponse(code = SC_BAD_REQUEST, message = "应用权限不存在")})
     @GetMapping("/api/app-authority/app-authorities/{id}")
@@ -99,7 +99,7 @@ public class AppAuthorityController {
         return ResponseEntity.ok(entity.asDTO());
     }
 
-    @ApiOperation("根据应用名称检索应用权限信息")
+    @ApiOperation("根据名称检索应用权限")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功获取")})
     @GetMapping("/api/app-authority/app-name/{appName}")
     @Secured({Authority.ADMIN})
@@ -114,13 +114,13 @@ public class AppAuthorityController {
         return ResponseEntity.ok(items);
     }
 
-    @ApiOperation("更新应用权限信息")
+    @ApiOperation("更新应用权限")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功更新"),
             @ApiResponse(code = SC_BAD_REQUEST, message = "应用权限不存在")})
     @PutMapping("/api/app-authority/app-authorities")
     @Secured({Authority.ADMIN})
     public ResponseEntity<Void> update(
-            @ApiParam(value = "新的应用权限信息", required = true) @Valid @RequestBody AppAuthorityDTO dto) {
+            @ApiParam(value = "新的应用权限", required = true) @Valid @RequestBody AppAuthorityDTO dto) {
         log.debug("REST request to update app authority: {}", dto);
         appAuthorityRepository.findById(dto.getId()).orElseThrow(() -> new NoDataException(dto.getId()));
         appAuthorityRepository.save(AppAuthority.of(dto));
@@ -129,7 +129,7 @@ public class AppAuthorityController {
                 .build();
     }
 
-    @ApiOperation(value = "根据字典ID删除应用权限信息", notes = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
+    @ApiOperation(value = "根据ID删除应用权限", notes = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功删除"),
             @ApiResponse(code = SC_BAD_REQUEST, message = "应用权限不存在")})
     @DeleteMapping("/api/app-authority/app-authorities/{id}")
