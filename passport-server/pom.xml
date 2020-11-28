@@ -39,7 +39,7 @@
         <project.testresult.directory>${project.build.directory}/test-results</project.testresult.directory>
         <run.addResources>false</run.addResources>
         <sortpom-maven-plugin.version>2.5.0</sortpom-maven-plugin.version>
-        <springfox.version>2.5.0</springfox.version>
+        <springfox.version>2.7.0</springfox.version>
     </properties>
 
     <!--
