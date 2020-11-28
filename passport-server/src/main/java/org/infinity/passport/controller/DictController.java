@@ -32,14 +32,14 @@ import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
 public class DictController {
 
     private final DictRepository    dictRepository;
-    private final DictService dictService;
+    private final DictService       dictService;
     private final HttpHeaderCreator httpHeaderCreator;
 
     public DictController(DictRepository dictRepository,
                           DictService dictService,
                           HttpHeaderCreator httpHeaderCreator) {
         this.dictRepository = dictRepository;
-        this.dictService =dictService;
+        this.dictService = dictService;
         this.httpHeaderCreator = httpHeaderCreator;
     }
 
@@ -64,28 +64,13 @@ public class DictController {
     @GetMapping("/api/dict/dicts")
     @Secured(Authority.DEVELOPER)
     public ResponseEntity<List<DictDTO>> find(Pageable pageable,
-                                              @ApiParam(value = "字典名称") @RequestParam(value = "dictName", required = false) String dictName)
+                                              @ApiParam(value = "字典名称") @RequestParam(value = "dictName", required = false) String dictName,
+                                              @ApiParam(value = "是否可用,null代表全部", allowableValues = "false,true,null") @RequestParam(value = "enabled", required = false) Boolean enabled)
             throws URISyntaxException {
-        Page<Dict> dicts = dictService.find(pageable, dictName);
+        Page<Dict> dicts = dictService.find(pageable, dictName, enabled);
         List<DictDTO> DTOs = dicts.getContent().stream().map(Dict::asDTO).collect(Collectors.toList());
         HttpHeaders headers = generatePageHeaders(dicts, "/api/dict/dicts");
         return ResponseEntity.ok().headers(headers).body(DTOs);
-    }
-
-    @ApiOperation("根据是否可用检索数据字典列表")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
-    @GetMapping("/api/dict/all")
-    @Secured({Authority.DEVELOPER, Authority.USER})
-    public ResponseEntity<List<DictDTO>> findByEnabled(
-            @ApiParam(value = "是否可用,null代表全部", allowableValues = "false,true,null") @RequestParam(value = "enabled", required = false) Boolean enabled) {
-        List<Dict> dicts;
-        if (enabled == null) {
-            dicts = dictRepository.findAll();
-        } else {
-            dicts = dictRepository.findByEnabled(enabled);
-        }
-        List<DictDTO> dictDTOs = dicts.stream().map(Dict::asDTO).collect(Collectors.toList());
-        return ResponseEntity.ok(dictDTOs);
     }
 
     @ApiOperation("根据ID检索数据字典")

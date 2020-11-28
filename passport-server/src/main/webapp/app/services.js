@@ -702,7 +702,6 @@ function HttpSessionService($resource) {
 function DictService($resource) {
     var service = $resource('api/dict/:extension/:id', {}, {
         'query': {method: 'GET', isArray: true, params: {extension: 'dicts'}},
-        'queryAll': {method: 'GET', isArray: true, params: {extension: 'all'}},
         'get': {
             method: 'GET',
             transformResponse: function (data) {

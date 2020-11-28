@@ -1229,7 +1229,7 @@ function DictItemListController($state, AlertUtils, ParseLinksUtils, PAGINATION_
     var vm = this;
 
     vm.pageTitle = $state.current.data.pageTitle;
-    vm.dicts = DictService.queryAll();
+    vm.dicts = DictService.query();
     vm.links = null;
     vm.loadAll = loadAll;
     vm.loadPage = loadPage;
@@ -1324,7 +1324,7 @@ function DictItemDialogController($state, $stateParams, $uibModalInstance, DictS
     var vm = this;
 
     vm.pageTitle = $state.current.data.pageTitle;
-    vm.dicts = DictService.queryAll({enabled: true});
+    vm.dicts = DictService.query({enabled: true});
     vm.mode = $state.current.data.mode;
     vm.entity = entity;
     vm.isSaving = false;

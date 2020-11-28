@@ -22,10 +22,10 @@ public class DictServiceImpl implements DictService {
     }
 
     @Override
-    public Page<Dict> find(Pageable pageable, String dictName) {
+    public Page<Dict> find(Pageable pageable, String dictName, Boolean enabled) {
         // Ignore query parameter if it has a null value
         ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreNullValues();
-        Example<Dict> queryExample = Example.of(new Dict(dictName), matcher);
+        Example<Dict> queryExample = Example.of(new Dict(dictName, enabled), matcher);
         return dictRepository.findAll(queryExample, pageable);
     }
 

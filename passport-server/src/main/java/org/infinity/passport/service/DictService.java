@@ -9,7 +9,7 @@ import java.util.Map;
 
 public interface DictService {
 
-    Page<Dict> find(Pageable pageable, String dictName);
+    Page<Dict> find(Pageable pageable, String dictName, Boolean enabled);
 
     Map<String, String> findDictCodeDictNameMap();
 

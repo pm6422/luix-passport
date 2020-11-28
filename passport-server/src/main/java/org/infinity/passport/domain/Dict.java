@@ -29,8 +29,9 @@ public class Dict extends AbstractAuditableDomain implements Serializable {
 
     private Boolean enabled;
 
-    public Dict(String dictName) {
+    public Dict(String dictName, Boolean enabled) {
         this.dictName = dictName;
+        this.enabled = enabled;
     }
 
     public Dict(String dictCode, String dictName, String remark, Boolean enabled) {
