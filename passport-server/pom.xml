@@ -22,10 +22,6 @@
     -->
     <properties>
         <app.server.port>9010</app.server.port>
-        <asciidoctor.html.output.directory>${project.basedir}/src/main/webapp/asciidoc</asciidoctor.html.output.directory>
-        <asciidoctor.input.directory>${project.basedir}/docs/asciidoc</asciidoctor.input.directory>
-        <asciidoctor.maven.plugin.version>1.5.3</asciidoctor.maven.plugin.version>
-        <generated.asciidoc.directory>${project.build.directory}/asciidoc/generated</generated.asciidoc.directory>
         <java.version>1.8</java.version>
 
         <!-- Plugin versions -->
@@ -140,38 +136,6 @@
             <artifactId>springfox-bean-validators</artifactId>
             <version>${springfox.version}</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-staticdocs</artifactId>
-            <version>2.6.1</version>
-            <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <artifactId>jackson-datatype-joda</artifactId>
-                    <groupId>com.fasterxml.jackson.datatype</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>joda-time</artifactId>
-                    <groupId>joda-time</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>guava</artifactId>
-                    <groupId>com.google.guava</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>swagger-models</artifactId>
-                    <groupId>io.swagger</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>commons-io</artifactId>
-                    <groupId>commons-io</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>jsr305</artifactId>
-                    <groupId>com.google.code.findbugs</groupId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>io.springfox</groupId>
@@ -386,57 +350,6 @@
                     </rules>
                 </configuration>
             </plugin>
-            <!-- Run the generated asciidoc through Asciidoctor to generate other documentation types, such as PDFs or HTML5 -->
-            <plugin>
-                <groupId>org.asciidoctor</groupId>
-                <artifactId>asciidoctor-maven-plugin</artifactId>
-                <version>1.6.0</version>
-                <!-- Since each execution can only handle one backend, run separate executions for each desired output type -->
-                <executions>
-                    <execution>
-                        <id>api-output-html</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>process-asciidoc</goal>
-                        </goals>
-                        <configuration>
-                            <backend>html5</backend>
-                            <outputDirectory>${asciidoctor.html.output.directory}/api</outputDirectory>
-                            <attributes>
-                                <generated>${generated.asciidoc.directory}/api</generated>
-                            </attributes>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>open-api-output-html</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>process-asciidoc</goal>
-                        </goals>
-                        <configuration>
-                            <backend>html5</backend>
-                            <outputDirectory>${asciidoctor.html.output.directory}/open-api</outputDirectory>
-                            <attributes>
-                                <generated>${generated.asciidoc.directory}/open-api</generated>
-                            </attributes>
-                        </configuration>
-                    </execution>
-                </executions>
-                <!-- Configure generic document generation settings -->
-                <configuration>
-                    <sourceDirectory>${asciidoctor.input.directory}</sourceDirectory>
-                    <sourceDocumentName>index.adoc</sourceDocumentName>
-                    <attributes>
-                        <doctype>book</doctype>
-                        <toc>left</toc>
-                        <toclevels>3</toclevels>
-                        <numbered />
-                        <hardbreaks />
-                        <sectlinks />
-                        <sectanchors />
-                    </attributes>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
@@ -496,24 +409,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <!-- Force alphabetical order to have a reproducible build -->
-                    <runOrder>alphabetical</runOrder>
-                    <systemPropertyVariables>
-                        <api.staticdocs.outputDir>${generated.asciidoc.directory}/api</api.staticdocs.outputDir>
-                        <open.api.staticdocs.outputDir>${generated.asciidoc.directory}/open-api</open.api.staticdocs.outputDir>
-                    </systemPropertyVariables>
-                    <includes>
-                        <include>**/*Test.java</include>
-                    </includes>
-                    <excludes>
-                        <exclude>**/Abstract*.java</exclude>
-                    </excludes>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
