@@ -2,11 +2,11 @@ package org.infinity.passport.controller;
 
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
+import org.infinity.passport.component.HttpHeaderCreator;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.dto.AuthorityDTO;
 import org.infinity.passport.exception.NoDataException;
 import org.infinity.passport.repository.AuthorityRepository;
-import org.infinity.passport.component.HttpHeaderCreator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -62,16 +62,6 @@ public class AuthorityController {
                 .collect(Collectors.toList());
         HttpHeaders headers = generatePageHeaders(authorities, "/api/authority/authorities");
         return ResponseEntity.ok().headers(headers).body(DTOs);
-    }
-
-    @ApiOperation("检索所有权限")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
-    @GetMapping("/api/authority/authorities/all")
-    @Secured({Authority.ADMIN})
-    public ResponseEntity<List<AuthorityDTO>> findAll() {
-        List<AuthorityDTO> authDTOs = authorityRepository.findAll().stream().map(Authority::asDTO)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(authDTOs);
     }
 
     @ApiOperation("根据名称检索权限信息")

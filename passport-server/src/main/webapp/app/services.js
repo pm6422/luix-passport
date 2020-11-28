@@ -1176,7 +1176,6 @@ function AppService($resource) {
 function AuthorityService($resource) {
     var service = $resource('api/authority/authorities/:extension', {}, {
         'query': {method: 'GET', isArray: true},
-        'queryAll': {method: 'GET', isArray: true, params: {extension: 'all'}},
         'get': {
             method: 'GET',
             transformResponse: function (data) {
