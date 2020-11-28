@@ -106,7 +106,7 @@ public class AccountController {
         return ResponseEntity.ok(StringUtils.EMPTY);
     }
 
-    @ApiOperation(value = "验证当前用户是否已经登录", notes = "理论上不会返回false，因为未登录则会出错，登录成功返回当前用户名", response = String.class)
+    @ApiOperation(value = "检索当前登录的用户名", notes = "理论上不会返回false，因为未登录则会出错，登录成功返回当前用户名", response = String.class)
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/account/authenticate")
     public ResponseEntity<String> isAuthenticated(HttpServletRequest request) {
@@ -114,7 +114,7 @@ public class AccountController {
         return ResponseEntity.ok(request.getRemoteUser());
     }
 
-    @ApiOperation(value = "检索登录的用户", notes = "用于SSO客户端调用，理论上不会返回null，因为未登录则会出错，登录成功返回当前用户")
+    @ApiOperation(value = "检索当前登录的用户名", notes = "用于SSO客户端调用，理论上不会返回null，因为未登录则会出错，登录成功返回当前用户")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/account/principal")
     public ResponseEntity<Principal> getPrincipal(Principal user) {
