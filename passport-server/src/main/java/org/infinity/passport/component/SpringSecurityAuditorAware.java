@@ -1,4 +1,4 @@
-package org.infinity.passport.security;
+package org.infinity.passport.component;
 
 import java.util.Optional;
 
