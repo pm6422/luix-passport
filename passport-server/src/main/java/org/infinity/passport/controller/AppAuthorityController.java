@@ -99,21 +99,6 @@ public class AppAuthorityController {
         return ResponseEntity.ok(entity.asDTO());
     }
 
-    @ApiOperation("根据名称检索应用权限")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
-    @GetMapping("/api/app-authority/app-name/{appName}")
-    @Secured({Authority.ADMIN})
-    public ResponseEntity<List<AppAuthorityDTO>> findByApp(
-            @ApiParam(value = "应用名称", required = true) @PathVariable String appName) {
-        log.debug("REST request to get app authorities : {}", appName);
-        List<AppAuthority> appAuthorities = appAuthorityRepository.findByAppName(appName);
-        if (CollectionUtils.isEmpty(appAuthorities)) {
-            return ResponseEntity.ok(Collections.emptyList());
-        }
-        List<AppAuthorityDTO> items = appAuthorities.stream().map(AppAuthority::asDTO).collect(Collectors.toList());
-        return ResponseEntity.ok(items);
-    }
-
     @ApiOperation("更新应用权限")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功更新"),
             @ApiResponse(code = SC_BAD_REQUEST, message = "应用权限不存在")})

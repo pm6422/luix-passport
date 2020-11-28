@@ -1199,7 +1199,6 @@ function AuthorityService($resource) {
 function AppAuthorityService($resource) {
     var service = $resource('api/app-authority/:extension/:id', {}, {
         'query': {method: 'GET', isArray: true, params: {extension: 'app-authorities'}},
-        'queryByAppName': {method: 'GET', isArray: true, params: {extension: 'app-name'}},
         'get': {
             method: 'GET',
             transformResponse: function (data) {

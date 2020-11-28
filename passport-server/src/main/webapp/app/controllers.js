@@ -2032,7 +2032,7 @@ function AuthorityAdminMenuController($state, AuthorityAdminMenuService, AppAuth
 
     function searchAuthorities() {
         if (vm.criteria && vm.criteria.appName) {
-            vm.authorities = AppAuthorityService.queryByAppName({id: vm.criteria.appName});
+            vm.authorities = AppAuthorityService.query({appName: vm.criteria.appName});
         }
         else {
             vm.authorities = [];
