@@ -807,7 +807,7 @@ function HealthController($state, HealthService, $uibModal) {
 
     function showHealth(health) {
         $uibModal.open({
-            templateUrl: 'app/views/developer/health/health.modal.html',
+            templateUrl: 'app/views/developer/health/health.dialog.html',
             controller: 'HealthDialogController',
             controllerAs: 'vm',
             size: 'lg',
