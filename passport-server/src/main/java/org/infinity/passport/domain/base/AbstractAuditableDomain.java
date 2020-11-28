@@ -21,7 +21,7 @@ public abstract class AbstractAuditableDomain implements Serializable {
     protected String id;
 
     /**
-     * Set the proper value when inserting. Value comes from getCurrentAuditor() of SpringSecurityAuditorAware
+     * Set the proper value when inserting. Value comes from SpringSecurityAuditorAware.getCurrentAuditor()
      * Note: id不指定值保存时才被认为插入操作
      */
     @CreatedBy
@@ -35,7 +35,7 @@ public abstract class AbstractAuditableDomain implements Serializable {
     protected Instant createdTime;
 
     /**
-     * Set the proper value when updating. Value comes from getCurrentAuditor() of SpringSecurityAuditorAware
+     * Set the proper value when updating. Value comes from SpringSecurityAuditorAware.getCurrentAuditor()
      */
     @LastModifiedBy
     protected String modifiedBy;
