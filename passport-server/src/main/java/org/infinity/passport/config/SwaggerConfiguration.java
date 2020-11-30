@@ -39,6 +39,7 @@ import static springfox.documentation.builders.PathSelectors.regex;
 public class SwaggerConfiguration {
     private static final String                DEFAULT_API_INCLUDE_PATTERN      = "/api/.*";
     private static final String                DEFAULT_OPEN_API_INCLUDE_PATTERN = "/open-api/.*";
+    private static final String                SECURITY_TOKEN_NAME              = "Authorization";
     private final        ApplicationProperties applicationProperties;
 
     public SwaggerConfiguration(ApplicationProperties applicationProperties) {
@@ -120,7 +121,7 @@ public class SwaggerConfiguration {
 
     private List<ApiKey> securitySchemes() {
         List<ApiKey> apiKeyList = new ArrayList<>();
-        apiKeyList.add(new ApiKey("Authorization", "Authorization", "header"));
+        apiKeyList.add(new ApiKey(SECURITY_TOKEN_NAME, SECURITY_TOKEN_NAME, "header"));
         return apiKeyList;
     }
 
@@ -141,7 +142,7 @@ public class SwaggerConfiguration {
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
         authorizationScopes[0] = authorizationScope;
         List<SecurityReference> securityReferences = new ArrayList<>();
-        securityReferences.add(new SecurityReference("Authorization", authorizationScopes));
+        securityReferences.add(new SecurityReference(SECURITY_TOKEN_NAME, authorizationScopes));
         return securityReferences;
     }
 }
