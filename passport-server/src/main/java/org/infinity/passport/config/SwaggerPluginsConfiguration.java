@@ -15,7 +15,6 @@ import springfox.documentation.spring.web.plugins.Docket;
 @Configuration
 @ConditionalOnWebApplication
 @ConditionalOnBean(Docket.class)
-@ConditionalOnProperty(prefix = "application.swagger", value = "enabled", havingValue = "true")
 @AutoConfigureAfter(SwaggerConfiguration.class)
 public class SwaggerPluginsConfiguration {
 
@@ -25,6 +24,7 @@ public class SwaggerPluginsConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
+        @ConditionalOnProperty(prefix = "application.swagger", value = "enabled", havingValue = "true")
         public PageableParameterBuilderPlugin pageableParameterBuilderPlugin(TypeNameExtractor typeNameExtractor,
                                                                              TypeResolver typeResolver) {
             return new PageableParameterBuilderPlugin(typeNameExtractor, typeResolver);
