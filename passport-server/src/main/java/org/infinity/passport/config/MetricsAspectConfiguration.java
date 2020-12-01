@@ -37,36 +37,55 @@ public class MetricsAspectConfiguration {
      */
     @Around("execution(@(org.springframework.web.bind.annotation.*Mapping) * *(..))")
     public Object controllerAround(ProceedingJoinPoint joinPoint) throws Throwable {
-        StopWatch stopWatch = new StopWatch();
-        stopWatch.start();
-        Object result = joinPoint.proceed();
-        stopWatch.stop();
-        long elapsed = stopWatch.getTotalTimeMillis();
-
-        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        HttpServletResponse response = servletRequestAttributes != null ? servletRequestAttributes.getResponse() : null;
-        if (response != null) {
-            // Store execution time to each http header
-            response.setHeader("ELAPSED", "" + elapsed + "ms");
-        }
-        if (elapsed > applicationProperties.getServiceMetrics().getSlowExecutionThreshold()) {
-            log.warn("Found slow running method {}.{}() over {} ms",
-                    joinPoint.getSignature().getDeclaringType().getSimpleName(), joinPoint.getSignature().getName(), elapsed);
-        }
-        return result;
+        return calculateExecutionTime(joinPoint, true);
     }
 
     @Around(SERVICE_PACKAGE)
     public Object serviceAround(ProceedingJoinPoint joinPoint) throws Throwable {
+        return calculateExecutionTime(joinPoint, false);
+    }
+
+    private Object calculateExecutionTime(ProceedingJoinPoint joinPoint, boolean addResponseHeader) throws Throwable {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         Object result = joinPoint.proceed();
         stopWatch.stop();
         long elapsed = stopWatch.getTotalTimeMillis();
-        if (elapsed > applicationProperties.getServiceMetrics().getSlowExecutionThreshold()) {
-            log.warn("Found slow running method {}.{}() over {} ms",
-                    joinPoint.getSignature().getDeclaringType().getSimpleName(), joinPoint.getSignature().getName(), elapsed);
+        outputLog(joinPoint, elapsed);
+
+        if (addResponseHeader) {
+            addResponseHeader(elapsed);
         }
         return result;
+    }
+
+    private void outputLog(ProceedingJoinPoint joinPoint, long elapsed) {
+        if (elapsed > applicationProperties.getServiceMetrics().getSlowExecutionThreshold()) {
+            if (elapsed < 1000) {
+                log.warn("Found slow running method {}.{}() over {}ms",
+                        joinPoint.getSignature().getDeclaringType().getSimpleName(), joinPoint.getSignature().getName(), elapsed);
+            } else if (elapsed < 60000) {
+                log.warn("Found slow running method {}.{}() over {}s",
+                        joinPoint.getSignature().getDeclaringType().getSimpleName(), joinPoint.getSignature().getName(), elapsed / 1000);
+            } else {
+                log.warn("Found slow running method {}.{}() over {}m",
+                        joinPoint.getSignature().getDeclaringType().getSimpleName(), joinPoint.getSignature().getName(), elapsed / 60000);
+            }
+        }
+    }
+
+    private void addResponseHeader(long elapsed) {
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletResponse response = servletRequestAttributes != null ? servletRequestAttributes.getResponse() : null;
+        if (response != null) {
+            // Store execution time to each http header
+            if (elapsed < 1000) {
+                response.setHeader("ELAPSED", "" + elapsed + "ms");
+            } else if (elapsed < 60000) {
+                response.setHeader("ELAPSED", "" + elapsed / 1000 + "s");
+            } else {
+                response.setHeader("ELAPSED", "" + elapsed / 60000 + "m");
+            }
+        }
     }
 }
