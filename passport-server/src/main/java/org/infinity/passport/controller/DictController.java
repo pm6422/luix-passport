@@ -68,7 +68,7 @@ public class DictController {
                                               @ApiParam(value = "是否可用,null代表全部", allowableValues = "false,true,null") @RequestParam(value = "enabled", required = false) Boolean enabled)
             throws URISyntaxException {
         Page<Dict> dicts = dictService.find(pageable, dictName, enabled);
-        List<DictDTO> DTOs = dicts.getContent().stream().map(Dict::asDTO).collect(Collectors.toList());
+        List<DictDTO> DTOs = dicts.getContent().stream().map(Dict::toDTO).collect(Collectors.toList());
         HttpHeaders headers = generatePageHeaders(dicts, "/api/dict/dicts");
         return ResponseEntity.ok().headers(headers).body(DTOs);
     }
@@ -80,7 +80,7 @@ public class DictController {
     @Secured({Authority.DEVELOPER, Authority.USER})
     public ResponseEntity<DictDTO> findById(@ApiParam(value = "字典编号", required = true) @PathVariable String id) {
         Dict entity = dictRepository.findById(id).orElseThrow(() -> new NoDataException(id));
-        return ResponseEntity.ok(entity.asDTO());
+        return ResponseEntity.ok(entity.toDTO());
     }
 
     @ApiOperation("更新数据字典")

@@ -71,7 +71,7 @@ public class OAuth2ApprovalController {
         Page<MongoOAuth2Approval> approvals = new PageImpl<>(
                 mongoTemplate.find(query, MongoOAuth2Approval.class), pageable, totalCount);
 
-        List<MongoOAuth2ApprovalDTO> DTOs = approvals.getContent().stream().map(MongoOAuth2Approval::asDTO)
+        List<MongoOAuth2ApprovalDTO> DTOs = approvals.getContent().stream().map(MongoOAuth2Approval::toDTO)
                 .collect(Collectors.toList());
         HttpHeaders headers = generatePageHeaders(approvals, "/api/oauth2-approval/approvals");
         return ResponseEntity.ok().headers(headers).body(DTOs);
@@ -85,7 +85,7 @@ public class OAuth2ApprovalController {
     public ResponseEntity<MongoOAuth2ApprovalDTO> findById(
             @ApiParam(value = "授权ID", required = true) @PathVariable String id) {
         MongoOAuth2Approval entity = oAuth2ApprovalRepository.findById(id).orElseThrow(() -> new NoDataException(id));
-        return ResponseEntity.ok(entity.asDTO());
+        return ResponseEntity.ok(entity.toDTO());
     }
 
     @ApiOperation(value = "根据ID删除授权", notes = "数据有可能被其他数据所引用，删除之后可能出现一些问题")

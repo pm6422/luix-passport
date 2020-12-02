@@ -34,7 +34,7 @@ public class MongoOAuth2AuthorizationCode implements Serializable {
         this.authentication = authentication;
     }
 
-    public MongoOAuth2AuthorizationCodeDTO asDTO() {
+    public MongoOAuth2AuthorizationCodeDTO toDTO() {
         MongoOAuth2AuthorizationCodeDTO dest = new MongoOAuth2AuthorizationCodeDTO();
         BeanUtils.copyProperties(this, dest);
         return dest;

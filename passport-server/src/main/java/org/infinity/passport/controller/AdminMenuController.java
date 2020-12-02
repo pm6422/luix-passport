@@ -82,7 +82,7 @@ public class AdminMenuController {
                                                    @ApiParam(value = "应用名称") @RequestParam(value = "appName", required = false) String appName)
             throws URISyntaxException {
         Page<AdminMenu> adminMenus = adminMenuService.find(pageable, appName);
-        List<AdminMenuDTO> DTOs = adminMenus.getContent().stream().map(AdminMenu::asDTO).collect(Collectors.toList());
+        List<AdminMenuDTO> DTOs = adminMenus.getContent().stream().map(AdminMenu::toDTO).collect(Collectors.toList());
         HttpHeaders headers = generatePageHeaders(adminMenus, "/api/admin-menu/menus");
         return ResponseEntity.ok().headers(headers).body(DTOs);
     }
@@ -94,7 +94,7 @@ public class AdminMenuController {
     @Secured({Authority.ADMIN})
     public ResponseEntity<AdminMenuDTO> findById(@ApiParam(value = "菜单ID", required = true) @PathVariable String id) {
         AdminMenu entity = adminMenuRepository.findById(id).orElseThrow(() -> new NoDataException(id));
-        return ResponseEntity.ok(entity.asDTO());
+        return ResponseEntity.ok(entity.toDTO());
     }
 
     @ApiOperation("检索父类菜单")
@@ -105,7 +105,7 @@ public class AdminMenuController {
             @ApiParam(value = "应用名称", required = true) @PathVariable String appName,
             @ApiParam(value = "菜单级别", required = true) @PathVariable Integer level) {
         List<AdminMenuDTO> all = adminMenuRepository.findByAppNameAndLevel(appName, level).stream()
-                .map(AdminMenu::asDTO).collect(Collectors.toList());
+                .map(AdminMenu::toDTO).collect(Collectors.toList());
         return ResponseEntity.ok(all);
     }
 

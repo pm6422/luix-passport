@@ -35,7 +35,7 @@ public class MongoOAuth2ClientDetails extends BaseClientDetails implements Clien
         super();
     }
 
-    public MongoOAuth2ClientDetailsDTO asDTO() {
+    public MongoOAuth2ClientDetailsDTO toDTO() {
         MongoOAuth2ClientDetailsDTO dest = new MongoOAuth2ClientDetailsDTO();
         BeanUtils.copyProperties(this, dest);
         return dest;

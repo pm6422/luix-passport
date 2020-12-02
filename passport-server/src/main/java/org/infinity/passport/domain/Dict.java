@@ -42,7 +42,7 @@ public class Dict extends AbstractAuditableDomain implements Serializable {
         this.enabled = enabled;
     }
 
-    public DictDTO asDTO() {
+    public DictDTO toDTO() {
         DictDTO dest = new DictDTO();
         BeanUtils.copyProperties(this, dest);
         return dest;

@@ -43,7 +43,7 @@ public class AdminMenuServiceImpl implements AdminMenuService {
     public List<MenuTreeNode> getAllAuthorityMenus(String appName, String enabledAuthority) {
         Set<String> adminMenuIds = authorityAdminMenuService.findAdminMenuIdSetByAuthorityNameIn(Collections.singletonList(enabledAuthority));
         List<AdminMenuDTO> allAdminMenus = adminMenuRepository.findByAppName(appName).stream().map(menu -> {
-            AdminMenuDTO dto = menu.asDTO();
+            AdminMenuDTO dto = menu.toDTO();
             if (adminMenuIds.contains(menu.getId())) {
                 dto.setChecked(true);
             }

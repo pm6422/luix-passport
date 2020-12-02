@@ -36,7 +36,7 @@ public class AppAuthority implements Serializable {
         this.authorityName = authorityName;
     }
 
-    public AppAuthorityDTO asDTO() {
+    public AppAuthorityDTO toDTO() {
         AppAuthorityDTO dest = new AppAuthorityDTO();
         BeanUtils.copyProperties(this, dest);
         return dest;

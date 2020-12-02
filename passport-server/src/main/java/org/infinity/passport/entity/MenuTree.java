@@ -10,8 +10,8 @@ import java.util.List;
 public class MenuTree implements Serializable {
 
     private static final long         serialVersionUID = 1L;
-    private       int          nodeSize = 0;
-    private final MenuTreeNode root     = new MenuTreeNode();
+    private              int          nodeSize         = 0;
+    private final        MenuTreeNode root             = new MenuTreeNode();
 
     public MenuTree(List<MenuTreeNode> list) {
         list.sort(Comparator.comparing(MenuTreeNode::getLevel));

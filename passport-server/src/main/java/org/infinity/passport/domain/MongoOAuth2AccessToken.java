@@ -48,7 +48,7 @@ public class MongoOAuth2AccessToken extends AbstractAuditableDomain implements S
         }
     }
 
-    public MongoOAuth2AccessTokenDTO asDTO() {
+    public MongoOAuth2AccessTokenDTO toDTO() {
         MongoOAuth2AccessTokenDTO dest = new MongoOAuth2AccessTokenDTO();
         BeanUtils.copyProperties(this, dest);
         return dest;

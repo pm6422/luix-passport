@@ -1,8 +1,8 @@
 package org.infinity.passport.service;
 
-import java.util.Set;
-
 import org.infinity.passport.domain.App;
+
+import java.util.Set;
 
 public interface AppService {
 

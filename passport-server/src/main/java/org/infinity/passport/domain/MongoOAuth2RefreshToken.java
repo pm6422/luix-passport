@@ -38,7 +38,7 @@ public class MongoOAuth2RefreshToken extends AbstractAuditableDomain implements 
         this.authentication = authentication;
     }
 
-    public MongoOAuth2RefreshTokenDTO asDTO() {
+    public MongoOAuth2RefreshTokenDTO toDTO() {
         MongoOAuth2RefreshTokenDTO dest = new MongoOAuth2RefreshTokenDTO();
         BeanUtils.copyProperties(this, dest);
         return dest;

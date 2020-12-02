@@ -35,7 +35,7 @@ public class MongoOAuth2Approval extends Approval implements Serializable {
         this.id = id;
     }
 
-    public MongoOAuth2ApprovalDTO asDTO() {
+    public MongoOAuth2ApprovalDTO toDTO() {
         MongoOAuth2ApprovalDTO dest = new MongoOAuth2ApprovalDTO();
         BeanUtils.copyProperties(this, dest);
         return dest;

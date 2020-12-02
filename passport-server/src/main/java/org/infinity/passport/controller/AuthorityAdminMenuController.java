@@ -62,8 +62,8 @@ public class AuthorityAdminMenuController {
             @ApiParam(value = "应用名称", required = true) @RequestParam(value = "appName") String appName) {
         List<String> allEnabledAuthorities = authorityService.findAllAuthorityNames(true);
         List<String> userEnabledAuthorities = SecurityUtils.getCurrentUserRoles().parallelStream()
-                .filter(userAuthority -> allEnabledAuthorities.contains(userAuthority.getAuthority()))
-                .map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+                .map(GrantedAuthority::getAuthority)
+                .filter(allEnabledAuthorities::contains).collect(Collectors.toList());
 
         List<MenuTreeNode> results = adminMenuService.getAuthorityMenus(appName, userEnabledAuthorities);
         return ResponseEntity.ok(results);
@@ -77,8 +77,8 @@ public class AuthorityAdminMenuController {
             @ApiParam(value = "应用名称", required = true) @RequestParam(value = "appName") String appName) {
         List<String> allEnabledAuthorities = authorityService.findAllAuthorityNames(true);
         List<String> userEnabledAuthorities = SecurityUtils.getCurrentUserRoles().parallelStream()
-                .filter(userAuthority -> allEnabledAuthorities.contains(userAuthority.getAuthority()))
-                .map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+                .map(GrantedAuthority::getAuthority)
+                .filter(allEnabledAuthorities::contains).collect(Collectors.toList());
 
         List<AdminMenu> results = adminMenuService.getAuthorityLinks(appName, userEnabledAuthorities);
         return ResponseEntity.ok(results);

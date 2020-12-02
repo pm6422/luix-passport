@@ -30,7 +30,7 @@ public class MongoApprovalStore implements ApprovalStore {
 
     @Override
     public boolean addApprovals(Collection<Approval> approvals) {
-        log.debug(String.format("adding approvals: [%s]", approvals));
+        log.debug("Adding approvals: {}", approvals);
 
         for (final Approval approval : approvals) {
             List<MongoOAuth2Approval> mongoDBApprovals = this.oAuth2ApprovalRepository
@@ -48,11 +48,10 @@ public class MongoApprovalStore implements ApprovalStore {
     }
 
     private void updateApproval(final MongoOAuth2Approval mongoDBApproval, final Approval approval) {
-        log.debug(String.format("refreshing approval: [%s]", approval));
+        log.debug("Refreshing approval: {}", approval);
 
         mongoDBApproval.setExpiresAt(approval.getExpiresAt());
-        mongoDBApproval
-                .setStatus(approval.getStatus() == null ? Approval.ApprovalStatus.APPROVED : approval.getStatus());
+        mongoDBApproval.setStatus(approval.getStatus() == null ? Approval.ApprovalStatus.APPROVED : approval.getStatus());
         mongoDBApproval.setLastUpdatedAt(approval.getLastUpdatedAt());
         mongoDBApproval.setUserId(approval.getUserId());
         mongoDBApproval.setClientId(approval.getClientId());
@@ -63,7 +62,7 @@ public class MongoApprovalStore implements ApprovalStore {
 
     @Override
     public boolean revokeApprovals(Collection<Approval> approvals) {
-        log.debug(String.format("Revoking approvals: [%s]", approvals));
+        log.debug("Revoking approvals: {}", approvals);
         boolean success = true;
 
         for (final Approval approval : approvals) {

@@ -56,7 +56,7 @@ public class OAuth2RefreshTokenController {
         // Ignore query parameter if it has a null value
         ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreNullValues();
         Page<MongoOAuth2RefreshToken> tokens = oAuth2RefreshTokenRepository.findAll(Example.of(probe, matcher), pageable);
-        List<MongoOAuth2RefreshTokenDTO> DTOs = tokens.getContent().stream().map(MongoOAuth2RefreshToken::asDTO)
+        List<MongoOAuth2RefreshTokenDTO> DTOs = tokens.getContent().stream().map(MongoOAuth2RefreshToken::toDTO)
                 .collect(Collectors.toList());
         HttpHeaders headers = generatePageHeaders(tokens, "/api/oauth2-refresh-token/tokens");
         return ResponseEntity.ok().headers(headers).body(DTOs);
@@ -70,7 +70,7 @@ public class OAuth2RefreshTokenController {
     public ResponseEntity<MongoOAuth2RefreshTokenDTO> findById(
             @ApiParam(value = "刷新令牌ID", required = true) @PathVariable String id) {
         MongoOAuth2RefreshToken entity = oAuth2RefreshTokenRepository.findById(id).orElseThrow(() -> new NoDataException(id));
-        return ResponseEntity.ok(entity.asDTO());
+        return ResponseEntity.ok(entity.toDTO());
     }
 
     @ApiOperation(value = "根据ID删除刷新令牌", notes = "数据有可能被其他数据所引用，删除之后可能出现一些问题")

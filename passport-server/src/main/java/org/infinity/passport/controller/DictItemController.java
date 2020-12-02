@@ -97,9 +97,9 @@ public class DictItemController {
         Page<DictItem> dictItems = dictItemService.find(pageable, dictCode, dictItemName);
         Map<String, String> dictCodeDictNameMap = dictService.findDictCodeDictNameMap();
         List<DictItemDTO> DTOs = dictItems.getContent().stream().map(entity -> {
-            DictItemDTO dto = entity.asDTO();
+            DictItemDTO dto = entity.toDTO();
             dto.setDictName(dictCodeDictNameMap.get(dto.getDictCode()));
-            return entity.asDTO();
+            return entity.toDTO();
         }).collect(Collectors.toList());
         HttpHeaders headers = generatePageHeaders(dictItems, "/api/dict-item/items");
         return ResponseEntity.ok().headers(headers).body(DTOs);
@@ -114,7 +114,7 @@ public class DictItemController {
             @ApiParam(value = "数据字典项ID", required = true) @PathVariable String id) {
         log.debug("REST request to get dict item : {}", id);
         DictItem entity = dictItemRepository.findById(id).orElseThrow(() -> new NoDataException(id));
-        return ResponseEntity.ok(entity.asDTO());
+        return ResponseEntity.ok(entity.toDTO());
     }
 
     @ApiOperation("更新数据字典项")

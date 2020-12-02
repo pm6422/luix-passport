@@ -54,7 +54,7 @@ public class OAuth2AccessTokenController {
         probe.setUserName(userName);
         probe.setRefreshToken(refreshToken);
         Page<MongoOAuth2AccessToken> tokens = oAuth2AccessTokenRepository.findAll(Example.of(probe), pageable);
-        List<MongoOAuth2AccessTokenDTO> DTOs = tokens.getContent().stream().map(MongoOAuth2AccessToken::asDTO)
+        List<MongoOAuth2AccessTokenDTO> DTOs = tokens.getContent().stream().map(MongoOAuth2AccessToken::toDTO)
                 .collect(Collectors.toList());
         HttpHeaders headers = generatePageHeaders(tokens, "/api/oauth2-access-token/tokens");
         return ResponseEntity.ok().headers(headers).body(DTOs);
@@ -69,7 +69,7 @@ public class OAuth2AccessTokenController {
             @ApiParam(value = "访问令牌ID", required = true) @PathVariable String id) {
         MongoOAuth2AccessToken entity = oAuth2AccessTokenRepository.findById(id)
                 .orElseThrow(() -> new NoDataException(id));
-        return ResponseEntity.ok(entity.asDTO());
+        return ResponseEntity.ok(entity.toDTO());
     }
 
     @ApiOperation(value = "根据ID删除访问令牌", notes = "数据有可能被其他数据所引用，删除之后可能出现一些问题")

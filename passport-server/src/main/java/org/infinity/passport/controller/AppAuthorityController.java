@@ -82,7 +82,7 @@ public class AppAuthorityController {
                                                       @ApiParam(value = "权限名称") @RequestParam(value = "authorityName", required = false) String authorityName)
             throws URISyntaxException {
         Page<AppAuthority> appAuthorities = appAuthorityService.find(pageable, appName, authorityName);
-        List<AppAuthorityDTO> DTOs = appAuthorities.getContent().stream().map(AppAuthority::asDTO).collect(Collectors.toList());
+        List<AppAuthorityDTO> DTOs = appAuthorities.getContent().stream().map(AppAuthority::toDTO).collect(Collectors.toList());
         HttpHeaders headers = generatePageHeaders(appAuthorities, "/api/app-authority/app-authorities");
         return ResponseEntity.ok().headers(headers).body(DTOs);
     }
@@ -96,7 +96,7 @@ public class AppAuthorityController {
             @ApiParam(value = "字典编号", required = true) @PathVariable String id) {
         log.debug("REST request to get app authority : {}", id);
         AppAuthority entity = appAuthorityRepository.findById(id).orElseThrow(() -> new NoDataException(id));
-        return ResponseEntity.ok(entity.asDTO());
+        return ResponseEntity.ok(entity.toDTO());
     }
 
     @ApiOperation("更新应用权限")

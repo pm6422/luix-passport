@@ -90,7 +90,7 @@ public class OAuth2ClientDetailsController {
                 ? oAuth2ClientDetailsRepository.findAll(pageable)
                 : new PageImpl<>(mongoTemplate.find(query, MongoOAuth2ClientDetails.class), pageable, totalCount);
         List<MongoOAuth2ClientDetailsDTO> DTOs = clientDetails.getContent().stream()
-                .map(MongoOAuth2ClientDetails::asDTO).collect(Collectors.toList());
+                .map(MongoOAuth2ClientDetails::toDTO).collect(Collectors.toList());
         HttpHeaders headers = generatePageHeaders(clientDetails, "/api/oauth2-client/clients");
         return ResponseEntity.ok().headers(headers).body(DTOs);
     }
@@ -103,7 +103,7 @@ public class OAuth2ClientDetailsController {
     public ResponseEntity<MongoOAuth2ClientDetailsDTO> findById(
             @ApiParam(value = "客户端ID", required = true) @PathVariable String id) {
         MongoOAuth2ClientDetails entity = oAuth2ClientDetailsRepository.findById(id).orElseThrow(() -> new NoDataException(id));
-        return ResponseEntity.ok(entity.asDTO());
+        return ResponseEntity.ok(entity.toDTO());
     }
 
     @ApiOperation("检索内部单点登录客户端")

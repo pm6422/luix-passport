@@ -32,7 +32,7 @@ public class App implements Serializable {
         this.enabled = enabled;
     }
 
-    public AppDTO asDTO() {
+    public AppDTO toDTO() {
         return new AppDTO(this.getName(), this.getEnabled());
     }
 

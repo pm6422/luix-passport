@@ -58,7 +58,7 @@ public class AdminMenu extends AbstractAuditableDomain implements Serializable {
         this.parentId = parentId;
     }
 
-    public AdminMenuDTO asDTO() {
+    public AdminMenuDTO toDTO() {
         AdminMenuDTO dto = new AdminMenuDTO();
         BeanCopier beanCopier = BeanCopier.create(AdminMenu.class, AdminMenuDTO.class, false);
         beanCopier.copy(this, dto, null);

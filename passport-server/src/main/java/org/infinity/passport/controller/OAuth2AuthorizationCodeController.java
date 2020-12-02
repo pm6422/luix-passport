@@ -60,7 +60,7 @@ public class OAuth2AuthorizationCodeController {
         probe.setId(authorizationCodeId);
         probe.setCode(code);
         Page<MongoOAuth2AuthorizationCode> codes = oAuth2AuthorizationCodeRepository.findAll(Example.of(probe), pageable);
-        List<MongoOAuth2AuthorizationCodeDTO> DTOs = codes.getContent().stream().map(MongoOAuth2AuthorizationCode::asDTO)
+        List<MongoOAuth2AuthorizationCodeDTO> DTOs = codes.getContent().stream().map(MongoOAuth2AuthorizationCode::toDTO)
                 .collect(Collectors.toList());
         HttpHeaders headers = generatePageHeaders(codes, "/api/oauth2-authorization-code/codes");
         return ResponseEntity.ok().headers(headers).body(DTOs);
@@ -74,7 +74,7 @@ public class OAuth2AuthorizationCodeController {
     public ResponseEntity<MongoOAuth2AuthorizationCodeDTO> findById(
             @ApiParam(value = "授权码ID", required = true) @PathVariable String id) {
         MongoOAuth2AuthorizationCode entity = oAuth2AuthorizationCodeRepository.findById(id).orElseThrow(() -> new NoDataException(id));
-        return ResponseEntity.ok(entity.asDTO());
+        return ResponseEntity.ok(entity.toDTO());
     }
 
     @ApiOperation(value = "根据ID删除授权码", notes = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
