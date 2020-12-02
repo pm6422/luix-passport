@@ -68,8 +68,6 @@ spring:
         basename: i18n/messages_zh_CN,i18n/messages_en_US
         fallback-to-system-locale: false
     mvc:
-        favicon:
-            enabled: false
         locale: zh_CN
     task:
         execution:
@@ -99,9 +97,6 @@ spring:
         password: 35H-UHR-9dH-8G9-FG3
     banner:
         location: classpath:config/banner-company.txt
-    output:
-        ansi:
-            console-available: true # Configures the ANSI output
     data:
         mongodb:
             auto-index-creation: false
