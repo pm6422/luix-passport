@@ -1,7 +1,7 @@
 package org.infinity.passport.config;
 
 import org.apache.commons.lang3.StringUtils;
-import org.infinity.passport.entity.RequesterIdHolder;
+import org.infinity.passport.utils.RequesterIdHolder;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;

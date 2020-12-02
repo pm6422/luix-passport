@@ -1,7 +1,6 @@
 package org.infinity.passport.dto;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
@@ -10,7 +9,6 @@ import java.io.Serializable;
  * DTO for sending a parameterized error message.
  */
 @Data
-@EqualsAndHashCode
 @NoArgsConstructor
 public class ParameterizedErrorDTO implements Serializable {
 

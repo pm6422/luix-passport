@@ -1,4 +1,4 @@
-package org.infinity.passport.entity;
+package org.infinity.passport.utils;
 
 public abstract class RequesterIdHolder {
     private static final ThreadLocal<String> HOLDER = ThreadLocal.withInitial(() -> "");
