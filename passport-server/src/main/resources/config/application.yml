@@ -112,7 +112,7 @@ server:
 logging:
     config: classpath:config/logback-spring.xml
     file:
-      path: ${user.home}${file.separator}Log${file.separator}${info.artifact.id}${file.separator}${info.artifact.id}
+        path: ${user.home}${file.separator}Log${file.separator}${info.artifact.id}${file.separator}${info.artifact.id}
     level:
         root: DEBUG
         ${info.project.package}: DEBUG
