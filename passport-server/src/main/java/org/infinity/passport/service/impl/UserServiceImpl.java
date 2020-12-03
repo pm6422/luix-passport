@@ -110,7 +110,7 @@ public class UserServiceImpl implements UserService {
             authorityNames.forEach(authorityName -> userAuthorityRepository.insert(new UserAuthority(newUser.getId(), authorityName)));
         }
 
-        log.debug("Created Information for User: {}", newUser);
+        log.debug("Created information for user: {}", newUser);
         return newUser;
     }
 
