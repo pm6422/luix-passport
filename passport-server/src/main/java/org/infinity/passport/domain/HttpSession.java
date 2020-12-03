@@ -12,7 +12,11 @@ import java.time.Duration;
 import java.time.Instant;
 
 /**
- * Http会话
+ * Http Session which is created by {@link org.springframework.session.data.mongo.MongoIndexedSessionRepository}
+ * <p>
+ * Please refer below classes for more details
+ * {@link org.springframework.session.data.mongo.JdkMongoSessionConverter}
+ * {@link org.springframework.session.data.mongo.MongoSession}
  */
 @Document(collection = "HttpSession")
 @Data
