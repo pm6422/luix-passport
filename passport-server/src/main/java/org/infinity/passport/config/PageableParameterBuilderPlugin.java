@@ -50,7 +50,7 @@ public class PageableParameterBuilderPlugin implements OperationBuilderPlugin {
     /**
      * Constant <code>SIZE_DESCRIPTION="Size of a page"</code>
      */
-    public static final String SIZE_DESCRIPTION  = "每页大小";
+    public static final String SIZE_DESCRIPTION  = "每页大小(最大值为2000)";
 
     /**
      * Constant <code>DEFAULT_SORT_NAME="sort"</code>
