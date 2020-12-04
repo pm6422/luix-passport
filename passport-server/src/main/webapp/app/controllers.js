@@ -482,6 +482,7 @@ function PasswordController($state, PasswordService, PrincipalService) {
             PasswordService.update(vm.password,
                 function (response) {
                     vm.isSaving = false;
+                    $state.go('login');
                 },
                 function (response) {
                     vm.isSaving = false;

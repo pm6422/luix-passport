@@ -2,14 +2,11 @@ package org.infinity.passport.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.infinity.passport.dto.TrackerDTO;
-import org.springframework.context.ApplicationListener;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
 import java.security.Principal;
 import java.time.Instant;
@@ -19,20 +16,7 @@ import static org.infinity.passport.config.WebsocketConfiguration.IP_ADDRESS;
 
 @Controller
 @Slf4j
-public class TopicServerSubscriberController implements ApplicationListener<SessionDisconnectEvent> {
-    private final SimpMessagingTemplate messagingTemplate;
-
-    public TopicServerSubscriberController(SimpMessagingTemplate messagingTemplate) {
-        this.messagingTemplate = messagingTemplate;
-    }
-
-    @Override
-    public void onApplicationEvent(SessionDisconnectEvent event) {
-        TrackerDTO activityDTO = new TrackerDTO();
-        activityDTO.setSessionId(event.getSessionId());
-        activityDTO.setPage("logout");
-        messagingTemplate.convertAndSend("/topic/client-subscriber/tracker", activityDTO);
-    }
+public class TopicServerSubscriberController {
 
     @MessageMapping("/topic/server-subscriber/tracker")
     @SendTo("/topic/client-subscriber/tracker")
