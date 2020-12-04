@@ -73,7 +73,7 @@ public class AppAuthorityController {
                 .build();
     }
 
-    @ApiOperation("(分页)检索应用权限列表")
+    @ApiOperation("分页检索应用权限列表")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/app-authority/app-authorities")
     @Secured({Authority.ADMIN})

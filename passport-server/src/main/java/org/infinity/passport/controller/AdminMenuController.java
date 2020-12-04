@@ -74,7 +74,7 @@ public class AdminMenuController {
                 .build();
     }
 
-    @ApiOperation("(分页)检索菜单列表")
+    @ApiOperation("分页检索菜单列表")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/admin-menu/menus")
     @Secured({Authority.ADMIN})

@@ -86,7 +86,7 @@ public class DictItemController {
                 .build();
     }
 
-    @ApiOperation("(分页)检索数据字典项列表")
+    @ApiOperation("分页检索数据字典项列表")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/dict-item/items")
     @Secured(Authority.DEVELOPER)

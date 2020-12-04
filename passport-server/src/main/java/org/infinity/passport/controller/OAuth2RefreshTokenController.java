@@ -40,7 +40,7 @@ public class OAuth2RefreshTokenController {
         this.httpHeaderCreator = httpHeaderCreator;
     }
 
-    @ApiOperation("(分页)检索刷新令牌列表")
+    @ApiOperation("分页检索刷新令牌列表")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/oauth2-refresh-token/tokens")
     @Secured(Authority.ADMIN)

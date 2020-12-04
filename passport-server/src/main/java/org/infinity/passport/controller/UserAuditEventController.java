@@ -44,7 +44,7 @@ public class UserAuditEventController {
      * @return 分页信息
      * @throws URISyntaxException if exception occurs
      */
-    @ApiOperation("(分页)检索用户审计事件列表")
+    @ApiOperation("分页检索用户审计事件列表")
     @GetMapping("/api/user-audit-event/user-audit-events")
     @Secured(Authority.DEVELOPER)
     public ResponseEntity<List<PersistentAuditEvent>> getUserAuditEvents(Pageable pageable,

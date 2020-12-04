@@ -76,7 +76,7 @@ public class OAuth2ClientDetailsController {
                 .build();
     }
 
-    @ApiOperation("(分页)检索单点登录客户端列表")
+    @ApiOperation("分页检索单点登录客户端列表")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/oauth2-client/clients")
     @Secured(Authority.ADMIN)

@@ -62,7 +62,7 @@ public class AppController {
                 .headers(httpHeaderCreator.createSuccessHeader("notification.app.created", dto.getName())).build();
     }
 
-    @ApiOperation("(分页)检索应用列表")
+    @ApiOperation("分页检索应用列表")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/app/apps")
     @Secured({Authority.ADMIN})

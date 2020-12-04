@@ -100,7 +100,7 @@ public class UserController {
                 .status(HttpStatus.CREATED).headers(headers).body(DEFAULT_PASSWORD);
     }
 
-    @ApiOperation("(分页)检索用户列表")
+    @ApiOperation("分页检索用户列表")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/user/users")
     @Secured({Authority.ADMIN})

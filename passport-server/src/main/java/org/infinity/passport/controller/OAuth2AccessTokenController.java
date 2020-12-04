@@ -38,7 +38,7 @@ public class OAuth2AccessTokenController {
         this.httpHeaderCreator = httpHeaderCreator;
     }
 
-    @ApiOperation("(分页)检索访问令牌列表")
+    @ApiOperation("分页检索访问令牌列表")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/oauth2-access-token/tokens")
     @Secured(Authority.ADMIN)

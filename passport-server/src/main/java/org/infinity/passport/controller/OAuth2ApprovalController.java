@@ -47,7 +47,7 @@ public class OAuth2ApprovalController {
         this.httpHeaderCreator = httpHeaderCreator;
     }
 
-    @ApiOperation("(分页)检索登录授权列表")
+    @ApiOperation("分页检索登录授权列表")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/oauth2-approval/approvals")
     @Secured(Authority.ADMIN)

@@ -48,7 +48,7 @@ public class OAuth2AuthorizationCodeController {
      * @return code list
      * @throws URISyntaxException if exception occurs
      */
-    @ApiOperation("(分页)检索授权码列表")
+    @ApiOperation("分页检索授权码列表")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/oauth2-authorization-code/codes")
     @Secured(Authority.ADMIN)
