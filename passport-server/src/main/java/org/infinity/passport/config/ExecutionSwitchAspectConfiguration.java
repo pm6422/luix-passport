@@ -20,9 +20,9 @@ public class ExecutionSwitchAspectConfiguration {
         this.env = env;
     }
 
-    @Around("@annotation(executionSwitch)")
-    public Object switchAround(ProceedingJoinPoint joinPoint, ExecutionSwitch executionSwitch) throws Throwable {
-        if ("true".equals(env.getProperty(executionSwitch.on()))) {
+    @Around("@annotation(annotation)")
+    public Object switchAround(ProceedingJoinPoint joinPoint, ExecutionSwitch annotation) throws Throwable {
+        if ("true".equals(env.getProperty(annotation.on()))) {
             // Proceed to execute method
             return joinPoint.proceed();
         }
