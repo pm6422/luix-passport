@@ -36,12 +36,12 @@ public class MetricsAspectConfiguration {
      * @throws Throwable if exception occurs
      */
     @Around("execution(@(org.springframework.web.bind.annotation.*Mapping) * *(..))")
-    public Object controllerAround(ProceedingJoinPoint joinPoint) throws Throwable {
+    public Object logController(ProceedingJoinPoint joinPoint) throws Throwable {
         return calculateExecutionTime(joinPoint, true);
     }
 
     @Around(SERVICE_PACKAGE)
-    public Object serviceAround(ProceedingJoinPoint joinPoint) throws Throwable {
+    public Object logService(ProceedingJoinPoint joinPoint) throws Throwable {
         return calculateExecutionTime(joinPoint, false);
     }
 
