@@ -1,6 +1,7 @@
 package org.infinity.passport.config;
 
 import lombok.Data;
+import lombok.Getter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
@@ -15,7 +16,7 @@ import org.springframework.validation.annotation.Validated;
 @Component
 @ConfigurationProperties(prefix = "application", ignoreUnknownFields = false)
 @Validated
-@Data
+@Getter
 public class ApplicationProperties {
     private final Directory            directory            = new Directory();
     private final Http                 http                 = new Http();
