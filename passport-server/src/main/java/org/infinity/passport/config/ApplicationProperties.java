@@ -21,7 +21,7 @@ public class ApplicationProperties {
     private final Directory            directory            = new Directory();
     private final Http                 http                 = new Http();
     private final Swagger              swagger              = new Swagger();
-    private final ServiceMetrics       serviceMetrics       = new ServiceMetrics();
+    private final ElapsedTimeMetrics   elapsedTimeMetrics   = new ElapsedTimeMetrics();
     private final Zookeeper            zookeeper            = new Zookeeper();
     private final Redis                redis                = new Redis();
     private final Scheduler            scheduler            = new Scheduler();
@@ -75,7 +75,7 @@ public class ApplicationProperties {
     }
 
     @Data
-    public static class ServiceMetrics {
+    public static class ElapsedTimeMetrics {
         private boolean enabled;
         private int     slowExecutionThreshold;
     }

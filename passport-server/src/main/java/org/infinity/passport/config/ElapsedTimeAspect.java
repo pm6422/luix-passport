@@ -13,18 +13,18 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Aspect for logging execution of Spring components.
+ * Aspect for logging elapsed time of Spring components.
  */
 @Aspect
-@ConditionalOnProperty(prefix = "application.service-metrics", value = "enabled", havingValue = "true")
+@ConditionalOnProperty(prefix = "application.elapsed-time-metrics", value = "enabled", havingValue = "true")
 @Configuration
 @Slf4j
-public class MetricsAspectConfiguration {
+public class ElapsedTimeAspect {
 
     private static final String                SERVICE_PACKAGE = "within(" + ApplicationConstants.BASE_PACKAGE + ".service..*)";
     private final        ApplicationProperties applicationProperties;
 
-    public MetricsAspectConfiguration(ApplicationProperties applicationProperties) {
+    public ElapsedTimeAspect(ApplicationProperties applicationProperties) {
         this.applicationProperties = applicationProperties;
     }
 
@@ -60,7 +60,7 @@ public class MetricsAspectConfiguration {
     }
 
     private void outputLog(ProceedingJoinPoint joinPoint, long elapsed) {
-        if (elapsed > applicationProperties.getServiceMetrics().getSlowExecutionThreshold()) {
+        if (elapsed > applicationProperties.getElapsedTimeMetrics().getSlowExecutionThreshold()) {
             if (elapsed < 1000) {
                 log.warn("Found slow running method {}.{}() over {}ms",
                         joinPoint.getSignature().getDeclaringType().getSimpleName(), joinPoint.getSignature().getName(), elapsed);

@@ -135,7 +135,7 @@ application:
         contact-name: Louis
         contact-email: pm6422@126.com
         host:
-    service-metrics:
+    elapsed-time-metrics:
         enabled: true
         slowExecutionThreshold: 300 # unit: ms
     ribbon:
