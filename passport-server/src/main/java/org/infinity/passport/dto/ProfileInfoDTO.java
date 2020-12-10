@@ -1,7 +1,8 @@
-package org.infinity.passport.entity;
+package org.infinity.passport.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import org.infinity.passport.config.ApplicationConstants;
 
 import java.io.Serializable;
@@ -9,7 +10,8 @@ import java.util.Arrays;
 import java.util.List;
 
 @ApiModel("Profile信息")
-public class ProfileInfo implements Serializable {
+@Data
+public class ProfileInfoDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -25,7 +27,7 @@ public class ProfileInfo implements Serializable {
     @ApiModelProperty(value = "是否启用Swagger")
     private boolean swaggerEnabled;
 
-    public ProfileInfo(String[] activeProfiles, boolean swaggerEnabled, String ribbonEnv) {
+    public ProfileInfoDTO(String[] activeProfiles, boolean swaggerEnabled, String ribbonEnv) {
         this.activeProfiles = activeProfiles;
         this.ribbonEnv = ribbonEnv;
 

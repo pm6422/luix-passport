@@ -3,7 +3,7 @@ package org.infinity.passport.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.infinity.passport.config.ApplicationProperties;
-import org.infinity.passport.entity.ProfileInfo;
+import org.infinity.passport.dto.ProfileInfoDTO;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,9 +28,9 @@ public class ProfileController {
 
     @ApiOperation("检索系统Profile")
     @GetMapping("/open-api/profile-info")
-    public ResponseEntity<ProfileInfo> getProfileInfo() {
-        ProfileInfo profileInfo = new ProfileInfo(env.getActiveProfiles(), applicationProperties.getSwagger().isEnabled(), getRibbonEnv());
-        return ResponseEntity.ok(profileInfo);
+    public ResponseEntity<ProfileInfoDTO> getProfileInfo() {
+        ProfileInfoDTO profileInfoDTO = new ProfileInfoDTO(env.getActiveProfiles(), applicationProperties.getSwagger().isEnabled(), getRibbonEnv());
+        return ResponseEntity.ok(profileInfoDTO);
     }
 
     private String getRibbonEnv() {
