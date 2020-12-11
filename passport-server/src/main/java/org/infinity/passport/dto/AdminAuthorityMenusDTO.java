@@ -11,7 +11,6 @@ import java.util.List;
 
 @ApiModel("管理系统菜单列表DTO")
 @Data
-@EqualsAndHashCode
 public class AdminAuthorityMenusDTO implements Serializable {
 
     private static final long serialVersionUID = -3119877507448443380L;

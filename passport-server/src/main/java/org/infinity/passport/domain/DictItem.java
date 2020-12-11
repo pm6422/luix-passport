@@ -15,7 +15,6 @@ import java.io.Serializable;
  */
 @Document(collection = "DictItem")
 @Data
-@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 public class DictItem extends AbstractAuditableDomain implements Serializable {
 

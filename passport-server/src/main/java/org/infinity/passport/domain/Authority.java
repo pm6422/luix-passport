@@ -1,5 +1,6 @@
 package org.infinity.passport.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -15,8 +16,8 @@ import java.io.Serializable;
  */
 @Document(collection = "Authority")
 @Data
-@EqualsAndHashCode
 @NoArgsConstructor
+@AllArgsConstructor
 public class Authority implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -42,13 +43,6 @@ public class Authority implements Serializable {
     private Boolean enabled;
 
     public Authority(Boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public Authority(String name, Boolean systemLevel, Boolean enabled) {
-        super();
-        this.name = name;
-        this.systemLevel = systemLevel;
         this.enabled = enabled;
     }
 

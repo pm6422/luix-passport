@@ -13,8 +13,6 @@ import java.time.Instant;
  */
 @Document(collection = "PersistentHttpTrace")
 @Data
-@EqualsAndHashCode
-@NoArgsConstructor
 public class PersistentHttpTrace implements Serializable {
 
     private static final long    serialVersionUID = 4090431427130666650L;

@@ -72,7 +72,7 @@ public class AdminMenuServiceImpl implements AdminMenuService {
     }
 
     private List<MenuTreeNode> groupAdminMenu(List<AdminMenu> menus) {
-        MenuTree tree = new MenuTree(menus.stream().map(AdminMenu::asNode).collect(Collectors.toList()));
+        MenuTree tree = new MenuTree(menus.stream().map(AdminMenu::toNode).collect(Collectors.toList()));
         return tree.getChildren();
     }
 

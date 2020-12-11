@@ -13,8 +13,6 @@ import java.io.Serializable;
 
 @ApiModel("数据字典DTO")
 @Data
-@EqualsAndHashCode(callSuper = true)
-@NoArgsConstructor
 public class DictDTO extends AbstractAuditableDomain implements Serializable {
 
     private static final long serialVersionUID = 4885526690107887683L;

@@ -1,7 +1,7 @@
 package org.infinity.passport.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.infinity.passport.dto.AppDTO;
 import org.springframework.data.annotation.Id;
@@ -15,8 +15,8 @@ import java.io.Serializable;
  */
 @Document(collection = "App")
 @Data
-@EqualsAndHashCode
 @NoArgsConstructor
+@AllArgsConstructor
 public class App implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -25,12 +25,6 @@ public class App implements Serializable {
     private String name;
 
     private Boolean enabled;
-
-    public App(String name, Boolean enabled) {
-        super();
-        this.name = name;
-        this.enabled = enabled;
-    }
 
     public AppDTO toDTO() {
         return new AppDTO(this.getName(), this.getEnabled());

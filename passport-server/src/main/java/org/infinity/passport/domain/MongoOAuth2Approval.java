@@ -14,7 +14,6 @@ import java.io.Serializable;
 
 @Document(collection = "MongoOAuth2Approval")
 @Data
-@EqualsAndHashCode(callSuper = true)
 public class MongoOAuth2Approval extends Approval implements Serializable {
 
     private static final long serialVersionUID = 1L;

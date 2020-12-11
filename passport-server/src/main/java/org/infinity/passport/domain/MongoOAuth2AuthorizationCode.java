@@ -14,7 +14,6 @@ import java.io.Serializable;
 
 @Document(collection = "MongoOAuth2AuthorizationCode")
 @Data
-@EqualsAndHashCode
 @NoArgsConstructor
 public class MongoOAuth2AuthorizationCode implements Serializable {
 

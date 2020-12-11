@@ -13,8 +13,6 @@ import java.io.Serializable;
  */
 @ApiModel("应用权限DTO")
 @Data
-@EqualsAndHashCode
-@NoArgsConstructor
 public class AppAuthorityDTO implements Serializable {
 
     private static final long serialVersionUID = 6131756179263179005L;

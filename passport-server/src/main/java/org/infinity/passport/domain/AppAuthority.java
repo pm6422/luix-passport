@@ -16,7 +16,6 @@ import java.io.Serializable;
  */
 @Document(collection = "AppAuthority")
 @Data
-@EqualsAndHashCode
 @NoArgsConstructor
 public class AppAuthority implements Serializable {
 

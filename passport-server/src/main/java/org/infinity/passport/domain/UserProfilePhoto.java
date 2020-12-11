@@ -17,7 +17,6 @@ import java.io.Serializable;
  */
 @Document(collection = "UserProfilePhoto")
 @Data
-@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 public class UserProfilePhoto extends AbstractAuditableDomain implements Serializable {
 

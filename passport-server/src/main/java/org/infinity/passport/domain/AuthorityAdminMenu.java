@@ -15,7 +15,6 @@ import java.io.Serializable;
  */
 @Document(collection = "AuthorityAdminMenu")
 @Data
-@EqualsAndHashCode
 @NoArgsConstructor
 public class AuthorityAdminMenu implements Serializable {
 

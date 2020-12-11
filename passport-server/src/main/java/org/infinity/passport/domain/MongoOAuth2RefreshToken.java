@@ -17,7 +17,6 @@ import java.util.Date;
 
 @Document(collection = "MongoOAuth2RefreshToken")
 @Data
-@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 public class MongoOAuth2RefreshToken extends AbstractAuditableDomain implements Serializable {
 

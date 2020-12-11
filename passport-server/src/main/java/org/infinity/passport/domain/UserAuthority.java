@@ -14,7 +14,6 @@ import java.io.Serializable;
  */
 @Document(collection = "UserAuthority")
 @Data
-@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 public class UserAuthority extends AbstractAuditableDomain implements Serializable {
 

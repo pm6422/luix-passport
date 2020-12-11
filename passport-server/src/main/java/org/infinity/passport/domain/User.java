@@ -19,7 +19,6 @@ import java.time.Instant;
  */
 @Document(collection = "User")
 @Data
-@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 public class User extends AbstractAuditableDomain implements Serializable {
 

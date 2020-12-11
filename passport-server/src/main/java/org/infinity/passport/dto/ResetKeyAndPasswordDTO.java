@@ -12,8 +12,6 @@ import java.io.Serializable;
 
 @ApiModel("重置密码DTO")
 @Data
-@EqualsAndHashCode
-@NoArgsConstructor
 public class ResetKeyAndPasswordDTO implements Serializable {
 
     private static final long serialVersionUID = -6442194590613017034L;

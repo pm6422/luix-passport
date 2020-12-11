@@ -20,8 +20,6 @@ import java.time.Instant;
  */
 @Document(collection = "HttpSession")
 @Data
-@EqualsAndHashCode
-@NoArgsConstructor
 public class HttpSession implements Serializable {
 
     private static final long     serialVersionUID = -1L;

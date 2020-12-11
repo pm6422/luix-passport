@@ -15,21 +15,21 @@ public abstract class AbstractAuditableDomain implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 主键不要定义为Long型，因为定义为Long型的字段如果超过16位的话在前端页面会显示为0
+     * ID data type must NOT be Long, because the number which exceeds 16 digits will be display as 0 at front end.
+     * e.g. the value 526373442322434543 will be displayed as 526373442322434500 in front end
+     * If id is null, save operation equals insert, or else save operation equals update
      */
     @Id
     protected String id;
 
     /**
      * Set the proper value when inserting. Value comes from SpringSecurityAuditorAware.getCurrentAuditor()
-     * Note: id不指定值保存时才被认为插入操作
      */
     @CreatedBy
     protected String createdBy;
 
     /**
      * Set the current time when inserting.
-     * Note: id不指定值保存时才被认为插入操作
      */
     @CreatedDate
     protected Instant createdTime;

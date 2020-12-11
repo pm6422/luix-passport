@@ -20,7 +20,6 @@ import java.util.Set;
  */
 @ApiModel("用户DTO")
 @Data
-@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 public class UserDTO extends AbstractAuditableDomain implements Serializable {
 

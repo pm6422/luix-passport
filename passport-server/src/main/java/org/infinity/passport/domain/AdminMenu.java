@@ -20,7 +20,6 @@ import java.io.Serializable;
  */
 @Document(collection = "AdminMenu")
 @Data
-@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 public class AdminMenu extends AbstractAuditableDomain implements Serializable {
     private static final long   serialVersionUID = 1L;
@@ -65,7 +64,7 @@ public class AdminMenu extends AbstractAuditableDomain implements Serializable {
         return dto;
     }
 
-    public MenuTreeNode asNode() {
+    public MenuTreeNode toNode() {
         MenuTreeNode dto = new MenuTreeNode();
         BeanCopier beanCopier = BeanCopier.create(AdminMenu.class, MenuTreeNode.class, false);
         beanCopier.copy(this, dto, null);

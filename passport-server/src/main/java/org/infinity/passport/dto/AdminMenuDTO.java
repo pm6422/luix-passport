@@ -16,8 +16,6 @@ import java.io.Serializable;
 
 @ApiModel("管理系统菜单DTO")
 @Data
-@EqualsAndHashCode(callSuper = true)
-@NoArgsConstructor
 public class AdminMenuDTO extends AbstractAuditableDomain implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -44,7 +42,7 @@ public class AdminMenuDTO extends AbstractAuditableDomain implements Serializabl
     @ApiModelProperty("父菜单ID")
     private String  parentId;
     @ApiModelProperty("是否选中")
-    private boolean checked;
+    private Boolean checked;
 
     public MenuTreeNode asNode() {
         MenuTreeNode dto = new MenuTreeNode();

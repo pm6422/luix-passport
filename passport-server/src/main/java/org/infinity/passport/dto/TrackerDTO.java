@@ -12,8 +12,6 @@ import java.time.Instant;
  */
 @ApiModel("用户追踪")
 @Data
-@EqualsAndHashCode
-@NoArgsConstructor
 public class TrackerDTO {
 
     private String sessionId;

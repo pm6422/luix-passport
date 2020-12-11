@@ -12,7 +12,6 @@ import org.springframework.security.oauth2.provider.client.BaseClientDetails;
 
 @Document(collection = "MongoOAuth2ClientDetails")
 @Data
-@EqualsAndHashCode(callSuper = true)
 public class MongoOAuth2ClientDetails extends BaseClientDetails implements ClientDetails {
 
     private static final long serialVersionUID = 1L;
