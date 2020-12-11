@@ -1,7 +1,6 @@
 package org.infinity.passport.domain;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.infinity.passport.dto.MongoOAuth2AuthorizationCodeDTO;
 import org.springframework.beans.BeanUtils;

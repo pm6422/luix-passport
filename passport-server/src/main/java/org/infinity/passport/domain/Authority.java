@@ -2,7 +2,6 @@ package org.infinity.passport.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.infinity.passport.dto.AuthorityDTO;
 import org.springframework.data.annotation.Id;

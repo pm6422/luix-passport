@@ -39,36 +39,4 @@ public class ProfileInfoDTO implements Serializable {
         }
         this.swaggerEnabled = swaggerEnabled;
     }
-
-    public String[] getActiveProfiles() {
-        return activeProfiles;
-    }
-
-    public void setActiveProfiles(String[] activeProfiles) {
-        this.activeProfiles = activeProfiles;
-    }
-
-    public String getRibbonEnv() {
-        return ribbonEnv;
-    }
-
-    public void setRibbonEnv(String ribbonEnv) {
-        this.ribbonEnv = ribbonEnv;
-    }
-
-    public boolean isInProduction() {
-        return inProduction;
-    }
-
-    public void setInProduction(boolean inProduction) {
-        this.inProduction = inProduction;
-    }
-
-    public boolean isSwaggerEnabled() {
-        return swaggerEnabled;
-    }
-
-    public void setSwaggerEnabled(boolean swaggerEnabled) {
-        this.swaggerEnabled = swaggerEnabled;
-    }
 }

@@ -3,8 +3,6 @@ package org.infinity.passport.dto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.infinity.passport.domain.base.AbstractAuditableDomain;
 

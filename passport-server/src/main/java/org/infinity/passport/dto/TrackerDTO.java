@@ -2,8 +2,6 @@ package org.infinity.passport.dto;
 
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 
