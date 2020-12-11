@@ -3,6 +3,7 @@ package org.infinity.passport.domain;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.infinity.passport.domain.base.AbstractAuditableDomain;
 import org.infinity.passport.dto.MongoOAuth2RefreshTokenDTO;
 import org.springframework.beans.BeanUtils;
@@ -17,6 +18,7 @@ import java.util.Date;
 
 @Document(collection = "MongoOAuth2RefreshToken")
 @Data
+@ToString(callSuper = true)
 @NoArgsConstructor
 public class MongoOAuth2RefreshToken extends AbstractAuditableDomain implements Serializable {
 

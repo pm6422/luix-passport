@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.infinity.passport.domain.User;
 import org.infinity.passport.domain.base.AbstractAuditableDomain;
 
@@ -20,6 +21,7 @@ import java.util.Set;
  */
 @ApiModel("用户DTO")
 @Data
+@ToString(callSuper = true)
 @NoArgsConstructor
 public class UserDTO extends AbstractAuditableDomain implements Serializable {
 

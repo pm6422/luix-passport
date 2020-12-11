@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.infinity.passport.domain.base.AbstractAuditableDomain;
 import org.infinity.passport.entity.MenuTreeNode;
 import org.springframework.cglib.beans.BeanCopier;
@@ -16,6 +17,7 @@ import java.io.Serializable;
 
 @ApiModel("管理系统菜单DTO")
 @Data
+@ToString(callSuper = true)
 public class AdminMenuDTO extends AbstractAuditableDomain implements Serializable {
 
     private static final long serialVersionUID = 1L;

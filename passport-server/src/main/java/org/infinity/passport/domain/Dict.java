@@ -3,6 +3,7 @@ package org.infinity.passport.domain;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.infinity.passport.domain.base.AbstractAuditableDomain;
 import org.infinity.passport.dto.DictDTO;
 import org.springframework.beans.BeanUtils;
@@ -15,6 +16,7 @@ import java.io.Serializable;
  */
 @Document(collection = "Dict")
 @Data
+@ToString(callSuper = true)
 @NoArgsConstructor
 public class Dict extends AbstractAuditableDomain implements Serializable {
 

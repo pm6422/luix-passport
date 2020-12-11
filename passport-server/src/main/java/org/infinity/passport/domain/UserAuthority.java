@@ -3,6 +3,7 @@ package org.infinity.passport.domain;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.infinity.passport.domain.base.AbstractAuditableDomain;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -14,6 +15,7 @@ import java.io.Serializable;
  */
 @Document(collection = "UserAuthority")
 @Data
+@ToString(callSuper = true)
 @NoArgsConstructor
 public class UserAuthority extends AbstractAuditableDomain implements Serializable {
 

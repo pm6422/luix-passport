@@ -3,6 +3,7 @@ package org.infinity.passport.domain;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.infinity.passport.domain.base.AbstractAuditableDomain;
 import org.infinity.passport.dto.AdminMenuDTO;
 import org.infinity.passport.entity.MenuTreeNode;
@@ -20,6 +21,7 @@ import java.io.Serializable;
  */
 @Document(collection = "AdminMenu")
 @Data
+@ToString(callSuper = true)
 @NoArgsConstructor
 public class AdminMenu extends AbstractAuditableDomain implements Serializable {
     private static final long   serialVersionUID = 1L;

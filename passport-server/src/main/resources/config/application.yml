@@ -135,6 +135,8 @@ application:
         contact-name: Louis
         contact-email: pm6422@126.com
         host:
+    aop-logging:
+        enabled: true
     elapsed-time-logging:
         enabled: true
         slow-execution-threshold: 300 # unit: ms

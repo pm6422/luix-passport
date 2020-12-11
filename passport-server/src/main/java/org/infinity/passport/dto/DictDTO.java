@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.infinity.passport.domain.base.AbstractAuditableDomain;
 
 import javax.validation.constraints.NotNull;
@@ -13,6 +14,7 @@ import java.io.Serializable;
 
 @ApiModel("数据字典DTO")
 @Data
+@ToString(callSuper = true)
 public class DictDTO extends AbstractAuditableDomain implements Serializable {
 
     private static final long serialVersionUID = 4885526690107887683L;
