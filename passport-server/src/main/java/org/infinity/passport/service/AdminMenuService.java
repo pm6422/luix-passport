@@ -1,8 +1,7 @@
 package org.infinity.passport.service;
 
 import org.infinity.passport.domain.AdminMenu;
-import org.infinity.passport.domain.AppAuthority;
-import org.infinity.passport.entity.MenuTreeNode;
+import org.infinity.passport.dto.AdminMenuTreeDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -12,11 +11,11 @@ public interface AdminMenuService {
 
     Page<AdminMenu> find(Pageable pageable, String appName);
 
-    List<MenuTreeNode> getAllAuthorityMenus(String appName, String enabledAuthority);
+    List<AdminMenu> getUserAuthorityLinks(String appName);
 
-    List<MenuTreeNode> getAuthorityMenus(String appName, List<String> enabledAuthorities);
+    List<AdminMenuTreeDTO> getUserAuthorityMenus(String appName);
 
-    List<AdminMenu> getAuthorityLinks(String appName, List<String> enabledAuthorities);
+    List<AdminMenuTreeDTO> getAuthorityMenus(String appName, String authorityName);
 
     void raiseSeq(String id);
 

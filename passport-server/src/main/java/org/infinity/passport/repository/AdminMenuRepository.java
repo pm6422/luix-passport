@@ -18,7 +18,7 @@ public interface AdminMenuRepository extends MongoRepository<AdminMenu, String> 
 
     List<AdminMenu> findByAppNameAndIdIn(String appName, Set<String> ids);
 
-    List<AdminMenu> findByAppNameAndIdInAndLevelGreaterThan(String appName, List<String> ids, Integer level);
+    List<AdminMenu> findByAppNameAndIdInAndParentIdNotNull(String appName, Set<String> ids);
 
     List<AdminMenu> findByAppName(String appName);
 

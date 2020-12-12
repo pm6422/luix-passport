@@ -7,16 +7,14 @@ import org.infinity.passport.domain.AdminMenu;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.AuthorityAdminMenu;
 import org.infinity.passport.dto.AdminAuthorityMenusDTO;
-import org.infinity.passport.entity.MenuTreeNode;
+import org.infinity.passport.dto.AdminMenuTreeDTO;
 import org.infinity.passport.repository.AdminMenuRepository;
 import org.infinity.passport.repository.AuthorityAdminMenuRepository;
 import org.infinity.passport.service.AdminMenuService;
 import org.infinity.passport.service.AuthorityService;
 import org.infinity.passport.component.HttpHeaderCreator;
-import org.infinity.passport.utils.SecurityUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -54,44 +52,34 @@ public class AuthorityAdminMenuController {
         this.httpHeaderCreator = httpHeaderCreator;
     }
 
-    @ApiOperation("检索当前用户权限关联的菜单")
+    @ApiOperation("检索当前用户权限关联的菜单列表")
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
+    @GetMapping("/api/authority-admin-menu/user-authority-links")
+    @Secured({Authority.USER})
+    public ResponseEntity<List<AdminMenu>> findUserAuthorityLinks(
+            @ApiParam(value = "应用名称", required = true) @RequestParam(value = "appName") String appName) {
+        List<AdminMenu> results = adminMenuService.getUserAuthorityLinks(appName);
+        return ResponseEntity.ok(results);
+    }
+
+    @ApiOperation("检索当前用户权限关联的菜单树")
+    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
+    @GetMapping("/api/authority-admin-menu/user-authority-menus")
+    @Secured({Authority.USER})
+    public ResponseEntity<List<AdminMenuTreeDTO>> findUserAuthorityMenus(
+            @ApiParam(value = "应用名称", required = true) @RequestParam(value = "appName") String appName) {
+        List<AdminMenuTreeDTO> results = adminMenuService.getUserAuthorityMenus(appName);
+        return ResponseEntity.ok(results);
+    }
+
+    @ApiOperation("根据权限名称检索菜单树")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/authority-admin-menu/authority-menus")
-    @Secured({Authority.USER})
-    public ResponseEntity<List<MenuTreeNode>> findByAppName(
-            @ApiParam(value = "应用名称", required = true) @RequestParam(value = "appName") String appName) {
-        List<String> allEnabledAuthorities = authorityService.findAllAuthorityNames(true);
-        List<String> userEnabledAuthorities = SecurityUtils.getCurrentUserRoles().parallelStream()
-                .map(GrantedAuthority::getAuthority)
-                .filter(allEnabledAuthorities::contains).collect(Collectors.toList());
-
-        List<MenuTreeNode> results = adminMenuService.getAuthorityMenus(appName, userEnabledAuthorities);
-        return ResponseEntity.ok(results);
-    }
-
-    @ApiOperation("检索当前用户权限关联的链接")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
-    @GetMapping("/api/authority-admin-menu/authority-links")
-    @Secured({Authority.USER})
-    public ResponseEntity<List<AdminMenu>> findAuthorityLinks(
-            @ApiParam(value = "应用名称", required = true) @RequestParam(value = "appName") String appName) {
-        List<String> allEnabledAuthorities = authorityService.findAllAuthorityNames(true);
-        List<String> userEnabledAuthorities = SecurityUtils.getCurrentUserRoles().parallelStream()
-                .map(GrantedAuthority::getAuthority)
-                .filter(allEnabledAuthorities::contains).collect(Collectors.toList());
-
-        List<AdminMenu> results = adminMenuService.getAuthorityLinks(appName, userEnabledAuthorities);
-        return ResponseEntity.ok(results);
-    }
-
-    @ApiOperation("根据权限名称检索菜单信息")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
-    @GetMapping("/api/authority-admin-menu/menu-info")
     @Secured({Authority.ADMIN})
-    public ResponseEntity<List<MenuTreeNode>> findMenus(
+    public ResponseEntity<List<AdminMenuTreeDTO>> findAuthorityMenus(
             @ApiParam(value = "应用名称", required = true) @RequestParam(value = "appName") String appName,
             @ApiParam(value = "权限名称", required = true) @RequestParam(value = "authorityName") String authorityName) {
-        List<MenuTreeNode> results = adminMenuService.getAllAuthorityMenus(appName, authorityName);
+        List<AdminMenuTreeDTO> results = adminMenuService.getAuthorityMenus(appName, authorityName);
         return ResponseEntity.ok(results);
     }
 

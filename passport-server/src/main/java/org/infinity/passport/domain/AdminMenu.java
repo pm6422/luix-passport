@@ -1,13 +1,13 @@
 package org.infinity.passport.domain;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.infinity.passport.domain.base.AbstractAuditableDomain;
 import org.infinity.passport.dto.AdminMenuDTO;
-import org.infinity.passport.entity.MenuTreeNode;
+import org.infinity.passport.dto.AdminMenuTreeDTO;
 import org.springframework.cglib.beans.BeanCopier;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -42,6 +42,11 @@ public class AdminMenu extends AbstractAuditableDomain implements Serializable {
     @Field(FIELD_SEQUENCE)
     private Integer sequence;
     private String  parentId;
+    /**
+     * DO NOT persist to DB
+     */
+    @Transient
+    private Boolean checked;
 
     public AdminMenu(@NotNull @Size(min = 1, max = 20) String appName) {
         this.appName = appName;
@@ -66,17 +71,17 @@ public class AdminMenu extends AbstractAuditableDomain implements Serializable {
         return dto;
     }
 
-    public MenuTreeNode toNode() {
-        MenuTreeNode dto = new MenuTreeNode();
-        BeanCopier beanCopier = BeanCopier.create(AdminMenu.class, MenuTreeNode.class, false);
-        beanCopier.copy(this, dto, null);
-        return dto;
-    }
-
     public static AdminMenu of(AdminMenuDTO dto) {
         AdminMenu dest = new AdminMenu();
         BeanCopier beanCopier = BeanCopier.create(AdminMenuDTO.class, AdminMenu.class, false);
         beanCopier.copy(dto, dest, null);
         return dest;
+    }
+
+    public AdminMenuTreeDTO toTreeDTO() {
+        AdminMenuTreeDTO dto = new AdminMenuTreeDTO();
+        BeanCopier beanCopier = BeanCopier.create(AdminMenu.class, AdminMenuTreeDTO.class, false);
+        beanCopier.copy(this, dto, null);
+        return dto;
     }
 }

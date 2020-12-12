@@ -5,6 +5,6 @@ import java.util.Set;
 
 public interface AuthorityAdminMenuService {
 
-    Set<String> findAdminMenuIdSetByAuthorityNameIn(List<String> authorityNames);
+    Set<String> findAdminMenuIds(List<String> authorityNames);
 
 }

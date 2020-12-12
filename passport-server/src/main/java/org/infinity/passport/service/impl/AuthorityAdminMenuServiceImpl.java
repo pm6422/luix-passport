@@ -19,7 +19,7 @@ public class AuthorityAdminMenuServiceImpl implements AuthorityAdminMenuService 
     }
 
     @Override
-    public Set<String> findAdminMenuIdSetByAuthorityNameIn(List<String> authorityNames) {
+    public Set<String> findAdminMenuIds(List<String> authorityNames) {
         return authorityAdminMenuRepository.findByAuthorityNameIn(authorityNames).stream()
                 .map(AuthorityAdminMenu::getAdminMenuId).collect(Collectors.toSet());
     }

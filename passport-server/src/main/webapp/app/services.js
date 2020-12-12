@@ -1138,9 +1138,9 @@ function AuthenticationService($rootScope, $state, $sessionStorage, $q, $locatio
  */
 function AuthorityAdminMenuService($resource) {
     return $resource('api/authority-admin-menu/:extension', {}, {
-        'query': {method: 'GET', isArray: true, params: {extension: 'authority-menus'}},
-        'queryLinks': {method: 'GET', isArray: true, params: {extension: 'authority-links'}},
-        'queryMenusByAuthorityName': {method: 'GET', isArray: true, params: {extension: 'menu-info'}},
+        'query': {method: 'GET', isArray: true, params: {extension: 'user-authority-menus'}},
+        'queryLinks': {method: 'GET', isArray: true, params: {extension: 'user-authority-links'}},
+        'queryMenusByAuthorityName': {method: 'GET', isArray: true, params: {extension: 'authority-menus'}},
         'updateAuthorityMenus': {
             method: 'PUT', isArray: true, params: {extension: 'update-authority-menus'},
             interceptor: {

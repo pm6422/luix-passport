@@ -2,18 +2,20 @@ package org.infinity.passport.service.impl;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.infinity.passport.domain.AdminMenu;
-import org.infinity.passport.dto.AdminMenuDTO;
-import org.infinity.passport.entity.MenuTree;
-import org.infinity.passport.entity.MenuTreeNode;
+import org.infinity.passport.dto.AdminMenuTreeDTO;
 import org.infinity.passport.exception.NoDataException;
 import org.infinity.passport.repository.AdminMenuRepository;
 import org.infinity.passport.service.AdminMenuService;
 import org.infinity.passport.service.AuthorityAdminMenuService;
+import org.infinity.passport.service.AuthorityService;
+import org.infinity.passport.utils.SecurityUtils;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.util.StringUtils;
 
 import java.util.*;
 import java.util.function.BiFunction;
@@ -23,11 +25,14 @@ import java.util.stream.Collectors;
 public class AdminMenuServiceImpl implements AdminMenuService {
 
     private final AdminMenuRepository       adminMenuRepository;
+    private final AuthorityService          authorityService;
     private final AuthorityAdminMenuService authorityAdminMenuService;
 
     public AdminMenuServiceImpl(AdminMenuRepository adminMenuRepository,
+                                AuthorityService authorityService,
                                 AuthorityAdminMenuService authorityAdminMenuService) {
         this.adminMenuRepository = adminMenuRepository;
+        this.authorityService = authorityService;
         this.authorityAdminMenuService = authorityAdminMenuService;
     }
 
@@ -40,54 +45,80 @@ public class AdminMenuServiceImpl implements AdminMenuService {
     }
 
     @Override
-    public List<MenuTreeNode> getAllAuthorityMenus(String appName, String enabledAuthority) {
-        Set<String> adminMenuIds = authorityAdminMenuService.findAdminMenuIdSetByAuthorityNameIn(Collections.singletonList(enabledAuthority));
-        List<AdminMenuDTO> allAdminMenus = adminMenuRepository.findByAppName(appName).stream().map(menu -> {
-            AdminMenuDTO dto = menu.toDTO();
-            if (adminMenuIds.contains(menu.getId())) {
-                dto.setChecked(true);
-            }
-            return dto;
-        }).collect(Collectors.toList());
-        return this.groupAdminMenuDTO(allAdminMenus);
+    public List<AdminMenu> getUserAuthorityLinks(String appName) {
+        Set<String> adminMenuIds = getAdminMenuIds(getEnabledUserAuthorities());
+        if (CollectionUtils.isEmpty(adminMenuIds)) {
+            return Collections.emptyList();
+        }
+        // 检索二级及以上级别菜单
+        return adminMenuRepository.findByAppNameAndIdInAndParentIdNotNull(appName, adminMenuIds);
     }
 
     @Override
-    public List<MenuTreeNode> getAuthorityMenus(String appName, List<String> enabledAuthorities) {
-        if (CollectionUtils.isEmpty(enabledAuthorities)) {
-            return Collections.emptyList();
-        }
-
-        Set<String> adminMenuIds = authorityAdminMenuService.findAdminMenuIdSetByAuthorityNameIn(enabledAuthorities);
+    public List<AdminMenuTreeDTO> getUserAuthorityMenus(String appName) {
+        Set<String> adminMenuIds = getAdminMenuIds(getEnabledUserAuthorities());
         if (CollectionUtils.isEmpty(adminMenuIds)) {
             return Collections.emptyList();
         }
         List<AdminMenu> adminMenus = adminMenuRepository.findByAppNameAndIdIn(appName, adminMenuIds);
-        return this.groupAdminMenu(adminMenus);
-    }
-
-    private List<MenuTreeNode> groupAdminMenuDTO(List<AdminMenuDTO> menus) {
-        MenuTree tree = new MenuTree(menus.stream().map(AdminMenuDTO::asNode).collect(Collectors.toList()));
-        return tree.getChildren();
-    }
-
-    private List<MenuTreeNode> groupAdminMenu(List<AdminMenu> menus) {
-        MenuTree tree = new MenuTree(menus.stream().map(AdminMenu::toNode).collect(Collectors.toList()));
-        return tree.getChildren();
+        return generateTree(adminMenus);
     }
 
     @Override
-    public List<AdminMenu> getAuthorityLinks(String appName, List<String> enabledAuthorities) {
-        List<AdminMenu> results = new ArrayList<>();
-        if (CollectionUtils.isEmpty(enabledAuthorities)) {
-            return results;
+    public List<AdminMenuTreeDTO> getAuthorityMenus(String appName, String authorityName) {
+        Set<String> authorityAdminMenuIds = getAdminMenuIds(Collections.singletonList(authorityName));
+        if (CollectionUtils.isEmpty(authorityAdminMenuIds)) {
+            return Collections.emptyList();
         }
+        // 检索所有菜单并将已赋权菜单的checked字段设置为true
+        List<AdminMenu> allAdminMenus = adminMenuRepository.findByAppName(appName).stream().peek(menu -> {
+            if (authorityAdminMenuIds.contains(menu.getId())) {
+                menu.setChecked(true);
+            }
+        }).collect(Collectors.toList());
+        return generateTree(allAdminMenus);
+    }
 
-        Set<String> adminMenuIds = authorityAdminMenuService.findAdminMenuIdSetByAuthorityNameIn(enabledAuthorities);
-        if (CollectionUtils.isNotEmpty(adminMenuIds)) {
-            return adminMenuRepository.findByAppNameAndIdInAndLevelGreaterThan(appName, new ArrayList<>(adminMenuIds), 1);
+    private List<String> getEnabledUserAuthorities() {
+        List<String> allEnabledAuthorities = authorityService.findAllAuthorityNames(true);
+        return SecurityUtils.getCurrentUserRoles().parallelStream()
+                .map(GrantedAuthority::getAuthority)
+                .filter(allEnabledAuthorities::contains).collect(Collectors.toList());
+    }
+
+    private Set<String> getAdminMenuIds(List<String> authorityNames) {
+        if (CollectionUtils.isEmpty(authorityNames)) {
+            return Collections.emptySet();
         }
-        return results;
+        return authorityAdminMenuService.findAdminMenuIds(authorityNames);
+    }
+
+    private List<AdminMenuTreeDTO> generateTree(List<AdminMenu> menus) {
+        // 根节点
+        List<AdminMenuTreeDTO> rootMenus = menus.stream()
+                .filter(menu -> StringUtils.isEmpty(menu.getParentId()))
+                .map(AdminMenu::toTreeDTO)
+                .sorted(Comparator.comparing(AdminMenuTreeDTO::getSequence))
+                .collect(Collectors.toList());
+        rootMenus.forEach(rootMenu -> {
+            // 给根节点设置子节点
+            rootMenu.setChildren(getChildren(rootMenu.getId(), menus));
+        });
+        return rootMenus;
+    }
+
+    private List<AdminMenuTreeDTO> getChildren(String parentId, List<AdminMenu> menus) {
+        // 子菜单
+        List<AdminMenuTreeDTO> childMenus = menus.stream()
+                .filter(menu -> parentId.equals(menu.getParentId()))
+                .map(AdminMenu::toTreeDTO)
+                .sorted(Comparator.comparing(AdminMenuTreeDTO::getSequence))
+                .collect(Collectors.toList());
+        // 递归
+        for (AdminMenuTreeDTO childMenu : childMenus) {
+            childMenu.setChildren(getChildren(childMenu.getId(), menus));
+        }
+        return childMenus;
     }
 
     @Override
