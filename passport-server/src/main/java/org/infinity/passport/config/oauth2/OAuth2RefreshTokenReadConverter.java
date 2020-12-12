@@ -1,11 +1,11 @@
 package org.infinity.passport.config.oauth2;
 
-import java.util.Date;
-
 import org.bson.Document;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.oauth2.common.DefaultExpiringOAuth2RefreshToken;
 import org.springframework.security.oauth2.common.OAuth2RefreshToken;
+
+import java.util.Date;
 
 /**
  * Deserialize back into an OAuth2RefreshToken Object made necessary because

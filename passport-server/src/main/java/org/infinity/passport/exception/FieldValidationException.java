@@ -1,10 +1,10 @@
 package org.infinity.passport.exception;
 
+import org.springframework.validation.FieldError;
+
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.springframework.validation.FieldError;
 
 /**
  * This exception is throw in case of field validation failure.

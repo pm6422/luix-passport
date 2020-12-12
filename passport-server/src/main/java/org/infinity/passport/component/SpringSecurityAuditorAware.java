@@ -1,13 +1,12 @@
 package org.infinity.passport.component;
 
-import java.util.Optional;
-
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.utils.SecurityUtils;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Nonnull;
+import java.util.Optional;
 
 /**
  * Implementation of AuditorAware based on Spring Security.

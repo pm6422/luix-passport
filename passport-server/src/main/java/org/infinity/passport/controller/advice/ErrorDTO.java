@@ -1,9 +1,9 @@
 package org.infinity.passport.controller.advice;
 
+import org.springframework.validation.FieldError;
+
 import java.io.Serializable;
 import java.util.List;
-
-import org.springframework.validation.FieldError;
 
 /**
  * DTO for transferring error message with a list of field errors.

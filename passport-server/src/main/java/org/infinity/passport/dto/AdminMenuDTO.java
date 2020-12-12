@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.ToString;
 import org.infinity.passport.domain.base.AbstractAuditableDomain;
-import org.springframework.cglib.beans.BeanCopier;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
