@@ -11,6 +11,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Aspect for logging elapsed time of Spring components.
@@ -21,6 +22,8 @@ import javax.servlet.http.HttpServletResponse;
 @Slf4j
 public class ElapsedTimeLoggingAspect {
 
+    private static final long                  SECOND          = TimeUnit.SECONDS.toMillis(1);
+    private static final long                  MINUTE          = TimeUnit.MINUTES.toMillis(1);
     private static final String                SERVICE_PACKAGE = "within(" + ApplicationConstants.BASE_PACKAGE + ".service..*)";
     private final        ApplicationProperties applicationProperties;
 
@@ -61,15 +64,15 @@ public class ElapsedTimeLoggingAspect {
 
     private void outputLog(ProceedingJoinPoint joinPoint, long elapsed) {
         if (elapsed > applicationProperties.getElapsedTimeLogging().getSlowExecutionThreshold()) {
-            if (elapsed < 1000) {
+            if (elapsed < SECOND) {
                 log.warn("Found slow running method {}.{}() over {}ms",
                         joinPoint.getSignature().getDeclaringType().getSimpleName(), joinPoint.getSignature().getName(), elapsed);
-            } else if (elapsed < 60000) {
+            } else if (elapsed < MINUTE) {
                 log.warn("Found slow running method {}.{}() over {}s",
-                        joinPoint.getSignature().getDeclaringType().getSimpleName(), joinPoint.getSignature().getName(), elapsed / 1000);
+                        joinPoint.getSignature().getDeclaringType().getSimpleName(), joinPoint.getSignature().getName(), elapsed / SECOND);
             } else {
                 log.warn("Found slow running method {}.{}() over {}m",
-                        joinPoint.getSignature().getDeclaringType().getSimpleName(), joinPoint.getSignature().getName(), elapsed / 60000);
+                        joinPoint.getSignature().getDeclaringType().getSimpleName(), joinPoint.getSignature().getName(), elapsed / MINUTE);
             }
         }
     }
@@ -79,12 +82,12 @@ public class ElapsedTimeLoggingAspect {
         HttpServletResponse response = servletRequestAttributes != null ? servletRequestAttributes.getResponse() : null;
         if (response != null) {
             // Store execution time to each http header
-            if (elapsed < 1000) {
+            if (elapsed < SECOND) {
                 response.setHeader("ELAPSED", "" + elapsed + "ms");
-            } else if (elapsed < 60000) {
-                response.setHeader("ELAPSED", "" + elapsed / 1000 + "s");
+            } else if (elapsed < MINUTE) {
+                response.setHeader("ELAPSED", "" + elapsed / SECOND + "s");
             } else {
-                response.setHeader("ELAPSED", "" + elapsed / 60000 + "m");
+                response.setHeader("ELAPSED", "" + elapsed / MINUTE + "m");
             }
         }
     }

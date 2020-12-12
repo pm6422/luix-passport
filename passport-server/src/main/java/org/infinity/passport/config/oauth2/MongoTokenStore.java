@@ -12,14 +12,9 @@ import org.springframework.security.oauth2.provider.token.DefaultAuthenticationK
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.stereotype.Component;
 
-import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * A MongoDB implementation of the TokenStore.
@@ -122,20 +117,5 @@ public class MongoTokenStore implements TokenStore {
             accessTokens.add(token.getOAuth2AccessToken());
         }
         return accessTokens;
-    }
-
-    protected String extractTokenKey(final String value) {
-        if (Objects.isNull(value)) {
-            return null;
-        }
-        MessageDigest digest;
-        try {
-            digest = MessageDigest.getInstance("MD5");
-        } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException("MD5 algorithm not available. Fatal (should be in the JDK).");
-        }
-
-        byte[] bytes = digest.digest(value.getBytes(StandardCharsets.UTF_8));
-        return String.format("%032x", new BigInteger(1, bytes));
     }
 }

@@ -21,7 +21,7 @@ public class AuditEventConverter {
         if (Objects.isNull(persistentAuditEvents)) {
             return Collections.emptyList();
         }
-        return persistentAuditEvents.stream().map(x -> convertToAuditEvent(x)).collect(Collectors.toList());
+        return persistentAuditEvents.stream().map(this::convertToAuditEvent).collect(Collectors.toList());
     }
 
     /**
@@ -63,7 +63,7 @@ public class AuditEventConverter {
             return Collections.emptyMap();
         }
 
-        Map<String, String> results = new HashMap<>();
+        Map<String, String> results = new HashMap<>(2);
         for (Map.Entry<String, Object> entry : data.entrySet()) {
             Object object = entry.getValue();
 

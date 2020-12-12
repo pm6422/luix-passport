@@ -36,7 +36,8 @@ public class OAuth2AuthenticationReadConverter implements Converter<Document, OA
             Document userAuthorization = (Document) source.get("userAuthentication");
             Object principal = getPrincipalObject(userAuthorization.get("principal"));
             if (principal == null) {
-                userAuthorization = (Document) userAuthorization.get("userAuthentication");// For nested userAuthorization in OAuth2Authentication
+                // For nested userAuthorization in OAuth2Authentication
+                userAuthorization = (Document) userAuthorization.get("userAuthentication");
                 if (userAuthorization != null) {
                     principal = getPrincipalObject(userAuthorization.get("principal"));
                 }

@@ -37,7 +37,12 @@ public class MongoConfiguration {
     private final MongoMappingContext mongoMappingContext;
     private final MongoDbFactory      mongoDbFactory;
 
-    // Use @Lazy to fix dependencies problems
+    /**
+     * Use @Lazy to fix dependencies problems
+     *
+     * @param mongoMappingContext mongo mapping context
+     * @param mongoDbFactory      mongo db factory
+     */
     public MongoConfiguration(@Lazy MongoMappingContext mongoMappingContext, MongoDbFactory mongoDbFactory) {
         this.mongoMappingContext = mongoMappingContext;
         this.mongoDbFactory = mongoDbFactory;

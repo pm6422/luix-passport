@@ -38,7 +38,7 @@ public class GlobalRequestParamsConfiguration implements WebMvcConfigurer {
         }
 
         @Override
-        public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        public void afterCompletion(@Nonnull HttpServletRequest request, @Nonnull HttpServletResponse response, @Nonnull Object handler, Exception ex) throws Exception {
             super.afterCompletion(request, response, handler, ex);
             RequesterIdHolder.destroy();
         }
