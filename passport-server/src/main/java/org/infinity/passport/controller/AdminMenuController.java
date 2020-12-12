@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.io.IOException;
@@ -83,7 +84,7 @@ public class AdminMenuController {
             throws URISyntaxException {
         Page<AdminMenu> adminMenus = adminMenuService.find(pageable, appName);
         List<AdminMenuDTO> DTOs = adminMenus.getContent().stream().map(AdminMenu::toDTO).collect(Collectors.toList());
-        HttpHeaders headers = generatePageHeaders(adminMenus, "/api/admin-menu/menus");
+        HttpHeaders headers = generatePageHeaders(adminMenus);
         return ResponseEntity.ok().headers(headers).body(DTOs);
     }
 

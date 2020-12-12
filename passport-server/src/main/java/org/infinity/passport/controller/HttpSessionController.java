@@ -45,7 +45,7 @@ public class HttpSessionController {
     public ResponseEntity<List<HttpSession>> find(Pageable pageable,
                                                   @ApiParam(value = "用户名称") @RequestParam(value = "principal", required = false) String principal) throws URISyntaxException {
         Page<HttpSession> sessions = StringUtils.isEmpty(principal) ? httpSessionRepository.findAll(pageable) : httpSessionRepository.findByPrincipal(pageable, principal);
-        HttpHeaders headers = generatePageHeaders(sessions, "/api/http-session/sessions");
+        HttpHeaders headers = generatePageHeaders(sessions);
         return ResponseEntity.ok().headers(headers).body(sessions.getContent());
     }
 

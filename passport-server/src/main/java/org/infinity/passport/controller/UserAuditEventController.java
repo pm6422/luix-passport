@@ -51,7 +51,7 @@ public class UserAuditEventController {
                                                                          @ApiParam(value = "开始日期，例：2020-10-01") @RequestParam(value = "from", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
                                                                          @ApiParam(value = "结束日期，例：2020-10-02") @RequestParam(value = "to", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) throws URISyntaxException {
         Page<PersistentAuditEvent> userAuditEvents = persistenceAuditEventRepository.findByAuditEventDateBetween(pageable, from, to);
-        HttpHeaders headers = generatePageHeaders(userAuditEvents, "/api/user-audit-event/user-audit-events");
+        HttpHeaders headers = generatePageHeaders(userAuditEvents);
         return ResponseEntity.ok().headers(headers).body(userAuditEvents.getContent());
     }
 }

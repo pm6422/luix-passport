@@ -111,7 +111,7 @@ public class UserController {
                 : userService.findByLogin(pageable, login);
         List<ManagedUserDTO> DTOs = users.getContent().stream().map(entity -> new ManagedUserDTO(entity, null))
                 .collect(Collectors.toList());
-        HttpHeaders headers = generatePageHeaders(users, "/api/user/users");
+        HttpHeaders headers = generatePageHeaders(users);
         return ResponseEntity.ok().headers(headers).body(DTOs);
     }
 

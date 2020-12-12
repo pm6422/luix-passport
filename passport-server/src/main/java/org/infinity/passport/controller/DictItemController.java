@@ -101,7 +101,7 @@ public class DictItemController {
             dto.setDictName(dictCodeDictNameMap.get(dto.getDictCode()));
             return entity.toDTO();
         }).collect(Collectors.toList());
-        HttpHeaders headers = generatePageHeaders(dictItems, "/api/dict-item/items");
+        HttpHeaders headers = generatePageHeaders(dictItems);
         return ResponseEntity.ok().headers(headers).body(DTOs);
     }
 

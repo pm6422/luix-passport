@@ -2,45 +2,57 @@ package org.infinity.passport.utils;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
 import java.net.URISyntaxException;
+import java.text.MessageFormat;
 
 /**
  * Utility class for generate http header.
  */
 public abstract class HttpHeaderUtils {
+    private static final String HEADER_X_TOTAL_COUNT = "X-Total-Count";
+    private static final String HEADER_LINK_FORMAT   = "<{0}>; rel=\"{1}\"";
+
     /**
-     * Generate pagination http header
-     * <p>
-     * Pagination uses the same principles as the <a href="https://developer.github.com/v3/#pagination">Github API</api>,
-     * and follow <a href="http://tools.ietf.org/html/rfc5988">RFC 5988 (Link header)</a>.
-     * </p>
+     * Generate pagination headers for a Spring Data {@link org.springframework.data.domain.Page} object.
      *
-     * @param page    pagination info
-     * @param baseUrl base url
-     * @return http header
-     * @throws URISyntaxException if exception occurs
+     * @param page The page.
+     * @param <T>  The type of object.
+     * @return http header.
      */
-    public static HttpHeaders generatePageHeaders(Page<?> page, String baseUrl) throws URISyntaxException {
+    public static <T> HttpHeaders generatePageHeaders(Page<T> page) throws URISyntaxException {
+        UriComponentsBuilder uriBuilder = ServletUriComponentsBuilder.fromCurrentRequest();
         HttpHeaders headers = new HttpHeaders();
-        headers.add("X-Total-Count", "" + page.getTotalElements());
-        String link = "";
-        if ((page.getNumber() + 1) < page.getTotalPages()) {
-            link = "<" + (new URI(baseUrl + "?page=" + (page.getNumber() + 1) + "&size=" + page.getSize())).toString() + ">; rel=\"next\",";
+        headers.add(HEADER_X_TOTAL_COUNT, Long.toString(page.getTotalElements()));
+        int pageNumber = page.getNumber();
+        int pageSize = page.getSize();
+        StringBuilder link = new StringBuilder();
+        if (pageNumber < page.getTotalPages() - 1) {
+            link.append(prepareLink(uriBuilder, pageNumber + 1, pageSize, "next"))
+                    .append(",");
         }
-        // prev link
-        if ((page.getNumber()) > 0) {
-            link += "<" + (new URI(baseUrl + "?page=" + (page.getNumber() - 1) + "&size=" + page.getSize())).toString() + ">; rel=\"prev\",";
+        if (pageNumber > 0) {
+            link.append(prepareLink(uriBuilder, pageNumber - 1, pageSize, "prev"))
+                    .append(",");
         }
-        // last and first link
-        int lastPage = 0;
-        if (page.getTotalPages() > 0) {
-            lastPage = page.getTotalPages() - 1;
-        }
-        link += "<" + (new URI(baseUrl + "?page=" + lastPage + "&size=" + page.getSize())).toString() + ">; rel=\"last\",";
-        link += "<" + (new URI(baseUrl + "?page=" + 0 + "&size=" + page.getSize())).toString() + ">; rel=\"first\"";
-        headers.add(HttpHeaders.LINK, link);
+        link.append(prepareLink(uriBuilder, page.getTotalPages() - 1, pageSize, "last"))
+                .append(",")
+                .append(prepareLink(uriBuilder, 0, pageSize, "first"));
+        headers.add(HttpHeaders.LINK, link.toString());
         return headers;
+    }
+
+    private static String prepareLink(UriComponentsBuilder uriBuilder, int pageNumber, int pageSize, String relType) {
+        return MessageFormat.format(HEADER_LINK_FORMAT, preparePageUri(uriBuilder, pageNumber, pageSize), relType);
+    }
+
+    private static String preparePageUri(UriComponentsBuilder uriBuilder, int pageNumber, int pageSize) {
+        return uriBuilder.replaceQueryParam("page", Integer.toString(pageNumber))
+                .replaceQueryParam("size", Integer.toString(pageSize))
+                .toUriString()
+                .replace(",", "%2C")
+                .replace(";", "%3B");
     }
 }

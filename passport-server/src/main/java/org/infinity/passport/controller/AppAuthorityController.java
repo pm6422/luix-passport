@@ -2,7 +2,7 @@ package org.infinity.passport.controller;
 
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
+import org.infinity.passport.component.HttpHeaderCreator;
 import org.infinity.passport.domain.AppAuthority;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.dto.AppAuthorityDTO;
@@ -10,7 +10,6 @@ import org.infinity.passport.exception.FieldValidationException;
 import org.infinity.passport.exception.NoDataException;
 import org.infinity.passport.repository.AppAuthorityRepository;
 import org.infinity.passport.service.AppAuthorityService;
-import org.infinity.passport.component.HttpHeaderCreator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URISyntaxException;
 import java.text.MessageFormat;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -83,7 +81,7 @@ public class AppAuthorityController {
             throws URISyntaxException {
         Page<AppAuthority> appAuthorities = appAuthorityService.find(pageable, appName, authorityName);
         List<AppAuthorityDTO> DTOs = appAuthorities.getContent().stream().map(AppAuthority::toDTO).collect(Collectors.toList());
-        HttpHeaders headers = generatePageHeaders(appAuthorities, "/api/app-authority/app-authorities");
+        HttpHeaders headers = generatePageHeaders(appAuthorities);
         return ResponseEntity.ok().headers(headers).body(DTOs);
     }
 

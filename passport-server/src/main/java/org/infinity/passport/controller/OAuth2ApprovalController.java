@@ -73,7 +73,7 @@ public class OAuth2ApprovalController {
 
         List<MongoOAuth2ApprovalDTO> DTOs = approvals.getContent().stream().map(MongoOAuth2Approval::toDTO)
                 .collect(Collectors.toList());
-        HttpHeaders headers = generatePageHeaders(approvals, "/api/oauth2-approval/approvals");
+        HttpHeaders headers = generatePageHeaders(approvals);
         return ResponseEntity.ok().headers(headers).body(DTOs);
     }
 

@@ -58,7 +58,7 @@ public class OAuth2RefreshTokenController {
         Page<MongoOAuth2RefreshToken> tokens = oAuth2RefreshTokenRepository.findAll(Example.of(probe, matcher), pageable);
         List<MongoOAuth2RefreshTokenDTO> DTOs = tokens.getContent().stream().map(MongoOAuth2RefreshToken::toDTO)
                 .collect(Collectors.toList());
-        HttpHeaders headers = generatePageHeaders(tokens, "/api/oauth2-refresh-token/tokens");
+        HttpHeaders headers = generatePageHeaders(tokens);
         return ResponseEntity.ok().headers(headers).body(DTOs);
     }
 

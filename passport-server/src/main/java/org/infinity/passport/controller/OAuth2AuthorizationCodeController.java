@@ -62,7 +62,7 @@ public class OAuth2AuthorizationCodeController {
         Page<MongoOAuth2AuthorizationCode> codes = oAuth2AuthorizationCodeRepository.findAll(Example.of(probe), pageable);
         List<MongoOAuth2AuthorizationCodeDTO> DTOs = codes.getContent().stream().map(MongoOAuth2AuthorizationCode::toDTO)
                 .collect(Collectors.toList());
-        HttpHeaders headers = generatePageHeaders(codes, "/api/oauth2-authorization-code/codes");
+        HttpHeaders headers = generatePageHeaders(codes);
         return ResponseEntity.ok().headers(headers).body(DTOs);
     }
 

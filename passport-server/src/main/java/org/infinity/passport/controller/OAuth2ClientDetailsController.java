@@ -91,7 +91,7 @@ public class OAuth2ClientDetailsController {
                 : new PageImpl<>(mongoTemplate.find(query, MongoOAuth2ClientDetails.class), pageable, totalCount);
         List<MongoOAuth2ClientDetailsDTO> DTOs = clientDetails.getContent().stream()
                 .map(MongoOAuth2ClientDetails::toDTO).collect(Collectors.toList());
-        HttpHeaders headers = generatePageHeaders(clientDetails, "/api/oauth2-client/clients");
+        HttpHeaders headers = generatePageHeaders(clientDetails);
         return ResponseEntity.ok().headers(headers).body(DTOs);
     }
 

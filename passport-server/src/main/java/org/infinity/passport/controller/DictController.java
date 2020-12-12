@@ -69,7 +69,7 @@ public class DictController {
             throws URISyntaxException {
         Page<Dict> dicts = dictService.find(pageable, dictName, enabled);
         List<DictDTO> DTOs = dicts.getContent().stream().map(Dict::toDTO).collect(Collectors.toList());
-        HttpHeaders headers = generatePageHeaders(dicts, "/api/dict/dicts");
+        HttpHeaders headers = generatePageHeaders(dicts);
         return ResponseEntity.ok().headers(headers).body(DTOs);
     }
 

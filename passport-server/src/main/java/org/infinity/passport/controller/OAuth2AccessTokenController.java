@@ -56,7 +56,7 @@ public class OAuth2AccessTokenController {
         Page<MongoOAuth2AccessToken> tokens = oAuth2AccessTokenRepository.findAll(Example.of(probe), pageable);
         List<MongoOAuth2AccessTokenDTO> DTOs = tokens.getContent().stream().map(MongoOAuth2AccessToken::toDTO)
                 .collect(Collectors.toList());
-        HttpHeaders headers = generatePageHeaders(tokens, "/api/oauth2-access-token/tokens");
+        HttpHeaders headers = generatePageHeaders(tokens);
         return ResponseEntity.ok().headers(headers).body(DTOs);
     }
 
