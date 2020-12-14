@@ -84,22 +84,6 @@ public class ExceptionTranslatorAdvice {
     }
 
     /**
-     * Login user not exist error handler
-     */
-    @ExceptionHandler(LoginUserNotExistException.class)
-    @ResponseBody
-    public ResponseEntity<ParameterizedErrorDTO> processLoginUserNotExistException(LoginUserNotExistException ex) {
-        String errorMessage = messageSource.getMessage(ErrorCodeConstants.ERROR_LOGIN_USER_NOT_EXIST,
-                new Object[]{ex.getUserName()}, ApplicationConstants.SYSTEM_LOCALE);
-        ex.setMessage(errorMessage);
-        log.error(errorMessage);
-        return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR).headers(httpHeaderCreator
-                        .createErrorHeader(ErrorCodeConstants.ERROR_LOGIN_USER_NOT_EXIST, ex.getUserName()))
-                .body(ex.getErrorDTO());
-    }
-
-    /**
      * No authority error handler
      */
     @ExceptionHandler(NoAuthorityException.class)
