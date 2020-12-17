@@ -1,13 +1,14 @@
 package org.infinity.passport.controller;
 
+import com.google.common.collect.ImmutableMap;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.infinity.passport.component.HttpHeaderCreator;
 import org.infinity.passport.domain.AppAuthority;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.dto.AppAuthorityDTO;
-import org.infinity.passport.exception.FieldValidationException;
-import org.infinity.passport.exception.NoDataException;
+import org.infinity.passport.exception.DuplicationException;
+import org.infinity.passport.exception.NoDataFoundException;
 import org.infinity.passport.repository.AppAuthorityRepository;
 import org.infinity.passport.service.AppAuthorityService;
 import org.springframework.data.domain.Page;
@@ -20,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URISyntaxException;
-import java.text.MessageFormat;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -57,11 +57,7 @@ public class AppAuthorityController {
         log.debug("REST request to create app authority: {}", dto);
         appAuthorityRepository.findOneByAppNameAndAuthorityName(dto.getAppName(), dto.getAuthorityName())
                 .ifPresent((existingEntity) -> {
-                    throw new FieldValidationException("appAuthorityDTO", "appName+authorityName",
-                            MessageFormat.format("appName: {0}, authorityName: {1}", dto.getAppName(),
-                                    dto.getAuthorityName()),
-                            "error.app.name.authority.name.exist",
-                            MessageFormat.format("appName: {0}, authorityName: {1}", dto.getAppName(), dto));
+                    throw new DuplicationException(ImmutableMap.of("appName", dto.getAppName(), "authorityName", dto.getAuthorityName()));
                 });
 
         AppAuthority appAuthority = appAuthorityRepository.save(AppAuthority.of(dto));
@@ -93,7 +89,7 @@ public class AppAuthorityController {
     public ResponseEntity<AppAuthorityDTO> findById(
             @ApiParam(value = "字典编号", required = true) @PathVariable String id) {
         log.debug("REST request to get app authority : {}", id);
-        AppAuthority entity = appAuthorityRepository.findById(id).orElseThrow(() -> new NoDataException(id));
+        AppAuthority entity = appAuthorityRepository.findById(id).orElseThrow(() -> new NoDataFoundException(id));
         return ResponseEntity.ok(entity.toDTO());
     }
 
@@ -105,7 +101,7 @@ public class AppAuthorityController {
     public ResponseEntity<Void> update(
             @ApiParam(value = "新的应用权限", required = true) @Valid @RequestBody AppAuthorityDTO dto) {
         log.debug("REST request to update app authority: {}", dto);
-        appAuthorityRepository.findById(dto.getId()).orElseThrow(() -> new NoDataException(dto.getId()));
+        appAuthorityRepository.findById(dto.getId()).orElseThrow(() -> new NoDataFoundException(dto.getId()));
         appAuthorityRepository.save(AppAuthority.of(dto));
         return ResponseEntity.ok().headers(
                 httpHeaderCreator.createSuccessHeader("notification.app.authority.updated", dto.getAuthorityName()))
@@ -119,7 +115,7 @@ public class AppAuthorityController {
     @Secured({Authority.ADMIN})
     public ResponseEntity<Void> delete(@ApiParam(value = "字典编号", required = true) @PathVariable String id) {
         log.debug("REST request to delete app authority: {}", id);
-        AppAuthority appAuthority = appAuthorityRepository.findById(id).orElseThrow(() -> new NoDataException(id));
+        AppAuthority appAuthority = appAuthorityRepository.findById(id).orElseThrow(() -> new NoDataFoundException(id));
         appAuthorityRepository.deleteById(id);
         log.info("Deleted app authority");
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("notification.app.authority.deleted",

@@ -1,5 +1,6 @@
 package org.infinity.passport.controller;
 
+import com.google.common.collect.ImmutableMap;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
@@ -8,8 +9,8 @@ import org.infinity.passport.component.HttpHeaderCreator;
 import org.infinity.passport.domain.AdminMenu;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.dto.AdminMenuDTO;
-import org.infinity.passport.exception.FieldValidationException;
-import org.infinity.passport.exception.NoDataException;
+import org.infinity.passport.exception.DuplicationException;
+import org.infinity.passport.exception.NoDataFoundException;
 import org.infinity.passport.repository.AdminMenuRepository;
 import org.infinity.passport.service.AdminMenuService;
 import org.springframework.data.domain.Page;
@@ -26,7 +27,6 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -63,14 +63,11 @@ public class AdminMenuController {
         log.debug("REST request to create admin menu: {}", dto);
         adminMenuRepository.findOneByAppNameAndLevelAndSequence(dto.getAppName(), dto.getLevel(), dto.getSequence())
                 .ifPresent((existingEntity) -> {
-                    throw new FieldValidationException("adminMenuDTO", "appName+sequence",
-                            MessageFormat.format("appName: {0}, sequence: {1}", dto.getAppName(), dto.getSequence()),
-                            "error.duplication",
-                            MessageFormat.format("appName: {0}, sequence: {1}", dto.getAppName(), dto.getSequence()));
+                    throw new DuplicationException(ImmutableMap.of("appName", dto.getAppName(), "level", dto.getLevel(), "sequence", dto.getSequence()));
                 });
         adminMenuRepository.save(AdminMenu.of(dto));
         return ResponseEntity.status(HttpStatus.CREATED).headers(
-                httpHeaderCreator.createSuccessHeader("notification.admin.menu.created", dto.getName()))
+                httpHeaderCreator.createSuccessHeader("SM1001", dto.getName()))
                 .build();
     }
 
@@ -93,7 +90,7 @@ public class AdminMenuController {
     @GetMapping("/api/admin-menu/menus/{id}")
     @Secured({Authority.ADMIN})
     public ResponseEntity<AdminMenuDTO> findById(@ApiParam(value = "菜单ID", required = true) @PathVariable String id) {
-        AdminMenu entity = adminMenuRepository.findById(id).orElseThrow(() -> new NoDataException(id));
+        AdminMenu entity = adminMenuRepository.findById(id).orElseThrow(() -> new NoDataFoundException(id));
         return ResponseEntity.ok(entity.toDTO());
     }
 
@@ -117,10 +114,10 @@ public class AdminMenuController {
     public ResponseEntity<Void> update(
             @ApiParam(value = "新的菜单", required = true) @Valid @RequestBody AdminMenuDTO dto) {
         log.debug("REST request to update admin menu: {}", dto);
-        adminMenuRepository.findById(dto.getId()).orElseThrow(() -> new NoDataException(dto.getId()));
+        adminMenuRepository.findById(dto.getId()).orElseThrow(() -> new NoDataFoundException(dto.getId()));
         adminMenuRepository.save(AdminMenu.of(dto));
         return ResponseEntity.ok().headers(
-                httpHeaderCreator.createSuccessHeader("notification.admin.menu.updated", dto.getName()))
+                httpHeaderCreator.createSuccessHeader("SM1002", dto.getName()))
                 .build();
     }
 
@@ -131,10 +128,10 @@ public class AdminMenuController {
     @Secured({Authority.ADMIN})
     public ResponseEntity<Void> delete(@ApiParam(value = "菜单ID", required = true) @PathVariable String id) {
         log.debug("REST request to delete admin menu: {}", id);
-        AdminMenu adminMenu = adminMenuRepository.findById(id).orElseThrow(() -> new NoDataException(id));
+        AdminMenu adminMenu = adminMenuRepository.findById(id).orElseThrow(() -> new NoDataFoundException(id));
         adminMenuRepository.deleteById(id);
         return ResponseEntity.ok().headers(
-                httpHeaderCreator.createSuccessHeader("notification.admin.menu.deleted", adminMenu.getName()))
+                httpHeaderCreator.createSuccessHeader("SM1003", adminMenu.getName()))
                 .build();
     }
 

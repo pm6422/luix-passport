@@ -3,7 +3,7 @@ package org.infinity.passport.service.impl;
 import org.apache.commons.collections4.CollectionUtils;
 import org.infinity.passport.domain.AdminMenu;
 import org.infinity.passport.dto.AdminMenuTreeDTO;
-import org.infinity.passport.exception.NoDataException;
+import org.infinity.passport.exception.NoDataFoundException;
 import org.infinity.passport.repository.AdminMenuRepository;
 import org.infinity.passport.service.AdminMenuService;
 import org.infinity.passport.service.AuthorityAdminMenuService;
@@ -140,7 +140,7 @@ public class AdminMenuServiceImpl implements AdminMenuService {
     }
 
     private void adjustSeq(String id, int moveIndex, BiFunction<LinkedList<AdminMenu>, AdminMenu, Boolean> func) {
-        AdminMenu current = adminMenuRepository.findById(id).orElseThrow(() -> new NoDataException(id));
+        AdminMenu current = adminMenuRepository.findById(id).orElseThrow(() -> new NoDataFoundException(id));
         List<AdminMenu> existingList = adminMenuRepository.findByAppNameAndLevelOrderBySequenceAsc(current.getAppName(), current.getLevel());
         if (CollectionUtils.isNotEmpty(existingList) && existingList.size() == 1) {
             return;

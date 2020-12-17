@@ -6,7 +6,7 @@ import org.infinity.passport.component.HttpHeaderCreator;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.MongoOAuth2AccessToken;
 import org.infinity.passport.dto.MongoOAuth2AccessTokenDTO;
-import org.infinity.passport.exception.NoDataException;
+import org.infinity.passport.exception.NoDataFoundException;
 import org.infinity.passport.repository.OAuth2AccessTokenRepository;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -68,7 +68,7 @@ public class OAuth2AccessTokenController {
     public ResponseEntity<MongoOAuth2AccessTokenDTO> findById(
             @ApiParam(value = "访问令牌ID", required = true) @PathVariable String id) {
         MongoOAuth2AccessToken entity = oAuth2AccessTokenRepository.findById(id)
-                .orElseThrow(() -> new NoDataException(id));
+                .orElseThrow(() -> new NoDataFoundException(id));
         return ResponseEntity.ok(entity.toDTO());
     }
 
@@ -79,9 +79,9 @@ public class OAuth2AccessTokenController {
     @Secured(Authority.ADMIN)
     public ResponseEntity<Void> delete(@ApiParam(value = "访问令牌ID", required = true) @PathVariable String id) {
         log.debug("REST request to delete oauth2 access token: {}", id);
-        oAuth2AccessTokenRepository.findById(id).orElseThrow(() -> new NoDataException(id));
+        oAuth2AccessTokenRepository.findById(id).orElseThrow(() -> new NoDataFoundException(id));
         oAuth2AccessTokenRepository.deleteById(id);
         return ResponseEntity.ok()
-                .headers(httpHeaderCreator.createSuccessHeader("notification.oauth2.access.token.deleted", id)).build();
+                .headers(httpHeaderCreator.createSuccessHeader("SM1003", id)).build();
     }
 }

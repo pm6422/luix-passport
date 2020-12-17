@@ -7,7 +7,7 @@ import org.infinity.passport.component.HttpHeaderCreator;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.MongoOAuth2Approval;
 import org.infinity.passport.dto.MongoOAuth2ApprovalDTO;
-import org.infinity.passport.exception.NoDataException;
+import org.infinity.passport.exception.NoDataFoundException;
 import org.infinity.passport.repository.OAuth2ApprovalRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -84,7 +84,7 @@ public class OAuth2ApprovalController {
     @Secured({Authority.ADMIN})
     public ResponseEntity<MongoOAuth2ApprovalDTO> findById(
             @ApiParam(value = "授权ID", required = true) @PathVariable String id) {
-        MongoOAuth2Approval entity = oAuth2ApprovalRepository.findById(id).orElseThrow(() -> new NoDataException(id));
+        MongoOAuth2Approval entity = oAuth2ApprovalRepository.findById(id).orElseThrow(() -> new NoDataFoundException(id));
         return ResponseEntity.ok(entity.toDTO());
     }
 
@@ -95,9 +95,9 @@ public class OAuth2ApprovalController {
     @Secured(Authority.ADMIN)
     public ResponseEntity<Void> delete(@ApiParam(value = "授权ID", required = true) @PathVariable String id) {
         log.debug("REST request to delete oauth2 approval: {}", id);
-        oAuth2ApprovalRepository.findById(id).orElseThrow(() -> new NoDataException(id));
+        oAuth2ApprovalRepository.findById(id).orElseThrow(() -> new NoDataFoundException(id));
         oAuth2ApprovalRepository.deleteById(id);
         return ResponseEntity.ok()
-                .headers(httpHeaderCreator.createSuccessHeader("notification.oauth2.approval.deleted", id)).build();
+                .headers(httpHeaderCreator.createSuccessHeader("SM1003", id)).build();
     }
 }

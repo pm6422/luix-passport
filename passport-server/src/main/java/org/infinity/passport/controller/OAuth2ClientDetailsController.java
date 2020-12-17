@@ -1,5 +1,6 @@
 package org.infinity.passport.controller;
 
+import com.google.common.collect.ImmutableMap;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -7,8 +8,8 @@ import org.infinity.passport.component.HttpHeaderCreator;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.MongoOAuth2ClientDetails;
 import org.infinity.passport.dto.MongoOAuth2ClientDetailsDTO;
-import org.infinity.passport.exception.FieldValidationException;
-import org.infinity.passport.exception.NoDataException;
+import org.infinity.passport.exception.DuplicationException;
+import org.infinity.passport.exception.NoDataFoundException;
 import org.infinity.passport.repository.OAuth2ClientDetailsRepository;
 import org.infinity.passport.utils.id.IdGenerator;
 import org.springframework.data.domain.Page;
@@ -65,14 +66,13 @@ public class OAuth2ClientDetailsController {
         log.debug("REST create oauth client detail: {}", dto);
         dto.setClientId(StringUtils.defaultIfEmpty(dto.getClientId(), "" + IdGenerator.generateSnowFlakeId()));
         oAuth2ClientDetailsRepository.findById(dto.getClientId()).ifPresent((existingEntity) -> {
-            throw new FieldValidationException("oAuth2ClientDetailsDTO", "clientId", dto.getClientId(),
-                    "error.oauth2.client.id.exists", dto.getClientId());
+            throw new DuplicationException(ImmutableMap.of("clientId", dto.getClientId()));
         });
         dto.setRawClientSecret(StringUtils.defaultIfEmpty(dto.getClientSecret(), "" + IdGenerator.generateSnowFlakeId()));
         dto.setClientSecret(passwordEncoder.encode(dto.getRawClientSecret()));
         oAuth2ClientDetailsRepository.save(MongoOAuth2ClientDetails.of(dto));
         return ResponseEntity.status(HttpStatus.CREATED)
-                .headers(httpHeaderCreator.createSuccessHeader("notification.oauth2.client.created", dto.getClientId()))
+                .headers(httpHeaderCreator.createSuccessHeader("SM1001", dto.getClientId()))
                 .build();
     }
 
@@ -102,7 +102,7 @@ public class OAuth2ClientDetailsController {
     @Secured({Authority.ADMIN})
     public ResponseEntity<MongoOAuth2ClientDetailsDTO> findById(
             @ApiParam(value = "客户端ID", required = true) @PathVariable String id) {
-        MongoOAuth2ClientDetails entity = oAuth2ClientDetailsRepository.findById(id).orElseThrow(() -> new NoDataException(id));
+        MongoOAuth2ClientDetails entity = oAuth2ClientDetailsRepository.findById(id).orElseThrow(() -> new NoDataFoundException(id));
         return ResponseEntity.ok(entity.toDTO());
     }
 
@@ -123,10 +123,10 @@ public class OAuth2ClientDetailsController {
     public ResponseEntity<Void> update(
             @ApiParam(value = "新的单点登录客户端", required = true) @Valid @RequestBody MongoOAuth2ClientDetailsDTO dto) {
         log.debug("REST request to update oauth client detail: {}", dto);
-        oAuth2ClientDetailsRepository.findById(dto.getClientId()).orElseThrow(() -> new NoDataException(dto.getClientId()));
+        oAuth2ClientDetailsRepository.findById(dto.getClientId()).orElseThrow(() -> new NoDataFoundException(dto.getClientId()));
         oAuth2ClientDetailsRepository.save(MongoOAuth2ClientDetails.of(dto));
         return ResponseEntity.ok()
-                .headers(httpHeaderCreator.createSuccessHeader("notification.oauth2.client.updated", dto.getClientId()))
+                .headers(httpHeaderCreator.createSuccessHeader("SM1002", dto.getClientId()))
                 .build();
 
     }
@@ -138,9 +138,9 @@ public class OAuth2ClientDetailsController {
     @Secured(Authority.ADMIN)
     public ResponseEntity<Void> delete(@ApiParam(value = "客户端ID", required = true) @PathVariable String id) {
         log.debug("REST request to delete oauth client detail: {}", id);
-        oAuth2ClientDetailsRepository.findById(id).orElseThrow(() -> new NoDataException(id));
+        oAuth2ClientDetailsRepository.findById(id).orElseThrow(() -> new NoDataFoundException(id));
         oAuth2ClientDetailsRepository.deleteById(id);
         return ResponseEntity.ok()
-                .headers(httpHeaderCreator.createSuccessHeader("notification.oauth2.client.deleted", id)).build();
+                .headers(httpHeaderCreator.createSuccessHeader("SM1003", id)).build();
     }
 }

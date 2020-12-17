@@ -10,8 +10,9 @@ import org.infinity.passport.domain.UserAuthority;
 import org.infinity.passport.domain.UserProfilePhoto;
 import org.infinity.passport.dto.ManagedUserDTO;
 import org.infinity.passport.dto.UserDTO;
+import org.infinity.passport.dto.UserNameAndPasswordDTO;
 import org.infinity.passport.exception.NoAuthorityException;
-import org.infinity.passport.exception.NoDataException;
+import org.infinity.passport.exception.NoDataFoundException;
 import org.infinity.passport.repository.UserAuthorityRepository;
 import org.infinity.passport.repository.UserProfilePhotoRepository;
 import org.infinity.passport.repository.UserRepository;
@@ -94,7 +95,7 @@ public class UserController {
                 request.getContextPath(); // "/myContextPath" or "" if
         // deployed in root context
         mailService.sendCreationEmail(newUser, baseUrl);
-        HttpHeaders headers = httpHeaderCreator.createSuccessHeader("notification.user.created", dto.getUserName(),
+        HttpHeaders headers = httpHeaderCreator.createSuccessHeader("SM1001", dto.getUserName(),
                 DEFAULT_PASSWORD);
         return ResponseEntity
                 .status(HttpStatus.CREATED).headers(headers).body(DEFAULT_PASSWORD);
@@ -122,7 +123,7 @@ public class UserController {
     @Secured({Authority.ADMIN})
     public ResponseEntity<ManagedUserDTO> findByName(
             @ApiParam(value = "用户名", required = true) @PathVariable String userName) {
-        User entity = userService.findOneByUserName(userName).orElseThrow(() -> new NoDataException(userName));
+        User entity = userService.findOneByUserName(userName).orElseThrow(() -> new NoDataFoundException(userName));
         List<UserAuthority> userAuthorities = Optional.ofNullable(userAuthorityRepository.findByUserId(entity.getId()))
                 .orElseThrow(() -> new NoAuthorityException(userName));
         Set<String> authorities = userAuthorities.stream().map(UserAuthority::getAuthorityName)
@@ -149,7 +150,7 @@ public class UserController {
             ajaxLogoutSuccessHandler.onLogoutSuccess(request, response, null);
         }
         return ResponseEntity.ok()
-                .headers(httpHeaderCreator.createSuccessHeader("notification.user.updated", dto.getUserName())).build();
+                .headers(httpHeaderCreator.createSuccessHeader("SM1002", dto.getUserName())).build();
     }
 
     @ApiOperation(value = "根据用户名删除用户", notes = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
@@ -159,11 +160,11 @@ public class UserController {
     @Secured({Authority.ADMIN})
     public ResponseEntity<Void> delete(@ApiParam(value = "用户名", required = true) @PathVariable String userName) {
         log.debug("REST request to delete user: {}", userName);
-        User user = userService.findOneByUserName(userName).orElseThrow(() -> new NoDataException(userName));
+        User user = userService.findOneByUserName(userName).orElseThrow(() -> new NoDataFoundException(userName));
         userRepository.deleteById(user.getId());
         userAuthorityRepository.deleteByUserId(user.getId());
         return ResponseEntity.ok()
-                .headers(httpHeaderCreator.createSuccessHeader("notification.user.deleted", userName)).build();
+                .headers(httpHeaderCreator.createSuccessHeader("SM1003", userName)).build();
     }
 
     @ApiOperation("根据用户名重置密码")
@@ -173,9 +174,8 @@ public class UserController {
     @Secured({Authority.ADMIN})
     public ResponseEntity<String> resetPassword(@ApiParam(value = "用户名", required = true) @PathVariable String userName) {
         log.debug("REST reset the password of user: {}", userName);
-        userService.changePassword(userName, DEFAULT_PASSWORD);
-        HttpHeaders headers = httpHeaderCreator.createSuccessHeader("notification.password.reset.to.default",
-                DEFAULT_PASSWORD);
+        userService.changePassword(UserNameAndPasswordDTO.builder().userName(userName).newPassword(DEFAULT_PASSWORD).build());
+        HttpHeaders headers = httpHeaderCreator.createSuccessHeader("NM2011", DEFAULT_PASSWORD);
         return ResponseEntity.ok().headers(headers).body(DEFAULT_PASSWORD);
     }
 

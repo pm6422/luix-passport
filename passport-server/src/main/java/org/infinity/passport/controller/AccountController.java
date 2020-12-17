@@ -14,10 +14,10 @@ import org.infinity.passport.domain.UserProfilePhoto;
 import org.infinity.passport.dto.ManagedUserDTO;
 import org.infinity.passport.dto.ResetKeyAndPasswordDTO;
 import org.infinity.passport.dto.UserDTO;
+import org.infinity.passport.dto.UserNameAndPasswordDTO;
 import org.infinity.passport.event.LogoutEvent;
-import org.infinity.passport.exception.FieldValidationException;
 import org.infinity.passport.exception.NoAuthorityException;
-import org.infinity.passport.exception.NoDataException;
+import org.infinity.passport.exception.NoDataFoundException;
 import org.infinity.passport.repository.UserAuthorityRepository;
 import org.infinity.passport.repository.UserProfilePhotoRepository;
 import org.infinity.passport.repository.UserRepository;
@@ -130,7 +130,7 @@ public class AccountController {
     @GetMapping("/api/account/user")
     @Secured({Authority.USER})
     public ResponseEntity<UserDTO> getCurrentUser() {
-        User user = userService.findOneByUserName(SecurityUtils.getCurrentUserName()).orElseThrow(() -> new NoDataException(SecurityUtils.getCurrentUserName()));
+        User user = userService.findOneByUserName(SecurityUtils.getCurrentUserName()).orElseThrow(() -> new NoDataFoundException(SecurityUtils.getCurrentUserName()));
         List<UserAuthority> userAuthorities = userAuthorityRepository.findByUserId(user.getId());
 
         if (CollectionUtils.isEmpty(userAuthorities)) {
@@ -186,7 +186,7 @@ public class AccountController {
 
         mailService.sendActivationEmail(newUser, baseUrl);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .headers(httpHeaderCreator.createSuccessHeader("notification.registration.success")).build();
+                .headers(httpHeaderCreator.createSuccessHeader("NM2001")).build();
     }
 
     @ApiOperation("根据激活码激活账户")
@@ -194,7 +194,7 @@ public class AccountController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "激活码不存在")})
     @GetMapping("/open-api/account/activate/{key:[0-9]+}")
     public void activateAccount(@ApiParam(value = "激活码", required = true) @PathVariable String key) {
-        userService.activateRegistration(key).orElseThrow(() -> new NoDataException(key));
+        userService.activateRegistration(key).orElseThrow(() -> new NoDataFoundException(key));
     }
 
     @ApiOperation("检索权限值列表")
@@ -217,7 +217,7 @@ public class AccountController {
             @ApiParam(value = "新的用户", required = true) @Valid @RequestBody UserDTO dto) {
         userService.updateWithCheck(dto);
         return ResponseEntity.ok()
-                .headers(httpHeaderCreator.createSuccessHeader("notification.user.updated", dto.getUserName()))
+                .headers(httpHeaderCreator.createSuccessHeader("SM1002", dto.getUserName()))
                 .build();
     }
 
@@ -227,11 +227,11 @@ public class AccountController {
     @PutMapping("/api/account/password")
     @Secured({Authority.USER})
     public ResponseEntity<Void> changePassword(@ApiParam(value = "新密码", required = true) @RequestBody String newPassword) {
-        userService.changePassword(SecurityUtils.getCurrentUserName(), newPassword);
+        userService.changePassword(UserNameAndPasswordDTO.builder().userName(SecurityUtils.getCurrentUserName()).newPassword(newPassword).build());
         // Logout asynchronously
         applicationEventPublisher.publishEvent(new LogoutEvent(this));
         return ResponseEntity.ok()
-                .headers(httpHeaderCreator.createSuccessHeader("notification.password.changed")).build();
+                .headers(httpHeaderCreator.createSuccessHeader("SM1002", "password")).build();
     }
 
     @ApiOperation("发送重置密码邮件")
@@ -240,8 +240,7 @@ public class AccountController {
     @PostMapping("/open-api/account/reset-password/init")
     public ResponseEntity<Void> requestPasswordReset(
             @ApiParam(value = "电子邮件", required = true) @RequestBody String email, HttpServletRequest request) {
-        User user = userService.requestPasswordReset(email, RandomUtils.generateResetKey()).orElseThrow(
-                () -> new FieldValidationException("email", "email", email, "error.email.not.exist", email));
+        User user = userService.requestPasswordReset(email, RandomUtils.generateResetKey());
         String baseUrl = request.getScheme()
                 + "://"
                 + request.getServerName()
@@ -250,7 +249,7 @@ public class AccountController {
                 + request.getContextPath();
         mailService.sendPasswordResetMail(user, baseUrl);
         return ResponseEntity.ok()
-                .headers(httpHeaderCreator.createSuccessHeader("notification.password.reset.email.sent")).build();
+                .headers(httpHeaderCreator.createSuccessHeader("NM2002")).build();
     }
 
     @ApiOperation("重置密码")
@@ -259,11 +258,9 @@ public class AccountController {
     @PostMapping("/open-api/account/reset-password/finish")
     public ResponseEntity<Void> finishPasswordReset(
             @ApiParam(value = "重置码及新密码", required = true) @Valid @RequestBody ResetKeyAndPasswordDTO resetKeyAndPasswordDTO) {
-        userService.completePasswordReset(resetKeyAndPasswordDTO.getNewPassword(), resetKeyAndPasswordDTO.getKey())
-                .orElseThrow(() -> new FieldValidationException("resetKeyAndPasswordDTO", "key",
-                        resetKeyAndPasswordDTO.getKey(), "error.invalid.reset.key"));
+        userService.completePasswordReset(resetKeyAndPasswordDTO.getNewPassword(), resetKeyAndPasswordDTO.getKey());
         return ResponseEntity.ok()
-                .headers(httpHeaderCreator.createSuccessHeader("notification.password.reset")).build();
+                .headers(httpHeaderCreator.createSuccessHeader("NM2003")).build();
 
     }
 

@@ -12,7 +12,6 @@ import org.infinity.passport.dto.AdminMenuTreeDTO;
 import org.infinity.passport.repository.AdminMenuRepository;
 import org.infinity.passport.repository.AuthorityAdminMenuRepository;
 import org.infinity.passport.service.AdminMenuService;
-import org.infinity.passport.service.AuthorityService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
@@ -37,18 +36,15 @@ public class AuthorityAdminMenuController {
     private final AuthorityAdminMenuRepository authorityAdminMenuRepository;
     private final AdminMenuRepository          adminMenuRepository;
     private final AdminMenuService             adminMenuService;
-    private final AuthorityService             authorityService;
     private final HttpHeaderCreator            httpHeaderCreator;
 
     public AuthorityAdminMenuController(AuthorityAdminMenuRepository authorityAdminMenuRepository,
                                         AdminMenuRepository adminMenuRepository,
                                         AdminMenuService adminMenuService,
-                                        AuthorityService authorityService,
                                         HttpHeaderCreator httpHeaderCreator) {
         this.authorityAdminMenuRepository = authorityAdminMenuRepository;
         this.adminMenuRepository = adminMenuRepository;
         this.adminMenuService = adminMenuService;
-        this.authorityService = authorityService;
         this.httpHeaderCreator = httpHeaderCreator;
     }
 
@@ -104,7 +100,6 @@ public class AuthorityAdminMenuController {
             // 批量插入
             authorityAdminMenuRepository.saveAll(adminAuthorityMenus);
         }
-        return ResponseEntity.ok()
-                .headers(httpHeaderCreator.createSuccessHeader("notification.admin.authority.menu.updated")).build();
+        return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1012")).build();
     }
 }

@@ -1,13 +1,14 @@
 package org.infinity.passport.controller;
 
+import com.google.common.collect.ImmutableMap;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.infinity.passport.component.HttpHeaderCreator;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.Dict;
 import org.infinity.passport.dto.DictDTO;
-import org.infinity.passport.exception.FieldValidationException;
-import org.infinity.passport.exception.NoDataException;
+import org.infinity.passport.exception.DuplicationException;
+import org.infinity.passport.exception.NoDataFoundException;
 import org.infinity.passport.repository.DictRepository;
 import org.infinity.passport.service.DictService;
 import org.springframework.data.domain.Page;
@@ -51,12 +52,11 @@ public class DictController {
     public ResponseEntity<Void> create(@ApiParam(value = "数据字典", required = true) @Valid @RequestBody DictDTO dto) {
         log.debug("REST request to create dict: {}", dto);
         dictRepository.findOneByDictCode(dto.getDictCode()).ifPresent((existingEntity) -> {
-            throw new FieldValidationException("dictDTO", "dictCode", dto.getDictCode(), "error.dict.exists",
-                    dto.getDictCode());
+            throw new DuplicationException(ImmutableMap.of("dictCode", dto.getDictCode()));
         });
         dictRepository.save(Dict.of(dto));
         return ResponseEntity.status(HttpStatus.CREATED)
-                .headers(httpHeaderCreator.createSuccessHeader("notification.dict.created", dto.getDictName())).build();
+                .headers(httpHeaderCreator.createSuccessHeader("SM1001", dto.getDictName())).build();
     }
 
     @ApiOperation("分页检索数据字典列表")
@@ -79,7 +79,7 @@ public class DictController {
     @GetMapping("/api/dict/dicts/{id}")
     @Secured({Authority.DEVELOPER, Authority.USER})
     public ResponseEntity<DictDTO> findById(@ApiParam(value = "字典编号", required = true) @PathVariable String id) {
-        Dict entity = dictRepository.findById(id).orElseThrow(() -> new NoDataException(id));
+        Dict entity = dictRepository.findById(id).orElseThrow(() -> new NoDataFoundException(id));
         return ResponseEntity.ok(entity.toDTO());
     }
 
@@ -90,10 +90,10 @@ public class DictController {
     @Secured(Authority.DEVELOPER)
     public ResponseEntity<Void> update(@ApiParam(value = "新的数据字典", required = true) @Valid @RequestBody DictDTO dto) {
         log.debug("REST request to update dict: {}", dto);
-        dictRepository.findById(dto.getId()).orElseThrow(() -> new NoDataException(dto.getId()));
+        dictRepository.findById(dto.getId()).orElseThrow(() -> new NoDataFoundException(dto.getId()));
         dictRepository.save(Dict.of(dto));
         return ResponseEntity.ok()
-                .headers(httpHeaderCreator.createSuccessHeader("notification.dict.updated", dto.getDictName())).build();
+                .headers(httpHeaderCreator.createSuccessHeader("SM1002", dto.getDictName())).build();
     }
 
     @ApiOperation(value = "根据ID删除数据字典", notes = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
@@ -103,10 +103,10 @@ public class DictController {
     @Secured(Authority.DEVELOPER)
     public ResponseEntity<Void> delete(@ApiParam(value = "字典编号", required = true) @PathVariable String id) {
         log.debug("REST request to delete dict: {}", id);
-        Dict dict = dictRepository.findById(id).orElseThrow(() -> new NoDataException(id));
+        Dict dict = dictRepository.findById(id).orElseThrow(() -> new NoDataFoundException(id));
         dictRepository.deleteById(id);
         return ResponseEntity.ok()
-                .headers(httpHeaderCreator.createSuccessHeader("notification.dict.deleted", dict.getDictName()))
+                .headers(httpHeaderCreator.createSuccessHeader("SM1003", dict.getDictName()))
                 .build();
     }
 }
