@@ -2,16 +2,18 @@ package org.infinity.passport.service;
 
 import org.infinity.passport.domain.User;
 import org.infinity.passport.dto.UserDTO;
+import org.infinity.passport.dto.UserNameAndPasswordDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import javax.validation.Valid;
 import java.time.Instant;
 import java.util.Optional;
 import java.util.Set;
 
 public interface UserService {
 
-    void changePassword(String userName, String newRawPassword);
+    void changePassword(@Valid UserNameAndPasswordDTO dto);
 
     User insert(String userName, String rawPassword, String firstName, String lastName, String email, String mobileNo,
                 String activationKey, Boolean activated, Boolean enabled, String remarks, String resetKey,
@@ -34,10 +36,8 @@ public interface UserService {
 
     Optional<User> activateRegistration(String activationKey);
 
-    Optional<User> requestPasswordReset(String email, String resetKey);
+    User requestPasswordReset(String email, String resetKey);
 
-    Optional<User> completePasswordReset(String newRawPassword, String resetKey);
-
-    boolean checkValidPasswordLength(String password);
+    User completePasswordReset(String newRawPassword, String resetKey);
 
 }

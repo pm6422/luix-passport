@@ -1,15 +1,16 @@
 package org.infinity.passport.service.impl;
 
+import com.google.common.collect.ImmutableMap;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.infinity.passport.component.MessageCreator;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.User;
 import org.infinity.passport.domain.UserAuthority;
-import org.infinity.passport.dto.ManagedUserDTO;
 import org.infinity.passport.dto.UserDTO;
-import org.infinity.passport.exception.FieldValidationException;
-import org.infinity.passport.exception.NoDataException;
+import org.infinity.passport.dto.UserNameAndPasswordDTO;
+import org.infinity.passport.exception.DuplicationException;
+import org.infinity.passport.exception.NoDataFoundException;
 import org.infinity.passport.repository.UserAuthorityRepository;
 import org.infinity.passport.repository.UserRepository;
 import org.infinity.passport.service.UserService;
@@ -31,16 +32,19 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
-
+    private final UserRepository          userRepository;
     private final UserAuthorityRepository userAuthorityRepository;
+    private final PasswordEncoder         passwordEncoder;
+    private final MessageCreator          messageCreator;
 
-    private final PasswordEncoder passwordEncoder;
-
-    public UserServiceImpl(UserRepository userRepository, UserAuthorityRepository userAuthorityRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository,
+                           UserAuthorityRepository userAuthorityRepository,
+                           PasswordEncoder passwordEncoder,
+                           MessageCreator messageCreator) {
         this.userRepository = userRepository;
         this.userAuthorityRepository = userAuthorityRepository;
         this.passwordEncoder = passwordEncoder;
+        this.messageCreator = messageCreator;
     }
 
     // private void removeUserToken(User user) {
@@ -52,15 +56,9 @@ public class UserServiceImpl implements UserService {
     // }
 
     @Override
-    public void changePassword(String userName, String newRawPassword) {
-        Assert.hasText(userName, "it must not be null, empty, or blank");
-        Assert.hasText(newRawPassword, "it must not be null, empty, or blank");
-
-        if (!checkValidPasswordLength(newRawPassword)) {
-            throw new FieldValidationException("password", "password", "error.incorrect.password.length");
-        }
-        userRepository.findOneByUserName(userName).ifPresent(user -> {
-            user.setPasswordHash(passwordEncoder.encode(newRawPassword));
+    public void changePassword(UserNameAndPasswordDTO dto) {
+        userRepository.findOneByUserName(dto.getUserName()).ifPresent(user -> {
+            user.setPasswordHash(passwordEncoder.encode(dto.getNewPassword()));
             userRepository.save(user);
             log.debug("Changed password for User: {}", user);
         });
@@ -72,16 +70,13 @@ public class UserServiceImpl implements UserService {
                        String remarks, String resetKey, Instant resetTime, Set<String> authorityNames) {
 
         if (findOneByUserName(userName).isPresent()) {
-            throw new FieldValidationException("userDTO", "userName", userName,
-                    "error.registration.user.exists", userName);
+            throw new DuplicationException(ImmutableMap.of("userName", userName));
         }
         if (findOneByEmail(email).isPresent()) {
-            throw new FieldValidationException("userDTO", "email", email,
-                    "error.registration.email.exists", email);
+            throw new DuplicationException(ImmutableMap.of("email", email));
         }
         if (findOneByMobileNo(mobileNo).isPresent()) {
-            throw new FieldValidationException("userDTO", "mobileNo", mobileNo,
-                    "error.registration.mobile.exists", mobileNo);
+            throw new DuplicationException(ImmutableMap.of("mobileNo", mobileNo));
         }
 
         User newUser = new User();
@@ -119,21 +114,19 @@ public class UserServiceImpl implements UserService {
         Optional<User> existingUser = findOneByUserName(dto.getUserName());
 
         if (!existingUser.isPresent()) {
-            throw new NoDataException(dto.getUserName());
+            throw new NoDataFoundException(dto.getUserName());
         }
         existingUser = findOneByEmail(dto.getEmail());
         if (existingUser.isPresent() && (!existingUser.get().getUserName().equalsIgnoreCase(dto.getUserName()))) {
-            throw new FieldValidationException("userDTO", "email", dto.getEmail(), "error.registration.email.exists",
-                    dto.getEmail());
+            throw new DuplicationException(ImmutableMap.of("email", dto.getEmail()));
         }
         existingUser = findOneByMobileNo(dto.getMobileNo());
         if (existingUser.isPresent() && (!existingUser.get().getUserName().equalsIgnoreCase(dto.getUserName()))) {
-            throw new FieldValidationException("userDTO", "mobileNo", dto.getMobileNo(),
-                    "error.registration.mobile.exists", dto.getMobileNo());
+            throw new DuplicationException(ImmutableMap.of("email", dto.getMobileNo()));
         }
         if (existingUser.isPresent() && !Boolean.TRUE.equals(dto.getActivated())
                 && Boolean.TRUE.equals(existingUser.get().getActivated())) {
-            throw new FieldValidationException("userDTO", "activated", "error.change.active.to.inactive");
+            throw new IllegalArgumentException(messageCreator.getMessage("EP5021"));
         }
 
         update(dto.getUserName().toLowerCase(), dto.getFirstName(), dto.getLastName(),
@@ -207,33 +200,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> requestPasswordReset(String email, String resetKey) {
-        return userRepository.findOneByEmailAndActivatedIsTrue(email).map(user -> {
-            user.setResetKey(RandomUtils.generateResetKey());
-            user.setResetTime(Instant.now());
-            userRepository.save(user);
-            log.debug("Requested reset user password for reset key {}", resetKey);
-            return user;
-        });
+    public User requestPasswordReset(String email, String resetKey) {
+        User user = userRepository.findOneByEmailAndActivatedIsTrue(email)
+                .orElseThrow(() -> new NoDataFoundException(messageCreator.getMessage("email") + ":" + email));
+        user.setResetKey(RandomUtils.generateResetKey());
+        user.setResetTime(Instant.now());
+        userRepository.save(user);
+        log.debug("Requested reset user password for reset key {}", resetKey);
+        return user;
     }
 
     @Override
-    public Optional<User> completePasswordReset(String newRawPassword, String resetKey) {
-        return userRepository.findOneByResetKey(resetKey)
-                .filter(user -> user.getResetTime().isAfter(Instant.now().minusSeconds(TimeUnit.DAYS.toSeconds(1))))
-                .map(user -> {
-                    user.setPasswordHash(passwordEncoder.encode(newRawPassword));
-                    user.setResetKey(null);
-                    user.setResetTime(null);
-                    userRepository.save(user);
-                    log.debug("Reset user password for reset key {}", resetKey);
-                    return user;
-                });
-    }
-
-    @Override
-    public boolean checkValidPasswordLength(String password) {
-        return (!StringUtils.isEmpty(password) && password.length() >= ManagedUserDTO.RAW_PASSWORD_MIN_LENGTH
-                && password.length() <= ManagedUserDTO.RAW_PASSWORD_MAX_LENGTH);
+    public User completePasswordReset(String newRawPassword, String resetKey) {
+        User user = userRepository.findOneByResetKey(resetKey)
+                .filter(u -> u.getResetTime().isAfter(Instant.now().minusSeconds(TimeUnit.DAYS.toSeconds(1))))
+                .orElseThrow(() -> new NoDataFoundException(messageCreator.getMessage("resetKey")));
+        user.setPasswordHash(passwordEncoder.encode(newRawPassword));
+        user.setResetKey(null);
+        user.setResetTime(null);
+        userRepository.save(user);
+        log.debug("Reset user password for reset key {}", resetKey);
+        return user;
     }
 }
