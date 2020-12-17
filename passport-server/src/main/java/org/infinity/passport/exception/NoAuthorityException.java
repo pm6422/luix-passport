@@ -1,38 +1,17 @@
 package org.infinity.passport.exception;
 
-import org.infinity.passport.dto.ParameterizedErrorDTO;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class NoAuthorityException extends RuntimeException {
 
     private static final long   serialVersionUID = 3389857462571862367L;
     private final        String userName;
-    private              String message;
 
     public NoAuthorityException(String userName) {
-        super();
+        super("No authority!");
         this.userName = userName;
-    }
-
-    public NoAuthorityException(String userName, String message) {
-        super();
-        this.userName = userName;
-        this.message = message;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    @Override
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public ParameterizedErrorDTO getErrorDTO() {
-        return new ParameterizedErrorDTO(message, userName);
     }
 }
