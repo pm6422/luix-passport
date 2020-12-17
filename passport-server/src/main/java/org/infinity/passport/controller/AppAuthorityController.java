@@ -62,8 +62,7 @@ public class AppAuthorityController {
 
         AppAuthority appAuthority = appAuthorityRepository.save(AppAuthority.of(dto));
         return ResponseEntity
-                .status(HttpStatus.CREATED).headers(httpHeaderCreator
-                        .createSuccessHeader("notification.app.authority.created", appAuthority.getAuthorityName()))
+                .status(HttpStatus.CREATED).headers(httpHeaderCreator.createSuccessHeader("SM1001", appAuthority.getAuthorityName()))
                 .build();
     }
 
@@ -104,7 +103,7 @@ public class AppAuthorityController {
         appAuthorityRepository.findById(dto.getId()).orElseThrow(() -> new NoDataFoundException(dto.getId()));
         appAuthorityRepository.save(AppAuthority.of(dto));
         return ResponseEntity.ok().headers(
-                httpHeaderCreator.createSuccessHeader("notification.app.authority.updated", dto.getAuthorityName()))
+                httpHeaderCreator.createSuccessHeader("SM1002", dto.getAuthorityName()))
                 .build();
     }
 
@@ -118,7 +117,6 @@ public class AppAuthorityController {
         AppAuthority appAuthority = appAuthorityRepository.findById(id).orElseThrow(() -> new NoDataFoundException(id));
         appAuthorityRepository.deleteById(id);
         log.info("Deleted app authority");
-        return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("notification.app.authority.deleted",
-                appAuthority.getAuthorityName())).build();
+        return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1003", appAuthority.getAuthorityName())).build();
     }
 }
