@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title th:text="#{email.activation.title}"></title>
+    <title th:text="#{emailActivationTitle}"></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link href="http://passport2.deepbrain.ai/content/css/mail-style.css" media="all" rel="stylesheet" type="text/css"/>
 </head>
@@ -14,7 +14,7 @@
                 <table class="main" width="100%" cellpadding="0" cellspacing="0">
                     <tr>
                         <td class="alert alert-good">
-                            <span th:text="#{email.activation.title}"></span>
+                            <span th:text="#{emailActivationTitle}"></span>
                         </td>
                     </tr>
                     <tr>
@@ -22,12 +22,12 @@
                             <table width="100%" cellpadding="0" cellspacing="0">
                                 <tr>
                                     <td class="content-block">
-                                        <span th:text="#{email.activation.greeting(${user.userName})}"></span>:
+                                        <span th:text="#{emailGreeting(${user.userName})}"></span>:
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="content-block">
-                                        <span th:text="#{email.activation.text1}"></span>:
+                                        <span th:text="#{emailActivationText1}"></span>:
                                     </td>
                                 </tr>
                                 <tr>
@@ -39,9 +39,9 @@
                                 <tr>
                                     <td class="content-block">
                                         <p>
-                                            <em th:text="#{email.closing}"></em>
+                                            <em th:text="#{emailClosing}"></em>
                                             <br/>
-                                            <em th:text="#{email.signature}"></em>
+                                            <em th:text="#{emailSignature}"></em>
                                             <br/>
                                         </p>
                                     </td>
