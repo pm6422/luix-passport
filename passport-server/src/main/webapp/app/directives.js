@@ -696,13 +696,10 @@ function jhiAlertError() {
                     addErrorAlert('Server not reachable', 'error.server.not.reachable');
                     break;
                 case 400:
-                    var errorHeader = httpResponse.headers('X-Error-Message');
-                    if (errorHeader) {
-                        addErrorAlert(decodeURIComponent(errorHeader), decodeURIComponent(errorHeader));
-                    } else if (httpResponse.data && httpResponse.data.fieldErrors) {
+                    if (httpResponse.data && httpResponse.data.fieldErrors) {
                         for (i = 0; i < httpResponse.data.fieldErrors.length; i++) {
                             var fieldError = httpResponse.data.fieldErrors[i];
-                            addErrorAlert(fieldError.defaultMessage);
+                            addErrorAlert(fieldError.message);
                         }
                     } else if (httpResponse.data && httpResponse.data.message) {
                         addErrorAlert(httpResponse.data.message, httpResponse.data.message, httpResponse.data);
