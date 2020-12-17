@@ -1,26 +1,32 @@
 package org.infinity.passport.controller.advice;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.infinity.passport.component.HttpHeaderCreator;
 import org.infinity.passport.config.ApplicationConstants;
-import org.infinity.passport.dto.ParameterizedErrorDTO;
-import org.infinity.passport.exception.*;
+import org.infinity.passport.dto.ErrorDTO;
+import org.infinity.passport.exception.DuplicationException;
+import org.infinity.passport.exception.NoAuthorityException;
+import org.infinity.passport.exception.NoDataFoundException;
 import org.springframework.context.MessageSource;
 import org.springframework.dao.ConcurrencyFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.validation.ConstraintViolationException;
+import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -29,174 +35,182 @@ import java.util.List;
 @ControllerAdvice
 @Slf4j
 public class ExceptionTranslatorAdvice {
+
+    public static final String INVALID_REQUEST_PARAM_CODE = "EP5000";
+    public static final String NO_DATA_FOUND_CODE         = "EP5002";
+    public static final String NO_AUTH_CODE               = "EP5011";
+    public static final String ACCESS_DENIED_CODE         = "EP5030";
+    public static final String DUPLICATED_DATA_CODE       = "EP5101";
+    public static final String SYS_ERROR_CODE             = "ES7000";
+    public static final String SYS_EXCEPTION_CODE         = "ES7001";
+    public static final String CONCURRENCY_EXCEPTION_CODE = "ES7002";
+
     private final MessageSource messageSource;
 
-    private final HttpHeaderCreator httpHeaderCreator;
-
-    public ExceptionTranslatorAdvice(MessageSource messageSource, HttpHeaderCreator httpHeaderCreator) {
+    public ExceptionTranslatorAdvice(MessageSource messageSource) {
         this.messageSource = messageSource;
-        this.httpHeaderCreator = httpHeaderCreator;
     }
 
     /**
-     * JSR 303 Bean Validation Warn handler
+     * JSR 303 bean validation exception handler
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseBody
-    public ResponseEntity<ErrorDTO> processBeanValidationException(MethodArgumentNotValidException ex) {
-        String warnMessage = messageSource.getMessage(ErrorCodeConstants.WARN_FIELDS_VALIDATION_ERROR, null,
-                ApplicationConstants.SYSTEM_LOCALE);
-        // warn级别记录用户输入错误，error级别只记录系统逻辑出错、异常、或者重要的错误信息
-        log.warn(warnMessage);
-        return ResponseEntity.badRequest()
-                .headers(httpHeaderCreator.createWarnHeader(ErrorCodeConstants.WARN_FIELDS_VALIDATION_ERROR))
-                .body(processFieldErrors(ex.getBindingResult().getFieldErrors()));
+    public ResponseEntity<ErrorDTO> processMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+        // warn级别记录用户输入错误
+        log.warn("Found invalid request parameters: ", ex);
+        // Http status: 400
+        return ResponseEntity.badRequest().body(processFieldErrors(ex.getBindingResult().getFieldErrors()));
     }
 
-    /**
-     * Field Validation Warn handler
-     */
     @ExceptionHandler(BindException.class)
     @ResponseBody
-    public ResponseEntity<ErrorDTO> processFieldValidationException(BindException ex) {
-        String warnMessage = messageSource.getMessage(ErrorCodeConstants.WARN_FIELDS_VALIDATION_ERROR, null,
-                ApplicationConstants.SYSTEM_LOCALE);
-        // warn级别记录用户输入错误，error级别只记录系统逻辑出错、异常、或者重要的错误信息
-        log.warn(warnMessage);
-        return ResponseEntity.badRequest()
-                .headers(httpHeaderCreator.createWarnHeader(ErrorCodeConstants.WARN_FIELDS_VALIDATION_ERROR))
-                .body(processFieldErrors(ex.getBindingResult().getFieldErrors()));
+    public ResponseEntity<ErrorDTO> processBindException(BindException ex) {
+        log.warn("Found invalid request parameters: ", ex);
+        // Http status: 400
+        return ResponseEntity.badRequest().body(processFieldErrors(ex.getBindingResult().getFieldErrors()));
     }
 
-    /**
-     * Field Validation Warn handler
-     */
-    @ExceptionHandler(FieldValidationException.class)
+    @ExceptionHandler(IllegalArgumentException.class)
     @ResponseBody
-    public ResponseEntity<ErrorDTO> processFieldValidationException(FieldValidationException ex) {
-        String warnMessage = messageSource.getMessage(ErrorCodeConstants.WARN_FIELDS_VALIDATION_ERROR, null,
-                ApplicationConstants.SYSTEM_LOCALE);
-        // warn级别记录用户输入错误，error级别只记录系统逻辑出错、异常、或者重要的错误信息
-        log.warn(warnMessage);
-        return ResponseEntity.badRequest()
-                .headers(httpHeaderCreator.createWarnHeader(ErrorCodeConstants.WARN_FIELDS_VALIDATION_ERROR))
-                .body(processFieldErrors(ex.getFieldErrors()));
+    public ResponseEntity<ErrorDTO> processIllegalArgumentException(IllegalArgumentException ex) {
+        log.warn("Found invalid request parameters: ", ex);
+        // Http status: 400
+        return ResponseEntity.badRequest().body(ErrorDTO.builder().code(INVALID_REQUEST_PARAM_CODE).message(ex.getMessage()).build());
     }
 
-    /**
-     * No authority error handler
-     */
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    @ResponseBody
+    public ResponseEntity<ErrorDTO> processHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
+        log.warn("Found invalid request parameters: ", ex);
+        // Http status: 400
+        return ResponseEntity.badRequest().body(ErrorDTO.builder().code(INVALID_REQUEST_PARAM_CODE).message(ex.getMessage()).build());
+    }
+
+    @ExceptionHandler(MismatchedInputException.class)
+    @ResponseBody
+    public ResponseEntity<ErrorDTO> processMismatchedInputException(MismatchedInputException ex) {
+        log.warn("Found invalid request parameters: ", ex);
+        // Http status: 400
+        return ResponseEntity.badRequest().body(ErrorDTO.builder().code(INVALID_REQUEST_PARAM_CODE).message(ex.getMessage()).build());
+    }
+
+    @ExceptionHandler(NumberFormatException.class)
+    @ResponseBody
+    public ResponseEntity<ErrorDTO> processNumberFormatException(NumberFormatException ex) {
+        log.warn("Found invalid request parameters: ", ex);
+        // Http status: 400
+        return ResponseEntity.badRequest().body(ErrorDTO.builder().code(INVALID_REQUEST_PARAM_CODE).message(ex.getMessage()).build());
+    }
+
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    @ResponseBody
+    public ResponseEntity<ErrorDTO> processMissingServletRequestParameterException(MissingServletRequestParameterException ex) {
+        log.warn("Found invalid request parameters: ", ex);
+        // Http status: 400
+        return ResponseEntity.badRequest().body(ErrorDTO.builder().code(INVALID_REQUEST_PARAM_CODE).message(ex.getMessage()).build());
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseBody
+    public ResponseEntity<ErrorDTO> processConstraintViolationException(ConstraintViolationException ex) {
+        log.warn("Found invalid request parameters: ", ex);
+        // Http status: 400
+        return ResponseEntity.badRequest().body(ErrorDTO.builder().code(INVALID_REQUEST_PARAM_CODE).message(ex.getMessage()).build());
+    }
+
     @ExceptionHandler(NoAuthorityException.class)
     @ResponseBody
-    public ResponseEntity<ParameterizedErrorDTO> processNoAuthorityException(NoAuthorityException ex) {
-        String errorMessage = messageSource.getMessage(ErrorCodeConstants.ERROR_NO_AUTHORITIES,
-                new Object[]{ex.getUserName()}, ApplicationConstants.SYSTEM_LOCALE);
-        ex.setMessage(errorMessage);
-        log.error(errorMessage);
-        return ResponseEntity.badRequest()
-                .headers(httpHeaderCreator.createErrorHeader(ErrorCodeConstants.ERROR_NO_AUTHORITIES, ex.getUserName()))
-                .body(ex.getErrorDTO());
+    public ResponseEntity<ErrorDTO> processNoAuthorityException(NoAuthorityException ex) {
+        log.warn("No authority: ", ex);
+        ErrorDTO error = ErrorDTO.builder().code(INVALID_REQUEST_PARAM_CODE).message(getMessage(NO_AUTH_CODE, ex.getUserName())).build();
+        // Http status: 400
+        return ResponseEntity.badRequest().body(error);
     }
 
-    /**
-     * No data error handler
-     */
-    @ExceptionHandler(NoDataException.class)
+    @ExceptionHandler(DuplicationException.class)
     @ResponseBody
-    public ResponseEntity<ParameterizedErrorDTO> processNoDataException(NoDataException ex) {
-        String errorMessage = messageSource.getMessage(ErrorCodeConstants.ERROR_DATA_NOT_EXIST,
-                new Object[]{ex.getId()}, ApplicationConstants.SYSTEM_LOCALE);
-        ex.setMessage(errorMessage);
-        log.error(errorMessage);
-        return ResponseEntity.badRequest()
-                .headers(httpHeaderCreator.createErrorHeader(ErrorCodeConstants.ERROR_DATA_NOT_EXIST, ex.getId()))
-                .body(ex.getErrorDTO());
+    public ResponseEntity<ErrorDTO> processDuplicationException(DuplicationException ex) {
+        log.warn("Found invalid request parameters: ", ex);
+        // Http status: 400
+
+        String jsonString = "";
+        try {
+            jsonString = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(ex.getFieldMap());
+        } catch (JsonProcessingException e) {
+            log.error("Failed to serialize to json string!", e);
+        }
+        ErrorDTO error = ErrorDTO.builder().code(INVALID_REQUEST_PARAM_CODE).message(getMessage(DUPLICATED_DATA_CODE, jsonString)).build();
+        return ResponseEntity.badRequest().body(error);
     }
 
-    /**
-     * Custom Error handler
-     */
-    @ExceptionHandler(CustomParameterizedException.class)
-    @ResponseBody
-    public ResponseEntity<ParameterizedErrorDTO> processCustomParameterizedException(CustomParameterizedException ex) {
-        log.error(ex.getMessage());
-        return ResponseEntity.badRequest().headers(httpHeaderCreator.createErrorHeader(ex.getCode(), ex.getParams()))
-                .body(ex.getErrorDTO());
-    }
-
-    /**
-     * Spring security access denied handler
-     */
-    @ExceptionHandler(AccessDeniedException.class)
+    @ExceptionHandler(java.nio.file.AccessDeniedException.class)
     @ResponseBody
     public ResponseEntity<ErrorDTO> processAccessDeniedException(AccessDeniedException ex) {
-        String warnMessage = ex.getMessage();
-        log.warn(warnMessage);
-        return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                .headers(httpHeaderCreator.createErrorHeader(ErrorCodeConstants.WARN_ACCESS_DENIED))
-                .body(new ErrorDTO(ErrorCodeConstants.WARN_ACCESS_DENIED, warnMessage));
+        log.warn("Access denied: ", ex);
+        ErrorDTO error = ErrorDTO.builder().code(INVALID_REQUEST_PARAM_CODE).message(getMessage(ACCESS_DENIED_CODE)).build();
+        // Http status: 403
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
     }
 
-    /**
-     * Method not supported handler
-     */
+    @ExceptionHandler(NoDataFoundException.class)
+    @ResponseBody
+    public ResponseEntity<ErrorDTO> processNoDataFoundException(NoDataFoundException ex) {
+        log.warn("No data found: ", ex);
+        ErrorDTO error = ErrorDTO.builder().code(INVALID_REQUEST_PARAM_CODE).message(getMessage(NO_DATA_FOUND_CODE, ex.getId())).build();
+        // Http status: 404
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     @ResponseBody
-    public ResponseEntity<ErrorDTO> processMethodNotSupportedException(HttpRequestMethodNotSupportedException ex) {
-        String warnMessage = ex.getMessage();
-        log.warn(warnMessage);
-        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED)
-                .headers(httpHeaderCreator.createErrorHeader(ErrorCodeConstants.WARN_METHOD_NOT_SUPPORTED))
-                .body(new ErrorDTO(ErrorCodeConstants.WARN_METHOD_NOT_SUPPORTED, warnMessage));
+    public ResponseEntity<ErrorDTO> processHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException ex) {
+        log.warn("Found unsupported http method: ", ex);
+        // Http status: 405
+        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(ErrorDTO.builder().code(INVALID_REQUEST_PARAM_CODE).message(ex.getMessage()).build());
     }
 
-    /**
-     * Concurrency failure handler
-     */
     @ExceptionHandler(ConcurrencyFailureException.class)
     @ResponseBody
     public ResponseEntity<ErrorDTO> processConcurrencyException(ConcurrencyFailureException ex) {
-        String errorMessage = messageSource.getMessage(ErrorCodeConstants.ERROR_CONCURRENCY_EXCEPTION, null,
-                ApplicationConstants.SYSTEM_LOCALE);
-        log.error(errorMessage, ex);
-        return ResponseEntity.status(HttpStatus.CONFLICT)
-                .headers(httpHeaderCreator.createErrorHeader(ErrorCodeConstants.ERROR_CONCURRENCY_EXCEPTION))
-                .body(new ErrorDTO(ErrorCodeConstants.ERROR_CONCURRENCY_EXCEPTION, errorMessage));
+        log.warn("Found concurrency exception: ", ex);
+        ErrorDTO error = ErrorDTO.builder().code(SYS_ERROR_CODE).message(getMessage(CONCURRENCY_EXCEPTION_CODE)).build();
+        // Http status: 409
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
     }
 
-    /**
-     * Exception handler
-     */
     @ExceptionHandler(Throwable.class)
     @ResponseBody
     public ResponseEntity<ErrorDTO> processException(Throwable throwable) {
-        String errorMessage = messageSource.getMessage(ErrorCodeConstants.ERROR_SYSTEM_EXCEPTION, null,
-                ApplicationConstants.SYSTEM_LOCALE);
-        log.error(errorMessage, throwable);
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .headers(httpHeaderCreator.createErrorHeader(ErrorCodeConstants.ERROR_SYSTEM_EXCEPTION))
-                .body(new ErrorDTO(ErrorCodeConstants.ERROR_SYSTEM_EXCEPTION, errorMessage));
+        log.warn("Found exception: ", throwable);
+        ErrorDTO error = ErrorDTO.builder().code(SYS_ERROR_CODE).message(getMessage(SYS_EXCEPTION_CODE)).build();
+        // Http status: 500
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
     }
 
     private ErrorDTO processFieldErrors(List<FieldError> fieldErrors) {
-        List<FieldError> newFieldErrors = new ArrayList<>();
+        List<ErrorDTO.ErrorField> errorFields = new ArrayList<>();
         for (FieldError fieldError : fieldErrors) {
-            String defaultMessage = "";
-            if (StringUtils.isNotEmpty(fieldError.getDefaultMessage())) {
-                defaultMessage = fieldError.getDefaultMessage();
-            } else if (fieldError.getCodes() != null) {
-                List<String> errorCodes = Arrays.asList(fieldError.getCodes());
-                defaultMessage = messageSource.getMessage(errorCodes.get(0), fieldError.getArguments(),
-                        ApplicationConstants.SYSTEM_LOCALE);
+            String defaultMessage = fieldError.getDefaultMessage();
+            if (StringUtils.isEmpty(defaultMessage)
+                    && fieldError.getCodes() != null) {
+                defaultMessage = getMessage(fieldError.getCodes()[0], fieldError.getArguments());
             }
-
-            FieldError newFieldError = new FieldError(fieldError.getObjectName(), fieldError.getField(),
-                    fieldError.getRejectedValue(), true, fieldError.getCodes(), fieldError.getArguments(),
-                    defaultMessage);
-            newFieldErrors.add(newFieldError);
+            ErrorDTO.ErrorField errorField = ErrorDTO.ErrorField.builder()
+                    .field(fieldError.getField())
+                    .rejectedValue(fieldError.getRejectedValue())
+                    .message(defaultMessage)
+                    .build();
+            errorFields.add(errorField);
         }
-        return new ErrorDTO(ErrorCodeConstants.WARN_FIELDS_VALIDATION_ERROR, messageSource
-                .getMessage(ErrorCodeConstants.WARN_FIELDS_VALIDATION_ERROR, null, ApplicationConstants.SYSTEM_LOCALE),
-                newFieldErrors);
+        return ErrorDTO.builder()
+                .code(INVALID_REQUEST_PARAM_CODE)
+                .message(getMessage(INVALID_REQUEST_PARAM_CODE))
+                .errorFields(errorFields)
+                .build();
+    }
+
+    private String getMessage(String code, Object... arguments) {
+        return messageSource.getMessage(code, arguments, ApplicationConstants.SYSTEM_LOCALE);
     }
 }
