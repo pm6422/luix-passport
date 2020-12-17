@@ -34,28 +34,28 @@ import java.util.List;
 @Slf4j
 public class MongoConfiguration {
 
-    private final MongoMappingContext mongoMappingContext;
-    private final MongoDbFactory      mongoDbFactory;
+    private final MongoMappingContext       mongoMappingContext;
+    private final MongoDbFactory            mongoDbFactory;
+    private final LocalValidatorFactoryBean validator;
 
     /**
      * Use @Lazy to fix dependencies problems
      *
      * @param mongoMappingContext mongo mapping context
      * @param mongoDbFactory      mongo db factory
+     * @param validator           bean validator
      */
-    public MongoConfiguration(@Lazy MongoMappingContext mongoMappingContext, MongoDbFactory mongoDbFactory) {
+    public MongoConfiguration(@Lazy MongoMappingContext mongoMappingContext,
+                              MongoDbFactory mongoDbFactory,
+                              LocalValidatorFactoryBean validator) {
         this.mongoMappingContext = mongoMappingContext;
         this.mongoDbFactory = mongoDbFactory;
+        this.validator = validator;
     }
 
     @Bean
     public ValidatingMongoEventListener validatingMongoEventListener() {
-        return new ValidatingMongoEventListener(validator());
-    }
-
-    @Bean
-    public LocalValidatorFactoryBean validator() {
-        return new LocalValidatorFactoryBean();
+        return new ValidatingMongoEventListener(validator);
     }
 
     @Bean
