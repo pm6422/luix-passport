@@ -22,11 +22,7 @@ spring:
         # Either way, it can be overridden by `--spring.profiles.active` value passed in the commandline or `-Dspring.profiles.active` set in `JAVA_OPTS`
         active: @spring.profiles.active@
     messages:
-        # Do not add the prefix classpath:, please refer to MessageSourceAutoConfiguration.getResources(ClassLoader classLoader, String name)
-        basename: i18n/messages_zh_CN,i18n/messages_en_US
-        fallback-to-system-locale: false
-    mvc:
-        locale: zh_CN
+        basename: i18n/messages
     thymeleaf: #ThymeleafAutoConfiguration
         mode: HTML
     banner:
