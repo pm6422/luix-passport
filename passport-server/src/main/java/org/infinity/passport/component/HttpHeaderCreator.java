@@ -23,20 +23,6 @@ public class HttpHeaderCreator {
         return headers;
     }
 
-    public HttpHeaders createWarnHeader(String code, Object... args) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("X-Warn-Code", code);
-        headers.add("X-Warn-Message", getMessage(code, args));
-        return headers;
-    }
-
-    public HttpHeaders createErrorHeader(String code, Object... args) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("X-Error-Code", code);
-        headers.add("X-Error-Message", getMessage(code, args));
-        return headers;
-    }
-
     private String getMessage(String code, Object... args) {
         String message = messageSource.getMessage(code, args, ApplicationConstants.SYSTEM_LOCALE);
 
