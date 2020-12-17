@@ -87,13 +87,10 @@ function StateHandler($rootScope, $state, $sessionStorage, $window, Authenticati
                     AlertUtils.error('Server not reachable');
                     break;
                 case 400:
-                    var errorHeader = httpResponse.headers('X-Error-Message');
-                    if (errorHeader) {
-                        AlertUtils.error(decodeURIComponent(errorHeader), {param: decodeURIComponent(errorHeader)});
-                    } else if (httpResponse.data && httpResponse.data.fieldErrors) {
-                        for (i = 0; i < httpResponse.data.fieldErrors.length; i++) {
-                            var fieldError = httpResponse.data.fieldErrors[i];
-                            AlertUtils.error(fieldError.defaultMessage);
+                    if (httpResponse.data && httpResponse.data.errorFields) {
+                        for (i = 0; i < httpResponse.data.errorFields.length; i++) {
+                            var fieldError = httpResponse.data.errorFields[i];
+                            AlertUtils.error(fieldError.message);
                         }
                     } else if (httpResponse.data && httpResponse.data.message) {
                         AlertUtils.error(httpResponse.data.message);
