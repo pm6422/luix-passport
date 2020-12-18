@@ -127,8 +127,7 @@ public class AccountController {
     @GetMapping("/api/account/user")
     @Secured({Authority.USER})
     public ResponseEntity<User> getCurrentUser() {
-        User user = userService.findOneByUserName(SecurityUtils.getCurrentUserName())
-                .orElseThrow(() -> new NoDataFoundException(SecurityUtils.getCurrentUserName()));
+        User user = userService.findOneByUserName(SecurityUtils.getCurrentUserName());
         List<UserAuthority> userAuthorities = Optional.ofNullable(userAuthorityRepository.findByUserId(user.getId()))
                 .orElseThrow(() -> new NoAuthorityException(SecurityUtils.getCurrentUserName()));
         Set<String> authorities = userAuthorities.stream().map(UserAuthority::getAuthorityName).collect(Collectors.toSet());
@@ -147,11 +146,11 @@ public class AccountController {
             OAuth2Authentication oAuth2Authentication = tokenStore.readAuthentication(StringUtils
                     .substringAfter(token.toLowerCase(), OAuth2AccessToken.BEARER_TYPE.toLowerCase()).trim());
             if (oAuth2Authentication != null) {
-                Optional<User> user = userService.findOneByUserName(oAuth2Authentication.getUserAuthentication().getName());
+                User user = userService.findOneByUserName(oAuth2Authentication.getUserAuthentication().getName());
                 Set<String> authorities = oAuth2Authentication.getUserAuthentication().getAuthorities().stream()
                         .map(GrantedAuthority::getAuthority).collect(Collectors.toSet());
-                if (user.isPresent()) {
-                    return ResponseEntity.ok(new ManagedUserDTO(user.get(), authorities));
+                if (user != null) {
+                    return ResponseEntity.ok(new ManagedUserDTO(user, authorities));
                 }
             }
         }
@@ -240,8 +239,7 @@ public class AccountController {
     public void uploadProfilePhoto(@ApiParam(value = "文件描述", required = true) @RequestPart String description,
                                    @ApiParam(value = "用户头像文件", required = true) @RequestPart MultipartFile file) throws IOException {
         log.debug("Upload file with name {} and description {}", file.getOriginalFilename(), description);
-        User user = userService.findOneByUserName(SecurityUtils.getCurrentUserName())
-                .orElseThrow(() -> new NoDataFoundException(SecurityUtils.getCurrentUserName()));
+        User user = userService.findOneByUserName(SecurityUtils.getCurrentUserName());
         Optional<UserProfilePhoto> existingPhoto = userProfilePhotoRepository.findByUserId(user.getId());
         if (existingPhoto.isPresent()) {
             // Update if exists
@@ -260,8 +258,7 @@ public class AccountController {
     @GetMapping("/api/account/profile-photo/download")
     @Secured({Authority.USER})
     public ResponseEntity<Resource> downloadProfilePhoto() {
-        User user = userService.findOneByUserName(SecurityUtils.getCurrentUserName())
-                .orElseThrow(() -> new NoDataFoundException(SecurityUtils.getCurrentUserName()));
+        User user = userService.findOneByUserName(SecurityUtils.getCurrentUserName());
         Optional<UserProfilePhoto> existingPhoto = userProfilePhotoRepository.findByUserId(user.getId());
         if (!existingPhoto.isPresent()) {
             return ResponseEntity.ok().body(null);

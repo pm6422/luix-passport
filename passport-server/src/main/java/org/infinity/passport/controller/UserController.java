@@ -11,7 +11,6 @@ import org.infinity.passport.dto.ManagedUserDTO;
 import org.infinity.passport.dto.UserNameAndPasswordDTO;
 import org.infinity.passport.event.LogoutEvent;
 import org.infinity.passport.exception.NoAuthorityException;
-import org.infinity.passport.exception.NoDataFoundException;
 import org.infinity.passport.repository.UserAuthorityRepository;
 import org.infinity.passport.repository.UserProfilePhotoRepository;
 import org.infinity.passport.service.MailService;
@@ -94,7 +93,7 @@ public class UserController {
     @GetMapping("/api/user/users/{userName:[a-zA-Z0-9-]+}")
     @Secured({Authority.ADMIN})
     public ResponseEntity<ManagedUserDTO> findByName(@ApiParam(value = "用户名", required = true) @PathVariable String userName) {
-        User domain = userService.findOneByUserName(userName).orElseThrow(() -> new NoDataFoundException(userName));
+        User domain = userService.findOneByUserName(userName);
         List<UserAuthority> userAuthorities = Optional.ofNullable(userAuthorityRepository.findByUserId(domain.getId()))
                 .orElseThrow(() -> new NoAuthorityException(userName));
         Set<String> authorities = userAuthorities.stream().map(UserAuthority::getAuthorityName).collect(Collectors.toSet());
@@ -126,7 +125,7 @@ public class UserController {
     @Secured({Authority.ADMIN})
     public ResponseEntity<Void> delete(@ApiParam(value = "用户名", required = true) @PathVariable String userName) {
         log.debug("REST request to delete user: {}", userName);
-        User user = userService.findOneByUserName(userName).orElseThrow(() -> new NoDataFoundException(userName));
+        User user = userService.findOneByUserName(userName);
         userService.deleteById(user.getId());
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1003", userName)).build();
     }
@@ -150,7 +149,7 @@ public class UserController {
     @GetMapping(GET_PROFILE_PHOTO_URL + "{userName:[a-zA-Z0-9-]+}")
     @Secured({Authority.USER})
     public ResponseEntity<byte[]> getProfilePhoto(@ApiParam(value = "用户名", required = true) @PathVariable String userName) {
-        User user = userService.findOneByUserName(userName).orElseThrow(() -> new NoDataFoundException(userName));
+        User user = userService.findOneByUserName(userName);
         Optional<UserProfilePhoto> userProfilePhoto = userProfilePhotoRepository.findByUserId(user.getId());
         return userProfilePhoto.map(photo -> ResponseEntity.ok(photo.getProfilePhoto().getData())).orElse(null);
     }

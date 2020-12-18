@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User insert(User user, String rawPassword) {
-        if (findOneByUserName(user.getUserName()).isPresent()) {
+        if (findOneByUserName(user.getUserName()) != null) {
             throw new DuplicationException(ImmutableMap.of("userName", user.getUserName()));
         }
         if (findOneByEmail(user.getEmail()).isPresent()) {
@@ -98,12 +98,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void update(User user) {
-        Optional<User> existingUser = findOneByUserName(user.getUserName());
+        userRepository.findOneByUserName(user.getUserName().toLowerCase(Locale.ENGLISH))
+                .orElseThrow(() -> new NoDataFoundException(user.getUserName()));
 
-        if (!existingUser.isPresent()) {
-            throw new NoDataFoundException(user.getUserName());
-        }
-        existingUser = findOneByEmail(user.getEmail());
+        Optional<User> existingUser = findOneByEmail(user.getEmail());
         if (existingUser.isPresent() && (!existingUser.get().getUserName().equalsIgnoreCase(user.getUserName()))) {
             throw new DuplicationException(ImmutableMap.of("email", user.getEmail()));
         }
@@ -134,9 +132,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> findOneByUserName(String userName) {
+    public User findOneByUserName(String userName) {
         Assert.hasText(userName, "it must not be null, empty, or blank");
-        return userRepository.findOneByUserName(userName.toLowerCase(Locale.ENGLISH));
+        return userRepository.findOneByUserName(userName.toLowerCase(Locale.ENGLISH))
+                .orElseThrow(() -> new NoDataFoundException(userName));
     }
 
     @Override

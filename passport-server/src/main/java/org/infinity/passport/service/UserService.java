@@ -15,7 +15,7 @@ public interface UserService {
 
     void update(User dto);
 
-    Optional<User> findOneByUserName(String userName);
+    User findOneByUserName(String userName);
 
     Optional<User> findOneByEmail(String email);
 
