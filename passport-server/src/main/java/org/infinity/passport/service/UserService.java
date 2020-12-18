@@ -31,5 +31,5 @@ public interface UserService {
 
     User completePasswordReset(String newRawPassword, String resetKey);
 
-    void deleteById(String id);
+    void deleteByUserName(String userName);
 }

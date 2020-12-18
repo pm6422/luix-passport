@@ -125,8 +125,7 @@ public class UserController {
     @Secured({Authority.ADMIN})
     public ResponseEntity<Void> delete(@ApiParam(value = "用户名", required = true) @PathVariable String userName) {
         log.debug("REST request to delete user: {}", userName);
-        User user = userService.findOneByUserName(userName);
-        userService.deleteById(user.getId());
+        userService.deleteByUserName(userName);
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1003", userName)).build();
     }
 
