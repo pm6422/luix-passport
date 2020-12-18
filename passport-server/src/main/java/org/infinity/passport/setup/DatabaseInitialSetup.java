@@ -46,7 +46,7 @@ public class DatabaseInitialSetup {
         // Creates 'user' user and corresponding authorities
         User userRoleUser = new User();
         userRoleUser.setUserName("user");
-        userRoleUser.setFirstName("");
+        userRoleUser.setFirstName("User");
         userRoleUser.setLastName("User");
         userRoleUser.setEmail("user@localhost");
         userRoleUser.setMobileNo("15000899479");
@@ -64,7 +64,7 @@ public class DatabaseInitialSetup {
         // Creates 'admin' user and corresponding authorities
         User adminRoleUser = new User();
         adminRoleUser.setUserName("admin");
-        adminRoleUser.setFirstName("");
+        adminRoleUser.setFirstName("Admin");
         adminRoleUser.setLastName("Admin");
         adminRoleUser.setEmail("admin@localhost");
         adminRoleUser.setMobileNo("15000899477");
@@ -83,7 +83,7 @@ public class DatabaseInitialSetup {
         // Creates 'system' user and corresponding authorities
         User adminRoleSystemUser = new User();
         adminRoleSystemUser.setUserName("system");
-        adminRoleSystemUser.setFirstName("");
+        adminRoleSystemUser.setFirstName("System");
         adminRoleSystemUser.setLastName("System");
         adminRoleSystemUser.setEmail("system@localhost");
         adminRoleSystemUser.setMobileNo("15000899422");
@@ -102,7 +102,7 @@ public class DatabaseInitialSetup {
         // Creates 'louis' user and corresponding authorities
         User developerRoleUser = new User();
         developerRoleUser.setUserName("louis");
-        developerRoleUser.setFirstName("");
+        developerRoleUser.setFirstName("louis");
         developerRoleUser.setLastName("🅛🅞🅤🅘🅢");
         developerRoleUser.setEmail("louis@localhost");
         developerRoleUser.setMobileNo("15000899488");

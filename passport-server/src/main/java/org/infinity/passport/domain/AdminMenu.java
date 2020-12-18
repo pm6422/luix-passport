@@ -42,7 +42,7 @@ public class AdminMenu extends AbstractAuditableDomain implements Serializable {
 
     @ApiModelProperty(value = "管理菜单显示文本", required = true)
     @NotNull
-    @Size(min = 3, max = 100)
+    @Size(min = 2, max = 100)
     private String label;
 
     @ApiModelProperty(value = "菜单层级", required = true)
