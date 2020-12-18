@@ -18,7 +18,6 @@ import org.infinity.passport.exception.NoAuthorityException;
 import org.infinity.passport.exception.NoDataFoundException;
 import org.infinity.passport.repository.UserAuthorityRepository;
 import org.infinity.passport.repository.UserProfilePhotoRepository;
-import org.infinity.passport.repository.UserRepository;
 import org.infinity.passport.service.AuthorityService;
 import org.infinity.passport.service.MailService;
 import org.infinity.passport.service.UserProfilePhotoService;
@@ -62,7 +61,6 @@ import static javax.servlet.http.HttpServletResponse.*;
 public class AccountController {
     private static final FastDateFormat             DATETIME_FORMAT = FastDateFormat.getInstance("yyyyMMdd-HHmmss");
     private final        UserService                userService;
-    private final        UserRepository             userRepository;
     private final        UserAuthorityRepository    userAuthorityRepository;
     private final        UserProfilePhotoRepository userProfilePhotoRepository;
     private final        UserProfilePhotoService    userProfilePhotoService;
@@ -73,7 +71,6 @@ public class AccountController {
     private final        HttpHeaderCreator          httpHeaderCreator;
 
     public AccountController(UserService userService,
-                             UserRepository userRepository,
                              UserAuthorityRepository userAuthorityRepository,
                              UserProfilePhotoRepository userProfilePhotoRepository,
                              UserProfilePhotoService userProfilePhotoService,
@@ -83,7 +80,6 @@ public class AccountController {
                              ApplicationEventPublisher applicationEventPublisher,
                              HttpHeaderCreator httpHeaderCreator) {
         this.userService = userService;
-        this.userRepository = userRepository;
         this.userAuthorityRepository = userAuthorityRepository;
         this.userProfilePhotoRepository = userProfilePhotoRepository;
         this.userProfilePhotoService = userProfilePhotoService;
