@@ -479,7 +479,7 @@ function PasswordController($state, PasswordService, PrincipalService) {
         } else {
             vm.passwordNotMatch = false;
             vm.isSaving = true;
-            PasswordService.update(vm.password,
+            PasswordService.update({'newPassword': vm.password},
                 function (response) {
                     vm.isSaving = false;
                     $state.go('login');
