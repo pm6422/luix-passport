@@ -3,7 +3,6 @@ package org.infinity.passport.controller;
 import com.google.common.collect.ImmutableMap;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
 import org.infinity.passport.component.HttpHeaderCreator;
@@ -13,7 +12,6 @@ import org.infinity.passport.domain.UserAuthority;
 import org.infinity.passport.domain.UserProfilePhoto;
 import org.infinity.passport.dto.ManagedUserDTO;
 import org.infinity.passport.dto.ResetKeyAndPasswordDTO;
-import org.infinity.passport.dto.UserDTO;
 import org.infinity.passport.dto.UserNameAndPasswordDTO;
 import org.infinity.passport.event.LogoutEvent;
 import org.infinity.passport.exception.NoAuthorityException;
@@ -101,11 +99,10 @@ public class AccountController {
     @GetMapping("/api/account/access-token")
     public ResponseEntity<String> getAccessToken(HttpServletRequest request) {
         String token = request.getHeader("authorization");
-        if (token != null && token.toLowerCase().startsWith(OAuth2AccessToken.BEARER_TYPE.toLowerCase())) {
-            return ResponseEntity.ok(
-                    StringUtils.substringAfter(token.toLowerCase(), OAuth2AccessToken.BEARER_TYPE.toLowerCase()).trim());
+        if (StringUtils.isEmpty(token) || !token.toLowerCase().startsWith(OAuth2AccessToken.BEARER_TYPE.toLowerCase())) {
+            return ResponseEntity.ok(StringUtils.EMPTY);
         }
-        return ResponseEntity.ok(StringUtils.EMPTY);
+        return ResponseEntity.ok(StringUtils.substringAfter(token.toLowerCase(), OAuth2AccessToken.BEARER_TYPE.toLowerCase()).trim());
     }
 
     @ApiOperation(value = "检索当前登录的用户名", notes = "理论上不会返回false，因为未登录则会出错，登录成功返回当前用户名", response = String.class)
@@ -129,17 +126,15 @@ public class AccountController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "账号无权限")})
     @GetMapping("/api/account/user")
     @Secured({Authority.USER})
-    public ResponseEntity<UserDTO> getCurrentUser() {
+    public ResponseEntity<User> getCurrentUser() {
         User user = userService.findOneByUserName(SecurityUtils.getCurrentUserName()).orElseThrow(() -> new NoDataFoundException(SecurityUtils.getCurrentUserName()));
-        List<UserAuthority> userAuthorities = userAuthorityRepository.findByUserId(user.getId());
-
-        if (CollectionUtils.isEmpty(userAuthorities)) {
-            throw new NoAuthorityException(SecurityUtils.getCurrentUserName());
-        }
+        List<UserAuthority> userAuthorities = Optional.ofNullable(userAuthorityRepository.findByUserId(user.getId()))
+                .orElseThrow(() -> new NoAuthorityException(SecurityUtils.getCurrentUserName()));
         Set<String> authorities = userAuthorities.stream().map(UserAuthority::getAuthorityName).collect(Collectors.toSet());
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-User-Signed-In", "true");
-        return ResponseEntity.ok().headers(headers).body(new UserDTO(user, authorities));
+        user.setAuthorities(authorities);
+        return ResponseEntity.ok().headers(headers).body(user);
     }
 
     @ApiOperation("根据访问令牌检索绑定的用户")
@@ -151,13 +146,11 @@ public class AccountController {
             OAuth2Authentication oAuth2Authentication = tokenStore.readAuthentication(StringUtils
                     .substringAfter(token.toLowerCase(), OAuth2AccessToken.BEARER_TYPE.toLowerCase()).trim());
             if (oAuth2Authentication != null) {
-                Optional<User> user = userService
-                        .findOneByUserName(oAuth2Authentication.getUserAuthentication().getName());
+                Optional<User> user = userService.findOneByUserName(oAuth2Authentication.getUserAuthentication().getName());
+                Set<String> authorities = oAuth2Authentication.getUserAuthentication().getAuthorities().stream()
+                        .map(GrantedAuthority::getAuthority).collect(Collectors.toSet());
                 if (user.isPresent()) {
-                    return ResponseEntity.ok(
-                            new UserDTO(user.get(),
-                                    oAuth2Authentication.getUserAuthentication().getAuthorities().stream()
-                                            .map(GrantedAuthority::getAuthority).collect(Collectors.toSet())));
+                    return ResponseEntity.ok(new ManagedUserDTO(user.get(), authorities));
                 }
             }
         }
@@ -166,27 +159,17 @@ public class AccountController {
         return ResponseEntity.ok(ImmutableMap.of("error", true));
     }
 
-    @ApiOperation("注册新用户")
+    @ApiOperation("注册新用户并发送激活邮件")
     @ApiResponses(value = {@ApiResponse(code = SC_CREATED, message = "成功创建"),
             @ApiResponse(code = SC_BAD_REQUEST, message = "账号已注册")})
     @PostMapping("/open-api/account/register")
     public ResponseEntity<Void> registerAccount(
-            @ApiParam(value = "用户", required = true) @Valid @RequestBody ManagedUserDTO managedUserDTO,
-            HttpServletRequest request) {
-        User newUser = userService.insert(managedUserDTO.getUserName(), managedUserDTO.getPassword(),
-                managedUserDTO.getFirstName(), managedUserDTO.getLastName(), managedUserDTO.getEmail(),
-                managedUserDTO.getMobileNo(), RandomUtils.generateActivationKey(), false,
-                true, null, null, null, null);
-        String baseUrl = request.getScheme() + // "http"
-                "://" + // "://"
-                request.getServerName() + // "host"
-                ":" + // ":"
-                request.getServerPort() + // "80"
-                request.getContextPath(); // "/myContextPath" or "" if deployed in root context
-
-        mailService.sendActivationEmail(newUser, baseUrl);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .headers(httpHeaderCreator.createSuccessHeader("NM2001")).build();
+            @ApiParam(value = "用户", required = true) @Valid @RequestBody ManagedUserDTO dto) {
+        log.debug("REST request to register user: {}", dto);
+        User newUser = userService.insert(dto.toUser(), dto.getPassword());
+        mailService.sendActivationEmail(newUser);
+        HttpHeaders headers = httpHeaderCreator.createSuccessHeader("NM2001");
+        return ResponseEntity.status(HttpStatus.CREATED).headers(headers).build();
     }
 
     @ApiOperation("根据激活码激活账户")
@@ -213,12 +196,9 @@ public class AccountController {
             @ApiResponse(code = SC_INTERNAL_SERVER_ERROR, message = "登录用户已经不存在")})
     @PutMapping("/api/account/user")
     @Secured({Authority.USER})
-    public ResponseEntity<Void> updateCurrentAccount(
-            @ApiParam(value = "新的用户", required = true) @Valid @RequestBody UserDTO dto) {
-        userService.updateWithCheck(dto);
-        return ResponseEntity.ok()
-                .headers(httpHeaderCreator.createSuccessHeader("SM1002", dto.getUserName()))
-                .build();
+    public ResponseEntity<Void> updateCurrentAccount(@ApiParam(value = "新的用户", required = true) @Valid @RequestBody User domain) {
+        userService.update(domain);
+        return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1002", domain.getUserName())).build();
     }
 
     @ApiOperation("修改当前用户的密码")
@@ -230,38 +210,26 @@ public class AccountController {
         userService.changePassword(UserNameAndPasswordDTO.builder().userName(SecurityUtils.getCurrentUserName()).newPassword(newPassword).build());
         // Logout asynchronously
         applicationEventPublisher.publishEvent(new LogoutEvent(this));
-        return ResponseEntity.ok()
-                .headers(httpHeaderCreator.createSuccessHeader("SM1002", "password")).build();
+        return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1002", "password")).build();
     }
 
     @ApiOperation("发送重置密码邮件")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功发送"),
             @ApiResponse(code = SC_BAD_REQUEST, message = "账号不存在")})
     @PostMapping("/open-api/account/reset-password/init")
-    public ResponseEntity<Void> requestPasswordReset(
-            @ApiParam(value = "电子邮件", required = true) @RequestBody String email, HttpServletRequest request) {
+    public ResponseEntity<Void> requestPasswordReset(@ApiParam(value = "电子邮件", required = true) @RequestBody String email) {
         User user = userService.requestPasswordReset(email, RandomUtils.generateResetKey());
-        String baseUrl = request.getScheme()
-                + "://"
-                + request.getServerName()
-                + ":"
-                + request.getServerPort()
-                + request.getContextPath();
-        mailService.sendPasswordResetMail(user, baseUrl);
-        return ResponseEntity.ok()
-                .headers(httpHeaderCreator.createSuccessHeader("NM2002")).build();
+        mailService.sendPasswordResetMail(user);
+        return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("NM2002")).build();
     }
 
     @ApiOperation("重置密码")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功重置"),
             @ApiResponse(code = SC_BAD_REQUEST, message = "重置码无效或已过期")})
     @PostMapping("/open-api/account/reset-password/finish")
-    public ResponseEntity<Void> finishPasswordReset(
-            @ApiParam(value = "重置码及新密码", required = true) @Valid @RequestBody ResetKeyAndPasswordDTO resetKeyAndPasswordDTO) {
-        userService.completePasswordReset(resetKeyAndPasswordDTO.getNewPassword(), resetKeyAndPasswordDTO.getKey());
-        return ResponseEntity.ok()
-                .headers(httpHeaderCreator.createSuccessHeader("NM2003")).build();
-
+    public ResponseEntity<Void> finishPasswordReset(@ApiParam(value = "重置码及新密码", required = true) @Valid @RequestBody ResetKeyAndPasswordDTO dto) {
+        userService.completePasswordReset(dto.getNewPassword(), dto.getKey());
+        return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("NM2003")).build();
     }
 
     @ApiOperation("上传用户头像")

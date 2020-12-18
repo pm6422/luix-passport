@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.infinity.passport.component.HttpHeaderCreator;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.MongoOAuth2RefreshToken;
-import org.infinity.passport.dto.MongoOAuth2RefreshTokenDTO;
 import org.infinity.passport.exception.NoDataFoundException;
 import org.infinity.passport.repository.OAuth2RefreshTokenRepository;
 import org.springframework.data.domain.Example;
@@ -17,9 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URISyntaxException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static javax.servlet.http.HttpServletResponse.SC_OK;
@@ -44,11 +41,10 @@ public class OAuth2RefreshTokenController {
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/oauth2-refresh-token/tokens")
     @Secured(Authority.ADMIN)
-    public ResponseEntity<List<MongoOAuth2RefreshTokenDTO>> find(Pageable pageable,
-                                                                 @ApiParam(value = "刷新令牌ID") @RequestParam(value = "tokenId", required = false) String tokenId,
-                                                                 @ApiParam(value = "客户端ID") @RequestParam(value = "clientId", required = false) String clientId,
-                                                                 @ApiParam(value = "用户名") @RequestParam(value = "userName", required = false) String userName)
-            throws URISyntaxException {
+    public ResponseEntity<List<MongoOAuth2RefreshToken>> find(Pageable pageable,
+                                                              @ApiParam(value = "刷新令牌ID") @RequestParam(value = "tokenId", required = false) String tokenId,
+                                                              @ApiParam(value = "客户端ID") @RequestParam(value = "clientId", required = false) String clientId,
+                                                              @ApiParam(value = "用户名") @RequestParam(value = "userName", required = false) String userName) {
         MongoOAuth2RefreshToken probe = new MongoOAuth2RefreshToken();
         probe.setId(tokenId);
         probe.setClientId(clientId);
@@ -56,10 +52,8 @@ public class OAuth2RefreshTokenController {
         // Ignore query parameter if it has a null value
         ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreNullValues();
         Page<MongoOAuth2RefreshToken> tokens = oAuth2RefreshTokenRepository.findAll(Example.of(probe, matcher), pageable);
-        List<MongoOAuth2RefreshTokenDTO> DTOs = tokens.getContent().stream().map(MongoOAuth2RefreshToken::toDTO)
-                .collect(Collectors.toList());
         HttpHeaders headers = generatePageHeaders(tokens);
-        return ResponseEntity.ok().headers(headers).body(DTOs);
+        return ResponseEntity.ok().headers(headers).body(tokens.getContent());
     }
 
     @ApiOperation("根据ID检索刷新令牌")
@@ -67,10 +61,10 @@ public class OAuth2RefreshTokenController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "刷新令牌不存在")})
     @GetMapping("/api/oauth2-refresh-token/tokens/{id}")
     @Secured({Authority.ADMIN})
-    public ResponseEntity<MongoOAuth2RefreshTokenDTO> findById(
+    public ResponseEntity<MongoOAuth2RefreshToken> findById(
             @ApiParam(value = "刷新令牌ID", required = true) @PathVariable String id) {
-        MongoOAuth2RefreshToken entity = oAuth2RefreshTokenRepository.findById(id).orElseThrow(() -> new NoDataFoundException(id));
-        return ResponseEntity.ok(entity.toDTO());
+        MongoOAuth2RefreshToken domain = oAuth2RefreshTokenRepository.findById(id).orElseThrow(() -> new NoDataFoundException(id));
+        return ResponseEntity.ok(domain);
     }
 
     @ApiOperation(value = "根据ID删除刷新令牌", notes = "数据有可能被其他数据所引用，删除之后可能出现一些问题")

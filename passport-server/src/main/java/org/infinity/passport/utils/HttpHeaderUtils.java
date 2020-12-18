@@ -22,7 +22,7 @@ public abstract class HttpHeaderUtils {
      * @param <T>  The type of object.
      * @return http header.
      */
-    public static <T> HttpHeaders generatePageHeaders(Page<T> page) throws URISyntaxException {
+    public static <T> HttpHeaders generatePageHeaders(Page<T> page) {
         UriComponentsBuilder uriBuilder = ServletUriComponentsBuilder.fromCurrentRequest();
         HttpHeaders headers = new HttpHeaders();
         headers.add(HEADER_X_TOTAL_COUNT, Long.toString(page.getTotalElements()));

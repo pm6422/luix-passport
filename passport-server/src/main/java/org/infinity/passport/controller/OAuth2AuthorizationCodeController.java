@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.infinity.passport.component.HttpHeaderCreator;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.MongoOAuth2AuthorizationCode;
-import org.infinity.passport.dto.MongoOAuth2AuthorizationCodeDTO;
 import org.infinity.passport.exception.NoDataFoundException;
 import org.infinity.passport.repository.OAuth2AuthorizationCodeRepository;
 import org.springframework.data.domain.Example;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static javax.servlet.http.HttpServletResponse.SC_OK;
@@ -52,18 +50,16 @@ public class OAuth2AuthorizationCodeController {
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/oauth2-authorization-code/codes")
     @Secured(Authority.ADMIN)
-    public ResponseEntity<List<MongoOAuth2AuthorizationCodeDTO>> find(Pageable pageable,
-                                                                      @ApiParam(value = "授权码ID") @RequestParam(value = "authorizationCodeId", required = false) String authorizationCodeId,
-                                                                      @ApiParam(value = "授权码") @RequestParam(value = "code", required = false) String code)
+    public ResponseEntity<List<MongoOAuth2AuthorizationCode>> find(Pageable pageable,
+                                                                   @ApiParam(value = "授权码ID") @RequestParam(value = "authorizationCodeId", required = false) String authorizationCodeId,
+                                                                   @ApiParam(value = "授权码") @RequestParam(value = "code", required = false) String code)
             throws URISyntaxException {
         MongoOAuth2AuthorizationCode probe = new MongoOAuth2AuthorizationCode();
         probe.setId(authorizationCodeId);
         probe.setCode(code);
         Page<MongoOAuth2AuthorizationCode> codes = oAuth2AuthorizationCodeRepository.findAll(Example.of(probe), pageable);
-        List<MongoOAuth2AuthorizationCodeDTO> DTOs = codes.getContent().stream().map(MongoOAuth2AuthorizationCode::toDTO)
-                .collect(Collectors.toList());
         HttpHeaders headers = generatePageHeaders(codes);
-        return ResponseEntity.ok().headers(headers).body(DTOs);
+        return ResponseEntity.ok().headers(headers).body(codes.getContent());
     }
 
     @ApiOperation("根据ID检索授权码")
@@ -71,10 +67,10 @@ public class OAuth2AuthorizationCodeController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "授权码不存在")})
     @GetMapping("/api/oauth2-authorization-code/codes/{id}")
     @Secured({Authority.ADMIN})
-    public ResponseEntity<MongoOAuth2AuthorizationCodeDTO> findById(
+    public ResponseEntity<MongoOAuth2AuthorizationCode> findById(
             @ApiParam(value = "授权码ID", required = true) @PathVariable String id) {
-        MongoOAuth2AuthorizationCode entity = oAuth2AuthorizationCodeRepository.findById(id).orElseThrow(() -> new NoDataFoundException(id));
-        return ResponseEntity.ok(entity.toDTO());
+        MongoOAuth2AuthorizationCode domain = oAuth2AuthorizationCodeRepository.findById(id).orElseThrow(() -> new NoDataFoundException(id));
+        return ResponseEntity.ok(domain);
     }
 
     @ApiOperation(value = "根据ID删除授权码", notes = "数据有可能被其他数据所引用，删除之后可能出现一些问题")

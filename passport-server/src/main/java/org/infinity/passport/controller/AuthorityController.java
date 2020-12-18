@@ -5,7 +5,6 @@ import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.infinity.passport.component.HttpHeaderCreator;
 import org.infinity.passport.domain.Authority;
-import org.infinity.passport.dto.AuthorityDTO;
 import org.infinity.passport.exception.DuplicationException;
 import org.infinity.passport.exception.NoDataFoundException;
 import org.infinity.passport.repository.AuthorityRepository;
@@ -44,36 +43,34 @@ public class AuthorityController {
     @ApiResponses(value = {@ApiResponse(code = SC_CREATED, message = "成功创建")})
     @PostMapping("/api/authority/authorities")
     public ResponseEntity<Void> create(
-            @ApiParam(value = "权限", required = true) @Valid @RequestBody AuthorityDTO dto) {
-        log.debug("REST request to create authority: {}", dto);
-        authorityRepository.findById(dto.getName()).ifPresent(app -> {
-            throw new DuplicationException(ImmutableMap.of("name", dto.getName()));
+            @ApiParam(value = "权限", required = true) @Valid @RequestBody Authority domain) {
+        log.debug("REST request to create authority: {}", domain);
+        authorityRepository.findById(domain.getName()).ifPresent(app -> {
+            throw new DuplicationException(ImmutableMap.of("name", domain.getName()));
         });
-        authorityRepository.insert(Authority.of(dto));
+        authorityRepository.insert(domain);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .headers(httpHeaderCreator.createSuccessHeader("SM1001", dto.getName()))
+                .headers(httpHeaderCreator.createSuccessHeader("SM1001", domain.getName()))
                 .build();
     }
 
     @ApiOperation("分页检索权限列表")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/authority/authorities")
-    public ResponseEntity<List<AuthorityDTO>> find(Pageable pageable) throws URISyntaxException {
+    public ResponseEntity<List<Authority>> find(Pageable pageable) throws URISyntaxException {
         Page<Authority> authorities = authorityRepository.findAll(pageable);
-        List<AuthorityDTO> DTOs = authorities.getContent().stream().map(Authority::toDTO)
-                .collect(Collectors.toList());
         HttpHeaders headers = generatePageHeaders(authorities);
-        return ResponseEntity.ok().headers(headers).body(DTOs);
+        return ResponseEntity.ok().headers(headers).body(authorities.getContent());
     }
 
     @ApiOperation("根据权限名称检索权限")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索"),
             @ApiResponse(code = SC_BAD_REQUEST, message = "权限不存在")})
     @GetMapping("/api/authority/authorities/{name}")
-    public ResponseEntity<AuthorityDTO> findById(
+    public ResponseEntity<Authority> findById(
             @ApiParam(value = "权限名称", required = true) @PathVariable String name) {
-        Authority authority = authorityRepository.findById(name).orElseThrow(() -> new NoDataFoundException(name));
-        return ResponseEntity.ok(authority.toDTO());
+        Authority domain = authorityRepository.findById(name).orElseThrow(() -> new NoDataFoundException(name));
+        return ResponseEntity.ok(domain);
     }
 
     @ApiOperation("更新权限")
@@ -81,12 +78,12 @@ public class AuthorityController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "权限不存在")})
     @PutMapping("/api/authority/authorities")
     public ResponseEntity<Void> update(
-            @ApiParam(value = "新的权限", required = true) @Valid @RequestBody AuthorityDTO dto) {
-        log.debug("REST request to update authority: {}", dto);
-        authorityRepository.findById(dto.getName()).orElseThrow(() -> new NoDataFoundException(dto.getName()));
-        authorityRepository.save(Authority.of(dto));
+            @ApiParam(value = "新的权限", required = true) @Valid @RequestBody Authority domain) {
+        log.debug("REST request to update authority: {}", domain);
+        authorityRepository.findById(domain.getName()).orElseThrow(() -> new NoDataFoundException(domain.getName()));
+        authorityRepository.save(domain);
         return ResponseEntity.ok()
-                .headers(httpHeaderCreator.createSuccessHeader("SM1002", dto.getName()))
+                .headers(httpHeaderCreator.createSuccessHeader("SM1002", domain.getName()))
                 .build();
     }
 

@@ -7,7 +7,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.infinity.passport.component.HttpHeaderCreator;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.DictItem;
-import org.infinity.passport.dto.DictItemDTO;
 import org.infinity.passport.exception.DuplicationException;
 import org.infinity.passport.exception.NoDataFoundException;
 import org.infinity.passport.repository.DictItemRepository;
@@ -64,18 +63,18 @@ public class DictItemController {
     @PostMapping("/api/dict-item/items")
     @Secured(Authority.DEVELOPER)
     public ResponseEntity<Void> create(
-            @ApiParam(value = "数据字典项", required = true) @Valid @RequestBody DictItemDTO dto) {
-        log.debug("REST request to create dict item: {}", dto);
+            @ApiParam(value = "数据字典项", required = true) @Valid @RequestBody DictItem domain) {
+        log.debug("REST request to create dict item: {}", domain);
         // 判断dictCode是否存在
-        dictRepository.findOneByDictCode(dto.getDictCode()).orElseThrow(() -> new NoDataFoundException(dto.getDictCode()));
+        dictRepository.findOneByDictCode(domain.getDictCode()).orElseThrow(() -> new NoDataFoundException(domain.getDictCode()));
         // 根据dictItemCode与dictCode检索记录是否存在
-        List<DictItem> existingDictItems = dictItemRepository.findByDictCodeAndDictItemCode(dto.getDictCode(),
-                dto.getDictItemCode());
+        List<DictItem> existingDictItems = dictItemRepository.findByDictCodeAndDictItemCode(domain.getDictCode(),
+                domain.getDictItemCode());
         if (CollectionUtils.isNotEmpty(existingDictItems)) {
-            throw new DuplicationException(ImmutableMap.of("dictCode", dto.getDictCode(), "dictItemCode", dto.getDictItemCode()));
+            throw new DuplicationException(ImmutableMap.of("dictCode", domain.getDictCode(), "dictItemCode", domain.getDictItemCode()));
         }
-        DictItem dictItem = dictItemService.insert(dto.getDictCode(), dto.getDictItemCode(), dto.getDictItemName(),
-                dto.getRemark(), dto.getEnabled());
+        DictItem dictItem = dictItemService.insert(domain.getDictCode(), domain.getDictItemCode(), domain.getDictItemName(),
+                domain.getRemark(), domain.getEnabled());
         return ResponseEntity.status(HttpStatus.CREATED).headers(
                 httpHeaderCreator.createSuccessHeader("SM1001", dictItem.getDictItemName()))
                 .build();
@@ -85,19 +84,18 @@ public class DictItemController {
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/dict-item/items")
     @Secured(Authority.DEVELOPER)
-    public ResponseEntity<List<DictItemDTO>> find(Pageable pageable,
-                                                  @ApiParam(value = "字典代码") @RequestParam(value = "dictCode", required = false) String dictCode,
-                                                  @ApiParam(value = "字典项名称") @RequestParam(value = "dictItemName", required = false) String dictItemName)
+    public ResponseEntity<List<DictItem>> find(Pageable pageable,
+                                               @ApiParam(value = "字典代码") @RequestParam(value = "dictCode", required = false) String dictCode,
+                                               @ApiParam(value = "字典项名称") @RequestParam(value = "dictItemName", required = false) String dictItemName)
             throws URISyntaxException {
         Page<DictItem> dictItems = dictItemService.find(pageable, dictCode, dictItemName);
         Map<String, String> dictCodeDictNameMap = dictService.findDictCodeDictNameMap();
-        List<DictItemDTO> DTOs = dictItems.getContent().stream().map(entity -> {
-            DictItemDTO dto = entity.toDTO();
-            dto.setDictName(dictCodeDictNameMap.get(dto.getDictCode()));
-            return entity.toDTO();
+        List<DictItem> domains = dictItems.getContent().stream().map(domain -> {
+            domain.setDictName(dictCodeDictNameMap.get(domain.getDictCode()));
+            return domain;
         }).collect(Collectors.toList());
         HttpHeaders headers = generatePageHeaders(dictItems);
-        return ResponseEntity.ok().headers(headers).body(DTOs);
+        return ResponseEntity.ok().headers(headers).body(domains);
     }
 
     @ApiOperation("根据ID检索数据字典项")
@@ -105,11 +103,11 @@ public class DictItemController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "字典项不存在")})
     @GetMapping("/api/dict-item/items/{id}")
     @Secured({Authority.USER})
-    public ResponseEntity<DictItemDTO> findById(
+    public ResponseEntity<DictItem> findById(
             @ApiParam(value = "数据字典项ID", required = true) @PathVariable String id) {
         log.debug("REST request to get dict item : {}", id);
-        DictItem entity = dictItemRepository.findById(id).orElseThrow(() -> new NoDataFoundException(id));
-        return ResponseEntity.ok(entity.toDTO());
+        DictItem domain = dictItemRepository.findById(id).orElseThrow(() -> new NoDataFoundException(id));
+        return ResponseEntity.ok(domain);
     }
 
     @ApiOperation("更新数据字典项")
@@ -118,13 +116,13 @@ public class DictItemController {
     @PutMapping("/api/dict-item/items")
     @Secured(Authority.DEVELOPER)
     public ResponseEntity<Void> update(
-            @ApiParam(value = "新的数据字典项", required = true) @Valid @RequestBody DictItemDTO dto) {
-        log.debug("REST request to update dict item: {}", dto);
-        dictItemRepository.findById(dto.getId()).orElseThrow(() -> new NoDataFoundException(dto.getId()));
-        dictItemService.update(dto.getId(), dto.getDictCode(), dto.getDictItemCode(), dto.getDictItemName(),
-                dto.getRemark(), dto.getEnabled());
+            @ApiParam(value = "新的数据字典项", required = true) @Valid @RequestBody DictItem domain) {
+        log.debug("REST request to update dict item: {}", domain);
+        dictItemRepository.findById(domain.getId()).orElseThrow(() -> new NoDataFoundException(domain.getId()));
+        dictItemService.update(domain.getId(), domain.getDictCode(), domain.getDictItemCode(), domain.getDictItemName(),
+                domain.getRemark(), domain.getEnabled());
         return ResponseEntity.ok()
-                .headers(httpHeaderCreator.createSuccessHeader("SM1002", dto.getDictItemName()))
+                .headers(httpHeaderCreator.createSuccessHeader("SM1002", domain.getDictItemName()))
                 .build();
     }
 

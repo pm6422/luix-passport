@@ -1,8 +1,7 @@
 package org.infinity.passport.domain;
 
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
-import org.infinity.passport.dto.MongoOAuth2ApprovalDTO;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -10,6 +9,7 @@ import org.springframework.security.oauth2.provider.approval.Approval;
 
 import java.io.Serializable;
 
+@ApiModel("单点登录授权信息")
 @Document(collection = "MongoOAuth2Approval")
 @Data
 public class MongoOAuth2Approval extends Approval implements Serializable {
@@ -30,12 +30,6 @@ public class MongoOAuth2Approval extends Approval implements Serializable {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public MongoOAuth2ApprovalDTO toDTO() {
-        MongoOAuth2ApprovalDTO dest = new MongoOAuth2ApprovalDTO();
-        BeanUtils.copyProperties(this, dest);
-        return dest;
     }
 
 }

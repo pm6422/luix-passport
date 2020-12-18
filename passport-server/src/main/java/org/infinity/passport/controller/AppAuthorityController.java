@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.infinity.passport.component.HttpHeaderCreator;
 import org.infinity.passport.domain.AppAuthority;
 import org.infinity.passport.domain.Authority;
-import org.infinity.passport.dto.AppAuthorityDTO;
 import org.infinity.passport.exception.DuplicationException;
 import org.infinity.passport.exception.NoDataFoundException;
 import org.infinity.passport.repository.AppAuthorityRepository;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static javax.servlet.http.HttpServletResponse.*;
 import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
@@ -53,14 +51,14 @@ public class AppAuthorityController {
     @PostMapping("/api/app-authority/app-authorities")
     @Secured({Authority.ADMIN})
     public ResponseEntity<Void> create(
-            @ApiParam(value = "应用权限", required = true) @Valid @RequestBody AppAuthorityDTO dto) {
-        log.debug("REST request to create app authority: {}", dto);
-        appAuthorityRepository.findOneByAppNameAndAuthorityName(dto.getAppName(), dto.getAuthorityName())
+            @ApiParam(value = "应用权限", required = true) @Valid @RequestBody AppAuthority domain) {
+        log.debug("REST request to create app authority: {}", domain);
+        appAuthorityRepository.findOneByAppNameAndAuthorityName(domain.getAppName(), domain.getAuthorityName())
                 .ifPresent((existingEntity) -> {
-                    throw new DuplicationException(ImmutableMap.of("appName", dto.getAppName(), "authorityName", dto.getAuthorityName()));
+                    throw new DuplicationException(ImmutableMap.of("appName", domain.getAppName(), "authorityName", domain.getAuthorityName()));
                 });
 
-        AppAuthority appAuthority = appAuthorityRepository.save(AppAuthority.of(dto));
+        AppAuthority appAuthority = appAuthorityRepository.save(domain);
         return ResponseEntity
                 .status(HttpStatus.CREATED).headers(httpHeaderCreator.createSuccessHeader("SM1001", appAuthority.getAuthorityName()))
                 .build();
@@ -70,14 +68,13 @@ public class AppAuthorityController {
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/app-authority/app-authorities")
     @Secured({Authority.ADMIN})
-    public ResponseEntity<List<AppAuthorityDTO>> find(Pageable pageable,
-                                                      @ApiParam(value = "应用名称") @RequestParam(value = "appName", required = false) String appName,
-                                                      @ApiParam(value = "权限名称") @RequestParam(value = "authorityName", required = false) String authorityName)
+    public ResponseEntity<List<AppAuthority>> find(Pageable pageable,
+                                                   @ApiParam(value = "应用名称") @RequestParam(value = "appName", required = false) String appName,
+                                                   @ApiParam(value = "权限名称") @RequestParam(value = "authorityName", required = false) String authorityName)
             throws URISyntaxException {
         Page<AppAuthority> appAuthorities = appAuthorityService.find(pageable, appName, authorityName);
-        List<AppAuthorityDTO> DTOs = appAuthorities.getContent().stream().map(AppAuthority::toDTO).collect(Collectors.toList());
         HttpHeaders headers = generatePageHeaders(appAuthorities);
-        return ResponseEntity.ok().headers(headers).body(DTOs);
+        return ResponseEntity.ok().headers(headers).body(appAuthorities.getContent());
     }
 
     @ApiOperation("根据ID检索应用权限")
@@ -85,11 +82,11 @@ public class AppAuthorityController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "应用权限不存在")})
     @GetMapping("/api/app-authority/app-authorities/{id}")
     @Secured({Authority.DEVELOPER, Authority.USER})
-    public ResponseEntity<AppAuthorityDTO> findById(
+    public ResponseEntity<AppAuthority> findById(
             @ApiParam(value = "字典编号", required = true) @PathVariable String id) {
         log.debug("REST request to get app authority : {}", id);
-        AppAuthority entity = appAuthorityRepository.findById(id).orElseThrow(() -> new NoDataFoundException(id));
-        return ResponseEntity.ok(entity.toDTO());
+        AppAuthority domain = appAuthorityRepository.findById(id).orElseThrow(() -> new NoDataFoundException(id));
+        return ResponseEntity.ok(domain);
     }
 
     @ApiOperation("更新应用权限")
@@ -98,12 +95,12 @@ public class AppAuthorityController {
     @PutMapping("/api/app-authority/app-authorities")
     @Secured({Authority.ADMIN})
     public ResponseEntity<Void> update(
-            @ApiParam(value = "新的应用权限", required = true) @Valid @RequestBody AppAuthorityDTO dto) {
-        log.debug("REST request to update app authority: {}", dto);
-        appAuthorityRepository.findById(dto.getId()).orElseThrow(() -> new NoDataFoundException(dto.getId()));
-        appAuthorityRepository.save(AppAuthority.of(dto));
+            @ApiParam(value = "新的应用权限", required = true) @Valid @RequestBody AppAuthority domain) {
+        log.debug("REST request to update app authority: {}", domain);
+        appAuthorityRepository.findById(domain.getId()).orElseThrow(() -> new NoDataFoundException(domain.getId()));
+        appAuthorityRepository.save(domain);
         return ResponseEntity.ok().headers(
-                httpHeaderCreator.createSuccessHeader("SM1002", dto.getAuthorityName()))
+                httpHeaderCreator.createSuccessHeader("SM1002", domain.getAuthorityName()))
                 .build();
     }
 

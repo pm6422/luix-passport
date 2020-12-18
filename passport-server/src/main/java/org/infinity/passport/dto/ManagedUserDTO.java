@@ -5,10 +5,10 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.infinity.passport.domain.User;
+import org.springframework.beans.BeanUtils;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.Instant;
 import java.util.Set;
 
 /**
@@ -17,7 +17,7 @@ import java.util.Set;
 @ApiModel("用户扩展DTO")
 @Data
 @NoArgsConstructor
-public class ManagedUserDTO extends UserDTO {
+public class ManagedUserDTO extends User {
 
     private static final long serialVersionUID = -8095593058946091229L;
 
@@ -30,24 +30,14 @@ public class ManagedUserDTO extends UserDTO {
     @Size(min = RAW_PASSWORD_MIN_LENGTH, max = RAW_PASSWORD_MAX_LENGTH)
     private String password;
 
-    @ApiModelProperty(value = "创建时间")
-    private Instant createdTime;
-
-    @ApiModelProperty(value = "创建用户")
-    private String createdBy;
-
-    @ApiModelProperty(value = "修改时间")
-    private Instant modifiedTime;
-
-    @ApiModelProperty(value = "修改用户")
-    private String modifiedBy;
-
     public ManagedUserDTO(User user, Set<String> authorities) {
-        super(user, authorities);
-        this.password = null;
-        this.createdTime = user.getCreatedTime();
-        this.createdBy = user.getCreatedBy();
-        this.modifiedTime = user.getModifiedTime();
-        this.modifiedBy = user.getModifiedBy();
+        BeanUtils.copyProperties(user, this);
+        setAuthorities(authorities);
+    }
+
+    public User toUser() {
+        User user = new User();
+        BeanUtils.copyProperties(this, user);
+        return user;
     }
 }

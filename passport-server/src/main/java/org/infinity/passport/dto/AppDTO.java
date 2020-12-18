@@ -2,13 +2,10 @@ package org.infinity.passport.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.infinity.passport.domain.App;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Set;
 
@@ -18,26 +15,21 @@ import java.util.Set;
 @ApiModel("应用DTO")
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
-public class AppDTO implements Serializable {
+public class AppDTO extends App implements Serializable {
 
     private static final long serialVersionUID = 6131756179263179005L;
-
-    @ApiModelProperty(value = "应用名称")
-    @NotNull
-    @Size(min = 3, max = 16)
-    @Pattern(regexp = "^[a-zA-Z0-9-]+$", message = "{EP5901}")
-    private String name;
-
-    @ApiModelProperty(value = "是否可用")
-    private Boolean enabled;
 
     @ApiModelProperty(value = "权限名称")
     private Set<String> authorities;
 
     public AppDTO(String name, Boolean enabled) {
         super();
-        this.name = name;
-        this.enabled = enabled;
+        setName(name);
+        setEnabled(enabled);
+    }
+
+    public AppDTO(String name, Boolean enabled, Set<String> authorities) {
+        super(name, enabled);
+        this.authorities = authorities;
     }
 }

@@ -1,11 +1,10 @@
 package org.infinity.passport.domain;
 
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.infinity.passport.domain.base.AbstractAuditableDomain;
-import org.infinity.passport.dto.MongoOAuth2AccessTokenDTO;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -15,6 +14,7 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import java.io.Serializable;
 import java.util.Date;
 
+@ApiModel("访问令牌信息")
 @Document(collection = "MongoOAuth2AccessToken")
 @Data
 @ToString(callSuper = true)
@@ -46,11 +46,5 @@ public class MongoOAuth2AccessToken extends AbstractAuditableDomain implements S
         if (oAuth2AccessToken.getRefreshToken() != null) {
             this.refreshToken = oAuth2AccessToken.getRefreshToken().getValue();
         }
-    }
-
-    public MongoOAuth2AccessTokenDTO toDTO() {
-        MongoOAuth2AccessTokenDTO dest = new MongoOAuth2AccessTokenDTO();
-        BeanUtils.copyProperties(this, dest);
-        return dest;
     }
 }

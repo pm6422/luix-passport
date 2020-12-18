@@ -10,10 +10,13 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 
@@ -31,7 +34,10 @@ public class MailServiceImpl implements MailService {
     private final        MessageSource        messageSource;
     private final        SpringTemplateEngine templateEngine;
 
-    public MailServiceImpl(MailProperties mailProperties, JavaMailSenderImpl javaMailSender, MessageSource messageSource, SpringTemplateEngine templateEngine) {
+    public MailServiceImpl(MailProperties mailProperties,
+                           JavaMailSenderImpl javaMailSender,
+                           MessageSource messageSource,
+                           SpringTemplateEngine templateEngine) {
         this.mailProperties = mailProperties;
         this.javaMailSender = javaMailSender;
         this.messageSource = messageSource;
@@ -63,11 +69,11 @@ public class MailServiceImpl implements MailService {
 
     @Async
     @Override
-    public void sendEmailFromTemplate(User user, String templateName, String titleKey, String baseUrl) {
+    public void sendEmailFromTemplate(User user, String templateName, String titleKey) {
         Locale locale = Locale.SIMPLIFIED_CHINESE;
         Context context = new Context(locale);
         context.setVariable(USER, user);
-        context.setVariable(BASE_URL, baseUrl);
+        context.setVariable(BASE_URL, getRequestUrl());
         String content = templateEngine.process(templateName, context);
         String subject = messageSource.getMessage(titleKey, null, locale);
         sendEmail(new String[]{user.getEmail()}, subject, content, false, true);
@@ -75,22 +81,36 @@ public class MailServiceImpl implements MailService {
 
     @Async
     @Override
-    public void sendActivationEmail(User user, String baseUrl) {
+    public void sendActivationEmail(User user) {
         log.debug("Sending activation e-mail to '{}'", user.getEmail());
-        sendEmailFromTemplate(user, "email/activation-email", "email.activation.title", baseUrl);
+        sendEmailFromTemplate(user, "email/activation-email", "emailActivationTitle");
     }
 
     @Async
     @Override
-    public void sendCreationEmail(User user, String baseUrl) {
+    public void sendCreationEmail(User user) {
         log.debug("Sending creation e-mail to '{}'", user.getEmail());
-        sendEmailFromTemplate(user, "email/creation-email", "email.activation.title", baseUrl);
+        sendEmailFromTemplate(user, "email/creation-email", "emailActivationTitle");
     }
 
     @Async
     @Override
-    public void sendPasswordResetMail(User user, String baseUrl) {
+    public void sendPasswordResetMail(User user) {
         log.debug("Sending password reset e-mail to '{}'", user.getEmail());
-        sendEmailFromTemplate(user, "email/password-reset-email", "email.reset.title", baseUrl);
+        sendEmailFromTemplate(user, "email/password-reset-email", "emailResetTitle");
+    }
+
+    private String getRequestUrl() {
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = servletRequestAttributes != null ? servletRequestAttributes.getRequest() : null;
+        if (request == null) {
+            return "";
+        }
+        return request.getScheme() + // "http"
+                "://" + // "://"
+                request.getServerName() + // "host"
+                ":" + // ":"
+                request.getServerPort() + // "80"
+                request.getContextPath();
     }
 }

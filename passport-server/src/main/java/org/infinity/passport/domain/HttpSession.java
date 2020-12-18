@@ -1,5 +1,6 @@
 package org.infinity.passport.domain;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
@@ -16,6 +17,7 @@ import java.time.Instant;
  * {@link org.springframework.session.data.mongo.JdkMongoSessionConverter}
  * {@link org.springframework.session.data.mongo.MongoSession}
  */
+@ApiModel("Http会话")
 @Document(collection = "HttpSession")
 @Data
 public class HttpSession implements Serializable {

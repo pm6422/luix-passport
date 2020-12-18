@@ -1,11 +1,10 @@
 package org.infinity.passport.domain;
 
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.infinity.passport.domain.base.AbstractAuditableDomain;
-import org.infinity.passport.dto.MongoOAuth2RefreshTokenDTO;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.oauth2.common.DefaultExpiringOAuth2RefreshToken;
@@ -15,6 +14,7 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import java.io.Serializable;
 import java.util.Date;
 
+@ApiModel("刷新令牌信息")
 @Document(collection = "MongoOAuth2RefreshToken")
 @Data
 @ToString(callSuper = true)
@@ -36,11 +36,5 @@ public class MongoOAuth2RefreshToken extends AbstractAuditableDomain implements 
         this.oAuth2RefreshToken = oAuth2RefreshToken;
         this.expiration = ((DefaultExpiringOAuth2RefreshToken) oAuth2RefreshToken).getExpiration();
         this.authentication = authentication;
-    }
-
-    public MongoOAuth2RefreshTokenDTO toDTO() {
-        MongoOAuth2RefreshTokenDTO dest = new MongoOAuth2RefreshTokenDTO();
-        BeanUtils.copyProperties(this, dest);
-        return dest;
     }
 }

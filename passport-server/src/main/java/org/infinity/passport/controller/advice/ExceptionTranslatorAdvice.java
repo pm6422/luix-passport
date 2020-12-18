@@ -30,6 +30,8 @@ import java.util.List;
 
 /**
  * Controller advice to translate the server side exceptions to client-friendly json structures.
+ * <p>
+ * Exception list refer to {@link org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler}
  */
 @ControllerAdvice
 @Slf4j

@@ -1,13 +1,13 @@
 package org.infinity.passport.service.impl;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.infinity.passport.component.MessageCreator;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.User;
 import org.infinity.passport.domain.UserAuthority;
-import org.infinity.passport.dto.UserDTO;
 import org.infinity.passport.dto.UserNameAndPasswordDTO;
 import org.infinity.passport.exception.DuplicationException;
 import org.infinity.passport.exception.NoDataFoundException;
@@ -15,17 +15,17 @@ import org.infinity.passport.repository.UserAuthorityRepository;
 import org.infinity.passport.repository.UserRepository;
 import org.infinity.passport.service.UserService;
 import org.infinity.passport.utils.RandomUtils;
-import org.infinity.passport.utils.SecurityUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.thymeleaf.util.StringUtils;
 
+import javax.validation.Valid;
 import java.time.Instant;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -55,103 +55,79 @@ public class UserServiceImpl implements UserService {
     // .forEach(token -> tokenStore.removeAccessToken(token));
     // }
 
+    // todo: @Valid does not work
     @Override
-    public void changePassword(UserNameAndPasswordDTO dto) {
+    public void changePassword(@Valid UserNameAndPasswordDTO dto) {
         userRepository.findOneByUserName(dto.getUserName()).ifPresent(user -> {
             user.setPasswordHash(passwordEncoder.encode(dto.getNewPassword()));
             userRepository.save(user);
-            log.debug("Changed password for User: {}", user);
+            log.debug("Changed password for user: {}", user);
         });
     }
 
     @Override
-    public User insert(String userName, String rawPassword, String firstName, String lastName, String email,
-                       String mobileNo, String activationKey, Boolean activated, Boolean enabled,
-                       String remarks, String resetKey, Instant resetTime, Set<String> authorityNames) {
-
-        if (findOneByUserName(userName).isPresent()) {
-            throw new DuplicationException(ImmutableMap.of("userName", userName));
+    public User insert(User user, String rawPassword) {
+        if (findOneByUserName(user.getUserName()).isPresent()) {
+            throw new DuplicationException(ImmutableMap.of("userName", user.getUserName()));
         }
-        if (findOneByEmail(email).isPresent()) {
-            throw new DuplicationException(ImmutableMap.of("email", email));
+        if (findOneByEmail(user.getEmail()).isPresent()) {
+            throw new DuplicationException(ImmutableMap.of("email", user.getEmail()));
         }
-        if (findOneByMobileNo(mobileNo).isPresent()) {
-            throw new DuplicationException(ImmutableMap.of("mobileNo", mobileNo));
+        if (findOneByMobileNo(user.getMobileNo()).isPresent()) {
+            throw new DuplicationException(ImmutableMap.of("mobileNo", user.getMobileNo()));
         }
 
-        User newUser = new User();
-        newUser.setUserName(userName.toLowerCase());
-        newUser.setPasswordHash(passwordEncoder.encode(rawPassword));
-        newUser.setFirstName(firstName);
-        newUser.setLastName(lastName);
-        newUser.setMobileNo(mobileNo);
-        newUser.setEmail(email.toLowerCase());
-        newUser.setActivated(activated);
-        newUser.setActivationKey(activationKey);
-        newUser.setResetKey(resetKey);
-        newUser.setResetTime(resetTime);
-        newUser.setEnabled(enabled);
-        // These four values are set by Auditing mechanism
-        //        newUser.setCreatedBy(createdBy);
-        //        newUser.setCreatedTime(Instant.now());
-        //        newUser.setModifiedBy(createdBy);
-        //        newUser.setModifiedTime(newUser.getCreatedTime());
+        user.setUserName(user.getUserName().toLowerCase());
+        user.setEmail(user.getEmail().toLowerCase());
+        user.setPasswordHash(passwordEncoder.encode(rawPassword));
+        user.setActivationKey(RandomUtils.generateActivationKey());
+        user.setActivated(false);
+        user.setResetKey(RandomUtils.generateResetKey());
+        user.setResetTime(Instant.now());
+        user.setEnabled(true);
+        userRepository.save(user);
 
-        userRepository.save(newUser);
-
-        if (CollectionUtils.isEmpty(authorityNames)) {
-            userAuthorityRepository.insert(new UserAuthority(newUser.getId(), Authority.USER));
-        } else {
-            authorityNames.forEach(authorityName -> userAuthorityRepository.insert(new UserAuthority(newUser.getId(), authorityName)));
+        if (CollectionUtils.isEmpty(user.getAuthorities())) {
+            user.setAuthorities(Sets.newHashSet(Authority.USER));
         }
+        user.getAuthorities().forEach(authorityName -> userAuthorityRepository.insert(new UserAuthority(user.getId(), authorityName)));
 
-        log.debug("Created information for user: {}", newUser);
-        return newUser;
+        log.debug("Created information for user: {}", user);
+        return user;
     }
 
     @Override
-    public void updateWithCheck(UserDTO dto) {
-        Optional<User> existingUser = findOneByUserName(dto.getUserName());
+    public void update(User user) {
+        Optional<User> existingUser = findOneByUserName(user.getUserName());
 
         if (!existingUser.isPresent()) {
-            throw new NoDataFoundException(dto.getUserName());
+            throw new NoDataFoundException(user.getUserName());
         }
-        existingUser = findOneByEmail(dto.getEmail());
-        if (existingUser.isPresent() && (!existingUser.get().getUserName().equalsIgnoreCase(dto.getUserName()))) {
-            throw new DuplicationException(ImmutableMap.of("email", dto.getEmail()));
+        existingUser = findOneByEmail(user.getEmail());
+        if (existingUser.isPresent() && (!existingUser.get().getUserName().equalsIgnoreCase(user.getUserName()))) {
+            throw new DuplicationException(ImmutableMap.of("email", user.getEmail()));
         }
-        existingUser = findOneByMobileNo(dto.getMobileNo());
-        if (existingUser.isPresent() && (!existingUser.get().getUserName().equalsIgnoreCase(dto.getUserName()))) {
-            throw new DuplicationException(ImmutableMap.of("email", dto.getMobileNo()));
+        existingUser = findOneByMobileNo(user.getMobileNo());
+        if (existingUser.isPresent() && (!existingUser.get().getUserName().equalsIgnoreCase(user.getUserName()))) {
+            throw new DuplicationException(ImmutableMap.of("email", user.getMobileNo()));
         }
-        if (existingUser.isPresent() && !Boolean.TRUE.equals(dto.getActivated())
-                && Boolean.TRUE.equals(existingUser.get().getActivated())) {
+        if (existingUser.isPresent() && !Boolean.TRUE.equals(user.getActivated()) && Boolean.TRUE.equals(existingUser.get().getActivated())) {
             throw new IllegalArgumentException(messageCreator.getMessage("EP5021"));
         }
 
-        update(dto.getUserName().toLowerCase(), dto.getFirstName(), dto.getLastName(),
-                dto.getEmail().toLowerCase(), dto.getMobileNo(), SecurityUtils.getCurrentUserName(), dto.getActivated(),
-                dto.getEnabled(), dto.getRemarks(), dto.getAuthorities());
-    }
-
-    @Override
-    public void update(String userName, String firstName, String lastName, String email, String mobileNo,
-                       String modifiedBy, Boolean activated, Boolean enabled, String remarks, Set<String> authorityNames) {
-        userRepository.findOneByUserName(userName.toLowerCase()).ifPresent(user -> {
-            user.setFirstName(firstName);
-            user.setLastName(lastName);
-            user.setEmail(email.toLowerCase());
-            user.setMobileNo(mobileNo);
-            user.setModifiedBy(modifiedBy);
-            user.setModifiedTime(Instant.now());
-            user.setActivated(activated);
-            user.setEnabled(enabled);
-            userRepository.save(user);
+        userRepository.findOneByUserName(user.getUserName().toLowerCase()).ifPresent(u -> {
+            u.setFirstName(user.getFirstName());
+            u.setLastName(user.getLastName());
+            u.setEmail(user.getEmail().toLowerCase());
+            u.setMobileNo(user.getMobileNo());
+            u.setEnabled(user.getEnabled());
+            u.setRemarks(user.getRemarks());
+            userRepository.save(u);
             log.debug("Updated user: {}", user);
 
-            if (CollectionUtils.isNotEmpty(authorityNames)) {
+            if (CollectionUtils.isNotEmpty(user.getAuthorities())) {
                 userAuthorityRepository.deleteByUserId(user.getId());
-                authorityNames.forEach(authorityName -> userAuthorityRepository.insert(new UserAuthority(user.getId(), authorityName)));
+                user.getAuthorities().forEach(authorityName -> userAuthorityRepository.insert(new UserAuthority(user.getId(), authorityName)));
                 log.debug("Updated user authorities");
             }
         });
@@ -184,7 +160,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Page<User> findByLogin(Pageable pageable, String login) {
-        Assert.hasText(login, "it must not be null, empty, or blank");
+        if (StringUtils.isEmpty(login)) {
+            return userRepository.findAll(pageable);
+        }
         return userRepository.findByUserNameOrEmailOrMobileNo(pageable, login, login, login);
     }
 
@@ -221,5 +199,11 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
         log.debug("Reset user password for reset key {}", resetKey);
         return user;
+    }
+
+    @Override
+    public void deleteById(String id) {
+        userRepository.deleteById(id);
+        userAuthorityRepository.deleteByUserId(id);
     }
 }
