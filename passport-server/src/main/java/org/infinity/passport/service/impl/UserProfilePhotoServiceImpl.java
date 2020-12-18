@@ -18,11 +18,9 @@ public class UserProfilePhotoServiceImpl implements UserProfilePhotoService {
     }
 
     @Override
-    public UserProfilePhoto insert(String userId, byte[] photoData) {
-        UserProfilePhoto photo = new UserProfilePhoto(userId);
-        photo.setProfilePhoto(new Binary(BsonBinarySubType.BINARY, photoData));
-        photo = userProfilePhotoRepository.insert(photo);
-        return photo;
+    public void insert(String userId, byte[] photoData) {
+        UserProfilePhoto photo = new UserProfilePhoto(userId, new Binary(BsonBinarySubType.BINARY, photoData));
+        userProfilePhotoRepository.insert(photo);
     }
 
     @Override

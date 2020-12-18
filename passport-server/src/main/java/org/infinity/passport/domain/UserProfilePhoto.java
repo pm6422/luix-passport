@@ -1,8 +1,9 @@
 package org.infinity.passport.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 import org.bson.types.Binary;
 import org.infinity.passport.domain.base.AbstractAuditableDomain;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -16,8 +17,9 @@ import java.io.Serializable;
  */
 @Document(collection = "UserProfilePhoto")
 @Data
-@ToString(callSuper = true)
 @NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class UserProfilePhoto extends AbstractAuditableDomain implements Serializable {
 
     private static final long serialVersionUID = -8375847941374800940L;
@@ -28,7 +30,4 @@ public class UserProfilePhoto extends AbstractAuditableDomain implements Seriali
 
     private Binary profilePhoto;
 
-    public UserProfilePhoto(String userId) {
-        this.userId = userId;
-    }
 }
