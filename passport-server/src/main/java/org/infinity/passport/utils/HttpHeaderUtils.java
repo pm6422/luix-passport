@@ -5,7 +5,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URISyntaxException;
 import java.text.MessageFormat;
 
 /**
