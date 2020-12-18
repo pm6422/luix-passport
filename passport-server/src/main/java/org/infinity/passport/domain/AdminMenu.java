@@ -12,10 +12,7 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 
 /**
@@ -31,29 +28,34 @@ public class AdminMenu extends AbstractAuditableDomain implements Serializable {
     public static final  String FIELD_LEVEL      = "level";
     public static final  String FIELD_SEQUENCE   = "sequence";
 
-    @ApiModelProperty("应用名称")
+    @ApiModelProperty(value = "应用名称", required = true)
     @NotNull
     @Size(min = 1, max = 20)
     @Indexed
     private String appName;
 
-    @ApiModelProperty("管理菜单名")
+    @ApiModelProperty(value = "管理菜单名", required = true)
     @NotNull
-    @Size(min = 1, max = 50)
+    @Size(min = 3, max = 30)
+    @Pattern(regexp = "^[a-zA-Z0-9-]+$", message = "{EP5901}")
     private String name;
 
-    @ApiModelProperty("管理菜单显示文本")
-    @Size(min = 1, max = 100)
+    @ApiModelProperty(value = "管理菜单显示文本", required = true)
+    @NotNull
+    @Size(min = 3, max = 100)
     private String label;
 
-    @ApiModelProperty("菜单层级")
+    @ApiModelProperty(value = "菜单层级", required = true)
+    @Min(1)
+    @Max(9)
     private Integer level;
 
-    @ApiModelProperty("菜单链接地址")
-    @Size(max = 4000)
+    @ApiModelProperty(value = "菜单链接地址", required = true)
+    @NotNull
+    @Size(min = 3, max = 200)
     private String url;
 
-    @ApiModelProperty("菜单排序序号")
+    @ApiModelProperty(value = "菜单排序序号", required = true)
     @Min(1)
     @Max(999)
     private Integer sequence;
@@ -65,7 +67,7 @@ public class AdminMenu extends AbstractAuditableDomain implements Serializable {
     @Transient
     private Boolean checked;
 
-    public AdminMenu(@NotNull @Size(min = 1, max = 20) String appName) {
+    public AdminMenu(String appName) {
         this.appName = appName;
     }
 

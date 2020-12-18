@@ -25,7 +25,7 @@ import java.io.Serializable;
 public class App implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "应用名称")
+    @ApiModelProperty(value = "应用名称", required = true)
     @NotNull
     @Size(min = 3, max = 16)
     @Pattern(regexp = "^[a-zA-Z0-9-]+$", message = "{EP5901}")

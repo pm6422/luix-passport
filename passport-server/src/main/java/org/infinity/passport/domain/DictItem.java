@@ -29,18 +29,18 @@ public class DictItem extends AbstractAuditableDomain implements Serializable {
     @NotNull
     private String dictCode;
 
-    @ApiModelProperty(value = "字典名称")
+    @ApiModelProperty(value = "字典名称", required = true)
     private String dictName;
 
-    @ApiModelProperty(value = "字典项编号")
+    @ApiModelProperty(value = "字典项编号", required = true)
     @NotNull
-    @Size(min = 1, max = 64)
-    @Pattern(regexp = "^[a-zA-Z0-9]*$")
+    @Size(min = 2, max = 50)
+    @Pattern(regexp = "^[a-zA-Z0-9-]+$", message = "{EP5901}")
     private String dictItemCode;
 
     @ApiModelProperty(value = "字典项名称", required = true)
     @NotNull
-    @Size(max = 1000)
+    @Size(min = 2, max = 50)
     private String dictItemName;
 
     @ApiModelProperty(value = "备注")

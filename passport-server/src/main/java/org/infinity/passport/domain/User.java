@@ -33,7 +33,6 @@ public class User extends AbstractAuditableDomain implements Serializable {
 
     public static final String DEFAULT_PASSWORD = "123456";
 
-    private static final String USER_REGEX = "^[a-zA-Z0-9-]+$";
 
     public static final String FIELD_USER_NAME = "userName";
 
@@ -43,22 +42,25 @@ public class User extends AbstractAuditableDomain implements Serializable {
 
     @ApiModelProperty(value = "用户名", required = true)
     @NotNull
-    @Pattern(regexp = USER_REGEX, message = "{EP5901}")
-    @Size(min = 1, max = 50)
+    @Pattern(regexp = "^[a-zA-Z0-9-]+$", message = "{EP5901}")
+    @Size(min = 3, max = 50)
+    @Indexed
     private String userName;
 
     @ApiModelProperty(value = "名", required = true)
-    @Size(max = 50)
+    @NotNull
+    @Size(min = 1, max = 50)
     private String firstName;
 
     @ApiModelProperty(value = "姓", required = true)
-    @Size(max = 50)
+    @NotNull
+    @Size(min = 1, max = 50)
     private String lastName;
 
     @ApiModelProperty(value = "电子邮件", required = true)
     @NotNull
     @Email
-    @Size(min = 5, max = 100)
+    @Size(min = 3, max = 100)
     @Indexed
     private String email;
 
@@ -76,12 +78,10 @@ public class User extends AbstractAuditableDomain implements Serializable {
     private Boolean activated;
 
     @ApiModelProperty(value = "激活密钥")
-    @Size(max = 20)
     @JsonIgnore
     private String activationKey;
 
     @ApiModelProperty(value = "重置密钥")
-    @Size(max = 20)
     @JsonIgnore
     private String resetKey;
 

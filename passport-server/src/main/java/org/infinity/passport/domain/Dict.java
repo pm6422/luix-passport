@@ -24,12 +24,14 @@ public class Dict extends AbstractAuditableDomain implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "字典编号")
+    @ApiModelProperty(value = "字典编号", required = true)
+    @NotNull
+    @Size(min = 2, max = 50)
     private String dictCode;
 
     @ApiModelProperty(value = "字典名称", required = true)
     @NotNull
-    @Size(max = 50)
+    @Size(min = 2, max = 50)
     private String dictName;
 
     @ApiModelProperty(value = "备注")

@@ -37,7 +37,7 @@ public class Authority implements Serializable {
 
     public static final String SYSTEM_ACCOUNT = "system";
 
-    @ApiModelProperty(value = "权限名称")
+    @ApiModelProperty(value = "权限名称", required = true)
     @NotNull
     @Size(min = 3, max = 16)
     @Pattern(regexp = "^[A-Z_]+$", message = "{EP5902}")

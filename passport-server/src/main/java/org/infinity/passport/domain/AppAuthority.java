@@ -5,8 +5,10 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 
@@ -24,12 +26,16 @@ public class AppAuthority implements Serializable {
     @Id
     private String id;
 
-    @ApiModelProperty(value = "应用名称")
+    @ApiModelProperty(value = "应用名称", required = true)
+    @NotNull
     @Size(min = 2, max = 20)
+    @Indexed
     private String appName;
 
-    @ApiModelProperty(value = "权限名称")
+    @ApiModelProperty(value = "权限名称", required = true)
+    @NotNull
     @Size(min = 2, max = 20)
+    @Indexed
     private String authorityName;
 
     public AppAuthority(String appName, String authorityName) {
