@@ -127,7 +127,8 @@ public class AccountController {
     @GetMapping("/api/account/user")
     @Secured({Authority.USER})
     public ResponseEntity<User> getCurrentUser() {
-        User user = userService.findOneByUserName(SecurityUtils.getCurrentUserName()).orElseThrow(() -> new NoDataFoundException(SecurityUtils.getCurrentUserName()));
+        User user = userService.findOneByUserName(SecurityUtils.getCurrentUserName())
+                .orElseThrow(() -> new NoDataFoundException(SecurityUtils.getCurrentUserName()));
         List<UserAuthority> userAuthorities = Optional.ofNullable(userAuthorityRepository.findByUserId(user.getId()))
                 .orElseThrow(() -> new NoAuthorityException(SecurityUtils.getCurrentUserName()));
         Set<String> authorities = userAuthorities.stream().map(UserAuthority::getAuthorityName).collect(Collectors.toSet());
@@ -232,25 +233,25 @@ public class AccountController {
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("NM2003")).build();
     }
 
-    @ApiOperation("上传用户头像")
+    @ApiOperation("上传当前用户头像")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功上传")})
     @PostMapping("/api/account/profile-photo/upload")
     @Secured({Authority.USER})
     public void uploadProfilePhoto(@ApiParam(value = "文件描述", required = true) @RequestPart String description,
                                    @ApiParam(value = "用户头像文件", required = true) @RequestPart MultipartFile file) throws IOException {
-        log.debug("upload file with name {} and description {}", file.getOriginalFilename(), description);
-        Optional<UserProfilePhoto> existingPhoto = userProfilePhotoRepository.findByUserName(SecurityUtils.getCurrentUserName());
+        log.debug("Upload file with name {} and description {}", file.getOriginalFilename(), description);
+        User user = userService.findOneByUserName(SecurityUtils.getCurrentUserName())
+                .orElseThrow(() -> new NoDataFoundException(SecurityUtils.getCurrentUserName()));
+        Optional<UserProfilePhoto> existingPhoto = userProfilePhotoRepository.findByUserId(user.getId());
         if (existingPhoto.isPresent()) {
             // Update if exists
-            userProfilePhotoService.update(existingPhoto.get().getId(), existingPhoto.get().getUserName(), file.getBytes());
+            userProfilePhotoService.update(existingPhoto.get().getId(), file.getBytes());
         } else {
             // Insert if not exists
-            userProfilePhotoService.insert(SecurityUtils.getCurrentUserName(), file.getBytes());
-            userRepository.findOneByUserName(SecurityUtils.getCurrentUserName()).ifPresent((user) -> {
-                // update hasProfilePhoto to true
-                user.setHasProfilePhoto(true);
-                userRepository.save(user);
-            });
+            userProfilePhotoService.insert(user.getId(), file.getBytes());
+            // Update hasProfilePhoto to true
+            user.setHasProfilePhoto(true);
+            userRepository.save(user);
         }
     }
 
@@ -259,7 +260,9 @@ public class AccountController {
     @GetMapping("/api/account/profile-photo/download")
     @Secured({Authority.USER})
     public ResponseEntity<Resource> downloadProfilePhoto() {
-        Optional<UserProfilePhoto> existingPhoto = userProfilePhotoRepository.findByUserName(SecurityUtils.getCurrentUserName());
+        User user = userService.findOneByUserName(SecurityUtils.getCurrentUserName())
+                .orElseThrow(() -> new NoDataFoundException(SecurityUtils.getCurrentUserName()));
+        Optional<UserProfilePhoto> existingPhoto = userProfilePhotoRepository.findByUserId(user.getId());
         if (!existingPhoto.isPresent()) {
             return ResponseEntity.ok().body(null);
         }
@@ -276,7 +279,7 @@ public class AccountController {
 //        FileUtils.writeLines(outFile, strList);
     }
 
-    @ApiOperation("检索用户头像")
+    @ApiOperation("检索当前用户头像")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/account/profile-photo")
     @Secured({Authority.USER})

@@ -12,5 +12,5 @@ import java.util.Optional;
 @Repository
 public interface UserProfilePhotoRepository extends MongoRepository<UserProfilePhoto, String> {
 
-    Optional<UserProfilePhoto> findByUserName(String userName);
+    Optional<UserProfilePhoto> findByUserId(String userId);
 }

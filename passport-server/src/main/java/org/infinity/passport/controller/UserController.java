@@ -150,7 +150,8 @@ public class UserController {
     @GetMapping(GET_PROFILE_PHOTO_URL + "{userName:[a-zA-Z0-9-]+}")
     @Secured({Authority.USER})
     public ResponseEntity<byte[]> getProfilePhoto(@ApiParam(value = "用户名", required = true) @PathVariable String userName) {
-        Optional<UserProfilePhoto> userProfilePhoto = userProfilePhotoRepository.findByUserName(userName);
+        User user = userService.findOneByUserName(userName).orElseThrow(() -> new NoDataFoundException(userName));
+        Optional<UserProfilePhoto> userProfilePhoto = userProfilePhotoRepository.findByUserId(user.getId());
         return userProfilePhoto.map(photo -> ResponseEntity.ok(photo.getProfilePhoto().getData())).orElse(null);
     }
 }
