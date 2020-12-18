@@ -131,9 +131,9 @@ public class AccountController {
         List<UserAuthority> userAuthorities = Optional.ofNullable(userAuthorityRepository.findByUserId(user.getId()))
                 .orElseThrow(() -> new NoAuthorityException(SecurityUtils.getCurrentUserName()));
         Set<String> authorities = userAuthorities.stream().map(UserAuthority::getAuthorityName).collect(Collectors.toSet());
+        user.setAuthorities(authorities);
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-User-Signed-In", "true");
-        user.setAuthorities(authorities);
         return ResponseEntity.ok().headers(headers).body(user);
     }
 
@@ -206,8 +206,9 @@ public class AccountController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "密码不正确")})
     @PutMapping("/api/account/password")
     @Secured({Authority.USER})
-    public ResponseEntity<Void> changePassword(@ApiParam(value = "新密码", required = true) @RequestBody String newPassword) {
-        userService.changePassword(UserNameAndPasswordDTO.builder().userName(SecurityUtils.getCurrentUserName()).newPassword(newPassword).build());
+    public ResponseEntity<Void> changePassword(@ApiParam(value = "新密码", required = true) @RequestBody @Valid UserNameAndPasswordDTO dto) {
+        dto.setUserName(SecurityUtils.getCurrentUserName());
+        userService.changePassword(dto);
         // Logout asynchronously
         applicationEventPublisher.publishEvent(new LogoutEvent(this));
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1002", "password")).build();
@@ -240,17 +241,7 @@ public class AccountController {
                                    @ApiParam(value = "用户头像文件", required = true) @RequestPart MultipartFile file) throws IOException {
         log.debug("Upload file with name {} and description {}", file.getOriginalFilename(), description);
         User user = userService.findOneByUserName(SecurityUtils.getCurrentUserName());
-        Optional<UserProfilePhoto> existingPhoto = userProfilePhotoRepository.findByUserId(user.getId());
-        if (existingPhoto.isPresent()) {
-            // Update if exists
-            userProfilePhotoService.update(existingPhoto.get().getId(), file.getBytes());
-        } else {
-            // Insert if not exists
-            userProfilePhotoService.insert(user.getId(), file.getBytes());
-            // Update hasProfilePhoto to true
-            user.setHasProfilePhoto(true);
-            userRepository.save(user);
-        }
+        userProfilePhotoService.save(user, file.getBytes());
     }
 
     @ApiOperation("下载用户头像")

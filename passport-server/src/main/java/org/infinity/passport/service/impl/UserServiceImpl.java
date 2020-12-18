@@ -22,7 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.thymeleaf.util.StringUtils;
 
-import javax.validation.Valid;
 import java.time.Instant;
 import java.util.Locale;
 import java.util.Optional;
@@ -55,9 +54,8 @@ public class UserServiceImpl implements UserService {
     // .forEach(token -> tokenStore.removeAccessToken(token));
     // }
 
-    // todo: @Valid does not work
     @Override
-    public void changePassword(@Valid UserNameAndPasswordDTO dto) {
+    public void changePassword(UserNameAndPasswordDTO dto) {
         userRepository.findOneByUserName(dto.getUserName()).ifPresent(user -> {
             user.setPasswordHash(passwordEncoder.encode(dto.getNewPassword()));
             userRepository.save(user);

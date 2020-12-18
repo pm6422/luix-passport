@@ -16,7 +16,6 @@ import javax.validation.constraints.Size;
 @Builder
 public class UserNameAndPasswordDTO {
     @ApiModelProperty("用户名")
-    @NotNull
     private String userName;
 
     @ApiModelProperty("新密码")
