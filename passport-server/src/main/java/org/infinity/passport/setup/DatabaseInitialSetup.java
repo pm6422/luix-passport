@@ -102,8 +102,8 @@ public class DatabaseInitialSetup {
         // Creates 'louis' user and corresponding authorities
         User developerRoleUser = new User();
         developerRoleUser.setUserName("louis");
-        developerRoleUser.setFirstName("louis");
-        developerRoleUser.setLastName("🅛🅞🅤🅘🅢");
+        developerRoleUser.setFirstName("Louis");
+        developerRoleUser.setLastName("Liu");
         developerRoleUser.setEmail("louis@localhost");
         developerRoleUser.setMobileNo("15000899488");
         // Raw password: louis
