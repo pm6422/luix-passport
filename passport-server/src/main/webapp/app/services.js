@@ -465,27 +465,25 @@ function ProfileService($q, $http, $localStorage) {
  * PasswordService
  */
 function PasswordService($resource) {
-    var service = $resource('api/account/password', {}, {
+    return $resource('api/account/password', {}, {
         'update': {method: 'PUT'}
     });
-
-    return service;
 }
 /**
  * PasswordResetInitService
  */
 function PasswordResetInitService($resource) {
-    var service = $resource('open-api/account/reset-password/init', {}, {});
-
-    return service;
+    return $resource('open-api/account/reset-password/init', {}, {
+        'create': {method: 'POST'}
+    });
 }
 /**
  * PasswordResetFinishService
  */
 function PasswordResetFinishService($resource) {
-    var service = $resource('open-api/account/reset-password/finish', {}, {});
-
-    return service;
+    return $resource('open-api/account/reset-password/finish', {}, {
+        'create': {method: 'POST'}
+    });
 }
 
 /**
@@ -864,7 +862,9 @@ function AccountService($resource) {
  * RegisterService
  */
 function RegisterService($resource) {
-    return $resource('open-api/account/register', {}, {});
+    return $resource('open-api/account/register', {}, {
+        'create': {method: 'POST'}
+    });
 }
 /**
  * ActivateService

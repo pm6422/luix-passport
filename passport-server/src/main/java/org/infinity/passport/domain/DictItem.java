@@ -35,7 +35,7 @@ public class DictItem extends AbstractAuditableDomain implements Serializable {
     @ApiModelProperty(value = "字典项编号", required = true)
     @NotNull
     @Size(min = 2, max = 50)
-    @Pattern(regexp = "^[a-zA-Z0-9-]+$", message = "{EP5901}")
+    @Pattern(regexp = "^[a-z0-9-]+$", message = "{EP5901}")
     private String dictItemCode;
 
     @ApiModelProperty(value = "字典项名称", required = true)

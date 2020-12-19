@@ -140,7 +140,7 @@ public class UserController {
     public ResponseEntity<String> resetPassword(@ApiParam(value = "用户名", required = true) @PathVariable String userName) {
         log.debug("REST reset the password of user: {}", userName);
         userService.changePassword(UserNameAndPasswordDTO.builder().userName(userName).newPassword(DEFAULT_PASSWORD).build());
-        HttpHeaders headers = httpHeaderCreator.createSuccessHeader("NM2011", DEFAULT_PASSWORD);
+        HttpHeaders headers = httpHeaderCreator.createSuccessHeader("NM2012", DEFAULT_PASSWORD);
         return ResponseEntity.ok().headers(headers).body(DEFAULT_PASSWORD);
     }
 
