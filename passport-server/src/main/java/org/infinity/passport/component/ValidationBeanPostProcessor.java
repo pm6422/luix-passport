@@ -1,6 +1,8 @@
 package org.infinity.passport.component;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
@@ -12,9 +14,7 @@ import javax.annotation.Nonnull;
 import javax.validation.Valid;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * This bean post processor used to add the message attribute value implicitly and globally
@@ -45,8 +45,10 @@ public class ValidationBeanPostProcessor implements BeanPostProcessor {
                 Class<?> parameterType = parameter.getType();
                 Field[] parameterFields = parameterType.getDeclaredFields();
                 for (Field parameterField : parameterFields) {
-                    String fieldName = parameterField.getName();
                     Annotation[] annotations = parameterField.getDeclaredAnnotations();
+                    Optional<Annotation> apiModelPropertyAnnotation = Arrays.asList(annotations)
+                            .stream()
+                            .filter(annotation -> annotation.annotationType().equals(ApiModelProperty.class)).findFirst();
                     for (Annotation annotation : annotations) {
                         String fieldAnnotationName = annotation.annotationType().getName();
                         if (!isBeanValidationAnnotation(fieldAnnotationName)) {
@@ -68,20 +70,23 @@ public class ValidationBeanPostProcessor implements BeanPostProcessor {
 
                             // Get the bean validation annotation simple name
                             String annotationSimpleName = fieldAnnotationName.substring(fieldAnnotationName.lastIndexOf(".") + 1);
+                            // Get field name from 'value' attribute of ApiModelProperty.class
+                            String annotationFieldName = apiModelPropertyAnnotation.isPresent() ? ((ApiModelProperty) apiModelPropertyAnnotation.get()).value() : "";
+                            String fieldName = StringUtils.isNotEmpty(annotationFieldName) ? annotationFieldName : "{" + parameterField.getName() + "}";
                             if ((fieldAnnotationName.equals("javax.validation.constraints.Pattern"))) {
                                 // Handle message property of @Pattern annotation
-                                String msg = String.format("[{%s}]: %s", fieldName, message);
+                                String msg = String.format("[%s]: %s", fieldName, message);
                                 annotationPropertyMap.put("message", msg);
                                 INITIALIZED_BEAN.add(parameterField.getDeclaringClass().getName());
                             } else if (isDefaultMassage(message)) {
                                 // Handle message property of other validation annotations except for @Pattern
                                 // and message value of the annotation is null explicitly
-                                String msg = String.format("[{%s}]: {%s}", fieldName, VALIDATION_CODE_PREFIX.concat(annotationSimpleName));
+                                String msg = String.format("[%s]: {%s}", fieldName, VALIDATION_CODE_PREFIX.concat(annotationSimpleName));
                                 annotationPropertyMap.put("message", msg);
                                 INITIALIZED_BEAN.add(parameterField.getDeclaringClass().getName());
                             } else {
                                 // Handle message property when message value of the annotation is NOT null explicitly
-                                String msg = String.format("[{%s}]: ", fieldName).concat(message);
+                                String msg = String.format("[%s]: ", fieldName).concat(message);
                                 annotationPropertyMap.put("message", msg);
                                 INITIALIZED_BEAN.add(parameterField.getDeclaringClass().getName());
                             }
