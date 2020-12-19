@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
 import org.infinity.passport.component.HttpHeaderCreator;
+import org.infinity.passport.config.oauth2.SecurityUser;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.User;
 import org.infinity.passport.domain.UserAuthority;
@@ -247,8 +248,8 @@ public class AccountController {
     @GetMapping("/api/account/profile-photo/download")
     @Secured({Authority.USER})
     public ResponseEntity<Resource> downloadProfilePhoto() {
-        User user = userService.findOneByUserName(SecurityUtils.getCurrentUserName());
-        Optional<UserProfilePhoto> existingPhoto = userProfilePhotoRepository.findByUserId(user.getId());
+        SecurityUser currentUser = SecurityUtils.getCurrentUser();
+        Optional<UserProfilePhoto> existingPhoto = userProfilePhotoRepository.findByUserId(currentUser.getUserId());
         if (!existingPhoto.isPresent()) {
             return ResponseEntity.ok().body(null);
         }

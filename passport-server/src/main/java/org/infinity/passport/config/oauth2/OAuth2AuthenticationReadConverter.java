@@ -56,6 +56,7 @@ public class OAuth2AuthenticationReadConverter implements Converter<Document, OA
         if (principal instanceof Document) {
             Document principalDBObject = (Document) principal;
 
+            String userId = (String) principalDBObject.get("userId");
             String userName = (String) principalDBObject.get("username");
             String password = "";
             boolean enabled = (boolean) principalDBObject.get("enabled");
@@ -63,7 +64,7 @@ public class OAuth2AuthenticationReadConverter implements Converter<Document, OA
             boolean credentialsNonExpired = (boolean) principalDBObject.get("credentialsNonExpired");
             boolean accountNonLocked = (boolean) principalDBObject.get("accountNonLocked");
 
-            return new org.springframework.security.core.userdetails.User(userName, password, enabled,
+            return new SecurityUser(userId, userName, password, enabled,
                     accountNonExpired, credentialsNonExpired, accountNonLocked,
                     getAuthorities((List<Map<String, String>>) principalDBObject.get("authorities")));
         } else {

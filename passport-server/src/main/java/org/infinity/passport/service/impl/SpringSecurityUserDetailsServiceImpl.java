@@ -1,6 +1,7 @@
 package org.infinity.passport.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import org.infinity.passport.config.oauth2.SecurityUser;
 import org.infinity.passport.domain.User;
 import org.infinity.passport.exception.UserDisabledException;
 import org.infinity.passport.exception.UserNotActivatedException;
@@ -50,7 +51,7 @@ public class SpringSecurityUserDetailsServiceImpl implements org.springframework
         List<GrantedAuthority> grantedAuthorities = userAuthorityRepository.findByUserId(userFromDatabase.getId())
                 .stream().map(userAuthority -> new SimpleGrantedAuthority(userAuthority.getAuthorityName()))
                 .collect(Collectors.toList());
-        return new org.springframework.security.core.userdetails.User(userFromDatabase.getUserName(),
+        return new SecurityUser(userFromDatabase.getId(), userFromDatabase.getUserName(),
                 userFromDatabase.getPasswordHash(), grantedAuthorities);
     }
 }
