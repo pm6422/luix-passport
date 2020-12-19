@@ -10,13 +10,10 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
 import javax.mail.internet.MimeMessage;
-import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 
@@ -69,11 +66,11 @@ public class MailServiceImpl implements MailService {
 
     @Async
     @Override
-    public void sendEmailFromTemplate(User user, String templateName, String titleKey) {
+    public void sendEmailFromTemplate(User user, String templateName, String titleKey, String baseUrl) {
         Locale locale = Locale.SIMPLIFIED_CHINESE;
         Context context = new Context(locale);
         context.setVariable(USER, user);
-        context.setVariable(BASE_URL, getRequestUrl());
+        context.setVariable(BASE_URL, baseUrl);
         String content = templateEngine.process(templateName, context);
         String subject = messageSource.getMessage(titleKey, null, locale);
         sendEmail(new String[]{user.getEmail()}, subject, content, false, true);
@@ -81,36 +78,22 @@ public class MailServiceImpl implements MailService {
 
     @Async
     @Override
-    public void sendActivationEmail(User user) {
+    public void sendActivationEmail(User user, String baseUrl) {
         log.debug("Sending activation e-mail to '{}'", user.getEmail());
-        sendEmailFromTemplate(user, "email/activation-email", "emailActivationTitle");
+        sendEmailFromTemplate(user, "email/activation-email", "emailActivationTitle", baseUrl);
     }
 
     @Async
     @Override
-    public void sendCreationEmail(User user) {
+    public void sendCreationEmail(User user, String baseUrl) {
         log.debug("Sending creation e-mail to '{}'", user.getEmail());
-        sendEmailFromTemplate(user, "email/creation-email", "emailActivationTitle");
+        sendEmailFromTemplate(user, "email/creation-email", "emailActivationTitle", baseUrl);
     }
 
     @Async
     @Override
-    public void sendPasswordResetMail(User user) {
+    public void sendPasswordResetMail(User user, String baseUrl) {
         log.debug("Sending password reset e-mail to '{}'", user.getEmail());
-        sendEmailFromTemplate(user, "email/password-reset-email", "emailResetTitle");
-    }
-
-    private String getRequestUrl() {
-        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        HttpServletRequest request = servletRequestAttributes != null ? servletRequestAttributes.getRequest() : null;
-        if (request == null) {
-            return "";
-        }
-        return request.getScheme() + // "http"
-                "://" + // "://"
-                request.getServerName() + // "host"
-                ":" + // ":"
-                request.getServerPort() + // "80"
-                request.getContextPath();
+        sendEmailFromTemplate(user, "email/password-reset-email", "emailResetTitle", baseUrl);
     }
 }

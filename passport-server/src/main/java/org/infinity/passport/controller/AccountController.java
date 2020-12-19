@@ -37,6 +37,8 @@ import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -163,7 +165,7 @@ public class AccountController {
             @ApiParam(value = "用户", required = true) @Valid @RequestBody ManagedUserDTO dto) {
         log.debug("REST request to register user: {}", dto);
         User newUser = userService.insert(dto.toUser(), dto.getPassword());
-        mailService.sendActivationEmail(newUser);
+        mailService.sendActivationEmail(newUser, getRequestUrl());
         HttpHeaders headers = httpHeaderCreator.createSuccessHeader("NM2001");
         return ResponseEntity.status(HttpStatus.CREATED).headers(headers).build();
     }
@@ -216,7 +218,7 @@ public class AccountController {
     @PostMapping("/open-api/account/reset-password/init")
     public ResponseEntity<Void> requestPasswordReset(@ApiParam(value = "电子邮件", required = true) @RequestBody String email) {
         User user = userService.requestPasswordReset(email, RandomUtils.generateResetKey());
-        mailService.sendPasswordResetMail(user);
+        mailService.sendPasswordResetMail(user, getRequestUrl());
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("NM2002")).build();
     }
 
@@ -272,5 +274,19 @@ public class AccountController {
         String forwardUrl = "forward:".concat(UserController.GET_PROFILE_PHOTO_URL).concat(SecurityUtils.getCurrentUserName());
         log.info(forwardUrl);
         return new ModelAndView(forwardUrl);
+    }
+
+    private String getRequestUrl() {
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = servletRequestAttributes != null ? servletRequestAttributes.getRequest() : null;
+        if (request == null) {
+            return "";
+        }
+        return request.getScheme() + // "http"
+                "://" + // "://"
+                request.getServerName() + // "host"
+                ":" + // ":"
+                request.getServerPort() + // "80"
+                request.getContextPath();
     }
 }

@@ -24,7 +24,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
@@ -72,7 +75,7 @@ public class UserController {
     public ResponseEntity<Void> create(@ApiParam(value = "用户", required = true) @Valid @RequestBody User domain) {
         log.debug("REST request to create user: {}", domain);
         User newUser = userService.insert(domain, DEFAULT_PASSWORD);
-        mailService.sendCreationEmail(newUser);
+        mailService.sendCreationEmail(newUser, getRequestUrl());
         HttpHeaders headers = httpHeaderCreator.createSuccessHeader("NM2011", DEFAULT_PASSWORD);
         return ResponseEntity.status(HttpStatus.CREATED).headers(headers).build();
     }
@@ -151,5 +154,19 @@ public class UserController {
         User user = userService.findOneByUserName(userName);
         Optional<UserProfilePhoto> userProfilePhoto = userProfilePhotoRepository.findByUserId(user.getId());
         return userProfilePhoto.map(photo -> ResponseEntity.ok(photo.getProfilePhoto().getData())).orElse(null);
+    }
+
+    private String getRequestUrl() {
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = servletRequestAttributes != null ? servletRequestAttributes.getRequest() : null;
+        if (request == null) {
+            return "";
+        }
+        return request.getScheme() + // "http"
+                "://" + // "://"
+                request.getServerName() + // "host"
+                ":" + // ":"
+                request.getServerPort() + // "80"
+                request.getContextPath();
     }
 }
