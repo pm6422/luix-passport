@@ -43,24 +43,24 @@ public class User extends AbstractAuditableDomain implements Serializable {
     @ApiModelProperty(value = "用户名", required = true)
     @NotNull
     @Pattern(regexp = "^[a-zA-Z0-9-]+$", message = "{EP5901}")
-    @Size(min = 3, max = 50)
+    @Size(min = 3, max = 20)
     @Indexed
     private String userName;
 
     @ApiModelProperty(value = "名", required = true)
     @NotNull
-    @Size(min = 1, max = 50)
+    @Size(min = 1, max = 20)
     private String firstName;
 
     @ApiModelProperty(value = "姓", required = true)
     @NotNull
-    @Size(min = 1, max = 50)
+    @Size(min = 1, max = 20)
     private String lastName;
 
     @ApiModelProperty(value = "电子邮件", required = true)
     @NotNull
     @Email
-    @Size(min = 3, max = 100)
+    @Size(min = 3, max = 30)
     @Indexed
     private String email;
 
