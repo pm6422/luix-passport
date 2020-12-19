@@ -98,22 +98,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void update(User user) {
-        userRepository.findOneByUserName(user.getUserName().toLowerCase(Locale.ENGLISH))
-                .orElseThrow(() -> new NoDataFoundException(user.getUserName()));
+        // 因为其他表的创建者和更新者使用的是userName，所以不能更新
+        userRepository.findById(user.getId()).map(u -> {
+            Optional<User> existingUser = findOneByEmail(user.getEmail());
+            if (existingUser.isPresent() && (!existingUser.get().getId().equalsIgnoreCase(user.getId()))) {
+                throw new DuplicationException(ImmutableMap.of("email", user.getEmail()));
+            }
+            existingUser = findOneByMobileNo(user.getMobileNo());
+            if (existingUser.isPresent() && (!existingUser.get().getId().equalsIgnoreCase(user.getId()))) {
+                throw new DuplicationException(ImmutableMap.of("mobileNo", user.getMobileNo()));
+            }
+            if (existingUser.isPresent() && !Boolean.TRUE.equals(user.getActivated()) && Boolean.TRUE.equals(existingUser.get().getActivated())) {
+                throw new IllegalArgumentException(messageCreator.getMessage("EP5021"));
+            }
 
-        Optional<User> existingUser = findOneByEmail(user.getEmail());
-        if (existingUser.isPresent() && (!existingUser.get().getUserName().equalsIgnoreCase(user.getUserName()))) {
-            throw new DuplicationException(ImmutableMap.of("email", user.getEmail()));
-        }
-        existingUser = findOneByMobileNo(user.getMobileNo());
-        if (existingUser.isPresent() && (!existingUser.get().getUserName().equalsIgnoreCase(user.getUserName()))) {
-            throw new DuplicationException(ImmutableMap.of("email", user.getMobileNo()));
-        }
-        if (existingUser.isPresent() && !Boolean.TRUE.equals(user.getActivated()) && Boolean.TRUE.equals(existingUser.get().getActivated())) {
-            throw new IllegalArgumentException(messageCreator.getMessage("EP5021"));
-        }
-
-        userRepository.findOneByUserName(user.getUserName().toLowerCase()).ifPresent(u -> {
             u.setFirstName(user.getFirstName());
             u.setLastName(user.getLastName());
             u.setEmail(user.getEmail().toLowerCase());
@@ -131,7 +129,8 @@ public class UserServiceImpl implements UserService {
                 user.getAuthorities().forEach(authorityName -> userAuthorityRepository.insert(new UserAuthority(user.getId(), authorityName)));
                 log.debug("Updated user authorities");
             }
-        });
+            return u;
+        }).orElseThrow(() -> new NoDataFoundException(user.getId()));
     }
 
     @Override
