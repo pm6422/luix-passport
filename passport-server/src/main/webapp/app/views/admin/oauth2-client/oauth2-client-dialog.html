@@ -10,7 +10,7 @@
             <input type="text" class="form-control" name="clientId" ng-model="vm.entity.client_id" ng-maxlength="50"
                    ng-disabled="vm.mode == 'edit'">
             <div ng-show="editForm.clientId.$invalid">
-                <p class="help-block" ng-show="editForm.clientId.$error.maxlength" translate-value-max="50">
+                <p class="help-block" ng-show="editForm.clientId.$error.maxlength">
                     <small>最大长度为50个字符</small>
                 </p>
             </div>
@@ -31,7 +31,7 @@
             <input type="text" class="form-control" name="rawClientSecret" ng-model="vm.entity.raw_client_secret"
                    ng-maxlength="50">
             <div ng-show="editForm.rawClientSecret.$invalid">
-                <p class="help-block" ng-show="editForm.rawClientSecret.$error.maxlength" translate-value-max="50">
+                <p class="help-block" ng-show="editForm.rawClientSecret.$error.maxlength>
                     <small>最大长度为50个字符</small>
                 </p>
             </div>
@@ -46,7 +46,7 @@
             <label class="control-label">Scopes</label>
             <input type="text" class="form-control" name="scope" ng-model="vm.entity.scope" ng-maxlength="50">
             <div ng-show="editForm.scope.$invalid">
-                <p class="help-block" ng-show="editForm.scope.$error.maxlength" translate-value-max="50">
+                <p class="help-block" ng-show="editForm.scope.$error.maxlength">
                     <small>最大长度为50个字符</small>
                 </p>
             </div>

@@ -91,7 +91,7 @@ spring:
     mail: # specific mail property, used by MailProperties
         host: smtp.exmail.qq.com
         username: admin@pm6422.org
-        password: 35H-UHR-9dH-8G9-FG3
+        password: LoU-UHR-9dH-8G9-F3G
     banner:
         location: classpath:config/banner-company.txt
     data:

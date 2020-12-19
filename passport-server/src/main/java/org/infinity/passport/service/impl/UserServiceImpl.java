@@ -2,6 +2,7 @@ package org.infinity.passport.service.impl;
 
 import com.google.common.collect.ImmutableMap;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.infinity.passport.component.MessageCreator;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.User;
@@ -63,10 +64,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User insert(User user, String rawPassword) {
-        if (!user.getAuthorities().contains(Authority.USER)) {
-            throw new IllegalArgumentException("[ROLE_USER] authority must be specified!");
-        }
-        if (findOneByUserName(user.getUserName()) != null) {
+        Optional<User> existingUser = userRepository.findOneByUserName(user.getUserName().toLowerCase(Locale.ENGLISH));
+        if (existingUser.isPresent()) {
             throw new DuplicationException(ImmutableMap.of("userName", user.getUserName()));
         }
         if (findOneByEmail(user.getEmail()).isPresent()) {
@@ -86,7 +85,12 @@ public class UserServiceImpl implements UserService {
         user.setEnabled(true);
         userRepository.save(user);
 
-        user.getAuthorities().forEach(authorityName -> userAuthorityRepository.insert(new UserAuthority(user.getId(), authorityName)));
+        if (CollectionUtils.isNotEmpty(user.getAuthorities())) {
+            if (!user.getAuthorities().contains(Authority.USER)) {
+                throw new IllegalArgumentException("[ROLE_USER] authority must be specified!");
+            }
+            user.getAuthorities().forEach(authorityName -> userAuthorityRepository.insert(new UserAuthority(user.getId(), authorityName)));
+        }
 
         log.debug("Created information for user: {}", user);
         return user;
@@ -94,10 +98,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void update(User user) {
-        if (!user.getAuthorities().contains(Authority.USER)) {
-            throw new IllegalArgumentException("[ROLE_USER] authority must be specified!");
-        }
-
         userRepository.findOneByUserName(user.getUserName().toLowerCase(Locale.ENGLISH))
                 .orElseThrow(() -> new NoDataFoundException(user.getUserName()));
 
@@ -123,9 +123,14 @@ public class UserServiceImpl implements UserService {
             userRepository.save(u);
             log.debug("Updated user: {}", user);
 
-            userAuthorityRepository.deleteByUserId(user.getId());
-            user.getAuthorities().forEach(authorityName -> userAuthorityRepository.insert(new UserAuthority(user.getId(), authorityName)));
-            log.debug("Updated user authorities");
+            if (CollectionUtils.isNotEmpty(user.getAuthorities())) {
+                if (!user.getAuthorities().contains(Authority.USER)) {
+                    throw new IllegalArgumentException("[ROLE_USER] authority must be specified!");
+                }
+                userAuthorityRepository.deleteByUserId(user.getId());
+                user.getAuthorities().forEach(authorityName -> userAuthorityRepository.insert(new UserAuthority(user.getId(), authorityName)));
+                log.debug("Updated user authorities");
+            }
         });
     }
 

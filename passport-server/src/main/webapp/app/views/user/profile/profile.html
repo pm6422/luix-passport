@@ -11,7 +11,7 @@
                     <div class="form-group">
                         <label class="control-label" for="lastName">姓</label>
                         <input type="text" class="form-control" id="lastName" name="lastName"
-                               ng-model="vm.profileAccount.lastName" ng-minlength=1 ng-maxlength=50 required maxlength="50">
+                               ng-model="vm.profileAccount.lastName" required ng-minlength="1" ng-maxlength="20">
                         <div ng-show="form.lastName.$dirty && form.lastName.$invalid">
                             <p class="help-block" ng-show="form.lastName.$error.required">
                                 必填字段
@@ -20,14 +20,14 @@
                                 最小长度为1个字符
                             </p>
                             <p class="help-block" ng-show="form.lastName.$error.maxlength">
-                                最大长度为50个字符
+                                最大长度为20个字符
                             </p>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label" for="firstName">名</label>
                         <input type="text" class="form-control" id="firstName" name="firstName"
-                               ng-model="vm.profileAccount.firstName" ng-minlength=1 ng-maxlength=50 required maxlength="50">
+                               ng-model="vm.profileAccount.firstName" required ng-minlength="1" ng-maxlength="20">
                         <div ng-show="form.firstName.$dirty && form.firstName.$invalid">
                             <p class="help-block" ng-show="form.firstName.$error.required">
                                 必填字段
@@ -36,14 +36,14 @@
                                 最小长度为1个字符
                             </p>
                             <p class="help-block" ng-show="form.firstName.$error.maxlength">
-                                最大长度为50个字符
+                                最大长度为20个字符
                             </p>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label" for="email">E-mail</label>
                         <input type="email" class="form-control" id="email" name="email"
-                               ng-model="vm.profileAccount.email" ng-minlength=5 ng-maxlength=100 required maxlength="100">
+                               ng-model="vm.profileAccount.email" required ng-minlength="3" ng-maxlength="30">
                         <div ng-show="form.email.$dirty && form.email.$invalid">
                             <p class="help-block" ng-show="form.email.$error.required">
                                 必填字段
@@ -52,17 +52,18 @@
                                 Email格式不正确
                             </p>
                             <p class="help-block" ng-show="form.email.$error.minlength">
-                                最小长度为5个字符
+                                最小长度为3个字符
                             </p>
                             <p class="help-block" ng-show="form.email.$error.maxlength">
-                                最大长度为100个字符
+                                最大长度为30个字符
                             </p>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label" for="mobileNo">手机号</label>
                         <input type="number" class="form-control" id="mobileNo" name="mobileNo"
-                               ng-model="vm.profileAccount.mobileNo" ng-minlength=11 ng-maxlength=13 ng-pattern="/^(13[0-9]|15[012356789]|17[03678]|18[0-9]|14[57])[0-9]{8}$/" required>
+                               ng-model="vm.profileAccount.mobileNo"
+                               required ng-minlength=11 ng-maxlength=13 ng-pattern="/^(13[0-9]|15[012356789]|17[03678]|18[0-9]|14[57])[0-9]{8}$/">
                         <div ng-show="form.mobileNo.$dirty && form.mobileNo.$invalid">
                             <p class="help-block" ng-show="form.mobileNo.$error.required">
                                 必填字段

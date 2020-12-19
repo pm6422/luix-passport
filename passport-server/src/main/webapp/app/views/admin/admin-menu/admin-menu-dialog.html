@@ -6,7 +6,8 @@
     <div class="modal-body">
         <div class="form-group">
             <label class="control-label">应用</label>
-            <select class="form-control" ng-model="vm.entity.appName" name="appName" ng-options="item.name as item.name for item in vm.apps" ng-change="vm.searchParentMenus()" required>
+            <select class="form-control" ng-model="vm.entity.appName" name="appName" ng-options="item.name as item.name for item in vm.apps"
+                    ng-change="vm.searchParentMenus()" required>
                 <option value="">请选择...</option>
             </select>
             <div ng-show="editForm.appName.$invalid">
@@ -17,25 +18,33 @@
         </div>
         <div class="form-group">
             <label class="control-label">菜单名称</label>
-            <input type="text" class="form-control" name="name" ng-model="vm.entity.name" required ng-maxlength="45">
+            <input type="text" class="form-control" name="name" ng-model="vm.entity.name"
+                   required ng-minlength="1" ng-maxlength="30">
             <div ng-show="editForm.name.$invalid">
                 <p class="help-block" ng-show="editForm.name.$error.required">
                     必填字段
                 </p>
-                <p class="help-block" ng-show="editForm.name.$error.maxlength" translate-value-max="45">
-                    最大长度为45个字符
+                <p class="help-block" ng-show="editForm.name.$error.minlength">
+                    最小长度为1个字符
+                </p>
+                <p class="help-block" ng-show="editForm.name.$error.maxlength">
+                    最大长度为30个字符
                 </p>
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label">菜单中文文本</label>
-            <input type="text" class="form-control" name="label" ng-model="vm.entity.label" required ng-maxlength="100">
+            <label class="control-label">菜单显示文本</label>
+            <input type="text" class="form-control" name="label" ng-model="vm.entity.label"
+                   required ng-minlength="1" ng-maxlength="30">
             <div ng-show="editForm.label.$invalid">
                 <p class="help-block" ng-show="editForm.label.$error.required">
                     必填字段
                 </p>
-                <p class="help-block" ng-show="editForm.label.$error.maxlength" translate-value-max="100">
-                    最大长度为100个字符
+                <p class="help-block" ng-show="editForm.label.$error.minlength">
+                    最小长度为1个字符
+                </p>
+                <p class="help-block" ng-show="editForm.label.$error.maxlength">
+                    最大长度为30个字符
                 </p>
             </div>
         </div>

@@ -6,13 +6,17 @@
     <div class="modal-body">
         <div class="form-group">
             <label class="control-label">名称</label>
-            <input type="text" class="form-control" name="name" ng-model="vm.entity.name" required ng-maxlength="20" ng-disabled="vm.mode == 'edit'">
+            <input type="text" class="form-control" name="name" ng-model="vm.entity.name"
+                   required ng-minlength="3" ng-maxlength="16" ng-disabled="vm.mode == 'edit'">
             <div ng-show="editForm.name.$invalid">
                 <p class="help-block" ng-show="editForm.name.$error.required">
                     必填字段
                 </p>
-                <p class="help-block" ng-show="editForm.name.$error.maxlength" translate-value-max="20">
-                    最大长度为20个字符
+                <p class="help-block" ng-show="editForm.name.$error.minlength">
+                    最小长度为3个字符
+                </p>
+                <p class="help-block" ng-show="editForm.name.$error.maxlength">
+                    最大长度为16个字符
                 </p>
             </div>
         </div>

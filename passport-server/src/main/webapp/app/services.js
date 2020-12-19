@@ -707,7 +707,7 @@ function DictService($resource) {
             },
             params: {extension: 'dicts'}
         },
-        'save': {method: 'POST', params: {extension: 'dicts'}},
+        'create': {method: 'POST', params: {extension: 'dicts'}},
         'update': {method: 'PUT', params: {extension: 'dicts'}},
         'del': {method: 'DELETE', params: {extension: 'dicts'}}
     });
@@ -725,7 +725,7 @@ function DictItemService($resource) {
             },
             params: {extension: 'items'}
         },
-        'save': {method: 'POST', params: {extension: 'items'}},
+        'create': {method: 'POST', params: {extension: 'items'}},
         'update': {method: 'PUT', params: {extension: 'items'}},
         'del': {method: 'DELETE', params: {extension: 'items'}}
     });
@@ -852,7 +852,7 @@ function AccountService($resource) {
                 }
             }
         },
-        'save': {method: 'POST', params: {extension: 'user'}},
+        'create': {method: 'POST', params: {extension: 'user'}},
         'update': {
             method: 'PUT', params: {extension: 'user'}
         },
@@ -1161,7 +1161,7 @@ function AppService($resource) {
                 return data;
             }
         },
-        'save': {method: 'POST'},
+        'create': {method: 'POST'},
         'update': {method: 'PUT'},
         'del': {method: 'DELETE'}
     });
@@ -1180,7 +1180,7 @@ function AuthorityService($resource) {
                 return data;
             }
         },
-        'save': {method: 'POST'},
+        'create': {method: 'POST'},
         'update': {method: 'PUT'},
         'del': {method: 'DELETE'}
     });
@@ -1200,7 +1200,7 @@ function AppAuthorityService($resource) {
             },
             params: {extension: 'app-authorities'}
         },
-        'save': {method: 'POST', params: {extension: 'app-authorities'}},
+        'create': {method: 'POST', params: {extension: 'app-authorities'}},
         'update': {method: 'PUT', params: {extension: 'app-authorities'}},
         'del': {method: 'DELETE', params: {extension: 'app-authorities'}}
     });
@@ -1219,7 +1219,7 @@ function UserService($resource) {
                 return data;
             }
         },
-        'save': {method: 'POST'},
+        'create': {method: 'POST'},
         'update': {method: 'PUT'},
         'del': {method: 'DELETE'},
         'resetPassword': {method: 'PUT', params: {userName: '@userName'}}
@@ -1240,7 +1240,7 @@ function OAuth2ClientService($resource) {
                 return data;
             }
         },
-        'save': {method: 'POST'},
+        'create': {method: 'POST'},
         'update': {method: 'PUT'},
         'del': {method: 'DELETE'}
     });
@@ -1315,7 +1315,7 @@ function AdminMenuService($resource, APP_NAME) {
             },
             params: {extension: 'menus'}
         },
-        'save': {method: 'POST', params: {extension: 'menus'}},
+        'create': {method: 'POST', params: {extension: 'menus'}},
         'update': {method: 'PUT', params: {extension: 'menus'}},
         'del': {method: 'DELETE', params: {extension: 'menus'}},
         'raiseSeq': {method: 'GET', params: {extension: 'raise-seq'}},
