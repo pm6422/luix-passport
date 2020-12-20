@@ -19,7 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URISyntaxException;
 import java.util.List;
 
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
@@ -52,8 +51,7 @@ public class OAuth2ApprovalController {
     public ResponseEntity<List<MongoOAuth2Approval>> find(Pageable pageable,
                                                           @ApiParam(value = "授权ID") @RequestParam(value = "approvalId", required = false) String approvalId,
                                                           @ApiParam(value = "客户端ID") @RequestParam(value = "clientId", required = false) String clientId,
-                                                          @ApiParam(value = "用户名") @RequestParam(value = "userName", required = false) String userName)
-            throws URISyntaxException {
+                                                          @ApiParam(value = "用户名") @RequestParam(value = "userName", required = false) String userName) {
         Query query = new Query();
         if (StringUtils.isNotEmpty(approvalId)) {
             query.addCriteria(Criteria.where("id").is(approvalId));

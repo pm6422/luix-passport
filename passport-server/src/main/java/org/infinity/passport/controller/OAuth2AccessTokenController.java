@@ -15,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URISyntaxException;
 import java.util.List;
 
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
@@ -44,8 +43,7 @@ public class OAuth2AccessTokenController {
                                                              @ApiParam(value = "访问令牌ID") @RequestParam(value = "tokenId", required = false) String tokenId,
                                                              @ApiParam(value = "客户端ID") @RequestParam(value = "clientId", required = false) String clientId,
                                                              @ApiParam(value = "用户名") @RequestParam(value = "userName", required = false) String userName,
-                                                             @ApiParam(value = "刷新令牌") @RequestParam(value = "refreshToken", required = false) String refreshToken)
-            throws URISyntaxException {
+                                                             @ApiParam(value = "刷新令牌") @RequestParam(value = "refreshToken", required = false) String refreshToken) {
         MongoOAuth2AccessToken probe = new MongoOAuth2AccessToken();
         probe.setId(tokenId);
         probe.setClientId(clientId);

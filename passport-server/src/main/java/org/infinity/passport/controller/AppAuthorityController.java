@@ -19,7 +19,6 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.net.URISyntaxException;
 import java.util.List;
 
 import static javax.servlet.http.HttpServletResponse.*;
@@ -70,8 +69,7 @@ public class AppAuthorityController {
     @Secured({Authority.ADMIN})
     public ResponseEntity<List<AppAuthority>> find(Pageable pageable,
                                                    @ApiParam(value = "应用名称") @RequestParam(value = "appName", required = false) String appName,
-                                                   @ApiParam(value = "权限名称") @RequestParam(value = "authorityName", required = false) String authorityName)
-            throws URISyntaxException {
+                                                   @ApiParam(value = "权限名称") @RequestParam(value = "authorityName", required = false) String authorityName) {
         Page<AppAuthority> appAuthorities = appAuthorityService.find(pageable, appName, authorityName);
         HttpHeaders headers = generatePageHeaders(appAuthorities);
         return ResponseEntity.ok().headers(headers).body(appAuthorities.getContent());

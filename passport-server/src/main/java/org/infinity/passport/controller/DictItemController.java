@@ -22,7 +22,6 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -86,8 +85,7 @@ public class DictItemController {
     @Secured(Authority.DEVELOPER)
     public ResponseEntity<List<DictItem>> find(Pageable pageable,
                                                @ApiParam(value = "字典代码") @RequestParam(value = "dictCode", required = false) String dictCode,
-                                               @ApiParam(value = "字典项名称") @RequestParam(value = "dictItemName", required = false) String dictItemName)
-            throws URISyntaxException {
+                                               @ApiParam(value = "字典项名称") @RequestParam(value = "dictItemName", required = false) String dictItemName) {
         Page<DictItem> dictItems = dictItemService.find(pageable, dictCode, dictItemName);
         Map<String, String> dictCodeDictNameMap = dictService.findDictCodeDictNameMap();
         List<DictItem> domains = dictItems.getContent().stream().map(domain -> {

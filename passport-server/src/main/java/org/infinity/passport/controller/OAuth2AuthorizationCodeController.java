@@ -15,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URISyntaxException;
 import java.util.List;
 
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
@@ -44,7 +43,6 @@ public class OAuth2AuthorizationCodeController {
      * @param authorizationCodeId authorization code id
      * @param code                authorization code
      * @return code list
-     * @throws URISyntaxException if exception occurs
      */
     @ApiOperation("分页检索授权码列表")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
@@ -52,8 +50,7 @@ public class OAuth2AuthorizationCodeController {
     @Secured(Authority.ADMIN)
     public ResponseEntity<List<MongoOAuth2AuthorizationCode>> find(Pageable pageable,
                                                                    @ApiParam(value = "授权码ID") @RequestParam(value = "authorizationCodeId", required = false) String authorizationCodeId,
-                                                                   @ApiParam(value = "授权码") @RequestParam(value = "code", required = false) String code)
-            throws URISyntaxException {
+                                                                   @ApiParam(value = "授权码") @RequestParam(value = "code", required = false) String code) {
         MongoOAuth2AuthorizationCode probe = new MongoOAuth2AuthorizationCode();
         probe.setId(authorizationCodeId);
         probe.setCode(code);

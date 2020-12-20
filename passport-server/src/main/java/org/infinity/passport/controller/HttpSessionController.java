@@ -15,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URISyntaxException;
 import java.util.List;
 
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
@@ -43,7 +42,7 @@ public class HttpSessionController {
     @GetMapping("/api/http-session/sessions")
     @Secured({Authority.DEVELOPER})
     public ResponseEntity<List<HttpSession>> find(Pageable pageable,
-                                                  @ApiParam(value = "用户名称") @RequestParam(value = "principal", required = false) String principal) throws URISyntaxException {
+                                                  @ApiParam(value = "用户名称") @RequestParam(value = "principal", required = false) String principal) {
         Page<HttpSession> sessions = StringUtils.isEmpty(principal) ? httpSessionRepository.findAll(pageable) : httpSessionRepository.findByPrincipal(pageable, principal);
         HttpHeaders headers = generatePageHeaders(sessions);
         return ResponseEntity.ok().headers(headers).body(sessions.getContent());

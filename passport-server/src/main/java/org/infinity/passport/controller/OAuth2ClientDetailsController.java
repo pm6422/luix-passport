@@ -26,7 +26,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.net.URISyntaxException;
 import java.util.List;
 
 import static javax.servlet.http.HttpServletResponse.*;
@@ -79,8 +78,7 @@ public class OAuth2ClientDetailsController {
     @GetMapping("/api/oauth2-client/clients")
     @Secured(Authority.ADMIN)
     public ResponseEntity<List<MongoOAuth2ClientDetails>> find(Pageable pageable,
-                                                               @ApiParam(value = "客户端ID") @RequestParam(value = "clientId", required = false) String clientId)
-            throws URISyntaxException {
+                                                               @ApiParam(value = "客户端ID") @RequestParam(value = "clientId", required = false) String clientId) {
         Query query = Query.query(Criteria.where("clientId").is(clientId));
         long totalCount = mongoTemplate.count(query, MongoOAuth2ClientDetails.class);
         query.with(pageable);// Note: the field name

@@ -24,7 +24,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,8 +73,7 @@ public class AdminMenuController {
     @GetMapping("/api/admin-menu/menus")
     @Secured({Authority.ADMIN})
     public ResponseEntity<List<AdminMenu>> find(Pageable pageable,
-                                                @ApiParam(value = "应用名称") @RequestParam(value = "appName", required = false) String appName)
-            throws URISyntaxException {
+                                                @ApiParam(value = "应用名称") @RequestParam(value = "appName", required = false) String appName) {
         Page<AdminMenu> adminMenus = adminMenuService.find(pageable, appName);
         HttpHeaders headers = generatePageHeaders(adminMenus);
         return ResponseEntity.ok().headers(headers).body(adminMenus.getContent());

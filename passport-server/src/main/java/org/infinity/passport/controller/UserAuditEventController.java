@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -42,14 +41,13 @@ public class UserAuditEventController {
      * @param from     开始日期 Instant反序列化会发生错误，所以使用LocalDate
      * @param to       结束日期 Instant反序列化会发生错误，所以使用LocalDate
      * @return 分页信息
-     * @throws URISyntaxException if exception occurs
      */
     @ApiOperation("分页检索用户审计事件列表")
     @GetMapping("/api/user-audit-event/user-audit-events")
     @Secured(Authority.DEVELOPER)
     public ResponseEntity<List<PersistentAuditEvent>> getUserAuditEvents(Pageable pageable,
                                                                          @ApiParam(value = "开始日期，例：2020-10-01") @RequestParam(value = "from", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
-                                                                         @ApiParam(value = "结束日期，例：2020-10-02") @RequestParam(value = "to", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) throws URISyntaxException {
+                                                                         @ApiParam(value = "结束日期，例：2020-10-02") @RequestParam(value = "to", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) {
         Page<PersistentAuditEvent> userAuditEvents = persistenceAuditEventRepository.findByAuditEventDateBetween(pageable, from, to);
         HttpHeaders headers = generatePageHeaders(userAuditEvents);
         return ResponseEntity.ok().headers(headers).body(userAuditEvents.getContent());

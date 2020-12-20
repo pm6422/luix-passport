@@ -19,7 +19,6 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.net.URISyntaxException;
 import java.util.List;
 
 import static javax.servlet.http.HttpServletResponse.*;
@@ -62,9 +61,8 @@ public class DictController {
     @GetMapping("/api/dict/dicts")
     @Secured(Authority.DEVELOPER)
     public ResponseEntity<List<Dict>> find(Pageable pageable,
-                                              @ApiParam(value = "字典名称") @RequestParam(value = "dictName", required = false) String dictName,
-                                              @ApiParam(value = "是否可用,null代表全部", allowableValues = "false,true,null") @RequestParam(value = "enabled", required = false) Boolean enabled)
-            throws URISyntaxException {
+                                           @ApiParam(value = "字典名称") @RequestParam(value = "dictName", required = false) String dictName,
+                                           @ApiParam(value = "是否可用,null代表全部", allowableValues = "false,true,null") @RequestParam(value = "enabled", required = false) Boolean enabled) {
         Page<Dict> dicts = dictService.find(pageable, dictName, enabled);
         HttpHeaders headers = generatePageHeaders(dicts);
         return ResponseEntity.ok().headers(headers).body(dicts.getContent());
