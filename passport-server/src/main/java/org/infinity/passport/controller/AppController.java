@@ -91,10 +91,8 @@ public class AppController {
     @Secured({Authority.ADMIN})
     public ResponseEntity<Void> update(@ApiParam(value = "新的应用", required = true) @Valid @RequestBody AppDTO dto) {
         log.debug("REST request to update app: {}", dto);
-        appRepository.findById(dto.getName()).orElseThrow(() -> new NoDataFoundException(dto.getName()));
         appService.update(dto.getName(), dto.getEnabled(), dto.getAuthorities());
-        return ResponseEntity.ok()
-                .headers(httpHeaderCreator.createSuccessHeader("SM1002", dto.getName())).build();
+        return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1002", dto.getName())).build();
     }
 
     @ApiOperation(value = "根据名称删除应用", notes = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
@@ -107,7 +105,6 @@ public class AppController {
         appRepository.findById(name).orElseThrow(() -> new NoDataFoundException(name));
         appRepository.deleteById(name);
         appAuthorityRepository.deleteByAppName(name);
-        return ResponseEntity.ok()
-                .headers(httpHeaderCreator.createSuccessHeader("SM1003", name)).build();
+        return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1003", name)).build();
     }
 }

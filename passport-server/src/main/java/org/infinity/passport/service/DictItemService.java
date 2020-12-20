@@ -6,9 +6,9 @@ import org.springframework.data.domain.Pageable;
 
 public interface DictItemService {
 
-    DictItem insert(String dictCode, String dictItemCode, String dictItemName, String remark, Boolean enabled);
+    DictItem insert(DictItem domain);
 
-    void update(String id, String dictCode, String dictItemCode, String dictItemName, String remark, Boolean enabled);
+    void update(DictItem domain);
 
     Page<DictItem> find(Pageable pageable, String dictCode, String dictItemName);
 }

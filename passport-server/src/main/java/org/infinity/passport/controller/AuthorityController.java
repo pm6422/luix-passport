@@ -80,9 +80,7 @@ public class AuthorityController {
         log.debug("REST request to update authority: {}", domain);
         authorityRepository.findById(domain.getName()).orElseThrow(() -> new NoDataFoundException(domain.getName()));
         authorityRepository.save(domain);
-        return ResponseEntity.ok()
-                .headers(httpHeaderCreator.createSuccessHeader("SM1002", domain.getName()))
-                .build();
+        return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1002", domain.getName())).build();
     }
 
     @ApiOperation(value = "根据名称删除权限", notes = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
@@ -93,7 +91,6 @@ public class AuthorityController {
         log.debug("REST request to delete authority: {}", name);
         authorityRepository.findById(name).orElseThrow(() -> new NoDataFoundException(name));
         authorityRepository.deleteById(name);
-        return ResponseEntity.ok()
-                .headers(httpHeaderCreator.createSuccessHeader("SM1003", name)).build();
+        return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1003", name)).build();
     }
 }

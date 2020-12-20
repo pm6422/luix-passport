@@ -57,7 +57,7 @@ public class AppAuthorityController {
                     throw new DuplicationException(ImmutableMap.of("appName", domain.getAppName(), "authorityName", domain.getAuthorityName()));
                 });
 
-        AppAuthority appAuthority = appAuthorityRepository.save(domain);
+        AppAuthority appAuthority = appAuthorityRepository.insert(domain);
         return ResponseEntity
                 .status(HttpStatus.CREATED).headers(httpHeaderCreator.createSuccessHeader("SM1001", appAuthority.getAuthorityName()))
                 .build();
@@ -97,9 +97,7 @@ public class AppAuthorityController {
         log.debug("REST request to update app authority: {}", domain);
         appAuthorityRepository.findById(domain.getId()).orElseThrow(() -> new NoDataFoundException(domain.getId()));
         appAuthorityRepository.save(domain);
-        return ResponseEntity.ok().headers(
-                httpHeaderCreator.createSuccessHeader("SM1002", domain.getAuthorityName()))
-                .build();
+        return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1002", domain.getAuthorityName())).build();
     }
 
     @ApiOperation(value = "根据ID删除应用权限", notes = "数据有可能被其他数据所引用，删除之后可能出现一些问题")

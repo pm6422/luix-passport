@@ -51,7 +51,7 @@ public class DictController {
         dictRepository.findOneByDictCode(domain.getDictCode()).ifPresent((existingEntity) -> {
             throw new DuplicationException(ImmutableMap.of("dictCode", domain.getDictCode()));
         });
-        dictRepository.save(domain);
+        dictRepository.insert(domain);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .headers(httpHeaderCreator.createSuccessHeader("SM1001", domain.getDictName())).build();
     }
@@ -87,8 +87,7 @@ public class DictController {
         log.debug("REST request to update dict: {}", domain);
         dictRepository.findById(domain.getId()).orElseThrow(() -> new NoDataFoundException(domain.getId()));
         dictRepository.save(domain);
-        return ResponseEntity.ok()
-                .headers(httpHeaderCreator.createSuccessHeader("SM1002", domain.getDictName())).build();
+        return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1002", domain.getDictName())).build();
     }
 
     @ApiOperation(value = "根据ID删除数据字典", notes = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
@@ -100,8 +99,6 @@ public class DictController {
         log.debug("REST request to delete dict: {}", id);
         Dict dict = dictRepository.findById(id).orElseThrow(() -> new NoDataFoundException(id));
         dictRepository.deleteById(id);
-        return ResponseEntity.ok()
-                .headers(httpHeaderCreator.createSuccessHeader("SM1003", dict.getDictName()))
-                .build();
+        return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1003", dict.getDictName())).build();
     }
 }

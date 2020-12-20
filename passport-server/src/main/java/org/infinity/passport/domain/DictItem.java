@@ -49,14 +49,4 @@ public class DictItem extends AbstractAuditableDomain implements Serializable {
     @ApiModelProperty(value = "是否可用")
     private Boolean enabled;
 
-    public DictItem(String dictCode, String dictName, String dictItemCode, String dictItemName, String remark,
-                    Boolean enabled) {
-        super();
-        this.dictCode = dictCode;
-        this.dictName = dictName;
-        this.dictItemCode = dictItemCode;
-        this.dictItemName = dictItemName;
-        this.remark = remark;
-        this.enabled = enabled;
-    }
 }

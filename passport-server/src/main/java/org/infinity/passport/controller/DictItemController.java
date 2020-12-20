@@ -64,16 +64,7 @@ public class DictItemController {
     public ResponseEntity<Void> create(
             @ApiParam(value = "数据字典项", required = true) @Valid @RequestBody DictItem domain) {
         log.debug("REST request to create dict item: {}", domain);
-        // 判断dictCode是否存在
-        dictRepository.findOneByDictCode(domain.getDictCode()).orElseThrow(() -> new NoDataFoundException(domain.getDictCode()));
-        // 根据dictItemCode与dictCode检索记录是否存在
-        List<DictItem> existingDictItems = dictItemRepository.findByDictCodeAndDictItemCode(domain.getDictCode(),
-                domain.getDictItemCode());
-        if (CollectionUtils.isNotEmpty(existingDictItems)) {
-            throw new DuplicationException(ImmutableMap.of("dictCode", domain.getDictCode(), "dictItemCode", domain.getDictItemCode()));
-        }
-        DictItem dictItem = dictItemService.insert(domain.getDictCode(), domain.getDictItemCode(), domain.getDictItemName(),
-                domain.getRemark(), domain.getEnabled());
+        DictItem dictItem = dictItemService.insert(domain);
         return ResponseEntity.status(HttpStatus.CREATED).headers(
                 httpHeaderCreator.createSuccessHeader("SM1001", dictItem.getDictItemName()))
                 .build();
@@ -116,9 +107,7 @@ public class DictItemController {
     public ResponseEntity<Void> update(
             @ApiParam(value = "新的数据字典项", required = true) @Valid @RequestBody DictItem domain) {
         log.debug("REST request to update dict item: {}", domain);
-        dictItemRepository.findById(domain.getId()).orElseThrow(() -> new NoDataFoundException(domain.getId()));
-        dictItemService.update(domain.getId(), domain.getDictCode(), domain.getDictItemCode(), domain.getDictItemName(),
-                domain.getRemark(), domain.getEnabled());
+        dictItemService.update(domain);
         return ResponseEntity.ok()
                 .headers(httpHeaderCreator.createSuccessHeader("SM1002", domain.getDictItemName()))
                 .build();
