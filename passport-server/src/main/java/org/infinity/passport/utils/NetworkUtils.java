@@ -1,11 +1,13 @@
 package org.infinity.passport.utils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.Enumeration;
+import java.util.Objects;
 
-public abstract class NetworkIpUtils {
+public abstract class NetworkUtils {
 
     public static final String INTRANET_IP = getIntranetIp(); // 内网IP
     public static final String INTERNET_IP = getInternetIp(); // 外网IP
@@ -50,5 +52,16 @@ public abstract class NetworkIpUtils {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static String getRequestUrl(HttpServletRequest request) {
+        Objects.requireNonNull(request);
+
+        return request.getScheme() + // "http"
+                "://" + // "://"
+                request.getServerName() + // "host"
+                ":" + // ":"
+                request.getServerPort() + // "80"
+                request.getContextPath();
     }
 }

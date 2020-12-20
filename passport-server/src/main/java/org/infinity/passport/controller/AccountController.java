@@ -38,8 +38,6 @@ import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -54,6 +52,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static javax.servlet.http.HttpServletResponse.*;
+import static org.infinity.passport.utils.NetworkUtils.getRequestUrl;
 
 /**
  * REST controller for managing the user's account.
@@ -163,10 +162,11 @@ public class AccountController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "账号已注册")})
     @PostMapping("/open-api/account/register")
     public ResponseEntity<Void> registerAccount(
-            @ApiParam(value = "用户", required = true) @Valid @RequestBody ManagedUserDTO dto) {
+            @ApiParam(value = "用户", required = true) @Valid @RequestBody ManagedUserDTO dto,
+            HttpServletRequest request) {
         log.debug("REST request to register user: {}", dto);
         User newUser = userService.insert(dto.toUser(), dto.getPassword());
-        mailService.sendActivationEmail(newUser, getRequestUrl());
+        mailService.sendActivationEmail(newUser, getRequestUrl(request));
         HttpHeaders headers = httpHeaderCreator.createSuccessHeader("NM2001");
         return ResponseEntity.status(HttpStatus.CREATED).headers(headers).build();
     }
@@ -217,9 +217,10 @@ public class AccountController {
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功发送"),
             @ApiResponse(code = SC_BAD_REQUEST, message = "账号不存在")})
     @PostMapping("/open-api/account/reset-password/init")
-    public ResponseEntity<Void> requestPasswordReset(@ApiParam(value = "电子邮件", required = true) @RequestBody String email) {
+    public ResponseEntity<Void> requestPasswordReset(@ApiParam(value = "电子邮件", required = true) @RequestBody String email,
+                                                     HttpServletRequest request) {
         User user = userService.requestPasswordReset(email, RandomUtils.generateResetKey());
-        mailService.sendPasswordResetMail(user, getRequestUrl());
+        mailService.sendPasswordResetMail(user, getRequestUrl(request));
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("NM2002")).build();
     }
 
@@ -275,19 +276,5 @@ public class AccountController {
         String forwardUrl = "forward:".concat(UserController.GET_PROFILE_PHOTO_URL).concat(SecurityUtils.getCurrentUserName());
         log.info(forwardUrl);
         return new ModelAndView(forwardUrl);
-    }
-
-    private String getRequestUrl() {
-        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        HttpServletRequest request = servletRequestAttributes != null ? servletRequestAttributes.getRequest() : null;
-        if (request == null) {
-            return "";
-        }
-        return request.getScheme() + // "http"
-                "://" + // "://"
-                request.getServerName() + // "host"
-                ":" + // ":"
-                request.getServerPort() + // "80"
-                request.getContextPath();
     }
 }

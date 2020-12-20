@@ -24,8 +24,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -37,6 +35,7 @@ import java.util.stream.Collectors;
 import static javax.servlet.http.HttpServletResponse.*;
 import static org.infinity.passport.domain.User.DEFAULT_PASSWORD;
 import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
+import static org.infinity.passport.utils.NetworkUtils.getRequestUrl;
 
 /**
  * REST controller for managing users.
@@ -72,10 +71,11 @@ public class UserController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "账号已注册")})
     @PostMapping("/api/user/users")
     @Secured({Authority.ADMIN})
-    public ResponseEntity<Void> create(@ApiParam(value = "用户", required = true) @Valid @RequestBody User domain) {
+    public ResponseEntity<Void> create(@ApiParam(value = "用户", required = true) @Valid @RequestBody User domain,
+                                       HttpServletRequest request) {
         log.debug("REST request to create user: {}", domain);
         User newUser = userService.insert(domain, DEFAULT_PASSWORD);
-        mailService.sendCreationEmail(newUser, getRequestUrl());
+        mailService.sendCreationEmail(newUser, getRequestUrl(request));
         HttpHeaders headers = httpHeaderCreator.createSuccessHeader("NM2011", DEFAULT_PASSWORD);
         return ResponseEntity.status(HttpStatus.CREATED).headers(headers).build();
     }
@@ -154,19 +154,5 @@ public class UserController {
         User user = userService.findOneByUserName(userName);
         Optional<UserProfilePhoto> userProfilePhoto = userProfilePhotoRepository.findByUserId(user.getId());
         return userProfilePhoto.map(photo -> ResponseEntity.ok(photo.getProfilePhoto().getData())).orElse(null);
-    }
-
-    private String getRequestUrl() {
-        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        HttpServletRequest request = servletRequestAttributes != null ? servletRequestAttributes.getRequest() : null;
-        if (request == null) {
-            return "";
-        }
-        return request.getScheme() + // "http"
-                "://" + // "://"
-                request.getServerName() + // "host"
-                ":" + // ":"
-                request.getServerPort() + // "80"
-                request.getContextPath();
     }
 }
