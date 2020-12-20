@@ -66,7 +66,7 @@ public class UserController {
         this.httpHeaderCreator = httpHeaderCreator;
     }
 
-    @ApiOperation(value = "创建新用户并发送激活邮件", response = String.class)
+    @ApiOperation(value = "创建新用户并发送激活邮件")
     @ApiResponses(value = {@ApiResponse(code = SC_CREATED, message = "成功创建"),
             @ApiResponse(code = SC_BAD_REQUEST, message = "账号已注册")})
     @PostMapping("/api/user/users")

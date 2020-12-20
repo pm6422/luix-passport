@@ -92,7 +92,7 @@ public class AccountController {
         this.tokenStore = tokenStore;
     }
 
-    @ApiOperation(value = "检索访问令牌", notes = "登录成功返回当前访问令牌", response = String.class)
+    @ApiOperation(value = "检索访问令牌", notes = "登录成功返回当前访问令牌")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/account/access-token")
     public ResponseEntity<String> getAccessToken(HttpServletRequest request) {
@@ -103,7 +103,7 @@ public class AccountController {
         return ResponseEntity.ok(StringUtils.substringAfter(token.toLowerCase(), OAuth2AccessToken.BEARER_TYPE.toLowerCase()).trim());
     }
 
-    @ApiOperation(value = "检索当前登录的用户名", notes = "理论上不会返回false，因为未登录则会出错，登录成功返回当前用户名", response = String.class)
+    @ApiOperation(value = "检索当前登录的用户名", notes = "登录成功返回当前用户名")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/account/authenticate")
     public ResponseEntity<String> isAuthenticated(HttpServletRequest request) {
@@ -148,7 +148,8 @@ public class AccountController {
                 Set<String> authorities = oAuth2Authentication.getUserAuthentication().getAuthorities().stream()
                         .map(GrantedAuthority::getAuthority).collect(Collectors.toSet());
                 if (user != null) {
-                    return ResponseEntity.ok(new ManagedUserDTO(user, authorities));
+                    user.setAuthorities(authorities);
+                    return ResponseEntity.ok(user);
                 }
             }
         }
@@ -239,7 +240,7 @@ public class AccountController {
     @Secured({Authority.USER})
     public void uploadProfilePhoto(@ApiParam(value = "文件描述", required = true) @RequestPart String description,
                                    @ApiParam(value = "用户头像文件", required = true) @RequestPart MultipartFile file) throws IOException {
-        log.debug("Upload file with name {} and description {}", file.getOriginalFilename(), description);
+        log.debug("Upload profile with file name {} and description {}", file.getOriginalFilename(), description);
         User user = userService.findOneByUserName(SecurityUtils.getCurrentUserName());
         userProfilePhotoService.save(user, file.getBytes());
     }
