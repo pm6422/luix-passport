@@ -181,7 +181,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User requestPasswordReset(String email, String resetKey) {
         User user = userRepository.findOneByEmailAndActivatedIsTrue(email)
-                .orElseThrow(() -> new NoDataFoundException(messageCreator.getMessage("email") + ":" + email));
+                .orElseThrow(() -> new NoDataFoundException(messageCreator.getMessage("email")));
         user.setResetKey(RandomUtils.generateResetKey());
         user.setResetTime(Instant.now());
         userRepository.save(user);
