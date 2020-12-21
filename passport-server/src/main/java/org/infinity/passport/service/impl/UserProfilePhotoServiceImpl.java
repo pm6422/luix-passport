@@ -4,7 +4,6 @@ import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
 import org.infinity.passport.domain.User;
 import org.infinity.passport.domain.UserProfilePhoto;
-import org.infinity.passport.exception.NoDataFoundException;
 import org.infinity.passport.repository.UserProfilePhotoRepository;
 import org.infinity.passport.repository.UserRepository;
 import org.infinity.passport.service.UserProfilePhotoService;
@@ -31,10 +30,9 @@ public class UserProfilePhotoServiceImpl implements UserProfilePhotoService {
     }
 
     @Override
-    public void update(String id, byte[] photoData) {
-        UserProfilePhoto existingPhoto = userProfilePhotoRepository.findById(id).orElseThrow(() -> new NoDataFoundException(id));
-        existingPhoto.setProfilePhoto(new Binary(BsonBinarySubType.BINARY, photoData));
-        userProfilePhotoRepository.save(existingPhoto);
+    public void update(UserProfilePhoto photo, byte[] photoData) {
+        photo.setProfilePhoto(new Binary(BsonBinarySubType.BINARY, photoData));
+        userProfilePhotoRepository.save(photo);
     }
 
     @Override
@@ -42,7 +40,7 @@ public class UserProfilePhotoServiceImpl implements UserProfilePhotoService {
         Optional<UserProfilePhoto> existingPhoto = userProfilePhotoRepository.findByUserId(user.getId());
         if (existingPhoto.isPresent()) {
             // Update if exists
-            update(existingPhoto.get().getId(), photoData);
+            update(existingPhoto.get(), photoData);
         } else {
             // Insert if not exists
             insert(user.getId(), photoData);

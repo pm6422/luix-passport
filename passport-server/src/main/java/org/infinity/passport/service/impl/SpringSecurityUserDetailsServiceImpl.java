@@ -28,7 +28,8 @@ public class SpringSecurityUserDetailsServiceImpl implements org.springframework
     private final UserAuthorityRepository userAuthorityRepository;
 
     // Use @Lazy to fix dependencies problems
-    public SpringSecurityUserDetailsServiceImpl(@Lazy UserService userService, UserAuthorityRepository userAuthorityRepository) {
+    public SpringSecurityUserDetailsServiceImpl(@Lazy UserService userService,
+                                                UserAuthorityRepository userAuthorityRepository) {
         this.userService = userService;
         this.userAuthorityRepository = userAuthorityRepository;
     }
