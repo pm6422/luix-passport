@@ -31,8 +31,6 @@ public class OAuth2AccessTokenReadConverter implements Converter<Document, OAuth
         }
         oAuth2AccessToken.setScope(new HashSet<>((List<String>) source.get("scope")));
         oAuth2AccessToken.setAdditionalInformation((Map<String, Object>) source.get("additionalInformation"));
-
         return oAuth2AccessToken;
     }
-
 }

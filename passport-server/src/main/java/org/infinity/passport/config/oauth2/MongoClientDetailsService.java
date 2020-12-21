@@ -66,9 +66,8 @@ public class MongoClientDetailsService implements ClientDetailsService, ClientRe
 
     public void saveClientDetails(MongoOAuth2ClientDetails mongoClientDetails, ClientDetails clientDetails) {
         mongoClientDetails.setClientId(clientDetails.getClientId());
-        mongoClientDetails.setClientSecret(
-                clientDetails.getClientSecret() != null ? passwordEncoder.encode(clientDetails.getClientSecret())
-                        : null);
+        String clientSecret = clientDetails.getClientSecret() != null ? passwordEncoder.encode(clientDetails.getClientSecret()) : null;
+        mongoClientDetails.setClientSecret(clientSecret);
         mongoClientDetails.setScope(clientDetails.getScope());
         mongoClientDetails.setResourceIds(clientDetails.getResourceIds());
         mongoClientDetails.setAuthorizedGrantTypes(clientDetails.getAuthorizedGrantTypes());

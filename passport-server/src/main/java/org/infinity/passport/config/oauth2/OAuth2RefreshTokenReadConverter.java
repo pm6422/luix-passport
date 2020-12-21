@@ -15,7 +15,6 @@ public class OAuth2RefreshTokenReadConverter implements Converter<Document, OAut
 
     @Override
     public OAuth2RefreshToken convert(Document source) {
-        return new DefaultExpiringOAuth2RefreshToken(
-                (String) source.get("value"), (Date) source.get("expiration"));
+        return new DefaultExpiringOAuth2RefreshToken((String) source.get("value"), (Date) source.get("expiration"));
     }
 }
