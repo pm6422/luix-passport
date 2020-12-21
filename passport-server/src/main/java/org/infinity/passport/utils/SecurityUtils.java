@@ -17,8 +17,7 @@ import java.util.Collection;
  */
 public abstract class SecurityUtils {
     /**
-     * Return the current user, or throws an exception, if the user is not
-     * authenticated yet.
+     * Return the current user, or throws an exception, if the user is not authenticated yet.
      *
      * @return the current user
      */
@@ -84,8 +83,7 @@ public abstract class SecurityUtils {
      * If the current user has a specific authority (security role).
      *
      * <p>
-     * The name of this method comes from the isUserInRole() method in the
-     * Servlet API
+     * The name of this method comes from the isUserInRole() method in the Servlet API
      * </p>
      *
      * @param role the authority to check
