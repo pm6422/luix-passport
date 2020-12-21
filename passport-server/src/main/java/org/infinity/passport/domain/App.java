@@ -5,14 +5,15 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.infinity.passport.dto.AppDTO;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Set;
 
 /**
  * Spring Data MongoDB collection for the App entity.
@@ -35,11 +36,12 @@ public class App implements Serializable {
     @ApiModelProperty(value = "是否可用")
     private Boolean enabled;
 
-    public AppDTO toDTO() {
-        return new AppDTO(this.getName(), this.getEnabled());
-    }
+    @ApiModelProperty(value = "权限名称")
+    @Transient
+    private Set<String> authorities;
 
-    public static App of(AppDTO dto) {
-        return new App(dto.getName(), dto.getEnabled());
+    public App(String name, Boolean enabled) {
+        this.name = name;
+        this.enabled = enabled;
     }
 }

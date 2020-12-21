@@ -13,7 +13,7 @@ public interface UserService {
 
     User insert(User user, String rawPassword);
 
-    void update(User dto);
+    void update(User user);
 
     User findOneByUserName(String userName);
 

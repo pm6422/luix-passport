@@ -10,8 +10,6 @@ import org.infinity.passport.repository.AppRepository;
 import org.infinity.passport.service.AppService;
 import org.springframework.stereotype.Service;
 
-import java.util.Set;
-
 @Service
 @Slf4j
 public class AppServiceImpl implements AppService {
@@ -26,29 +24,28 @@ public class AppServiceImpl implements AppService {
     }
 
     @Override
-    public App insert(String name, Boolean enabled, Set<String> authorityNames) {
-        App newApp = new App(name, enabled);
-        appRepository.save(newApp);
-        authorityNames.forEach(authorityName -> appAuthorityRepository.insert(new AppAuthority(newApp.getName(), authorityName)));
-        log.debug("Created Information for app: {}", newApp);
-        return newApp;
+    public App insert(App domain) {
+        appRepository.save(domain);
+        domain.getAuthorities().forEach(authorityName -> appAuthorityRepository.insert(new AppAuthority(domain.getName(), authorityName)));
+        log.debug("Created Information for app: {}", domain);
+        return domain;
     }
 
     @Override
-    public void update(String name, Boolean enabled, Set<String> authorityNames) {
-        appRepository.findById(name).map(app -> {
-            app.setEnabled(enabled);
+    public void update(App domain) {
+        appRepository.findById(domain.getName()).map(app -> {
+            app.setEnabled(domain.getEnabled());
             appRepository.save(app);
             log.debug("Updated app: {}", app);
 
-            if (CollectionUtils.isNotEmpty(authorityNames)) {
-                appAuthorityRepository.deleteByAppName(app.getName());
-                authorityNames.forEach(authorityName -> appAuthorityRepository.insert(new AppAuthority(app.getName(), authorityName)));
+            if (CollectionUtils.isNotEmpty(domain.getAuthorities())) {
+                appAuthorityRepository.deleteByAppName(domain.getName());
+                domain.getAuthorities().forEach(authorityName -> appAuthorityRepository.insert(new AppAuthority(domain.getName(), authorityName)));
                 log.debug("Updated user authorities");
             } else {
                 appAuthorityRepository.deleteByAppName(app.getName());
             }
             return app;
-        }).orElseThrow(() -> new NoDataFoundException(name));
+        }).orElseThrow(() -> new NoDataFoundException(domain.getName()));
     }
 }
