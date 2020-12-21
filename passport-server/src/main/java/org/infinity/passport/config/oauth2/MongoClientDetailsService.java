@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -27,10 +26,7 @@ public class MongoClientDetailsService implements ClientDetailsService, ClientRe
     @Override
     public ClientDetails loadClientByClientId(String clientId) throws ClientRegistrationException {
         return oAuth2ClientDetailsRepository.findById(clientId)
-                .orElseThrow(() -> {
-                    log.error("No client with requested id: " + clientId);
-                    return new NoSuchClientException("No client with requested id: " + clientId);
-                });
+                .orElseThrow(() -> new NoSuchClientException("No client found with id: " + clientId));
     }
 
     @Override
@@ -43,17 +39,15 @@ public class MongoClientDetailsService implements ClientDetailsService, ClientRe
 
     @Override
     public void updateClientDetails(ClientDetails clientDetails) throws NoSuchClientException {
-        Optional<MongoOAuth2ClientDetails> mongoClientDetails = oAuth2ClientDetailsRepository.findById(clientDetails.getClientId());
-        if (!mongoClientDetails.isPresent()) {
-            throw new NoSuchClientException("No client found with ID: " + clientDetails.getClientId());
-        }
-        saveClientDetails(mongoClientDetails.get(), clientDetails);
+        MongoOAuth2ClientDetails mongoClientDetails = oAuth2ClientDetailsRepository.findById(clientDetails.getClientId())
+                .orElseThrow(() -> new NoSuchClientException("No client found with ID: " + clientDetails.getClientId()));
+        saveClientDetails(mongoClientDetails, clientDetails);
     }
 
     @Override
     public void updateClientSecret(String clientId, String secret) throws NoSuchClientException {
         MongoOAuth2ClientDetails mongoClientDetails = oAuth2ClientDetailsRepository.findById(clientId)
-                .orElseThrow(() -> new NoSuchClientException("No client with requested id: " + clientId));
+                .orElseThrow(() -> new NoSuchClientException("No client found with id: " + clientId));
         mongoClientDetails.setClientSecret(passwordEncoder.encode(secret));
         oAuth2ClientDetailsRepository.save(mongoClientDetails);
     }
@@ -61,7 +55,7 @@ public class MongoClientDetailsService implements ClientDetailsService, ClientRe
     @Override
     public void removeClientDetails(String clientId) throws NoSuchClientException {
         MongoOAuth2ClientDetails mongoClientDetails = oAuth2ClientDetailsRepository.findById(clientId)
-                .orElseThrow(() -> new NoSuchClientException("No client with requested id: " + clientId));
+                .orElseThrow(() -> new NoSuchClientException("No client found with id: " + clientId));
         oAuth2ClientDetailsRepository.delete(mongoClientDetails);
     }
 

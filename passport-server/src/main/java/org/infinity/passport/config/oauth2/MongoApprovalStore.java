@@ -1,6 +1,7 @@
 package org.infinity.passport.config.oauth2;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.infinity.passport.domain.MongoOAuth2Approval;
 import org.infinity.passport.repository.OAuth2ApprovalRepository;
 import org.springframework.security.oauth2.provider.approval.Approval;
@@ -35,28 +36,23 @@ public class MongoApprovalStore implements ApprovalStore {
         for (final Approval approval : approvals) {
             List<MongoOAuth2Approval> mongoDBApprovals = this.oAuth2ApprovalRepository
                     .findByUserIdAndClientIdAndScope(approval.getUserId(), approval.getClientId(), approval.getScope());
-
-            if (!mongoDBApprovals.isEmpty()) {
-                for (final MongoOAuth2Approval mongoDBApproval : mongoDBApprovals) {
-                    updateApproval(mongoDBApproval, approval);
-                }
+            if (CollectionUtils.isEmpty(mongoDBApprovals)) {
+                saveApproval(new MongoOAuth2Approval(), approval);
             } else {
-                updateApproval(new MongoOAuth2Approval(), approval);
+                mongoDBApprovals.forEach(mongoDBApproval -> saveApproval(mongoDBApproval, approval));
             }
         }
         return true;
     }
 
-    private void updateApproval(final MongoOAuth2Approval mongoDBApproval, final Approval approval) {
+    private void saveApproval(final MongoOAuth2Approval mongoDBApproval, final Approval approval) {
         log.debug("Refreshing approval: {}", approval);
-
         mongoDBApproval.setExpiresAt(approval.getExpiresAt());
         mongoDBApproval.setStatus(approval.getStatus() == null ? Approval.ApprovalStatus.APPROVED : approval.getStatus());
         mongoDBApproval.setLastUpdatedAt(approval.getLastUpdatedAt());
         mongoDBApproval.setUserId(approval.getUserId());
         mongoDBApproval.setClientId(approval.getClientId());
         mongoDBApproval.setScope(approval.getScope());
-
         this.oAuth2ApprovalRepository.save(mongoDBApproval);
     }
 
