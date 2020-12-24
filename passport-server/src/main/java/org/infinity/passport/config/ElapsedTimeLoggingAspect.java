@@ -11,7 +11,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Aspect for logging elapsed time of Spring components.
@@ -22,10 +21,13 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class ElapsedTimeLoggingAspect {
 
-    private static final long                  SECOND          = TimeUnit.SECONDS.toMillis(1);
-    private static final long                  MINUTE          = TimeUnit.MINUTES.toMillis(1);
-    private static final String                SERVICE_PACKAGE = "within(" + ApplicationConstants.BASE_PACKAGE + ".service..*)";
-    private final        ApplicationProperties applicationProperties;
+    private static final String SERVICE_PACKAGE    = "within(" + ApplicationConstants.BASE_PACKAGE + ".service..*)";
+    private static final String CONTROLLER_PACKAGE = "within(" + ApplicationConstants.BASE_PACKAGE + ".controller..*)";
+    private static final String HEADER_KEY         = "X-ELAPSED";
+    private static final int    SECOND             = 1000;
+    private static final int    MINUTE             = 60000;
+
+    private final ApplicationProperties applicationProperties;
 
     public ElapsedTimeLoggingAspect(ApplicationProperties applicationProperties) {
         this.applicationProperties = applicationProperties;
@@ -38,27 +40,38 @@ public class ElapsedTimeLoggingAspect {
      * @return return value
      * @throws Throwable if exception occurs
      */
-    @Around("execution(@(org.springframework.web.bind.annotation.*Mapping) * *(..))")
+    @Around(CONTROLLER_PACKAGE)
     public Object logController(ProceedingJoinPoint joinPoint) throws Throwable {
-        return calculateExecutionTime(joinPoint, true);
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        Object result = joinPoint.proceed();
+        stopWatch.stop();
+        long elapsed = stopWatch.getTotalTimeMillis();
+
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletResponse response = servletRequestAttributes != null ? servletRequestAttributes.getResponse() : null;
+        if (response != null) {
+            // Store execution time to each http header
+            if (elapsed < SECOND) {
+                response.setHeader(HEADER_KEY, "" + elapsed + "ms");
+            } else if (elapsed < MINUTE) {
+                response.setHeader(HEADER_KEY, "" + elapsed / SECOND + "s");
+            } else {
+                response.setHeader(HEADER_KEY, "" + elapsed / (MINUTE) + "m");
+            }
+        }
+        outputLog(joinPoint, elapsed);
+        return result;
     }
 
     @Around(SERVICE_PACKAGE)
     public Object logService(ProceedingJoinPoint joinPoint) throws Throwable {
-        return calculateExecutionTime(joinPoint, false);
-    }
-
-    private Object calculateExecutionTime(ProceedingJoinPoint joinPoint, boolean addResponseHeader) throws Throwable {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         Object result = joinPoint.proceed();
         stopWatch.stop();
         long elapsed = stopWatch.getTotalTimeMillis();
         outputLog(joinPoint, elapsed);
-
-        if (addResponseHeader) {
-            addResponseHeader(elapsed);
-        }
         return result;
     }
 
@@ -69,25 +82,10 @@ public class ElapsedTimeLoggingAspect {
                         joinPoint.getSignature().getDeclaringType().getSimpleName(), joinPoint.getSignature().getName(), elapsed);
             } else if (elapsed < MINUTE) {
                 log.warn("Found slow running method {}.{}() over {}s",
-                        joinPoint.getSignature().getDeclaringType().getSimpleName(), joinPoint.getSignature().getName(), elapsed / SECOND);
+                        joinPoint.getSignature().getDeclaringType().getSimpleName(), joinPoint.getSignature().getName(), elapsed / 1000);
             } else {
                 log.warn("Found slow running method {}.{}() over {}m",
-                        joinPoint.getSignature().getDeclaringType().getSimpleName(), joinPoint.getSignature().getName(), elapsed / MINUTE);
-            }
-        }
-    }
-
-    private void addResponseHeader(long elapsed) {
-        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        HttpServletResponse response = servletRequestAttributes != null ? servletRequestAttributes.getResponse() : null;
-        if (response != null) {
-            // Store execution time to each http header
-            if (elapsed < SECOND) {
-                response.setHeader("ELAPSED", "" + elapsed + "ms");
-            } else if (elapsed < MINUTE) {
-                response.setHeader("ELAPSED", "" + elapsed / SECOND + "s");
-            } else {
-                response.setHeader("ELAPSED", "" + elapsed / MINUTE + "m");
+                        joinPoint.getSignature().getDeclaringType().getSimpleName(), joinPoint.getSignature().getName(), elapsed / (1000 * 60));
             }
         }
     }
