@@ -26,9 +26,11 @@ import java.util.*;
 public class ValidationBeanPostProcessor implements BeanPostProcessor {
     private static final String      VALIDATION_CODE_PREFIX = "Validation.";
     private static final Set<String> INITIALIZED_BEAN       = new HashSet<>();
+    private static final String      MESSAGE_PROPERTY       = "message";
+    private static final String      PATTERN_PACKAGE        = "javax.validation.constraints.Pattern";
 
     @Override
-    public Object postProcessBeforeInitialization(Object bean, @Nonnull String beanName) throws BeansException {
+    public Object postProcessBeforeInitialization(@Nonnull Object bean, @Nonnull String beanName) throws BeansException {
         if (!isControllerBean(bean)) {
             return bean;
         }
@@ -46,62 +48,62 @@ public class ValidationBeanPostProcessor implements BeanPostProcessor {
                 Field[] parameterFields = parameterType.getDeclaredFields();
                 for (Field parameterField : parameterFields) {
                     Annotation[] annotations = parameterField.getDeclaredAnnotations();
-                    Optional<Annotation> apiModelPropertyAnnotation = Arrays.asList(annotations)
-                            .stream()
+                    Optional<Annotation> apiModelPropertyAnnotation = Arrays.stream(annotations)
                             .filter(annotation -> annotation.annotationType().equals(ApiModelProperty.class)).findFirst();
                     for (Annotation annotation : annotations) {
-                        String fieldAnnotationName = annotation.annotationType().getName();
-                        if (!isBeanValidationAnnotation(fieldAnnotationName)) {
-                            continue;
-                        }
-
-                        try {
-                            // Enhance message property of validation annotation class by dynamic proxy
-                            InvocationHandler invocationHandler = Proxy.getInvocationHandler(annotation);
-                            // Get the field memberValues of sun.reflect.annotationAnnotationInvocationHandler
-                            Field memberValuesField = invocationHandler.getClass().getDeclaredField("memberValues");
-                            if (memberValuesField == null) {
-                                continue;
-                            }
-                            memberValuesField.setAccessible(true);
-                            @SuppressWarnings("unchecked")
-                            Map<String, Object> annotationPropertyMap = (Map<String, Object>) memberValuesField.get(invocationHandler);
-                            String message = annotationPropertyMap.get("message").toString();
-
-                            // Get the bean validation annotation simple name
-                            String annotationSimpleName = fieldAnnotationName.substring(fieldAnnotationName.lastIndexOf(".") + 1);
-                            // Get field name from 'value' attribute of ApiModelProperty.class
-                            String annotationFieldName = apiModelPropertyAnnotation.isPresent() ? ((ApiModelProperty) apiModelPropertyAnnotation.get()).value() : "";
-                            String fieldName = StringUtils.isNotEmpty(annotationFieldName) ? annotationFieldName : "{" + parameterField.getName() + "}";
-                            if ((fieldAnnotationName.equals("javax.validation.constraints.Pattern"))) {
-                                // Handle message property of @Pattern annotation
-                                String msg = String.format("[%s]: %s", fieldName, message);
-                                annotationPropertyMap.put("message", msg);
-                                INITIALIZED_BEAN.add(parameterField.getDeclaringClass().getName());
-                            } else if (isDefaultMassage(message)) {
-                                // Handle message property of other validation annotations except for @Pattern
-                                // and message value of the annotation is null explicitly
-                                String msg = String.format("[%s]: {%s}", fieldName, VALIDATION_CODE_PREFIX.concat(annotationSimpleName));
-                                annotationPropertyMap.put("message", msg);
-                                INITIALIZED_BEAN.add(parameterField.getDeclaringClass().getName());
-                            } else {
-                                // Handle message property when message value of the annotation is NOT null explicitly
-                                String msg = String.format("[%s]: ", fieldName).concat(message);
-                                annotationPropertyMap.put("message", msg);
-                                INITIALIZED_BEAN.add(parameterField.getDeclaringClass().getName());
-                            }
-                            log.debug("Initialized validated bean class {}'s annotation @{} with message value: {}",
-                                    parameterField.getDeclaringClass().getSimpleName(),
-                                    annotationSimpleName,
-                                    annotationPropertyMap.get("message"));
-                        } catch (Exception e) {
-                            log.error("Failed to process the bean validation annotation!", e);
-                        }
+                        addMessageProperty(parameterField, apiModelPropertyAnnotation, annotation);
                     }
                 }
             }
         }
         return bean;
+    }
+
+    private void addMessageProperty(Field parameterField, Optional<Annotation> apiModelPropertyAnnotation, Annotation annotation) {
+        String fieldAnnotationName = annotation.annotationType().getName();
+        if (!isBeanValidationAnnotation(fieldAnnotationName)) {
+            return;
+        }
+
+        try {
+            // Enhance message property of validation annotation class by dynamic proxy
+            InvocationHandler invocationHandler = Proxy.getInvocationHandler(annotation);
+            // Get the field memberValues of sun.reflect.annotationAnnotationInvocationHandler
+            Field memberValuesField = invocationHandler.getClass().getDeclaredField("memberValues");
+            memberValuesField.setAccessible(true);
+            @SuppressWarnings("unchecked")
+            Map<String, Object> annotationPropertyMap = (Map<String, Object>) memberValuesField.get(invocationHandler);
+            String message = annotationPropertyMap.get(MESSAGE_PROPERTY).toString();
+
+            // Get the bean validation annotation simple name
+            String annotationSimpleName = fieldAnnotationName.substring(fieldAnnotationName.lastIndexOf(".") + 1);
+            // Get field name from 'value' attribute of ApiModelProperty.class
+            String annotationFieldName = apiModelPropertyAnnotation.map(value -> ((ApiModelProperty) value).value()).orElse("");
+            String fieldName = StringUtils.isNotEmpty(annotationFieldName) ? annotationFieldName : "{" + parameterField.getName() + "}";
+            if (PATTERN_PACKAGE.equals(fieldAnnotationName)) {
+                // Handle message property of @Pattern annotation
+                String msg = String.format("[%s]: %s", fieldName, message);
+                annotationPropertyMap.put(MESSAGE_PROPERTY, msg);
+                INITIALIZED_BEAN.add(parameterField.getDeclaringClass().getName());
+            } else if (isDefaultMassage(message)) {
+                // Handle message property of other validation annotations except for @Pattern
+                // and message value of the annotation is null explicitly
+                String msg = String.format("[%s]: {%s}", fieldName, VALIDATION_CODE_PREFIX.concat(annotationSimpleName));
+                annotationPropertyMap.put(MESSAGE_PROPERTY, msg);
+                INITIALIZED_BEAN.add(parameterField.getDeclaringClass().getName());
+            } else {
+                // Handle message property when message value of the annotation is NOT null explicitly
+                String msg = String.format("[%s]: ", fieldName).concat(message);
+                annotationPropertyMap.put(MESSAGE_PROPERTY, msg);
+                INITIALIZED_BEAN.add(parameterField.getDeclaringClass().getName());
+            }
+            log.debug("Initialized validated bean class {}'s annotation @{} with message value: {}",
+                    parameterField.getDeclaringClass().getSimpleName(),
+                    annotationSimpleName,
+                    annotationPropertyMap.get(MESSAGE_PROPERTY));
+        } catch (Exception e) {
+            log.error("Failed to process the bean validation annotation!", e);
+        }
     }
 
     private boolean isControllerBean(Object bean) {
