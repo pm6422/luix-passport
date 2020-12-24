@@ -134,6 +134,8 @@ application:
         host:
     aop-logging:
         enabled: true
+        logging-methods:
+            - AccountController.getTokenUser
     elapsed-time-logging:
         enabled: true
         slow-execution-threshold: 300 # unit: ms

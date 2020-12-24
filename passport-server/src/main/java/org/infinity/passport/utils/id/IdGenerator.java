@@ -5,7 +5,9 @@ import javax.annotation.concurrent.ThreadSafe;
 @ThreadSafe
 public class IdGenerator {
     private static final ShortIdGenerator     SHORT_ID_GENERATOR      = new ShortIdGenerator();
-    // 毫秒内固定起始值开始
+    /**
+     * 毫秒内固定起始值开始
+     */
     private static final SnowFlakeIdGenerator SNOW_FLAKE_ID_GENERATOR = new SnowFlakeIdGenerator(1L, false, false);
 
     private IdGenerator() {
@@ -36,5 +38,14 @@ public class IdGenerator {
      */
     public static long generateShortId() {
         return SHORT_ID_GENERATOR.nextId();
+    }
+
+    /**
+     * Generate a 19 bits format ID
+     *
+     * @return 19 bits length，e.g：R317297928250941551
+     */
+    public static String generateRequestId() {
+        return "R" + generateSnowFlakeId();
     }
 }
