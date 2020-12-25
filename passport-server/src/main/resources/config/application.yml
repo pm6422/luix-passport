@@ -134,6 +134,7 @@ application:
         host:
     aop-logging:
         enabled: true
+        methods-whitelist-mode: false
         logging-methods:
             - AccountController.getTokenUser
     elapsed-time-logging:

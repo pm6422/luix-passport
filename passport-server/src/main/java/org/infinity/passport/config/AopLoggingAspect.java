@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.infinity.passport.utils.RequestIdHolder;
 import org.infinity.passport.utils.id.IdGenerator;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -11,8 +12,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * Aspect for logging execution arguments and result of the method.
@@ -40,27 +46,10 @@ public class AopLoggingAspect {
      */
     @Around("execution(@(org.springframework.web.bind.annotation.*Mapping) * *(..))")
     public Object logController(ProceedingJoinPoint joinPoint) throws Throwable {
-        if (log.isInfoEnabled() && inLoggingMethods(joinPoint)) {
-            RequestIdHolder.setRequestId(IdGenerator.generateRequestId());
-            log.info("Request: {}.{}() with requestId = {} and argument[s] = {}",
-                    joinPoint.getSignature().getDeclaringType().getSimpleName(),
-                    joinPoint.getSignature().getName(),
-                    RequestIdHolder.getRequestId(),
-                    Arrays.toString(joinPoint.getArgs()));
-        }
         try {
+            beforeRun(joinPoint);
             Object result = joinPoint.proceed();
-            if (log.isInfoEnabled() && inLoggingMethods(joinPoint)) {
-                HttpServletResponse response = getHttpServletResponse();
-                if (response != null) {
-                    response.setHeader("X-REQUEST-ID", RequestIdHolder.getRequestId());
-                }
-                log.info("Response: {}.{}() with requestId = {} and result = {}",
-                        joinPoint.getSignature().getDeclaringType().getSimpleName(),
-                        joinPoint.getSignature().getName(),
-                        RequestIdHolder.getRequestId(),
-                        result);
-            }
+            afterRun(joinPoint, result);
             return result;
         } catch (IllegalArgumentException e) {
             // Catch illegal argument exception and re-throw
@@ -72,10 +61,50 @@ public class AopLoggingAspect {
         }
     }
 
-    private boolean inLoggingMethods(ProceedingJoinPoint joinPoint) {
+    public void beforeRun(ProceedingJoinPoint joinPoint) {
+        if (log.isInfoEnabled() && needLog(joinPoint)) {
+            // Store request id
+            RequestIdHolder.setRequestId(IdGenerator.generateRequestId());
+            String[] paramNames = ((MethodSignature) joinPoint.getSignature()).getParameterNames();
+            Object[] arguments = joinPoint.getArgs();
+            Map<String, Object> paramMap = new HashMap<>(arguments.length);
+            for (int i = 0; i < arguments.length; i++) {
+                if (isValidArgument(arguments[i])) {
+                    paramMap.put(paramNames[i], arguments[i]);
+                }
+            }
+            log.info("{} Request: {}.{}() with argument[s] = {}",
+                    RequestIdHolder.getRequestId(),
+                    joinPoint.getSignature().getDeclaringType().getSimpleName(),
+                    joinPoint.getSignature().getName(),
+                    paramMap);
+        }
+    }
+
+    private boolean needLog(ProceedingJoinPoint joinPoint) {
+        if (!applicationProperties.getAopLogging().isMethodsWhitelistMode()) {
+            return true;
+        }
         String method = joinPoint.getSignature().getDeclaringType().getSimpleName() + "." +
                 joinPoint.getSignature().getName();
         return applicationProperties.getAopLogging().getLoggingMethods().contains(method);
+    }
+
+    private boolean isValidArgument(Object argument) {
+        return !(argument instanceof ServletRequest)
+                && !(argument instanceof ServletResponse);
+    }
+
+    private void afterRun(ProceedingJoinPoint joinPoint, Object result) {
+        if (log.isInfoEnabled() && needLog(joinPoint)) {
+            Optional.ofNullable(getHttpServletResponse())
+                    .ifPresent(r -> r.setHeader("X-REQUEST-ID", RequestIdHolder.getRequestId()));
+            log.info("{} Response: {}.{}() with result = {}",
+                    RequestIdHolder.getRequestId(),
+                    joinPoint.getSignature().getDeclaringType().getSimpleName(),
+                    joinPoint.getSignature().getName(),
+                    result);
+        }
     }
 
     private HttpServletResponse getHttpServletResponse() {
