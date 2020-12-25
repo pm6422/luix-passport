@@ -1,6 +1,7 @@
 package org.infinity.passport.config;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -14,6 +15,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -29,6 +31,7 @@ import java.util.Optional;
 @Slf4j
 public class AopLoggingAspect {
 
+    private static final String REQUEST_ID = "X-REQUEST-ID";
     private final ApplicationProperties applicationProperties;
 
     public AopLoggingAspect(ApplicationProperties applicationProperties) {
@@ -47,9 +50,12 @@ public class AopLoggingAspect {
     @Around("execution(@(org.springframework.web.bind.annotation.*Mapping) * *(..))")
     public Object logController(ProceedingJoinPoint joinPoint) throws Throwable {
         try {
-            beforeRun(joinPoint);
+            ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+            HttpServletRequest request = servletRequestAttributes != null ? servletRequestAttributes.getRequest() : null;
+            HttpServletResponse response = servletRequestAttributes != null ? servletRequestAttributes.getResponse() : null;
+            beforeRun(joinPoint, request);
             Object result = joinPoint.proceed();
-            afterRun(joinPoint, result);
+            afterRun(joinPoint, response, result);
             return result;
         } catch (IllegalArgumentException e) {
             // Catch illegal argument exception and re-throw
@@ -61,10 +67,15 @@ public class AopLoggingAspect {
         }
     }
 
-    public void beforeRun(ProceedingJoinPoint joinPoint) {
+    public void beforeRun(ProceedingJoinPoint joinPoint, HttpServletRequest request) {
         if (log.isInfoEnabled() && needLog(joinPoint)) {
             // Store request id
-            RequestIdHolder.setRequestId(IdGenerator.generateRequestId());
+            if(StringUtils.isNotEmpty(request.getHeader(REQUEST_ID))) {
+                RequestIdHolder.setRequestId(request.getHeader(REQUEST_ID));
+            }
+            else {
+                RequestIdHolder.setRequestId(IdGenerator.generateRequestId());
+            }
             String[] paramNames = ((MethodSignature) joinPoint.getSignature()).getParameterNames();
             Object[] arguments = joinPoint.getArgs();
             Map<String, Object> paramMap = new HashMap<>(arguments.length);
@@ -95,20 +106,15 @@ public class AopLoggingAspect {
                 && !(argument instanceof ServletResponse);
     }
 
-    private void afterRun(ProceedingJoinPoint joinPoint, Object result) {
+    private void afterRun(ProceedingJoinPoint joinPoint, HttpServletResponse response, Object result) {
         if (log.isInfoEnabled() && needLog(joinPoint)) {
-            Optional.ofNullable(getHttpServletResponse())
-                    .ifPresent(r -> r.setHeader("X-REQUEST-ID", RequestIdHolder.getRequestId()));
+            Optional.ofNullable(response)
+                    .ifPresent(r -> r.setHeader(REQUEST_ID, RequestIdHolder.getRequestId()));
             log.info("{} Response: {}.{}() with result = {}",
                     RequestIdHolder.getRequestId(),
                     joinPoint.getSignature().getDeclaringType().getSimpleName(),
                     joinPoint.getSignature().getName(),
                     result);
         }
-    }
-
-    private HttpServletResponse getHttpServletResponse() {
-        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        return servletRequestAttributes != null ? servletRequestAttributes.getResponse() : null;
     }
 }
