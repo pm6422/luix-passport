@@ -96,7 +96,7 @@ public class AopLoggingAspect {
             return true;
         }
         String method = joinPoint.getSignature().getDeclaringType().getSimpleName() + "." +
-                joinPoint.getSignature().getName();
+joinPoint.getSignature().getName();
         return applicationProperties.getAopLogging().getMethodWhitelist().contains(method);
     }
 
@@ -107,8 +107,7 @@ public class AopLoggingAspect {
 
     private void afterRun(ProceedingJoinPoint joinPoint, HttpServletResponse response, Object result) {
         if (log.isInfoEnabled() && needLog(joinPoint)) {
-            Optional.ofNullable(response)
-                    .ifPresent(r -> r.setHeader(REQUEST_ID, RequestIdHolder.getRequestId()));
+            Optional.ofNullable(response).ifPresent(r -> r.setHeader(REQUEST_ID, RequestIdHolder.getRequestId()));
             log.info("{} Response: {}.{}() with result = {}",
                     RequestIdHolder.getRequestId(),
                     joinPoint.getSignature().getDeclaringType().getSimpleName(),
