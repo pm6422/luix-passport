@@ -68,7 +68,7 @@ public class AopLoggingAspect {
     }
 
     public void beforeRun(ProceedingJoinPoint joinPoint, HttpServletRequest request) {
-        if (log.isInfoEnabled() && needLog(joinPoint)) {
+        if (log.isInfoEnabled() && matchLogMethod(joinPoint)) {
             // Store request id
             if (StringUtils.isNotEmpty(request.getHeader(REQUEST_ID))) {
                 RequestIdHolder.setRequestId(request.getHeader(REQUEST_ID));
@@ -91,7 +91,18 @@ public class AopLoggingAspect {
         }
     }
 
-    private boolean needLog(ProceedingJoinPoint joinPoint) {
+    private void afterRun(ProceedingJoinPoint joinPoint, HttpServletResponse response, Object result) {
+        if (log.isInfoEnabled() && matchLogMethod(joinPoint)) {
+            Optional.ofNullable(response).ifPresent(r -> r.setHeader(REQUEST_ID, RequestIdHolder.getRequestId()));
+            log.info("{} Response: {}.{}() with result = {}",
+                    RequestIdHolder.getRequestId(),
+                    joinPoint.getSignature().getDeclaringType().getSimpleName(),
+                    joinPoint.getSignature().getName(),
+                    result);
+        }
+    }
+
+    private boolean matchLogMethod(ProceedingJoinPoint joinPoint) {
         if (!applicationProperties.getAopLogging().isMethodWhitelistMode()) {
             return true;
         }
@@ -103,16 +114,5 @@ public class AopLoggingAspect {
     private boolean isValidArgument(Object argument) {
         return !(argument instanceof ServletRequest)
                 && !(argument instanceof ServletResponse);
-    }
-
-    private void afterRun(ProceedingJoinPoint joinPoint, HttpServletResponse response, Object result) {
-        if (log.isInfoEnabled() && needLog(joinPoint)) {
-            Optional.ofNullable(response).ifPresent(r -> r.setHeader(REQUEST_ID, RequestIdHolder.getRequestId()));
-            log.info("{} Response: {}.{}() with result = {}",
-                    RequestIdHolder.getRequestId(),
-                    joinPoint.getSignature().getDeclaringType().getSimpleName(),
-                    joinPoint.getSignature().getName(),
-                    result);
-        }
     }
 }
