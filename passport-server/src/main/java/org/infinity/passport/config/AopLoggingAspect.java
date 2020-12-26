@@ -96,7 +96,7 @@ public class AopLoggingAspect {
             return true;
         }
         String method = joinPoint.getSignature().getDeclaringType().getSimpleName() + "." +
-joinPoint.getSignature().getName();
+                joinPoint.getSignature().getName();
         return applicationProperties.getAopLogging().getMethodWhitelist().contains(method);
     }
 
