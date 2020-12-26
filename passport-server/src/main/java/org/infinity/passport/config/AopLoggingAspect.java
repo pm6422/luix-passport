@@ -31,8 +31,8 @@ import java.util.Optional;
 @Slf4j
 public class AopLoggingAspect {
 
-    private static final String REQUEST_ID = "X-REQUEST-ID";
-    private final ApplicationProperties applicationProperties;
+    private static final String                REQUEST_ID = "X-REQUEST-ID";
+    private final        ApplicationProperties applicationProperties;
 
     public AopLoggingAspect(ApplicationProperties applicationProperties) {
         this.applicationProperties = applicationProperties;
@@ -70,10 +70,9 @@ public class AopLoggingAspect {
     public void beforeRun(ProceedingJoinPoint joinPoint, HttpServletRequest request) {
         if (log.isInfoEnabled() && needLog(joinPoint)) {
             // Store request id
-            if(StringUtils.isNotEmpty(request.getHeader(REQUEST_ID))) {
+            if (StringUtils.isNotEmpty(request.getHeader(REQUEST_ID))) {
                 RequestIdHolder.setRequestId(request.getHeader(REQUEST_ID));
-            }
-            else {
+            } else {
                 RequestIdHolder.setRequestId(IdGenerator.generateRequestId());
             }
             String[] paramNames = ((MethodSignature) joinPoint.getSignature()).getParameterNames();
@@ -93,12 +92,12 @@ public class AopLoggingAspect {
     }
 
     private boolean needLog(ProceedingJoinPoint joinPoint) {
-        if (!applicationProperties.getAopLogging().isMethodsWhitelistMode()) {
+        if (!applicationProperties.getAopLogging().isMethodWhitelistMode()) {
             return true;
         }
         String method = joinPoint.getSignature().getDeclaringType().getSimpleName() + "." +
                 joinPoint.getSignature().getName();
-        return applicationProperties.getAopLogging().getLoggingMethods().contains(method);
+        return applicationProperties.getAopLogging().getMethodWhitelist().contains(method);
     }
 
     private boolean isValidArgument(Object argument) {
