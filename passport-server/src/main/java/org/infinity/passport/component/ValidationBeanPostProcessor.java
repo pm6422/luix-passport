@@ -3,6 +3,7 @@ package org.infinity.passport.component;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
@@ -45,7 +46,8 @@ public class ValidationBeanPostProcessor implements BeanPostProcessor {
                     continue;
                 }
                 Class<?> parameterType = parameter.getType();
-                Field[] parameterFields = parameterType.getDeclaredFields();
+                // Get all fields of the Class passed in or its super classes.
+                Field[] parameterFields = FieldUtils.getAllFields(parameterType);
                 for (Field parameterField : parameterFields) {
                     Annotation[] annotations = parameterField.getDeclaredAnnotations();
                     Optional<Annotation> apiModelPropertyAnnotation = Arrays.stream(annotations)
