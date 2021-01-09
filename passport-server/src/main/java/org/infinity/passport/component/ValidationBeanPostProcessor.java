@@ -46,7 +46,7 @@ public class ValidationBeanPostProcessor implements BeanPostProcessor {
                     continue;
                 }
                 Class<?> parameterType = parameter.getType();
-                // Get all fields of the Class passed in or its super classes.
+                // Get all fields of the class passed in or its super classes.
                 Field[] parameterFields = FieldUtils.getAllFields(parameterType);
                 for (Field parameterField : parameterFields) {
                     Annotation[] annotations = parameterField.getDeclaredAnnotations();
