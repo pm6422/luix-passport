@@ -41,7 +41,7 @@ public class IdGenerator {
     }
 
     /**
-     * Generate a 19 bits format ID
+     * Generate a 19 bits ID
      *
      * @return 19 bits length，e.g：R317297928250941551
      */
