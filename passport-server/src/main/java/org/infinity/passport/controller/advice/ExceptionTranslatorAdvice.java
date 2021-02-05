@@ -23,6 +23,7 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
@@ -92,6 +93,15 @@ public class ExceptionTranslatorAdvice {
     @ResponseBody
     public ResponseEntity<ErrorDTO> processMismatchedInputException(MismatchedInputException ex) {
         log.warn("Found invalid request parameters: ", ex);
+        // Http status: 400
+        return ResponseEntity.badRequest().body(ErrorDTO.builder().code(INVALID_REQUEST_PARAM_CODE).message(ex.getMessage()).build());
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    @ResponseBody
+    public ResponseEntity<ErrorDTO> processMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
+        // warn级别记录用户输入错误
+        log.warn("Found mismatched type request parameters: ", ex);
         // Http status: 400
         return ResponseEntity.badRequest().body(ErrorDTO.builder().code(INVALID_REQUEST_PARAM_CODE).message(ex.getMessage()).build());
     }
