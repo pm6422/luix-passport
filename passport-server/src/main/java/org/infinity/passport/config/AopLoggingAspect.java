@@ -103,9 +103,6 @@ public class AopLoggingAspect {
     }
 
     private boolean matchLogMethod(ProceedingJoinPoint joinPoint) {
-        if (!applicationProperties.getAopLogging().isEnabled()) {
-            return false;
-        }
         if (!applicationProperties.getAopLogging().isMethodWhitelistMode()) {
             return true;
         }
