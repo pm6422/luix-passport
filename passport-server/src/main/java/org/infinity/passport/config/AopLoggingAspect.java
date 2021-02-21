@@ -31,7 +31,7 @@ import java.util.Optional;
 @Slf4j
 public class AopLoggingAspect {
 
-    private static final String                REQUEST_ID = "X-REQUEST-ID";
+    public static final String                REQUEST_ID = "X-REQUEST-ID";
     private final        ApplicationProperties applicationProperties;
 
     public AopLoggingAspect(ApplicationProperties applicationProperties) {
