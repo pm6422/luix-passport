@@ -19,7 +19,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import static org.infinity.passport.config.ApplicationConstants.GLOBAL_HEADER_REQUESTER_ID;
+import static org.infinity.passport.config.AopLoggingAspect.REQUEST_ID;
 import static springfox.documentation.builders.PathSelectors.regex;
 
 /**
@@ -100,8 +100,8 @@ public class SwaggerConfiguration {
      */
     private List<Parameter> createGlobalParameters() {
         ParameterBuilder requesterParamBuilder = new ParameterBuilder();
-        requesterParamBuilder.name(GLOBAL_HEADER_REQUESTER_ID)
-                .description("请求方ID(全局参数)")
+        requesterParamBuilder.name(REQUEST_ID)
+                .description("请求ID(全局参数)")
                 .modelRef(new ModelRef("string"))
                 .parameterType("header")
                 .required(false)
