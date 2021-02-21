@@ -64,42 +64,48 @@ public class AopLoggingAspect {
                     joinPoint.getSignature().getDeclaringType().getSimpleName(),
                     joinPoint.getSignature().getName());
             throw e;
+        } finally {
+            if (needLogOutput(joinPoint)) {
+                RequestIdHolder.destroy();
+            }
         }
     }
 
     public void beforeRun(ProceedingJoinPoint joinPoint, HttpServletRequest request) {
-        if (log.isInfoEnabled() && matchLogMethod(joinPoint)) {
-            // Store request id
-            if (StringUtils.isNotEmpty(request.getHeader(REQUEST_ID))) {
-                RequestIdHolder.setRequestId(request.getHeader(REQUEST_ID));
-            } else {
-                RequestIdHolder.setRequestId(IdGenerator.generateRequestId());
-            }
-            String[] paramNames = ((MethodSignature) joinPoint.getSignature()).getParameterNames();
-            Object[] arguments = joinPoint.getArgs();
-            Map<String, Object> paramMap = new HashMap<>(arguments.length);
-            for (int i = 0; i < arguments.length; i++) {
-                if (isValidArgument(arguments[i])) {
-                    paramMap.put(paramNames[i], arguments[i]);
-                }
-            }
-            log.info("{} Request: {}.{}() with argument[s] = {}",
-                    RequestIdHolder.getRequestId(),
-                    joinPoint.getSignature().getDeclaringType().getSimpleName(),
-                    joinPoint.getSignature().getName(),
-                    paramMap);
+        if (!needLogOutput(joinPoint)) {
+            return;
         }
+        // Store request id
+        if (StringUtils.isNotEmpty(request.getHeader(REQUEST_ID))) {
+            RequestIdHolder.setRequestId(request.getHeader(REQUEST_ID));
+        } else {
+            RequestIdHolder.setRequestId("R" + IdGenerator.generateTimestampId());
+        }
+        String[] paramNames = ((MethodSignature) joinPoint.getSignature()).getParameterNames();
+        Object[] arguments = joinPoint.getArgs();
+        Map<String, Object> paramMap = new HashMap<>(arguments.length);
+        for (int i = 0; i < arguments.length; i++) {
+            if (isValidArgument(arguments[i])) {
+                paramMap.put(paramNames[i], arguments[i]);
+            }
+        }
+        log.info("{} Request: {}.{}() with argument[s] = {}",
+                RequestIdHolder.getRequestId(),
+                joinPoint.getSignature().getDeclaringType().getSimpleName(),
+                joinPoint.getSignature().getName(),
+                paramMap);
     }
 
     private void afterRun(ProceedingJoinPoint joinPoint, HttpServletResponse response, Object result) {
-        if (log.isInfoEnabled() && matchLogMethod(joinPoint)) {
-            Optional.ofNullable(response).ifPresent(r -> r.setHeader(REQUEST_ID, RequestIdHolder.getRequestId()));
-            log.info("{} Response: {}.{}() with result = {}",
-                    RequestIdHolder.getRequestId(),
-                    joinPoint.getSignature().getDeclaringType().getSimpleName(),
-                    joinPoint.getSignature().getName(),
-                    result);
+        if (!needLogOutput(joinPoint)) {
+            return;
         }
+        Optional.ofNullable(response).ifPresent(r -> r.setHeader(REQUEST_ID, RequestIdHolder.getRequestId()));
+        log.info("{} Response: {}.{}() with result = {}",
+                RequestIdHolder.getRequestId(),
+                joinPoint.getSignature().getDeclaringType().getSimpleName(),
+                joinPoint.getSignature().getName(),
+                result);
     }
 
     private boolean matchLogMethod(ProceedingJoinPoint joinPoint) {
@@ -112,7 +118,10 @@ public class AopLoggingAspect {
     }
 
     private boolean isValidArgument(Object argument) {
-        return !(argument instanceof ServletRequest)
-                && !(argument instanceof ServletResponse);
+        return !(argument instanceof ServletRequest) && !(argument instanceof ServletResponse);
+    }
+
+    private boolean needLogOutput(ProceedingJoinPoint joinPoint) {
+        return log.isInfoEnabled() && matchLogMethod(joinPoint);
     }
 }
