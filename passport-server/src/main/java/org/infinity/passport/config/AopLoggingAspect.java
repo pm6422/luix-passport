@@ -32,7 +32,7 @@ import java.util.Optional;
 public class AopLoggingAspect {
 
     public static final String                REQUEST_ID = "X-REQUEST-ID";
-    private final        ApplicationProperties applicationProperties;
+    private final       ApplicationProperties applicationProperties;
 
     public AopLoggingAspect(ApplicationProperties applicationProperties) {
         this.applicationProperties = applicationProperties;
@@ -65,7 +65,7 @@ public class AopLoggingAspect {
                     joinPoint.getSignature().getName());
             throw e;
         } finally {
-            if (needLogOutput(joinPoint)) {
+            if (StringUtils.isNotEmpty(RequestIdHolder.getRequestId())) {
                 RequestIdHolder.destroy();
             }
         }
@@ -108,6 +108,10 @@ public class AopLoggingAspect {
                 result);
     }
 
+    private boolean needLogOutput(ProceedingJoinPoint joinPoint) {
+        return log.isInfoEnabled() && matchLogMethod(joinPoint);
+    }
+
     private boolean matchLogMethod(ProceedingJoinPoint joinPoint) {
         if (!applicationProperties.getAopLogging().isMethodWhitelistMode()) {
             return true;
@@ -119,9 +123,5 @@ public class AopLoggingAspect {
 
     private boolean isValidArgument(Object argument) {
         return !(argument instanceof ServletRequest) && !(argument instanceof ServletResponse);
-    }
-
-    private boolean needLogOutput(ProceedingJoinPoint joinPoint) {
-        return log.isInfoEnabled() && matchLogMethod(joinPoint);
     }
 }
