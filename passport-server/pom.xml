@@ -62,13 +62,13 @@
         <dependency>
             <groupId>com.github.cloudyrock.mongock</groupId>
             <artifactId>mongock-spring-v5</artifactId>
+            <version>4.1.17</version>
             <exclusions>
                 <exclusion>
                     <artifactId>reflections</artifactId>
                     <groupId>org.reflections</groupId>
                 </exclusion>
             </exclusions>
-            <version>4.1.17</version>
         </dependency>
         <dependency>
             <groupId>com.github.cloudyrock.mongock</groupId>
