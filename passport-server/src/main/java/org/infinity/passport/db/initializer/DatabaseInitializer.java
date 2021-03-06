@@ -1,9 +1,9 @@
-package org.infinity.passport.setup;
+package org.infinity.passport.db.initializer;//package org.infinity.passport.setup;
 
-import com.github.mongobee.changeset.ChangeLog;
-import com.github.mongobee.changeset.ChangeSet;
+import com.github.cloudyrock.mongock.ChangeLog;
+import com.github.cloudyrock.mongock.ChangeSet;
+import com.github.cloudyrock.mongock.driver.mongodb.springdata.v3.decorator.impl.MongockTemplate;
 import org.infinity.passport.domain.*;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,19 +16,19 @@ import java.util.concurrent.TimeUnit;
 /**
  * Creates the initial database
  */
-@ChangeLog(order = "001")
-public class DatabaseInitialSetup {
+@ChangeLog(order = "01")
+public class DatabaseInitializer {
 
     private static final String APP_NAME = "PassportServer";
 
     @ChangeSet(order = "01", author = "Louis", id = "addApps", runAlways = true)
-    public void addApps(MongoTemplate mongoTemplate) {
+    public void addApps(MongockTemplate mongoTemplate) {
         App app = new App(APP_NAME, true);
         mongoTemplate.save(app);
     }
 
     @ChangeSet(order = "02", author = "Louis", id = "addAuthorities", runAlways = true)
-    public void addAuthorities(MongoTemplate mongoTemplate) {
+    public void addAuthorities(MongockTemplate mongoTemplate) {
         mongoTemplate.save(new Authority(Authority.USER, true, true));
         mongoTemplate.save(new Authority(Authority.ADMIN, true, true));
         mongoTemplate.save(new Authority(Authority.DEVELOPER, true, true));
@@ -41,7 +41,7 @@ public class DatabaseInitialSetup {
     }
 
     @ChangeSet(order = "03", author = "Louis", id = "addUserAndAuthorities", runAlways = true)
-    public void addUserAndAuthorities(MongoTemplate mongoTemplate) {
+    public void addUserAndAuthorities(MongockTemplate mongoTemplate) {
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         // Creates 'user' user and corresponding authorities
         User userRoleUser = new User();
@@ -121,7 +121,7 @@ public class DatabaseInitialSetup {
     }
 
     @ChangeSet(order = "04", author = "Louis", id = "addAuthorityAdminMenu", runAlways = true)
-    public void addAuthorityAdminMenu(MongoTemplate mongoTemplate) {
+    public void addAuthorityAdminMenu(MongockTemplate mongoTemplate) {
 
         AdminMenu userAuthority = new AdminMenu(APP_NAME, "user-authority", "用户权限", 1, "user-authority", 100, null);
         mongoTemplate.save(userAuthority);
@@ -200,7 +200,7 @@ public class DatabaseInitialSetup {
     }
 
     @ChangeSet(order = "05", author = "Louis", id = "addOAuth2ClientDetails", runAlways = true)
-    public void addOAuth2ClientDetails(MongoTemplate mongoTemplate) {
+    public void addOAuth2ClientDetails(MongockTemplate mongoTemplate) {
         MongoOAuth2ClientDetails oAuth2ClientDetails = new MongoOAuth2ClientDetails();
         oAuth2ClientDetails.setClientId(MongoOAuth2ClientDetails.INTERNAL_CLIENT_ID);
         oAuth2ClientDetails.setRawClientSecret(MongoOAuth2ClientDetails.INTERNAL_RAW_CLIENT_SECRET);

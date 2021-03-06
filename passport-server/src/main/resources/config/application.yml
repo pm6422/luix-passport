@@ -4,13 +4,13 @@
 # This configuration will be overridden by the Spring profile you use,
 # for example application-dev.yml if you use the "dev" profile.
 # Full reference is available at:
-# https://docs.spring.io/spring-boot/docs/2.2.5.RELEASE/reference/html/appendix-application-properties.html
+# https://docs.spring.io/spring-boot/docs/2.3.0.RELEASE/reference/html/appendix-application-properties.html
 # ===================================================================
 management: # Management http server configuration, used by ManagementServerProperties
     endpoints:
         web:
             base-path: /management
-            exposure: # Refer to https://docs.spring.io/spring-boot/docs/2.2.5.RELEASE/reference/html/production-ready-features.html
+            exposure: # Refer to https://docs.spring.io/spring-boot/docs/2.3.0.RELEASE/reference/html/production-ready-features.html
                 include: ['configprops', 'env', 'health', 'info', 'beans', 'mappings', 'httptrace', 'shutdown', 'auditevents', 'scheduledtasks', 'loggers', 'prometheus', 'threaddump']
     endpoint:
         health: # used by HealthEndpointProperties, Note: it will show health details if it has the access token by Ajax
@@ -113,6 +113,10 @@ logging:
     level:
         root: DEBUG
         ${info.project.package}: DEBUG
+mongock:
+    change-logs-scan-package:
+        - ${info.project.package}.db
+    trackIgnored: true
 # ===================================================================
 # Application specific properties
 # ===================================================================
