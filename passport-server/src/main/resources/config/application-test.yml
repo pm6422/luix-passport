@@ -3,7 +3,7 @@
 #
 # This configuration overrides the application.yml file.
 # Full reference is available at:
-# https://docs.spring.io/spring-boot/docs/2.2.5.RELEASE/reference/html/appendix-application-properties.html
+# https://docs.spring.io/spring-boot/docs/2.3.0.RELEASE/reference/html/appendix-application-properties.html
 # ===================================================================
 
 spring:

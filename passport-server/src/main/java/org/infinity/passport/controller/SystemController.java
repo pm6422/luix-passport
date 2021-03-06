@@ -1,7 +1,6 @@
 package org.infinity.passport.controller;
 
-import com.github.mongobee.Mongobee;
-import com.github.mongobee.exception.MongobeeException;
+import io.changock.runner.core.ChangockBase;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.infinity.passport.config.ApplicationProperties;
@@ -22,12 +21,12 @@ import java.io.IOException;
 public class SystemController {
 
     private final ApplicationProperties applicationProperties;
-    private final Mongobee              mongobee;
+    private final ChangockBase          changockBase;
     private final MongoTemplate         mongoTemplate;
 
-    public SystemController(ApplicationProperties applicationProperties, Mongobee mongobee, MongoTemplate mongoTemplate) {
+    public SystemController(ApplicationProperties applicationProperties, ChangockBase changockBase, MongoTemplate mongoTemplate) {
         this.applicationProperties = applicationProperties;
-        this.mongobee = mongobee;
+        this.changockBase = changockBase;
         this.mongoTemplate = mongoTemplate;
     }
 
@@ -56,9 +55,9 @@ public class SystemController {
     }
 
     @GetMapping("/open-api/system/reset-database")
-    public String resetDatabase() throws MongobeeException {
+    public String resetDatabase() {
         mongoTemplate.getDb().drop();
-        mongobee.execute();
+        changockBase.execute();
         return "Reset successfully.";
     }
 }

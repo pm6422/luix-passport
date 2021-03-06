@@ -1,20 +1,19 @@
 package org.infinity.passport.config;
 
-import com.github.mongobee.Mongobee;
-import com.mongodb.MongoClient;
+import com.github.cloudyrock.spring.v5.EnableMongock;
+import io.changock.runner.core.ChangockBase;
 import lombok.extern.slf4j.Slf4j;
 import org.infinity.passport.config.oauth2.OAuth2AccessTokenReadConverter;
 import org.infinity.passport.config.oauth2.OAuth2AuthenticationReadConverter;
 import org.infinity.passport.config.oauth2.OAuth2GrantedAuthorityTokenReadConverter;
 import org.infinity.passport.config.oauth2.OAuth2RefreshTokenReadConverter;
-import org.infinity.passport.setup.DatabaseInitialSetup;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.data.mongodb.MongoDbFactory;
+import org.springframework.data.mongodb.MongoDatabaseFactory;
 import org.springframework.data.mongodb.config.EnableMongoAuditing;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.convert.*;
@@ -29,27 +28,32 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Using @EnableMongock with minimal configuration only requires changeLog package to scan
+ * in property file
+ */
+@EnableMongock
 @Configuration
 @EnableMongoAuditing(auditorAwareRef = "springSecurityAuditorAware")
 @Slf4j
 public class MongoConfiguration {
 
     private final MongoMappingContext       mongoMappingContext;
-    private final MongoDbFactory            mongoDbFactory;
+    private final MongoDatabaseFactory      mongoDatabaseFactory;
     private final LocalValidatorFactoryBean validator;
 
     /**
      * Use @Lazy to fix dependencies problems
      *
-     * @param mongoMappingContext mongo mapping context
-     * @param mongoDbFactory      mongo db factory
-     * @param validator           bean validator
+     * @param mongoMappingContext  mongo mapping context
+     * @param mongoDatabaseFactory mongo db factory
+     * @param validator            bean validator
      */
     public MongoConfiguration(@Lazy MongoMappingContext mongoMappingContext,
-                              MongoDbFactory mongoDbFactory,
+                              MongoDatabaseFactory mongoDatabaseFactory,
                               LocalValidatorFactoryBean validator) {
         this.mongoMappingContext = mongoMappingContext;
-        this.mongoDbFactory = mongoDbFactory;
+        this.mongoDatabaseFactory = mongoDatabaseFactory;
         this.validator = validator;
     }
 
@@ -70,7 +74,7 @@ public class MongoConfiguration {
 
     @Bean
     public MappingMongoConverter mappingMongoConverter() {
-        DbRefResolver dbRefResolver = new DefaultDbRefResolver(mongoDbFactory);
+        DbRefResolver dbRefResolver = new DefaultDbRefResolver(mongoDatabaseFactory);
         MappingMongoConverter converter = new MappingMongoConverter(dbRefResolver, mongoMappingContext);
         converter.setCustomConversions(customConversions());
         // remove _class field
@@ -80,20 +84,7 @@ public class MongoConfiguration {
 
     @Bean
     public MongoTemplate mongoTemplate() {
-        return new MongoTemplate(mongoDbFactory, mappingMongoConverter());
-    }
-
-    @Bean
-    public Mongobee mongobee(MongoClient mongoClient, MongoTemplate mongoTemplate) {
-        log.debug("Configuring Mongobee");
-        Mongobee mongobee = new Mongobee(mongoClient);
-        // For embedded mongo
-        mongobee.setDbName(mongoClient.listDatabaseNames().first());
-        mongobee.setMongoTemplate(mongoTemplate);
-        mongobee.setChangeLogsScanPackage(DatabaseInitialSetup.class.getPackage().getName());
-        mongobee.setEnabled(true);
-        log.debug("Configured Mongobee");
-        return mongobee;
+        return new MongoTemplate(mongoDatabaseFactory, mappingMongoConverter());
     }
 
     @EventListener(ApplicationReadyEvent.class)
