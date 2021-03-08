@@ -28,7 +28,7 @@ public class App implements Serializable {
 
     @ApiModelProperty(value = "应用名称", required = true)
     @NotNull
-    @Size(min = 3, max = 16)
+    @Size(min = 3, max = 20)
     @Pattern(regexp = "^[a-zA-Z0-9-]+$", message = "{EP5903}")
     @Id
     private String name;
