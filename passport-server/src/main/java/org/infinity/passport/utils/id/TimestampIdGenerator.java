@@ -19,9 +19,9 @@ final class TimestampIdGenerator {
     protected static final long       MAX_COUNT_PER_MILLIS = 1 << BITS;
 
     /**
-     * 获取 requestId
+     * Generate a thread-safe digit format ID
      *
-     * @return 19 bits length，like：1672888135850179037
+     * @return 19 bits length，e.g：1672888135850179037
      */
     protected static long nextId() {
         long currentTime = System.currentTimeMillis();
