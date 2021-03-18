@@ -36,12 +36,6 @@ public class SystemController {
         response.sendRedirect(applicationProperties.getRedis().getAdminUrl());
     }
 
-    @GetMapping("/api/system/scheduler-admin")
-    @Secured(Authority.DEVELOPER)
-    public void redirectToScheduler(HttpServletResponse response) throws IOException {
-        response.sendRedirect(applicationProperties.getScheduler().getAdminUrl());
-    }
-
     @GetMapping("/api/system/internet-ip")
     @Secured(Authority.DEVELOPER)
     public ResponseEntity<String> getInternetIp() {

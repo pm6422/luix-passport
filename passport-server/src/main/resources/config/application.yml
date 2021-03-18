@@ -146,11 +146,7 @@ application:
         slow-execution-threshold: 300 # unit: ms
     ribbon:
         # comma separated list of profiles to show a ribbon on the GUI
-        display-on-active-profiles: dev,test,demo,preprod
-    user-audit-event:
-        enabled: true
+        display-on-active-profiles: dev,test,demo
     http-client-connection:
         global-retry-count: 1
         global-read-timeout-in-seconds: 3
-    cache: # Cache configuration
-        cache-prefix: ${spring.application.name}_
