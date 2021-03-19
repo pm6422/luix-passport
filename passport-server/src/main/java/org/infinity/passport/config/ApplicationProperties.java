@@ -35,7 +35,10 @@ public class ApplicationProperties {
 
         @Data
         public static class Cache {
-            private Long timeToLiveInDays = 31L;
+            /**
+             * Expired days
+             */
+            private Long expiredAfter = 31L;
         }
     }
 
