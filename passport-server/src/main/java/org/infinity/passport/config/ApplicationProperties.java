@@ -28,7 +28,6 @@ public class ApplicationProperties {
     private final Ribbon               ribbon               = new Ribbon();
     private final HttpClientConnection httpClientConnection = new HttpClientConnection();
 
-
     @Data
     public static class Http {
         private final Cache cache = new Cache();

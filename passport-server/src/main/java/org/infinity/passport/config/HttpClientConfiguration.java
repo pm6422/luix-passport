@@ -11,9 +11,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.*;
 import org.springframework.http.client.support.HttpRequestWrapper;
+import org.springframework.lang.NonNull;
 import org.springframework.web.client.RestTemplate;
 
-import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.util.Collections;
 
@@ -74,8 +74,8 @@ public class HttpClientConfiguration {
 
     static class SecurityHeaderClientHttpRequestInterceptor implements ClientHttpRequestInterceptor {
         @Override
-        @Nonnull
-        public ClientHttpResponse intercept(@Nonnull HttpRequest request, @Nonnull byte[] body, ClientHttpRequestExecution execution)
+        @NonNull
+        public ClientHttpResponse intercept(@NonNull HttpRequest request, @NonNull byte[] body, ClientHttpRequestExecution execution)
                 throws IOException {
             HttpRequestWrapper requestWrapper = new HttpRequestWrapper(request);
             // 服务端获取到该Header值，然后删除首8位,尾部4位，剩余部分转换为时间，如果改时间在误差范围之内为合法请求
