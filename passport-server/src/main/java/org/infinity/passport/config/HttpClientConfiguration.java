@@ -32,7 +32,7 @@ public class HttpClientConfiguration {
         // SimpleClientHttpRequestFactory内部使用JDK的java.net.HttpURLConnection
         SimpleClientHttpRequestFactory clientHttpRequestFactory = new SimpleClientHttpRequestFactory();
         clientHttpRequestFactory
-                .setReadTimeout(applicationProperties.getHttpClientConnection().getGlobalReadTimeoutInSeconds() * 1000);
+                .setReadTimeout(applicationProperties.getHttpClientConnection().getReadTimeoutInSeconds() * 1000);
         clientHttpRequestFactory.setConnectTimeout(1000);
         return clientHttpRequestFactory;
     }
@@ -50,7 +50,7 @@ public class HttpClientConfiguration {
         // 设置链接池和失败重试次数
         return HttpClientBuilder.create().setConnectionManager(connectionManager)
                 .setRetryHandler(new DefaultHttpRequestRetryHandler(
-                        applicationProperties.getHttpClientConnection().getGlobalRetryCount(), true))
+                        applicationProperties.getHttpClientConnection().getMaxRetries(), true))
                 .build();
     }
 
@@ -59,7 +59,7 @@ public class HttpClientConfiguration {
         HttpComponentsClientHttpRequestFactory clientHttpRequestFactory = new HttpComponentsClientHttpRequestFactory(
                 closeableHttpClient());
         clientHttpRequestFactory
-                .setReadTimeout(applicationProperties.getHttpClientConnection().getGlobalReadTimeoutInSeconds() * 1000);
+                .setReadTimeout(applicationProperties.getHttpClientConnection().getReadTimeoutInSeconds() * 1000);
         clientHttpRequestFactory.setConnectTimeout(1000);
         return clientHttpRequestFactory;
     }

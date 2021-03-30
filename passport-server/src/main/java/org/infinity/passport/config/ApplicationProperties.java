@@ -96,7 +96,7 @@ public class ApplicationProperties {
 
     @Data
     public static class HttpClientConnection {
-        private int globalRetryCount;
-        private int globalReadTimeoutInSeconds;
+        private int maxRetries;
+        private int readTimeoutInSeconds;
     }
 }
