@@ -4,7 +4,7 @@
 
 	<groupId>org.infinity</groupId>
 	<artifactId>passport</artifactId>
-	<name>Passport</name>
+	<name>${project.artifactId}</name>
 	<version>1.0.0</version>
 	<packaging>pom</packaging>
 

@@ -13,7 +13,7 @@
     <artifactId>passport-server</artifactId>
     <version>1.0.0</version>
     <packaging>war</packaging>
-    <name>PassportServer</name>
+    <name>${project.artifactId}</name>
 
     <!--
         *************************************************************************************
