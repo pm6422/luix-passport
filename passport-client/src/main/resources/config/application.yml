@@ -6,16 +6,15 @@
 # Full reference is available at:
 # https://docs.spring.io/spring-boot/docs/2.3.0.RELEASE/reference/html/appendix-application-properties.html
 # ===================================================================
-info: # These configuration can be exported to Environment, accessing URL /info can get these properties
+info: # These configuration can be exported to Environment, accessing URL /management/info can get these properties
     artifact:
         id: @project.artifactId@
-        name: @project.name@
         version: @project.version@
     project:
         package: ai.deepbrain.springbootsample
 spring:
     application:
-        name: ${info.artifact.name}
+        name: ${info.artifact.id}
     profiles:
         # The commented value for `active` can be replaced with valid spring profiles to load.
         # Otherwise, it will be filled in by maven when building the WAR file
@@ -35,11 +34,11 @@ server:
     servlet:
         session:
             cookie:
-                name: ${info.artifact.name}
+                name: ${spring.application.name}
 logging:
     config: classpath:config/logback-spring.xml
     file:
-        path: ${user.home}${file.separator}Log${file.separator}${info.artifact.id}${file.separator}${info.artifact.id}
+        path: ${user.home}${file.separator}Log${file.separator}${spring.application.name}${file.separator}${spring.application.name}
     level:
         root: DEBUG
         ${info.project.package}: DEBUG

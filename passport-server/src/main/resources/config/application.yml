@@ -49,16 +49,15 @@ management: # Management http server configuration, used by ManagementServerProp
                 request:
                     autotime:
                         enabled: true
-info: # These configuration can be exported to Environment, accessing URL /info can get these properties
+info: # These configuration can be exported to Environment, accessing URL /management/info can get these properties
     artifact:
         id: @project.artifactId@
-        name: @project.name@
         version: @project.version@
     project:
         package: org.infinity.passport
 spring:
     application:
-        name: ${info.artifact.name}
+        name: ${info.artifact.id}
     profiles:
         # The commented value for `active` can be replaced with valid spring profiles to load.
         # Otherwise, it will be filled in by maven when building the WAR file
@@ -103,13 +102,13 @@ server:
     servlet:
         session:
             cookie:
-                name: ${info.artifact.name}
+                name: ${spring.application.name}
             timeout: 1D # Session timeout in 1 day, Note: this parameter can control the login expiration
             # and this statement can effect spring session, used by SessionProperties
 logging:
     config: classpath:config/logback-spring.xml
     file:
-        path: ${user.home}${file.separator}Log${file.separator}${info.artifact.id}${file.separator}${info.artifact.id}
+        path: ${user.home}${file.separator}Log${file.separator}${spring.application.name}${file.separator}${spring.application.name}
     level:
         root: DEBUG
         ${info.project.package}: DEBUG
