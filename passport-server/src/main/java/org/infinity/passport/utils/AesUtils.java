@@ -1,126 +1,39 @@
 package org.infinity.passport.utils;
 
-
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.Base64Utils;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.security.MessageDigest;
-import java.util.Arrays;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 
 /**
  * A simple utility class for easily encrypting and decrypting data using the AES algorithm.
  */
 @Slf4j
-public abstract class AesUtils {
+public class AesUtils {
+
+    private static final String KEY_ALGORITHM            = "AES";
+    private static final String DEFAULT_CIPHER_ALGORITHM = "AES/ECB/PKCS5Padding";
 
     /**
-     * The constant that denotes the algorithm being used.
-     */
-    private static final String ALGORITHM = "AES";
-
-    /**
-     * The method that will generate a random {@link SecretKey}.
+     * The method that will encrypt data
      *
-     * @return The key generated.
+     * @param rawText  The raw text to encrypt
+     * @param password The password that will be the {@link SecretKey}
+     * @return the encrypted data encoded by Base64
      */
-    public static SecretKey generateKey() {
+    public static String encrypt(String rawText, String password) {
         try {
-            KeyGenerator keyGenerator = KeyGenerator.getInstance(ALGORITHM);
-            keyGenerator.init(128);
-            return keyGenerator.generateKey();
-        } catch (Exception ex) {
-            log.error("Failed to generate key!", ex);
-        }
-        return null;
-    }
-
-    /**
-     * Creates a new {@link SecretKey} based on a password.
-     *
-     * @param password The password that will be the {@link SecretKey}.
-     * @return The key.
-     */
-    public static SecretKey createKey(String password) {
-        try {
-            byte[] key = password.getBytes(StandardCharsets.UTF_8);
-            MessageDigest sha = MessageDigest.getInstance("SHA-1");
-            key = sha.digest(key);
-            // use only first 128 bit
-            key = Arrays.copyOf(key, 16);
-
-            return new SecretKeySpec(key, ALGORITHM);
-        } catch (Exception ex) {
-            log.error("Failed to create key!", ex);
-        }
-        return null;
-    }
-
-    /**
-     * Creates a new {@link SecretKey} based on a password with a specified salt.
-     *
-     * @param salt     The random salt.
-     * @param password The password that will be the {@link SecretKey}.
-     * @return The key.
-     */
-    public static SecretKey createKey(byte[] salt, String password) {
-        try {
-            byte[] key = (Arrays.toString(salt) + password).getBytes(StandardCharsets.UTF_8);
-            MessageDigest sha = MessageDigest.getInstance("SHA-1");
-            key = sha.digest(key);
-            // use only first 128 bit
-            key = Arrays.copyOf(key, 16);
-
-            return new SecretKeySpec(key, ALGORITHM);
-        } catch (Exception ex) {
-            log.error("Failed to create key!", ex);
-        }
-        return null;
-    }
-
-    /**
-     * The method that writes the {@link SecretKey} to a file.
-     *
-     * @param key  The key to write.
-     * @param file The file to create.
-     * @throws IOException If the file could not be created.
-     */
-    public static void writeKey(SecretKey key, File file) throws IOException {
-        try (FileOutputStream fis = new FileOutputStream(file)) {
-            fis.write(key.getEncoded());
-        }
-    }
-
-    /**
-     * Gets a {@link SecretKey} from a {@link File}.
-     *
-     * @param file The file that is encoded as a key.
-     * @return The key.
-     * @throws IOException The exception thrown if the file could not be read as a {@link SecretKey}.
-     */
-    public static SecretKey getSecretKey(File file) throws IOException {
-        return new SecretKeySpec(Files.readAllBytes(file.toPath()), ALGORITHM);
-    }
-
-    /**
-     * The method that will encrypt data.
-     *
-     * @param secretKey The key used to encrypt the data.
-     * @param data      The data to encrypt.
-     * @return The encrypted data.
-     */
-    public static byte[] encrypt(SecretKey secretKey, byte[] data) {
-        try {
-            Cipher cipher = Cipher.getInstance(ALGORITHM);
-            cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-            return cipher.doFinal(data);
+            Cipher cipher = Cipher.getInstance(DEFAULT_CIPHER_ALGORITHM);
+            byte[] byteContent = rawText.getBytes(StandardCharsets.UTF_8);
+            cipher.init(Cipher.ENCRYPT_MODE, getSecretKey(password));
+            byte[] result = cipher.doFinal(byteContent);
+            return Base64Utils.encodeToString(result);
         } catch (Exception ex) {
             log.error("Failed to encrypt!", ex);
         }
@@ -128,17 +41,18 @@ public abstract class AesUtils {
     }
 
     /**
-     * The method that will decrypt a piece of encrypted data.
+     * The method that will decrypt a piece of encrypted data
      *
-     * @param password  The password used to decrypt the data.
-     * @param encrypted The encrypted data.
-     * @return The decrypted data.
+     * @param encryptedData The encrypted data
+     * @param password      The password that will be the {@link SecretKey}
+     * @return raw text
      */
-    public static byte[] decrypt(String password, byte[] encrypted) {
+    public static String decrypt(String encryptedData, String password) {
         try {
-            Cipher cipher = Cipher.getInstance(ALGORITHM);
-            cipher.init(Cipher.DECRYPT_MODE, AesUtils.createKey(password));
-            return cipher.doFinal(encrypted);
+            Cipher cipher = Cipher.getInstance(DEFAULT_CIPHER_ALGORITHM);
+            cipher.init(Cipher.DECRYPT_MODE, getSecretKey(password));
+            byte[] result = cipher.doFinal(Base64Utils.decodeFromString(encryptedData));
+            return new String(result, StandardCharsets.UTF_8);
         } catch (Exception ex) {
             log.error("Failed to decrypt!", ex);
         }
@@ -146,19 +60,23 @@ public abstract class AesUtils {
     }
 
     /**
-     * The method that will decrypt a piece of encrypted data.
+     * The method that will generate a random {@link SecretKey}
      *
-     * @param secretKey The key used to decrypt encrypted data.
-     * @param encrypted The encrypted data.
-     * @return The decrypted data.
+     * @param password The password that will be the {@link SecretKey}
+     * @return the key
      */
-    public static byte[] decrypt(SecretKey secretKey, byte[] encrypted) {
+    private static SecretKey getSecretKey(String password) {
+        KeyGenerator kg;
         try {
-            Cipher cipher = Cipher.getInstance(ALGORITHM);
-            cipher.init(Cipher.DECRYPT_MODE, secretKey);
-            return cipher.doFinal(encrypted);
-        } catch (Exception ex) {
-            log.error("Failed to decrypt!", ex);
+            kg = KeyGenerator.getInstance(KEY_ALGORITHM);
+            SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
+            random.setSeed(password.getBytes());
+            // use only first 128 bit
+            kg.init(128, random);
+            SecretKey secretKey = kg.generateKey();
+            return new SecretKeySpec(secretKey.getEncoded(), KEY_ALGORITHM);
+        } catch (NoSuchAlgorithmException ex) {
+            log.error("Failed to get secret key!", ex);
         }
         return null;
     }
