@@ -20,13 +20,12 @@ import java.util.List;
 @Validated
 @Getter
 public class ApplicationProperties {
-    private final Http                 http                 = new Http();
-    private final Swagger              swagger              = new Swagger();
-    private final AopLogging           aopLogging           = new AopLogging();
-    private final ElapsedTimeLogging   elapsedTimeLogging   = new ElapsedTimeLogging();
-    private final Redis                redis                = new Redis();
-    private final Ribbon               ribbon               = new Ribbon();
-    private final HttpClientConnection httpClientConnection = new HttpClientConnection();
+    private final Http               http               = new Http();
+    private final Swagger            swagger            = new Swagger();
+    private final AopLogging         aopLogging         = new AopLogging();
+    private final ElapsedTimeLogging elapsedTimeLogging = new ElapsedTimeLogging();
+    private final Redis              redis              = new Redis();
+    private final Ribbon             ribbon             = new Ribbon();
 
 
     @Data
@@ -89,11 +88,5 @@ public class ApplicationProperties {
     @Data
     public static class Ribbon {
         private String[] displayOnActiveProfiles;
-    }
-
-    @Data
-    public static class HttpClientConnection {
-        private int globalRetryCount;
-        private int globalReadTimeoutInSeconds;
     }
 }

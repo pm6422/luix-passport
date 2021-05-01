@@ -146,6 +146,3 @@ application:
     ribbon:
         # comma separated list of profiles to show a ribbon on the GUI
         display-on-active-profiles: dev,test,demo
-    http-client-connection:
-        global-retry-count: 1
-        global-read-timeout-in-seconds: 3
