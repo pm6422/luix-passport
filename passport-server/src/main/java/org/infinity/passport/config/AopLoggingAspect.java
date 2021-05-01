@@ -22,6 +22,8 @@ import java.util.Map;
 
 /**
  * Aspect for logging execution arguments and result of the method.
+ * <p>
+ * http://www.imooc.com/article/297283
  */
 @Aspect
 @ConditionalOnProperty(prefix = "application.aop-logging", value = "enabled", havingValue = "true")
