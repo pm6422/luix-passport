@@ -5,8 +5,6 @@ import org.infinity.passport.config.oauth2.MongoAuthorizationCodeServices;
 import org.infinity.passport.config.oauth2.MongoClientDetailsService;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.security.AjaxLogoutSuccessHandler;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -29,6 +27,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import org.zalando.problem.spring.web.advice.security.SecurityProblemSupport;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -71,14 +70,10 @@ public class UaaConfiguration {
     @Import(SecurityProblemSupport.class)
     protected static class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
 
-        private final SecurityProblemSupport problemSupport;
-
-        private final AjaxLogoutSuccessHandler ajaxLogoutSuccessHandler;
-
-        public ResourceServerConfiguration(SecurityProblemSupport problemSupport, AjaxLogoutSuccessHandler ajaxLogoutSuccessHandler) {
-            this.problemSupport = problemSupport;
-            this.ajaxLogoutSuccessHandler = ajaxLogoutSuccessHandler;
-        }
+        @Resource
+        private SecurityProblemSupport   problemSupport;
+        @Resource
+        private AjaxLogoutSuccessHandler ajaxLogoutSuccessHandler;
 
         @Override
         public void configure(HttpSecurity http) throws Exception {
@@ -122,37 +117,22 @@ public class UaaConfiguration {
     @EnableAuthorizationServer
     protected static class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
 
-        private final MongoClientDetailsService clientDetailsService;
-
-        private final AuthenticationManager authenticationManager;
-
-        private final TokenStore tokenStore;
-
-        private final MongoApprovalStore approvalStore;
-
-        private final UserDetailsService userDetailsService;
-
-        private final MongoAuthorizationCodeServices authorizationCodeServices;
-
-        public AuthorizationServerConfiguration(MongoClientDetailsService clientDetailsService,
-                                                AuthenticationManager authenticationManager,
-                                                TokenStore tokenStore,
-                                                MongoApprovalStore approvalStore,
-                                                @Autowired
-                                                @Qualifier("springSecurityUserDetailsServiceImpl")
-                                                        UserDetailsService userDetailsService,
-                                                MongoAuthorizationCodeServices authorizationCodeServices) {
-            this.clientDetailsService = clientDetailsService;
-            this.authenticationManager = authenticationManager;
-            this.tokenStore = tokenStore;
-            this.approvalStore = approvalStore;
-            this.userDetailsService = userDetailsService;
-            this.authorizationCodeServices = authorizationCodeServices;
-        }
+        @Resource
+        private MongoClientDetailsService      mongoClientDetailsService;
+        @Resource
+        private AuthenticationManager          authenticationManager;
+        @Resource
+        private TokenStore                     tokenStore;
+        @Resource
+        private MongoApprovalStore             mongoApprovalStore;
+        @Resource
+        private MongoAuthorizationCodeServices mongoAuthorizationCodeServices;
+        @Resource(name = "springSecurityUserDetailsServiceImpl")
+        private UserDetailsService             userDetailsService;
 
         @Override
         public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-            clients.withClientDetails(clientDetailsService);
+            clients.withClientDetails(mongoClientDetailsService);
         }
 
         @Override
@@ -163,9 +143,9 @@ public class UaaConfiguration {
             endpoints
                     .authenticationManager(authenticationManager)
                     .tokenStore(tokenStore)
-                    .approvalStore(approvalStore)
+                    .approvalStore(mongoApprovalStore)
                     .userDetailsService(userDetailsService)
-                    .authorizationCodeServices(authorizationCodeServices);
+                    .authorizationCodeServices(mongoAuthorizationCodeServices);
             // @formatter:on
             // Use to logout
             endpoints.addInterceptor(new HandlerInterceptorAdapter() {
