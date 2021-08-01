@@ -25,6 +25,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -36,13 +37,14 @@ import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
 @Slf4j
 public class OAuth2ClientDetailsController {
 
-    private final OAuth2ClientDetailsRepository oAuth2ClientDetailsRepository;
-
-    private final MongoTemplate mongoTemplate;
-
-    private final HttpHeaderCreator httpHeaderCreator;
-
-    private final PasswordEncoder passwordEncoder;
+    @Resource
+    private OAuth2ClientDetailsRepository oAuth2ClientDetailsRepository;
+    @Resource
+    private MongoTemplate                 mongoTemplate;
+    @Resource
+    private HttpHeaderCreator             httpHeaderCreator;
+    @Resource
+    private PasswordEncoder               passwordEncoder;
 
     public OAuth2ClientDetailsController(OAuth2ClientDetailsRepository oAuth2ClientDetailsRepository,
                                          MongoTemplate mongoTemplate, HttpHeaderCreator httpHeaderCreator,

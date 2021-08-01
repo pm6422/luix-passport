@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
@@ -26,14 +27,10 @@ import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
 @Slf4j
 public class OAuth2AccessTokenController {
 
-    private final OAuth2AccessTokenRepository oAuth2AccessTokenRepository;
-    private final HttpHeaderCreator           httpHeaderCreator;
-
-    public OAuth2AccessTokenController(OAuth2AccessTokenRepository oAuth2AccessTokenRepository,
-                                       HttpHeaderCreator httpHeaderCreator) {
-        this.oAuth2AccessTokenRepository = oAuth2AccessTokenRepository;
-        this.httpHeaderCreator = httpHeaderCreator;
-    }
+    @Resource
+    private OAuth2AccessTokenRepository oAuth2AccessTokenRepository;
+    @Resource
+    private HttpHeaderCreator           httpHeaderCreator;
 
     @ApiOperation("分页检索访问令牌列表")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})

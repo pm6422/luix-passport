@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
@@ -26,14 +27,10 @@ import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
 @Slf4j
 public class OAuth2AuthorizationCodeController {
 
-    private final OAuth2AuthorizationCodeRepository oAuth2AuthorizationCodeRepository;
-    private final HttpHeaderCreator                 httpHeaderCreator;
-
-    public OAuth2AuthorizationCodeController(OAuth2AuthorizationCodeRepository oAuth2AuthorizationCodeRepository,
-                                             HttpHeaderCreator httpHeaderCreator) {
-        this.oAuth2AuthorizationCodeRepository = oAuth2AuthorizationCodeRepository;
-        this.httpHeaderCreator = httpHeaderCreator;
-    }
+    @Resource
+    private OAuth2AuthorizationCodeRepository oAuth2AuthorizationCodeRepository;
+    @Resource
+    private HttpHeaderCreator                 httpHeaderCreator;
 
     /**
      * Authorization code will be deleted immediately after authentication process.

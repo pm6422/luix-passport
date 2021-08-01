@@ -25,6 +25,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
@@ -45,26 +46,18 @@ import static org.infinity.passport.utils.NetworkUtils.getRequestUrl;
 @Slf4j
 public class UserController {
 
-    private final UserProfilePhotoRepository userProfilePhotoRepository;
-    private final UserAuthorityRepository    userAuthorityRepository;
-    private final UserService                userService;
-    private final MailService                mailService;
-    private final ApplicationEventPublisher  applicationEventPublisher;
-    private final HttpHeaderCreator          httpHeaderCreator;
-
-    public UserController(UserProfilePhotoRepository userProfilePhotoRepository,
-                          UserAuthorityRepository userAuthorityRepository,
-                          UserService userService,
-                          MailService mailService,
-                          ApplicationEventPublisher applicationEventPublisher,
-                          HttpHeaderCreator httpHeaderCreator) {
-        this.userProfilePhotoRepository = userProfilePhotoRepository;
-        this.userAuthorityRepository = userAuthorityRepository;
-        this.userService = userService;
-        this.mailService = mailService;
-        this.applicationEventPublisher = applicationEventPublisher;
-        this.httpHeaderCreator = httpHeaderCreator;
-    }
+    @Resource
+    private UserProfilePhotoRepository userProfilePhotoRepository;
+    @Resource
+    private UserAuthorityRepository    userAuthorityRepository;
+    @Resource
+    private UserService                userService;
+    @Resource
+    private MailService                mailService;
+    @Resource
+    private ApplicationEventPublisher  applicationEventPublisher;
+    @Resource
+    private HttpHeaderCreator          httpHeaderCreator;
 
     @ApiOperation(value = "创建新用户并发送激活邮件")
     @ApiResponses(value = {@ApiResponse(code = SC_CREATED, message = "成功创建"),

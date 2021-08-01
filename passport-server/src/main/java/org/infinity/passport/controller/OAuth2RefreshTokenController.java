@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
@@ -27,15 +28,10 @@ import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
 @Slf4j
 public class OAuth2RefreshTokenController {
 
-    private final OAuth2RefreshTokenRepository oAuth2RefreshTokenRepository;
-
-    private final HttpHeaderCreator httpHeaderCreator;
-
-    public OAuth2RefreshTokenController(OAuth2RefreshTokenRepository oAuth2RefreshTokenRepository,
-                                        HttpHeaderCreator httpHeaderCreator) {
-        this.oAuth2RefreshTokenRepository = oAuth2RefreshTokenRepository;
-        this.httpHeaderCreator = httpHeaderCreator;
-    }
+    @Resource
+    private OAuth2RefreshTokenRepository oAuth2RefreshTokenRepository;
+    @Resource
+    private HttpHeaderCreator            httpHeaderCreator;
 
     @ApiOperation("分页检索刷新令牌列表")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})

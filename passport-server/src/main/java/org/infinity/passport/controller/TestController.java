@@ -11,19 +11,17 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
+
 @RestController
 @Api(tags = "测试")
 @Slf4j
 public class TestController {
 
-    private final UserRepository userRepository;
-
-    private final MailService mailService;
-
-    public TestController(UserRepository userRepository, MailService mailService) {
-        this.userRepository = userRepository;
-        this.mailService = mailService;
-    }
+    @Resource
+    private UserRepository userRepository;
+    @Resource
+    private MailService    mailService;
 
     @ApiOperation("测试审计功能")
     @GetMapping("/api/test/user-audit")

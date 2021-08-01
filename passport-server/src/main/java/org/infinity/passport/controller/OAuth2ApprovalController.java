@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
@@ -30,19 +31,12 @@ import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
 @Slf4j
 public class OAuth2ApprovalController {
 
-    private final OAuth2ApprovalRepository oAuth2ApprovalRepository;
-
-    private final MongoTemplate mongoTemplate;
-
-    private final HttpHeaderCreator httpHeaderCreator;
-
-    public OAuth2ApprovalController(OAuth2ApprovalRepository oAuth2ApprovalRepository,
-                                    MongoTemplate mongoTemplate,
-                                    HttpHeaderCreator httpHeaderCreator) {
-        this.oAuth2ApprovalRepository = oAuth2ApprovalRepository;
-        this.mongoTemplate = mongoTemplate;
-        this.httpHeaderCreator = httpHeaderCreator;
-    }
+    @Resource
+    private OAuth2ApprovalRepository oAuth2ApprovalRepository;
+    @Resource
+    private MongoTemplate            mongoTemplate;
+    @Resource
+    private HttpHeaderCreator        httpHeaderCreator;
 
     @ApiOperation("分页检索登录授权列表")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})

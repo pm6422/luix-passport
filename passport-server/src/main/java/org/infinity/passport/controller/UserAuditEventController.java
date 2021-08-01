@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -28,11 +29,8 @@ import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
 @Api(tags = "用户审计")
 public class UserAuditEventController {
 
-    private final PersistenceAuditEventRepository persistenceAuditEventRepository;
-
-    public UserAuditEventController(PersistenceAuditEventRepository persistenceAuditEventRepository) {
-        this.persistenceAuditEventRepository = persistenceAuditEventRepository;
-    }
+    @Resource
+    private PersistenceAuditEventRepository persistenceAuditEventRepository;
 
     /**
      * 分页检索用户审计事件列表

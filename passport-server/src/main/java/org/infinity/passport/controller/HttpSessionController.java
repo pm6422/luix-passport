@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
@@ -29,13 +30,10 @@ import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
 @Slf4j
 public class HttpSessionController {
 
-    private final HttpSessionRepository httpSessionRepository;
-    private final HttpHeaderCreator     httpHeaderCreator;
-
-    public HttpSessionController(HttpSessionRepository httpSessionRepository, HttpHeaderCreator httpHeaderCreator) {
-        this.httpSessionRepository = httpSessionRepository;
-        this.httpHeaderCreator = httpHeaderCreator;
-    }
+    @Resource
+    private HttpSessionRepository httpSessionRepository;
+    @Resource
+    private HttpHeaderCreator     httpHeaderCreator;
 
     @ApiOperation("分页检索Http会话列表")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
