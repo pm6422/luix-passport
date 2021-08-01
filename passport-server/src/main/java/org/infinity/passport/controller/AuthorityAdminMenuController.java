@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,20 +34,14 @@ import static javax.servlet.http.HttpServletResponse.SC_OK;
 @Slf4j
 public class AuthorityAdminMenuController {
 
-    private final AuthorityAdminMenuRepository authorityAdminMenuRepository;
-    private final AdminMenuRepository          adminMenuRepository;
-    private final AdminMenuService             adminMenuService;
-    private final HttpHeaderCreator            httpHeaderCreator;
-
-    public AuthorityAdminMenuController(AuthorityAdminMenuRepository authorityAdminMenuRepository,
-                                        AdminMenuRepository adminMenuRepository,
-                                        AdminMenuService adminMenuService,
-                                        HttpHeaderCreator httpHeaderCreator) {
-        this.authorityAdminMenuRepository = authorityAdminMenuRepository;
-        this.adminMenuRepository = adminMenuRepository;
-        this.adminMenuService = adminMenuService;
-        this.httpHeaderCreator = httpHeaderCreator;
-    }
+    @Resource
+    private AuthorityAdminMenuRepository authorityAdminMenuRepository;
+    @Resource
+    private AdminMenuRepository          adminMenuRepository;
+    @Resource
+    private AdminMenuService             adminMenuService;
+    @Resource
+    private HttpHeaderCreator            httpHeaderCreator;
 
     @ApiOperation("根据权限名称检索菜单树")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
