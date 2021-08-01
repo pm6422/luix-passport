@@ -1,7 +1,5 @@
 package org.infinity.passport.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -15,6 +13,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.annotation.Resource;
+
 /**
  * If any class extends WebSecurityConfigurerAdapter, the auto-configuration of spring security will don't work.
  * <p>
@@ -25,13 +25,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private final UserDetailsService userDetailsService;
-
-
-    public SecurityConfiguration(@Autowired
-                                 @Qualifier("springSecurityUserDetailsServiceImpl") UserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
-    }
+    @Resource(name = "springSecurityUserDetailsServiceImpl")
+    private UserDetailsService userDetailsService;
 
     @Bean
     @Override
