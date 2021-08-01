@@ -17,6 +17,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.util.StringUtils;
 
+import javax.annotation.Resource;
 import java.util.*;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
@@ -24,17 +25,12 @@ import java.util.stream.Collectors;
 @Service
 public class AdminMenuServiceImpl implements AdminMenuService {
 
-    private final AdminMenuRepository       adminMenuRepository;
-    private final AuthorityService          authorityService;
-    private final AuthorityAdminMenuService authorityAdminMenuService;
-
-    public AdminMenuServiceImpl(AdminMenuRepository adminMenuRepository,
-                                AuthorityService authorityService,
-                                AuthorityAdminMenuService authorityAdminMenuService) {
-        this.adminMenuRepository = adminMenuRepository;
-        this.authorityService = authorityService;
-        this.authorityAdminMenuService = authorityAdminMenuService;
-    }
+    @Resource
+    private AdminMenuRepository       adminMenuRepository;
+    @Resource
+    private AuthorityService          authorityService;
+    @Resource
+    private AuthorityAdminMenuService authorityAdminMenuService;
 
     @Override
     public Page<AdminMenu> find(Pageable pageable, String appName) {
