@@ -27,7 +27,6 @@ import org.infinity.passport.utils.RandomUtils;
 import org.infinity.passport.utils.SecurityUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -41,6 +40,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
@@ -62,35 +62,24 @@ import static org.infinity.passport.utils.NetworkUtils.getRequestUrl;
 @Slf4j
 public class AccountController {
     private static final FastDateFormat             DATETIME_FORMAT = FastDateFormat.getInstance("yyyyMMdd-HHmmss");
-    private final        UserService                userService;
-    private final        UserAuthorityRepository    userAuthorityRepository;
-    private final        UserProfilePhotoRepository userProfilePhotoRepository;
-    private final        UserProfilePhotoService    userProfilePhotoService;
-    private final        AuthorityService           authorityService;
-    private final        MailService                mailService;
-    private final        TokenStore                 tokenStore;
-    private final        ApplicationEventPublisher  applicationEventPublisher;
-    private final        HttpHeaderCreator          httpHeaderCreator;
-
-    public AccountController(UserService userService,
-                             UserAuthorityRepository userAuthorityRepository,
-                             UserProfilePhotoRepository userProfilePhotoRepository,
-                             UserProfilePhotoService userProfilePhotoService,
-                             AuthorityService authorityService,
-                             MailService mailService,
-                             TokenStore tokenStore,
-                             ApplicationEventPublisher applicationEventPublisher,
-                             HttpHeaderCreator httpHeaderCreator) {
-        this.userService = userService;
-        this.userAuthorityRepository = userAuthorityRepository;
-        this.userProfilePhotoRepository = userProfilePhotoRepository;
-        this.userProfilePhotoService = userProfilePhotoService;
-        this.authorityService = authorityService;
-        this.mailService = mailService;
-        this.httpHeaderCreator = httpHeaderCreator;
-        this.applicationEventPublisher = applicationEventPublisher;
-        this.tokenStore = tokenStore;
-    }
+    @Resource
+    private              UserService                userService;
+    @Resource
+    private              UserAuthorityRepository    userAuthorityRepository;
+    @Resource
+    private              UserProfilePhotoRepository userProfilePhotoRepository;
+    @Resource
+    private              UserProfilePhotoService    userProfilePhotoService;
+    @Resource
+    private              AuthorityService           authorityService;
+    @Resource
+    private              MailService                mailService;
+    @Resource
+    private              TokenStore                 tokenStore;
+    @Resource
+    private              ApplicationEventPublisher  applicationEventPublisher;
+    @Resource
+    private              HttpHeaderCreator          httpHeaderCreator;
 
     @ApiOperation(value = "检索访问令牌", notes = "登录成功返回当前访问令牌")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
@@ -249,7 +238,7 @@ public class AccountController {
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功上传")})
     @GetMapping("/api/account/profile-photo/download")
     @Secured({Authority.USER})
-    public ResponseEntity<Resource> downloadProfilePhoto() {
+    public ResponseEntity<org.springframework.core.io.Resource> downloadProfilePhoto() {
         SecurityUser currentUser = SecurityUtils.getCurrentUser();
         Optional<UserProfilePhoto> existingPhoto = userProfilePhotoRepository.findByUserId(currentUser.getUserId());
         if (!existingPhoto.isPresent()) {
