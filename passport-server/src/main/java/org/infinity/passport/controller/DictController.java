@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -29,17 +30,12 @@ import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
 @Slf4j
 public class DictController {
 
-    private final DictRepository    dictRepository;
-    private final DictService       dictService;
-    private final HttpHeaderCreator httpHeaderCreator;
-
-    public DictController(DictRepository dictRepository,
-                          DictService dictService,
-                          HttpHeaderCreator httpHeaderCreator) {
-        this.dictRepository = dictRepository;
-        this.dictService = dictService;
-        this.httpHeaderCreator = httpHeaderCreator;
-    }
+    @Resource
+    private DictRepository    dictRepository;
+    @Resource
+    private DictService       dictService;
+    @Resource
+    private HttpHeaderCreator httpHeaderCreator;
 
     @ApiOperation("创建数据字典")
     @ApiResponses(value = {@ApiResponse(code = SC_CREATED, message = "成功创建"),

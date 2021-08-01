@@ -1,16 +1,12 @@
 package org.infinity.passport.controller;
 
-import com.google.common.collect.ImmutableMap;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
 import org.infinity.passport.component.HttpHeaderCreator;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.DictItem;
-import org.infinity.passport.exception.DuplicationException;
 import org.infinity.passport.exception.NoDataFoundException;
 import org.infinity.passport.repository.DictItemRepository;
-import org.infinity.passport.repository.DictRepository;
 import org.infinity.passport.service.DictItemService;
 import org.infinity.passport.service.DictService;
 import org.springframework.data.domain.Page;
@@ -21,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
@@ -34,27 +31,14 @@ import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
 @Slf4j
 public class DictItemController {
 
-    private final DictRepository dictRepository;
-
-    private final DictService dictService;
-
-    private final DictItemRepository dictItemRepository;
-
-    private final DictItemService dictItemService;
-
-    private final HttpHeaderCreator httpHeaderCreator;
-
-    public DictItemController(DictRepository dictRepository,
-                              DictService dictService,
-                              DictItemRepository dictItemRepository,
-                              DictItemService dictItemService,
-                              HttpHeaderCreator httpHeaderCreator) {
-        this.dictRepository = dictRepository;
-        this.dictService = dictService;
-        this.dictItemRepository = dictItemRepository;
-        this.dictItemService = dictItemService;
-        this.httpHeaderCreator = httpHeaderCreator;
-    }
+    @Resource
+    private DictService        dictService;
+    @Resource
+    private DictItemRepository dictItemRepository;
+    @Resource
+    private DictItemService    dictItemService;
+    @Resource
+    private HttpHeaderCreator  httpHeaderCreator;
 
     @ApiOperation("创建数据字典项")
     @ApiResponses(value = {@ApiResponse(code = SC_CREATED, message = "成功创建"),
@@ -66,7 +50,7 @@ public class DictItemController {
         log.debug("REST request to create dict item: {}", domain);
         DictItem dictItem = dictItemService.insert(domain);
         return ResponseEntity.status(HttpStatus.CREATED).headers(
-                httpHeaderCreator.createSuccessHeader("SM1001", dictItem.getDictItemName()))
+                        httpHeaderCreator.createSuccessHeader("SM1001", dictItem.getDictItemName()))
                 .build();
     }
 
@@ -123,7 +107,7 @@ public class DictItemController {
         DictItem dictItem = dictItemRepository.findById(id).orElseThrow(() -> new NoDataFoundException(id));
         dictItemRepository.deleteById(id);
         return ResponseEntity.ok().headers(
-                httpHeaderCreator.createSuccessHeader("SM1003", dictItem.getDictItemName()))
+                        httpHeaderCreator.createSuccessHeader("SM1003", dictItem.getDictItemName()))
                 .build();
     }
 }
