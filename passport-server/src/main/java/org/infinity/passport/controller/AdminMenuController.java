@@ -22,6 +22,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -39,17 +40,12 @@ import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
 @Slf4j
 public class AdminMenuController {
 
-    private final AdminMenuRepository adminMenuRepository;
-    private final AdminMenuService    adminMenuService;
-    private final HttpHeaderCreator   httpHeaderCreator;
-
-    public AdminMenuController(AdminMenuRepository adminMenuRepository,
-                               AdminMenuService adminMenuService,
-                               HttpHeaderCreator httpHeaderCreator) {
-        this.adminMenuRepository = adminMenuRepository;
-        this.adminMenuService = adminMenuService;
-        this.httpHeaderCreator = httpHeaderCreator;
-    }
+    @Resource
+    private AdminMenuRepository adminMenuRepository;
+    @Resource
+    private AdminMenuService    adminMenuService;
+    @Resource
+    private HttpHeaderCreator   httpHeaderCreator;
 
     @ApiOperation("创建菜单")
     @ApiResponses(value = {@ApiResponse(code = SC_CREATED, message = "成功创建")})
@@ -64,7 +60,7 @@ public class AdminMenuController {
                 });
         adminMenuRepository.insert(entity);
         return ResponseEntity.status(HttpStatus.CREATED).headers(
-                httpHeaderCreator.createSuccessHeader("SM1001", entity.getCode()))
+                        httpHeaderCreator.createSuccessHeader("SM1001", entity.getCode()))
                 .build();
     }
 
