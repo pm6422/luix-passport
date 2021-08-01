@@ -4,7 +4,6 @@ import org.infinity.passport.domain.MongoOAuth2ClientDetails;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.JacksonJsonParser;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.util.Pair;
@@ -17,6 +16,8 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 
+import javax.annotation.Resource;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -27,11 +28,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 public class OAuth2PasswordGrantTest {
 
-    @Autowired
+    @Resource
     private WebApplicationContext wac;
-
-    @Autowired
-    private FilterChainProxy springSecurityFilterChain;
+    @Resource
+    private FilterChainProxy      springSecurityFilterChain;
 
     private MockMvc mockMvc;
 
@@ -61,13 +61,13 @@ public class OAuth2PasswordGrantTest {
 
         // @formatter:off
         ResultActions result = mockMvc.perform(post("/oauth/token")
-                               .params(params)
-                               .accept(CONTENT_TYPE))
-                               .andExpect(status().isOk())
-                               .andExpect(content().contentType(CONTENT_TYPE));
+                        .params(params)
+                        .accept(CONTENT_TYPE))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(CONTENT_TYPE));
         return result;
     }
-    
+
     private String refreshAccessToken(String refreshToken) throws Exception {
         final MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("client_id", CLIENT_ID);
@@ -77,10 +77,10 @@ public class OAuth2PasswordGrantTest {
 
         // @formatter:off
         ResultActions result = mockMvc.perform(post("/oauth/token")
-                               .params(params)
-                               .accept(CONTENT_TYPE))
-                               .andExpect(status().isOk())
-                               .andExpect(content().contentType(CONTENT_TYPE));
+                        .params(params)
+                        .accept(CONTENT_TYPE))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(CONTENT_TYPE));
         String resultString = result.andReturn().getResponse().getContentAsString();
         JacksonJsonParser jsonParser = new JacksonJsonParser();
         return jsonParser.parseMap(resultString).get("access_token").toString();
@@ -109,9 +109,9 @@ public class OAuth2PasswordGrantTest {
 
         // @formatter:off
         ResultActions result = mockMvc.perform(get("/management/env")
-                .header("Authorization", "Bearer " + accessToken)
-                .contentType(CONTENT_TYPE)
-                .accept(CONTENT_TYPE))
+                        .header("Authorization", "Bearer " + accessToken)
+                        .contentType(CONTENT_TYPE)
+                        .accept(CONTENT_TYPE))
                 .andExpect(status().isOk());
         // @formatter:on
 
@@ -125,8 +125,8 @@ public class OAuth2PasswordGrantTest {
     public void accessResourceWhenNoAccessTokenThenUnauthorized() throws Exception {
         // @formatter:off
         mockMvc.perform(get("/management/env")
-                .contentType(CONTENT_TYPE)
-                .accept(CONTENT_TYPE))
+                        .contentType(CONTENT_TYPE)
+                        .accept(CONTENT_TYPE))
                 .andExpect(status().isUnauthorized());
         // @formatter:on
     }
@@ -137,9 +137,9 @@ public class OAuth2PasswordGrantTest {
 
         // @formatter:off
         mockMvc.perform(get("/management/env")
-                .header("Authorization", "Bearer " + accessToken)
-                .contentType(CONTENT_TYPE)
-                .accept(CONTENT_TYPE))
+                        .header("Authorization", "Bearer " + accessToken)
+                        .contentType(CONTENT_TYPE)
+                        .accept(CONTENT_TYPE))
                 .andExpect(status().isForbidden());
         // @formatter:on
     }
@@ -150,15 +150,15 @@ public class OAuth2PasswordGrantTest {
 
         // @formatter:off
         mockMvc.perform(post("/api/account/logout")
-                .header("Authorization", "Bearer " + accessToken)
-                .contentType(CONTENT_TYPE)
-                .accept(CONTENT_TYPE))
+                        .header("Authorization", "Bearer " + accessToken)
+                        .contentType(CONTENT_TYPE)
+                        .accept(CONTENT_TYPE))
                 .andExpect(status().isOk());
-        
+
         mockMvc.perform(get("/management/env")
-                .header("Authorization", "Bearer " + accessToken)
-                .contentType(CONTENT_TYPE)
-                .accept(CONTENT_TYPE))
+                        .header("Authorization", "Bearer " + accessToken)
+                        .contentType(CONTENT_TYPE)
+                        .accept(CONTENT_TYPE))
                 .andExpect(status().isUnauthorized());
         // @formatter:on
     }
@@ -172,18 +172,18 @@ public class OAuth2PasswordGrantTest {
         String newAccessToken = refreshAccessToken(originalRefreshToken);
 
         // @formatter:off
-         mockMvc.perform(get("/management/env")
-                .header("Authorization", "Bearer " + originalAccessToken)
-                .contentType(CONTENT_TYPE)
-                .accept(CONTENT_TYPE))
+        mockMvc.perform(get("/management/env")
+                        .header("Authorization", "Bearer " + originalAccessToken)
+                        .contentType(CONTENT_TYPE)
+                        .accept(CONTENT_TYPE))
                 .andExpect(status().isUnauthorized());
         // @formatter:on
 
         // @formatter:off
         mockMvc.perform(get("/management/env")
-                .header("Authorization", "Bearer " + newAccessToken)
-                .contentType(CONTENT_TYPE)
-                .accept(CONTENT_TYPE))
+                        .header("Authorization", "Bearer " + newAccessToken)
+                        .contentType(CONTENT_TYPE)
+                        .accept(CONTENT_TYPE))
                 .andExpect(status().isOk());
         // @formatter:on
     }

@@ -4,7 +4,6 @@ import org.infinity.passport.domain.MongoOAuth2ClientDetails;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.JacksonJsonParser;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.web.FilterChainProxy;
@@ -15,6 +14,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
+
+import javax.annotation.Resource;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -28,9 +29,9 @@ public class OAuth2ClientCredentialsTest {
     private static final String                CLIENT_ID         = MongoOAuth2ClientDetails.INTERNAL_CLIENT_ID;
     private static final String                RAW_CLIENT_SECRET = MongoOAuth2ClientDetails.INTERNAL_RAW_CLIENT_SECRET;
     private static final String                CONTENT_TYPE      = "application/json;charset=UTF-8";
-    @Autowired
+    @Resource
     private              WebApplicationContext wac;
-    @Autowired
+    @Resource
     private              FilterChainProxy      springSecurityFilterChain;
     private              MockMvc               mockMvc;
 
@@ -54,8 +55,8 @@ public class OAuth2ClientCredentialsTest {
 
         // @formatter:off
         ResultActions result = mockMvc.perform(post("/oauth/token")
-                .params(params)
-                .accept(CONTENT_TYPE))
+                        .params(params)
+                        .accept(CONTENT_TYPE))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(CONTENT_TYPE));
         return result;
@@ -75,9 +76,9 @@ public class OAuth2ClientCredentialsTest {
 
         // @formatter:off
         ResultActions result = mockMvc.perform(get("/management/env")
-                .header("Authorization", "Bearer " + accessToken)
-                .contentType(CONTENT_TYPE)
-                .accept(CONTENT_TYPE))
+                        .header("Authorization", "Bearer " + accessToken)
+                        .contentType(CONTENT_TYPE)
+                        .accept(CONTENT_TYPE))
                 .andExpect(status().isOk());
         // @formatter:on
     }
