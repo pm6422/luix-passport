@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -32,17 +33,12 @@ import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
 @Slf4j
 public class AppAuthorityController {
 
-    private final AppAuthorityRepository appAuthorityRepository;
-    private final AppAuthorityService    appAuthorityService;
-    private final HttpHeaderCreator      httpHeaderCreator;
-
-    public AppAuthorityController(AppAuthorityRepository appAuthorityRepository,
-                                  AppAuthorityService appAuthorityService,
-                                  HttpHeaderCreator httpHeaderCreator) {
-        this.appAuthorityRepository = appAuthorityRepository;
-        this.appAuthorityService = appAuthorityService;
-        this.httpHeaderCreator = httpHeaderCreator;
-    }
+    @Resource
+    private AppAuthorityRepository appAuthorityRepository;
+    @Resource
+    private AppAuthorityService    appAuthorityService;
+    @Resource
+    private HttpHeaderCreator      httpHeaderCreator;
 
     @ApiOperation("创建应用权限")
     @ApiResponses(value = {@ApiResponse(code = SC_CREATED, message = "成功创建"),
