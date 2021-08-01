@@ -9,19 +9,16 @@ import org.infinity.passport.repository.UserRepository;
 import org.infinity.passport.service.UserProfilePhotoService;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.Optional;
 
 @Service
 public class UserProfilePhotoServiceImpl implements UserProfilePhotoService {
 
-    private final UserProfilePhotoRepository userProfilePhotoRepository;
-    private final UserRepository             userRepository;
-
-    public UserProfilePhotoServiceImpl(UserProfilePhotoRepository userProfilePhotoRepository,
-                                       UserRepository userRepository) {
-        this.userProfilePhotoRepository = userProfilePhotoRepository;
-        this.userRepository = userRepository;
-    }
+    @Resource
+    private UserProfilePhotoRepository userProfilePhotoRepository;
+    @Resource
+    private UserRepository             userRepository;
 
     @Override
     public void insert(String userId, byte[] photoData) {

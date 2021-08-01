@@ -9,14 +9,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+
 @Service
 public class AppAuthorityServiceImpl implements AppAuthorityService {
 
-    private final AppAuthorityRepository appAuthorityRepository;
-
-    public AppAuthorityServiceImpl(AppAuthorityRepository appAuthorityRepository) {
-        this.appAuthorityRepository = appAuthorityRepository;
-    }
+    @Resource
+    private AppAuthorityRepository appAuthorityRepository;
 
     @Override
     public Page<AppAuthority> find(Pageable pageable, String appName, String authorityName) {

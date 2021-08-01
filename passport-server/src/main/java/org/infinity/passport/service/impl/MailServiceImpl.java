@@ -13,6 +13,7 @@ import org.springframework.util.StringUtils;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
+import javax.annotation.Resource;
 import javax.mail.internet.MimeMessage;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
@@ -26,20 +27,14 @@ public class MailServiceImpl implements MailService {
 
     private static final String               USER     = "user";
     private static final String               BASE_URL = "baseUrl";
-    private final        MailProperties       mailProperties;
-    private final        JavaMailSenderImpl   javaMailSender;
-    private final        MessageSource        messageSource;
-    private final        SpringTemplateEngine templateEngine;
-
-    public MailServiceImpl(MailProperties mailProperties,
-                           JavaMailSenderImpl javaMailSender,
-                           MessageSource messageSource,
-                           SpringTemplateEngine templateEngine) {
-        this.mailProperties = mailProperties;
-        this.javaMailSender = javaMailSender;
-        this.messageSource = messageSource;
-        this.templateEngine = templateEngine;
-    }
+    @Resource
+    private              MailProperties       mailProperties;
+    @Resource
+    private              JavaMailSenderImpl   javaMailSender;
+    @Resource
+    private              MessageSource        messageSource;
+    @Resource
+    private              SpringTemplateEngine springTemplateEngine;
 
     /**
      * System default email address that sends the e-mails.
@@ -71,7 +66,7 @@ public class MailServiceImpl implements MailService {
         Context context = new Context(locale);
         context.setVariable(USER, user);
         context.setVariable(BASE_URL, baseUrl);
-        String content = templateEngine.process(templateName, context);
+        String content = springTemplateEngine.process(templateName, context);
         String subject = messageSource.getMessage(titleKey, null, locale);
         sendEmail(new String[]{user.getEmail()}, subject, content, false, true);
     }

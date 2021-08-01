@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.thymeleaf.util.StringUtils;
 
+import javax.annotation.Resource;
 import java.time.Instant;
 import java.util.Locale;
 import java.util.Optional;
@@ -30,20 +31,14 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository          userRepository;
-    private final UserAuthorityRepository userAuthorityRepository;
-    private final PasswordEncoder         passwordEncoder;
-    private final MessageCreator          messageCreator;
-
-    public UserServiceImpl(UserRepository userRepository,
-                           UserAuthorityRepository userAuthorityRepository,
-                           PasswordEncoder passwordEncoder,
-                           MessageCreator messageCreator) {
-        this.userRepository = userRepository;
-        this.userAuthorityRepository = userAuthorityRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.messageCreator = messageCreator;
-    }
+    @Resource
+    private UserRepository          userRepository;
+    @Resource
+    private UserAuthorityRepository userAuthorityRepository;
+    @Resource
+    private PasswordEncoder         passwordEncoder;
+    @Resource
+    private MessageCreator          messageCreator;
 
     // private void removeUserToken(User user) {
     // String clientId =

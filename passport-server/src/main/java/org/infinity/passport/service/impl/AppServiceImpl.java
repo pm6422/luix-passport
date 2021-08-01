@@ -10,18 +10,16 @@ import org.infinity.passport.repository.AppRepository;
 import org.infinity.passport.service.AppService;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+
 @Service
 @Slf4j
 public class AppServiceImpl implements AppService {
 
-    private final AppRepository appRepository;
-
-    private final AppAuthorityRepository appAuthorityRepository;
-
-    public AppServiceImpl(AppRepository appRepository, AppAuthorityRepository appAuthorityRepository) {
-        this.appRepository = appRepository;
-        this.appAuthorityRepository = appAuthorityRepository;
-    }
+    @Resource
+    private AppRepository          appRepository;
+    @Resource
+    private AppAuthorityRepository appAuthorityRepository;
 
     @Override
     public App insert(App domain) {

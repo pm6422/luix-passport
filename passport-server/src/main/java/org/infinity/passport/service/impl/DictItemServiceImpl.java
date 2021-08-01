@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
@@ -23,17 +24,12 @@ import java.util.Map;
 @Slf4j
 public class DictItemServiceImpl implements DictItemService {
 
-    private final DictRepository     dictRepository;
-    private final DictItemRepository dictItemRepository;
-    private final DictService        dictService;
-
-    public DictItemServiceImpl(DictRepository dictRepository,
-                               DictItemRepository dictItemRepository,
-                               DictService dictService) {
-        this.dictRepository = dictRepository;
-        this.dictItemRepository = dictItemRepository;
-        this.dictService = dictService;
-    }
+    @Resource
+    private DictRepository     dictRepository;
+    @Resource
+    private DictItemRepository dictItemRepository;
+    @Resource
+    private DictService        dictService;
 
     @Override
     public DictItem insert(DictItem domain) {

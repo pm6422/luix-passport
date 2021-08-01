@@ -7,17 +7,15 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class AuthorityServiceImpl implements AuthorityService {
 
-    private final AuthorityRepository authorityRepository;
-
-    public AuthorityServiceImpl(AuthorityRepository authorityRepository) {
-        this.authorityRepository = authorityRepository;
-    }
+    @Resource
+    private AuthorityRepository authorityRepository;
 
     @Override
     public List<String> findAllAuthorityNames(Boolean enabled) {
