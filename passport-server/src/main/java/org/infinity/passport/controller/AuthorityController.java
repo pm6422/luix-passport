@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -29,13 +30,10 @@ import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
 @Slf4j
 public class AuthorityController {
 
-    private final AuthorityRepository authorityRepository;
-    private final HttpHeaderCreator   httpHeaderCreator;
-
-    public AuthorityController(AuthorityRepository authorityRepository, HttpHeaderCreator httpHeaderCreator) {
-        this.authorityRepository = authorityRepository;
-        this.httpHeaderCreator = httpHeaderCreator;
-    }
+    @Resource
+    private AuthorityRepository authorityRepository;
+    @Resource
+    private HttpHeaderCreator   httpHeaderCreator;
 
     @ApiOperation("创建权限")
     @ApiResponses(value = {@ApiResponse(code = SC_CREATED, message = "成功创建")})
