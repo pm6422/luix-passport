@@ -89,7 +89,7 @@ public class UaaConfiguration {
                     .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                     .and()
                     .logout() // Logout is handled by LogoutFilter
-                    .logoutUrl("/api/account/logout") // For the logout behavior of OAuth2 password grant
+                    .logoutUrl("/api/accounts/logout") // For the logout behavior of OAuth2 password grant
                     .logoutSuccessHandler(ajaxLogoutSuccessHandler) // It need to delete access token if u want to logout other clients simultaneously
                     .and()
                     .headers()
