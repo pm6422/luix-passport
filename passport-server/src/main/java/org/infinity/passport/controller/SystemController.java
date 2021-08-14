@@ -25,7 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @RestController
-@Api(tags = "系统")
+@Api(tags = "系统管理")
 @Slf4j
 public class SystemController {
 
