@@ -60,11 +60,11 @@ zuul:
         sso-server:
             url: http://127.0.0.1:9010
         sso-server-account:
-            path: /api/account/**
-            url: ${zuul.routes.sso-server.url}/api/account
+            path: /api/accounts/**
+            url: ${zuul.routes.sso-server.url}/api/accounts
         sso-server-account-open-api:
-            path: /open-api/account/**
-            url: ${zuul.routes.sso-server.url}/open-api/account
+            path: /open-api/accounts/**
+            url: ${zuul.routes.sso-server.url}/open-api/accounts
 # ===================================================================
 # Application specific properties
 # ===================================================================
