@@ -18,7 +18,7 @@ import static org.infinity.passport.config.WebsocketConfiguration.IP_ADDRESS;
 @Slf4j
 public class TopicServerSubscriberController {
 
-    @MessageMapping("/topic/server-subscriber/tracker")
+    @MessageMapping("/topic/server-subscribers/tracker")
     @SendTo("/topic/client-subscriber/tracker")
     public TrackerDTO sendActivity(@Payload TrackerDTO trackerDTO, StompHeaderAccessor stompHeaderAccessor, Principal principal) {
         trackerDTO.setUserLogin(principal.getName());

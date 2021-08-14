@@ -802,7 +802,7 @@ function TrackerService($rootScope, $window, $cookies, $http, $q, AuthServerServ
     function sendActivity() {
         if (stompClient !== null && stompClient.connected) {
             stompClient
-                .send('/topic/server-subscriber/tracker',
+                .send('/topic/server-subscribers/tracker',
                     {},
                     angular.toJson({'page': $rootScope.toState.name}));
         }
