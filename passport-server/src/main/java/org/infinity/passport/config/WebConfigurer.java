@@ -1,9 +1,13 @@
 package org.infinity.passport.config;
 
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.servlet.InstrumentedFilter;
+import com.codahale.metrics.servlets.MetricsServlet;
 import io.undertow.server.DefaultByteBufferPool;
 import io.undertow.websockets.jsr.WebSocketDeploymentInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.infinity.passport.filter.CachingHttpHeadersFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.embedded.undertow.UndertowServletWebServerFactory;
 import org.springframework.boot.web.server.MimeMappings;
 import org.springframework.boot.web.server.WebServerFactory;
@@ -15,9 +19,11 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.env.Profiles;
 import org.springframework.http.MediaType;
 
+import javax.annotation.Resource;
 import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration;
 import javax.servlet.ServletContext;
+import javax.servlet.ServletRegistration;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
@@ -32,19 +38,19 @@ import static java.net.URLDecoder.decode;
 @Configuration
 @Slf4j
 public class WebConfigurer implements ServletContextInitializer, WebServerFactoryCustomizer<UndertowServletWebServerFactory> {
-    private final Environment           env;
-    private final ApplicationProperties applicationProperties;
-
-    public WebConfigurer(Environment env, ApplicationProperties applicationProperties) {
-        this.env = env;
-        this.applicationProperties = applicationProperties;
-    }
+    @Resource
+    private Environment           env;
+    @Resource
+    private ApplicationProperties applicationProperties;
+    @Autowired(required = false)
+    private MetricRegistry        metricRegistry;
 
     @Override
     public void onStartup(ServletContext servletContext) {
         log.info("Configuring web application");
         EnumSet<DispatcherType> types = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD,
                 DispatcherType.ASYNC);
+        initMetrics(servletContext, types);
         if (env.acceptsProfiles(Profiles.of(ApplicationConstants.SPRING_PROFILE_PROD))) {
             initCachingHttpHeadersFilter(servletContext, types);
         }
@@ -126,5 +132,27 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
         cachingHttpHeadersFilter.addMappingForUrlPatterns(types, true, "/app/*");
         cachingHttpHeadersFilter.setAsyncSupported(true);
         log.debug("Registered Caching HTTP Headers Filter");
+    }
+
+    /**
+     * Initializes Metrics.
+     */
+    private void initMetrics(ServletContext servletContext, EnumSet<DispatcherType> disps) {
+        servletContext.setAttribute(InstrumentedFilter.REGISTRY_ATTRIBUTE, metricRegistry);
+        servletContext.setAttribute(MetricsServlet.METRICS_REGISTRY, metricRegistry);
+        log.debug("Initialized metrics registries");
+
+        FilterRegistration.Dynamic metricsFilter = servletContext.addFilter("webappMetricsFilter",
+                new InstrumentedFilter());
+        metricsFilter.addMappingForUrlPatterns(disps, true, "/*");
+        metricsFilter.setAsyncSupported(true);
+        log.debug("Registered metrics filter");
+
+        ServletRegistration.Dynamic metricsAdminServlet = servletContext.addServlet("metricsServlet",
+                new MetricsServlet());
+        metricsAdminServlet.addMapping("/api/metrics/*");
+        metricsAdminServlet.setAsyncSupported(true);
+        metricsAdminServlet.setLoadOnStartup(2);
+        log.debug("Registered metrics servlet");
     }
 }

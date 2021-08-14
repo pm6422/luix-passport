@@ -22,6 +22,7 @@ import java.util.List;
 public class ApplicationProperties {
     private final Http               http               = new Http();
     private final Swagger            swagger            = new Swagger();
+    private final Metrics            metrics            = new Metrics();
     private final AopLogging         aopLogging         = new AopLogging();
     private final ElapsedTimeLogging elapsedTimeLogging = new ElapsedTimeLogging();
     private final Redis              redis              = new Redis();
@@ -58,6 +59,34 @@ public class ApplicationProperties {
         public static class OpenApi {
             private String title;
             private String description;
+        }
+    }
+
+    @Data
+    public static class Metrics {
+        private final Spark    spark    = new Spark();
+        private final Graphite graphite = new Graphite();
+        private final Logs     logs     = new Logs();
+
+        @Data
+        public static class Spark {
+            private boolean enabled = false;
+            private String  host    = "localhost";
+            private int     port    = 9999;
+        }
+
+        @Data
+        public static class Graphite {
+            private boolean enabled = false;
+            private String  host    = "localhost";
+            private int     port    = 2003;
+            private String  prefix  = "";
+        }
+
+        @Data
+        public static class Logs {
+            private boolean enabled         = false;
+            private int     reportFrequency = 60;
         }
     }
 

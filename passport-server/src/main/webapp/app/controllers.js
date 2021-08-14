@@ -713,7 +713,7 @@ function MetricsController($state, $scope, $uibModal, MetricsService, metrics) {
     function refreshThreadDumpData() {
         MetricsService.threadDump().then(function (data) {
             $uibModal.open({
-                templateUrl: 'app/views/developer/metrics/metrics.modal.html',
+                templateUrl: 'app/views/developer/metrics/metrics.dialog.html',
                 controller: 'MetricsDialogController',
                 controllerAs: 'vm',
                 size: 'lg',

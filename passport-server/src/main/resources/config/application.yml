@@ -26,29 +26,7 @@ management: # Management http server configuration, used by ManagementServerProp
         mongo:
             enabled: true
     metrics:
-        export:
-            # Prometheus is the default metrics backend
-            prometheus:
-                enabled: true
-                step: 60
-        enable:
-            http: true
-            jvm: true
-            logback: true
-            process: true
-            system: true
-        distribution:
-            percentiles-histogram:
-                all: true
-            percentiles:
-                all: 0, 0.5, 0.75, 0.95, 0.99, 1.0
-        tags:
-            application: ${spring.application.name}
-        web:
-            server:
-                request:
-                    autotime:
-                        enabled: true
+        enabled: false # http://micrometer.io/ is disabled by default, as we use http://metrics.dropwizard.io/ instead
 info: # These configuration can be exported to Environment, accessing URL /management/info can get these properties
     artifact:
         id: @project.artifactId@
@@ -63,6 +41,8 @@ spring:
         # Otherwise, it will be filled in by maven when building the WAR file
         # Either way, it can be overridden by `--spring.profiles.active` value passed in the commandline or `-Dspring.profiles.active` set in `JAVA_OPTS`
         active: @spring.profiles.active@
+    main:
+        allow-bean-definition-overriding: true
     messages:
         basename: i18n/messages
     task:
@@ -120,6 +100,19 @@ mongock:
 # Application specific properties
 # ===================================================================
 application:
+    metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
+        spark:
+            enabled: false
+            host: localhost
+            port: 9999
+        graphite:
+            enabled: false
+            host: localhost
+            port: 2003
+            prefix: smartcloudservice
+        logs: # Reports Dropwizard metrics in the logs
+            enabled: false
+            report-frequency: 60 # in seconds
     http:
         cache: # Used by the CachingHttpHeadersFilter
             time-to-live-in-days: 31
