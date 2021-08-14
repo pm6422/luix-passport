@@ -30,12 +30,12 @@
                     </td>
                     <td>
                         <button ng-click="vm.changeLevel(logger.name, 'TRACE')"
-                                ng-class="(logger.level=='TRACE') ? 'btn-danger' : 'btn-default'"
+                                ng-class="(logger.level=='TRACE') ? 'btn-success' : 'btn-default'"
                                 class="btn btn-xs">
                             <small>TRACE</small>
                         </button>
                         <button ng-click="vm.changeLevel(logger.name, 'DEBUG')"
-                                ng-class="(logger.level=='DEBUG') ? 'btn-warning' : 'btn-default'"
+                                ng-class="(logger.level=='DEBUG') ? 'btn-primary' : 'btn-default'"
                                 class="btn btn-xs">
                             <small>DEBUG</small>
                         </button>
@@ -45,12 +45,12 @@
                             <small>INFO</small>
                         </button>
                         <button ng-click="vm.changeLevel(logger.name, 'WARN')"
-                                ng-class="(logger.level=='WARN') ? 'btn-success' : 'btn-default'"
+                                ng-class="(logger.level=='WARN') ? 'btn-warning' : 'btn-default'"
                                 class="btn btn-xs">
                             <small>WARN</small>
                         </button>
                         <button ng-click="vm.changeLevel(logger.name, 'ERROR')"
-                                ng-class="(logger.level=='ERROR') ? 'btn-primary' : 'btn-default'"
+                                ng-class="(logger.level=='ERROR') ? 'btn-danger' : 'btn-default'"
                                 class="btn btn-xs">
                             <small>ERROR</small>
                         </button>
