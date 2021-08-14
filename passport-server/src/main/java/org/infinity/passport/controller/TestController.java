@@ -24,7 +24,7 @@ public class TestController {
     private MailService    mailService;
 
     @ApiOperation("测试审计功能")
-    @GetMapping("/api/test/user-audit")
+    @GetMapping("/api/tests/user-audit")
     @Secured(Authority.DEVELOPER)
     public void testAudit() {
         User user1 = new User();
@@ -53,7 +53,7 @@ public class TestController {
     }
 
     @ApiOperation("测试发送邮件功能")
-    @GetMapping("/api/test/email")
+    @GetMapping("/api/tests/email")
     @Secured(Authority.DEVELOPER)
     public void testEmail() {
         mailService.sendEmail(new String[]{"pm6422@126.com", "pm6422@gmail.com"}, "test", "test", false, false);

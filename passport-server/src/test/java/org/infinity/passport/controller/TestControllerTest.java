@@ -47,7 +47,7 @@ public class TestControllerTest {
             log.debug("Active thread count: {}", Thread.activeCount());
             String key = UUID.randomUUID().toString().replaceAll("-", "");
             try {
-                this.mockMvc.perform(get("/open-api/test/threadsafe?key=" + key).accept(MediaType.APPLICATION_JSON));
+                this.mockMvc.perform(get("/open-api/tests/threadsafe?key=" + key).accept(MediaType.APPLICATION_JSON));
             } catch (Exception e) {
                 e.printStackTrace();
             }
