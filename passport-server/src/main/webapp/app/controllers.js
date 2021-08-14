@@ -524,13 +524,13 @@ function MetricsController($state, $scope, $uibModal, MetricsService, metrics) {
         {
             value: vm.metrics.gauges['jvm.memory.total.used'].value / 1000000,
             color: '#a3e1d4',
-            highlight: '#1ab394',
+            highlight: '#4424bc',
             label: '已使用'
         },
         {
             value: (vm.metrics.gauges['jvm.memory.total.max'].value - vm.metrics.gauges['jvm.memory.total.used'].value) / 1000000,
             color: '#dedede',
-            highlight: '#1ab394',
+            highlight: '#4424bc',
             label: '未使用'
         }
     ];
@@ -539,13 +539,13 @@ function MetricsController($state, $scope, $uibModal, MetricsService, metrics) {
         {
             value: vm.metrics.gauges['jvm.memory.heap.used'].value / 1000000,
             color: '#a3e1d4',
-            highlight: '#1ab394',
+            highlight: '#4424bc',
             label: '已使用'
         },
         {
             value: (vm.metrics.gauges['jvm.memory.heap.max'].value - vm.metrics.gauges['jvm.memory.heap.used'].value) / 1000000,
             color: '#dedede',
-            highlight: '#1ab394',
+            highlight: '#4424bc',
             label: '未使用'
         }
     ];
@@ -554,13 +554,13 @@ function MetricsController($state, $scope, $uibModal, MetricsService, metrics) {
         {
             value: vm.metrics.gauges['jvm.memory.pools.PS-Eden-Space.used'].value / 1000000,
             color: '#a3e1d4',
-            highlight: '#1ab394',
+            highlight: '#4424bc',
             label: '已使用'
         },
         {
             value: (vm.metrics.gauges['jvm.memory.pools.PS-Eden-Space.max'].value - vm.metrics.gauges['jvm.memory.pools.PS-Eden-Space.used'].value) / 1000000,
             color: '#dedede',
-            highlight: '#1ab394',
+            highlight: '#4424bc',
             label: '未使用'
         }
     ];
@@ -569,13 +569,13 @@ function MetricsController($state, $scope, $uibModal, MetricsService, metrics) {
         {
             value: vm.metrics.gauges['jvm.memory.pools.PS-Survivor-Space.used'].value / 1000000,
             color: '#a3e1d4',
-            highlight: '#1ab394',
+            highlight: '#4424bc',
             label: '已使用'
         },
         {
             value: (vm.metrics.gauges['jvm.memory.pools.PS-Survivor-Space.max'].value - vm.metrics.gauges['jvm.memory.pools.PS-Survivor-Space.used'].value) / 1000000,
             color: '#dedede',
-            highlight: '#1ab394',
+            highlight: '#4424bc',
             label: '未使用'
         }
     ];
@@ -584,13 +584,13 @@ function MetricsController($state, $scope, $uibModal, MetricsService, metrics) {
         {
             value: vm.metrics.gauges['jvm.memory.pools.PS-Old-Gen.used'].value / 1000000,
             color: '#a3e1d4',
-            highlight: '#1ab394',
+            highlight: '#4424bc',
             label: '已使用'
         },
         {
             value: (vm.metrics.gauges['jvm.memory.pools.PS-Old-Gen.max'].value - vm.metrics.gauges['jvm.memory.pools.PS-Old-Gen.used'].value) / 1000000,
             color: '#dedede',
-            highlight: '#1ab394',
+            highlight: '#4424bc',
             label: '未使用'
         }
     ];
@@ -599,13 +599,13 @@ function MetricsController($state, $scope, $uibModal, MetricsService, metrics) {
         {
             value: vm.metrics.gauges['jvm.memory.non-heap.used'].value / 1000000,
             color: '#a3e1d4',
-            highlight: '#1ab394',
+            highlight: '#4424bc',
             label: '已使用'
         },
         {
             value: (vm.metrics.gauges['jvm.memory.non-heap.committed'].value - vm.metrics.gauges['jvm.memory.non-heap.used'].value) / 1000000,
             color: '#dedede',
-            highlight: '#1ab394',
+            highlight: '#4424bc',
             label: '未使用'
         }
     ];
@@ -614,13 +614,13 @@ function MetricsController($state, $scope, $uibModal, MetricsService, metrics) {
         {
             value: vm.metrics.gauges['jvm.threads.runnable.count'].value,
             color: '#a3e1d4',
-            highlight: '#1ab394',
+            highlight: '#4424bc',
             label: 'Runnable'
         },
         {
             value: (vm.metrics.gauges['jvm.threads.count'].value - vm.metrics.gauges['jvm.threads.runnable.count'].value),
             color: '#dedede',
-            highlight: '#1ab394',
+            highlight: '#4424bc',
             label: 'Others'
         }
     ];
@@ -629,13 +629,13 @@ function MetricsController($state, $scope, $uibModal, MetricsService, metrics) {
         {
             value: vm.metrics.gauges['jvm.threads.timed_waiting.count'].value,
             color: '#a3e1d4',
-            highlight: '#1ab394',
+            highlight: '#4424bc',
             label: 'Timed waiting'
         },
         {
             value: (vm.metrics.gauges['jvm.threads.count'].value - vm.metrics.gauges['jvm.threads.timed_waiting.count'].value),
             color: '#dedede',
-            highlight: '#1ab394',
+            highlight: '#4424bc',
             label: 'Others'
         }
     ];
@@ -644,13 +644,13 @@ function MetricsController($state, $scope, $uibModal, MetricsService, metrics) {
         {
             value: vm.metrics.gauges['jvm.threads.waiting.count'].value,
             color: '#a3e1d4',
-            highlight: '#1ab394',
+            highlight: '#4424bc',
             label: 'Waiting'
         },
         {
             value: (vm.metrics.gauges['jvm.threads.count'].value - vm.metrics.gauges['jvm.threads.waiting.count'].value),
             color: '#dedede',
-            highlight: '#1ab394',
+            highlight: '#4424bc',
             label: 'Others'
         }
     ];
@@ -659,13 +659,13 @@ function MetricsController($state, $scope, $uibModal, MetricsService, metrics) {
         {
             value: vm.metrics.gauges['jvm.threads.blocked.count'].value,
             color: '#a3e1d4',
-            highlight: '#1ab394',
+            highlight: '#4424bc',
             label: 'Blocked'
         },
         {
             value: (vm.metrics.gauges['jvm.threads.count'].value - vm.metrics.gauges['jvm.threads.blocked.count'].value),
             color: '#dedede',
-            highlight: '#1ab394',
+            highlight: '#4424bc',
             label: 'Others'
         }
     ];
