@@ -3,7 +3,7 @@
         <div class="navbar-header">
             <span minimalize-sidebar-directive></span>
             <a class="navbar-brand p-h-m text-muted" href="#">&nbsp;&nbsp;&nbsp;
-                <span>{{APP_NAME}}</span>
+                <span class="text-navy"><strong>{{APP_NAME}}</strong></span>
                 <span class="navbar-version">v{{VERSION}}</span>
             </a>
         </div>
@@ -18,8 +18,8 @@
         <ul class="nav navbar-top-links navbar-right">
             <li uib-dropdown ng-switch-when="true" has-authority-directive="ROLE_DEVELOPER">
                 <a class="count-info" href uib-dropdown-toggle>
-                    <span class="fa fa-child"></span>&nbsp;
-                    <span>开发者工具</span>
+                    <span class="fas fa-wrench text-navy"></span>&nbsp;
+                    <span class="text-navy">开发者工具</span>
                 </a>
                 <ul uib-dropdown-menu class="animated fadeInDown m-t-xs">
                     <li ng-show="vm.swaggerEnabled" ui-sref-active="active">
@@ -114,20 +114,20 @@
                     </li>
                 </ul>
             </li>
-            <li uib-dropdown>
-                <a class="count-info" href uib-dropdown-toggle>
-                    <span class="fa fa-language"></span>&nbsp;
-                    <span>语言</span>
-                </a>
-                <ul uib-dropdown-menu class="animated fadeInDown m-t-xs">
-                    <li><a ng-click="vm.changeLanguage('en')">English</a></li>
-                    <li><a ng-click="vm.changeLanguage('es')">Spanish</a></li>
-                </ul>
-            </li>
+<!--            <li uib-dropdown>-->
+<!--                <a class="count-info" href uib-dropdown-toggle>-->
+<!--                    <span class="fa fa-language"></span>&nbsp;-->
+<!--                    <span class="text-navy">语言</span>-->
+<!--                </a>-->
+<!--                <ul uib-dropdown-menu class="animated fadeInDown m-t-xs">-->
+<!--                    <li><a ng-click="vm.changeLanguage('en')">English</a></li>-->
+<!--                    <li><a ng-click="vm.changeLanguage('es')">Spanish</a></li>-->
+<!--                </ul>-->
+<!--            </li>-->
             <li>
                 <a ng-click="vm.logout()">
-                    <span class="fa fa-sign-out"></span>&nbsp;
-                    <span>退出</span>
+                    <span class="fas fa-sign-out-alt text-navy"></span>&nbsp;
+                    <span class="text-navy">退出</span>
                 </a>
             </li>
         </ul>
