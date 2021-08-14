@@ -1725,7 +1725,7 @@ function UserDetailsController($state, $stateParams, entity, AuthServerService) 
 
     var authToken = AuthServerService.getToken();
     if (authToken) {
-        vm.entity.profilePhotoUrl = '/api/user/profile-photo/' + vm.entity.userName + '?access_token=' + authToken.access_token;
+        vm.entity.profilePhotoUrl = '/api/users/profile-photo/' + vm.entity.userName + '?access_token=' + authToken.access_token;
     }
 }
 
