@@ -149,7 +149,7 @@ public class OAuth2PasswordGrantTest {
         String accessToken = this.obtainAccessToken("louis", "louis");
 
         // @formatter:off
-        mockMvc.perform(post("/api/account/logout")
+        mockMvc.perform(post("/api/accounts/logout")
                         .header("Authorization", "Bearer " + accessToken)
                         .contentType(CONTENT_TYPE)
                         .accept(CONTENT_TYPE))
