@@ -41,7 +41,7 @@ public class SystemController {
     private ApplicationContext    applicationContext;
 
     @ApiOperation("检索系统Profile")
-    @GetMapping("/open-api/system/profile-info")
+    @GetMapping("/open-api/systems/profile-info")
     public ResponseEntity<ProfileInfoDTO> getProfileInfo() {
         ProfileInfoDTO profileInfoDTO = new ProfileInfoDTO(env.getActiveProfiles(), applicationProperties.getSwagger().isEnabled(), getRibbonEnv());
         return ResponseEntity.ok(profileInfoDTO);
@@ -65,30 +65,30 @@ public class SystemController {
     }
 
     @ApiOperation("get bean")
-    @GetMapping("/api/system/bean")
+    @GetMapping("/api/systems/bean")
     public ResponseEntity<Object> getBean(@RequestParam(value = "name") String name) {
         return ResponseEntity.ok(applicationContext.getBean(name));
     }
 
-    @GetMapping("/api/system/redis-admin")
+    @GetMapping("/api/systems/redis-admin")
     @Secured(Authority.DEVELOPER)
     public void redirectToRedisAdmin(HttpServletResponse response) throws IOException {
         response.sendRedirect(applicationProperties.getRedis().getAdminUrl());
     }
 
-    @GetMapping("/api/system/internet-ip")
+    @GetMapping("/api/systems/internet-ip")
     @Secured(Authority.DEVELOPER)
     public ResponseEntity<String> getInternetIp() {
         return ResponseEntity.ok(NetworkUtils.INTERNET_IP);
     }
 
-    @GetMapping("/api/system/intranet-ip")
+    @GetMapping("/api/systems/intranet-ip")
     @Secured(Authority.DEVELOPER)
     public ResponseEntity<String> getIntranetIp() {
         return ResponseEntity.ok(NetworkUtils.INTRANET_IP);
     }
 
-    @GetMapping("/open-api/system/reset-database")
+    @GetMapping("/open-api/systems/reset-database")
     public String resetDatabase() {
         mongoTemplate.getDb().drop();
         changockBase.execute();

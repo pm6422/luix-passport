@@ -452,7 +452,7 @@ function ProfileService($q, $http, $localStorage) {
 
     function getProfileInfo() {
         if (angular.isUndefined(dataPromise)) {
-            dataPromise = $http.get('open-api/system/profile-info').then(function (result) {
+            dataPromise = $http.get('open-api/systems/profile-info').then(function (result) {
                 if (result.data.activeProfiles) {
                     return result.data;
                 }
