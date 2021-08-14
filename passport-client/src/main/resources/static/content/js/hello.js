@@ -19,7 +19,7 @@ function($rootScope, $http, $location, $route) {
 		return $route.current && route === $route.current.controller;
 	};
 
-	$http.get('open-api/account/user').then(function(response) {
+	$http.get('open-api/accounts/user').then(function(response) {
 		if (response.data.userName) {
 			$rootScope.authenticated = true;
 			$rootScope.userName = response.data.userName;
@@ -35,7 +35,7 @@ function($rootScope, $http, $location, $route) {
 
 	self.logout = function() {
 //           console.log('Post logout to auth server');
-//           $http.post('api/account/logout', { withCredentials: true }).finally(function() {
+//           $http.post('api/accounts/logout', { withCredentials: true }).finally(function() {
 //           });
            console.log('Post logout to ui client');
            $http.post('logout', {}).finally(function() {

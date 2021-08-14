@@ -32,7 +32,7 @@ function alertErrorHandlerInterceptor ($q, $rootScope) {
     };
 
     function responseError (response) {
-        if (!(response.status === 401 && (response.data === '' || (response.data.path && response.data.path.indexOf('/api/account/user') > -1 )))) {
+        if (!(response.status === 401 && (response.data === '' || (response.data.path && response.data.path.indexOf('/api/accounts/user') > -1 )))) {
             // 非访问受限401错误并且访问非用户账号接口时
             $rootScope.$emit('smartcloudserviceApp.httpError', response);
         }
