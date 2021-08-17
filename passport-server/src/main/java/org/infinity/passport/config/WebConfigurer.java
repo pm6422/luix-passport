@@ -47,7 +47,6 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
 
     @Override
     public void onStartup(ServletContext servletContext) {
-        log.info("Configuring web application");
         EnumSet<DispatcherType> types = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD,
                 DispatcherType.ASYNC);
         initMetrics(servletContext, types);
@@ -124,14 +123,13 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
      * Initializes the caching HTTP Headers Filter.
      */
     private void initCachingHttpHeadersFilter(ServletContext servletContext, EnumSet<DispatcherType> types) {
-        log.debug("Registering Caching HTTP Headers Filter");
         FilterRegistration.Dynamic cachingHttpHeadersFilter = servletContext.addFilter("cachingHttpHeadersFilter",
                 new CachingHttpHeadersFilter(applicationProperties));
         cachingHttpHeadersFilter.addMappingForUrlPatterns(types, true, "/i18n/*");
         cachingHttpHeadersFilter.addMappingForUrlPatterns(types, true, "/content/*");
         cachingHttpHeadersFilter.addMappingForUrlPatterns(types, true, "/app/*");
         cachingHttpHeadersFilter.setAsyncSupported(true);
-        log.debug("Registered Caching HTTP Headers Filter");
+        log.debug("Registered caching HTTP headers filter");
     }
 
     /**
