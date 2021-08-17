@@ -64,9 +64,8 @@ public class ApplicationProperties {
 
     @Data
     public static class Metrics {
-        private final Spark    spark    = new Spark();
-        private final Graphite graphite = new Graphite();
         private final Logs     logs     = new Logs();
+        private final Graphite graphite = new Graphite();
 
         @Data
         public static class Spark {

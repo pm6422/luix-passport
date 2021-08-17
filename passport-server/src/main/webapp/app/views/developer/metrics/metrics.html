@@ -189,64 +189,104 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>OK</td>
-                                <td>
-                                    <uib-progressbar min="0" max="vm.metrics.timers['com.codahale.metrics.servlet.InstrumentedFilter.requests'].count" value="vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.responseCodes.ok'].count" class="progress-striped active" type="primary">
-                                        <span>{{vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.responseCodes.ok'].count}}</span>
-                                    </uib-progressbar>
-                                </td>
-                                <td class="text-right">
-                                    {{vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.responseCodes.ok'].mean_rate | number:2}}
-                                </td>
-                                <td class="text-right">{{vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.responseCodes.ok'].m1_rate | number:2}}
-                                </td>
-                                <td class="text-right">{{vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.responseCodes.ok'].m5_rate | number:2}}
-                                </td>
-                                <td class="text-right">
-                                    {{vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.responseCodes.ok'].m15_rate | number:2}}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Not Found</td>
-                                <td>
-                                    <uib-progressbar min="0" max="vm.metrics.timers['com.codahale.metrics.servlet.InstrumentedFilter.requests'].count" value="vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.responseCodes.notFound'].count" class="progress-striped active" type="primary">
-                                        <span>{{vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.responseCodes.notFound'].count}}</span>
-                                    </uib-progressbar>
-                                </td>
-                                <td class="text-right">
-                                    {{vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.responseCodes.notFound'].mean_rate | number:2}}
-                                </td>
-                                <td class="text-right">
-                                    {{vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.responseCodes.notFound'].m1_rate | number:2}}
-                                </td>
-                                <td class="text-right">
-                                    {{vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.responseCodes.notFound'].m5_rate | number:2}}
-                                </td>
-                                <td class="text-right">
-                                    {{vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.responseCodes.notFound'].m15_rate | number:2}}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Server error</td>
-                                <td>
-                                    <uib-progressbar min="0" max="vm.metrics.timers['com.codahale.metrics.servlet.InstrumentedFilter.requests'].count" value="vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.responseCodes.serverError'].count" class="progress-striped active" type="primary">
-                                        <span>{{vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.responseCodes.serverError'].count}}</span>
-                                    </uib-progressbar>
-                                </td>
-                                <td class="text-right">
-                                    {{vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.responseCodes.serverError'].mean_rate | number:2}}
-                                </td>
-                                <td class="text-right">
-                                    {{vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.responseCodes.serverError'].m1_rate | number:2}}
-                                </td>
-                                <td class="text-right">
-                                    {{vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.responseCodes.serverError'].m5_rate | number:2}}
-                                </td>
-                                <td class="text-right">
-                                    {{vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.responseCodes.serverError'].m15_rate | number:2}}
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td>OK</td>
+                                    <td>
+                                        <uib-progressbar min="0" max="vm.metrics.timers['com.codahale.metrics.servlet.InstrumentedFilter.requests'].count" value="vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.responseCodes.ok'].count" class="progress-striped active" type="primary">
+                                            <span>{{vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.responseCodes.ok'].count}}</span>
+                                        </uib-progressbar>
+                                    </td>
+                                    <td class="text-right">
+                                        {{vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.responseCodes.ok'].mean_rate | number:2}}
+                                    </td>
+                                    <td class="text-right">{{vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.responseCodes.ok'].m1_rate | number:2}}
+                                    </td>
+                                    <td class="text-right">{{vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.responseCodes.ok'].m5_rate | number:2}}
+                                    </td>
+                                    <td class="text-right">
+                                        {{vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.responseCodes.ok'].m15_rate | number:2}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Not Found</td>
+                                    <td>
+                                        <uib-progressbar min="0" max="vm.metrics.timers['com.codahale.metrics.servlet.InstrumentedFilter.requests'].count" value="vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.responseCodes.notFound'].count" class="progress-striped active" type="primary">
+                                            <span>{{vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.responseCodes.notFound'].count}}</span>
+                                        </uib-progressbar>
+                                    </td>
+                                    <td class="text-right">
+                                        {{vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.responseCodes.notFound'].mean_rate | number:2}}
+                                    </td>
+                                    <td class="text-right">
+                                        {{vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.responseCodes.notFound'].m1_rate | number:2}}
+                                    </td>
+                                    <td class="text-right">
+                                        {{vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.responseCodes.notFound'].m5_rate | number:2}}
+                                    </td>
+                                    <td class="text-right">
+                                        {{vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.responseCodes.notFound'].m15_rate | number:2}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Server error</td>
+                                    <td>
+                                        <uib-progressbar min="0" max="vm.metrics.timers['com.codahale.metrics.servlet.InstrumentedFilter.requests'].count" value="vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.responseCodes.serverError'].count" class="progress-striped active" type="primary">
+                                            <span>{{vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.responseCodes.serverError'].count}}</span>
+                                        </uib-progressbar>
+                                    </td>
+                                    <td class="text-right">
+                                        {{vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.responseCodes.serverError'].mean_rate | number:2}}
+                                    </td>
+                                    <td class="text-right">
+                                        {{vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.responseCodes.serverError'].m1_rate | number:2}}
+                                    </td>
+                                    <td class="text-right">
+                                        {{vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.responseCodes.serverError'].m5_rate | number:2}}
+                                    </td>
+                                    <td class="text-right">
+                                        {{vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.responseCodes.serverError'].m15_rate | number:2}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Bad request</td>
+                                    <td>
+                                        <uib-progressbar min="0" max="vm.metrics.timers['com.codahale.metrics.servlet.InstrumentedFilter.requests'].count" value="vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.responseCodes.badRequest'].count" class="progress-striped active" type="primary">
+                                            <span>{{vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.responseCodes.badRequest'].count}}</span>
+                                        </uib-progressbar>
+                                    </td>
+                                    <td class="text-right">
+                                        {{vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.responseCodes.badRequest'].mean_rate | number:2}}
+                                    </td>
+                                    <td class="text-right">
+                                        {{vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.responseCodes.badRequest'].m1_rate | number:2}}
+                                    </td>
+                                    <td class="text-right">
+                                        {{vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.responseCodes.badRequest'].m5_rate | number:2}}
+                                    </td>
+                                    <td class="text-right">
+                                        {{vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.responseCodes.badRequest'].m15_rate | number:2}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Timeout</td>
+                                    <td>
+                                        <uib-progressbar min="0" max="vm.metrics.timers['com.codahale.metrics.servlet.InstrumentedFilter.requests'].count" value="vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.timeouts'].count" class="progress-striped active" type="primary">
+                                            <span>{{vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.timeouts'].count}}</span>
+                                        </uib-progressbar>
+                                    </td>
+                                    <td class="text-right">
+                                        {{vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.timeouts'].mean_rate | number:2}}
+                                    </td>
+                                    <td class="text-right">
+                                        {{vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.timeouts'].m1_rate | number:2}}
+                                    </td>
+                                    <td class="text-right">
+                                        {{vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.timeouts'].m5_rate | number:2}}
+                                    </td>
+                                    <td class="text-right">
+                                        {{vm.metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.timeouts'].m15_rate | number:2}}
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -258,7 +298,7 @@
             </div>
             <div class="ibox m-b-sm">
                 <div class="ibox-content">
-                    <h3>Services response (time in millisecond)</h3>
+                    <h3>HTTP responses & service results</h3>
                     <hr>
                     <div class="table-responsive">
                         <table class="table table-striped">
