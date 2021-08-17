@@ -150,6 +150,8 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
 
         ServletRegistration.Dynamic metricsAdminServlet = servletContext.addServlet("metricsServlet",
                 new MetricsServlet());
+        // Visit the following address to get more metrics info
+        // http://localhost:9010/api/metrics?access_token=7d305527-d4cc-4555-9de4-77fdd345d3a5
         metricsAdminServlet.addMapping("/api/metrics/*");
         metricsAdminServlet.setAsyncSupported(true);
         metricsAdminServlet.setLoadOnStartup(2);

@@ -59,9 +59,8 @@ public class MetricsConfiguration extends MetricsConfigurerAdapter {
         metricRegistry.register(PROP_METRIC_REG_JVM_GARBAGE, new GarbageCollectorMetricSet());
         metricRegistry.register(PROP_METRIC_REG_JVM_THREADS, new ThreadStatesGaugeSet());
         metricRegistry.register(PROP_METRIC_REG_JVM_FILES, new FileDescriptorRatioGauge());
-        metricRegistry.register(PROP_METRIC_REG_JVM_BUFFERS,
-                new BufferPoolMetricSet(ManagementFactory.getPlatformMBeanServer()));
-        log.debug("Registered JVM gauges");
+        metricRegistry.register(PROP_METRIC_REG_JVM_BUFFERS, new BufferPoolMetricSet(ManagementFactory.getPlatformMBeanServer()));
+        log.debug("Registered JVM gauge");
 
         if (applicationProperties.getMetrics().getLogs().isEnabled()) {
             log.info("Initializing metrics log reporting");
