@@ -13,17 +13,16 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import java.util.Arrays;
 
 @SpringBootApplication
 @EnableConfigurationProperties({ApplicationProperties.class})
 @Slf4j
 public class PassportServerLauncher implements WebMvcConfigurer {
-    private final Environment env;
 
-    public PassportServerLauncher(Environment env) {
-        this.env = env;
-    }
+    @Resource
+    private Environment env;
 
     /**
      * Entrance method which used to run the application. Spring profiles can be configured with a program arguments
@@ -42,9 +41,9 @@ public class PassportServerLauncher implements WebMvcConfigurer {
         Arrays.stream(env.getActiveProfiles())
                 .filter(activeProfile -> !ArrayUtils.contains(ApplicationConstants.AVAILABLE_PROFILES, activeProfile))
                 .findFirst().ifPresent((activeProfile) -> {
-            log.error("Mis-configured application with an illegal profile '{}'!", activeProfile);
-            System.exit(0);
-        });
+                    log.error("Mis-configured application with an illegal profile '{}'!", activeProfile);
+                    System.exit(0);
+                });
     }
 
     @Override
