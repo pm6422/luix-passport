@@ -6,6 +6,7 @@ import com.codahale.metrics.graphite.Graphite;
 import com.codahale.metrics.graphite.GraphiteReporter;
 import com.codahale.metrics.health.HealthCheckRegistry;
 import com.codahale.metrics.jvm.*;
+import com.ryantenney.metrics.spring.config.annotation.EnableMetrics;
 import com.ryantenney.metrics.spring.config.annotation.MetricsConfigurerAdapter;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.LoggerFactory;
@@ -27,7 +28,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 @Configuration
-//@EnableMetrics(proxyTargetClass = true)
+@EnableMetrics(proxyTargetClass = true)
 public class DropwizardMetricsConfiguration extends MetricsConfigurerAdapter {
 
     private static final String                PROP_METRIC_REG_JVM_MEMORY  = "jvm.memory";
