@@ -13,6 +13,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
@@ -23,18 +24,14 @@ import java.util.Map;
 public class ApplicationErrorController implements ErrorController {
 
     /**
-     * Error Attributes in the Application
-     */
-    private final ErrorAttributes errorAttributes;
-
-    /**
      * The error mapping URL
      */
-    private final static String ERROR_PATH = "/error";
-
-    public ApplicationErrorController(ErrorAttributes errorAttributes) {
-        this.errorAttributes = errorAttributes;
-    }
+    private static final String          ERROR_PATH = "/error";
+    /**
+     * Error Attributes in the Application
+     */
+    @Resource
+    private              ErrorAttributes errorAttributes;
 
     /**
      * Returns the path of the error page.
