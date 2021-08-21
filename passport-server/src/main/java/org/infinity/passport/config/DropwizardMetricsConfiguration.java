@@ -4,16 +4,13 @@ import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.Slf4jReporter;
 import com.codahale.metrics.graphite.Graphite;
 import com.codahale.metrics.graphite.GraphiteReporter;
-import com.codahale.metrics.health.HealthCheckRegistry;
 import com.codahale.metrics.jvm.*;
 import com.ryantenney.metrics.spring.config.annotation.EnableMetrics;
-import com.ryantenney.metrics.spring.config.annotation.MetricsConfigurerAdapter;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
@@ -27,31 +24,19 @@ import java.util.concurrent.TimeUnit;
  * aggregate data for all nodes
  */
 @Slf4j
+@EnableMetrics
 @Configuration
-@EnableMetrics(proxyTargetClass = true)
-public class DropwizardMetricsConfiguration extends MetricsConfigurerAdapter {
+public class DropwizardMetricsConfiguration {
 
     private static final String                PROP_METRIC_REG_JVM_MEMORY  = "jvm.memory";
     private static final String                PROP_METRIC_REG_JVM_GARBAGE = "jvm.garbage";
     private static final String                PROP_METRIC_REG_JVM_THREADS = "jvm.threads";
     private static final String                PROP_METRIC_REG_JVM_FILES   = "jvm.files";
     private static final String                PROP_METRIC_REG_JVM_BUFFERS = "jvm.buffers";
-    private              MetricRegistry        metricRegistry              = new MetricRegistry();
-    private              HealthCheckRegistry   healthCheckRegistry         = new HealthCheckRegistry();
+    @Resource
+    private              MetricRegistry        metricRegistry;
     @Resource
     private              ApplicationProperties applicationProperties;
-
-    @Bean
-    @Override
-    public MetricRegistry getMetricRegistry() {
-        return metricRegistry;
-    }
-
-    @Bean
-    @Override
-    public HealthCheckRegistry getHealthCheckRegistry() {
-        return healthCheckRegistry;
-    }
 
     @PostConstruct
     public void init() {

@@ -7,7 +7,6 @@ import io.undertow.server.DefaultByteBufferPool;
 import io.undertow.websockets.jsr.WebSocketDeploymentInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.infinity.passport.filter.CachingHttpHeadersFilter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.embedded.undertow.UndertowServletWebServerFactory;
 import org.springframework.boot.web.server.MimeMappings;
 import org.springframework.boot.web.server.WebServerFactory;
@@ -42,7 +41,7 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
     private Environment           env;
     @Resource
     private ApplicationProperties applicationProperties;
-    @Autowired(required = false)
+    @Resource
     private MetricRegistry        metricRegistry;
 
     @Override
