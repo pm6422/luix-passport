@@ -22,10 +22,14 @@ import java.lang.management.ManagementFactory;
 import java.net.InetSocketAddress;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Dropwizard metrics used to monitor and collect data for one node, but it can NOT
+ * aggregate data for all nodes
+ */
 @Slf4j
 @Configuration
 @EnableMetrics(proxyTargetClass = true)
-public class MetricsConfiguration extends MetricsConfigurerAdapter {
+public class DropwizardMetricsConfiguration extends MetricsConfigurerAdapter {
 
     private static final String                PROP_METRIC_REG_JVM_MEMORY  = "jvm.memory";
     private static final String                PROP_METRIC_REG_JVM_GARBAGE = "jvm.garbage";
