@@ -1,5 +1,6 @@
 package org.infinity.passport.controller;
 
+import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
@@ -80,7 +81,12 @@ public class ApplicationErrorController implements ErrorController {
 
     private Map<String, Object> getErrorAttributes(HttpServletRequest request, boolean includeStackTrace) {
         WebRequest requestAttributes = new ServletWebRequest(request);
-        return this.errorAttributes.getErrorAttributes(requestAttributes, includeStackTrace);
+        ErrorAttributeOptions options = ErrorAttributeOptions.of(ErrorAttributeOptions.Include.EXCEPTION,
+                ErrorAttributeOptions.Include.MESSAGE, ErrorAttributeOptions.Include.BINDING_ERRORS);
+        if (includeStackTrace) {
+            options.including(ErrorAttributeOptions.Include.STACK_TRACE);
+        }
+        return this.errorAttributes.getErrorAttributes(requestAttributes, options);
     }
 
     private HttpStatus getStatus(HttpServletRequest request) {
