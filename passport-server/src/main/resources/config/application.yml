@@ -26,7 +26,28 @@ management: # Management http server configuration, used by ManagementServerProp
         mongo:
             enabled: true
     metrics:
-        enabled: false # http://micrometer.io/ is disabled by default, as we use http://metrics.dropwizard.io/ instead
+        export:
+            prometheus: # Prometheus is the default metrics backend
+                enabled: true
+                step: 60
+        enable:
+            http: true
+            jvm: true
+            logback: true
+            process: true
+            system: true
+        distribution:
+            percentiles-histogram:
+                all: true
+            percentiles:
+                all: 0, 0.5, 0.75, 0.95, 0.99, 1.0
+        tags:
+            application: ${spring.application.name}
+        web:
+            server:
+                request:
+                    autotime:
+                        enabled: true
 info: # These configuration can be exported to Environment, accessing URL /management/info can get these properties
     artifact:
         id: @project.artifactId@
