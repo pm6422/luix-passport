@@ -1,7 +1,6 @@
 package org.infinity.passport.config;
 
 import com.alibaba.fastjson.JSON;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
@@ -46,7 +45,7 @@ public class AopLoggingAspect {
     @AfterThrowing(pointcut = "within(@org.springframework.web.bind.annotation.RestController *)", throwing = "e")
     public void logAfterThrowing(JoinPoint joinPoint, Throwable e) {
         getLogger(joinPoint).error(
-                "Exception in {}() with cause = \'{}\' and exception = \'{}\'",
+                "Exception in {}() with cause = '{}' and exception = '{}'",
                 joinPoint.getSignature().getName(),
                 e.getCause() != null ? e.getCause() : "NULL",
                 e.getMessage());
@@ -85,7 +84,7 @@ public class AopLoggingAspect {
         }
     }
 
-    public void beforeRun(ProceedingJoinPoint joinPoint, HttpServletRequest request) throws JsonProcessingException {
+    public void beforeRun(ProceedingJoinPoint joinPoint, HttpServletRequest request) {
         if (enablePrint(joinPoint)) {
             return;
         }
