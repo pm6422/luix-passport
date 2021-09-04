@@ -1,6 +1,6 @@
 package demo.component;
 
-import demo.utils.NetworkIpUtils;
+import demo.utils.NetworkUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -29,11 +29,11 @@ public class PrintAppInfoApplicationRunner implements ApplicationRunner {
                 Charset.defaultCharset());
         log.info(appBanner, env.getProperty("spring.application.name"),
                 StringUtils.isEmpty(env.getProperty("server.ssl.key-store")) ? "http" : "https",
-                NetworkIpUtils.INTRANET_IP,
+                "127.0.0.1",
                 env.getProperty("server.port"),
                 StringUtils.defaultString(env.getProperty("server.servlet.context-path")),
                 StringUtils.isEmpty(env.getProperty("server.ssl.key-store")) ? "http" : "https",
-                NetworkIpUtils.INTERNET_IP,
+                NetworkUtils.INTRANET_IP,
                 env.getProperty("server.port"),
                 StringUtils.defaultString(env.getProperty("server.servlet.context-path")),
                 org.springframework.util.StringUtils.arrayToCommaDelimitedString(env.getActiveProfiles()),

@@ -1,11 +1,6 @@
-package org.infinity.passport.utils;
+package demo.utils;
 
-import javax.servlet.http.HttpServletRequest;
-import java.net.Inet4Address;
 import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.util.Enumeration;
-import java.util.Objects;
 
 public abstract class NetworkUtils {
     /**

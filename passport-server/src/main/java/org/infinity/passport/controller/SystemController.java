@@ -76,12 +76,6 @@ public class SystemController {
         response.sendRedirect(applicationProperties.getRedis().getAdminUrl());
     }
 
-    @GetMapping("/api/systems/internet-ip")
-    @Secured(Authority.DEVELOPER)
-    public ResponseEntity<String> getInternetIp() {
-        return ResponseEntity.ok(NetworkUtils.INTERNET_IP);
-    }
-
     @GetMapping("/api/systems/intranet-ip")
     @Secured(Authority.DEVELOPER)
     public ResponseEntity<String> getIntranetIp() {
