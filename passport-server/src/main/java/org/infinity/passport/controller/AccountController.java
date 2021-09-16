@@ -186,6 +186,10 @@ public class AccountController {
     @PutMapping("/api/accounts/user")
     @Secured({Authority.USER})
     public ResponseEntity<Void> updateCurrentAccount(@ApiParam(value = "新的用户", required = true) @Valid @RequestBody User domain) {
+        // For security reason
+        User currentUser = userService.findOneByUserName(SecurityUtils.getCurrentUserName());
+        domain.setId(currentUser.getId());
+        domain.setUserName(currentUser.getUserName());
         userService.update(domain);
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1002", domain.getUserName())).build();
     }
@@ -196,6 +200,7 @@ public class AccountController {
     @PutMapping("/api/accounts/password")
     @Secured({Authority.USER})
     public ResponseEntity<Void> changePassword(@ApiParam(value = "新密码", required = true) @RequestBody @Valid UserNameAndPasswordDTO dto) {
+        // For security reason
         dto.setUserName(SecurityUtils.getCurrentUserName());
         userService.changePassword(dto);
         // Logout asynchronously
