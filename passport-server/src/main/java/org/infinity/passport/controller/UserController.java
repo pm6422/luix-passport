@@ -130,11 +130,14 @@ public class UserController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "用户不存在或账号无权限")})
     @PutMapping("/api/users/{userName:[a-zA-Z0-9-]+}")
     @Secured({Authority.ADMIN})
-    public ResponseEntity<String> resetPassword(@ApiParam(value = "用户名", required = true) @PathVariable String userName) {
+    public ResponseEntity<Void> resetPassword(@ApiParam(value = "用户名", required = true) @PathVariable String userName) {
         log.debug("REST reset the password of user: {}", userName);
-        userService.changePassword(UserNameAndPasswordDTO.builder().userName(userName).newPassword(DEFAULT_PASSWORD).build());
-        HttpHeaders headers = httpHeaderCreator.createSuccessHeader("NM2012", DEFAULT_PASSWORD);
-        return ResponseEntity.ok().headers(headers).body(DEFAULT_PASSWORD);
+        UserNameAndPasswordDTO dto = UserNameAndPasswordDTO.builder()
+                .userName(userName)
+                .newPassword(applicationProperties.getAccount().getDefaultPassword()).build();
+        userService.changePassword(dto);
+        HttpHeaders headers = httpHeaderCreator.createSuccessHeader("NM2012", applicationProperties.getAccount().getDefaultPassword());
+        return ResponseEntity.ok().headers(headers).build();
     }
 
     public static final String GET_PROFILE_PHOTO_URL = "/api/users/profile-photo/";
