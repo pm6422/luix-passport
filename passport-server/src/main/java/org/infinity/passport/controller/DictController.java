@@ -7,7 +7,7 @@ import org.infinity.passport.component.HttpHeaderCreator;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.Dict;
 import org.infinity.passport.exception.DuplicationException;
-import org.infinity.passport.exception.NoDataFoundException;
+import org.infinity.passport.exception.DataNotFoundException;
 import org.infinity.passport.repository.DictRepository;
 import org.infinity.passport.service.DictService;
 import org.springframework.data.domain.Page;
@@ -70,7 +70,7 @@ public class DictController {
     @GetMapping("/api/dicts/{id}")
     @Secured({Authority.DEVELOPER, Authority.USER})
     public ResponseEntity<Dict> findById(@ApiParam(value = "字典编号", required = true) @PathVariable String id) {
-        Dict domain = dictRepository.findById(id).orElseThrow(() -> new NoDataFoundException(id));
+        Dict domain = dictRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
         return ResponseEntity.ok(domain);
     }
 
@@ -81,7 +81,7 @@ public class DictController {
     @Secured(Authority.DEVELOPER)
     public ResponseEntity<Void> update(@ApiParam(value = "新的数据字典", required = true) @Valid @RequestBody Dict domain) {
         log.debug("REST request to update dict: {}", domain);
-        dictRepository.findById(domain.getId()).orElseThrow(() -> new NoDataFoundException(domain.getId()));
+        dictRepository.findById(domain.getId()).orElseThrow(() -> new DataNotFoundException(domain.getId()));
         dictRepository.save(domain);
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1002", domain.getDictName())).build();
     }
@@ -93,7 +93,7 @@ public class DictController {
     @Secured(Authority.DEVELOPER)
     public ResponseEntity<Void> delete(@ApiParam(value = "字典编号", required = true) @PathVariable String id) {
         log.debug("REST request to delete dict: {}", id);
-        Dict dict = dictRepository.findById(id).orElseThrow(() -> new NoDataFoundException(id));
+        Dict dict = dictRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
         dictRepository.deleteById(id);
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1003", dict.getDictName())).build();
     }

@@ -6,7 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.infinity.passport.component.HttpHeaderCreator;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.HttpSession;
-import org.infinity.passport.exception.NoDataFoundException;
+import org.infinity.passport.exception.DataNotFoundException;
 import org.infinity.passport.repository.HttpSessionRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -52,7 +52,7 @@ public class HttpSessionController {
     @Secured({Authority.DEVELOPER})
     public ResponseEntity<Void> delete(@ApiParam(value = "Http会话ID", required = true) @PathVariable String id) {
         log.debug("REST request to delete http session: {}", id);
-        httpSessionRepository.findById(id).orElseThrow(() -> new NoDataFoundException(id));
+        httpSessionRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
         httpSessionRepository.deleteById(id);
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1003", id)).build();
     }

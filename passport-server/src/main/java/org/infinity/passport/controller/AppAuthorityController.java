@@ -7,7 +7,7 @@ import org.infinity.passport.component.HttpHeaderCreator;
 import org.infinity.passport.domain.AppAuthority;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.exception.DuplicationException;
-import org.infinity.passport.exception.NoDataFoundException;
+import org.infinity.passport.exception.DataNotFoundException;
 import org.infinity.passport.repository.AppAuthorityRepository;
 import org.infinity.passport.service.AppAuthorityService;
 import org.springframework.data.domain.Page;
@@ -79,7 +79,7 @@ public class AppAuthorityController {
     public ResponseEntity<AppAuthority> findById(
             @ApiParam(value = "字典编号", required = true) @PathVariable String id) {
         log.debug("REST request to get app authority : {}", id);
-        AppAuthority domain = appAuthorityRepository.findById(id).orElseThrow(() -> new NoDataFoundException(id));
+        AppAuthority domain = appAuthorityRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
         return ResponseEntity.ok(domain);
     }
 
@@ -91,7 +91,7 @@ public class AppAuthorityController {
     public ResponseEntity<Void> update(
             @ApiParam(value = "新的应用权限", required = true) @Valid @RequestBody AppAuthority domain) {
         log.debug("REST request to update app authority: {}", domain);
-        appAuthorityRepository.findById(domain.getId()).orElseThrow(() -> new NoDataFoundException(domain.getId()));
+        appAuthorityRepository.findById(domain.getId()).orElseThrow(() -> new DataNotFoundException(domain.getId()));
         appAuthorityRepository.save(domain);
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1002", domain.getAuthorityName())).build();
     }
@@ -103,7 +103,7 @@ public class AppAuthorityController {
     @Secured({Authority.ADMIN})
     public ResponseEntity<Void> delete(@ApiParam(value = "字典编号", required = true) @PathVariable String id) {
         log.debug("REST request to delete app authority: {}", id);
-        AppAuthority appAuthority = appAuthorityRepository.findById(id).orElseThrow(() -> new NoDataFoundException(id));
+        AppAuthority appAuthority = appAuthorityRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
         appAuthorityRepository.deleteById(id);
         log.info("Deleted app authority");
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1003", appAuthority.getAuthorityName())).build();

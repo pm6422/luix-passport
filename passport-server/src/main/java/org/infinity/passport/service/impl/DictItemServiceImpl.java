@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.infinity.passport.domain.DictItem;
 import org.infinity.passport.exception.DuplicationException;
-import org.infinity.passport.exception.NoDataFoundException;
+import org.infinity.passport.exception.DataNotFoundException;
 import org.infinity.passport.repository.DictItemRepository;
 import org.infinity.passport.repository.DictRepository;
 import org.infinity.passport.service.DictItemService;
@@ -34,7 +34,7 @@ public class DictItemServiceImpl implements DictItemService {
     @Override
     public DictItem insert(DictItem domain) {
         // 判断dictCode是否存在
-        dictRepository.findOneByDictCode(domain.getDictCode()).orElseThrow(() -> new NoDataFoundException(domain.getDictCode()));
+        dictRepository.findOneByDictCode(domain.getDictCode()).orElseThrow(() -> new DataNotFoundException(domain.getDictCode()));
         // 根据dictItemCode与dictCode检索记录是否存在
         List<DictItem> existingDictItems = dictItemRepository.findByDictCodeAndDictItemCode(domain.getDictCode(),
                 domain.getDictItemCode());
@@ -56,7 +56,7 @@ public class DictItemServiceImpl implements DictItemService {
             dictItemRepository.save(dictItem);
             log.debug("Updated dict item: {}", domain);
             return dictItem;
-        }).orElseThrow(() -> new NoDataFoundException(domain.getId()));
+        }).orElseThrow(() -> new DataNotFoundException(domain.getId()));
     }
 
     @Override

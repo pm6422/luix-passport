@@ -16,7 +16,7 @@ import org.infinity.passport.dto.ResetKeyAndPasswordDTO;
 import org.infinity.passport.dto.UserNameAndPasswordDTO;
 import org.infinity.passport.event.LogoutEvent;
 import org.infinity.passport.exception.NoAuthorityException;
-import org.infinity.passport.exception.NoDataFoundException;
+import org.infinity.passport.exception.DataNotFoundException;
 import org.infinity.passport.repository.UserAuthorityRepository;
 import org.infinity.passport.repository.UserProfilePhotoRepository;
 import org.infinity.passport.service.AuthorityService;
@@ -166,7 +166,7 @@ public class AccountController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "激活码不存在")})
     @GetMapping("/open-api/accounts/activate/{key:[0-9]+}")
     public void activateAccount(@ApiParam(value = "激活码", required = true) @PathVariable String key) {
-        userService.activateRegistration(key).orElseThrow(() -> new NoDataFoundException(key));
+        userService.activateRegistration(key).orElseThrow(() -> new DataNotFoundException(key));
     }
 
     @ApiOperation("检索权限值列表")

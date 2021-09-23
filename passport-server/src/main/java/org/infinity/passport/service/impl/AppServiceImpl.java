@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.infinity.passport.domain.App;
 import org.infinity.passport.domain.AppAuthority;
-import org.infinity.passport.exception.NoDataFoundException;
+import org.infinity.passport.exception.DataNotFoundException;
 import org.infinity.passport.repository.AppAuthorityRepository;
 import org.infinity.passport.repository.AppRepository;
 import org.infinity.passport.service.AppService;
@@ -44,6 +44,6 @@ public class AppServiceImpl implements AppService {
                 appAuthorityRepository.deleteByAppName(app.getName());
             }
             return app;
-        }).orElseThrow(() -> new NoDataFoundException(domain.getName()));
+        }).orElseThrow(() -> new DataNotFoundException(domain.getName()));
     }
 }

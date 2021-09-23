@@ -8,7 +8,7 @@ import org.infinity.passport.component.HttpHeaderCreator;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.MongoOAuth2ClientDetails;
 import org.infinity.passport.exception.DuplicationException;
-import org.infinity.passport.exception.NoDataFoundException;
+import org.infinity.passport.exception.DataNotFoundException;
 import org.infinity.passport.repository.OAuth2ClientDetailsRepository;
 import org.infinity.passport.utils.id.IdGenerator;
 import org.springframework.data.domain.Page;
@@ -98,7 +98,7 @@ public class OAuth2ClientDetailsController {
     @Secured({Authority.ADMIN})
     public ResponseEntity<MongoOAuth2ClientDetails> findById(
             @ApiParam(value = "客户端ID", required = true) @PathVariable String id) {
-        MongoOAuth2ClientDetails domain = oAuth2ClientDetailsRepository.findById(id).orElseThrow(() -> new NoDataFoundException(id));
+        MongoOAuth2ClientDetails domain = oAuth2ClientDetailsRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
         return ResponseEntity.ok(domain);
     }
 
@@ -119,7 +119,7 @@ public class OAuth2ClientDetailsController {
     public ResponseEntity<Void> update(
             @ApiParam(value = "新的单点登录客户端", required = true) @Valid @RequestBody MongoOAuth2ClientDetails domain) {
         log.debug("REST request to update oauth client detail: {}", domain);
-        oAuth2ClientDetailsRepository.findById(domain.getClientId()).orElseThrow(() -> new NoDataFoundException(domain.getClientId()));
+        oAuth2ClientDetailsRepository.findById(domain.getClientId()).orElseThrow(() -> new DataNotFoundException(domain.getClientId()));
         oAuth2ClientDetailsRepository.save(domain);
         return ResponseEntity.ok()
                 .headers(httpHeaderCreator.createSuccessHeader("SM1002", domain.getClientId()))
@@ -134,7 +134,7 @@ public class OAuth2ClientDetailsController {
     @Secured(Authority.ADMIN)
     public ResponseEntity<Void> delete(@ApiParam(value = "客户端ID", required = true) @PathVariable String id) {
         log.debug("REST request to delete oauth client detail: {}", id);
-        oAuth2ClientDetailsRepository.findById(id).orElseThrow(() -> new NoDataFoundException(id));
+        oAuth2ClientDetailsRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
         oAuth2ClientDetailsRepository.deleteById(id);
         return ResponseEntity.ok()
                 .headers(httpHeaderCreator.createSuccessHeader("SM1003", id)).build();

@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.infinity.passport.component.HttpHeaderCreator;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.MongoOAuth2RefreshToken;
-import org.infinity.passport.exception.NoDataFoundException;
+import org.infinity.passport.exception.DataNotFoundException;
 import org.infinity.passport.repository.OAuth2RefreshTokenRepository;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -59,7 +59,7 @@ public class OAuth2RefreshTokenController {
     @Secured({Authority.ADMIN})
     public ResponseEntity<MongoOAuth2RefreshToken> findById(
             @ApiParam(value = "刷新令牌ID", required = true) @PathVariable String id) {
-        MongoOAuth2RefreshToken domain = oAuth2RefreshTokenRepository.findById(id).orElseThrow(() -> new NoDataFoundException(id));
+        MongoOAuth2RefreshToken domain = oAuth2RefreshTokenRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
         return ResponseEntity.ok(domain);
     }
 
@@ -70,7 +70,7 @@ public class OAuth2RefreshTokenController {
     @Secured(Authority.ADMIN)
     public ResponseEntity<Void> delete(@ApiParam(value = "刷新令牌ID", required = true) @PathVariable String id) {
         log.debug("REST request to delete oauth2 access token: {}", id);
-        oAuth2RefreshTokenRepository.findById(id).orElseThrow(() -> new NoDataFoundException(id));
+        oAuth2RefreshTokenRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
         oAuth2RefreshTokenRepository.deleteById(id);
         return ResponseEntity.ok()
                 .headers(httpHeaderCreator.createSuccessHeader("SM1003", id))

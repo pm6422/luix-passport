@@ -6,7 +6,7 @@ import org.infinity.passport.component.HttpHeaderCreator;
 import org.infinity.passport.domain.App;
 import org.infinity.passport.domain.AppAuthority;
 import org.infinity.passport.domain.Authority;
-import org.infinity.passport.exception.NoDataFoundException;
+import org.infinity.passport.exception.DataNotFoundException;
 import org.infinity.passport.repository.AppAuthorityRepository;
 import org.infinity.passport.repository.AppRepository;
 import org.infinity.passport.service.AppService;
@@ -69,7 +69,7 @@ public class AppController {
     @GetMapping("/api/apps/{name}")
     @Secured({Authority.ADMIN})
     public ResponseEntity<App> findById(@ApiParam(value = "应用名称", required = true) @PathVariable String name) {
-        App app = appRepository.findById(name).orElseThrow(() -> new NoDataFoundException(name));
+        App app = appRepository.findById(name).orElseThrow(() -> new DataNotFoundException(name));
         List<AppAuthority> appAuthorities = appAuthorityRepository.findByAppName(name);
         Set<String> authorities = appAuthorities.stream().map(AppAuthority::getAuthorityName).collect(Collectors.toSet());
         app.setAuthorities(authorities);
@@ -94,7 +94,7 @@ public class AppController {
     @Secured({Authority.ADMIN})
     public ResponseEntity<Void> delete(@ApiParam(value = "应用名称", required = true) @PathVariable String name) {
         log.debug("REST request to delete app: {}", name);
-        appRepository.findById(name).orElseThrow(() -> new NoDataFoundException(name));
+        appRepository.findById(name).orElseThrow(() -> new DataNotFoundException(name));
         appRepository.deleteById(name);
         appAuthorityRepository.deleteByAppName(name);
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1003", name)).build();

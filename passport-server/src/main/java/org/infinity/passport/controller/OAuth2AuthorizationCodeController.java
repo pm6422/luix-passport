@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.infinity.passport.component.HttpHeaderCreator;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.MongoOAuth2AuthorizationCode;
-import org.infinity.passport.exception.NoDataFoundException;
+import org.infinity.passport.exception.DataNotFoundException;
 import org.infinity.passport.repository.OAuth2AuthorizationCodeRepository;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -63,7 +63,7 @@ public class OAuth2AuthorizationCodeController {
     @Secured({Authority.ADMIN})
     public ResponseEntity<MongoOAuth2AuthorizationCode> findById(
             @ApiParam(value = "授权码ID", required = true) @PathVariable String id) {
-        MongoOAuth2AuthorizationCode domain = oAuth2AuthorizationCodeRepository.findById(id).orElseThrow(() -> new NoDataFoundException(id));
+        MongoOAuth2AuthorizationCode domain = oAuth2AuthorizationCodeRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
         return ResponseEntity.ok(domain);
     }
 
@@ -74,7 +74,7 @@ public class OAuth2AuthorizationCodeController {
     @Secured(Authority.ADMIN)
     public ResponseEntity<Void> delete(@ApiParam(value = "授权码ID", required = true) @PathVariable String id) {
         log.debug("REST request to delete oauth2 authorization code: {}", id);
-        oAuth2AuthorizationCodeRepository.findById(id).orElseThrow(() -> new NoDataFoundException(id));
+        oAuth2AuthorizationCodeRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
         oAuth2AuthorizationCodeRepository.deleteById(id);
         return ResponseEntity.ok()
                 .headers(httpHeaderCreator.createSuccessHeader("SM1003", id))

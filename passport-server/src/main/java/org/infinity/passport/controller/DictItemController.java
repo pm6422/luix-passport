@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.infinity.passport.component.HttpHeaderCreator;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.DictItem;
-import org.infinity.passport.exception.NoDataFoundException;
+import org.infinity.passport.exception.DataNotFoundException;
 import org.infinity.passport.repository.DictItemRepository;
 import org.infinity.passport.service.DictItemService;
 import org.infinity.passport.service.DictService;
@@ -79,7 +79,7 @@ public class DictItemController {
     public ResponseEntity<DictItem> findById(
             @ApiParam(value = "数据字典项ID", required = true) @PathVariable String id) {
         log.debug("REST request to get dict item : {}", id);
-        DictItem domain = dictItemRepository.findById(id).orElseThrow(() -> new NoDataFoundException(id));
+        DictItem domain = dictItemRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
         return ResponseEntity.ok(domain);
     }
 
@@ -104,7 +104,7 @@ public class DictItemController {
     @Secured(Authority.DEVELOPER)
     public ResponseEntity<Void> delete(@ApiParam(value = "数据字典项ID", required = true) @PathVariable String id) {
         log.debug("REST request to delete dict item: {}", id);
-        DictItem dictItem = dictItemRepository.findById(id).orElseThrow(() -> new NoDataFoundException(id));
+        DictItem dictItem = dictItemRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
         dictItemRepository.deleteById(id);
         return ResponseEntity.ok().headers(
                         httpHeaderCreator.createSuccessHeader("SM1003", dictItem.getDictItemName()))
