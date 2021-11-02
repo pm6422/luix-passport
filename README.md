@@ -14,8 +14,6 @@ https://github.com/pm6422/passport
 
 系统前端架构UI部分为Bootstrap定制主题，JavaScript部分采用了AngularJS的前端MVC架构，基于前后端分离思想，前后端通信采用AJAX请求实现局部刷新页面。
 
-本项目采用嵌入式MongoDB，原因是本例用作Demo，便于安装应用和还原数据库。大家在实际应用中可以替换成自己的MongoDB。
-
 另外本项目采用国外最新的技术栈，也可以用作前后端学习资料。
 
 ## 应用配置(Configuration)
