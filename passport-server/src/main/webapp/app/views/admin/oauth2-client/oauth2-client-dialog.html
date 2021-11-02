@@ -64,31 +64,31 @@
             <input type="text" class="form-control" name="authorizedGrantTypes"
                    ng-model="vm.entity.authorized_grant_types" ng-maxlength="100">
             <div>
-                <p class="label label-info">
+                <p class="label label-primary">
                     <span class="fa fa-exclamation-circle" aria-hidden="true"></span>
                     authorization_code: 授权码模式(即先登录获取code,再获取token) [最常用]
                 </p>
             </div>
             <div>
-                <p class="label label-info">
+                <p class="label label-primary">
                     <span class="fa fa-exclamation-circle" aria-hidden="true"></span>
                     password: 密码模式(将用户名,密码传过去,直接获取token) [适用于移动设备]
                 </p>
             </div>
             <div>
-                <p class="label label-info">
+                <p class="label label-primary">
                     <span class="fa fa-exclamation-circle" aria-hidden="true"></span>
                     refresh_token: 刷新access_token
                 </p>
             </div>
             <div>
-                <p class="label label-info">
+                <p class="label label-primary">
                     <span class="fa fa-exclamation-circle" aria-hidden="true"></span>
                     client_credentials: 客户端模式(无用户和密码,然后客户端以自己的名义获取token，此方式很危险，用户无需密码验证便可以获得最高权限接口访问能力)
                 </p>
             </div>
             <div>
-                <p class="label label-info">
+                <p class="label label-primary">
                     <span class="fa fa-exclamation-circle" aria-hidden="true"></span>
                     implicit: 简化模式(直接在redirect_uri末尾传递token) [适用于浏览器,如JS,Flash]
                 </p>
