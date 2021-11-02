@@ -19,34 +19,12 @@ https://github.com/pm6422/passport
 另外本项目采用国外最新的技术栈，也可以用作前后端学习资料。
 
 ## 应用配置(Configuration)
-同时可以使用外部MongoDB，只需要按照以下两步骤操作即可：
-
-1. 配置文件中增加如下配置，配置文件指的是application-XXX.yml。
-```
-spring:
-    data:
-        mongodb:
-            database: dbname
-            uri: mongodb://username:passport@ip:port/dbname
-```
-2. pom.xml中删除嵌入式Mongo的依赖
-```
-<dependency>
-    <groupId>de.flapdoodle.embed</groupId>
-    <artifactId>de.flapdoodle.embed.mongo</artifactId>
-    <exclusions>
-        <exclusion>
-            <artifactId>slf4j-api</artifactId>
-            <groupId>org.slf4j</groupId>
-        </exclusion>
-    </exclusions>
-</dependency>
-```
+如果不想搭建mongo数据库，可以使用名为test的profile。如需使用mongo数据库，可以使用名为prod的profile。
 
 ## 应用运行(Run)
-本项目包含服务器端(passport-server)和客户端(passport-client)两个子模块。由于本项目采用嵌入式内存数据库，不需要依赖外部数据库，因此可以做到**不修改一行代码就可以完成应用启动**。
+本项目包含服务器端(passport-server)和客户端(passport-client)两个子模块。可以做到**不修改一行代码就可以完成应用启动**。
 
-另外应用在第一次启动过程中会自动下载嵌入式数据库并自动完成安装，无需人工介入。下载过程中会使用到国外AWS服务器，有可能有部分人下载比较慢，请耐心等待，有条件的可以翻墙。
+另外应用在第一次启动过程中会自动下载嵌入式数据库并自动完成安装，无需人工介入。
 
 运行命令很简单就是mvn，自动进行maven clean install操作，并完成应用启动。
 
