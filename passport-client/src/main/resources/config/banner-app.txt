@@ -6,5 +6,6 @@ Application is running:
     Profiles:        {}
     PID:             {}
     Charset:         {}
+    Log level:       {}
     Log:             {}
 ----------------------------------------------------------------------------------
