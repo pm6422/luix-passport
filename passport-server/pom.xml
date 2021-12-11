@@ -200,6 +200,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <version>1.18.20</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -378,10 +379,9 @@
                             <version>[${maven.version},)</version>
                         </requireMavenVersion>
                         <requireJavaVersion>
-                            <!-- Until it supports JDK 9 -->
                             <message>You are running an incompatible version of Java. Application requires JDK
-                                ${java.version}</message>
-                            <version>[1.8,1.9)</version>
+                                ${java.version} above</message>
+                            <version>1.8</version>
                         </requireJavaVersion>
                     </rules>
                 </configuration>
