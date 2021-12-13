@@ -506,6 +506,23 @@ function MetricsController($state, $scope, $uibModal, MetricsService, metrics) {
     vm.refreshThreadDumpData = refreshThreadDumpData;
     vm.servicesStats = {};
     vm.updatingMetrics = false;
+
+    vm.markSweepCount = vm.metrics.gauges['jvm.garbage.PS-MarkSweep.count'] ?
+        vm.metrics.gauges['jvm.garbage.PS-MarkSweep.count'].value :
+        vm.metrics.gauges['jvm.garbage.Copy.count'].value;
+
+    vm.markSweepTime = vm.metrics.gauges['jvm.garbage.PS-MarkSweep.time'] ?
+        vm.metrics.gauges['jvm.garbage.PS-MarkSweep.time'].value :
+        vm.metrics.gauges['jvm.garbage.Copy.time'].value;
+
+    vm.scavengeCount = vm.metrics.gauges['jvm.garbage.PS-Scavenge.count'] ?
+        vm.metrics.gauges['jvm.garbage.PS-Scavenge.count'].value :
+        vm.metrics.gauges['jvm.garbage.MarkSweepCompact.count'].value;
+
+    vm.scavengeTime = vm.metrics.gauges['jvm.garbage.PS-Scavenge.time'] ?
+        vm.metrics.gauges['jvm.garbage.PS-Scavenge.time'].value :
+        vm.metrics.gauges['jvm.garbage.MarkSweepCompact.time'].value;
+
     /**
      * Options for Doughnut chart
      */
@@ -550,45 +567,66 @@ function MetricsController($state, $scope, $uibModal, MetricsService, metrics) {
         }
     ];
 
+    vm.edenSpaceUsed = vm.metrics.gauges['jvm.memory.pools.PS-Eden-Space.used'] ?
+        vm.metrics.gauges['jvm.memory.pools.PS-Eden-Space.used'].value :
+        vm.metrics.gauges['jvm.memory.pools.Eden-Space.used'].value;
+
+    vm.edenSpaceMax = vm.metrics.gauges['jvm.memory.pools.PS-Eden-Space.max'] ?
+        vm.metrics.gauges['jvm.memory.pools.PS-Eden-Space.max'].value :
+        vm.metrics.gauges['jvm.memory.pools.Eden-Space.max'].value;
     vm.edenSpaceMemory = [
         {
-            value: vm.metrics.gauges['jvm.memory.pools.PS-Eden-Space.used'].value / 1000000,
+            value: vm.edenSpaceUsed / 1000000,
             color: '#8d7fbf',
             highlight: '#4424bc',
             label: '已使用'
         },
         {
-            value: (vm.metrics.gauges['jvm.memory.pools.PS-Eden-Space.max'].value - vm.metrics.gauges['jvm.memory.pools.PS-Eden-Space.used'].value) / 1000000,
+            value: (vm.edenSpaceMax - vm.edenSpaceUsed) / 1000000,
             color: '#dedede',
             highlight: '#4424bc',
             label: '未使用'
         }
     ];
 
+    vm.survivorSpaceUsed = vm.metrics.gauges['jvm.memory.pools.PS-Survivor-Space.used'] ?
+        vm.metrics.gauges['jvm.memory.pools.PS-Survivor-Space.used'].value :
+        vm.metrics.gauges['jvm.memory.pools.Survivor-Space.used'].value;
+
+    vm.survivorSpaceMax = vm.metrics.gauges['jvm.memory.pools.PS-Survivor-Space.max'] ?
+        vm.metrics.gauges['jvm.memory.pools.PS-Survivor-Space.max'].value :
+        vm.metrics.gauges['jvm.memory.pools.Survivor-Space.max'].value;
     vm.survivorSpaceMemory = [
         {
-            value: vm.metrics.gauges['jvm.memory.pools.PS-Survivor-Space.used'].value / 1000000,
+            value: vm.survivorSpaceUsed / 1000000,
             color: '#8d7fbf',
             highlight: '#4424bc',
             label: '已使用'
         },
         {
-            value: (vm.metrics.gauges['jvm.memory.pools.PS-Survivor-Space.max'].value - vm.metrics.gauges['jvm.memory.pools.PS-Survivor-Space.used'].value) / 1000000,
+            value: (vm.survivorSpaceMax - vm.survivorSpaceUsed) / 1000000,
             color: '#dedede',
             highlight: '#4424bc',
             label: '未使用'
         }
     ];
 
+    vm.oldGenUsed = vm.metrics.gauges['jvm.memory.pools.PS-Old-Gen.used'] ?
+        vm.metrics.gauges['jvm.memory.pools.PS-Old-Gen.used'].value :
+        vm.metrics.gauges['jvm.memory.pools.Tenured-Gen.used'].value;
+
+    vm.oldGenMax = vm.metrics.gauges['jvm.memory.pools.PS-Old-Gen.max'] ?
+        vm.metrics.gauges['jvm.memory.pools.PS-Old-Gen.max'].value :
+        vm.metrics.gauges['jvm.memory.pools.Tenured-Gen.max'].value;
     vm.oldSpaceMemory = [
         {
-            value: vm.metrics.gauges['jvm.memory.pools.PS-Old-Gen.used'].value / 1000000,
+            value: vm.oldGenUsed / 1000000,
             color: '#8d7fbf',
             highlight: '#4424bc',
             label: '已使用'
         },
         {
-            value: (vm.metrics.gauges['jvm.memory.pools.PS-Old-Gen.max'].value - vm.metrics.gauges['jvm.memory.pools.PS-Old-Gen.used'].value) / 1000000,
+            value: (vm.oldGenMax - vm.oldGenUsed) / 1000000,
             color: '#dedede',
             highlight: '#4424bc',
             label: '未使用'
