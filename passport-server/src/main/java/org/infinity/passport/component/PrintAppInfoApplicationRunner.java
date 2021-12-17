@@ -28,7 +28,7 @@ public class PrintAppInfoApplicationRunner implements ApplicationRunner {
                 Charset.defaultCharset());
         log.info(appBanner, env.getProperty("spring.application.name"),
                 StringUtils.isEmpty(env.getProperty("server.ssl.key-store")) ? "http" : "https",
-                "127.0.0.7",
+                "127.0.0.1",
                 env.getProperty("server.port"),
                 StringUtils.defaultString(env.getProperty("server.servlet.context-path")),
                 StringUtils.isEmpty(env.getProperty("server.ssl.key-store")) ? "http" : "https",
