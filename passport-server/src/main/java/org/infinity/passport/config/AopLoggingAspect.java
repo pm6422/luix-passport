@@ -62,26 +62,18 @@ public class AopLoggingAspect {
      */
     @Around("within(@org.springframework.web.bind.annotation.RestController *)")
     public Object logController(ProceedingJoinPoint joinPoint) throws Throwable {
-        try {
-            ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-            HttpServletRequest request = servletRequestAttributes != null ? servletRequestAttributes.getRequest() : null;
-            HttpServletResponse response = servletRequestAttributes != null ? servletRequestAttributes.getResponse() : null;
-            // Get traceId from http request
-            TraceIdUtils.setTraceId(request);
-            beforeRun(joinPoint, request);
-            Object result = joinPoint.proceed();
-            // Set traceId to http response
-            TraceIdUtils.setTraceId(response);
-            afterRun(joinPoint, response, result);
-            return result;
-        } catch (IllegalArgumentException e) {
-            // Catch illegal argument exception and re-throw
-            getLogger(joinPoint).error("Illegal argument[s]: {} in {}()",
-                    Arrays.toString(joinPoint.getArgs()), joinPoint.getSignature().getName());
-            throw e;
-        } finally {
-            TraceIdUtils.remove();
-        }
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = servletRequestAttributes != null ? servletRequestAttributes.getRequest() : null;
+        HttpServletResponse response = servletRequestAttributes != null ? servletRequestAttributes.getResponse() : null;
+        // Get traceId from http request
+        TraceIdUtils.setTraceId(request);
+        beforeRun(joinPoint);
+        Object result = joinPoint.proceed();
+        // Set traceId to http response
+        TraceIdUtils.setTraceId(response);
+        afterRun(joinPoint, result);
+        TraceIdUtils.remove();
+        return result;
     }
 
     public void beforeRun(ProceedingJoinPoint joinPoint, HttpServletRequest request) {

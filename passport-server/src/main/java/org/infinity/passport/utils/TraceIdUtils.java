@@ -18,6 +18,9 @@ public class TraceIdUtils {
     public static final String TRACE_ID = "traceId";
 
     public static void setTraceId(HttpServletRequest request) {
+        if (request == null) {
+            return;
+        }
         String traceId = Optional.ofNullable(request.getHeader(TRACE_ID)).orElse(generateTraceId());
         MDC.put(TRACE_ID, traceId);
     }
