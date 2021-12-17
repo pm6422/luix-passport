@@ -77,5 +77,5 @@ mvn
 
 ## 联系方式(Contact)
 - WeChat ID: pm6422
-- Email: pm6422@126.com
+- Email: louis@luixtech.com
 

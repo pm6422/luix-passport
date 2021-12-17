@@ -11,17 +11,16 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StreamUtils;
 
+import javax.annotation.Resource;
 import java.nio.charset.Charset;
 import java.util.Date;
 
 @Component
 @Slf4j
 public class PrintAppInfoApplicationRunner implements ApplicationRunner {
-    private final Environment env;
 
-    public PrintAppInfoApplicationRunner(Environment env) {
-        this.env = env;
-    }
+    @Resource
+    private Environment env;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {

@@ -56,6 +56,6 @@ public class TestController {
     @GetMapping("/api/tests/email")
     @Secured(Authority.DEVELOPER)
     public void testEmail() {
-        mailService.sendEmail(new String[]{"pm6422@126.com", "pm6422@gmail.com"}, "test", "test", false, false);
+        mailService.sendEmail(new String[]{"louis@luixtech.com"}, "test", "test", false, false);
     }
 }

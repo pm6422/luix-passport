@@ -143,7 +143,7 @@ application:
             description: Passport Server 开放接口文档
         version: @project.version@
         contact-name: Louis
-        contact-email: pm6422@126.com
+        contact-email: louis@luixtech.com
         host:
     aop-logging:
         enabled: true
