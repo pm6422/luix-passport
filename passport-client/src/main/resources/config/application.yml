@@ -6,12 +6,12 @@
 # Full reference is available at:
 # https://docs.spring.io/spring-boot/docs/2.3.0.RELEASE/reference/html/appendix-application-properties.html
 # ===================================================================
-info: # These configuration can be exported to Environment, accessing URL /management/info can get these properties
+info: # These configurations can be exported to Environment, accessing URL /management/info can get these properties
     artifact:
         id: @project.artifactId@
         version: @project.version@
     project:
-        package: ai.deepbrain.springbootsample
+        package: org.infinity.passport.client
 spring:
     application:
         name: ${info.artifact.id}

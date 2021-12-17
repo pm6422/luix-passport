@@ -103,8 +103,8 @@ public class DatabaseInitializer {
         User developerRoleUser = new User();
         developerRoleUser.setUserName("louis");
         developerRoleUser.setFirstName("Louis");
-        developerRoleUser.setLastName("Liu");
-        developerRoleUser.setEmail("louis@localhost");
+        developerRoleUser.setLastName("Lau");
+        developerRoleUser.setEmail("louis@luixtech.com");
         developerRoleUser.setMobileNo("15000899488");
         // Raw password: louis
         developerRoleUser.setPasswordHash(passwordEncoder.encode("louis"));
@@ -213,7 +213,7 @@ public class DatabaseInitializer {
                 Arrays.asList("password", "authorization_code", "refresh_token", "client_credentials"));
         // Note: localhost and 127.0.0.1 must be save twice.
         oAuth2ClientDetails.setRegisteredRedirectUri(
-                new HashSet<>(Arrays.asList("http://127.0.0.1:8010/login", "http://localhost:8010/login")));
+                new HashSet<>(Arrays.asList("http://127.0.0.1:9020/login", "http://localhost:9020/login")));
         oAuth2ClientDetails.setAccessTokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(7));
         oAuth2ClientDetails.setRefreshTokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(7));
         // 这个authority还不知道其作用

@@ -7,9 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.infinity.passport.component.MessageCreator;
 import org.infinity.passport.dto.ErrorDTO;
+import org.infinity.passport.exception.DataNotFoundException;
 import org.infinity.passport.exception.DuplicationException;
 import org.infinity.passport.exception.NoAuthorityException;
-import org.infinity.passport.exception.DataNotFoundException;
 import org.springframework.dao.ConcurrencyFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +23,9 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import javax.annotation.Resource;
 import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,11 +48,8 @@ public class ExceptionTranslatorAdvice {
     public static final String SYS_EXCEPTION_CODE         = "ES7001";
     public static final String CONCURRENCY_EXCEPTION_CODE = "ES7002";
 
-    private final MessageCreator messageCreator;
-
-    public ExceptionTranslatorAdvice(MessageCreator messageCreator) {
-        this.messageCreator = messageCreator;
-    }
+    @Resource
+    private MessageCreator messageCreator;
 
     /**
      * JSR 303 bean validation exception handler
@@ -58,7 +57,6 @@ public class ExceptionTranslatorAdvice {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseBody
     public ResponseEntity<ErrorDTO> processMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
-        // warn级别记录用户输入错误
         log.warn("Found invalid request parameters: ", ex);
         // Http status: 400
         return ResponseEntity.badRequest().body(processFieldErrors(ex.getBindingResult().getFieldErrors()));
@@ -92,6 +90,14 @@ public class ExceptionTranslatorAdvice {
     @ResponseBody
     public ResponseEntity<ErrorDTO> processMismatchedInputException(MismatchedInputException ex) {
         log.warn("Found invalid request parameters: ", ex);
+        // Http status: 400
+        return ResponseEntity.badRequest().body(ErrorDTO.builder().code(INVALID_REQUEST_PARAM_CODE).message(ex.getMessage()).build());
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    @ResponseBody
+    public ResponseEntity<ErrorDTO> processMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
+        log.warn("Found mismatched type request parameters: ", ex);
         // Http status: 400
         return ResponseEntity.badRequest().body(ErrorDTO.builder().code(INVALID_REQUEST_PARAM_CODE).message(ex.getMessage()).build());
     }

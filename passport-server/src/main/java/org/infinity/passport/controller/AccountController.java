@@ -1,5 +1,6 @@
 package org.infinity.passport.controller;
 
+import com.codahale.metrics.annotation.Timed;
 import com.google.common.collect.ImmutableMap;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
@@ -84,6 +85,7 @@ public class AccountController {
     @ApiOperation(value = "检索访问令牌", notes = "登录成功返回当前访问令牌")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/accounts/access-token")
+    @Timed
     public ResponseEntity<String> getAccessToken(HttpServletRequest request) {
         String token = request.getHeader("authorization");
         if (StringUtils.isEmpty(token) || !token.toLowerCase().startsWith(OAuth2AccessToken.BEARER_TYPE.toLowerCase())) {
@@ -95,6 +97,7 @@ public class AccountController {
     @ApiOperation(value = "检索当前登录的用户名", notes = "登录成功返回当前用户名")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/accounts/authenticate")
+    @Timed
     public ResponseEntity<String> isAuthenticated(HttpServletRequest request) {
         log.debug("REST request to check if the current user is authenticated");
         return ResponseEntity.ok(request.getRemoteUser());
@@ -103,6 +106,7 @@ public class AccountController {
     @ApiOperation(value = "检索当前登录的用户名", notes = "用于SSO客户端调用，理论上不会返回null，因为未登录则会出错，登录成功返回当前用户")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/accounts/principal")
+    @Timed
     public ResponseEntity<Principal> getPrincipal(Principal user) {
         log.debug("REST request to get current user if the user is authenticated");
         return ResponseEntity.ok(user);
@@ -113,6 +117,7 @@ public class AccountController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "账号无权限")})
     @GetMapping("/api/accounts/user")
     @Secured({Authority.USER})
+    @Timed
     public ResponseEntity<User> getCurrentUser() {
         User user = userService.findOneByUserName(SecurityUtils.getCurrentUserName());
         List<UserAuthority> userAuthorities = Optional.ofNullable(userAuthorityRepository.findByUserId(user.getId()))
@@ -127,6 +132,7 @@ public class AccountController {
     @ApiOperation("根据访问令牌检索绑定的用户")
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/open-api/accounts/user")
+    @Timed
     public ResponseEntity<Object> getTokenUser(HttpServletRequest request) {
         String token = request.getHeader("authorization");
         if (token != null && token.toLowerCase().startsWith(OAuth2AccessToken.BEARER_TYPE.toLowerCase())) {
@@ -151,6 +157,7 @@ public class AccountController {
     @ApiResponses(value = {@ApiResponse(code = SC_CREATED, message = "成功创建"),
             @ApiResponse(code = SC_BAD_REQUEST, message = "账号已注册")})
     @PostMapping("/open-api/accounts/register")
+    @Timed
     public ResponseEntity<Void> registerAccount(
             @ApiParam(value = "用户", required = true) @Valid @RequestBody ManagedUserDTO dto,
             HttpServletRequest request) {
@@ -165,6 +172,7 @@ public class AccountController {
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功激活"),
             @ApiResponse(code = SC_BAD_REQUEST, message = "激活码不存在")})
     @GetMapping("/open-api/accounts/activate/{key:[0-9]+}")
+    @Timed
     public void activateAccount(@ApiParam(value = "激活码", required = true) @PathVariable String key) {
         userService.activateRegistration(key).orElseThrow(() -> new DataNotFoundException(key));
     }
@@ -173,6 +181,7 @@ public class AccountController {
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/accounts/authority-names")
     @Secured({Authority.USER})
+    @Timed
     public ResponseEntity<List<String>> getAuthorityNames(
             @ApiParam(value = "是否可用,null代表全部", allowableValues = "false,true,null") @RequestParam(value = "enabled", required = false) Boolean enabled) {
         List<String> authorities = authorityService.find(enabled).stream().map(Authority::getName).collect(Collectors.toList());
@@ -185,6 +194,7 @@ public class AccountController {
             @ApiResponse(code = SC_INTERNAL_SERVER_ERROR, message = "登录用户已经不存在")})
     @PutMapping("/api/accounts/user")
     @Secured({Authority.USER})
+    @Timed
     public ResponseEntity<Void> updateCurrentAccount(@ApiParam(value = "新的用户", required = true) @Valid @RequestBody User domain) {
         // For security reason
         User currentUser = userService.findOneByUserName(SecurityUtils.getCurrentUserName());
@@ -199,6 +209,7 @@ public class AccountController {
             @ApiResponse(code = SC_BAD_REQUEST, message = "密码不正确")})
     @PutMapping("/api/accounts/password")
     @Secured({Authority.USER})
+    @Timed
     public ResponseEntity<Void> changePassword(@ApiParam(value = "新密码", required = true) @RequestBody @Valid UserNameAndPasswordDTO dto) {
         // For security reason
         dto.setUserName(SecurityUtils.getCurrentUserName());
@@ -212,6 +223,7 @@ public class AccountController {
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功发送"),
             @ApiResponse(code = SC_BAD_REQUEST, message = "账号不存在")})
     @PostMapping("/open-api/accounts/reset-password/init")
+    @Timed
     public ResponseEntity<Void> requestPasswordReset(@ApiParam(value = "电子邮件", required = true) @RequestBody String email,
                                                      HttpServletRequest request) {
         User user = userService.requestPasswordReset(email, RandomUtils.generateResetKey());
@@ -223,6 +235,7 @@ public class AccountController {
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功重置"),
             @ApiResponse(code = SC_BAD_REQUEST, message = "重置码无效或已过期")})
     @PostMapping("/open-api/accounts/reset-password/finish")
+    @Timed
     public ResponseEntity<Void> finishPasswordReset(@ApiParam(value = "重置码及新密码", required = true) @Valid @RequestBody ResetKeyAndPasswordDTO dto) {
         userService.completePasswordReset(dto.getNewPassword(), dto.getKey());
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("NM2003")).build();
@@ -232,6 +245,7 @@ public class AccountController {
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功上传")})
     @PostMapping("/api/accounts/profile-photo/upload")
     @Secured({Authority.USER})
+    @Timed
     public void uploadProfilePhoto(@ApiParam(value = "文件描述", required = true) @RequestPart String description,
                                    @ApiParam(value = "用户头像文件", required = true) @RequestPart MultipartFile file) throws IOException {
         log.debug("Upload profile with file name {} and description {}", file.getOriginalFilename(), description);
@@ -243,6 +257,7 @@ public class AccountController {
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功上传")})
     @GetMapping("/api/accounts/profile-photo/download")
     @Secured({Authority.USER})
+    @Timed
     public ResponseEntity<org.springframework.core.io.Resource> downloadProfilePhoto() {
         SecurityUser currentUser = SecurityUtils.getCurrentUser();
         Optional<UserProfilePhoto> existingPhoto = userProfilePhotoRepository.findByUserId(currentUser.getUserId());
@@ -266,6 +281,7 @@ public class AccountController {
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/accounts/profile-photo")
     @Secured({Authority.USER})
+    @Timed
     public ModelAndView getProfilePhoto() {
         // @RestController下使用return forwardUrl不好使
         String forwardUrl = "forward:".concat(UserController.GET_PROFILE_PHOTO_URL).concat(SecurityUtils.getCurrentUserName());

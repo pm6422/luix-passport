@@ -62,7 +62,7 @@ public class ExceptionHandlingAsyncTaskExecutor implements AsyncTaskExecutor, In
     }
 
     protected void handle(Exception e) {
-        log.error("Caught async exception", e);
+        log.error("Caught async task exception", e);
     }
 
     @Override
@@ -78,18 +78,18 @@ public class ExceptionHandlingAsyncTaskExecutor implements AsyncTaskExecutor, In
     }
 
     @Override
-    public void destroy() throws Exception {
-        if (executor instanceof DisposableBean) {
-            DisposableBean bean = (DisposableBean) executor;
-            bean.destroy();
-        }
-    }
-
-    @Override
     public void afterPropertiesSet() throws Exception {
         if (executor instanceof InitializingBean) {
             InitializingBean bean = (InitializingBean) executor;
             bean.afterPropertiesSet();
+        }
+    }
+
+    @Override
+    public void destroy() throws Exception {
+        if (executor instanceof DisposableBean) {
+            DisposableBean bean = (DisposableBean) executor;
+            bean.destroy();
         }
     }
 }

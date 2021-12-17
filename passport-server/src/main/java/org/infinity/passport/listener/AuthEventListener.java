@@ -4,10 +4,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.infinity.passport.event.LogoutEvent;
 import org.infinity.passport.security.AjaxLogoutSuccessHandler;
 import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -15,12 +17,10 @@ import javax.servlet.http.HttpServletResponse;
 @Slf4j
 public class AuthEventListener {
 
-    private final AjaxLogoutSuccessHandler ajaxLogoutSuccessHandler;
+    @Resource
+    private AjaxLogoutSuccessHandler ajaxLogoutSuccessHandler;
 
-    public AuthEventListener(AjaxLogoutSuccessHandler ajaxLogoutSuccessHandler) {
-        this.ajaxLogoutSuccessHandler = ajaxLogoutSuccessHandler;
-    }
-
+    @Async
     @EventListener
     public void logoutEvent(LogoutEvent event) {
         log.debug("Processing logout event initiated by {}", event.getSource().getClass().getSimpleName());

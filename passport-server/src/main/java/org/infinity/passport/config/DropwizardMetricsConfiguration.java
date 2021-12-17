@@ -40,7 +40,6 @@ public class DropwizardMetricsConfiguration {
 
     @PostConstruct
     public void init() {
-        log.debug("Registering JVM gauges");
         metricRegistry.register(PROP_METRIC_REG_JVM_MEMORY, new MemoryUsageGaugeSet());
         metricRegistry.register(PROP_METRIC_REG_JVM_GARBAGE, new GarbageCollectorMetricSet());
         metricRegistry.register(PROP_METRIC_REG_JVM_THREADS, new ThreadStatesGaugeSet());
@@ -49,13 +48,12 @@ public class DropwizardMetricsConfiguration {
         log.info("Registered JVM gauge");
 
         if (applicationProperties.getMetrics().getLogs().isEnabled()) {
-            log.info("Initializing metrics log reporting");
             Marker metricsMarker = MarkerFactory.getMarker("metrics");
             final Slf4jReporter reporter = Slf4jReporter.forRegistry(metricRegistry)
                     .outputTo(LoggerFactory.getLogger("metrics")).markWith(metricsMarker)
                     .convertRatesTo(TimeUnit.SECONDS).convertDurationsTo(TimeUnit.MILLISECONDS).build();
             reporter.start(applicationProperties.getMetrics().getLogs().getReportFrequency(), TimeUnit.SECONDS);
-            log.info("Initialized metrics log reporting");
+            log.info("Registered metrics log reporting");
         }
     }
 

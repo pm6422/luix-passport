@@ -1,5 +1,5 @@
 # Passport
-## 项目地址(URL)
+## 项目地址(Repository)
 https://github.com/pm6422/passport
 
 ## 概述(Overview)
@@ -57,7 +57,7 @@ mvn
 - Maven 3.0+
 
 ## 主要依赖(Major dependencies)
-- Spring Boot 2.2.5
+- Spring Boot 2.3.0
 - Swagger and Springfox
 - Spring boot starter actuator
 - Spring boot starter data mongodb

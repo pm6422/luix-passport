@@ -13,14 +13,8 @@ spring:
             enabled: false # we use gulp + BrowserSync for livereload
     thymeleaf:
         cache: false
+mongock:
+    enabled: true
 # ===================================================================
 # Application specific properties
 # ===================================================================
-
-application:
-    logging:
-        logstash: # Forward logs to logstash over a socket, used by LoggingConfiguration
-            enabled: false
-            host: localhost
-            port: 5000
-            queueSize: 512

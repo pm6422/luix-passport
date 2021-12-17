@@ -81,7 +81,7 @@ public class ValidationBeanPostProcessor implements BeanPostProcessor {
             String annotationSimpleName = fieldAnnotationName.substring(fieldAnnotationName.lastIndexOf(".") + 1);
             // Get field name from 'value' attribute of ApiModelProperty.class
             String annotationFieldName = apiModelPropertyAnnotation.map(value -> ((ApiModelProperty) value).value()).orElse("");
-            String fieldName = StringUtils.isNotEmpty(annotationFieldName) ? annotationFieldName : "{" + parameterField.getName() + "}";
+            String fieldName = StringUtils.isNotEmpty(annotationFieldName) ? annotationFieldName : parameterField.getName();
             if (PATTERN_PACKAGE.equals(fieldAnnotationName)) {
                 // Handle message property of @Pattern annotation
                 String msg = String.format("[%s]: %s", fieldName, message);

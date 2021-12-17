@@ -25,4 +25,15 @@ public abstract class NetworkUtils {
             throw new RuntimeException(e);
         }
     }
+
+    public static String getRequestUrl(HttpServletRequest request) {
+        Objects.requireNonNull(request);
+
+        return request.getScheme() + // "http"
+                "://" + // "://"
+                request.getServerName() + // "host"
+                ":" + // ":"
+                request.getServerPort() + // "80"
+                request.getContextPath();
+    }
 }

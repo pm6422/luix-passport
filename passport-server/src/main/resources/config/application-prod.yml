@@ -13,14 +13,9 @@ spring:
             enabled: false # we use gulp + BrowserSync for livereload
     thymeleaf:
         cache: false
+    data:
+        mongodb:
+            uri: mongodb://passport:79Gfs87J3YhS23YH@192.168.10.101:27017/passport
 # ===================================================================
 # Application specific properties
 # ===================================================================
-
-application:
-    logging:
-        logstash: # Forward logs to logstash over a socket, used by LoggingConfiguration
-            enabled: false
-            host: localhost
-            port: 5000
-            queueSize: 512

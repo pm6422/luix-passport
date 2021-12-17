@@ -24,7 +24,6 @@ import java.util.Set;
 public class BaseUser extends AbstractAuditableDomain implements Serializable {
 
     private static final long   serialVersionUID = -8677592622292657950L;
-    public static final  String DEFAULT_PASSWORD = "123456";
     public static final  String FIELD_USER_NAME  = "userName";
     public static final  String FIELD_EMAIL      = "email";
     public static final  String FIELD_MOBILE_NO  = "mobileNo";

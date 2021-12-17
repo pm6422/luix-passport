@@ -48,7 +48,7 @@ management: # Management http server configuration, used by ManagementServerProp
                 request:
                     autotime:
                         enabled: true
-info: # These configuration can be exported to Environment, accessing URL /management/info can get these properties
+info: # These configurations can be exported to Environment, accessing URL /management/info can get these properties
     artifact:
         id: @project.artifactId@
         version: @project.version@
@@ -90,7 +90,7 @@ spring:
             collection-name: HttpSession
     mail: # specific mail property, used by MailProperties
         host: smtp.exmail.qq.com
-        username: louis@pm6422.club
+        username: test@luixtech.com
         password: LoU-UHR-9dH-8G9-F3G
     banner:
         location: classpath:config/banner-company.txt
@@ -114,25 +114,26 @@ logging:
         root: DEBUG
         ${info.project.package}: DEBUG
 mongock:
+    enabled: false
+    track-ignored: true
     change-logs-scan-package:
         - ${info.project.package}.db
-    trackIgnored: true
 # ===================================================================
 # Application specific properties
 # ===================================================================
 application:
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
-        logs: # Reports Dropwizard metrics in the logs
-            enabled: true
+        logs: # print metrics info to the logs
+            enabled: false
             report-frequency: 60 # in seconds
-        graphite:
+        graphite: # output metrics info to graphite server
             enabled: false
             host: localhost
             port: 2003
-            prefix: smartcloudservice
+            prefix: ${spring.application.name}
     http:
         cache: # Used by the CachingHttpHeadersFilter
-            time-to-live-in-days: 31
+            expired-after: 31
     swagger:
         enabled: true
         api:
@@ -153,6 +154,8 @@ application:
     elapsed-time-logging:
         enabled: true
         slow-execution-threshold: 300 # unit: ms
+    account:
+        default-password: ${spring.application.name}
     ribbon:
         # comma separated list of profiles to show a ribbon on the GUI
         display-on-active-profiles: dev,test,demo

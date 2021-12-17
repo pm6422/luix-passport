@@ -3,6 +3,7 @@ package org.infinity.passport.controller;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.infinity.passport.component.HttpHeaderCreator;
+import org.infinity.passport.config.ApplicationProperties;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.User;
 import org.infinity.passport.domain.UserAuthority;
@@ -34,7 +35,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static javax.servlet.http.HttpServletResponse.*;
-import static org.infinity.passport.domain.User.DEFAULT_PASSWORD;
 import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
 import static org.infinity.passport.utils.NetworkUtils.getRequestUrl;
 
@@ -46,6 +46,8 @@ import static org.infinity.passport.utils.NetworkUtils.getRequestUrl;
 @Slf4j
 public class UserController {
 
+    @Resource
+    private ApplicationProperties      applicationProperties;
     @Resource
     private UserProfilePhotoRepository userProfilePhotoRepository;
     @Resource
@@ -67,9 +69,9 @@ public class UserController {
     public ResponseEntity<Void> create(@ApiParam(value = "用户", required = true) @Valid @RequestBody User domain,
                                        HttpServletRequest request) {
         log.debug("REST request to create user: {}", domain);
-        User newUser = userService.insert(domain, DEFAULT_PASSWORD);
+        User newUser = userService.insert(domain, applicationProperties.getAccount().getDefaultPassword());
         mailService.sendCreationEmail(newUser, getRequestUrl(request));
-        HttpHeaders headers = httpHeaderCreator.createSuccessHeader("NM2011", DEFAULT_PASSWORD);
+        HttpHeaders headers = httpHeaderCreator.createSuccessHeader("NM2011", applicationProperties.getAccount().getDefaultPassword());
         return ResponseEntity.status(HttpStatus.CREATED).headers(headers).build();
     }
 

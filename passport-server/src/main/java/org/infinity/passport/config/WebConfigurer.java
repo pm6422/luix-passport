@@ -127,7 +127,7 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
         cachingHttpHeadersFilter.addMappingForUrlPatterns(types, true, "/content/*");
         cachingHttpHeadersFilter.addMappingForUrlPatterns(types, true, "/app/*");
         cachingHttpHeadersFilter.setAsyncSupported(true);
-        log.debug("Registered caching HTTP headers filter");
+        log.info("Registered caching HTTP headers filter");
     }
 
     /**
@@ -136,13 +136,13 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
     private void initMetrics(ServletContext servletContext, EnumSet<DispatcherType> disps) {
         servletContext.setAttribute(InstrumentedFilter.REGISTRY_ATTRIBUTE, metricRegistry);
         servletContext.setAttribute(MetricsServlet.METRICS_REGISTRY, metricRegistry);
-        log.debug("Initialized metrics registries");
+        log.info("Initialized metrics registry");
 
         FilterRegistration.Dynamic metricsFilter = servletContext.addFilter("webappMetricsFilter",
                 new InstrumentedFilter());
         metricsFilter.addMappingForUrlPatterns(disps, true, "/*");
         metricsFilter.setAsyncSupported(true);
-        log.debug("Registered metrics filter");
+        log.info("Registered metrics filter");
 
         ServletRegistration.Dynamic metricsAdminServlet = servletContext.addServlet("metricsServlet",
                 new MetricsServlet());
@@ -151,6 +151,6 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
         metricsAdminServlet.addMapping("/api/metrics/*");
         metricsAdminServlet.setAsyncSupported(true);
         metricsAdminServlet.setLoadOnStartup(2);
-        log.debug("Registered metrics servlet");
+        log.info("Registered metrics servlet");
     }
 }

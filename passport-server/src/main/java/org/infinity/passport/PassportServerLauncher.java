@@ -7,6 +7,7 @@ import org.infinity.passport.config.ApplicationProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.core.env.Environment;
 import org.springframework.util.Assert;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
@@ -18,6 +19,7 @@ import java.util.Arrays;
 
 @SpringBootApplication
 @EnableConfigurationProperties({ApplicationProperties.class})
+@ServletComponentScan
 @Slf4j
 public class PassportServerLauncher implements WebMvcConfigurer {
 
@@ -37,7 +39,7 @@ public class PassportServerLauncher implements WebMvcConfigurer {
 
     @PostConstruct
     private void validateProfiles() {
-        Assert.notEmpty(env.getActiveProfiles(), "No Spring profile configured.");
+        Assert.notEmpty(env.getActiveProfiles(), "No Spring profile configured!");
         Assert.isTrue(env.getActiveProfiles().length == 1, "Multiple profiles are not allowed!");
         Arrays.stream(env.getActiveProfiles())
                 .filter(activeProfile -> !ArrayUtils.contains(ApplicationConstants.AVAILABLE_PROFILES, activeProfile))

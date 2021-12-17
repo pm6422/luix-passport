@@ -1,6 +1,14 @@
 <div class="row wrapper border-bottom white-bg page-heading">
-    <div class="col-lg-10">
+    <div class="col-lg-8">
         <h2>Metrics</h2>
+    </div>
+    <div class="col-lg-4">
+        <div class="title-action">
+            <button type="button" class="btn btn-primary btn-sm pull-right" ng-click="vm.refresh()">
+                <span class="fa fa-refresh"></span>&nbsp;
+                <span>Refresh</span>
+            </button>
+        </div>
     </div>
 </div>
 <div class="wrapper wrapper-content p-h-xs animated fadeInDown">
@@ -8,14 +16,8 @@
         <div class="col-lg-12">
             <div class="ibox m-b-sm">
                 <div class="ibox-content">
-                    <!-- <p>
-                        <button type="button" class="btn btn-warning btn-sm pull-right" ng-click="vm.refresh()">
-                            <span class="fa fa-refresh"></span>&nbsp;
-                            <span>Refresh</span>
-                        </button>
-                    </p> -->
                     <div>
-                        <h3>JVM Status</h3>
+                        <h3>JVM status</h3>
                     </div>
                     <hr>
                     <div class="row" ng-hide="vm.updatingMetrics">
@@ -91,7 +93,7 @@
             </div>
             <div class="ibox m-b-sm">
                 <div class="ibox-content">
-                    <h3>Garbage Collections</h3>
+                    <h3>Garbage collections</h3>
                     <hr>
                     <div class="row" ng-hide="vm.updatingMetrics">
                         <div class="col-md-12">
@@ -120,7 +122,15 @@
             </div>
             <div class="ibox m-b-sm">
                 <div class="ibox-content">
-                    <h3>Threads <a class="hand" ng-click="vm.refreshThreadDumpData()" data-toggle="modal" data-target="#threadDump"><i class="fa fa-eye"></i></a></h3>
+                    <p>
+                        <button type="button" class="btn btn-primary btn-sm pull-right" ng-click="vm.refreshThreadDumpData()">
+                            <span class="fa fa-eye"></span>&nbsp;
+                            <span>Threads dump</span>
+                        </button>
+                    </p>
+                    <div>
+                        <h3>Threads</h3>
+                    </div>
                     <hr>
                     <div class="row" ng-hide="vm.updatingMetrics">
                         <div class="col-lg-3">
@@ -173,7 +183,7 @@
             </div>
             <div class="ibox m-b-sm">
                 <div class="ibox-content">
-                    <h3>HTTP requests (events per second)</h3>
+                    <h3>HTTP requests</h3>
                     <hr>
                     <p><span>Active requests</span> <b>{{vm.metrics.counters['com.codahale.metrics.servlet.InstrumentedFilter.activeRequests'].count | number:0}}</b> - <span>Total requests</span> <b>{{vm.metrics.timers['com.codahale.metrics.servlet.InstrumentedFilter.requests'].count | number:0}}</b></p>
                     <div class="table-responsive">
@@ -336,7 +346,7 @@
             </div>
             <div class="ibox m-b-sm hide">
                 <div class="ibox-content">
-                    <h3 ng-show="vm.metrics.gauges['HikariPool-1.pool.TotalConnections'].value > 0">DataSource statistics (time in millisecond)</h3>
+                    <h3 ng-show="vm.metrics.gauges['HikariPool-1.pool.TotalConnections'].value > 0">DataSource statistics (time in milliseconds)</h3>
                     <hr>
                     <div class="table-responsive" ng-show="vm.metrics.gauges['HikariPool-1.pool.TotalConnections'].value > 0">
                         <table class="table table-striped">

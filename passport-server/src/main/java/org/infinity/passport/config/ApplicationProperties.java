@@ -25,9 +25,9 @@ public class ApplicationProperties {
     private final Metrics            metrics            = new Metrics();
     private final AopLogging         aopLogging         = new AopLogging();
     private final ElapsedTimeLogging elapsedTimeLogging = new ElapsedTimeLogging();
+    private final Account            account            = new Account();
     private final Redis              redis              = new Redis();
     private final Ribbon             ribbon             = new Ribbon();
-
 
     @Data
     public static class Http {
@@ -35,7 +35,10 @@ public class ApplicationProperties {
 
         @Data
         public static class Cache {
-            private Long timeToLiveInDays = 31L;
+            /**
+             * Expired days
+             */
+            private Long expiredAfter = 31L;
         }
     }
 
@@ -103,9 +106,8 @@ public class ApplicationProperties {
     }
 
     @Data
-    public static class Dubbo {
-        private String adminUrl;
-        private String monitorUrl;
+    public static class Account {
+        private String defaultPassword;
     }
 
     @Data

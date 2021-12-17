@@ -141,7 +141,7 @@ public class AdminMenuController {
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功复制")})
     @GetMapping("/api/admin-menus/copy")
     @Secured({Authority.ADMIN})
-    public void copyMenus(@ApiParam(value = "源应用名称", required = true, defaultValue = "DeepBrainPassport") @RequestParam(value = "sourceAppName") String sourceAppName,
+    public void copyMenus(@ApiParam(value = "源应用名称", required = true, defaultValue = "Passport") @RequestParam(value = "sourceAppName") String sourceAppName,
                           @ApiParam(value = "目标应用名称", required = true) @RequestParam(value = "targetAppName") String targetAppName) {
         List<AdminMenu> sourceMenus = adminMenuRepository.findByAppName(sourceAppName);
         sourceMenus.forEach(menu -> {
