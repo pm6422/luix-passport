@@ -6,15 +6,14 @@
 # Full reference is available at:
 # https://docs.spring.io/spring-boot/docs/2.3.0.RELEASE/reference/html/appendix-application-properties.html
 # ===================================================================
-info: # These configurations can be exported to Environment, accessing URL /management/info can get these properties
-    artifact:
-        id: @project.artifactId@
-        version: @project.version@
-    project:
-        package: org.infinity.passport.client
+app:
+    id: @project.artifactId@
+    name: @project.name@
+    version: @project.version@
+    package: org.infinity.passport.client
 spring:
     application:
-        name: ${info.artifact.id}
+        name: ${app.id}
     profiles:
         # The commented value for `active` can be replaced with valid spring profiles to load.
         # Otherwise, it will be filled in by maven when building the WAR file
@@ -41,7 +40,6 @@ logging:
         path: ${user.home}${file.separator}Log${file.separator}${spring.application.name}${file.separator}${spring.application.name}
     level:
         root: DEBUG
-        ${info.project.package}: DEBUG
 security:
     oauth2:
         client: # used by org.springframework.boot.autoconfigure.security.oauth2.OAuth2ClientProperties
