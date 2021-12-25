@@ -400,6 +400,7 @@
                         </goals>
                         <phase>validate</phase>
                         <configuration>
+                            <outputDirectory>src/main/resources/static/app/</outputDirectory>
                             <resources>
                                 <resource>
                                     <filtering>true</filtering>
@@ -409,7 +410,6 @@
                                     </includes>
                                 </resource>
                             </resources>
-                            <outputDirectory>${project.build.sourceDirectory}/../webapp/app/</outputDirectory>
                         </configuration>
                     </execution>
                     <execution>
@@ -463,20 +463,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <configuration>
-                    <warSourceDirectory>src/main/webapp/</warSourceDirectory>
                     <!--uncomment it if use the undertow-->
                     <packagingExcludes>WEB-INF/lib/tomcat-*.jar</packagingExcludes>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
-                    <webResources>
-                        <webResource>
-                            <targetPath>/app/</targetPath>
-                            <filtering>true</filtering>
-                            <directory>src/main/resources/templates</directory>
-                            <includes>
-                                <include>app.constants.js</include>
-                            </includes>
-                        </webResource>
-                    </webResources>
                 </configuration>
             </plugin>
         </plugins>
