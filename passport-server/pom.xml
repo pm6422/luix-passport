@@ -463,7 +463,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <configuration>
-                    <!--uncomment it if use the undertow-->
+                    <warSourceDirectory>src/main/webapp/</warSourceDirectory>
+                    <!--uncomment it if you use the undertow-->
                     <packagingExcludes>WEB-INF/lib/tomcat-*.jar</packagingExcludes>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
