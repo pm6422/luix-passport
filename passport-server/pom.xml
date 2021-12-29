@@ -401,7 +401,7 @@
                         </goals>
                         <phase>validate</phase>
                         <configuration>
-                            <outputDirectory>src/main/resources/static/app/</outputDirectory>
+                            <outputDirectory>${project.build.sourceDirectory}/../webapp/app/</outputDirectory>
                             <resources>
                                 <resource>
                                     <filtering>true</filtering>
