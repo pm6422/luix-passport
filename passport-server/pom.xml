@@ -473,7 +473,7 @@
                             <filtering>true</filtering>
                             <directory>src/main/resources/templates</directory>
                             <includes>
-                                <include>app.constants.js</include>
+                                <include>constants.js</include>
                             </includes>
                         </webResource>
                     </webResources>
