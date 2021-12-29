@@ -1,0 +1,60 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>{{vm.pageTitle}}</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="#">首页</a>
+            </li>
+            <li>
+                <a style="pointer-events: none">{{vm.grandfatherPageTitle}}</a>
+            </li>
+            <li>
+                <a ui-sref="^">{{vm.parentPageTitle}}</a>
+            </li>
+            <li class="active">
+                <strong>{{vm.pageTitle}}</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInDown">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>参数名称</th>
+                                <th>参数值</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>名称:</td>
+                                <td>{{vm.entity.name}}</td>
+                            </tr>
+                            <tr>
+                                <td>应用权限:</td>
+                                <td>
+                                    <ul class="list-unstyled m-b-none">
+                                        <li ng-repeat="item in vm.entity.authorities"><span>{{item}}</span></li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>是否可用:</td>
+                                <td>{{vm.entity.enabled}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="text-right">
+                        <button type="button" class="btn btn-default btn-sm" ui-sref="^">
+                            <span class="fa fa-arrow-left"></span>&nbsp;<span>返回</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,70 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>{{vm.pageTitle}}</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="#">首页</a>
+            </li>
+            <li>
+                <a style="pointer-events: none">{{vm.parentPageTitle}}</a>
+            </li>
+            <li class="active">
+                <a href="#{{$state.$current.url.sourcePath}}"><strong>{{vm.pageTitle}}</strong></a>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="wrapper wrapper-content p-h-xs animated fadeInDown">
+    <div class="ibox-content p-w-m">
+        <div class="row p-h-xs">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="control-label">应用</label>
+                    <select class="form-control" ng-model="vm.criteria.appName" ng-options="item.name as item.name for item in vm.apps" ng-change="vm.searchAuthorities()">
+                        <option value="">请选择...</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="control-label">权限</label>
+                    <select class="form-control" ng-model="vm.criteria.authorityName" ng-options="item.authorityName as item.authorityName for item in vm.authorities" ng-change="vm.searchMenus()" ng-disabled="vm.criteria.appName == null" required>
+                        <option value="">请选择...</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label">菜单</label>
+                    <tree-view tree-data="vm.allMenus" text-field="name" value-field='id'
+                               check-field="checked"
+                               children-field="children" item-clicked="itemClicked($item)"
+                               item-checked-changed="itemCheckedChanged($item)" can-checked="true">
+                    </tree-view>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <button type="button"
+                        ng-disabled="form.$invalid || vm.isSaving || vm.criteria.appName == null || vm.criteria.authorityName == null"
+                        ng-click="vm.save()" class="btn btn-default btn-sm pull-right">
+                    <span class="fa fa-check"></span>&nbsp;<span>保存</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/ng-template" id="/treeView.html">
+    <ul class="tree-view">
+        <li ng-repeat="item in treeData" ng-include="itemTemplateUrl || '/treeItem.html'" ></li>
+    </ul>
+</script>
+
+<script type="text/ng-template" id="/treeItem.html">
+    <i ng-click="itemExpended(item, $event);" class="{{getItemIcon(item)}}"></i>
+    <input type="checkbox" ng-model="item[checkField]" class="check-box" ng-if="canChecked" ng-checked="item[checkField]" ng-click="isCheck(treeData, item)">
+    <span class='text-field' ng-click="warpCallback('itemClicked', item, $event);">{{item[textField]}}</span>
+    <ul ng-if="!isLeaf(item)" ng-show="!item.$$isExpend">
+        <li ng-repeat="item in item[childrenField]" ng-include="itemTemplateUrl || '/treeItem.html'">
+        </li>
+    </ul>
+</script>

@@ -1,0 +1,83 @@
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation-directive>
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="vm.cancel()">&times;</button>
+        <h4 class="modal-title">{{vm.pageTitle}}</h4>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <label class="control-label">应用</label>
+            <select class="form-control" ng-model="vm.entity.appName" name="appName" ng-options="item.name as item.name for item in vm.apps"
+                    ng-change="vm.searchParentMenus()" required>
+                <option value="">请选择...</option>
+            </select>
+            <div ng-show="editForm.appName.$invalid">
+                <p class="help-block" ng-show="editForm.appName.$error.required">
+                    必填字段
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">菜单代码</label>
+            <input type="text" class="form-control" name="code" ng-model="vm.entity.code"
+                   required ng-minlength="1" ng-maxlength="30">
+            <div ng-show="editForm.code.$invalid">
+                <p class="help-block" ng-show="editForm.code.$error.required">
+                    必填字段
+                </p>
+                <p class="help-block" ng-show="editForm.code.$error.minlength">
+                    最小长度为1个字符
+                </p>
+                <p class="help-block" ng-show="editForm.code.$error.maxlength">
+                    最大长度为30个字符
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">菜单名称</label>
+            <input type="text" class="form-control" name="label" ng-model="vm.entity.name"
+                   required ng-minlength="1" ng-maxlength="30">
+            <div ng-show="editForm.name.$invalid">
+                <p class="help-block" ng-show="editForm.name.$error.required">
+                    必填字段
+                </p>
+                <p class="help-block" ng-show="editForm.name.$error.minlength">
+                    最小长度为1个字符
+                </p>
+                <p class="help-block" ng-show="editForm.name.$error.maxlength">
+                    最大长度为30个字符
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">父菜单</label>
+            <select class="form-control" ng-model="vm.entity.parentId" name="parentId"
+                    ng-options="item.id as item.name for item in vm.parentMenus"
+                    ng-disabled="vm.entity.appName == null">
+                <option value="">请选择...</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="control-label">序号</label>
+            <input type="number" class="form-control" name="sequence" ng-model="vm.entity.sequence" required>
+            <div ng-show="editForm.sequence.$invalid">
+                <p class="help-block" ng-show="editForm.sequence.$error.required">
+                    必填字段
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">功能地址</label>
+            <input type="text" class="form-control" name="url" ng-model="vm.entity.url">
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal" ng-click="vm.cancel()">
+            <span class="fa fa-times"></span>&nbsp;<span>取消</span>
+        </button>
+        <button type="submit" class="btn btn-default btn-sm" ng-disabled="editForm.$invalid || vm.isSaving">
+            <span class='fa fa-circle-o-notch fa-spin' ng-show="vm.isSaving"></span>
+            <span class="fa fa-check" ng-hide="vm.isSaving"></span>
+            &nbsp;<span>保存</span>
+        </button>
+    </div>
+</form>

@@ -1,0 +1,41 @@
+<nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="sidebar-collapse">
+        <ul side-navigation-directive class="nav metismenu" id="side-menu" ng-controller="LeftSidebarController as vm">
+            <li class="nav-header">
+                <div class="profile-element" uib-dropdown>
+                    <div class="text-center">
+                        <img alt="image" class="img-circle" style="width:50px" ng-src="{{main.account.profilePhotoUrl}}"
+                             ng-show="main.account.hasProfilePhoto"/>
+                        <img alt="image" class="img-circle" style="width:50px" ng-src="content/img/profile_small.png"
+                             ng-hide="main.account.hasProfilePhoto"/>
+                    </div>
+                    <a uib-dropdown-toggle>
+                        <span class="clear forum-info">
+                            <span class="block m-t-xs"><strong class="font-bold">{{main.account.userName}}</strong></span>
+                            <span class="text-muted text-xs block">{{main.account.firstName}} {{main.account.lastName}}<b class="caret"></b></span>
+                        </span>
+                    </a>
+                    <ul uib-dropdown-menu class="animated fadeInDown m-t-xs">
+                        <li><a ui-sref="profile">个人信息</a></li>
+                        <li><a ui-sref="password">修改密码</a></li>
+                    </ul>
+                </div>
+                <div class="logo-element">
+                    M+
+                </div>
+            </li>
+            <li ng-class="{active: $state.includes('{{group.url}}')}" ng-repeat="group in vm.groups">
+                <a href="#">
+                    <i class="fa fa-th-large"></i>
+                    <span class="nav-label">{{group.name}}</span>
+                    <span class="fa arrow"></span>
+                </a>
+                <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('{{group.url}}')}">
+                    <li ui-sref-active="active" ng-repeat="child in group.children">
+                        <a ui-sref="{{child.url}}">{{child.name}}</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</nav>

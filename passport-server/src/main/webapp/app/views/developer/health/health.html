@@ -1,0 +1,39 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>{{vm.pageTitle}}</h2>
+    </div>
+</div>
+<div class="wrapper wrapper-content p-h-xs animated fadeInDown">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <table id="healthCheck" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th class="col-md-7">Service Name</th>
+                                <th class="col-md-2 text-center">Status</th>
+                                <th class="col-md-2 text-center">Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="health in vm.healthData">
+                                <td><span class="text-capitalize">{{ vm.baseName(health.name) }}</span> {{vm.subSystemName(health.name)}}</td>
+                                <td class="text-center">
+                                    <span class="label" ng-class="vm.getLabelClass(health.status)">
+                                        {{ health.status }}
+                                    </span>
+                                </td>
+                                <td class="text-center">
+                                    <a class="hand" ng-click="vm.showHealth(health)" ng-show="health.details || health.error">
+                                        <i class="fa fa-eye text-navy"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+           </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,70 @@
+<section id="contact" class="gray-section contact">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h1 class="logo-name" style="font-size:65px">PASSPORT</h1>
+                <p>OAuth2 architecture based service</p>
+            </div>
+        </div>
+        <div class="middle-box text-center loginscreen animated bounceInDown">
+            <form role="form" name="form" class="m-t" ng-submit="vm.login($event)" novalidate show-validation-directive>
+                <div class="alert alert-danger" ng-show="vm.errorMsg">
+                    {{vm.errorMsg}}
+                </div>
+                <div class="form-group">
+                    <input type="text" name="userName" class="form-control" placeholder="用户名/email/手机号"
+                           ng-model="vm.userName" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" name="password" class="form-control" placeholder="密码" ng-model="vm.password"
+                           required>
+                </div>
+                <button type="submit" class="btn btn-primary block full-width m-b font-bold"
+                        ng-disabled="form.$invalid || vm.isSaving">
+                    <span class='fa fa-circle-o-notch fa-spin' ng-show="vm.isSaving"></span>
+                    <span ng-hide="vm.isSaving">登录</span>
+                </button>
+
+                <div class="m-t">
+                    <a class="btn btn-sm btn-white btn-block font-bold" ui-sref="register">注册账号</a>
+                </div>
+
+                <div class="m-t">
+                    <a class="text-warning font-bold" ui-sref="forgot-password">
+                        <small>忘记密码?</small>
+                    </a>
+                </div>
+
+                <div class="m-t">
+                    <p class="text-danger font-bold">
+                        <small>用户名：louis</small>
+                    </p>
+                    <p class="text-danger font-bold">
+                        <small>密码：louis</small>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<div class="navbar-fixed-bottom text-center">
+    <div class="row">
+        <div class="col-lg-12 text-center">
+            <p class="m-t-sm">
+                <small>Or follow us on social platform</small>
+            </p>
+            <ul class="list-inline social-icon">
+                <li><a href="#"><i class="fa fa-twitter"></i></a>
+                </li>
+                <li><a href="#"><i class="fa fa-facebook"></i></a>
+                </li>
+                <li><a href="#"><i class="fa fa-linkedin"></i></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <p class="m-t text-muted font-bold">
+        <small>{{companyName}}</small>
+        <a class="fa fa-database" href="/open-api/systems/reset-database" target="_blank"></a>
+    </p>
+</div>

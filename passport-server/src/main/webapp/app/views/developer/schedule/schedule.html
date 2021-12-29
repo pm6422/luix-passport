@@ -1,0 +1,44 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>{{vm.pageTitle}}</h2>
+    </div>
+</div>
+<div class="wrapper wrapper-content p-h-xs animated fadeInDown">
+    <div class="ibox-content m-b-sm">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="control-label">Filter</label>
+                    <input type="text" class="form-control" placeholder="Filter by keyword" ng-model="filter">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ibox">
+        <div class="ibox-content">
+            <div ng-repeat="(key, value) in vm.data">
+                <label ng-hide="filtered.length == 0"><span>{{key}}</span></label>
+                <table class="table table-condensed table-striped table-bordered table-responsive"
+                       style="table-layout:fixed" ng-hide="filtered.length == 0">
+                    <thead>
+                    <tr>
+                        <th class="col-sm-12">Value</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="item in filtered = (value | filter:filter)">
+                        <td>
+                            <div class="row" ng-repeat="(k, v) in item">
+                                <div class="col-md-4">{{k}}</div>
+                                <div class="col-md-8">
+                                    <span class="pull-right label label-primary break">{{v}}</span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,64 @@
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation-directive>
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="vm.cancel()">&times;</button>
+        <h4 class="modal-title">{{vm.pageTitle}}</h4>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <label class="control-label">字典代码</label>
+            <input type="text" class="form-control" name="dictCode" ng-model="vm.entity.dictCode" required ng-maxlength="12">
+            <div ng-show="editForm.dictCode.$invalid">
+                <p class="help-block" ng-show="editForm.dictCode.$error.maxlength" translate-value-max="12">
+                    最大长度为12个字符
+                </p>
+            </div>
+            <div>
+                <p class="label label-warning" ng-show="vm.mode == 'create'">
+                    <span class="fa fa-exclamation-circle" aria-hidden="true"></span>
+                    唯一键
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">字典名称</label>
+            <input type="text" class="form-control" name="dictName" ng-model="vm.entity.dictName" required ng-maxlength="50">
+            <div ng-show="editForm.dictName.$invalid">
+                <p class="help-block" ng-show="editForm.dictName.$error.required">
+                    必填字段
+                </p>
+                <p class="help-block" ng-show="editForm.dictName.$error.maxlength" translate-value-max="50">
+                    最大长度为50个字符
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">是否可用</label>
+            <div class="onoffswitch">
+                <input type="checkbox" id="enabled" ng-model="vm.entity.enabled" class="onoffswitch-checkbox" ng-disabled="vm.entity.dictName === null">
+                <label class="onoffswitch-label" for="enabled">
+                    <span class="onoffswitch-inner"></span>
+                    <span class="onoffswitch-switch"></span>
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">备注</label>
+            <input type="text" class="form-control" name="remark" ng-model="vm.entity.remark" ng-maxlength="100">
+            <div ng-show="editForm.remark.$invalid">
+                <p class="help-block" ng-show="editForm.remark.$error.maxlength" translate-value-max="100">
+                    最大长度为100个字符
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal" ng-click="vm.cancel()">
+            <span class="fa fa-times"></span>&nbsp;<span>取消</span>
+        </button>
+        <button type="submit" class="btn btn-default btn-sm" ng-disabled="editForm.$invalid || vm.isSaving">
+            <span class='fa fa-circle-o-notch fa-spin' ng-show="vm.isSaving"></span>
+            <span class="fa fa-check" ng-hide="vm.isSaving"></span>
+            &nbsp;<span>保存</span>
+        </button>
+    </div>
+</form>

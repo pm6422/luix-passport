@@ -1,0 +1,144 @@
+<div class="middle-box text-center loginscreen animated bounceInDown">
+        <h1 class="logo-name" style="font-size:65px">PASSPORT</h1>
+        <h2 class="text-muted">{{vm.pageTitle}}</h2>
+        <form role="form" name="form" class="m-t" ng-submit="vm.register()" novalidate show-validation-directive>
+            <div class="alert alert-danger" ng-show="vm.errorMsg">
+                {{vm.errorMsg}}
+            </div>
+            <div class="alert alert-danger" ng-show="vm.passwordNotMatch">
+                两次输入的密码不匹配!
+            </div>
+             <div class="form-group">
+                <input type="text" class="form-control" id="userName" name="userName" placeholder="输入用户名"
+                       ng-model="vm.registerAccount.userName" required ng-minlength="3" ng-maxlength="20" ng-pattern="/^[a-zA-Z0-9-]+$/">
+                <div ng-show="form.userName.$dirty && form.userName.$invalid">
+                    <p class="help-block text-left" ng-show="form.userName.$error.required">
+                        必填字段
+                    </p>
+                    <p class="help-block text-left" ng-show="form.userName.$error.minlength">
+                        最小长度为3个字符
+                    </p>
+                    <p class="help-block text-left" ng-show="form.userName.$error.maxlength">
+                        最大长度为20个字符
+                    </p>
+                    <p class="help-block text-left" ng-show="form.userName.$error.pattern">
+                        只可以包含小写字母和数字
+                    </p>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" id="lastName" name="lastName" placeholder="输入姓"
+                       ng-model="vm.registerAccount.lastName" required ng-minlength="1" ng-maxlength="20">
+                <div ng-show="form.lastName.$dirty && form.lastName.$invalid">
+                    <p class="help-block text-left" ng-show="form.lastName.$error.required">
+                        必填字段
+                    </p>
+                    <p class="help-block text-left" ng-show="form.lastName.$error.minlength">
+                        最小长度为1个字符
+                    </p>
+                    <p class="help-block text-left" ng-show="form.lastName.$error.maxlength">
+                        最大长度为20个字符
+                    </p>
+                    <p class="help-block text-left" ng-show="form.lastName.$error.pattern">
+                        只可以包含字母和数字
+                    </p>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" id="firstName" name="firstName" placeholder="输入名"
+                       ng-model="vm.registerAccount.firstName" required ng-minlength="1" ng-maxlength="20">
+                <div ng-show="form.firstName.$dirty && form.firstName.$invalid">
+                    <p class="help-block text-left" ng-show="form.firstName.$error.required">
+                        必填字段
+                    </p>
+                    <p class="help-block text-left" ng-show="form.firstName.$error.minlength">
+                        最小长度为1个字符
+                    </p>
+                    <p class="help-block text-left" ng-show="form.firstName.$error.maxlength">
+                        最大长度为20个字符
+                    </p>
+                    <p class="help-block text-left" ng-show="form.firstName.$error.pattern">
+                        只可以包含字母和数字
+                </p>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="email" class="form-control" id="email" name="email" placeholder="电子邮箱"
+                       ng-model="vm.registerAccount.email" required ng-minlength="3" ng-maxlength="30">
+                <div ng-show="form.email.$dirty && form.email.$invalid">
+                    <p class="help-block text-left" ng-show="form.email.$error.required">
+                        必填字段
+                    </p>
+                    <p class="help-block text-left" ng-show="form.email.$error.email">
+                        Email格式不正确
+                    </p>
+                    <p class="help-block text-left" ng-show="form.email.$error.minlength">
+                        最小长度为3个字符
+                    </p>
+                    <p class="help-block text-left" ng-show="form.email.$error.maxlength">
+                        最大长度为30个字符
+                    </p>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="number" class="form-control" id="mobileNo" name="mobileNo" placeholder="输入手机号" ng-model="vm.registerAccount.mobileNo"
+                       required ng-maxlength="13" ng-pattern="/^(13[0-9]|15[012356789]|17[03678]|18[0-9]|14[57])[0-9]{8}$/">
+                <div ng-show="form.mobileNo.$dirty && form.mobileNo.$invalid">
+                    <p class="help-block text-left" ng-show="form.mobileNo.$error.required">
+                        必填字段
+                    </p>
+                    <p class="help-block text-left" ng-show="form.mobileNo.$error.maxlength">
+                        最小长度为13个字符
+                    </p>
+                    <p class="help-block text-left" ng-show="form.mobileNo.$error.pattern">
+                        手机号格式不正确
+                    </p>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" id="password" name="password" placeholder="输入密码"
+                       ng-model="vm.registerAccount.password" ng-minlength=5 ng-maxlength=50 required>
+                <div ng-show="form.password.$dirty && form.password.$invalid">
+                    <p class="help-block text-left" ng-show="form.password.$error.required">
+                        必填字段
+                    </p>
+                    <p class="help-block text-left" ng-show="form.password.$error.minlength">
+                        最小长度为5个字符
+                    </p>
+                    <p class="help-block text-left" ng-show="form.password.$error.maxlength">
+                        最小长度为50个字符
+                    </p>
+                </div>
+                <div class="text-warning">
+                    <password-strength-bar-directive password-to-check="vm.registerAccount.password" class="pull-left"></password-strength-bar-directive>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="密码确认"
+                       ng-model="vm.confirmPassword" ng-minlength=5 ng-maxlength=50 required>
+                <div ng-show="form.confirmPassword.$dirty && form.confirmPassword.$invalid">
+                    <p class="help-block text-left" ng-show="form.confirmPassword.$error.required">
+                        必填字段
+                    </p>
+                    <p class="help-block text-left" ng-show="form.confirmPassword.$error.minlength">
+                        最小长度为5个字符
+                    </p>
+                    <p class="help-block text-left" ng-show="form.confirmPassword.$error.maxlength">
+                        最小长度为50个字符
+                    </p>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary block full-width m-b font-bold" ng-disabled="form.$invalid || vm.isSaving">
+                <span class='fa fa-circle-o-notch fa-spin' ng-show="vm.isSaving"></span>
+                <span ng-hide="vm.isSaving">注册</span>
+            </button>
+            
+            <p class="text-muted text-center font-bold"><small>已经拥有账号?</small></p>
+            <a class="btn btn-sm btn-white btn-block font-bold" ui-sref="login">登录</a>
+        </form>
+</div>
+<div class="navbar-fixed-bottom text-center">
+    <p class="m-t text-muted font-bold">
+        <small>{{companyName}}</small>
+    </p>
+</div>
