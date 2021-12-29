@@ -8,11 +8,11 @@
 spring:
     devtools:
         restart:
-            enabled: true # disable on prod environment
+            enabled: false # disable on prod environment
         livereload:
-            enabled: false # we use gulp + BrowserSync for livereload
+            enabled: false
     thymeleaf:
-        cache: false
+        cache: true
     data:
         mongodb:
             uri: mongodb://passport:79Gfs87J3YhS23YH@192.168.10.101:27017/passport

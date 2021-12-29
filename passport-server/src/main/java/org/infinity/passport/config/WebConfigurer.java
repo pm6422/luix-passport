@@ -23,12 +23,15 @@ import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.EnumSet;
 
 import static java.net.URLDecoder.decode;
+import static org.infinity.passport.config.ApplicationConstants.SPRING_PROFILE_TEST;
 
 /**
  * Web application configuration
@@ -60,6 +63,10 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
     public void customize(UndertowServletWebServerFactory factory) {
         setWebSocketDeploymentInfo(factory);
         setMimeMappings(factory);
+        if (Arrays.asList(env.getActiveProfiles()).contains(SPRING_PROFILE_TEST)) {
+            // When running in an IDE or with ./mvnw spring-boot:run, set location of the static web assets.
+            setLocationForStaticAssets(factory);
+        }
     }
 
     private void setWebSocketDeploymentInfo(UndertowServletWebServerFactory factory) {
@@ -79,6 +86,18 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
             mappings.add("json", MediaType.TEXT_HTML_VALUE + ";charset=" + StandardCharsets.UTF_8.name().toLowerCase());
             ConfigurableServletWebServerFactory servletWebServer = (ConfigurableServletWebServerFactory) factory;
             servletWebServer.setMimeMappings(mappings);
+        }
+    }
+
+    private void setLocationForStaticAssets(WebServerFactory factory) {
+        if (factory instanceof ConfigurableServletWebServerFactory) {
+            ConfigurableServletWebServerFactory servletWebServer = (ConfigurableServletWebServerFactory) factory;
+            File root;
+            String prefixPath = resolvePathPrefix();
+            root = new File(prefixPath + "src/main/webapp/");
+            if (root.exists() && root.isDirectory()) {
+                servletWebServer.setDocumentRoot(root);
+            }
         }
     }
 

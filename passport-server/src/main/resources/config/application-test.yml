@@ -10,7 +10,7 @@ spring:
         restart:
             enabled: true # enable on test environment
         livereload:
-            enabled: false # we use gulp + BrowserSync for livereload
+            enabled: false
     thymeleaf:
         cache: false
 mongock:

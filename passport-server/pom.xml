@@ -77,7 +77,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>20.0</version>
+            <version>30.0-jre</version>
         </dependency>
         <dependency>
             <groupId>com.jayway.restassured</groupId>
@@ -392,6 +392,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
+                <version>${maven-resources-plugin.version}</version>
                 <executions>
                     <execution>
                         <id>copy-resources</id>
@@ -425,8 +426,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <!-- Executable war cannot be unzipped -->
-                    <executable>false</executable>
                     <fork>true</fork>
                     <!--
                     Enable the line below to have remote debugging of your application on port 5005
@@ -444,6 +443,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
+                <version>${maven-assembly-plugin.version}</version>
                 <configuration>
                     <descriptors>
                         <descriptor>src/main/assembly/assembly.xml</descriptor>
@@ -467,6 +467,16 @@
                     <!--uncomment it if you use the undertow-->
                     <packagingExcludes>WEB-INF/lib/tomcat-*.jar</packagingExcludes>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
+                    <webResources>
+                        <webResource>
+                            <targetPath>/app/</targetPath>
+                            <filtering>true</filtering>
+                            <directory>src/main/resources/templates</directory>
+                            <includes>
+                                <include>app.constants.js</include>
+                            </includes>
+                        </webResource>
+                    </webResources>
                 </configuration>
             </plugin>
         </plugins>
@@ -480,7 +490,7 @@
         <profile>
             <id>test</id>
             <activation>
-                <!-- default Spring profiles -->
+                <!-- default spring profile -->
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
