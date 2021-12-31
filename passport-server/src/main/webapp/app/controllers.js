@@ -59,14 +59,13 @@ angular
  * Contains several global data used in different view
  *
  */
-function MainController($http, $rootScope, $scope, $state, AuthenticationService, PrincipalService, AuthorityAdminMenuService, AuthServerService, AlertUtils, APP_NAME, COMPANY_NAME) {
+function MainController($http, $rootScope, $scope, $state, AuthenticationService, PrincipalService, AuthorityAdminMenuService, AuthServerService, AlertUtils, APP_NAME) {
     var main = this;
     main.account = null;
     main.isAuthenticated = null;
     main.links = [];
     main.selectedLink = null;
     main.selectLink = selectLink;
-    $rootScope.companyName = COMPANY_NAME;
 
     // Authenticate user whether has logged in
     AuthenticationService.authorize(false, getAccount);
@@ -199,14 +198,17 @@ function LoginController($rootScope, $state, AuthenticationService) {
 /**
  * NavbarController
  */
-function NavbarController($rootScope, $scope, $translate, $state, AuthenticationService, PrincipalService, ProfileService) {
+function NavbarController($rootScope, $scope, $translate, $state, AuthenticationService, PrincipalService, SystemService) {
     var vm = this;
 
     vm.isNavbarCollapsed = true;
     vm.isAuthenticated = PrincipalService.isAuthenticated;
     vm.changeLanguage = changeLanguage;
 
-    ProfileService.getProfileInfo().then(function (response) {
+    SystemService.getSystemInfo().then(function (response) {
+        vm.appId = response.appId;
+        vm.appVersion = response.appVersion;
+        $rootScope.companyName = response.companyName;
         vm.inProduction = response.inProduction;
         vm.swaggerEnabled = response.swaggerEnabled;
     });

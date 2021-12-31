@@ -11,6 +11,7 @@ app:
     name: @project.name@
     version: @project.version@
     package: org.infinity.passport.client
+    companyName: Infinity Organization
 spring:
     application:
         name: ${app.id}

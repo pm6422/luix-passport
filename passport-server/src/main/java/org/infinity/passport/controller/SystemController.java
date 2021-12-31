@@ -4,10 +4,13 @@ import com.github.cloudyrock.mongock.runner.core.executor.MongockRunnerBase;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.infinity.passport.config.ApplicationProperties;
 import org.infinity.passport.domain.Authority;
-import org.infinity.passport.dto.ProfileInfoDTO;
+import org.infinity.passport.dto.SystemDTO;
 import org.infinity.passport.utils.NetworkUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -20,9 +23,10 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 @Api(tags = "系统管理")
@@ -39,29 +43,31 @@ public class SystemController {
     private MongoTemplate         mongoTemplate;
     @Resource
     private ApplicationContext    applicationContext;
+    @Value("${app.id}")
+    private String                appId;
+    @Value("${app.version}")
+    private String                appVersion;
+    @Value("${app.companyName}")
+    private String                companyName;
 
-    @ApiOperation("检索系统Profile")
-    @GetMapping("/open-api/systems/profile-info")
-    public ResponseEntity<ProfileInfoDTO> getProfileInfo() {
-        ProfileInfoDTO profileInfoDTO = new ProfileInfoDTO(env.getActiveProfiles(), applicationProperties.getSwagger().isEnabled(), getRibbonEnv());
-        return ResponseEntity.ok(profileInfoDTO);
+    @ApiOperation("get system info")
+    @GetMapping("/open-api/systems/info")
+    public ResponseEntity<SystemDTO> getSystemInfo() {
+        SystemDTO systemDTO = new SystemDTO(appId, appVersion, companyName, getRibbonProfile(),
+                applicationProperties.getSwagger().isEnabled(), env.getActiveProfiles());
+        return ResponseEntity.ok(systemDTO);
     }
 
-    private String getRibbonEnv() {
-        String[] activeProfiles = env.getActiveProfiles();
+    private String getRibbonProfile() {
         String[] displayOnActiveProfiles = applicationProperties.getRibbon().getDisplayOnActiveProfiles();
-        if (displayOnActiveProfiles == null) {
+        if (ArrayUtils.isEmpty(displayOnActiveProfiles)) {
             return null;
         }
 
-        List<String> ribbonProfiles = new ArrayList<>(Arrays.asList(displayOnActiveProfiles));
-        List<String> springBootProfiles = Arrays.asList(activeProfiles);
-        ribbonProfiles.retainAll(springBootProfiles);
+        List<String> ribbonProfiles = Stream.of(displayOnActiveProfiles).collect(Collectors.toList());
+        ribbonProfiles.retainAll(Arrays.asList(env.getActiveProfiles()));
 
-        if (ribbonProfiles.size() > 0) {
-            return ribbonProfiles.get(0);
-        }
-        return null;
+        return CollectionUtils.isNotEmpty(ribbonProfiles) ? ribbonProfiles.get(0) : null;
     }
 
     @ApiOperation("get bean")

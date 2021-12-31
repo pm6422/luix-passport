@@ -11,6 +11,7 @@ app:
     name: @project.name@
     version: @project.version@
     package: org.infinity.passport
+    companyName: Infinity Organization
 management: # Management http server configuration, used by ManagementServerProperties
     endpoints:
         web:
