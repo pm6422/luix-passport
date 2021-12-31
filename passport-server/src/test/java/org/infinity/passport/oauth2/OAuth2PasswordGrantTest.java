@@ -1,20 +1,15 @@
 package org.infinity.passport.oauth2;
 
+import org.infinity.passport.IntegrationTest;
 import org.infinity.passport.domain.MongoOAuth2ClientDetails;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.json.JacksonJsonParser;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.data.util.Pair;
-import org.springframework.security.web.FilterChainProxy;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.context.WebApplicationContext;
 
 import javax.annotation.Resource;
 
@@ -24,32 +19,16 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
-@RunWith(SpringRunner.class)
+@AutoConfigureMockMvc
+@IntegrationTest
 public class OAuth2PasswordGrantTest {
 
     @Resource
-    private WebApplicationContext wac;
-    @Resource
-    private FilterChainProxy      springSecurityFilterChain;
-
     private MockMvc mockMvc;
 
     private static final String CLIENT_ID         = MongoOAuth2ClientDetails.INTERNAL_CLIENT_ID;
     private static final String RAW_CLIENT_SECRET = MongoOAuth2ClientDetails.INTERNAL_RAW_CLIENT_SECRET;
     private static final String CONTENT_TYPE      = "application/json;charset=UTF-8";
-
-    /**
-     * The constructor will be executed first before the spring boot starting.
-     */
-    public OAuth2PasswordGrantTest() {
-        super();
-    }
-
-    @Before
-    public void setup() {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).addFilter(springSecurityFilterChain).build();
-    }
 
     private ResultActions obtainToken(String username, String password) throws Exception {
         final MultiValueMap<String, String> params = new LinkedMultiValueMap<>();

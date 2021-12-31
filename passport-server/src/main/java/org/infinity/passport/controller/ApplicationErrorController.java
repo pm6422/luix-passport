@@ -38,10 +38,10 @@ public class ApplicationErrorController implements ErrorController {
      *
      * @return the error path
      */
-    @Override
-    public String getErrorPath() {
-        return ERROR_PATH;
-    }
+//    @Override
+//    public String getErrorPath() {
+//        return ERROR_PATH;
+//    }
 
     /**
      * Supports the HTML Error View

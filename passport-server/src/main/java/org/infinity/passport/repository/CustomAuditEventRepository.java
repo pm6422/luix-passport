@@ -1,8 +1,8 @@
 package org.infinity.passport.repository;
 
 import lombok.extern.slf4j.Slf4j;
-import org.infinity.passport.annotation.ExecutionSwitch;
 import org.infinity.passport.component.AuditEventConverter;
+import org.infinity.passport.config.ApplicationProperties;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.PersistentAuditEvent;
 import org.springframework.boot.actuate.audit.AuditEvent;
@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
@@ -29,18 +30,13 @@ public class CustomAuditEventRepository implements AuditEventRepository {
     /**
      * Should be the same as in Liquibase migration.
      */
-    protected static final int EVENT_DATA_COLUMN_MAX_LENGTH = 255;
-
-    private final PersistenceAuditEventRepository persistenceAuditEventRepository;
-
-    private final AuditEventConverter auditEventConverter;
-
-    public CustomAuditEventRepository(PersistenceAuditEventRepository persistenceAuditEventRepository,
-                                      AuditEventConverter auditEventConverter) {
-
-        this.persistenceAuditEventRepository = persistenceAuditEventRepository;
-        this.auditEventConverter = auditEventConverter;
-    }
+    protected static final int                             EVENT_DATA_COLUMN_MAX_LENGTH = 255;
+    @Resource
+    private                PersistenceAuditEventRepository persistenceAuditEventRepository;
+    @Resource
+    private                AuditEventConverter             auditEventConverter;
+    @Resource
+    private                ApplicationProperties           applicationProperties;
 
     @Override
     public List<AuditEvent> find(String principal, Instant after, String type) {
@@ -51,8 +47,10 @@ public class CustomAuditEventRepository implements AuditEventRepository {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
-    @ExecutionSwitch(on = "application.user-audit-event.enabled")
     public void add(AuditEvent event) {
+        if (!applicationProperties.getUserEventAudit().isEnabled()) {
+            return;
+        }
         if (!AUTHORIZATION_FAILURE.equals(event.getType()) && !Authority.ANONYMOUS.equals(event.getPrincipal())) {
             PersistentAuditEvent persistentAuditEvent = new PersistentAuditEvent();
             persistentAuditEvent.setPrincipal(event.getPrincipal());

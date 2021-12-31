@@ -33,7 +33,6 @@ public class PassportServerLauncher implements WebMvcConfigurer {
      * @param args program arguments
      */
     public static void main(String[] args) {
-        fixEmbedDbIssue();
         SpringApplication.run(PassportServerLauncher.class, args);
     }
 
@@ -53,13 +52,5 @@ public class PassportServerLauncher implements WebMvcConfigurer {
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/login").setViewName("oauth2/login");
         registry.addViewController("/oauth/confirm_access").setViewName("oauth2/authorize");
-    }
-
-    private static void fixEmbedDbIssue() {
-        if ("aarch64".equals(System.getProperty("os.arch"))) {
-            // Resolve flapdoodle embed db compatibility issue on M1 CPU
-            // Refer: https://github.com/flapdoodle-oss/de.flapdoodle.embed.mongo/issues/337
-            System.setProperty("os.arch", "x86_64");
-        }
     }
 }

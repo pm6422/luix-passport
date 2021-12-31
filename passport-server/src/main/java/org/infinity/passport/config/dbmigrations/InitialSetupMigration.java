@@ -1,4 +1,4 @@
-package org.infinity.passport.db.initializer;//package org.infinity.passport.setup;
+package org.infinity.passport.config.dbmigrations;//package org.infinity.passport.setup;
 
 import com.github.cloudyrock.mongock.ChangeLog;
 import com.github.cloudyrock.mongock.ChangeSet;
@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
  * Creates the initial database
  */
 @ChangeLog(order = "01")
-public class DatabaseInitializer {
+public class InitialSetupMigration {
 
     private static final String APP_NAME = "passport-server";
 

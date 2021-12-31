@@ -4,7 +4,7 @@
 # This configuration will be overridden by the Spring profile you use,
 # for example application-dev.yml if you use the "dev" profile.
 # Full reference is available at:
-# https://docs.spring.io/spring-boot/docs/2.3.0.RELEASE/reference/html/appendix-application-properties.html
+# https://docs.spring.io/spring-boot/docs/2.5.5/reference/html/application-properties.html#application-properties
 # ===================================================================
 app:
     id: @project.artifactId@

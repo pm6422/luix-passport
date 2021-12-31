@@ -17,16 +17,20 @@ import org.springframework.web.socket.server.HandshakeInterceptor;
 import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Resource;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
 
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebsocketConfiguration implements WebSocketMessageBrokerConfigurer {
 
-    public static final String IP_ADDRESS = "IP_ADDRESS";
+    public static final String                IP_ADDRESS = "IP_ADDRESS";
+    @Resource
+    private             ApplicationProperties applicationProperties;
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
@@ -36,9 +40,13 @@ public class WebsocketConfiguration implements WebSocketMessageBrokerConfigurer 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         // @formatter:off
+        String[] allowedOrigins = Optional
+                .ofNullable(applicationProperties.getCors().getAllowedOrigins())
+                .map(origins -> origins.toArray(new String[0]))
+                .orElse(new String[0]);
         registry
                 .addEndpoint("/websocket/app-health", "/websocket/tracker")
-                .setAllowedOrigins("*")
+                .setAllowedOrigins(allowedOrigins)
                 .setHandshakeHandler(defaultHandshakeHandler())
                 .withSockJS()
                 .setInterceptors(httpSessionHandshakeInterceptor());

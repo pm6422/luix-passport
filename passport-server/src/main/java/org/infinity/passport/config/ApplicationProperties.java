@@ -5,6 +5,7 @@ import lombok.Getter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.List;
 
@@ -25,6 +26,8 @@ public class ApplicationProperties {
     private final Metrics            metrics            = new Metrics();
     private final AopLogging         aopLogging         = new AopLogging();
     private final ElapsedTimeLogging elapsedTimeLogging = new ElapsedTimeLogging();
+    private final CorsConfiguration  cors               = new CorsConfiguration();
+    private final UserEventAudit     userEventAudit     = new UserEventAudit();
     private final Account            account            = new Account();
     private final Redis              redis              = new Redis();
     private final Ribbon             ribbon             = new Ribbon();
@@ -103,6 +106,11 @@ public class ApplicationProperties {
     public static class ElapsedTimeLogging {
         private boolean enabled;
         private int     slowExecutionThreshold;
+    }
+
+    @Data
+    public static class UserEventAudit {
+        private boolean enabled;
     }
 
     @Data

@@ -19,9 +19,9 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.convert.*;
 import org.springframework.data.mongodb.core.index.IndexOperations;
 import org.springframework.data.mongodb.core.index.MongoPersistentEntityIndexResolver;
-import org.springframework.data.mongodb.core.mapping.BasicMongoPersistentEntity;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
+import org.springframework.data.mongodb.core.mapping.MongoPersistentEntity;
 import org.springframework.data.mongodb.core.mapping.event.ValidatingMongoEventListener;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
@@ -96,7 +96,7 @@ public class MongoConfiguration {
     @EventListener(ApplicationReadyEvent.class)
     public void initIndicesAfterStartup() {
         if (mongoMappingContext != null) {
-            for (BasicMongoPersistentEntity<?> persistentEntity : mongoMappingContext.getPersistentEntities()) {
+            for (MongoPersistentEntity<?> persistentEntity : mongoMappingContext.getPersistentEntities()) {
                 Class<?> clazz = persistentEntity.getType();
                 if (clazz.isAnnotationPresent(Document.class)) {
                     MongoPersistentEntityIndexResolver resolver = new MongoPersistentEntityIndexResolver(mongoMappingContext);

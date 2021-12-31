@@ -4,7 +4,7 @@
 # This configuration will be overridden by the Spring profile you use,
 # for example application-dev.yml if you use the "dev" profile.
 # Full reference is available at:
-# https://docs.spring.io/spring-boot/docs/2.3.0.RELEASE/reference/html/appendix-application-properties.html
+# https://docs.spring.io/spring-boot/docs/2.5.5/reference/html/application-properties.html#application-properties
 # ===================================================================
 app:
     id: @project.artifactId@
@@ -15,7 +15,7 @@ management: # Management http server configuration, used by ManagementServerProp
     endpoints:
         web:
             base-path: /management
-            exposure: # Refer to https://docs.spring.io/spring-boot/docs/2.3.0.RELEASE/reference/html/production-ready-features.html
+            exposure: # Refer to https://docs.spring.io/spring-boot/docs/2.5.5/reference/html/application-properties.html#application-properties.actuator
                 include: ['configprops', 'env', 'health', 'beans', 'mappings', 'httptrace', 'shutdown', 'auditevents', 'scheduledtasks', 'loggers', 'prometheus', 'threaddump']
     endpoint:
         health: # used by HealthEndpointProperties, Note: it will show health details if it has the access token by Ajax
@@ -115,7 +115,11 @@ mongock:
     enabled: false
     track-ignored: true
     change-logs-scan-package:
-        - ${app.package}.db
+        - ${app.package}.config.dbmigrations
+    mongo-db:
+        read-concern: local
+        write-concern:
+            journal: false
 # ===================================================================
 # Application specific properties
 # ===================================================================
@@ -152,6 +156,14 @@ application:
     elapsed-time-logging:
         enabled: true
         slow-execution-threshold: 300 # unit: ms
+    cors:
+        allowed-methods: "*"
+        allowed-headers: "*"
+        exposed-headers: "Authorization,Link,X-Total-Count,X-${spring.application.name}-alert,X-${spring.application.name}-error,X-${spring.application.name}-params"
+        allow-credentials: true
+        max-age: 1800
+    user-event-audit:
+        enabled: true
     account:
         default-password: ${spring.application.name}
     ribbon:

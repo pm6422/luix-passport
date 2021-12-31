@@ -1,6 +1,6 @@
 package org.infinity.passport.controller;
 
-import io.changock.runner.core.ChangockBase;
+import com.github.cloudyrock.mongock.runner.core.executor.MongockRunnerBase;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +34,7 @@ public class SystemController {
     @Resource
     private ApplicationProperties applicationProperties;
     @Resource
-    private ChangockBase          changockBase;
+    private MongockRunnerBase     mongockRunnerBase;
     @Resource
     private MongoTemplate         mongoTemplate;
     @Resource
@@ -85,7 +85,7 @@ public class SystemController {
     @GetMapping("/open-api/systems/reset-database")
     public String resetDatabase() {
         mongoTemplate.getDb().drop();
-        changockBase.execute();
+        mongockRunnerBase.execute();
         return "Reset successfully.";
     }
 }

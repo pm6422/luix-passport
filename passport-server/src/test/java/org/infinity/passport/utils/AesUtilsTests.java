@@ -1,7 +1,9 @@
 package org.infinity.passport.utils;
 
-import org.junit.Assert;
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @version 1.0
@@ -18,6 +20,6 @@ public class AesUtilsTests {
         System.out.println(encrypted1);
         System.out.println(encrypted2);
         String decrypted = AesUtils.decrypt(encrypted1, password);
-        Assert.assertEquals(raw, decrypted);
+        assertThat(raw).isEqualTo(decrypted);
     }
 }
