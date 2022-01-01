@@ -27,11 +27,11 @@ public class PrintAppInfoApplicationRunner implements ApplicationRunner {
         String appBanner = StreamUtils.copyToString(new ClassPathResource("config/banner-app.txt").getInputStream(),
                 Charset.defaultCharset());
         log.info(appBanner, env.getProperty("spring.application.name"),
-                StringUtils.isEmpty(env.getProperty("server.ssl.key-store")) ? "http" : "https",
+                "http",
                 "127.0.0.1",
                 env.getProperty("server.port"),
                 StringUtils.defaultString(env.getProperty("server.servlet.context-path")),
-                StringUtils.isEmpty(env.getProperty("server.ssl.key-store")) ? "http" : "https",
+                "http",
                 NetworkUtils.INTRANET_IP,
                 env.getProperty("server.port"),
                 StringUtils.defaultString(env.getProperty("server.servlet.context-path")),
