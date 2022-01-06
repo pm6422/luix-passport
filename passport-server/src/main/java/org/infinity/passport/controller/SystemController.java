@@ -10,6 +10,7 @@ import org.infinity.passport.config.ApplicationProperties;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.dto.SystemDTO;
 import org.infinity.passport.utils.NetworkUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
@@ -37,8 +38,8 @@ public class SystemController {
     private Environment           env;
     @Resource
     private ApplicationProperties applicationProperties;
-    @Resource
-    private MongockRunnerBase     mongockRunnerBase;
+    @Autowired(required = false)
+    private MongockRunnerBase<?>  mongockRunnerBase;
     @Resource
     private MongoTemplate         mongoTemplate;
     @Resource
