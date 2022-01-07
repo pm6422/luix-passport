@@ -15,7 +15,7 @@ spring:
         cache: true
     data:
         mongodb:
-            uri: mongodb://passport:79Gfs87J3YhS23YH@192.168.10.101:27017/passport
+            uri: mongodb://passport:79Gfs87J3YhS23GG@192.168.10.101:27017/passport
 # ===================================================================
 # Application specific properties
 # ===================================================================

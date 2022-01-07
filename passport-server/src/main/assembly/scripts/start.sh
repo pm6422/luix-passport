@@ -7,7 +7,7 @@ cd `dirname $0`
 #------------------------------------------------------------------------------------------------------------
 appDir=../lib
 appName="${project.build.finalName}.${project.packaging}"
-serverPort=${app.server.port}
+serverPort=9010
 profiles="${spring.profiles.active}"
 appStartLog="../start.log"
 appStartedIndicatorText="Application is running"

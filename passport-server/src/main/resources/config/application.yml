@@ -7,9 +7,9 @@
 # https://docs.spring.io/spring-boot/docs/2.5.5/reference/html/application-properties.html#application-properties
 # ===================================================================
 app:
-    id: @project.artifactId@
-    name: @project.name@
-    version: @project.version@
+    id: passport-server
+    name: passport-server
+    version: 1.0.0
     package: org.infinity.passport
     companyName: Infinity Organization
 management: # Management http server configuration, used by ManagementServerProperties
@@ -61,7 +61,7 @@ spring:
         # The commented value for `active` can be replaced with valid spring profiles to load.
         # Otherwise, it will be filled in by maven when building the WAR file
         # Either way, it can be overridden by `--spring.profiles.active` value passed in the commandline or `-Dspring.profiles.active` set in `JAVA_OPTS`
-        active: @spring.profiles.active@
+        active: test
     main:
         allow-bean-definition-overriding: true
     messages:
@@ -99,7 +99,7 @@ spring:
             auto-index-creation: false
 server:
     # It can be overridden by `--server.port` value passed in the commandline or `-Dserver.port` set in `JAVA_OPTS`
-    port: @app.server.port@
+    port: 9010
     servlet:
         session:
             cookie:

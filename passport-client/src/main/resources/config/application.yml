@@ -7,9 +7,9 @@
 # https://docs.spring.io/spring-boot/docs/2.5.5/reference/html/application-properties.html#application-properties
 # ===================================================================
 app:
-    id: @project.artifactId@
-    name: @project.name@
-    version: @project.version@
+    id: passport-client
+    name: passport-client
+    version: 1.0.0
     package: org.infinity.passport.client
     companyName: Infinity Organization
 spring:
@@ -19,7 +19,7 @@ spring:
         # The commented value for `active` can be replaced with valid spring profiles to load.
         # Otherwise, it will be filled in by maven when building the WAR file
         # Either way, it can be overridden by `--spring.profiles.active` value passed in the commandline or `-Dspring.profiles.active` set in `JAVA_OPTS`
-        active: @spring.profiles.active@
+        active: test
     messages:
         basename: i18n/messages
     thymeleaf: #ThymeleafAutoConfiguration
@@ -30,7 +30,7 @@ spring:
         proxy-target-class: true
 server:
     # It can be overridden by `--server.port` value passed in the commandline or `-Dserver.port` set in `JAVA_OPTS`
-    port: @app.server.port@
+    port: 9020
     servlet:
         session:
             cookie:
