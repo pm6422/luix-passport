@@ -132,9 +132,10 @@
                             <version>[${maven.version},)</version>
                         </requireMavenVersion>
                         <requireJavaVersion>
+                            <!-- Until it supports JDK 8 -->
                             <message>You are running an incompatible version of Java. Application requires JDK
-                                ${java.version} above</message>
-                            <version>1.8</version>
+                                ${java.version}</message>
+                            <version>[1.8,1.9)</version>
                         </requireJavaVersion>
                     </rules>
                 </configuration>
