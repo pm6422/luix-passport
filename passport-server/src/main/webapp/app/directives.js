@@ -41,19 +41,17 @@ angular
 /**
  * pageRibbonDirective
  */
-function pageRibbonDirective($rootScope, SystemService) {
+function pageRibbonDirective(RIBBON_PROFILE) {
     return {
         replace: true,
         restrict: 'AE',
         template: '<div class="ribbon hidden"><a href="" >{{ribbonProfile}}</a></div>',
         link: function (scope, element) {
-            SystemService.getSystemInfo().then(function (response) {
-                if (response.ribbonProfile) {
-                    scope.ribbonProfile = response.ribbonProfile.toUpperCase();
-                    element.addClass(response.ribbonProfile);
-                    element.removeClass('hidden');
-                }
-            });
+            if (RIBBON_PROFILE) {
+                scope.ribbonProfile = RIBBON_PROFILE.toUpperCase();
+                element.addClass(RIBBON_PROFILE);
+                element.removeClass('hidden');
+            }
         }
     }
 }

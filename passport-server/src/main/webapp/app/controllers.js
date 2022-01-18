@@ -8,7 +8,6 @@ angular
     .controller('ErrorPageController', ErrorPageController)
     .controller('LoginController', LoginController)
     .controller('NavbarController', NavbarController)
-    .controller('FooterController', FooterController)
     .controller('ProfileController', ProfileController)
     .controller('RegisterController', RegisterController)
     .controller('ActivationController', ActivationController)
@@ -139,7 +138,7 @@ function LeftSidebarController($scope, $state, $element, $timeout, APP_NAME, Aut
 /**
  * ErrorPageController
  */
-function ErrorPageController($state, $stateParams, $scope, JSONFormatterConfig) {
+function ErrorPageController($state, $stateParams) {
     var vm = this;
 
     vm.errorMessage = $stateParams.errorMessage;
@@ -198,21 +197,12 @@ function LoginController($rootScope, $state, AuthenticationService) {
 /**
  * NavbarController
  */
-function NavbarController($rootScope, $scope, $translate, $state, AuthenticationService, PrincipalService, SystemService) {
+function NavbarController($rootScope, $scope, $translate, $state, AuthenticationService, PrincipalService) {
     var vm = this;
 
     vm.isNavbarCollapsed = true;
     vm.isAuthenticated = PrincipalService.isAuthenticated;
     vm.changeLanguage = changeLanguage;
-
-    SystemService.getSystemInfo().then(function (response) {
-        vm.appId = response.appId;
-        vm.appVersion = response.appVersion;
-        $rootScope.companyName = response.companyName;
-        vm.inProduction = response.inProduction;
-        vm.swaggerEnabled = response.swaggerEnabled;
-    });
-
     vm.logout = logout;
     vm.toggleNavbar = toggleNavbar;
     vm.collapseNavbar = collapseNavbar;
@@ -236,28 +226,6 @@ function NavbarController($rootScope, $scope, $translate, $state, Authentication
     function collapseNavbar() {
         vm.isNavbarCollapsed = true;
     }
-}
-
-/**
- * FooterController
- */
-function FooterController($http, PrincipalService) {
-    var vm = this;
-
-    PrincipalService.hasAuthority('ROLE_DEVELOPER')
-        .then(function (result) {
-            if (result) {
-                $http({
-                    url: 'api/systems/intranet-ip',
-                    method: 'GET',
-                    transformResponse: [function (data) {
-                        return data;
-                    }]
-                }).then(function (response) {
-                    vm.ip = response.data;
-                });
-            }
-        });
 }
 /**
  * ProfileController

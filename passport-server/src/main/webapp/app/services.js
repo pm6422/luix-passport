@@ -10,7 +10,6 @@ angular
     .factory('AlertUtils', AlertUtils)
     .factory('DateUtils', DateUtils)
     .factory('DataUtils', DataUtils)
-    .factory('SystemService', SystemService)
     .factory('PasswordService', PasswordService)
     .factory('PasswordResetInitService', PasswordResetInitService)
     .factory('PasswordResetFinishService', PasswordResetFinishService)
@@ -43,13 +42,16 @@ angular
 /**
  * StateHandler
  */
-function StateHandler($rootScope, $state, $sessionStorage, $window, AuthenticationService, PrincipalService, AlertUtils, APP_NAME) {
+function StateHandler($rootScope, $state, $sessionStorage, $window, AuthenticationService, PrincipalService, AlertUtils, APP_NAME, VERSION, COMPANY, ENABLE_SWAGGER) {
     return {
         initialize: initialize
     };
 
     function initialize() {
         $rootScope.APP_NAME = APP_NAME;
+        $rootScope.VERSION = VERSION;
+        $rootScope.COMPANY = COMPANY;
+        $rootScope.ENABLE_SWAGGER = ENABLE_SWAGGER;
 
         var stateChangeStart = $rootScope.$on('$stateChangeStart', function (event, toState, toStateParams, fromState) {
             $rootScope.toState = toState;
@@ -437,25 +439,6 @@ function DataUtils($window) {
             var base64Data = e.target.result.substr(e.target.result.indexOf('base64,') + 'base64,'.length);
             cb(base64Data);
         };
-    }
-}
-/**
- * SystemService
- */
-function SystemService($q, $http, $localStorage) {
-    var dataPromise;
-
-    return {
-        getSystemInfo: getSystemInfo
-    };
-
-    function getSystemInfo() {
-        if (angular.isUndefined(dataPromise)) {
-            dataPromise = $http.get('open-api/systems/info').then(function (result) {
-                return result.data;
-            });
-        }
-        return dataPromise;
     }
 }
 /**

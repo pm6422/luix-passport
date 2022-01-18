@@ -8,7 +8,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.infinity.passport.config.ApplicationProperties;
 import org.infinity.passport.domain.Authority;
-import org.infinity.passport.dto.SystemDTO;
 import org.infinity.passport.utils.NetworkUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -54,14 +53,28 @@ public class SystemController {
     @Autowired(required = false)
     private BuildProperties       buildProperties;
 
-    @ApiOperation("get system info")
-    @GetMapping("/open-api/systems/info")
-    public ResponseEntity<SystemDTO> getSystemInfo() {
+    @GetMapping(value = "app/constants.js", produces = "application/javascript")
+    String getConstantsJs() {
         String id = buildProperties != null ? buildProperties.getArtifact() : appId;
         String version = buildProperties != null ? buildProperties.getVersion() : appVersion;
-        SystemDTO systemDTO = new SystemDTO(id, version, companyName, getRibbonProfile(),
-                applicationProperties.getSwagger().isEnabled(), env.getActiveProfiles());
-        return ResponseEntity.ok(systemDTO);
+        String js = "'use strict';\n" +
+                "(function () {\n" +
+                "    'use strict';\n" +
+                "    angular\n" +
+                "        .module('smartcloudserviceApp')\n" +
+                "        .constant('APP_NAME', '%s')\n" +
+                "        .constant('VERSION', '%s')\n" +
+                "        .constant('COMPANY', '%s')\n" +
+                "        .constant('RIBBON_PROFILE', '%s')\n" +
+                "        .constant('ENABLE_SWAGGER', '%s')\n" +
+                "        .constant('PAGINATION_CONSTANTS', {\n" +
+                "            'itemsPerPage': 10\n" +
+                "        })\n" +
+                "        .constant('DEBUG_INFO_ENABLED', true);\n" +
+                "})();";
+
+        return String.format(js, id, version, companyName, getRibbonProfile(),
+                applicationProperties.getSwagger().isEnabled());
     }
 
     private String getRibbonProfile() {
