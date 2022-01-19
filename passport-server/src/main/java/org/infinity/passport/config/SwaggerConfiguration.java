@@ -39,6 +39,7 @@ import static springfox.documentation.builders.PathSelectors.regex;
 public class SwaggerConfiguration {
     private static final String                DEFAULT_API_INCLUDE_PATTERN      = "/api/.*";
     private static final String                DEFAULT_OPEN_API_INCLUDE_PATTERN = "/open-api/.*";
+    private static final String                MANAGEMENT_API_INCLUDE_PATTERN   = "/management/.*";
     private static final String                SECURITY_TOKEN_NAME              = "Authorization";
     private final        ApplicationProperties applicationProperties;
 
@@ -54,6 +55,11 @@ public class SwaggerConfiguration {
     @Bean
     public Docket openApiDocket() {
         return createDocket("open-api-group", DEFAULT_OPEN_API_INCLUDE_PATTERN);
+    }
+
+    @Bean
+    public Docket managementDocket() {
+        return createDocket("management", MANAGEMENT_API_INCLUDE_PATTERN);
     }
 
     private Docket createDocket(String groupName, String path) {
