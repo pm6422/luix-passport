@@ -4,17 +4,7 @@ import javax.annotation.concurrent.ThreadSafe;
 
 @ThreadSafe
 public abstract class IdGenerator {
-    private static final ShortIdGenerator     SHORT_ID_GENERATOR      = new ShortIdGenerator();
-    private static final SnowFlakeIdGenerator SNOW_FLAKE_ID_GENERATOR = new SnowFlakeIdGenerator(1L, false, false);
-
-    /**
-     * Generate a thread-safe digit format ID
-     *
-     * @return 18 bits length，e.g：317297928250941551
-     */
-    public static long generateSnowFlakeId() {
-        return SNOW_FLAKE_ID_GENERATOR.nextId();
-    }
+    private static final ShortIdGenerator SHORT_ID_GENERATOR = new ShortIdGenerator();
 
     /**
      * Generate a thread-safe digit format ID

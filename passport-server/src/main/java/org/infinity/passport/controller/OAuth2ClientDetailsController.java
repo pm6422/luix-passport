@@ -63,11 +63,11 @@ public class OAuth2ClientDetailsController {
     public ResponseEntity<Void> create(
             @ApiParam(value = "单点登录客户端", required = true) @Valid @RequestBody MongoOAuth2ClientDetails domain) {
         log.debug("REST create oauth client detail: {}", domain);
-        domain.setClientId(StringUtils.defaultIfEmpty(domain.getClientId(), "" + IdGenerator.generateSnowFlakeId()));
+        domain.setClientId(StringUtils.defaultIfEmpty(domain.getClientId(), "" + IdGenerator.generateTimestampId()));
         oAuth2ClientDetailsRepository.findById(domain.getClientId()).ifPresent((existingEntity) -> {
             throw new DuplicationException(ImmutableMap.of("clientId", domain.getClientId()));
         });
-        domain.setRawClientSecret(StringUtils.defaultIfEmpty(domain.getClientSecret(), "" + IdGenerator.generateSnowFlakeId()));
+        domain.setRawClientSecret(StringUtils.defaultIfEmpty(domain.getClientSecret(), "" + IdGenerator.generateTimestampId()));
         domain.setClientSecret(passwordEncoder.encode(domain.getRawClientSecret()));
         oAuth2ClientDetailsRepository.save(domain);
         return ResponseEntity.status(HttpStatus.CREATED)
