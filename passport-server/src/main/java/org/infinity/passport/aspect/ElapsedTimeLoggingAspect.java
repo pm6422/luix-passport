@@ -86,13 +86,13 @@ public class ElapsedTimeLoggingAspect {
     private void outputLog(ProceedingJoinPoint joinPoint, long elapsed) {
         if (elapsed > applicationProperties.getElapsedTimeLogging().getSlowExecutionThreshold()) {
             if (elapsed < SECOND) {
-                getLogger(joinPoint).warn("Found slow running method {}() over {}ms",
+                getLogger(joinPoint).warn("Found long running method {}() in {}ms",
                         joinPoint.getSignature().getName(), elapsed);
             } else if (elapsed < MINUTE) {
-                getLogger(joinPoint).warn("Found slow running method {}() over {}s",
+                getLogger(joinPoint).warn("Found long running method {}() in {}s",
                         joinPoint.getSignature().getName(), elapsed / 1000);
             } else {
-                getLogger(joinPoint).warn("Found slow running method {}() over {}m",
+                getLogger(joinPoint).warn("Found long running method {}() in {}m",
                         joinPoint.getSignature().getName(), elapsed / (1000 * 60));
             }
         }
