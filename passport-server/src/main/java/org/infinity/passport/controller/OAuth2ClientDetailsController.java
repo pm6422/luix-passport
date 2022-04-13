@@ -1,6 +1,7 @@
 package org.infinity.passport.controller;
 
 import com.google.common.collect.ImmutableMap;
+import com.luixtech.uidgenerator.core.id.IdGenerator;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -10,7 +11,6 @@ import org.infinity.passport.domain.MongoOAuth2ClientDetails;
 import org.infinity.passport.exception.DuplicationException;
 import org.infinity.passport.exception.DataNotFoundException;
 import org.infinity.passport.repository.OAuth2ClientDetailsRepository;
-import org.infinity.passport.utils.id.IdGenerator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;

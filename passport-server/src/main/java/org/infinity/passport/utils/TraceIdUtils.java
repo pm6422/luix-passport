@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 import java.util.Optional;
 
-import static org.infinity.passport.utils.id.IdGenerator.generateTimestampId;
+import static com.luixtech.uidgenerator.core.id.IdGenerator.generateTraceId;
 
 /**
  * https://www.toutiao.com/i6807750667449401869/
@@ -49,10 +49,6 @@ public class TraceIdUtils {
             MDC.setContextMap(context);
         }
         putTraceIdIfAbsent();
-    }
-
-    private static String generateTraceId() {
-        return "T" + generateTimestampId();
     }
 
     private static void putTraceIdIfAbsent() {
