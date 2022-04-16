@@ -8,24 +8,6 @@ import java.util.Enumeration;
 import java.util.Objects;
 
 public abstract class NetworkUtils {
-    /**
-     * Intranet IP
-     */
-    public static final String INTRANET_IP = getIntranetIp();
-
-    /**
-     * Get intranet IP
-     *
-     * @return intranet IP
-     */
-    private static String getIntranetIp() {
-        try {
-            return InetAddress.getLocalHost().getHostAddress();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public static String getRequestUrl(HttpServletRequest request) {
         Objects.requireNonNull(request);
 

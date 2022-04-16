@@ -1,6 +1,7 @@
 package org.infinity.passport.controller;
 
 import com.github.cloudyrock.mongock.runner.core.executor.MongockRunnerBase;
+import com.luixtech.utilities.network.AddressUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -104,7 +105,7 @@ public class SystemController {
     @GetMapping("/api/systems/intranet-ip")
     @Secured(Authority.DEVELOPER)
     public ResponseEntity<String> getIntranetIp() {
-        return ResponseEntity.ok(NetworkUtils.INTRANET_IP);
+        return ResponseEntity.ok(AddressUtils.getIntranetIp());
     }
 
     @GetMapping("/open-api/systems/reset-database")

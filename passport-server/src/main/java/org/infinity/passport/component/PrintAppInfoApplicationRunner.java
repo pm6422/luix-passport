@@ -1,9 +1,9 @@
 package org.infinity.passport.component;
 
+import com.luixtech.utilities.network.AddressUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.infinity.passport.utils.NetworkUtils;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.env.Environment;
@@ -32,7 +32,7 @@ public class PrintAppInfoApplicationRunner implements ApplicationRunner {
                 env.getProperty("server.port"),
                 StringUtils.defaultString(env.getProperty("server.servlet.context-path")),
                 "http",
-                NetworkUtils.INTRANET_IP,
+                AddressUtils.getIntranetIp(),
                 env.getProperty("server.port"),
                 StringUtils.defaultString(env.getProperty("server.servlet.context-path")),
                 org.springframework.util.StringUtils.arrayToCommaDelimitedString(env.getActiveProfiles()),
