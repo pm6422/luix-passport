@@ -83,7 +83,7 @@ spring:
             thread-name-prefix: global-async-task-
             pool:
                 core-size: 5
-                max-size: 32 # 生产环境CPU是32线程
+                max-size: 32
                 queue-capacity: 1000
         scheduling:
             thread-name-prefix: global-scheduling-
