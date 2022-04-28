@@ -17,7 +17,19 @@ management: # Management http server configuration, used by ManagementServerProp
         web:
             base-path: /management
             exposure: # Refer to https://docs.spring.io/spring-boot/docs/2.5.5/reference/html/application-properties.html#application-properties.actuator
-                include: ['configprops', 'env', 'health', 'beans', 'mappings', 'httptrace', 'shutdown', 'auditevents', 'scheduledtasks', 'loggers', 'prometheus', 'threaddump']
+                include:
+                    - configprops
+                    - env
+                    - health
+                    - beans
+                    - mappings
+                    - httptrace
+                    - shutdown
+                    - auditevents
+                    - scheduledtasks
+                    - loggers
+                    - prometheus
+                    - threaddump
     endpoint:
         health: # used by HealthEndpointProperties, Note: it will show health details if it has the access token by Ajax
             enabled: true
