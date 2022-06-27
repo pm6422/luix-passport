@@ -8,7 +8,6 @@ import org.infinity.passport.domain.AdminMenu;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.AuthorityAdminMenu;
 import org.infinity.passport.dto.AdminAuthorityMenusDTO;
-import org.infinity.passport.dto.AdminMenuTreeDTO;
 import org.infinity.passport.repository.AdminMenuRepository;
 import org.infinity.passport.repository.AuthorityAdminMenuRepository;
 import org.infinity.passport.service.AdminMenuService;
@@ -47,10 +46,10 @@ public class AuthorityAdminMenuController {
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/authority-admin-menus")
     @Secured({Authority.ADMIN})
-    public ResponseEntity<List<AdminMenuTreeDTO>> findAuthorityMenus(
+    public ResponseEntity<List<AdminMenu>> findAuthorityMenus(
             @ApiParam(value = "应用名称", required = true) @RequestParam(value = "appName") String appName,
             @ApiParam(value = "权限名称", required = true) @RequestParam(value = "authorityName") String authorityName) {
-        List<AdminMenuTreeDTO> results = adminMenuService.getAuthorityMenus(appName, authorityName);
+        List<AdminMenu> results = adminMenuService.getAuthorityMenus(appName, authorityName);
         return ResponseEntity.ok(results);
     }
 
@@ -92,9 +91,9 @@ public class AuthorityAdminMenuController {
     @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
     @GetMapping("/api/authority-admin-menus/user-menus")
     @Secured({Authority.USER})
-    public ResponseEntity<List<AdminMenuTreeDTO>> findUserAuthorityMenus(
+    public ResponseEntity<List<AdminMenu>> findUserAuthorityMenus(
             @ApiParam(value = "应用名称", required = true) @RequestParam(value = "appName") String appName) {
-        List<AdminMenuTreeDTO> results = adminMenuService.getUserAuthorityMenus(appName);
+        List<AdminMenu> results = adminMenuService.getUserAuthorityMenus(appName);
         return ResponseEntity.ok(results);
     }
 }

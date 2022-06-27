@@ -2,7 +2,6 @@ package org.infinity.passport.service.impl;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.infinity.passport.domain.AdminMenu;
-import org.infinity.passport.dto.AdminMenuTreeDTO;
 import org.infinity.passport.exception.DataNotFoundException;
 import org.infinity.passport.repository.AdminMenuRepository;
 import org.infinity.passport.service.AdminMenuService;
@@ -52,7 +51,7 @@ public class AdminMenuServiceImpl implements AdminMenuService {
     }
 
     @Override
-    public List<AdminMenuTreeDTO> getUserAuthorityMenus(String appName) {
+    public List<AdminMenu> getUserAuthorityMenus(String appName) {
         Set<String> adminMenuIds = getAdminMenuIds(getEnabledUserAuthorities());
         if (CollectionUtils.isEmpty(adminMenuIds)) {
             return Collections.emptyList();
@@ -62,7 +61,7 @@ public class AdminMenuServiceImpl implements AdminMenuService {
     }
 
     @Override
-    public List<AdminMenuTreeDTO> getAuthorityMenus(String appName, String authorityName) {
+    public List<AdminMenu> getAuthorityMenus(String appName, String authorityName) {
         Set<String> authorityAdminMenuIds = getAdminMenuIds(Collections.singletonList(authorityName));
         if (CollectionUtils.isEmpty(authorityAdminMenuIds)) {
             return Collections.emptyList();
@@ -90,20 +89,18 @@ public class AdminMenuServiceImpl implements AdminMenuService {
         return authorityAdminMenuService.findAdminMenuIds(authorityNames);
     }
 
-    private List<AdminMenuTreeDTO> convertToTree(List<AdminMenu> menuList) {
-        return convertToTree(menuList, "0");
+    private List<AdminMenu> convertToTree(List<AdminMenu> menus) {
+        return convertToTree(menus, "0");
     }
 
-    private List<AdminMenuTreeDTO> convertToTree(List<AdminMenu> menuList, String parentId) {
-        return menuList.stream()
+    private List<AdminMenu> convertToTree(List<AdminMenu> menus, String parentId) {
+        return menus.stream()
                 // 过滤父节点
                 .filter(parent -> parentId.equals(parent.getParentId()))
-                // 转换
-                .map(AdminMenu::toTreeDTO)
                 // 排序
-                .sorted(Comparator.comparing(AdminMenuTreeDTO::getSequence))
+                .sorted(Comparator.comparing(AdminMenu::getSequence))
                 // 把父节点children递归赋值成为子节点
-                .peek(node -> node.setChildren(convertToTree(menuList, node.getId())))
+                .peek(node -> node.setChildren(convertToTree(menus, node.getId())))
                 .collect(Collectors.toList());
     }
 

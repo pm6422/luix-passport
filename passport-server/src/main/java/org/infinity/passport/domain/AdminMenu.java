@@ -7,14 +7,13 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.infinity.passport.domain.base.AbstractAuditableDomain;
-import org.infinity.passport.dto.AdminMenuTreeDTO;
-import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Spring Data MongoDB collection for the AdminMenu entity.
@@ -71,6 +70,10 @@ public class AdminMenu extends AbstractAuditableDomain implements Serializable {
     @Transient
     private Boolean checked;
 
+    @ApiModelProperty(value = "叶子节点")
+    @Transient
+    private List<AdminMenu> children;
+
     public AdminMenu(String appName, String code, String name, Integer level, String url,
                      Integer sequence, String parentId) {
         super();
@@ -83,10 +86,4 @@ public class AdminMenu extends AbstractAuditableDomain implements Serializable {
         this.parentId = parentId;
     }
 
-    public AdminMenuTreeDTO toTreeDTO() {
-        AdminMenuTreeDTO dto = new AdminMenuTreeDTO();
-        BeanCopier beanCopier = BeanCopier.create(AdminMenu.class, AdminMenuTreeDTO.class, false);
-        beanCopier.copy(this, dto, null);
-        return dto;
-    }
 }
