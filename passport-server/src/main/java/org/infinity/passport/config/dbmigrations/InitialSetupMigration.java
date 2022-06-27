@@ -19,7 +19,8 @@ import java.util.concurrent.TimeUnit;
 @ChangeLog(order = "01")
 public class InitialSetupMigration {
 
-    private static final String APP_NAME = "passport-server";
+    private static final String APP_NAME       = "passport-server";
+    private static final String MENU_PARENT_ID = "0";
 
     @ChangeSet(order = "01", author = "Louis", id = "addApps", runAlways = true)
     public void addApps(MongockTemplate mongoTemplate) {
@@ -123,7 +124,7 @@ public class InitialSetupMigration {
     @ChangeSet(order = "04", author = "Louis", id = "addAuthorityAdminMenu", runAlways = true)
     public void addAuthorityAdminMenu(MongockTemplate mongoTemplate) {
 
-        AdminMenu userAuthority = new AdminMenu(APP_NAME, "user-authority", "用户权限", 1, "user-authority", 100, null);
+        AdminMenu userAuthority = new AdminMenu(APP_NAME, "user-authority", "用户权限", 1, "user-authority", 100, MENU_PARENT_ID);
         mongoTemplate.save(userAuthority);
 
         AdminMenu authorityList = new AdminMenu(APP_NAME, "authority-list", "权限", 2, "user-authority.authority-list",
@@ -134,14 +135,14 @@ public class InitialSetupMigration {
                 userAuthority.getId());
         mongoTemplate.save(userList);
 
-        AdminMenu app = new AdminMenu(APP_NAME, "app", "应用系统", 1, "app", 200, null);
+        AdminMenu app = new AdminMenu(APP_NAME, "app", "应用系统", 1, "app", 200, MENU_PARENT_ID);
         mongoTemplate.save(app);
 
         AdminMenu appList = new AdminMenu(APP_NAME, "app-list", "应用", 2, "app.app-list", 201, app.getId());
         mongoTemplate.save(appList);
 
         AdminMenu adminMenuAuthority = new AdminMenu(APP_NAME, "admin-menu-authority", "菜单权限", 1,
-                "admin-menu-authority", 300, null);
+                "admin-menu-authority", 300, MENU_PARENT_ID);
         mongoTemplate.save(adminMenuAuthority);
 
         AdminMenu adminMenuList = new AdminMenu(APP_NAME, "admin-menu-list", "管理菜单", 2,
@@ -152,7 +153,7 @@ public class InitialSetupMigration {
                 "admin-menu-authority.authority-admin-menu", 302, adminMenuAuthority.getId());
         mongoTemplate.save(authorityAdminMenu);
 
-        AdminMenu security = new AdminMenu(APP_NAME, "security", "安全信息", 1, "security", 400, null);
+        AdminMenu security = new AdminMenu(APP_NAME, "security", "安全信息", 1, "security", 400, MENU_PARENT_ID);
         mongoTemplate.save(security);
 
         AdminMenu oAuth2ClientDetails = new AdminMenu(APP_NAME, "oauth2-client-list", "单点登录客户端", 2,

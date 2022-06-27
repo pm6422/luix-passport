@@ -20,6 +20,8 @@ public class AdminMenuTreeDTO implements Serializable {
     private transient    Integer                sequence;
     @ApiModelProperty("是否选中")
     private              Boolean                checked;
+    @ApiModelProperty("父菜单ID")
+    private              String                 parentId;
     @ApiModelProperty(value = "叶子节点")
     private              List<AdminMenuTreeDTO> children;
 }
