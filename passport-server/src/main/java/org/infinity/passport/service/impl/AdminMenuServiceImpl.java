@@ -95,9 +95,9 @@ public class AdminMenuServiceImpl implements AdminMenuService {
 
     private List<AdminMenu> convertToTree(List<AdminMenu> menus, String parentId) {
         return menus.stream()
-                // 过滤父节点
+                // filter by parentId
                 .filter(parent -> parentId.equals(parent.getParentId()))
-                // 排序
+                // sort by order
                 .sorted(Comparator.comparing(AdminMenu::getSequence))
                 // 把父节点children递归赋值成为子节点
                 .peek(node -> node.setChildren(convertToTree(menus, node.getId())))
