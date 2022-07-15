@@ -1,9 +1,10 @@
 package org.infinity.passport.config.dbmigrations;//package org.infinity.passport.setup;
 
-import com.github.cloudyrock.mongock.ChangeLog;
-import com.github.cloudyrock.mongock.ChangeSet;
-import com.github.cloudyrock.mongock.driver.mongodb.springdata.v3.decorator.impl.MongockTemplate;
+import io.mongock.api.annotations.ChangeUnit;
+import io.mongock.api.annotations.Execution;
+import io.mongock.api.annotations.RollbackExecution;
 import org.infinity.passport.domain.*;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,20 +17,37 @@ import java.util.concurrent.TimeUnit;
 /**
  * Creates the initial database
  */
-@ChangeLog(order = "01")
+@ChangeUnit(id = "InitialSetupMigration", order = "01")
 public class InitialSetupMigration {
 
     private static final String APP_NAME       = "passport-server";
     private static final String MENU_PARENT_ID = "0";
+    private final MongoTemplate mongoTemplate;
 
-    @ChangeSet(order = "01", author = "Louis", id = "addApps", runAlways = true)
-    public void addApps(MongockTemplate mongoTemplate) {
+    public InitialSetupMigration(MongoTemplate mongoTemplate) {
+        this.mongoTemplate = mongoTemplate;
+    }
+
+    @Execution
+    public void execute() {
+        addApps();
+        addAuthorities();
+        addUserAndAuthorities();
+        addAuthorityAdminMenu();
+        addOAuth2ClientDetails();
+    }
+
+    @RollbackExecution
+    public void rollback() {
+        mongoTemplate.getDb().drop();
+    }
+
+    public void addApps() {
         App app = new App(APP_NAME, true);
         mongoTemplate.save(app);
     }
 
-    @ChangeSet(order = "02", author = "Louis", id = "addAuthorities", runAlways = true)
-    public void addAuthorities(MongockTemplate mongoTemplate) {
+    public void addAuthorities() {
         mongoTemplate.save(new Authority(Authority.USER, true, true));
         mongoTemplate.save(new Authority(Authority.ADMIN, true, true));
         mongoTemplate.save(new Authority(Authority.DEVELOPER, true, true));
@@ -41,8 +59,7 @@ public class InitialSetupMigration {
         mongoTemplate.save(new AppAuthority(APP_NAME, Authority.ANONYMOUS));
     }
 
-    @ChangeSet(order = "03", author = "Louis", id = "addUserAndAuthorities", runAlways = true)
-    public void addUserAndAuthorities(MongockTemplate mongoTemplate) {
+    public void addUserAndAuthorities() {
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         // Creates 'user' user and corresponding authorities
         User userRoleUser = new User();
@@ -121,9 +138,7 @@ public class InitialSetupMigration {
         mongoTemplate.save(new UserAuthority(developerRoleUser.getId(), Authority.DEVELOPER));
     }
 
-    @ChangeSet(order = "04", author = "Louis", id = "addAuthorityAdminMenu", runAlways = true)
-    public void addAuthorityAdminMenu(MongockTemplate mongoTemplate) {
-
+    public void addAuthorityAdminMenu() {
         AdminMenu userAuthority = new AdminMenu(APP_NAME, "user-authority", "用户权限", 1, "user-authority", 100, MENU_PARENT_ID);
         mongoTemplate.save(userAuthority);
 
@@ -200,8 +215,7 @@ public class InitialSetupMigration {
         mongoTemplate.save(AuthorityAdminMenu.of(Authority.ADMIN, oAuth2ApprovalDetails.getId()));
     }
 
-    @ChangeSet(order = "05", author = "Louis", id = "addOAuth2ClientDetails", runAlways = true)
-    public void addOAuth2ClientDetails(MongockTemplate mongoTemplate) {
+    public void addOAuth2ClientDetails() {
         MongoOAuth2ClientDetails oAuth2ClientDetails = new MongoOAuth2ClientDetails();
         oAuth2ClientDetails.setClientId(MongoOAuth2ClientDetails.INTERNAL_CLIENT_ID);
         oAuth2ClientDetails.setRawClientSecret(MongoOAuth2ClientDetails.INTERNAL_RAW_CLIENT_SECRET);
