@@ -4,7 +4,7 @@
 # This configuration will be overridden by the Spring profile you use,
 # for example application-dev.yml if you use the "dev" profile.
 # Full reference is available at:
-# https://docs.spring.io/spring-boot/docs/2.5.5/reference/html/application-properties.html#application-properties
+# https://docs.spring.io/spring-boot/docs/2.7.1/reference/html/application-properties.html#application-properties
 # ===================================================================
 app:
     id: passport-server
@@ -16,7 +16,7 @@ management: # Management http server configuration, used by ManagementServerProp
     endpoints:
         web:
             base-path: /management
-            exposure: # Refer to https://docs.spring.io/spring-boot/docs/2.5.5/reference/html/application-properties.html#application-properties.actuator
+            exposure: # Refer to https://docs.spring.io/spring-boot/docs/2.7.1/reference/html/application-properties.html#application-properties.actuator
                 include:
                     - configprops
                     - env
@@ -109,6 +109,9 @@ spring:
     data:
         mongodb:
             auto-index-creation: false
+    mongodb:
+        embedded:
+            version: 4.0.0
 server:
     # It can be overridden by `--server.port` value passed in the commandline or `-Dserver.port` set in `JAVA_OPTS`
     port: 9010
@@ -127,12 +130,16 @@ logging:
 mongock:
     enabled: false
     track-ignored: true
-    change-logs-scan-package:
+    migration-scan-package:
         - ${app.package}.config.dbmigrations
     mongo-db:
         read-concern: local
         write-concern:
             journal: false
+springdoc: # https://springdoc.org/#migrating-from-springfox
+    api-docs:
+        enabled: true
+    show-actuator: true
 # ===================================================================
 # Application specific properties
 # ===================================================================
@@ -149,18 +156,18 @@ application:
     http:
         cache: # Used by the CachingHttpHeadersFilter
             expired-after: 31
-    swagger:
-        enabled: true
-        api:
-            title: Passport Server API
-            description: Passport Server 接口文档
-        open-api:
-            title: Passport Server Open API
-            description: Passport Server 开放接口文档
+    api-docs:
+        api-include-pattern: /api/**
+        open-api-include-pattern: /open-api/**
+        management-include-pattern: /management/**
+        title: LUI️✘ Passport
         version: ${app.version}
+        terms-of-service-url:
         contact-name: Louis
+        contact-url:
         contact-email: louis@luixtech.com
-        host:
+        license: Unlicensed
+        license-url:
     aop-logging:
         enabled: true
         method-whitelist-mode: true

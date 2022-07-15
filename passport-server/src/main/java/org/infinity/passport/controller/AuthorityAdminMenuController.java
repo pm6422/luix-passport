@@ -1,6 +1,8 @@
 package org.infinity.passport.controller;
 
-import io.swagger.annotations.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.infinity.passport.component.HttpHeaderCreator;
@@ -22,14 +24,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
-import static javax.servlet.http.HttpServletResponse.SC_OK;
-
 /**
  * REST controller for managing the authority admin menu.
  */
 @RestController
-@Api(tags = "权限管理菜单")
+@Tag(name = "权限管理菜单")
 @Slf4j
 public class AuthorityAdminMenuController {
 
@@ -42,23 +41,21 @@ public class AuthorityAdminMenuController {
     @Resource
     private HttpHeaderCreator            httpHeaderCreator;
 
-    @ApiOperation("根据权限名称检索菜单树")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
+    @Operation(summary = "根据权限名称检索菜单树")
     @GetMapping("/api/authority-admin-menus")
     @Secured({Authority.ADMIN})
     public ResponseEntity<List<AdminMenu>> findAuthorityMenus(
-            @ApiParam(value = "应用名称", required = true) @RequestParam(value = "appName") String appName,
-            @ApiParam(value = "权限名称", required = true) @RequestParam(value = "authorityName") String authorityName) {
+            @Parameter(description = "应用名称", required = true) @RequestParam(value = "appName") String appName,
+            @Parameter(description = "权限名称", required = true) @RequestParam(value = "authorityName") String authorityName) {
         List<AdminMenu> results = adminMenuService.getAuthorityMenus(appName, authorityName);
         return ResponseEntity.ok(results);
     }
 
-    @ApiOperation("更新权限菜单")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功更新"), @ApiResponse(code = SC_BAD_REQUEST, message = "权限信息不存在")})
+    @Operation(summary = "更新权限菜单")
     @PutMapping("/api/authority-admin-menus")
     @Secured({Authority.ADMIN})
     public ResponseEntity<Void> update(
-            @ApiParam(value = "新的权限菜单信息", required = true) @Valid @RequestBody AdminAuthorityMenusDTO dto) {
+            @Parameter(description = "新的权限菜单信息", required = true) @Valid @RequestBody AdminAuthorityMenusDTO dto) {
         log.debug("REST request to update admin authority menus: {}", dto);
         // 删除当前权限下的所有菜单
         Set<String> appAdminMenuIds = adminMenuRepository.findByAppName(dto.getAppName()).stream().map(AdminMenu::getId)
@@ -77,22 +74,20 @@ public class AuthorityAdminMenuController {
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1012")).build();
     }
 
-    @ApiOperation("检索当前用户权限关联的菜单列表")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
+    @Operation(summary = "检索当前用户权限关联的菜单列表")
     @GetMapping("/api/authority-admin-menus/user-links")
     @Secured({Authority.USER})
     public ResponseEntity<List<AdminMenu>> findUserAuthorityLinks(
-            @ApiParam(value = "应用名称", required = true) @RequestParam(value = "appName") String appName) {
+            @Parameter(description = "应用名称", required = true) @RequestParam(value = "appName") String appName) {
         List<AdminMenu> results = adminMenuService.getUserAuthorityLinks(appName);
         return ResponseEntity.ok(results);
     }
 
-    @ApiOperation("检索当前用户权限关联的菜单树")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
+    @Operation(summary = "检索当前用户权限关联的菜单树")
     @GetMapping("/api/authority-admin-menus/user-menus")
     @Secured({Authority.USER})
     public ResponseEntity<List<AdminMenu>> findUserAuthorityMenus(
-            @ApiParam(value = "应用名称", required = true) @RequestParam(value = "appName") String appName) {
+            @Parameter(description = "应用名称", required = true) @RequestParam(value = "appName") String appName) {
         List<AdminMenu> results = adminMenuService.getUserAuthorityMenus(appName);
         return ResponseEntity.ok(results);
     }

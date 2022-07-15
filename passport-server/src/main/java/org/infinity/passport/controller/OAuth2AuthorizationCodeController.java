@@ -1,6 +1,8 @@
 package org.infinity.passport.controller;
 
-import io.swagger.annotations.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.infinity.passport.component.HttpHeaderCreator;
 import org.infinity.passport.domain.Authority;
@@ -18,12 +20,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.List;
 
-import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
-import static javax.servlet.http.HttpServletResponse.SC_OK;
 import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
 
 @RestController
-@Api(tags = "登录授权码")
+@Tag(name = "登录授权码")
 @Slf4j
 public class OAuth2AuthorizationCodeController {
 
@@ -41,13 +41,12 @@ public class OAuth2AuthorizationCodeController {
      * @param code                authorization code
      * @return code list
      */
-    @ApiOperation("分页检索授权码列表")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
+    @Operation(summary = "分页检索授权码列表")
     @GetMapping("/api/oauth2-authorization-codes")
     @Secured(Authority.ADMIN)
     public ResponseEntity<List<MongoOAuth2AuthorizationCode>> find(Pageable pageable,
-                                                                   @ApiParam(value = "授权码ID") @RequestParam(value = "authorizationCodeId", required = false) String authorizationCodeId,
-                                                                   @ApiParam(value = "授权码") @RequestParam(value = "code", required = false) String code) {
+                                                                   @Parameter(description = "授权码ID") @RequestParam(value = "authorizationCodeId", required = false) String authorizationCodeId,
+                                                                   @Parameter(description = "授权码") @RequestParam(value = "code", required = false) String code) {
         MongoOAuth2AuthorizationCode probe = new MongoOAuth2AuthorizationCode();
         probe.setId(authorizationCodeId);
         probe.setCode(code);
@@ -56,23 +55,19 @@ public class OAuth2AuthorizationCodeController {
         return ResponseEntity.ok().headers(headers).body(codes.getContent());
     }
 
-    @ApiOperation("根据ID检索授权码")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "授权码不存在")})
+    @Operation(summary = "根据ID检索授权码")
     @GetMapping("/api/oauth2-authorization-codes/{id}")
     @Secured({Authority.ADMIN})
     public ResponseEntity<MongoOAuth2AuthorizationCode> findById(
-            @ApiParam(value = "授权码ID", required = true) @PathVariable String id) {
+            @Parameter(description = "授权码ID", required = true) @PathVariable String id) {
         MongoOAuth2AuthorizationCode domain = oAuth2AuthorizationCodeRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
         return ResponseEntity.ok(domain);
     }
 
-    @ApiOperation(value = "根据ID删除授权码", notes = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功删除"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "授权码不存在")})
+    @Operation(summary = "根据ID删除授权码", description = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
     @DeleteMapping("/api/oauth2-authorization-codes/{id}")
     @Secured(Authority.ADMIN)
-    public ResponseEntity<Void> delete(@ApiParam(value = "授权码ID", required = true) @PathVariable String id) {
+    public ResponseEntity<Void> delete(@Parameter(description = "授权码ID", required = true) @PathVariable String id) {
         log.debug("REST request to delete oauth2 authorization code: {}", id);
         oAuth2AuthorizationCodeRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
         oAuth2AuthorizationCodeRepository.deleteById(id);

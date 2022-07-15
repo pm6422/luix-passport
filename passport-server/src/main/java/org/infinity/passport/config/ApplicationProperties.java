@@ -22,7 +22,7 @@ import java.util.List;
 @Getter
 public class ApplicationProperties {
     private final Http               http               = new Http();
-    private final Swagger            swagger            = new Swagger();
+    private final ApiDocs            apiDocs            = new ApiDocs();
     private final Metrics            metrics            = new Metrics();
     private final AopLogging         aopLogging         = new AopLogging();
     private final ElapsedTimeLogging elapsedTimeLogging = new ElapsedTimeLogging();
@@ -46,24 +46,24 @@ public class ApplicationProperties {
     }
 
     @Data
-    public static class Swagger {
-        private       boolean enabled;
-        private       String  version;
-        private       String  contactName;
-        private       String  contactEmail;
-        private       String  host;
-        private final Api     api     = new Api();
-        private final OpenApi openApi = new OpenApi();
+    public static class ApiDocs {
+        private String   apiIncludePattern        = "/api/**";
+        private String   openApiIncludePattern    = "/open-api/**";
+        private String   managementIncludePattern = "/management/**";
+        private String   title;
+        private String   description              = "API documentation";
+        private String   version;
+        private String   termsOfServiceUrl;
+        private String   contactName;
+        private String   contactUrl;
+        private String   contactEmail;
+        private String   license;
+        private String   licenseUrl;
+        private Server[] servers                  = new Server[0];
 
         @Data
-        public static class Api {
-            private String title;
-            private String description;
-        }
-
-        @Data
-        public static class OpenApi {
-            private String title;
+        public static class Server {
+            private String url;
             private String description;
         }
     }

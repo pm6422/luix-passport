@@ -2,14 +2,16 @@ package org.infinity.passport.controller;
 
 import com.google.common.collect.ImmutableMap;
 import com.luixtech.uidgenerator.core.id.IdGenerator;
-import io.swagger.annotations.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.infinity.passport.component.HttpHeaderCreator;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.MongoOAuth2ClientDetails;
-import org.infinity.passport.exception.DuplicationException;
 import org.infinity.passport.exception.DataNotFoundException;
+import org.infinity.passport.exception.DuplicationException;
 import org.infinity.passport.repository.OAuth2ClientDetailsRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -29,11 +31,10 @@ import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.List;
 
-import static javax.servlet.http.HttpServletResponse.*;
 import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
 
 @RestController
-@Api(tags = "单点登录客户端")
+@Tag(name = "单点登录客户端")
 @Slf4j
 public class OAuth2ClientDetailsController {
 
@@ -55,13 +56,11 @@ public class OAuth2ClientDetailsController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @ApiOperation("创建单点登录客户端")
-    @ApiResponses(value = {@ApiResponse(code = SC_CREATED, message = "成功创建"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "字典名已存在")})
+    @Operation(summary = "创建单点登录客户端")
     @PostMapping("/api/oauth2-clients")
     @Secured(Authority.ADMIN)
     public ResponseEntity<Void> create(
-            @ApiParam(value = "单点登录客户端", required = true) @Valid @RequestBody MongoOAuth2ClientDetails domain) {
+            @Parameter(description = "单点登录客户端", required = true) @Valid @RequestBody MongoOAuth2ClientDetails domain) {
         log.debug("REST create oauth client detail: {}", domain);
         domain.setClientId(StringUtils.defaultIfEmpty(domain.getClientId(), "" + IdGenerator.generateTimestampId()));
         oAuth2ClientDetailsRepository.findById(domain.getClientId()).ifPresent((existingEntity) -> {
@@ -75,12 +74,11 @@ public class OAuth2ClientDetailsController {
                 .build();
     }
 
-    @ApiOperation("分页检索单点登录客户端列表")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
+    @Operation(summary = "分页检索单点登录客户端列表")
     @GetMapping("/api/oauth2-clients")
     @Secured(Authority.ADMIN)
     public ResponseEntity<List<MongoOAuth2ClientDetails>> find(Pageable pageable,
-                                                               @ApiParam(value = "客户端ID") @RequestParam(value = "clientId", required = false) String clientId) {
+                                                               @Parameter(description = "客户端ID") @RequestParam(value = "clientId", required = false) String clientId) {
         Query query = Query.query(Criteria.where("clientId").is(clientId));
         long totalCount = mongoTemplate.count(query, MongoOAuth2ClientDetails.class);
         query.with(pageable);// Note: the field name
@@ -91,33 +89,27 @@ public class OAuth2ClientDetailsController {
         return ResponseEntity.ok().headers(headers).body(clientDetails.getContent());
     }
 
-    @ApiOperation("根据ID检索单点登录客户端")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "单点登录客户端不存在")})
+    @Operation(summary = "根据ID检索单点登录客户端")
     @GetMapping("/api/oauth2-clients/{id}")
     @Secured({Authority.ADMIN})
     public ResponseEntity<MongoOAuth2ClientDetails> findById(
-            @ApiParam(value = "客户端ID", required = true) @PathVariable String id) {
+            @Parameter(description = "客户端ID", required = true) @PathVariable String id) {
         MongoOAuth2ClientDetails domain = oAuth2ClientDetailsRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
         return ResponseEntity.ok(domain);
     }
 
-    @ApiOperation("检索内部单点登录客户端")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "单点登录客户端不存在")})
+    @Operation(summary = "检索内部单点登录客户端")
     @GetMapping("/open-api/oauth2-client/internal-client")
     public ResponseEntity<Pair<String, String>> findInternalClient() {
         return ResponseEntity.ok(Pair.of(MongoOAuth2ClientDetails.INTERNAL_CLIENT_ID,
                 MongoOAuth2ClientDetails.INTERNAL_RAW_CLIENT_SECRET));
     }
 
-    @ApiOperation("更新单点登录客户端")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功更新"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "单点登录客户端不存在")})
+    @Operation(summary = "更新单点登录客户端")
     @PutMapping("/api/oauth2-clients")
     @Secured(Authority.ADMIN)
     public ResponseEntity<Void> update(
-            @ApiParam(value = "新的单点登录客户端", required = true) @Valid @RequestBody MongoOAuth2ClientDetails domain) {
+            @Parameter(description = "新的单点登录客户端", required = true) @Valid @RequestBody MongoOAuth2ClientDetails domain) {
         log.debug("REST request to update oauth client detail: {}", domain);
         oAuth2ClientDetailsRepository.findById(domain.getClientId()).orElseThrow(() -> new DataNotFoundException(domain.getClientId()));
         oAuth2ClientDetailsRepository.save(domain);
@@ -127,12 +119,10 @@ public class OAuth2ClientDetailsController {
 
     }
 
-    @ApiOperation(value = "根据ID删除单点登录客户端", notes = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功删除"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "单点登录客户端不存在")})
+    @Operation(summary = "根据ID删除单点登录客户端", description = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
     @DeleteMapping("/api/oauth2-clients/{id}")
     @Secured(Authority.ADMIN)
-    public ResponseEntity<Void> delete(@ApiParam(value = "客户端ID", required = true) @PathVariable String id) {
+    public ResponseEntity<Void> delete(@Parameter(description = "客户端ID", required = true) @PathVariable String id) {
         log.debug("REST request to delete oauth client detail: {}", id);
         oAuth2ClientDetailsRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
         oAuth2ClientDetailsRepository.deleteById(id);

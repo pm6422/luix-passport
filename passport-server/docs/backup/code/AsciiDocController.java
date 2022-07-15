@@ -25,7 +25,7 @@
 // * REST controller for generating static API docs.
 // */
 //@RestController
-//@Api(tags = "接口文档")
+//@Tag(name = "接口文档")
 //public class AsciiDocController {
 //
 //    @Autowired

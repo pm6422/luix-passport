@@ -1,6 +1,6 @@
 package org.infinity.passport.domain;
 
-import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -14,7 +14,7 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import java.io.Serializable;
 import java.time.Instant;
 
-@ApiModel("刷新令牌信息")
+@Schema(description = "刷新令牌信息")
 @Document(collection = "MongoOAuth2RefreshToken")
 @Data
 @ToString(callSuper = true)

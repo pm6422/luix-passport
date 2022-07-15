@@ -1,6 +1,8 @@
 package org.infinity.passport.controller;
 
-import io.swagger.annotations.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.infinity.passport.component.HttpHeaderCreator;
@@ -22,12 +24,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.List;
 
-import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
-import static javax.servlet.http.HttpServletResponse.SC_OK;
 import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
 
 @RestController
-@Api(tags = "登录授权")
+@Tag(name = "登录授权")
 @Slf4j
 public class OAuth2ApprovalController {
 
@@ -38,14 +38,13 @@ public class OAuth2ApprovalController {
     @Resource
     private HttpHeaderCreator        httpHeaderCreator;
 
-    @ApiOperation("分页检索登录授权列表")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
+    @Operation(summary = "分页检索登录授权列表")
     @GetMapping("/api/oauth2-approvals")
     @Secured(Authority.ADMIN)
     public ResponseEntity<List<MongoOAuth2Approval>> find(Pageable pageable,
-                                                          @ApiParam(value = "授权ID") @RequestParam(value = "approvalId", required = false) String approvalId,
-                                                          @ApiParam(value = "客户端ID") @RequestParam(value = "clientId", required = false) String clientId,
-                                                          @ApiParam(value = "用户名") @RequestParam(value = "userName", required = false) String userName) {
+                                                          @Parameter(description = "授权ID") @RequestParam(value = "approvalId", required = false) String approvalId,
+                                                          @Parameter(description = "客户端ID") @RequestParam(value = "clientId", required = false) String clientId,
+                                                          @Parameter(description = "用户名") @RequestParam(value = "userName", required = false) String userName) {
         Query query = new Query();
         if (StringUtils.isNotEmpty(approvalId)) {
             query.addCriteria(Criteria.where("id").is(approvalId));
@@ -63,23 +62,19 @@ public class OAuth2ApprovalController {
         return ResponseEntity.ok().headers(headers).body(approvals.getContent());
     }
 
-    @ApiOperation("根据ID检索授权")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "授权不存在")})
+    @Operation(summary = "根据ID检索授权")
     @GetMapping("/api/oauth2-approvals/{id}")
     @Secured({Authority.ADMIN})
     public ResponseEntity<MongoOAuth2Approval> findById(
-            @ApiParam(value = "授权ID", required = true) @PathVariable String id) {
+            @Parameter(description = "授权ID", required = true) @PathVariable String id) {
         MongoOAuth2Approval domain = oAuth2ApprovalRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
         return ResponseEntity.ok(domain);
     }
 
-    @ApiOperation(value = "根据ID删除授权", notes = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功删除"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "授权不存在")})
+    @Operation(summary = "根据ID删除授权", description = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
     @DeleteMapping("/api/oauth2-approvals/{id}")
     @Secured(Authority.ADMIN)
-    public ResponseEntity<Void> delete(@ApiParam(value = "授权ID", required = true) @PathVariable String id) {
+    public ResponseEntity<Void> delete(@Parameter(description = "授权ID", required = true) @PathVariable String id) {
         log.debug("REST request to delete oauth2 approval: {}", id);
         oAuth2ApprovalRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
         oAuth2ApprovalRepository.deleteById(id);

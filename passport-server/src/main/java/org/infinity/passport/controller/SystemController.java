@@ -1,23 +1,29 @@
 package org.infinity.passport.controller;
 
-import com.github.cloudyrock.mongock.runner.core.executor.MongockRunnerBase;
 import com.luixtech.utilities.network.AddressUtils;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.mongock.api.config.MongockConfiguration;
+import io.mongock.driver.api.driver.ConnectionDriver;
+import io.mongock.driver.mongodb.springdata.v3.config.MongoDBConfiguration;
+import io.mongock.driver.mongodb.springdata.v3.config.SpringDataMongoV3Context;
+import io.mongock.runner.springboot.MongockSpringboot;
+import io.mongock.runner.springboot.RunnerSpringbootBuilder;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.infinity.passport.config.ApplicationProperties;
 import org.infinity.passport.domain.Authority;
-import org.infinity.passport.utils.NetworkUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.env.Environment;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,32 +33,41 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @RestController
-@Api(tags = "系统管理")
+@Tag(name = "系统管理")
 @Slf4j
 public class SystemController {
 
     @Resource
-    private Environment           env;
+    private Environment                          env;
     @Resource
-    private ApplicationProperties applicationProperties;
-    @Autowired(required = false)
-    private MongockRunnerBase<?>  mongockRunnerBase;
-    @Resource
-    private MongoTemplate         mongoTemplate;
-    @Resource
-    private ApplicationContext    applicationContext;
+    private ApplicationProperties                applicationProperties;
     @Value("${app.id}")
-    private String                appId;
+    private String                               appId;
     @Value("${app.version}")
-    private String                appVersion;
+    private String                               appVersion;
     @Value("${app.companyName}")
-    private String                companyName;
+    private String                               companyName;
+    @Value("${springdoc.api-docs.enabled}")
+    private boolean                              enabledApiDocs;
+    @Resource
+    private MongoTemplate                        mongoTemplate;
+    @Resource
+    private ApplicationContext                   applicationContext;
     @Autowired(required = false)
-    private BuildProperties       buildProperties;
+    private BuildProperties                      buildProperties;
+    @Resource
+    private MongockConfiguration                 mongockConfiguration;
+    @Resource
+    private ApplicationEventPublisher            applicationEventPublisher;
+    @Resource
+    private MongoDBConfiguration                 mongoDBConfiguration;
+    @Resource
+    private Optional<PlatformTransactionManager> txManagerOpt;
 
     @GetMapping(value = "app/constants.js", produces = "application/javascript")
     String getConstantsJs() {
@@ -74,8 +89,7 @@ public class SystemController {
                 "        .constant('DEBUG_INFO_ENABLED', true);\n" +
                 "})();";
 
-        return String.format(js, id, version, companyName, getRibbonProfile(),
-                applicationProperties.getSwagger().isEnabled());
+        return String.format(js, id, version, companyName, getRibbonProfile(), enabledApiDocs);
     }
 
     private String getRibbonProfile() {
@@ -90,7 +104,7 @@ public class SystemController {
         return CollectionUtils.isNotEmpty(ribbonProfiles) ? ribbonProfiles.get(0) : null;
     }
 
-    @ApiOperation("get bean")
+    @Operation(summary = "get bean")
     @GetMapping("/api/systems/bean")
     public ResponseEntity<Object> getBean(@RequestParam(value = "name") String name) {
         return ResponseEntity.ok(applicationContext.getBean(name));
@@ -108,10 +122,18 @@ public class SystemController {
         return ResponseEntity.ok(AddressUtils.getIntranetIp());
     }
 
+    @Operation(summary = "reset database")
     @GetMapping("/open-api/systems/reset-database")
     public String resetDatabase() {
         mongoTemplate.getDb().drop();
-        mongockRunnerBase.execute();
-        return "Reset successfully.";
+        ConnectionDriver connectionDriver = new SpringDataMongoV3Context()
+                .connectionDriver(mongoTemplate, mongockConfiguration, mongoDBConfiguration, txManagerOpt);
+        RunnerSpringbootBuilder runnerSpringbootBuilder = MongockSpringboot.builder()
+                .setDriver(connectionDriver)
+                .setConfig(mongockConfiguration)
+                .setSpringContext(applicationContext)
+                .setEventPublisher(applicationEventPublisher);
+        runnerSpringbootBuilder.buildRunner().execute();
+        return "Reset database successfully.";
     }
 }

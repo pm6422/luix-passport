@@ -1,28 +1,27 @@
 package org.infinity.passport.dto;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
 
-@ApiModel("管理系统菜单列表DTO")
+@Schema(description = "管理系统菜单列表DTO")
 @Data
 public class AdminAuthorityMenusDTO implements Serializable {
 
     private static final long serialVersionUID = -3119877507448443380L;
 
-    @ApiModelProperty("应用名称")
+    @Schema(description = "应用名称")
     @NotNull
     private String appName;
 
-    @ApiModelProperty("权限名")
+    @Schema(description = "权限名")
     @NotNull
     private String authorityName;
 
-    @ApiModelProperty("管理系统菜单IDs")
+    @Schema(description = "管理系统菜单IDs")
     private List<String> adminMenuIds;
 
 }

@@ -1,7 +1,7 @@
 package org.infinity.passport.controller;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.User;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 
 @RestController
-@Api(tags = "测试")
+@Tag(name = "测试")
 @Slf4j
 public class TestController {
 
@@ -23,7 +23,7 @@ public class TestController {
     @Resource
     private MailService    mailService;
 
-    @ApiOperation("测试审计功能")
+    @Operation(description = "测试审计功能")
     @GetMapping("/api/tests/user-audit")
     @Secured(Authority.DEVELOPER)
     public void testAudit() {
@@ -52,7 +52,7 @@ public class TestController {
         userRepository.deleteById(user1.getId());
     }
 
-    @ApiOperation("测试发送邮件功能")
+    @Operation(summary = "测试发送邮件功能")
     @GetMapping("/api/tests/email")
     @Secured(Authority.DEVELOPER)
     public void testEmail() {

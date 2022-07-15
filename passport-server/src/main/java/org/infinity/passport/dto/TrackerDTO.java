@@ -1,6 +1,6 @@
 package org.infinity.passport.dto;
 
-import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.time.Instant;
@@ -8,7 +8,7 @@ import java.time.Instant;
 /**
  * DTO for storing a user's activity.
  */
-@ApiModel("用户追踪")
+@Schema(description = "用户追踪")
 @Data
 public class TrackerDTO {
 

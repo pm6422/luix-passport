@@ -1,7 +1,6 @@
 package org.infinity.passport.domain;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -17,7 +16,7 @@ import java.io.Serializable;
 /**
  * Spring Data MongoDB collection for the UserProfilePhoto entity.
  */
-@ApiModel("用户照片")
+@Schema(description = "用户照片")
 @Document(collection = "UserProfilePhoto")
 @Data
 @NoArgsConstructor
@@ -27,12 +26,12 @@ public class UserProfilePhoto extends AbstractAuditableDomain implements Seriali
 
     private static final long serialVersionUID = -8375847941374800940L;
 
-    @ApiModelProperty(value = "用户ID", required = true)
+    @Schema(description = "用户ID", required = true)
     @NotNull
     @Indexed(unique = true)
     private String userId;
 
-    @ApiModelProperty(value = "用户头像", required = true)
+    @Schema(description = "用户头像", required = true)
     @NotNull
     private Binary profilePhoto;
 

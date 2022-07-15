@@ -9,19 +9,14 @@
     </parent>
     <groupId>org.infinity</groupId>
     <artifactId>passport-client</artifactId>
-    <version>1.0.0</version>
+    <version>2.0.0</version>
     <packaging>war</packaging>
     <name>${project.artifactId}</name>
-    <!--
-        *************************************************************************************
-        Properties definition
-        *************************************************************************************
-    -->
     <properties>
         <java.version>1.8</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
-        <maven.version>3.0.0</maven.version>
+        <maven.version>3.2.1</maven.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -34,11 +29,6 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-    <!--
-        *************************************************************************************
-        Dependencies definition
-        *************************************************************************************
-    -->
     <dependencies>
         <dependency>
             <groupId>commons-io</groupId>
@@ -93,11 +83,6 @@
             <artifactId>spring-security-oauth2-client</artifactId>
         </dependency>
     </dependencies>
-    <!--
-        *************************************************************************************
-        Plugins definition
-        *************************************************************************************
-    -->
     <build>
         <defaultGoal>spring-boot:run</defaultGoal>
         <plugins>
@@ -123,35 +108,7 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-enforcer-plugin</artifactId>
-                <version>3.0.0-M3</version>
-                <configuration>
-                    <rules>
-                        <requireMavenVersion>
-                            <message>You are running an older version of Maven. JHipster requires at least Maven ${maven.version}</message>
-                            <version>[${maven.version},)</version>
-                        </requireMavenVersion>
-                        <requireJavaVersion>
-                            <!-- Until it supports JDK 8 -->
-                            <message>You are running an incompatible version of Java. Application requires JDK
-                                ${java.version}</message>
-                            <version>[1.8,1.9)</version>
-                        </requireJavaVersion>
-                    </rules>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>enforce-versions</id>
-                        <goals>
-                            <goal>enforce</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
-                <version>${maven-resources-plugin.version}</version>
                 <executions>
                     <execution>
                         <id>default-resources</id>
@@ -193,7 +150,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring-boot.version}</version>
                 <configuration>
                     <fork>true</fork>
                     <!--
@@ -220,11 +176,6 @@
             </plugin>
         </plugins>
     </build>
-    <!--
-        *************************************************************************************
-        Profile
-        *************************************************************************************
-    -->
     <profiles>
         <profile>
             <id>test</id>

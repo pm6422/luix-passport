@@ -1,6 +1,6 @@
 package org.infinity.passport.domain;
 
-import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -13,7 +13,7 @@ import java.io.Serializable;
 /**
  * Spring Data MongoDB collection for the User entity.
  */
-@ApiModel("用户")
+@Schema(description = "用户")
 @Document(collection = "User")
 @Data
 @EqualsAndHashCode(callSuper = true)

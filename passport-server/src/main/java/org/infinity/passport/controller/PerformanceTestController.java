@@ -1,6 +1,6 @@
 package org.infinity.passport.controller;
 
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 @RestController
-@Api(tags = "性能测试")
+@Tag(name = "性能测试")
 @Slf4j
 public class PerformanceTestController {
 

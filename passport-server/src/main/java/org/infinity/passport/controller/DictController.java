@@ -1,13 +1,16 @@
 package org.infinity.passport.controller;
 
 import com.google.common.collect.ImmutableMap;
-import io.swagger.annotations.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.infinity.passport.component.HttpHeaderCreator;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.Dict;
-import org.infinity.passport.exception.DuplicationException;
 import org.infinity.passport.exception.DataNotFoundException;
+import org.infinity.passport.exception.DuplicationException;
 import org.infinity.passport.repository.DictRepository;
 import org.infinity.passport.service.DictService;
 import org.springframework.data.domain.Page;
@@ -22,11 +25,10 @@ import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.List;
 
-import static javax.servlet.http.HttpServletResponse.*;
 import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
 
 @RestController
-@Api(tags = "数据字典")
+@Tag(name = "数据字典")
 @Slf4j
 public class DictController {
 
@@ -37,12 +39,10 @@ public class DictController {
     @Resource
     private HttpHeaderCreator httpHeaderCreator;
 
-    @ApiOperation("创建数据字典")
-    @ApiResponses(value = {@ApiResponse(code = SC_CREATED, message = "成功创建"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "字典名已存在")})
+    @Operation(summary = "创建数据字典")
     @PostMapping("/api/dicts")
     @Secured(Authority.DEVELOPER)
-    public ResponseEntity<Void> create(@ApiParam(value = "数据字典", required = true) @Valid @RequestBody Dict domain) {
+    public ResponseEntity<Void> create(@Parameter(description = "数据字典", required = true) @Valid @RequestBody Dict domain) {
         log.debug("REST request to create dict: {}", domain);
         dictRepository.findOneByDictCode(domain.getDictCode()).ifPresent((existingEntity) -> {
             throw new DuplicationException(ImmutableMap.of("dictCode", domain.getDictCode()));
@@ -52,46 +52,39 @@ public class DictController {
                 .headers(httpHeaderCreator.createSuccessHeader("SM1001", domain.getDictName())).build();
     }
 
-    @ApiOperation("分页检索数据字典列表")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索")})
+    @Operation(summary = "分页检索数据字典列表")
     @GetMapping("/api/dicts")
     @Secured(Authority.DEVELOPER)
     public ResponseEntity<List<Dict>> find(Pageable pageable,
-                                           @ApiParam(value = "字典名称") @RequestParam(value = "dictName", required = false) String dictName,
-                                           @ApiParam(value = "是否可用,null代表全部", allowableValues = "false,true,null") @RequestParam(value = "enabled", required = false) Boolean enabled) {
+                                           @Parameter(description = "字典名称") @RequestParam(value = "dictName", required = false) String dictName,
+                                           @Parameter(description = "是否可用,null代表全部", schema = @Schema(allowableValues = "false,true,null")) @RequestParam(value = "enabled", required = false) Boolean enabled) {
         Page<Dict> dicts = dictService.find(pageable, dictName, enabled);
         HttpHeaders headers = generatePageHeaders(dicts);
         return ResponseEntity.ok().headers(headers).body(dicts.getContent());
     }
 
-    @ApiOperation("根据ID检索数据字典")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功检索"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "数据字典不存在")})
+    @Operation(summary = "根据ID检索数据字典")
     @GetMapping("/api/dicts/{id}")
     @Secured({Authority.DEVELOPER, Authority.USER})
-    public ResponseEntity<Dict> findById(@ApiParam(value = "字典编号", required = true) @PathVariable String id) {
+    public ResponseEntity<Dict> findById(@Parameter(description = "字典编号", required = true) @PathVariable String id) {
         Dict domain = dictRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
         return ResponseEntity.ok(domain);
     }
 
-    @ApiOperation("更新数据字典")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功更新"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "数据字典不存在")})
+    @Operation(summary = "更新数据字典")
     @PutMapping("/api/dicts")
     @Secured(Authority.DEVELOPER)
-    public ResponseEntity<Void> update(@ApiParam(value = "新的数据字典", required = true) @Valid @RequestBody Dict domain) {
+    public ResponseEntity<Void> update(@Parameter(description = "新的数据字典", required = true) @Valid @RequestBody Dict domain) {
         log.debug("REST request to update dict: {}", domain);
         dictRepository.findById(domain.getId()).orElseThrow(() -> new DataNotFoundException(domain.getId()));
         dictRepository.save(domain);
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1002", domain.getDictName())).build();
     }
 
-    @ApiOperation(value = "根据ID删除数据字典", notes = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
-    @ApiResponses(value = {@ApiResponse(code = SC_OK, message = "成功删除"),
-            @ApiResponse(code = SC_BAD_REQUEST, message = "数据字典不存在")})
+    @Operation(summary = "根据ID删除数据字典", description = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
     @DeleteMapping("/api/dicts/{id}")
     @Secured(Authority.DEVELOPER)
-    public ResponseEntity<Void> delete(@ApiParam(value = "字典编号", required = true) @PathVariable String id) {
+    public ResponseEntity<Void> delete(@Parameter(description = "字典编号", required = true) @PathVariable String id) {
         log.debug("REST request to delete dict: {}", id);
         Dict dict = dictRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
         dictRepository.deleteById(id);

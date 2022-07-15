@@ -1,7 +1,6 @@
 package org.infinity.passport.domain;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -15,7 +14,7 @@ import java.io.Serializable;
 /**
  * Spring Data MongoDB collection for the UserAuthority entity.
  */
-@ApiModel("用户权限")
+@Schema(description = "用户权限")
 @Document(collection = "UserAuthority")
 @Data
 @ToString(callSuper = true)
@@ -24,12 +23,12 @@ public class UserAuthority extends AbstractAuditableDomain implements Serializab
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "用户ID", required = true)
+    @Schema(description = "用户ID", required = true)
     @NotNull
     @Indexed
     private String userId;
 
-    @ApiModelProperty(value = "权限名称", required = true)
+    @Schema(description = "权限名称", required = true)
     @NotNull
     private String authorityName;
 

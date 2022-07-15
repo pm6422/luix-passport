@@ -1,7 +1,6 @@
 package org.infinity.passport.domain;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -18,7 +17,7 @@ import java.util.List;
 /**
  * Spring Data MongoDB collection for the AdminMenu entity.
  */
-@ApiModel("管理系统菜单")
+@Schema(description = "管理系统菜单")
 @Document(collection = "AdminMenu")
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -30,47 +29,47 @@ public class AdminMenu extends AbstractAuditableDomain implements Serializable {
     public static final  String FIELD_LEVEL      = "level";
     public static final  String FIELD_SEQUENCE   = "sequence";
 
-    @ApiModelProperty(value = "应用名称", required = true)
+    @Schema(description = "应用名称", required = true)
     @NotNull
     @Size(min = 1, max = 20)
     @Indexed
     private String appName;
 
-    @ApiModelProperty(value = "代码", required = true)
+    @Schema(description = "代码", required = true)
     @NotNull
     @Size(min = 1, max = 30)
     @Pattern(regexp = "^[a-z0-9-]+$", message = "{EP5901}")
     @Indexed(unique = true)
     private String code;
 
-    @ApiModelProperty(value = "名称", required = true)
+    @Schema(description = "名称", required = true)
     @NotNull
     @Size(min = 1, max = 30)
     private String name;
 
-    @ApiModelProperty(value = "层级", required = true)
+    @Schema(description = "层级", required = true)
     @Min(1)
     @Max(9)
     private Integer level;
 
-    @ApiModelProperty(value = "链接地址", required = true)
+    @Schema(description = "链接地址", required = true)
     @NotNull
     @Size(min = 3, max = 200)
     private String url;
 
-    @ApiModelProperty(value = "排序序号", required = true)
+    @Schema(description = "排序序号", required = true)
     @Min(1)
     @Max(999)
     private Integer sequence;
 
-    @ApiModelProperty("父菜单ID")
+    @Schema(description = "父菜单ID")
     private String parentId;
 
-    @ApiModelProperty("是否选中")
+    @Schema(description = "是否选中")
     @Transient
     private Boolean checked;
 
-    @ApiModelProperty(value = "叶子节点")
+    @Schema(description = "叶子节点")
     @Transient
     private List<AdminMenu> children;
 

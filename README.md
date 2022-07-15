@@ -57,7 +57,7 @@ mvn
 - Maven 3.0+
 
 ## 主要依赖(Major dependencies)
-- Spring Boot 2.5.5
+- Spring Boot 2.7.1
 - Swagger and Springfox
 - Spring boot starter actuator
 - Spring boot starter data mongodb

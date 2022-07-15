@@ -1,6 +1,6 @@
 package org.infinity.passport.config;
 
-import com.github.cloudyrock.spring.v5.EnableMongock;
+import io.mongock.runner.springboot.EnableMongock;
 import lombok.extern.slf4j.Slf4j;
 import org.infinity.passport.config.oauth2.OAuth2AccessTokenReadConverter;
 import org.infinity.passport.config.oauth2.OAuth2AuthenticationReadConverter;
@@ -58,7 +58,7 @@ public class MongoConfiguration {
 
     @Configuration
     @EnableMongock
-    @ConditionalOnProperty(prefix = "mongock", value = "enabled", havingValue = "true")
+    @ConditionalOnProperty("mongock.enabled")
     protected static class EmbeddedDatabaseConfiguration {
 
     }

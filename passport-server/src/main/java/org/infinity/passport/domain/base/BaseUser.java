@@ -1,7 +1,7 @@
 package org.infinity.passport.domain.base;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -28,31 +28,31 @@ public class BaseUser extends AbstractAuditableDomain implements Serializable {
     public static final  String FIELD_EMAIL      = "email";
     public static final  String FIELD_MOBILE_NO  = "mobileNo";
 
-    @ApiModelProperty(value = "用户名", required = true)
+    @Schema(description = "用户名", required = true)
     @NotNull
     @Pattern(regexp = "^[a-z0-9-]+$", message = "{EP5901}")
     @Size(min = 3, max = 20)
     @Indexed(unique = true)
     private String userName;
 
-    @ApiModelProperty(value = "名", required = true)
+    @Schema(description = "名", required = true)
     @NotNull
     @Size(min = 1, max = 20)
     private String firstName;
 
-    @ApiModelProperty(value = "姓", required = true)
+    @Schema(description = "姓", required = true)
     @NotNull
     @Size(min = 1, max = 20)
     private String lastName;
 
-    @ApiModelProperty(value = "电子邮件", required = true)
+    @Schema(description = "电子邮件", required = true)
     @NotNull
     @Email
     @Size(min = 3, max = 30)
     @Indexed
     private String email;
 
-    @ApiModelProperty(value = "手机号", required = true)
+    @Schema(description = "手机号", required = true)
     @NotNull
     @Pattern(regexp = "^(13[0-9]|15[012356789]|17[03678]|18[0-9]|14[57])[0-9]{8}$", message = "{EP5951}")
     @Size(min = 11, max = 13)
@@ -62,30 +62,30 @@ public class BaseUser extends AbstractAuditableDomain implements Serializable {
     @JsonIgnore
     private String passwordHash;
 
-    @ApiModelProperty(value = "是否激活")
+    @Schema(description = "是否激活")
     private Boolean activated;
 
-    @ApiModelProperty(value = "激活密钥")
+    @Schema(description = "激活密钥")
     @JsonIgnore
     private String activationKey;
 
-    @ApiModelProperty(value = "重置密钥")
+    @Schema(description = "重置密钥")
     @JsonIgnore
     private String resetKey;
 
-    @ApiModelProperty(value = "重置密码时间")
+    @Schema(description = "重置密码时间")
     private Instant resetTime;
 
-    @ApiModelProperty(value = "是否包含个人头像")
+    @Schema(description = "是否包含个人头像")
     private Boolean hasProfilePhoto;
 
-    @ApiModelProperty(value = "是否可用")
+    @Schema(description = "是否可用")
     private Boolean enabled;
 
-    @ApiModelProperty(value = "备注")
+    @Schema(description = "备注")
     private String remarks;
 
-    @ApiModelProperty(value = "权限列表")
+    @Schema(description = "权限列表")
     @Transient
     private Set<String> authorities;
 }

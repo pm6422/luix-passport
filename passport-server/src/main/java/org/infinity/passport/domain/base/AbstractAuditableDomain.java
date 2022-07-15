@@ -1,6 +1,6 @@
 package org.infinity.passport.domain.base;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.springframework.data.annotation.*;
 
@@ -20,35 +20,35 @@ public abstract class AbstractAuditableDomain implements Serializable {
      * e.g. the value 526373442322434543 will be displayed as 526373442322434500 in front end
      * If id is null, save operation equals insert, or else save operation equals update
      */
-    @ApiModelProperty("ID")
+    @Schema(description = "ID")
     @Id
     protected String id;
 
     /**
      * Set the proper value when inserting. Value comes from SpringSecurityAuditorAware.getCurrentAuditor()
      */
-    @ApiModelProperty("创建者")
+    @Schema(description = "创建者")
     @CreatedBy
     protected String createdBy;
 
     /**
      * Set the current time when inserting.
      */
-    @ApiModelProperty("创建时间")
+    @Schema(description = "创建时间")
     @CreatedDate
     protected Instant createdTime;
 
     /**
      * Set the proper value when updating. Value comes from SpringSecurityAuditorAware.getCurrentAuditor()
      */
-    @ApiModelProperty("更新者")
+    @Schema(description = "更新者")
     @LastModifiedBy
     protected String modifiedBy;
 
     /**
      * Set the current time when updating.
      */
-    @ApiModelProperty("更新时间")
+    @Schema(description = "更新时间")
     @LastModifiedDate
     protected Instant modifiedTime;
 }

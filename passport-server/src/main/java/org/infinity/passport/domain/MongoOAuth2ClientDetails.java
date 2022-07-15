@@ -1,6 +1,6 @@
 package org.infinity.passport.domain;
 
-import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.client.BaseClientDetails;
 
-@ApiModel("单点登录客户端信息")
+@Schema(description = "单点登录客户端信息")
 @Document(collection = "MongoOAuth2ClientDetails")
 @Data
 public class MongoOAuth2ClientDetails extends BaseClientDetails implements ClientDetails {

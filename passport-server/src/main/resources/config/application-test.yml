@@ -3,7 +3,7 @@
 #
 # This configuration overrides the application.yml file.
 # Full reference is available at:
-# https://docs.spring.io/spring-boot/docs/2.5.5/reference/html/application-properties.html#application-properties
+# https://docs.spring.io/spring-boot/docs/2.7.1/reference/html/application-properties.html#application-properties
 # ===================================================================
 spring:
     devtools:
