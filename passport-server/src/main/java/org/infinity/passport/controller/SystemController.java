@@ -70,7 +70,7 @@ public class SystemController {
     private Optional<PlatformTransactionManager> txManagerOpt;
 
     @GetMapping(value = "app/constants.js", produces = "application/javascript")
-    String getConstantsJs() {
+    public String getConstantsJs() {
         String id = buildProperties != null ? buildProperties.getArtifact() : appId;
         String version = buildProperties != null ? buildProperties.getVersion() : appVersion;
         String js = "'use strict';\n" +

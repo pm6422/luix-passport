@@ -263,7 +263,7 @@
         <dependency>
             <groupId>org.zalando</groupId>
             <artifactId>problem-spring-web</artifactId>
-            <version>0.25.2</version>
+            <version>0.27.0</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
@@ -408,11 +408,6 @@
             </plugin>
         </plugins>
     </build>
-    <!--
-        *************************************************************************************
-        Profile
-        *************************************************************************************
-    -->
     <profiles>
         <profile>
             <id>test</id>
