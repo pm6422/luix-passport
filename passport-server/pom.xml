@@ -7,7 +7,7 @@
         <version>2.7.1</version>
         <relativePath/>
     </parent>
-    <groupId>org.infinity</groupId>
+    <groupId>com.luixtech</groupId>
     <artifactId>passport-server</artifactId>
     <version>2.0.0</version>
     <packaging>war</packaging>
@@ -64,6 +64,11 @@
                     <artifactId>slf4j-api</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
+            <version>2.3.6</version>
         </dependency>
         <dependency>
             <groupId>commons-pool</groupId>
@@ -254,11 +259,6 @@
                     <artifactId>apiguardian-api</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.sun.xml.bind</groupId>
-            <artifactId>jaxb-impl</artifactId>
-            <version>2.3.6</version>
         </dependency>
         <dependency>
             <groupId>org.zalando</groupId>

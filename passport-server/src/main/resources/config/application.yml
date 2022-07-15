@@ -160,7 +160,7 @@ application:
         api-include-pattern: /api/**
         open-api-include-pattern: /open-api/**
         management-include-pattern: /management/**
-        title: LUI️✘ Passport
+        title: LUI️✘ Passport Server
         version: ${app.version}
         terms-of-service-url:
         contact-name: Louis
