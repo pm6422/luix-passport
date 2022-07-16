@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.PersistentAuditEvent;
 import org.infinity.passport.repository.PersistenceAuditEventRepository;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -44,7 +45,7 @@ public class UserAuditEventController {
     @Operation(summary = "分页检索用户审计事件列表")
     @GetMapping("/api/user-audit-events")
     @PreAuthorize("hasAuthority(\"" + Authority.DEVELOPER + "\")")
-    public ResponseEntity<List<PersistentAuditEvent>> getUserAuditEvents(Pageable pageable,
+    public ResponseEntity<List<PersistentAuditEvent>> getUserAuditEvents(@ParameterObject Pageable pageable,
                                                                          @Parameter(description = "开始日期，例：2020-10-01") @RequestParam(value = "from", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
                                                                          @Parameter(description = "结束日期，例：2020-10-02") @RequestParam(value = "to", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) {
         Page<PersistentAuditEvent> userAuditEvents = persistenceAuditEventRepository.findByAuditEventDateBetween(pageable, from, to);

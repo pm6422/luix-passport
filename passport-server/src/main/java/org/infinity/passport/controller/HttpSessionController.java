@@ -10,6 +10,7 @@ import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.HttpSession;
 import org.infinity.passport.exception.DataNotFoundException;
 import org.infinity.passport.repository.HttpSessionRepository;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -38,7 +39,7 @@ public class HttpSessionController {
     @Operation(summary = "分页检索Http会话列表")
     @GetMapping("/api/http-sessions")
     @PreAuthorize("hasAuthority(\"" + Authority.DEVELOPER + "\")")
-    public ResponseEntity<List<HttpSession>> find(Pageable pageable,
+    public ResponseEntity<List<HttpSession>> find(@ParameterObject Pageable pageable,
                                                   @Parameter(description = "用户名称") @RequestParam(value = "principal", required = false) String principal) {
         Page<HttpSession> sessions = StringUtils.isEmpty(principal) ? httpSessionRepository.findAll(pageable) : httpSessionRepository.findByPrincipal(pageable, principal);
         HttpHeaders headers = generatePageHeaders(sessions);

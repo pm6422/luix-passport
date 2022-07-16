@@ -10,6 +10,7 @@ import org.infinity.passport.domain.Authority;
 import org.infinity.passport.exception.DataNotFoundException;
 import org.infinity.passport.exception.DuplicationException;
 import org.infinity.passport.repository.AuthorityRepository;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -52,7 +53,7 @@ public class AuthorityController {
 
     @Operation(summary = "分页检索权限列表")
     @GetMapping("/api/authorities")
-    public ResponseEntity<List<Authority>> find(Pageable pageable) {
+    public ResponseEntity<List<Authority>> find(@ParameterObject Pageable pageable) {
         Page<Authority> authorities = authorityRepository.findAll(pageable);
         HttpHeaders headers = generatePageHeaders(authorities);
         return ResponseEntity.ok().headers(headers).body(authorities.getContent());

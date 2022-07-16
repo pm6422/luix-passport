@@ -10,6 +10,7 @@ import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.MongoOAuth2Approval;
 import org.infinity.passport.exception.DataNotFoundException;
 import org.infinity.passport.repository.OAuth2ApprovalRepository;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -41,7 +42,7 @@ public class OAuth2ApprovalController {
     @Operation(summary = "分页检索登录授权列表")
     @GetMapping("/api/oauth2-approvals")
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
-    public ResponseEntity<List<MongoOAuth2Approval>> find(Pageable pageable,
+    public ResponseEntity<List<MongoOAuth2Approval>> find(@ParameterObject Pageable pageable,
                                                           @Parameter(description = "授权ID") @RequestParam(value = "approvalId", required = false) String approvalId,
                                                           @Parameter(description = "客户端ID") @RequestParam(value = "clientId", required = false) String clientId,
                                                           @Parameter(description = "用户名") @RequestParam(value = "userName", required = false) String userName) {

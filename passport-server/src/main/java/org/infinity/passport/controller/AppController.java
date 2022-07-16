@@ -12,6 +12,7 @@ import org.infinity.passport.exception.DataNotFoundException;
 import org.infinity.passport.repository.AppAuthorityRepository;
 import org.infinity.passport.repository.AppRepository;
 import org.infinity.passport.service.AppService;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -57,7 +58,7 @@ public class AppController {
     @Operation(summary = "分页检索应用列表")
     @GetMapping("/api/apps")
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
-    public ResponseEntity<List<App>> find(Pageable pageable) {
+    public ResponseEntity<List<App>> find(@ParameterObject Pageable pageable) {
         Page<App> apps = appRepository.findAll(pageable);
         return ResponseEntity.ok().headers(generatePageHeaders(apps)).body(apps.getContent());
     }

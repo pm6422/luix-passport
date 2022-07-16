@@ -19,6 +19,7 @@ import org.infinity.passport.repository.UserProfilePhotoRepository;
 import org.infinity.passport.service.MailService;
 import org.infinity.passport.service.UserService;
 import org.infinity.passport.utils.SecurityUtils;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -78,7 +79,7 @@ public class UserController {
     @Operation(summary = "分页检索用户列表")
     @GetMapping("/api/users")
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
-    public ResponseEntity<List<User>> find(Pageable pageable,
+    public ResponseEntity<List<User>> find(@ParameterObject Pageable pageable,
                                            @Parameter(description = "检索条件") @RequestParam(value = "login", required = false) String login) {
         Page<User> users = userService.findByLogin(pageable, login);
         return ResponseEntity.ok().headers(generatePageHeaders(users)).body(users.getContent());

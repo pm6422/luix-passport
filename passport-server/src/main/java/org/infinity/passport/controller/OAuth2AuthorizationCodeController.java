@@ -9,6 +9,7 @@ import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.MongoOAuth2AuthorizationCode;
 import org.infinity.passport.exception.DataNotFoundException;
 import org.infinity.passport.repository.OAuth2AuthorizationCodeRepository;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -45,7 +46,7 @@ public class OAuth2AuthorizationCodeController {
     @Operation(summary = "分页检索授权码列表")
     @GetMapping("/api/oauth2-authorization-codes")
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
-    public ResponseEntity<List<MongoOAuth2AuthorizationCode>> find(Pageable pageable,
+    public ResponseEntity<List<MongoOAuth2AuthorizationCode>> find(@ParameterObject Pageable pageable,
                                                                    @Parameter(description = "授权码ID") @RequestParam(value = "authorizationCodeId", required = false) String authorizationCodeId,
                                                                    @Parameter(description = "授权码") @RequestParam(value = "code", required = false) String code) {
         MongoOAuth2AuthorizationCode probe = new MongoOAuth2AuthorizationCode();

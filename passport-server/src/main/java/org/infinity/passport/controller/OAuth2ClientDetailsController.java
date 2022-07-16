@@ -13,6 +13,7 @@ import org.infinity.passport.domain.MongoOAuth2ClientDetails;
 import org.infinity.passport.exception.DataNotFoundException;
 import org.infinity.passport.exception.DuplicationException;
 import org.infinity.passport.repository.OAuth2ClientDetailsRepository;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -78,7 +79,7 @@ public class OAuth2ClientDetailsController {
     @Operation(summary = "分页检索单点登录客户端列表")
     @GetMapping("/api/oauth2-clients")
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
-    public ResponseEntity<List<MongoOAuth2ClientDetails>> find(Pageable pageable,
+    public ResponseEntity<List<MongoOAuth2ClientDetails>> find(@ParameterObject Pageable pageable,
                                                                @Parameter(description = "客户端ID") @RequestParam(value = "clientId", required = false) String clientId) {
         Query query = Query.query(Criteria.where("clientId").is(clientId));
         long totalCount = mongoTemplate.count(query, MongoOAuth2ClientDetails.class);

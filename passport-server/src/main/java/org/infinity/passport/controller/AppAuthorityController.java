@@ -12,6 +12,7 @@ import org.infinity.passport.exception.DataNotFoundException;
 import org.infinity.passport.exception.DuplicationException;
 import org.infinity.passport.repository.AppAuthorityRepository;
 import org.infinity.passport.service.AppAuthorityService;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -61,7 +62,7 @@ public class AppAuthorityController {
     @Operation(summary = "分页检索应用权限列表")
     @GetMapping("/api/app-authorities")
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
-    public ResponseEntity<List<AppAuthority>> find(Pageable pageable,
+    public ResponseEntity<List<AppAuthority>> find(@ParameterObject Pageable pageable,
                                                    @Parameter(description = "应用名称") @RequestParam(value = "appName", required = false) String appName,
                                                    @Parameter(description = "权限名称") @RequestParam(value = "authorityName", required = false) String authorityName) {
         Page<AppAuthority> appAuthorities = appAuthorityService.find(pageable, appName, authorityName);

@@ -9,6 +9,7 @@ import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.MongoOAuth2AccessToken;
 import org.infinity.passport.exception.DataNotFoundException;
 import org.infinity.passport.repository.OAuth2AccessTokenRepository;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,7 +37,7 @@ public class OAuth2AccessTokenController {
     @Operation(summary = "分页检索访问令牌列表")
     @GetMapping("/api/oauth2-access-tokens")
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
-    public ResponseEntity<List<MongoOAuth2AccessToken>> find(Pageable pageable,
+    public ResponseEntity<List<MongoOAuth2AccessToken>> find(@ParameterObject Pageable pageable,
                                                              @Parameter(description = "访问令牌ID") @RequestParam(value = "tokenId", required = false) String tokenId,
                                                              @Parameter(description = "客户端ID") @RequestParam(value = "clientId", required = false) String clientId,
                                                              @Parameter(description = "用户名") @RequestParam(value = "userName", required = false) String userName,

@@ -15,6 +15,7 @@ import org.infinity.passport.exception.DataNotFoundException;
 import org.infinity.passport.exception.DuplicationException;
 import org.infinity.passport.repository.AdminMenuRepository;
 import org.infinity.passport.service.AdminMenuService;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -69,7 +70,7 @@ public class AdminMenuController {
     @Operation(summary = "分页检索菜单列表")
     @GetMapping("/api/admin-menus")
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
-    public ResponseEntity<List<AdminMenu>> find(Pageable pageable,
+    public ResponseEntity<List<AdminMenu>> find(@ParameterObject Pageable pageable,
                                                 @Parameter(description = "应用名称") @RequestParam(value = "appName", required = false) String appName) {
         Page<AdminMenu> adminMenus = adminMenuService.find(pageable, appName);
         HttpHeaders headers = generatePageHeaders(adminMenus);

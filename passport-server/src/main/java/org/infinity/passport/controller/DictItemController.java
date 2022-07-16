@@ -11,6 +11,7 @@ import org.infinity.passport.exception.DataNotFoundException;
 import org.infinity.passport.repository.DictItemRepository;
 import org.infinity.passport.service.DictItemService;
 import org.infinity.passport.service.DictService;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -57,7 +58,7 @@ public class DictItemController {
     @Operation(summary = "分页检索数据字典项列表")
     @GetMapping("/api/dict-items")
     @PreAuthorize("hasAuthority(\"" + Authority.DEVELOPER + "\")")
-    public ResponseEntity<List<DictItem>> find(Pageable pageable,
+    public ResponseEntity<List<DictItem>> find(@ParameterObject Pageable pageable,
                                                @Parameter(description = "字典代码") @RequestParam(value = "dictCode", required = false) String dictCode,
                                                @Parameter(description = "字典项名称") @RequestParam(value = "dictItemName", required = false) String dictItemName) {
         Page<DictItem> dictItems = dictItemService.find(pageable, dictCode, dictItemName);

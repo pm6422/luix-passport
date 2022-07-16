@@ -9,6 +9,7 @@ import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.MongoOAuth2RefreshToken;
 import org.infinity.passport.exception.DataNotFoundException;
 import org.infinity.passport.repository.OAuth2RefreshTokenRepository;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
@@ -37,7 +38,7 @@ public class OAuth2RefreshTokenController {
     @Operation(summary = "分页检索刷新令牌列表")
     @GetMapping("/api/oauth2-refresh-tokens")
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
-    public ResponseEntity<List<MongoOAuth2RefreshToken>> find(Pageable pageable,
+    public ResponseEntity<List<MongoOAuth2RefreshToken>> find(@ParameterObject Pageable pageable,
                                                               @Parameter(description = "刷新令牌ID") @RequestParam(value = "tokenId", required = false) String tokenId,
                                                               @Parameter(description = "客户端ID") @RequestParam(value = "clientId", required = false) String clientId,
                                                               @Parameter(description = "用户名") @RequestParam(value = "userName", required = false) String userName) {
