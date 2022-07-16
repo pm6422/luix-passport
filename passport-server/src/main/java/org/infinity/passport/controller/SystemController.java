@@ -8,6 +8,7 @@ import io.mongock.driver.mongodb.springdata.v3.config.SpringDataMongoV3Context;
 import io.mongock.runner.springboot.MongockSpringboot;
 import io.mongock.runner.springboot.RunnerSpringbootBuilder;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -38,8 +39,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static org.infinity.passport.config.api.SpringDocConfiguration.AUTH;
+
 @RestController
 @Tag(name = "系统管理")
+@SecurityRequirement(name = AUTH)
 @Slf4j
 public class SystemController {
 

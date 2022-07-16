@@ -2,6 +2,7 @@ package org.infinity.passport.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.infinity.passport.component.HttpHeaderCreator;
@@ -27,10 +28,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static org.infinity.passport.config.api.SpringDocConfiguration.AUTH;
 import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
 
 @RestController
 @Tag(name = "数据字典项")
+@SecurityRequirement(name = AUTH)
 @Slf4j
 public class DictItemController {
 

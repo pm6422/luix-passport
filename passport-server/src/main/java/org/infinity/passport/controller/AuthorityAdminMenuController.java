@@ -2,6 +2,7 @@ package org.infinity.passport.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -25,11 +26,14 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static org.infinity.passport.config.api.SpringDocConfiguration.AUTH;
+
 /**
  * REST controller for managing the authority admin menu.
  */
 @RestController
 @Tag(name = "权限管理菜单")
+@SecurityRequirement(name = AUTH)
 @Slf4j
 public class AuthorityAdminMenuController {
 

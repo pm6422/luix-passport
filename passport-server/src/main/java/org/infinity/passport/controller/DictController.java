@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.infinity.passport.component.HttpHeaderCreator;
@@ -26,10 +27,12 @@ import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.List;
 
+import static org.infinity.passport.config.api.SpringDocConfiguration.AUTH;
 import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
 
 @RestController
 @Tag(name = "数据字典")
+@SecurityRequirement(name = AUTH)
 @Slf4j
 public class DictController {
 

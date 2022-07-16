@@ -2,6 +2,7 @@ package org.infinity.passport.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.infinity.passport.component.HttpHeaderCreator;
@@ -38,6 +39,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static org.infinity.passport.config.api.SpringDocConfiguration.AUTH;
 import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
 import static org.infinity.passport.utils.NetworkUtils.getRequestUrl;
 
@@ -46,6 +48,7 @@ import static org.infinity.passport.utils.NetworkUtils.getRequestUrl;
  */
 @RestController
 @Tag(name = "用户管理")
+@SecurityRequirement(name = AUTH)
 @Slf4j
 public class UserController {
 

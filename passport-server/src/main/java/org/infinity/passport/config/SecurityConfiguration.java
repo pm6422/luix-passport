@@ -54,7 +54,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/content/**")
                 .antMatchers("/open-api/**")
                 .antMatchers("/favicon.png") // Note: it will cause authorization failure if loss this statement.
-                .antMatchers("/swagger-ui/swagger-ui.html");
+                .antMatchers("/swagger-ui/index.html");
         // @formatter:on
     }
 

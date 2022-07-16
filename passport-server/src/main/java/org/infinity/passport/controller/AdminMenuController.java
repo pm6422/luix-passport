@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
@@ -34,6 +35,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.infinity.passport.config.api.SpringDocConfiguration.AUTH;
 import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
 
 /**
@@ -41,6 +43,7 @@ import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
  */
 @RestController
 @Tag(name = "管理菜单")
+@SecurityRequirement(name = AUTH)
 @Slf4j
 public class AdminMenuController {
 
