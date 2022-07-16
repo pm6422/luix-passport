@@ -12,6 +12,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,7 +43,7 @@ public class UserAuditEventController {
      */
     @Operation(summary = "分页检索用户审计事件列表")
     @GetMapping("/api/user-audit-events")
-    @Secured(Authority.DEVELOPER)
+    @PreAuthorize("hasAuthority(\"" + Authority.DEVELOPER + "\")")
     public ResponseEntity<List<PersistentAuditEvent>> getUserAuditEvents(Pageable pageable,
                                                                          @Parameter(description = "开始日期，例：2020-10-01") @RequestParam(value = "from", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
                                                                          @Parameter(description = "结束日期，例：2020-10-02") @RequestParam(value = "to", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) {

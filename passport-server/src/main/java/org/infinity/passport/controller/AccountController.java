@@ -35,7 +35,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -113,7 +113,7 @@ public class AccountController {
 
     @Operation(summary = "检索当前用户")
     @GetMapping("/api/accounts/user")
-    @Secured({Authority.USER})
+    @PreAuthorize("hasAuthority(\"" + Authority.USER + "\")")
     @Timed
     public ResponseEntity<User> getCurrentUser() {
         User user = userService.findOneByUserName(SecurityUtils.getCurrentUserName());
@@ -171,7 +171,7 @@ public class AccountController {
 
     @Operation(summary = "检索权限值列表")
     @GetMapping("/api/accounts/authority-names")
-    @Secured({Authority.USER})
+    @PreAuthorize("hasAuthority(\"" + Authority.USER + "\")")
     @Timed
     public ResponseEntity<List<String>> getAuthorityNames(
             @Parameter(description = "是否可用,null代表全部", schema = @Schema(allowableValues = "false,true,null"))
@@ -182,7 +182,7 @@ public class AccountController {
 
     @Operation(summary = "更新当前用户")
     @PutMapping("/api/accounts/user")
-    @Secured({Authority.USER})
+    @PreAuthorize("hasAuthority(\"" + Authority.USER + "\")")
     @Timed
     public ResponseEntity<Void> updateCurrentAccount(@Parameter(description = "新的用户", required = true) @Valid @RequestBody User domain) {
         // For security reason
@@ -195,7 +195,7 @@ public class AccountController {
 
     @Operation(summary = "修改当前用户的密码")
     @PutMapping("/api/accounts/password")
-    @Secured({Authority.USER})
+    @PreAuthorize("hasAuthority(\"" + Authority.USER + "\")")
     @Timed
     public ResponseEntity<Void> changePassword(@Parameter(description = "新密码", required = true) @RequestBody @Valid UserNameAndPasswordDTO dto) {
         // For security reason
@@ -226,7 +226,7 @@ public class AccountController {
 
     @Operation(summary = "上传当前用户头像")
     @PostMapping("/api/accounts/profile-photo/upload")
-    @Secured({Authority.USER})
+    @PreAuthorize("hasAuthority(\"" + Authority.USER + "\")")
     @Timed
     public void uploadProfilePhoto(@Parameter(description = "文件描述", required = true) @RequestPart String description,
                                    @Parameter(description = "用户头像文件", required = true) @RequestPart MultipartFile file) throws IOException {
@@ -237,7 +237,7 @@ public class AccountController {
 
     @Operation(summary = "下载用户头像")
     @GetMapping("/api/accounts/profile-photo/download")
-    @Secured({Authority.USER})
+    @PreAuthorize("hasAuthority(\"" + Authority.USER + "\")")
     @Timed
     public ResponseEntity<org.springframework.core.io.Resource> downloadProfilePhoto() {
         SecurityUser currentUser = SecurityUtils.getCurrentUser();
@@ -260,7 +260,7 @@ public class AccountController {
 
     @Operation(summary = "检索当前用户头像")
     @GetMapping("/api/accounts/profile-photo")
-    @Secured({Authority.USER})
+    @PreAuthorize("hasAuthority(\"" + Authority.USER + "\")")
     @Timed
     public ModelAndView getProfilePhoto() {
         // @RestController下使用return forwardUrl不好使

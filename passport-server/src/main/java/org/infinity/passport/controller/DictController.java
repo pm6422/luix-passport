@@ -18,7 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -41,7 +41,7 @@ public class DictController {
 
     @Operation(summary = "创建数据字典")
     @PostMapping("/api/dicts")
-    @Secured(Authority.DEVELOPER)
+    @PreAuthorize("hasAuthority(\"" + Authority.DEVELOPER + "\")")
     public ResponseEntity<Void> create(@Parameter(description = "数据字典", required = true) @Valid @RequestBody Dict domain) {
         log.debug("REST request to create dict: {}", domain);
         dictRepository.findOneByDictCode(domain.getDictCode()).ifPresent((existingEntity) -> {
@@ -54,7 +54,7 @@ public class DictController {
 
     @Operation(summary = "分页检索数据字典列表")
     @GetMapping("/api/dicts")
-    @Secured(Authority.DEVELOPER)
+    @PreAuthorize("hasAuthority(\"" + Authority.DEVELOPER + "\")")
     public ResponseEntity<List<Dict>> find(Pageable pageable,
                                            @Parameter(description = "字典名称") @RequestParam(value = "dictName", required = false) String dictName,
                                            @Parameter(description = "是否可用,null代表全部", schema = @Schema(allowableValues = "false,true,null")) @RequestParam(value = "enabled", required = false) Boolean enabled) {
@@ -65,7 +65,7 @@ public class DictController {
 
     @Operation(summary = "根据ID检索数据字典")
     @GetMapping("/api/dicts/{id}")
-    @Secured({Authority.DEVELOPER, Authority.USER})
+    @PreAuthorize("hasAnyAuthority(\"" + Authority.DEVELOPER + "\", \"" + Authority.USER + "\")")
     public ResponseEntity<Dict> findById(@Parameter(description = "字典编号", required = true) @PathVariable String id) {
         Dict domain = dictRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
         return ResponseEntity.ok(domain);
@@ -73,7 +73,7 @@ public class DictController {
 
     @Operation(summary = "更新数据字典")
     @PutMapping("/api/dicts")
-    @Secured(Authority.DEVELOPER)
+    @PreAuthorize("hasAuthority(\"" + Authority.DEVELOPER + "\")")
     public ResponseEntity<Void> update(@Parameter(description = "新的数据字典", required = true) @Valid @RequestBody Dict domain) {
         log.debug("REST request to update dict: {}", domain);
         dictRepository.findById(domain.getId()).orElseThrow(() -> new DataNotFoundException(domain.getId()));
@@ -83,7 +83,7 @@ public class DictController {
 
     @Operation(summary = "根据ID删除数据字典", description = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
     @DeleteMapping("/api/dicts/{id}")
-    @Secured(Authority.DEVELOPER)
+    @PreAuthorize("hasAuthority(\"" + Authority.DEVELOPER + "\")")
     public ResponseEntity<Void> delete(@Parameter(description = "字典编号", required = true) @PathVariable String id) {
         log.debug("REST request to delete dict: {}", id);
         Dict dict = dictRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));

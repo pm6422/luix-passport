@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -34,7 +35,7 @@ public class OAuth2AccessTokenController {
 
     @Operation(summary = "分页检索访问令牌列表")
     @GetMapping("/api/oauth2-access-tokens")
-    @Secured(Authority.ADMIN)
+    @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<List<MongoOAuth2AccessToken>> find(Pageable pageable,
                                                              @Parameter(description = "访问令牌ID") @RequestParam(value = "tokenId", required = false) String tokenId,
                                                              @Parameter(description = "客户端ID") @RequestParam(value = "clientId", required = false) String clientId,
@@ -52,7 +53,7 @@ public class OAuth2AccessTokenController {
 
     @Operation(summary = "根据ID检索访问令牌")
     @GetMapping("/api/oauth2-access-tokens/{id}")
-    @Secured({Authority.ADMIN})
+    @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<MongoOAuth2AccessToken> findById(
             @Parameter(description = "访问令牌ID", required = true) @PathVariable String id) {
         MongoOAuth2AccessToken domain = oAuth2AccessTokenRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
@@ -61,7 +62,7 @@ public class OAuth2AccessTokenController {
 
     @Operation(summary = "根据ID删除访问令牌", description = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
     @DeleteMapping("/api/oauth2-access-tokens/{id}")
-    @Secured(Authority.ADMIN)
+    @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<Void> delete(@Parameter(description = "访问令牌ID", required = true) @PathVariable String id) {
         log.debug("REST request to delete oauth2 access token: {}", id);
         oAuth2AccessTokenRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));

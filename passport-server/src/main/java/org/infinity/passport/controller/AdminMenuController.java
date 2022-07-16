@@ -22,6 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -51,7 +52,7 @@ public class AdminMenuController {
 
     @Operation(summary = "创建菜单")
     @PostMapping("/api/admin-menus")
-    @Secured({Authority.ADMIN})
+    @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<Void> create(
             @Parameter(description = "菜单", required = true) @Valid @RequestBody AdminMenu entity) {
         log.debug("REST request to create admin menu: {}", entity);
@@ -67,7 +68,7 @@ public class AdminMenuController {
 
     @Operation(summary = "分页检索菜单列表")
     @GetMapping("/api/admin-menus")
-    @Secured({Authority.ADMIN})
+    @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<List<AdminMenu>> find(Pageable pageable,
                                                 @Parameter(description = "应用名称") @RequestParam(value = "appName", required = false) String appName) {
         Page<AdminMenu> adminMenus = adminMenuService.find(pageable, appName);
@@ -77,7 +78,7 @@ public class AdminMenuController {
 
     @Operation(summary = "根据ID检索菜单")
     @GetMapping("/api/admin-menus/{id}")
-    @Secured({Authority.ADMIN})
+    @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<AdminMenu> findById(@Parameter(description = "菜单ID", required = true) @PathVariable String id) {
         AdminMenu domain = adminMenuRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
         return ResponseEntity.ok(domain);
@@ -85,7 +86,7 @@ public class AdminMenuController {
 
     @Operation(summary = "更新菜单")
     @PutMapping("/api/admin-menus")
-    @Secured({Authority.ADMIN})
+    @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<Void> update(
             @Parameter(description = "新的菜单", required = true) @Valid @RequestBody AdminMenu domain) {
         log.debug("REST request to update admin menu: {}", domain);
@@ -96,7 +97,7 @@ public class AdminMenuController {
 
     @Operation(summary = "根据ID删除管理菜单")
     @DeleteMapping("/api/admin-menus/{id}")
-    @Secured({Authority.ADMIN})
+    @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<Void> delete(@Parameter(description = "菜单ID", required = true) @PathVariable String id) {
         log.debug("REST request to delete admin menu: {}", id);
         AdminMenu adminMenu = adminMenuRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
@@ -106,7 +107,7 @@ public class AdminMenuController {
 
     @Operation(summary = "检索父类菜单")
     @GetMapping("/api/admin-menus/parents")
-    @Secured({Authority.ADMIN})
+    @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<List<AdminMenu>> findParents(
             @Parameter(description = "应用名称", required = true) @RequestParam(value = "appName") String appName,
             @Parameter(description = "菜单级别", required = true) @RequestParam(value = "level") Integer level) {
@@ -116,21 +117,21 @@ public class AdminMenuController {
 
     @Operation(summary = "根据ID提升管理菜单顺序")
     @PutMapping("/api/admin-menus/move-up/{id}")
-    @Secured({Authority.ADMIN})
+    @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public void moveUp(@Parameter(description = "菜单ID", required = true) @PathVariable String id) {
         adminMenuService.moveUp(id);
     }
 
     @Operation(summary = "根据ID降低管理菜单顺序")
     @PutMapping("/api/admin-menus/move-down/{id}")
-    @Secured({Authority.ADMIN})
+    @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public void moveDown(@Parameter(description = "菜单ID", required = true) @PathVariable String id) {
         adminMenuService.moveDown(id);
     }
 
     @Operation(summary = "复制管理菜单")
     @GetMapping("/api/admin-menus/copy")
-    @Secured({Authority.ADMIN})
+    @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public void copyMenus(@Parameter(description = "源应用名称", required = true, schema = @Schema(defaultValue = "Passport")) @RequestParam(value = "sourceAppName") String sourceAppName,
                           @Parameter(description = "目标应用名称", required = true) @RequestParam(value = "targetAppName") String targetAppName) {
         List<AdminMenu> sourceMenus = adminMenuRepository.findByAppName(sourceAppName);
@@ -143,7 +144,7 @@ public class AdminMenuController {
 
     @Operation(summary = "导入管理菜单", description = "输入文件格式：每行先后appName,name,label,level,url,sequence数列，列之间使用tab分隔，行之间使用回车换行")
     @PostMapping(value = "/api/admin-menus/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @Secured({Authority.ADMIN})
+    @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public void importData(@Parameter(description = "文件", required = true) @RequestPart MultipartFile file) throws IOException {
         List<String> lines = IOUtils.readLines(file.getInputStream(), StandardCharsets.UTF_8);
         List<AdminMenu> list = new ArrayList<>();

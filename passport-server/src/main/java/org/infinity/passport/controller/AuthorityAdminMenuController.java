@@ -15,6 +15,7 @@ import org.infinity.passport.repository.AuthorityAdminMenuRepository;
 import org.infinity.passport.service.AdminMenuService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -43,7 +44,7 @@ public class AuthorityAdminMenuController {
 
     @Operation(summary = "根据权限名称检索菜单树")
     @GetMapping("/api/authority-admin-menus")
-    @Secured({Authority.ADMIN})
+    @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<List<AdminMenu>> findAuthorityMenus(
             @Parameter(description = "应用名称", required = true) @RequestParam(value = "appName") String appName,
             @Parameter(description = "权限名称", required = true) @RequestParam(value = "authorityName") String authorityName) {
@@ -53,7 +54,7 @@ public class AuthorityAdminMenuController {
 
     @Operation(summary = "更新权限菜单")
     @PutMapping("/api/authority-admin-menus")
-    @Secured({Authority.ADMIN})
+    @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<Void> update(
             @Parameter(description = "新的权限菜单信息", required = true) @Valid @RequestBody AdminAuthorityMenusDTO dto) {
         log.debug("REST request to update admin authority menus: {}", dto);
@@ -76,7 +77,7 @@ public class AuthorityAdminMenuController {
 
     @Operation(summary = "检索当前用户权限关联的菜单列表")
     @GetMapping("/api/authority-admin-menus/user-links")
-    @Secured({Authority.USER})
+    @PreAuthorize("hasAuthority(\"" + Authority.USER + "\")")
     public ResponseEntity<List<AdminMenu>> findUserAuthorityLinks(
             @Parameter(description = "应用名称", required = true) @RequestParam(value = "appName") String appName) {
         List<AdminMenu> results = adminMenuService.getUserAuthorityLinks(appName);
@@ -85,7 +86,7 @@ public class AuthorityAdminMenuController {
 
     @Operation(summary = "检索当前用户权限关联的菜单树")
     @GetMapping("/api/authority-admin-menus/user-menus")
-    @Secured({Authority.USER})
+    @PreAuthorize("hasAuthority(\"" + Authority.USER + "\")")
     public ResponseEntity<List<AdminMenu>> findUserAuthorityMenus(
             @Parameter(description = "应用名称", required = true) @RequestParam(value = "appName") String appName) {
         List<AdminMenu> results = adminMenuService.getUserAuthorityMenus(appName);

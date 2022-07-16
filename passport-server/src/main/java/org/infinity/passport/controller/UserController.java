@@ -26,6 +26,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -64,7 +65,7 @@ public class UserController {
 
     @Operation(summary = "创建新用户并发送激活邮件")
     @PostMapping("/api/users")
-    @Secured({Authority.ADMIN})
+    @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<Void> create(@Parameter(description = "用户", required = true) @Valid @RequestBody User domain,
                                        HttpServletRequest request) {
         log.debug("REST request to create user: {}", domain);
@@ -76,7 +77,7 @@ public class UserController {
 
     @Operation(summary = "分页检索用户列表")
     @GetMapping("/api/users")
-    @Secured({Authority.ADMIN})
+    @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<List<User>> find(Pageable pageable,
                                            @Parameter(description = "检索条件") @RequestParam(value = "login", required = false) String login) {
         Page<User> users = userService.findByLogin(pageable, login);
@@ -85,7 +86,7 @@ public class UserController {
 
     @Operation(summary = "根据用户名检索用户")
     @GetMapping("/api/users/{userName:[a-zA-Z0-9-]+}")
-    @Secured({Authority.ADMIN})
+    @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<ManagedUserDTO> findByName(@Parameter(description = "用户名", required = true) @PathVariable String userName) {
         User domain = userService.findOneByUserName(userName);
         List<UserAuthority> userAuthorities = Optional.ofNullable(userAuthorityRepository.findByUserId(domain.getId()))
@@ -96,7 +97,7 @@ public class UserController {
 
     @Operation(summary = "更新用户")
     @PutMapping("/api/users")
-    @Secured({Authority.ADMIN})
+    @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<Void> update(@Parameter(description = "新的用户", required = true) @Valid @RequestBody User domain) {
         log.debug("REST request to update user: {}", domain);
         userService.update(domain);
@@ -109,7 +110,7 @@ public class UserController {
 
     @Operation(summary = "根据用户名删除用户", description = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
     @DeleteMapping("/api/users/{userName:[a-zA-Z0-9-]+}")
-    @Secured({Authority.ADMIN})
+    @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<Void> delete(@Parameter(description = "用户名", required = true) @PathVariable String userName) {
         log.debug("REST request to delete user: {}", userName);
         userService.deleteByUserName(userName);
@@ -118,7 +119,7 @@ public class UserController {
 
     @Operation(summary = "根据用户名重置密码")
     @PutMapping("/api/users/{userName:[a-zA-Z0-9-]+}")
-    @Secured({Authority.ADMIN})
+    @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<Void> resetPassword(@Parameter(description = "用户名", required = true) @PathVariable String userName) {
         log.debug("REST reset the password of user: {}", userName);
         UserNameAndPasswordDTO dto = UserNameAndPasswordDTO.builder()
@@ -133,7 +134,7 @@ public class UserController {
 
     @Operation(summary = "检索用户头像")
     @GetMapping(GET_PROFILE_PHOTO_URL + "{userName:[a-zA-Z0-9-]+}")
-    @Secured({Authority.USER})
+    @PreAuthorize("hasAuthority(\"" + Authority.USER + "\")")
     public ResponseEntity<byte[]> getProfilePhoto(@Parameter(description = "用户名", required = true) @PathVariable String userName) {
         User user = userService.findOneByUserName(userName);
         Optional<UserProfilePhoto> userProfilePhoto = userProfilePhotoRepository.findByUserId(user.getId());

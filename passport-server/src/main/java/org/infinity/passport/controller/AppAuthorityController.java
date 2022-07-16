@@ -17,7 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -43,7 +43,7 @@ public class AppAuthorityController {
 
     @Operation(summary = "创建应用权限")
     @PostMapping("/api/app-authorities")
-    @Secured({Authority.ADMIN})
+    @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<Void> create(
             @Parameter(description = "应用权限", required = true) @Valid @RequestBody AppAuthority domain) {
         log.debug("REST request to create app authority: {}", domain);
@@ -60,7 +60,7 @@ public class AppAuthorityController {
 
     @Operation(summary = "分页检索应用权限列表")
     @GetMapping("/api/app-authorities")
-    @Secured({Authority.ADMIN})
+    @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<List<AppAuthority>> find(Pageable pageable,
                                                    @Parameter(description = "应用名称") @RequestParam(value = "appName", required = false) String appName,
                                                    @Parameter(description = "权限名称") @RequestParam(value = "authorityName", required = false) String authorityName) {
@@ -71,7 +71,7 @@ public class AppAuthorityController {
 
     @Operation(summary = "根据ID检索应用权限")
     @GetMapping("/api/app-authorities/{id}")
-    @Secured({Authority.DEVELOPER, Authority.USER})
+    @PreAuthorize("hasAnyAuthority(\"" + Authority.DEVELOPER + "\", \"" + Authority.USER + "\")")
     public ResponseEntity<AppAuthority> findById(
             @Parameter(description = "字典编号", required = true) @PathVariable String id) {
         log.debug("REST request to get app authority : {}", id);
@@ -81,7 +81,7 @@ public class AppAuthorityController {
 
     @Operation(summary = "更新应用权限")
     @PutMapping("/api/app-authorities")
-    @Secured({Authority.ADMIN})
+    @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<Void> update(
             @Parameter(description = "新的应用权限", required = true) @Valid @RequestBody AppAuthority domain) {
         log.debug("REST request to update app authority: {}", domain);
@@ -92,7 +92,7 @@ public class AppAuthorityController {
 
     @Operation(summary = "根据ID删除应用权限", description = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
     @DeleteMapping("/api/app-authorities/{id}")
-    @Secured({Authority.ADMIN})
+    @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<Void> delete(@Parameter(description = "字典编号", required = true) @PathVariable String id) {
         log.debug("REST request to delete app authority: {}", id);
         AppAuthority appAuthority = appAuthorityRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));

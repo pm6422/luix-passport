@@ -16,7 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -46,7 +46,7 @@ public class AppController {
 
     @Operation(summary = "创建应用")
     @PostMapping("/api/apps")
-    @Secured({Authority.ADMIN})
+    @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<Void> create(@Parameter(description = "应用", required = true) @Valid @RequestBody App domain) {
         log.debug("REST request to create app: {}", domain);
         appService.insert(domain);
@@ -56,7 +56,7 @@ public class AppController {
 
     @Operation(summary = "分页检索应用列表")
     @GetMapping("/api/apps")
-    @Secured({Authority.ADMIN})
+    @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<List<App>> find(Pageable pageable) {
         Page<App> apps = appRepository.findAll(pageable);
         return ResponseEntity.ok().headers(generatePageHeaders(apps)).body(apps.getContent());
@@ -64,7 +64,7 @@ public class AppController {
 
     @Operation(summary = "根据名称检索应用")
     @GetMapping("/api/apps/{name}")
-    @Secured({Authority.ADMIN})
+    @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<App> findById(@Parameter(description = "应用名称", required = true) @PathVariable String name) {
         App app = appRepository.findById(name).orElseThrow(() -> new DataNotFoundException(name));
         List<AppAuthority> appAuthorities = appAuthorityRepository.findByAppName(name);
@@ -75,7 +75,7 @@ public class AppController {
 
     @Operation(summary = "更新应用")
     @PutMapping("/api/apps")
-    @Secured({Authority.ADMIN})
+    @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<Void> update(@Parameter(description = "新的应用", required = true) @Valid @RequestBody App domain) {
         log.debug("REST request to update app: {}", domain);
         appService.update(domain);
@@ -84,7 +84,7 @@ public class AppController {
 
     @Operation(summary = "根据名称删除应用", description = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
     @DeleteMapping("/api/apps/{name}")
-    @Secured({Authority.ADMIN})
+    @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<Void> delete(@Parameter(description = "应用名称", required = true) @PathVariable String name) {
         log.debug("REST request to delete app: {}", name);
         appRepository.findById(name).orElseThrow(() -> new DataNotFoundException(name));

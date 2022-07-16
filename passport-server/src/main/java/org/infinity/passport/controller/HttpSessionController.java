@@ -14,7 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -37,7 +37,7 @@ public class HttpSessionController {
 
     @Operation(summary = "分页检索Http会话列表")
     @GetMapping("/api/http-sessions")
-    @Secured({Authority.DEVELOPER})
+    @PreAuthorize("hasAuthority(\"" + Authority.DEVELOPER + "\")")
     public ResponseEntity<List<HttpSession>> find(Pageable pageable,
                                                   @Parameter(description = "用户名称") @RequestParam(value = "principal", required = false) String principal) {
         Page<HttpSession> sessions = StringUtils.isEmpty(principal) ? httpSessionRepository.findAll(pageable) : httpSessionRepository.findByPrincipal(pageable, principal);
@@ -47,7 +47,7 @@ public class HttpSessionController {
 
     @Operation(summary = "根据ID删除Http会话", description = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
     @DeleteMapping("/api/http-sessions/{id}")
-    @Secured({Authority.DEVELOPER})
+    @PreAuthorize("hasAuthority(\"" + Authority.DEVELOPER + "\")")
     public ResponseEntity<Void> delete(@Parameter(description = "Http会话ID", required = true) @PathVariable String id) {
         log.debug("REST request to delete http session: {}", id);
         httpSessionRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));

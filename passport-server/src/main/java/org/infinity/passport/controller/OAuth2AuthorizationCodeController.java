@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -43,7 +44,7 @@ public class OAuth2AuthorizationCodeController {
      */
     @Operation(summary = "分页检索授权码列表")
     @GetMapping("/api/oauth2-authorization-codes")
-    @Secured(Authority.ADMIN)
+    @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<List<MongoOAuth2AuthorizationCode>> find(Pageable pageable,
                                                                    @Parameter(description = "授权码ID") @RequestParam(value = "authorizationCodeId", required = false) String authorizationCodeId,
                                                                    @Parameter(description = "授权码") @RequestParam(value = "code", required = false) String code) {
@@ -57,7 +58,7 @@ public class OAuth2AuthorizationCodeController {
 
     @Operation(summary = "根据ID检索授权码")
     @GetMapping("/api/oauth2-authorization-codes/{id}")
-    @Secured({Authority.ADMIN})
+    @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<MongoOAuth2AuthorizationCode> findById(
             @Parameter(description = "授权码ID", required = true) @PathVariable String id) {
         MongoOAuth2AuthorizationCode domain = oAuth2AuthorizationCodeRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
@@ -66,7 +67,7 @@ public class OAuth2AuthorizationCodeController {
 
     @Operation(summary = "根据ID删除授权码", description = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
     @DeleteMapping("/api/oauth2-authorization-codes/{id}")
-    @Secured(Authority.ADMIN)
+    @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<Void> delete(@Parameter(description = "授权码ID", required = true) @PathVariable String id) {
         log.debug("REST request to delete oauth2 authorization code: {}", id);
         oAuth2AuthorizationCodeRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));

@@ -24,6 +24,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,7 +59,7 @@ public class OAuth2ClientDetailsController {
 
     @Operation(summary = "创建单点登录客户端")
     @PostMapping("/api/oauth2-clients")
-    @Secured(Authority.ADMIN)
+    @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<Void> create(
             @Parameter(description = "单点登录客户端", required = true) @Valid @RequestBody MongoOAuth2ClientDetails domain) {
         log.debug("REST create oauth client detail: {}", domain);
@@ -76,7 +77,7 @@ public class OAuth2ClientDetailsController {
 
     @Operation(summary = "分页检索单点登录客户端列表")
     @GetMapping("/api/oauth2-clients")
-    @Secured(Authority.ADMIN)
+    @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<List<MongoOAuth2ClientDetails>> find(Pageable pageable,
                                                                @Parameter(description = "客户端ID") @RequestParam(value = "clientId", required = false) String clientId) {
         Query query = Query.query(Criteria.where("clientId").is(clientId));
@@ -91,7 +92,7 @@ public class OAuth2ClientDetailsController {
 
     @Operation(summary = "根据ID检索单点登录客户端")
     @GetMapping("/api/oauth2-clients/{id}")
-    @Secured({Authority.ADMIN})
+    @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<MongoOAuth2ClientDetails> findById(
             @Parameter(description = "客户端ID", required = true) @PathVariable String id) {
         MongoOAuth2ClientDetails domain = oAuth2ClientDetailsRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
@@ -107,7 +108,7 @@ public class OAuth2ClientDetailsController {
 
     @Operation(summary = "更新单点登录客户端")
     @PutMapping("/api/oauth2-clients")
-    @Secured(Authority.ADMIN)
+    @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<Void> update(
             @Parameter(description = "新的单点登录客户端", required = true) @Valid @RequestBody MongoOAuth2ClientDetails domain) {
         log.debug("REST request to update oauth client detail: {}", domain);
@@ -121,7 +122,7 @@ public class OAuth2ClientDetailsController {
 
     @Operation(summary = "根据ID删除单点登录客户端", description = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
     @DeleteMapping("/api/oauth2-clients/{id}")
-    @Secured(Authority.ADMIN)
+    @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<Void> delete(@Parameter(description = "客户端ID", required = true) @PathVariable String id) {
         log.debug("REST request to delete oauth client detail: {}", id);
         oAuth2ClientDetailsRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
