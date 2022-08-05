@@ -17,6 +17,8 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.Arrays;
 
+import static org.infinity.passport.config.OAuth2AuthorizationServerSecurityConfiguration.LOGIN_PAGE_URI;
+
 @SpringBootApplication
 @EnableConfigurationProperties({ApplicationProperties.class})
 @ServletComponentScan
@@ -50,7 +52,7 @@ public class PassportServerLauncher implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/login").setViewName("oauth2/login");
-        registry.addViewController("/oauth/confirm_access").setViewName("oauth2/authorize");
+        registry.addViewController(LOGIN_PAGE_URI).setViewName(LOGIN_PAGE_URI);
+//        registry.addViewController("/oauth/confirm_access").setViewName("oauth2/authorize");
     }
 }

@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 /**
  * Authenticate a user from the database.
  */
-@Service
+//@Service
 @Slf4j
 public class SpringSecurityUserDetailsServiceImpl implements org.springframework.security.core.userdetails.UserDetailsService {
 
