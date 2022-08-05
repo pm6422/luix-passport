@@ -77,8 +77,8 @@ public class OAuth2Tests {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add(OAuth2ParameterNames.GRANT_TYPE, AuthorizationGrantType.CLIENT_CREDENTIALS.getValue());
         params.add(OAuth2ParameterNames.SCOPE, "message:read");
-        Map<String, Object> resultMap = execute(INTERNAL_CLIENT_ID, INTERNAL_RAW_CLIENT_SECRET, params);
-        assertThat(resultMap).containsKey("access_token");
+        // Request access token
+        Map<String, Object> resultMap = requestToken(INTERNAL_CLIENT_ID, INTERNAL_RAW_CLIENT_SECRET, params);
         // Request resource by access token
         assertRequestResource(resultMap);
     }
@@ -99,13 +99,18 @@ public class OAuth2Tests {
     @Test
     @DisplayName("password mode")
     public void passwordMode() throws Exception {
+        Map<String, Object> resultMap = requestTokenByPasswordMode();
+        // Request resource by access token
+        assertRequestResource(resultMap);
+    }
+
+    private Map<String, Object> requestTokenByPasswordMode() throws Exception {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add(OAuth2ParameterNames.GRANT_TYPE, AuthorizationGrantType.PASSWORD.getValue());
         params.add(OAuth2ParameterNames.USERNAME, "user");
         params.add(OAuth2ParameterNames.PASSWORD, "password");
-        Map<String, Object> resultMap = execute(INTERNAL_CLIENT_ID, INTERNAL_RAW_CLIENT_SECRET, params);
-        // Request resource by access token
-        assertRequestResource(resultMap);
+        // Request access token
+        return requestToken(INTERNAL_CLIENT_ID, INTERNAL_RAW_CLIENT_SECRET, params);
     }
 
     /**
@@ -129,7 +134,8 @@ public class OAuth2Tests {
         params.add(OAuth2ParameterNames.USERNAME, "user");
         params.add(OAuth2ParameterNames.PASSWORD, "password");
         params.add(OAuth2ParameterNames.SCOPE, "openid");
-        Map<String, Object> resultMap = execute(INTERNAL_CLIENT_ID, INTERNAL_RAW_CLIENT_SECRET, params);
+        // Request access token
+        Map<String, Object> resultMap = requestToken(INTERNAL_CLIENT_ID, INTERNAL_RAW_CLIENT_SECRET, params);
         assertThat(resultMap.get("scope")).isEqualTo("openid");
     }
 
@@ -149,7 +155,7 @@ public class OAuth2Tests {
     @Test
     @DisplayName("authorization code mode")
     public void authCodeMode() throws Exception {
-        // Get authorization code by web login
+        // Get authorization code via web login
         String authCode = getAuthCode(AUTH_CODE_CLIENT_ID, OidcScopes.OPENID);
         // Get access token by authorization code
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
@@ -157,50 +163,35 @@ public class OAuth2Tests {
         params.add(OAuth2ParameterNames.CODE, authCode);
         params.add(OAuth2ParameterNames.STATE, "some-state");
         params.add(OAuth2ParameterNames.REDIRECT_URI, REDIRECT_URI);
-        Map<String, Object> resultMap = execute(AUTH_CODE_CLIENT_ID, INTERNAL_RAW_CLIENT_SECRET, params);
-        assertThat(resultMap).containsKey("access_token");
+        Map<String, Object> resultMap = requestToken(AUTH_CODE_CLIENT_ID, INTERNAL_RAW_CLIENT_SECRET, params);
         assertThat(resultMap.get("scope")).isEqualTo("openid");
         // Request resource by access token
         assertRequestResource(resultMap);
     }
 
-
     @Test
     @DisplayName("introspect access token")
     void introspectAccessToken() throws Exception {
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add(OAuth2ParameterNames.GRANT_TYPE, AuthorizationGrantType.PASSWORD.getValue());
-        params.add(OAuth2ParameterNames.USERNAME, "user");
-        params.add(OAuth2ParameterNames.PASSWORD, "password");
-        Map<String, Object> resultMap = execute(INTERNAL_CLIENT_ID, INTERNAL_RAW_CLIENT_SECRET, params);
+        // Request access token
+        Map<String, Object> resultMap = requestTokenByPasswordMode();
         String accessToken = resultMap.get("access_token").toString();
 
-        HttpHeaders headers2 = new HttpHeaders();
-        headers2.add(HttpHeaders.AUTHORIZATION, getBasicHeader(INTERNAL_CLIENT_ID, INTERNAL_RAW_CLIENT_SECRET));
-
-        MultiValueMap<String, String> params2 = new LinkedMultiValueMap<>();
-        params2.add(OAuth2ParameterNames.TOKEN, accessToken);
-
         ResultActions result = mockMvc.perform(post(INTROSPECT_TOKEN_URI)
-                        .headers(headers2)
-                        .params(params2)
+                        .header(HttpHeaders.AUTHORIZATION, getBasicHeader(INTERNAL_CLIENT_ID, INTERNAL_RAW_CLIENT_SECRET))
+                        .param(OAuth2ParameterNames.TOKEN, accessToken)
                         .accept(APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk());
 
         String resultString = result.andReturn().getResponse().getContentAsString();
         Map<String, Object> objectMap = new JacksonJsonParser().parseMap(resultString);
-        log.info("Access token information: {}", JSON.toJSONString(objectMap, JSONWriter.Feature.PrettyFormat));
+        log.info("Access token details: {}", JSON.toJSONString(objectMap, JSONWriter.Feature.PrettyFormat));
     }
 
     @Test
     @DisplayName("refresh access token")
     public void refreshAccessToken() throws Exception {
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add(OAuth2ParameterNames.GRANT_TYPE, AuthorizationGrantType.PASSWORD.getValue());
-        params.add(OAuth2ParameterNames.USERNAME, "user");
-        params.add(OAuth2ParameterNames.PASSWORD, "password");
-        Map<String, Object> resultMap = execute(INTERNAL_CLIENT_ID, INTERNAL_RAW_CLIENT_SECRET, params);
-
+        // Request access token
+        Map<String, Object> resultMap = requestTokenByPasswordMode();
         String refreshToken1 = resultMap.get("refresh_token").toString();
         String accessToken1 = resultMap.get("access_token").toString();
 
@@ -210,7 +201,7 @@ public class OAuth2Tests {
         MultiValueMap<String, String> params2 = new LinkedMultiValueMap<>();
         params2.add(OAuth2ParameterNames.GRANT_TYPE, AuthorizationGrantType.REFRESH_TOKEN.getValue());
         params2.add(OAuth2ParameterNames.REFRESH_TOKEN, refreshToken1);
-        Map<String, Object> resultMap2 = execute(INTERNAL_CLIENT_ID, INTERNAL_RAW_CLIENT_SECRET, params2);
+        Map<String, Object> resultMap2 = requestToken(INTERNAL_CLIENT_ID, INTERNAL_RAW_CLIENT_SECRET, params2);
 
         String refreshToken2 = resultMap2.get("refresh_token").toString();
         String accessToken2 = resultMap2.get("access_token").toString();
@@ -220,48 +211,58 @@ public class OAuth2Tests {
         assertThat(accessToken1).isNotEqualTo(accessToken2);
     }
 
-//    @Test
-//    @DisplayName("revoke access token")
-//    public void revokeAccessToken() throws Exception {
-//        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-//        params.add(OAuth2ParameterNames.GRANT_TYPE, AuthorizationGrantType.PASSWORD.getValue());
-//        params.add(OAuth2ParameterNames.USERNAME, "user");
-//        params.add(OAuth2ParameterNames.PASSWORD, "password");
-//        Map<String, Object> resultMap = execute(params);
-//
-//        String accessToken = resultMap.get("access_token").toString();
-//        String refreshToken = resultMap.get("access_token").toString();
-//
-//        MultiValueMap<String, String> params2 = new LinkedMultiValueMap<>();
-//        params2.add(OAuth2ParameterNames.TOKEN, accessToken);
-//
-//        // Revoke access token
-////        mockMvc.perform(post("/oauth2/tokens/revoke")
-////                        .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_BEARER + accessToken)
-////                        .params(params2)
-////                        .accept(APPLICATION_JSON_VALUE))
-////                .andExpect(status().isOk());
-//
-//        mockMvc.perform(post(REVOKE_TOKEN_URI)
-//                        .header(HttpHeaders.AUTHORIZATION, getBasicHeader(INTERNAL_CLIENT_ID, INTERNAL_RAW_CLIENT_SECRET))
-//                        .params(params2)
-//                        .accept(APPLICATION_JSON_VALUE))
-//                .andExpect(status().isOk());
-//
+    @Test
+    @DisplayName("revoke access token")
+    public void revokeAccessToken() throws Exception {
+        // Request access token
+        Map<String, Object> resultMap = requestTokenByPasswordMode();
+
+        String accessToken = resultMap.get("access_token").toString();
+        String refreshToken = resultMap.get("access_token").toString();
+
+        // Introspect access token
+        ResultActions result1 = mockMvc.perform(post(INTROSPECT_TOKEN_URI)
+                        .header(HttpHeaders.AUTHORIZATION, getBasicHeader(INTERNAL_CLIENT_ID, INTERNAL_RAW_CLIENT_SECRET))
+                        .param(OAuth2ParameterNames.TOKEN, accessToken)
+                        .accept(APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk());
+
+        String resultString1 = result1.andReturn().getResponse().getContentAsString();
+        Map<String, Object> objectMap1 = new JacksonJsonParser().parseMap(resultString1);
+        assertThat(objectMap1.get("active")).isEqualTo(true);
+
+        // Revoke access token
+        mockMvc.perform(post(REVOKE_TOKEN_URI)
+                        .header(HttpHeaders.AUTHORIZATION, getBasicHeader(INTERNAL_CLIENT_ID, INTERNAL_RAW_CLIENT_SECRET))
+                        .param(OAuth2ParameterNames.TOKEN, accessToken)
+                        .accept(APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk());
+
+        // Introspect access token
+        ResultActions result2 = mockMvc.perform(post(INTROSPECT_TOKEN_URI)
+                        .header(HttpHeaders.AUTHORIZATION, getBasicHeader(INTERNAL_CLIENT_ID, INTERNAL_RAW_CLIENT_SECRET))
+                        .param(OAuth2ParameterNames.TOKEN, accessToken)
+                        .accept(APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk());
+
+        String resultString2 = result2.andReturn().getResponse().getContentAsString();
+        Map<String, Object> objectMap2 = new JacksonJsonParser().parseMap(resultString2);
+        assertThat(objectMap2.get("active")).isEqualTo(false);
+
 //        mockMvc.perform(get("/api/userinfo")
 //                        .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_BEARER + accessToken)
 //                        .contentType(APPLICATION_JSON_VALUE)
 //                        .accept(APPLICATION_JSON_VALUE))
 //                .andExpect(status().isUnauthorized());
-//    }
-//
+    }
 
 
-    private Map<String, Object> execute(String clientId, String rawClientSecret, MultiValueMap<String, String> params) throws Exception {
+    private Map<String, Object> requestToken(String clientId, String rawClientSecret, MultiValueMap<String, String> params) throws Exception {
         String resultString = this.doExecute(clientId, rawClientSecret, params).andReturn().getResponse().getContentAsString();
-        Map<String, Object> objectMap = new JacksonJsonParser().parseMap(resultString);
-        log.info("Result: {}", JSON.toJSONString(objectMap, JSONWriter.Feature.PrettyFormat));
-        return objectMap;
+        Map<String, Object> resultMap = new JacksonJsonParser().parseMap(resultString);
+        log.info("Token result: {}", JSON.toJSONString(resultMap, JSONWriter.Feature.PrettyFormat));
+        assertThat(resultMap).containsKey("access_token");
+        return resultMap;
     }
 
     private ResultActions doExecute(String clientId, String rawClientSecret, MultiValueMap<String, String> params) throws Exception {
