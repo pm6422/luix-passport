@@ -1,4 +1,4 @@
-package org.infinity.passport.config.oauth2;
+package org.infinity.passport.config.oauth2.consent;
 
 import java.util.HashMap;
 import java.util.Map;

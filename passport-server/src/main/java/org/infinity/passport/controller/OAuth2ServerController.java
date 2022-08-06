@@ -1,7 +1,7 @@
 package org.infinity.passport.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.infinity.passport.config.oauth2.ScopeWithDescription;
+import org.infinity.passport.config.oauth2.consent.ScopeWithDescription;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
