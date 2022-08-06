@@ -81,8 +81,7 @@ public class OAuth2AuthServerSecurityConfiguration {
                                                                       DaoAuthenticationProvider daoAuthenticationProvider) throws Exception {
         OAuth2AuthorizationServerConfigurer<HttpSecurity> authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer<>();
         // Apply authorization grant type authentication converters
-        http.apply(authorizationServerConfigurer.tokenEndpoint(tokenEndpoint ->
-                tokenEndpoint.accessTokenRequestConverter(getAuthorizationGrantTypeConverters())));
+        authorizationServerConfigurer.tokenEndpoint(endpoint -> endpoint.accessTokenRequestConverter(getAuthorizationGrantTypeConverters()));
         // Specify the consent page URI
         authorizationServerConfigurer.authorizationEndpoint(endpoint -> endpoint.consentPage(CUSTOM_CONSENT_PAGE_URI));
 
