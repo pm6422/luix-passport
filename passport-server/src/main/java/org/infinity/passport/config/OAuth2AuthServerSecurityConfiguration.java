@@ -97,6 +97,7 @@ public class OAuth2AuthServerSecurityConfiguration {
                 .csrf(csrf -> csrf.ignoringRequestMatchers(endpointsMatcher))
                 .formLogin(Customizer.withDefaults())
                 .apply(authorizationServerConfigurer);
+        // Configure custom login page URI
         http.apply(new FederatedIdentityConfigurer(CUSTOM_LOGIN_PAGE_URI));
 
         // Password grant authentication provider
