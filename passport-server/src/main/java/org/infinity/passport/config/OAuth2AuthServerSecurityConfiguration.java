@@ -67,6 +67,7 @@ public class OAuth2AuthServerSecurityConfiguration {
     public static final String VIEW_JWK_URI               = "/oauth2/jwks";
     public static final String REVOKE_TOKEN_URI           = "/oauth2/revoke";
     public static final String LOGIN_PAGE_URI             = "/oauth2/login";
+    public static final String CONSENT_PAGE_URI           = "/oauth2/consent";
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -82,10 +83,8 @@ public class OAuth2AuthServerSecurityConfiguration {
         // Apply authorization grant type authentication converters
         http.apply(authorizationServerConfigurer.tokenEndpoint(tokenEndpoint ->
                 tokenEndpoint.accessTokenRequestConverter(getAuthorizationGrantTypeConverters())));
-
-//        authorizationServerConfigurer
-//                .authorizationEndpoint(authorizationEndpoint ->
-//                        authorizationEndpoint.consentPage("/oauth2/consent"));
+        // Specify the consent page URI
+        authorizationServerConfigurer.authorizationEndpoint(endpoint -> endpoint.consentPage(CONSENT_PAGE_URI));
 
         RequestMatcher endpointsMatcher = authorizationServerConfigurer.getEndpointsMatcher();
         http
