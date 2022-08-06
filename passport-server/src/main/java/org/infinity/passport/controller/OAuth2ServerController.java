@@ -14,9 +14,10 @@ import javax.annotation.Resource;
 import java.security.Principal;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-import static org.infinity.passport.config.OAuth2AuthServerSecurityConfiguration.CONSENT_PAGE_URI;
-import static org.infinity.passport.config.OAuth2AuthServerSecurityConfiguration.LOGIN_PAGE_URI;
+import static org.infinity.passport.config.OAuth2AuthServerSecurityConfiguration.CUSTOM_CONSENT_PAGE_URI;
+import static org.infinity.passport.config.OAuth2AuthServerSecurityConfiguration.CUSTOM_LOGIN_PAGE_URI;
 
 /**
  * Controller for OAuth2 server.
@@ -28,12 +29,12 @@ public class OAuth2ServerController {
     @Resource
     private RegisteredClientRepository registeredClientRepository;
 
-    @GetMapping(LOGIN_PAGE_URI)
+    @GetMapping(CUSTOM_LOGIN_PAGE_URI)
     public String forwardToLoginPage() {
-        return LOGIN_PAGE_URI;
+        return CUSTOM_LOGIN_PAGE_URI;
     }
 
-    @GetMapping(CONSENT_PAGE_URI)
+    @GetMapping(CUSTOM_CONSENT_PAGE_URI)
     public String forwardToConsentPage(Principal principal, Model model,
                                        @RequestParam(OAuth2ParameterNames.CLIENT_ID) String clientId,
                                        @RequestParam(OAuth2ParameterNames.SCOPE) String scope,
@@ -50,18 +51,9 @@ public class OAuth2ServerController {
         model.addAttribute("clientId", clientId);
         model.addAttribute("clientName", registeredClient.getClientName());
         model.addAttribute("state", state);
-        model.addAttribute("scopes", withDescription(scopesToApprove));
+        model.addAttribute("scopes", scopesToApprove.stream().map(ScopeWithDescription::new).collect(Collectors.toSet()));
         model.addAttribute("principalName", principal != null ? principal.getName() : "");
         model.addAttribute("redirectUri", registeredClient.getRedirectUris().iterator().next());
         return "oauth2/consent";
-    }
-
-    private static Set<ScopeWithDescription> withDescription(Set<String> scopes) {
-        Set<ScopeWithDescription> scopeWithDescriptions = new LinkedHashSet<>();
-        for (String scope : scopes) {
-            scopeWithDescriptions.add(new ScopeWithDescription(scope));
-
-        }
-        return scopeWithDescriptions;
     }
 }

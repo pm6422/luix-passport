@@ -290,7 +290,7 @@ public class OAuth2Tests {
         this.webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
         this.webClient.getOptions().setRedirectEnabled(false);
 
-        HtmlPage page = this.webClient.getPage(LOGIN_PAGE_URI);
+        HtmlPage page = this.webClient.getPage(CUSTOM_LOGIN_PAGE_URI);
         // Redirect to Sign-in page
         assertLoginPage(page);
         // Sign in
@@ -318,7 +318,7 @@ public class OAuth2Tests {
     }
 
     private static void assertLoginPage(HtmlPage page) {
-        assertThat(page.getUrl().toString()).endsWith(LOGIN_PAGE_URI);
+        assertThat(page.getUrl().toString()).endsWith(CUSTOM_LOGIN_PAGE_URI);
 
         HtmlInput usernameInput = page.querySelector("input[name=\"username\"]");
         HtmlInput passwordInput = page.querySelector("input[name=\"password\"]");

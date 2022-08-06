@@ -66,8 +66,8 @@ public class OAuth2AuthServerSecurityConfiguration {
     public static final String INTROSPECT_TOKEN_URI       = "/oauth2/introspect";
     public static final String VIEW_JWK_URI               = "/oauth2/jwks";
     public static final String REVOKE_TOKEN_URI           = "/oauth2/revoke";
-    public static final String LOGIN_PAGE_URI             = "/oauth2/login";
-    public static final String CONSENT_PAGE_URI           = "/oauth2/consent";
+    public static final String CUSTOM_LOGIN_PAGE_URI      = "/oauth2/login";
+    public static final String CUSTOM_CONSENT_PAGE_URI    = "/oauth2/consent";
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -84,13 +84,13 @@ public class OAuth2AuthServerSecurityConfiguration {
         http.apply(authorizationServerConfigurer.tokenEndpoint(tokenEndpoint ->
                 tokenEndpoint.accessTokenRequestConverter(getAuthorizationGrantTypeConverters())));
         // Specify the consent page URI
-        authorizationServerConfigurer.authorizationEndpoint(endpoint -> endpoint.consentPage(CONSENT_PAGE_URI));
+        authorizationServerConfigurer.authorizationEndpoint(endpoint -> endpoint.consentPage(CUSTOM_CONSENT_PAGE_URI));
 
         RequestMatcher endpointsMatcher = authorizationServerConfigurer.getEndpointsMatcher();
         http
                 .requestMatcher(endpointsMatcher)
                 .authorizeRequests(authorizeRequests -> {
-                    authorizeRequests.antMatchers(LOGIN_PAGE_URI).permitAll();
+                    authorizeRequests.antMatchers(CUSTOM_LOGIN_PAGE_URI).permitAll();
                     authorizeRequests.anyRequest().authenticated();
                 })
                 .csrf(csrf -> csrf.ignoringRequestMatchers(endpointsMatcher))
@@ -109,7 +109,7 @@ public class OAuth2AuthServerSecurityConfiguration {
         http
                 .oauth2ResourceServer(resource -> resource.jwt())
                 .authorizeHttpRequests(authorize -> {
-                    authorize.antMatchers(LOGIN_PAGE_URI).permitAll();
+                    authorize.antMatchers(CUSTOM_LOGIN_PAGE_URI).permitAll();
                     authorize.antMatchers(HttpMethod.OPTIONS, "/**").permitAll();
                     authorize.antMatchers("/app/**/*.{js,html}").permitAll();
                     authorize.antMatchers("/content/**").permitAll();
