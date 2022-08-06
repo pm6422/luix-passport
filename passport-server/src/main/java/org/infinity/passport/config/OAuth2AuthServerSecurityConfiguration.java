@@ -5,7 +5,9 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import org.infinity.passport.config.oauth2.FederatedIdentityConfigurer;
 import org.infinity.passport.config.oauth2.OAuth2ConfigurerUtils;
+import org.infinity.passport.config.oauth2.UserRepositoryOAuth2UserHandler;
 import org.infinity.passport.config.oauth2.passwordgrant.OAuth2PasswordAuthenticationConverter;
 import org.infinity.passport.config.oauth2.passwordgrant.OAuth2PasswordAuthenticationProvider;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -95,6 +97,7 @@ public class OAuth2AuthServerSecurityConfiguration {
                 .csrf(csrf -> csrf.ignoringRequestMatchers(endpointsMatcher))
                 .formLogin(Customizer.withDefaults())
                 .apply(authorizationServerConfigurer);
+        http.apply(new FederatedIdentityConfigurer(CUSTOM_LOGIN_PAGE_URI));
 
         // Password grant authentication provider
         setPasswordGrantAuthentication(http, daoAuthenticationProvider, oAuth2PasswordAuthenticationProvider);
@@ -104,6 +107,8 @@ public class OAuth2AuthServerSecurityConfiguration {
     @Bean
     @Order(2)
     public SecurityFilterChain standardSecurityFilterChain(HttpSecurity http) throws Exception {
+        FederatedIdentityConfigurer federatedIdentityConfigurer = new FederatedIdentityConfigurer(CUSTOM_LOGIN_PAGE_URI);
+        federatedIdentityConfigurer.oauth2UserHandler(new UserRepositoryOAuth2UserHandler());
         // @formatter:off
         http
                 .oauth2ResourceServer(resource -> resource.jwt())
@@ -117,6 +122,7 @@ public class OAuth2AuthServerSecurityConfiguration {
                     authorize.anyRequest().authenticated();
                 })
                 .formLogin(Customizer.withDefaults());
+//                .apply(federatedIdentityConfigurer);
         // @formatter:on
         return http.build();
     }

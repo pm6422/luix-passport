@@ -112,6 +112,27 @@ spring:
     mongodb:
         embedded:
             version: 4.0.0
+    security:
+        oauth2:
+            client:
+                registration:
+                    google-idp:
+                        provider: google
+                        client-id: ${GOOGLE_CLIENT_ID:google-client-id}
+                        client-secret: ${GOOGLE_CLIENT_SECRET:google-client-secret}
+                        scope: openid, https://www.googleapis.com/auth/userinfo.profile, https://www.googleapis.com/auth/userinfo.email
+                        client-name: Sign in with Google
+                    github-idp:
+                        provider: github
+                        client-id: ${GITHUB_CLIENT_ID:0f25e4d118b8caa67371}
+                        client-secret: ${GITHUB_CLIENT_SECRET:b4eba530555b66efc49d4e4da558d59006ec873f}
+                        scope: user:email, read:user
+                        client-name: Sign in with GitHub
+                provider:
+                    google:
+                        user-name-attribute: email
+                    github:
+                        user-name-attribute: login
 server:
     # It can be overridden by `--server.port` value passed in the commandline or `-Dserver.port` set in `JAVA_OPTS`
     port: 9010
