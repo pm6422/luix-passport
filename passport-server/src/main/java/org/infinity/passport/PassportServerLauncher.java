@@ -17,7 +17,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.Arrays;
 
-import static org.infinity.passport.config.OAuth2AuthorizationServerSecurityConfiguration.LOGIN_PAGE_URI;
+import static org.infinity.passport.config.OAuth2AuthServerSecurityConfiguration.LOGIN_PAGE_URI;
 
 @SpringBootApplication
 @EnableConfigurationProperties({ApplicationProperties.class})

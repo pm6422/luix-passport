@@ -56,7 +56,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Configuration
-public class OAuth2AuthorizationServerSecurityConfiguration {
+public class OAuth2AuthServerSecurityConfiguration {
     public static final String AUTHORIZATION_BEARER       = "Bearer ";
     public static final String AUTHORIZATION_BASIC        = "Basic ";
     public static final String INTERNAL_CLIENT_ID         = "messaging-client";
@@ -98,6 +98,7 @@ public class OAuth2AuthorizationServerSecurityConfiguration {
                 .formLogin(Customizer.withDefaults())
                 .apply(authorizationServerConfigurer);
 
+        // Password grant authentication provider
         setPasswordGrantAuthentication(http, daoAuthenticationProvider, oAuth2PasswordAuthenticationProvider);
         return http.build();
     }
