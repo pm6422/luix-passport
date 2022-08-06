@@ -16,22 +16,28 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import static org.infinity.passport.config.OAuth2AuthServerSecurityConfiguration.CONSENT_PAGE_URI;
+import static org.infinity.passport.config.OAuth2AuthServerSecurityConfiguration.LOGIN_PAGE_URI;
 
 /**
- * Controller for OAuth2.
+ * Controller for OAuth2 server.
  */
 @Controller
 @Slf4j
-public class OAuth2Controller {
+public class OAuth2ServerController {
 
     @Resource
     private RegisteredClientRepository registeredClientRepository;
 
+    @GetMapping(LOGIN_PAGE_URI)
+    public String forwardToLoginPage() {
+        return LOGIN_PAGE_URI;
+    }
+
     @GetMapping(CONSENT_PAGE_URI)
-    public String consent(Principal principal, Model model,
-                          @RequestParam(OAuth2ParameterNames.CLIENT_ID) String clientId,
-                          @RequestParam(OAuth2ParameterNames.SCOPE) String scope,
-                          @RequestParam(OAuth2ParameterNames.STATE) String state) {
+    public String forwardToConsentPage(Principal principal, Model model,
+                                       @RequestParam(OAuth2ParameterNames.CLIENT_ID) String clientId,
+                                       @RequestParam(OAuth2ParameterNames.SCOPE) String scope,
+                                       @RequestParam(OAuth2ParameterNames.STATE) String state) {
         Set<String> scopesToApprove = new LinkedHashSet<>();
         RegisteredClient registeredClient = this.registeredClientRepository.findByClientId(clientId);
         Set<String> scopes = registeredClient.getScopes();
