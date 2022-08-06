@@ -188,6 +188,18 @@ public class OAuth2Tests {
     }
 
     @Test
+    @DisplayName("View JWK")
+    void viewJwk() throws Exception {
+        ResultActions result = mockMvc.perform(get(VIEW_JWK_URI)
+                        .accept(APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk());
+
+        String resultString = result.andReturn().getResponse().getContentAsString();
+        Map<String, Object> objectMap = new JacksonJsonParser().parseMap(resultString);
+        log.info("JWK details: {}", JSON.toJSONString(objectMap, JSONWriter.Feature.PrettyFormat));
+    }
+
+    @Test
     @DisplayName("refresh access token")
     public void refreshAccessToken() throws Exception {
         // Request access token
@@ -258,20 +270,16 @@ public class OAuth2Tests {
 
 
     private Map<String, Object> requestToken(String clientId, String rawClientSecret, MultiValueMap<String, String> params) throws Exception {
-        String resultString = this.doExecute(clientId, rawClientSecret, params).andReturn().getResponse().getContentAsString();
-        Map<String, Object> resultMap = new JacksonJsonParser().parseMap(resultString);
-        log.info("Token result: {}", JSON.toJSONString(resultMap, JSONWriter.Feature.PrettyFormat));
-        assertThat(resultMap).containsKey("access_token");
-        return resultMap;
-    }
-
-    private ResultActions doExecute(String clientId, String rawClientSecret, MultiValueMap<String, String> params) throws Exception {
         ResultActions result = mockMvc.perform(post(TOKEN_URI)
                         .header(HttpHeaders.AUTHORIZATION, getBasicHeader(clientId, rawClientSecret))
                         .params(params)
                         .accept(APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk());
-        return result;
+        String resultString = result.andReturn().getResponse().getContentAsString();
+        Map<String, Object> resultMap = new JacksonJsonParser().parseMap(resultString);
+        log.info("Token result: {}", JSON.toJSONString(resultMap, JSONWriter.Feature.PrettyFormat));
+        assertThat(resultMap).containsKey("access_token");
+        return resultMap;
     }
 
     private String getBasicHeader(String clientId, String rawClientSecret) {

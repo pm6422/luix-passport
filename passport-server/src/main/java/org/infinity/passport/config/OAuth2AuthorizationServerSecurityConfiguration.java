@@ -64,6 +64,7 @@ public class OAuth2AuthorizationServerSecurityConfiguration {
     public static final String INTERNAL_RAW_CLIENT_SECRET = "secret";
     public static final String TOKEN_URI                  = "/oauth2/token";
     public static final String INTROSPECT_TOKEN_URI       = "/oauth2/introspect";
+    public static final String VIEW_JWK_URI               = "/oauth2/jwks";
     public static final String REVOKE_TOKEN_URI           = "/oauth2/revoke";
     public static final String LOGIN_PAGE_URI             = "/oauth2/login";
 
@@ -129,6 +130,7 @@ public class OAuth2AuthorizationServerSecurityConfiguration {
                 .clientId(AUTH_CODE_CLIENT_ID)
                 .clientSecret(passwordEncoder().encode(INTERNAL_RAW_CLIENT_SECRET))
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+                // 最安全的流程，需要用户的参与
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
                 // Supports multiple valid redirect URIs
@@ -143,7 +145,7 @@ public class OAuth2AuthorizationServerSecurityConfiguration {
                 .clientId(INTERNAL_CLIENT_ID)
                 .clientSecret(passwordEncoder().encode(INTERNAL_RAW_CLIENT_SECRET))
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-                // 全局只有一个账号密码，使用这一个账号便可以访问资源
+                // 全局只有一个账号密码，使用这一个账号便可以访问资源，一般用于内部系统间调用
                 .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
                 // 每个用户有不同的账号密码，每个用户可以使用自己的账号访问资源
                 .authorizationGrantType(AuthorizationGrantType.PASSWORD)
