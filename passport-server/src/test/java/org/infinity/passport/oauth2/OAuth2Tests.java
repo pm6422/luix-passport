@@ -188,7 +188,7 @@ public class OAuth2Tests {
     }
 
     @Test
-    @DisplayName("View JWK")
+    @DisplayName("view JWK(JSON Web Key)")
     void viewJwk() throws Exception {
         ResultActions result = mockMvc.perform(get(VIEW_JWK_URI)
                         .accept(APPLICATION_JSON_VALUE))
