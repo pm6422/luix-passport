@@ -344,7 +344,8 @@ public class OAuth2Tests {
         mockMvc.perform(get("/api/dicts")
                         .contentType(APPLICATION_JSON_VALUE)
                         .accept(APPLICATION_JSON_VALUE))
-                .andExpect(status().isUnauthorized());
+                // Note: this is not a bug, it's a feature!
+                .andExpect(status().isFound());
 
         // authorized if request has an access token
         String accessToken = resultMap.get("access_token").toString();

@@ -121,8 +121,9 @@ public class OAuth2AuthServerSecurityConfiguration {
                     authorize.antMatchers("/swagger-ui/index.html").permitAll();
                     authorize.anyRequest().authenticated();
                 })
-                .formLogin(Customizer.withDefaults());
-//                .apply(federatedIdentityConfigurer);
+                .formLogin(Customizer.withDefaults())
+                // Support third-party login authentication
+                .apply(federatedIdentityConfigurer);
         // @formatter:on
         return http.build();
     }
