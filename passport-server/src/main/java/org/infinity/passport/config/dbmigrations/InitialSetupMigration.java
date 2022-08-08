@@ -20,9 +20,11 @@ import java.util.concurrent.TimeUnit;
 @ChangeUnit(id = "InitialSetupMigration", order = "01")
 public class InitialSetupMigration {
 
-    private static final String APP_NAME       = "passport-server";
-    private static final String MENU_PARENT_ID = "0";
-    private final MongoTemplate mongoTemplate;
+    private static final String        APP_NAME       = "passport-server";
+    public static final  String        USERNAME       = "louis";
+    public static final  String        PASSWORD       = "louis";
+    private static final String        MENU_PARENT_ID = "0";
+    private final        MongoTemplate mongoTemplate;
 
     public InitialSetupMigration(MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
@@ -119,13 +121,13 @@ public class InitialSetupMigration {
 
         // Creates 'louis' user and corresponding authorities
         User developerRoleUser = new User();
-        developerRoleUser.setUserName("louis");
+        developerRoleUser.setUserName(USERNAME);
         developerRoleUser.setFirstName("Louis");
         developerRoleUser.setLastName("Lau");
         developerRoleUser.setEmail("louis@luixtech.com");
         developerRoleUser.setMobileNo("15000899488");
         // Raw password: louis
-        developerRoleUser.setPasswordHash(passwordEncoder.encode("louis"));
+        developerRoleUser.setPasswordHash(passwordEncoder.encode(PASSWORD));
         developerRoleUser.setActivated(true);
         developerRoleUser.setActivationKey(null);
         developerRoleUser.setResetKey(null);
