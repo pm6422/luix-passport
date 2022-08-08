@@ -10,6 +10,7 @@ import org.infinity.passport.config.oauth2.OAuth2ConfigurerUtils;
 import org.infinity.passport.config.oauth2.UserRepositoryOAuth2UserHandler;
 import org.infinity.passport.config.oauth2.passwordgrant.OAuth2PasswordAuthenticationConverter;
 import org.infinity.passport.config.oauth2.passwordgrant.OAuth2PasswordAuthenticationProvider;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -141,7 +142,7 @@ public class OAuth2AuthServerSecurityConfiguration {
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
                 // Supports multiple valid redirect URIs
-                .redirectUri("http://127.0.0.1:8080/login/oauth2/code/login-client")
+                .redirectUri("http://127.0.0.1:9020")
                 .redirectUri("https://www.baidu.com")
                 .scope(OidcScopes.OPENID)
                 .scope(OidcScopes.PROFILE)
@@ -186,8 +187,9 @@ public class OAuth2AuthServerSecurityConfiguration {
     }
 
     @Bean
-    public ProviderSettings providerSettings() {
-        return ProviderSettings.builder().issuer("http://localhost:9070").build();
+    public ProviderSettings providerSettings(@Value("${server.port}") Integer port) {
+        //TODO: 配置化 生产应该使用域名
+        return ProviderSettings.builder().issuer("http://localhost:" + port).build();
     }
 
     @Bean
