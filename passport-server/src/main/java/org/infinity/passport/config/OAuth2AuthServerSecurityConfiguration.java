@@ -58,13 +58,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import static org.infinity.passport.domain.MongoOAuth2ClientDetails.INTERNAL_CLIENT_ID;
+import static org.infinity.passport.domain.MongoOAuth2ClientDetails.INTERNAL_RAW_CLIENT_SECRET;
+
 @Configuration
 public class OAuth2AuthServerSecurityConfiguration {
     public static final String AUTHORIZATION_BEARER       = "Bearer ";
     public static final String AUTHORIZATION_BASIC        = "Basic ";
-    public static final String INTERNAL_CLIENT_ID         = "messaging-client";
     public static final String AUTH_CODE_CLIENT_ID        = "login-client";
-    public static final String INTERNAL_RAW_CLIENT_SECRET = "secret";
     public static final String TOKEN_URI                  = "/oauth2/token";
     public static final String INTROSPECT_TOKEN_URI       = "/oauth2/introspect";
     public static final String VIEW_JWK_URI               = "/oauth2/jwks";
@@ -117,6 +118,7 @@ public class OAuth2AuthServerSecurityConfiguration {
                 .authorizeHttpRequests(authorize -> {
                     authorize.antMatchers(CUSTOM_LOGIN_PAGE_URI).permitAll();
                     authorize.antMatchers(HttpMethod.OPTIONS, "/**").permitAll();
+                    authorize.antMatchers("/").permitAll();
                     authorize.antMatchers("/app/**/*.{js,html}").permitAll();
                     authorize.antMatchers("/content/**").permitAll();
                     authorize.antMatchers("/favicon.png").permitAll();
