@@ -19,7 +19,6 @@ import java.util.List;
 /**
  * A MongoDB implementation of the TokenStore.
  */
-@Component
 public class MongoTokenStore implements TokenStore {
 
     private final OAuth2AccessTokenRepository oAuth2AccessTokenRepository;

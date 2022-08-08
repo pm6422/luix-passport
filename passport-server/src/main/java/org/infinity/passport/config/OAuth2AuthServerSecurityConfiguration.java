@@ -34,6 +34,8 @@ import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 import org.springframework.security.oauth2.server.authorization.InMemoryOAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
@@ -94,7 +96,8 @@ public class OAuth2AuthServerSecurityConfiguration {
                 .requestMatcher(endpointsMatcher)
                 .authorizeRequests(authorizeRequests -> {
                     authorizeRequests.antMatchers(CUSTOM_LOGIN_PAGE_URI).permitAll();
-                    authorizeRequests.anyRequest().authenticated();
+                    authorizeRequests.antMatchers("/open-api/**").permitAll();
+                    authorizeRequests.antMatchers("/api/**").authenticated();
                 })
                 .csrf(csrf -> csrf.ignoringRequestMatchers(endpointsMatcher))
                 .formLogin(Customizer.withDefaults())
@@ -123,7 +126,8 @@ public class OAuth2AuthServerSecurityConfiguration {
                     authorize.antMatchers("/content/**").permitAll();
                     authorize.antMatchers("/favicon.png").permitAll();
                     authorize.antMatchers("/swagger-ui/index.html").permitAll();
-                    authorize.anyRequest().authenticated();
+                    authorize.antMatchers("/open-api/**").permitAll();
+                    authorize.antMatchers("/api/**").authenticated();
                 })
                 .formLogin(Customizer.withDefaults())
                 // Support third-party login authentication
@@ -233,10 +237,10 @@ public class OAuth2AuthServerSecurityConfiguration {
         authenticationManagerBuilder.authenticationProvider(oAuth2PasswordAuthenticationProvider);
     }
 
-//    @Bean
-//    public TokenStore tokenStore() {
-//        return new InMemoryTokenStore();
-//    }
+    @Bean
+    public TokenStore tokenStore() {
+        return new InMemoryTokenStore();
+    }
 
     @Bean
     public OAuth2AuthorizationService oAuth2AuthorizationService() {

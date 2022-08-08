@@ -150,8 +150,8 @@ function LoginController($rootScope, $state, AuthenticationService) {
     var vm = this;
 
     vm.pageTitle = $state.current.data.pageTitle;
-    vm.userName = null;
-    vm.password = null;
+    vm.userName = 'louis';
+    vm.password = 'louis';
     vm.errorMsg = null;
     vm.login = login;
     vm.requestResetPassword = requestResetPassword;

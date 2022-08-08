@@ -974,16 +974,14 @@ function AuthServerService($http, $localStorage) {
 
     function login(credentials, successCallback, errorCallback) {
         $http.get('open-api/oauth2-client/internal-client').then(function (response) {
-            var data = 'username=' + encodeURIComponent(credentials.userName)
-                + '&password=' + encodeURIComponent(credentials.password)
-                + '&grant_type=password'
-                + '&client_id=' + response.data.first
-                + '&client_secret=' + response.data.second;
+            var params = '?grant_type=password'
+                + '&username=' + encodeURIComponent(credentials.userName)
+                + '&password=' + encodeURIComponent(credentials.password);
 
-            return $http.post('oauth/token', data, {
+            return $http.post('oauth2/token' + params, {}, {
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    'Authorization': 'Basic ' + btoa(response.data.first + ':' + response.data.second)
                 }
             }).success(function (data) {
                 var expiredAt = new Date();
