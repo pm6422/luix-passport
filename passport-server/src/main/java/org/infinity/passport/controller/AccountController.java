@@ -37,10 +37,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.security.oauth2.core.OAuth2TokenType;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
+import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -82,6 +83,8 @@ public class AccountController {
     private              MailService                mailService;
     @Resource
     private              TokenStore                 tokenStore;
+    @Resource
+    private              OAuth2AuthorizationService authorizationService;
     @Resource
     private              ApplicationEventPublisher  applicationEventPublisher;
     @Resource
@@ -133,14 +136,16 @@ public class AccountController {
     @GetMapping("/open-api/accounts/user")
     @Timed
     public ResponseEntity<Object> getTokenUser(HttpServletRequest request) {
-        String token = request.getHeader("authorization");
+        String token = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (token != null && token.toLowerCase().startsWith(OAuth2AccessToken.BEARER_TYPE.toLowerCase())) {
-            OAuth2Authentication oAuth2Authentication = tokenStore.readAuthentication(StringUtils
-                    .substringAfter(token.toLowerCase(), OAuth2AccessToken.BEARER_TYPE.toLowerCase()).trim());
-            if (oAuth2Authentication != null) {
-                User user = userService.findOneByUserName(oAuth2Authentication.getUserAuthentication().getName());
-                Set<String> authorities = oAuth2Authentication.getUserAuthentication().getAuthorities().stream()
-                        .map(GrantedAuthority::getAuthority).collect(Collectors.toSet());
+            String accessToken = StringUtils.substringAfter(token, OAuth2AccessToken.BEARER_TYPE).trim();
+//            OAuth2Authentication oAuth2Authentication = tokenStore.readAuthentication(accessToken);
+            OAuth2Authorization authorization = authorizationService.findByToken(accessToken, OAuth2TokenType.ACCESS_TOKEN);
+            if (authorization != null) {
+                User user = userService.findOneByUserName(authorization.getPrincipalName());
+                List<UserAuthority> userAuthorities = Optional.ofNullable(userAuthorityRepository.findByUserId(user.getId()))
+                        .orElseThrow(() -> new NoAuthorityException(SecurityUtils.getCurrentUserName()));
+                Set<String> authorities = userAuthorities.stream().map(UserAuthority::getAuthorityName).collect(Collectors.toSet());
                 if (user != null) {
                     user.setAuthorities(authorities);
                     return ResponseEntity.ok(user);
