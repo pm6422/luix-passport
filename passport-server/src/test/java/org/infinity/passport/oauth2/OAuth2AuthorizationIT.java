@@ -39,6 +39,8 @@ import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.infinity.passport.config.OAuth2AuthServerSecurityConfiguration.*;
+import static org.infinity.passport.config.dbmigrations.InitialSetupMigration.PASSWORD;
+import static org.infinity.passport.config.dbmigrations.InitialSetupMigration.USERNAME;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -107,8 +109,8 @@ public class OAuth2AuthorizationIT {
     private Map<String, Object> requestTokenByPasswordMode() throws Exception {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add(OAuth2ParameterNames.GRANT_TYPE, AuthorizationGrantType.PASSWORD.getValue());
-        params.add(OAuth2ParameterNames.USERNAME, "user");
-        params.add(OAuth2ParameterNames.PASSWORD, "password");
+        params.add(OAuth2ParameterNames.USERNAME, USERNAME);
+        params.add(OAuth2ParameterNames.PASSWORD, PASSWORD);
         // Request access token
         return requestToken(INTERNAL_CLIENT_ID, INTERNAL_RAW_CLIENT_SECRET, params);
     }
@@ -131,8 +133,8 @@ public class OAuth2AuthorizationIT {
     public void passwordModeWithOpenIdScope() throws Exception {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add(OAuth2ParameterNames.GRANT_TYPE, AuthorizationGrantType.PASSWORD.getValue());
-        params.add(OAuth2ParameterNames.USERNAME, "user");
-        params.add(OAuth2ParameterNames.PASSWORD, "password");
+        params.add(OAuth2ParameterNames.USERNAME, USERNAME);
+        params.add(OAuth2ParameterNames.PASSWORD, PASSWORD);
         params.add(OAuth2ParameterNames.SCOPE, "openid");
         // Request access token
         Map<String, Object> resultMap = requestToken(INTERNAL_CLIENT_ID, INTERNAL_RAW_CLIENT_SECRET, params);
@@ -294,7 +296,7 @@ public class OAuth2AuthorizationIT {
         // Redirect to Sign-in page
         assertLoginPage(page);
         // Sign in
-        signIn(page, "user", "password");
+        signIn(page, USERNAME, PASSWORD);
 
         String authorizationRequest = UriComponentsBuilder
                 .fromPath("/oauth2/authorize")

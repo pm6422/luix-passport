@@ -7,9 +7,12 @@ import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import org.infinity.passport.config.oauth2.FederatedIdentityConfigurer;
 import org.infinity.passport.config.oauth2.OAuth2ConfigurerUtils;
+import org.infinity.passport.config.oauth2.SecurityUserDetailsService;
 import org.infinity.passport.config.oauth2.UserRepositoryOAuth2UserHandler;
 import org.infinity.passport.config.oauth2.passwordgrant.OAuth2PasswordAuthenticationConverter;
 import org.infinity.passport.config.oauth2.passwordgrant.OAuth2PasswordAuthenticationProvider;
+import org.infinity.passport.repository.UserAuthorityRepository;
+import org.infinity.passport.service.UserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Bean;
@@ -23,8 +26,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.HttpSecurityBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.authorization.OAuth2AuthorizationServerConfigurer;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -45,7 +46,6 @@ import org.springframework.security.oauth2.server.authorization.web.authenticati
 import org.springframework.security.oauth2.server.authorization.web.authentication.OAuth2AuthorizationCodeAuthenticationConverter;
 import org.springframework.security.oauth2.server.authorization.web.authentication.OAuth2ClientCredentialsAuthenticationConverter;
 import org.springframework.security.oauth2.server.authorization.web.authentication.OAuth2RefreshTokenAuthenticationConverter;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationConverter;
 import org.springframework.security.web.util.matcher.RequestMatcher;
@@ -242,17 +242,9 @@ public class OAuth2AuthServerSecurityConfiguration {
     }
 
     @Bean
-    public UserDetailsService userDetailsService() {
-        // @formatter:off
-        UserDetails userDetails = User
-                .withUsername("user")
-                .password("password")
-                .passwordEncoder(passwordEncoder()::encode)
-                .roles("USER")
-                .build();
-        // @formatter:on
-
-        return new InMemoryUserDetailsManager(userDetails);
+    public UserDetailsService userDetailsService(UserService userService,
+                                                 UserAuthorityRepository userAuthorityRepository) {
+        return new SecurityUserDetailsService(userService, userAuthorityRepository);
     }
 
     @Bean
