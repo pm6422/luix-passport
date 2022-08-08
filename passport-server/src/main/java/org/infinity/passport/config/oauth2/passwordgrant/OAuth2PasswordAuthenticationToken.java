@@ -12,7 +12,8 @@ import java.util.Map;
 import java.util.Set;
 
 public class OAuth2PasswordAuthenticationToken extends OAuth2AuthorizationGrantAuthenticationToken {
-    private final Set<String> scopes;
+    private static final long        serialVersionUID = -7793318818051403023L;
+    private final        Set<String> scopes;
 
     /**
      * Constructs an {@code OAuth2ClientCredentialsAuthenticationToken} using the provided parameters.
