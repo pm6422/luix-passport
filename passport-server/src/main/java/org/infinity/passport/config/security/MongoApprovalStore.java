@@ -2,8 +2,8 @@ package org.infinity.passport.config.security;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
-import org.infinity.passport.domain.MongoOAuth2Approval;
-import org.infinity.passport.repository.OAuth2ApprovalRepository;
+import org.infinity.passport.domain.useless.MongoOAuth2Approval;
+import org.infinity.passport.repository.useless.OAuth2ApprovalRepository;
 import org.springframework.security.oauth2.provider.approval.Approval;
 import org.springframework.security.oauth2.provider.approval.ApprovalStore;
 import org.springframework.stereotype.Component;

@@ -60,8 +60,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-import static org.infinity.passport.domain.MongoOAuth2ClientDetails.INTERNAL_CLIENT_ID;
-import static org.infinity.passport.domain.MongoOAuth2ClientDetails.INTERNAL_RAW_CLIENT_SECRET;
+import static org.infinity.passport.domain.useless.MongoOAuth2ClientDetails.INTERNAL_CLIENT_ID;
+import static org.infinity.passport.domain.useless.MongoOAuth2ClientDetails.INTERNAL_RAW_CLIENT_SECRET;
 
 @Configuration
 public class OAuth2AuthServerSecurityConfiguration {

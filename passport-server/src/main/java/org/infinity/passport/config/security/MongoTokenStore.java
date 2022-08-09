@@ -1,16 +1,15 @@
 package org.infinity.passport.config.security;
 
-import org.infinity.passport.domain.MongoOAuth2AccessToken;
-import org.infinity.passport.domain.MongoOAuth2RefreshToken;
-import org.infinity.passport.repository.OAuth2AccessTokenRepository;
-import org.infinity.passport.repository.OAuth2RefreshTokenRepository;
+import org.infinity.passport.domain.useless.MongoOAuth2AccessToken;
+import org.infinity.passport.domain.useless.MongoOAuth2RefreshToken;
+import org.infinity.passport.repository.useless.OAuth2AccessTokenRepository;
+import org.infinity.passport.repository.useless.OAuth2RefreshTokenRepository;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2RefreshToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.AuthenticationKeyGenerator;
 import org.springframework.security.oauth2.provider.token.DefaultAuthenticationKeyGenerator;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collection;

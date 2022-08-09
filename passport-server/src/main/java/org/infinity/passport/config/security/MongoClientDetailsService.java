@@ -1,8 +1,8 @@
 package org.infinity.passport.config.security;
 
 import lombok.extern.slf4j.Slf4j;
-import org.infinity.passport.domain.MongoOAuth2ClientDetails;
-import org.infinity.passport.repository.OAuth2ClientDetailsRepository;
+import org.infinity.passport.domain.useless.MongoOAuth2ClientDetails;
+import org.infinity.passport.repository.useless.OAuth2ClientDetailsRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.*;
 import org.springframework.security.oauth2.provider.client.BaseClientDetails;

@@ -1,7 +1,7 @@
 package org.infinity.passport.config.security;
 
-import org.infinity.passport.domain.MongoOAuth2AuthorizationCode;
-import org.infinity.passport.repository.OAuth2AuthorizationCodeRepository;
+import org.infinity.passport.domain.useless.MongoOAuth2AuthorizationCode;
+import org.infinity.passport.repository.useless.OAuth2AuthorizationCodeRepository;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.code.RandomValueAuthorizationCodeServices;
 import org.springframework.stereotype.Service;

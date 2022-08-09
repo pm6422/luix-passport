@@ -7,16 +7,15 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.infinity.passport.component.HttpHeaderCreator;
 import org.infinity.passport.domain.Authority;
-import org.infinity.passport.domain.MongoOAuth2AuthorizationCode;
+import org.infinity.passport.domain.useless.MongoOAuth2AuthorizationCode;
 import org.infinity.passport.exception.DataNotFoundException;
-import org.infinity.passport.repository.OAuth2AuthorizationCodeRepository;
+import org.infinity.passport.repository.useless.OAuth2AuthorizationCodeRepository;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
