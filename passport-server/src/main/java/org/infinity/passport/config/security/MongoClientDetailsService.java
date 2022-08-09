@@ -1,4 +1,4 @@
-package org.infinity.passport.config.oauth2;
+package org.infinity.passport.config.security;
 
 import lombok.extern.slf4j.Slf4j;
 import org.infinity.passport.domain.MongoOAuth2ClientDetails;

@@ -1,13 +1,18 @@
 package org.infinity.passport.config.oauth2;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
 
+@ToString
 public class SecurityUser extends org.springframework.security.core.userdetails.User {
-    private static final long serialVersionUID = -8021915441738843058L;
-
-    private String userId;
+    private static final long   serialVersionUID = -8021915441738843058L;
+    @Setter
+    @Getter
+    private              String userId;
 
     public SecurityUser(String userId, String username, String password, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
@@ -19,18 +24,5 @@ public class SecurityUser extends org.springframework.security.core.userdetails.
                         Collection<? extends GrantedAuthority> authorities) {
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
         this.userId = userId;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    @Override
-    public String toString() {
-        return super.toString();
     }
 }

@@ -1,4 +1,4 @@
-package org.infinity.passport.config.oauth2;
+package org.infinity.passport.config.security;
 
 import org.bson.Document;
 import org.springframework.core.convert.converter.Converter;

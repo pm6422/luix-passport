@@ -1,6 +1,5 @@
-package org.infinity.passport.utils;
+package org.infinity.passport.config.oauth2;
 
-import org.infinity.passport.config.oauth2.SecurityUser;
 import org.infinity.passport.domain.Authority;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;

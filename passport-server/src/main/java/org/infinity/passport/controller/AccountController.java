@@ -29,7 +29,7 @@ import org.infinity.passport.service.MailService;
 import org.infinity.passport.service.UserProfilePhotoService;
 import org.infinity.passport.service.UserService;
 import org.infinity.passport.utils.RandomUtils;
-import org.infinity.passport.utils.SecurityUtils;
+import org.infinity.passport.config.oauth2.SecurityUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;

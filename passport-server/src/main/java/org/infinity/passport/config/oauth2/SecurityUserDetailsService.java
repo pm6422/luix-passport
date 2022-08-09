@@ -42,7 +42,7 @@ public class SecurityUserDetailsService implements org.springframework.security.
                 .stream().map(userAuthority -> new SimpleGrantedAuthority(userAuthority.getAuthorityName()))
                 .collect(Collectors.toList());
 
-        return new org.springframework.security.core.userdetails.User(userFromDatabase.getUserName(),
+        return new SecurityUser(userFromDatabase.getId(), userFromDatabase.getUserName(),
                 userFromDatabase.getPasswordHash(), userFromDatabase.getEnabled(),
                 true, true, true, grantedAuthorities);
     }

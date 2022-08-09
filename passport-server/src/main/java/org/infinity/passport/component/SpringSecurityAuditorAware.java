@@ -1,7 +1,7 @@
 package org.infinity.passport.component;
 
 import org.infinity.passport.domain.Authority;
-import org.infinity.passport.utils.SecurityUtils;
+import org.infinity.passport.config.oauth2.SecurityUtils;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.stereotype.Component;
 

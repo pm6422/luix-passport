@@ -2,10 +2,10 @@ package org.infinity.passport.config;
 
 import io.mongock.runner.springboot.EnableMongock;
 import lombok.extern.slf4j.Slf4j;
-import org.infinity.passport.config.oauth2.OAuth2AccessTokenReadConverter;
-import org.infinity.passport.config.oauth2.OAuth2AuthenticationReadConverter;
-import org.infinity.passport.config.oauth2.OAuth2GrantedAuthorityTokenReadConverter;
-import org.infinity.passport.config.oauth2.OAuth2RefreshTokenReadConverter;
+import org.infinity.passport.config.security.OAuth2AccessTokenReadConverter;
+import org.infinity.passport.config.security.OAuth2AuthenticationReadConverter;
+import org.infinity.passport.config.security.OAuth2GrantedAuthorityTokenReadConverter;
+import org.infinity.passport.config.security.OAuth2RefreshTokenReadConverter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Bean;
@@ -68,21 +68,21 @@ public class MongoConfiguration {
         return new ValidatingMongoEventListener(validator);
     }
 
-    @Bean
-    public MongoCustomConversions customConversions() {
-        List<Converter<?, ?>> converters = new ArrayList<>();
-        converters.add(new OAuth2AccessTokenReadConverter());
-        converters.add(new OAuth2RefreshTokenReadConverter());
-        converters.add(new OAuth2AuthenticationReadConverter());
-        converters.add(new OAuth2GrantedAuthorityTokenReadConverter());
-        return new MongoCustomConversions(converters);
-    }
+//    @Bean
+//    public MongoCustomConversions customConversions() {
+//        List<Converter<?, ?>> converters = new ArrayList<>();
+//        converters.add(new OAuth2AccessTokenReadConverter());
+//        converters.add(new OAuth2RefreshTokenReadConverter());
+//        converters.add(new OAuth2AuthenticationReadConverter());
+//        converters.add(new OAuth2GrantedAuthorityTokenReadConverter());
+//        return new MongoCustomConversions(converters);
+//    }
 
     @Bean
     public MappingMongoConverter mappingMongoConverter() {
         DbRefResolver dbRefResolver = new DefaultDbRefResolver(mongoDatabaseFactory);
         MappingMongoConverter converter = new MappingMongoConverter(dbRefResolver, mongoMappingContext);
-        converter.setCustomConversions(customConversions());
+//        converter.setCustomConversions(customConversions());
         // remove _class field
         converter.setTypeMapper(new DefaultMongoTypeMapper(null));
         return converter;

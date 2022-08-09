@@ -7,7 +7,7 @@ import org.infinity.passport.repository.AdminMenuRepository;
 import org.infinity.passport.service.AdminMenuService;
 import org.infinity.passport.service.AuthorityAdminMenuService;
 import org.infinity.passport.service.AuthorityService;
-import org.infinity.passport.utils.SecurityUtils;
+import org.infinity.passport.config.oauth2.SecurityUtils;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;

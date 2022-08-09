@@ -1,6 +1,7 @@
-package org.infinity.passport.config.oauth2;
+package org.infinity.passport.config.security;
 
 import org.bson.Document;
+import org.infinity.passport.config.oauth2.SecurityUser;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

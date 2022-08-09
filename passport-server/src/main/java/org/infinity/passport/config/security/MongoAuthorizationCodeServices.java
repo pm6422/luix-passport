@@ -1,4 +1,4 @@
-package org.infinity.passport.config.oauth2;
+package org.infinity.passport.config.security;
 
 import org.infinity.passport.domain.MongoOAuth2AuthorizationCode;
 import org.infinity.passport.repository.OAuth2AuthorizationCodeRepository;
