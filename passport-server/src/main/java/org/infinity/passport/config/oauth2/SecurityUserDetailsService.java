@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Slf4j
 public class SecurityUserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
-
     private final UserService             userService;
     private final UserAuthorityRepository userAuthorityRepository;
 
