@@ -7,7 +7,7 @@ import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import org.infinity.passport.config.oauth2.FederatedIdentityConfigurer;
 import org.infinity.passport.config.oauth2.OAuth2ConfigurerUtils;
-import org.infinity.passport.config.oauth2.SecurityUserDetailsService;
+import org.infinity.passport.config.oauth2.SecurityUserDetailsServiceImpl;
 import org.infinity.passport.config.oauth2.UserRepositoryOAuth2UserHandler;
 import org.infinity.passport.config.oauth2.passwordgrant.OAuth2PasswordAuthenticationConverter;
 import org.infinity.passport.config.oauth2.passwordgrant.OAuth2PasswordAuthenticationProvider;
@@ -250,7 +250,7 @@ public class OAuth2AuthServerSecurityConfiguration {
     @Bean
     public UserDetailsService userDetailsService(UserService userService,
                                                  UserAuthorityRepository userAuthorityRepository) {
-        return new SecurityUserDetailsService(userService, userAuthorityRepository);
+        return new SecurityUserDetailsServiceImpl(userService, userAuthorityRepository);
     }
 
     @Bean
