@@ -135,6 +135,11 @@ public class OAuth2AuthServerSecurityConfiguration {
     }
 
     @Bean
+    public ProviderSettings providerSettings(ApplicationProperties applicationProperties) {
+        return ProviderSettings.builder().issuer(applicationProperties.getServer().getAddress()).build();
+    }
+
+    @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
@@ -148,11 +153,6 @@ public class OAuth2AuthServerSecurityConfiguration {
     @Bean
     public RegisteredClientRepository registeredClientRepository(OAuth2ClientRepository oauth2ClientRepository) {
         return new MongoOAuth2RegisteredClientRepository(oauth2ClientRepository);
-    }
-
-    @Bean
-    public ProviderSettings providerSettings(ApplicationProperties applicationProperties) {
-        return ProviderSettings.builder().issuer(applicationProperties.getServer().getAddress()).build();
     }
 
     @Bean
