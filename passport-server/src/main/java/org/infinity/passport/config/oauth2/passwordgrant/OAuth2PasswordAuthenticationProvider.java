@@ -55,7 +55,6 @@ public class OAuth2PasswordAuthenticationProvider implements AuthenticationProvi
         if (!registeredClient.getAuthorizationGrantTypes().contains(AuthorizationGrantType.PASSWORD)) {
             throw new OAuth2AuthenticationException(OAuth2ErrorCodes.UNAUTHORIZED_CLIENT);
         }
-
         Map<String, Object> additionalParameters = resourceOwnerPasswordAuthentication.getAdditionalParameters();
         String password = (String) additionalParameters.get(OAuth2ParameterNames.PASSWORD);
         if (StringUtils.isEmpty(password)) {
@@ -78,7 +77,6 @@ public class OAuth2PasswordAuthenticationProvider implements AuthenticationProvi
             if (!CollectionUtils.isEmpty(unauthorizedScopes)) {
                 throw new OAuth2AuthenticationException(OAuth2ErrorCodes.INVALID_SCOPE);
             }
-
             authorizedScopes = new LinkedHashSet<>(resourceOwnerPasswordAuthentication.getScopes());
         }
 
@@ -189,17 +187,13 @@ public class OAuth2PasswordAuthenticationProvider implements AuthenticationProvi
     }
 
     private OAuth2ClientAuthenticationToken getAuthenticatedClientElseThrowInvalidClient(Authentication authentication) {
-
         OAuth2ClientAuthenticationToken clientPrincipal = null;
-
         if (OAuth2ClientAuthenticationToken.class.isAssignableFrom(authentication.getPrincipal().getClass())) {
             clientPrincipal = (OAuth2ClientAuthenticationToken) authentication.getPrincipal();
         }
-
         if (clientPrincipal != null && clientPrincipal.isAuthenticated()) {
             return clientPrincipal;
         }
-
         throw new OAuth2AuthenticationException(OAuth2ErrorCodes.INVALID_CLIENT);
     }
 }
