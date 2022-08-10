@@ -28,8 +28,7 @@ public class InitialSetupMigration {
     private final        MongoTemplate   mongoTemplate;
     private final        PasswordEncoder passwordEncoder;
 
-    public InitialSetupMigration(MongoTemplate mongoTemplate,
-                                 PasswordEncoder passwordEncoder) {
+    public InitialSetupMigration(MongoTemplate mongoTemplate, PasswordEncoder passwordEncoder) {
         this.mongoTemplate = mongoTemplate;
         this.passwordEncoder = passwordEncoder;
     }
@@ -230,7 +229,7 @@ public class InitialSetupMigration {
                 // 最安全的流程，需要用户的参与
                 Set.of(AuthorizationGrantType.AUTHORIZATION_CODE.getValue(),
                         AuthorizationGrantType.REFRESH_TOKEN.getValue()));
-        // Note: localhost and 127.0.0.1 must be save twice.
+        // Note: localhost and 127.0.0.1 must be saved twice.
         oAuth2Client1.setRedirectUris(Set.of("http://127.0.0.1:9020", "http://localhost:9020", "https://www.baidu.com"));
         oAuth2Client1.setScopes(Set.of(OAuth2Client.OAuth2Scope.builder().scope(OidcScopes.OPENID).description("openid").build(),
                 OAuth2Client.OAuth2Scope.builder().scope(OidcScopes.PROFILE).description("profile").build()));
