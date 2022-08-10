@@ -176,13 +176,9 @@ public class OAuth2AuthServerSecurityConfiguration {
 
     private DelegatingAuthenticationConverter getAuthorizationGrantTypeConverters() {
         List<AuthenticationConverter> converters = Arrays.asList(
-                // Client credentials grant type authentication converter
                 new OAuth2ClientCredentialsAuthenticationConverter(),
-                // Password grant type authentication converter
                 new OAuth2PasswordAuthenticationConverter(),
-                // Refresh token grant type authentication converter
                 new OAuth2RefreshTokenAuthenticationConverter(),
-                // Authorization code grant type authentication converter
                 new OAuth2AuthorizationCodeAuthenticationConverter());
         return new DelegatingAuthenticationConverter(converters);
     }
