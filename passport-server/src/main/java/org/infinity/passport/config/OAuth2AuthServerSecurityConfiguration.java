@@ -122,6 +122,15 @@ public class OAuth2AuthServerSecurityConfiguration {
         return http.build();
     }
 
+    private DelegatingAuthenticationConverter getAuthorizationGrantTypeConverters() {
+        List<AuthenticationConverter> converters = Arrays.asList(
+                new OAuth2ClientCredentialsAuthenticationConverter(),
+                new OAuth2PasswordAuthenticationConverter(),
+                new OAuth2RefreshTokenAuthenticationConverter(),
+                new OAuth2AuthorizationCodeAuthenticationConverter());
+        return new DelegatingAuthenticationConverter(converters);
+    }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -159,15 +168,6 @@ public class OAuth2AuthServerSecurityConfiguration {
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
         daoAuthenticationProvider.setUserDetailsService(userDetailsService);
         return daoAuthenticationProvider;
-    }
-
-    private DelegatingAuthenticationConverter getAuthorizationGrantTypeConverters() {
-        List<AuthenticationConverter> converters = Arrays.asList(
-                new OAuth2ClientCredentialsAuthenticationConverter(),
-                new OAuth2PasswordAuthenticationConverter(),
-                new OAuth2RefreshTokenAuthenticationConverter(),
-                new OAuth2AuthorizationCodeAuthenticationConverter());
-        return new DelegatingAuthenticationConverter(converters);
     }
 
     private static void setPasswordGrantAuthentication(HttpSecurity http,
