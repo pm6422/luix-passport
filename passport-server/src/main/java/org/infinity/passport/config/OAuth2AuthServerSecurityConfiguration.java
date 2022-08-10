@@ -11,6 +11,8 @@ import org.infinity.passport.config.oauth2.SecurityUserDetailsServiceImpl;
 import org.infinity.passport.config.oauth2.UserRepositoryOAuth2UserHandler;
 import org.infinity.passport.config.oauth2.passwordgrant.OAuth2PasswordAuthenticationConverter;
 import org.infinity.passport.config.oauth2.passwordgrant.OAuth2PasswordAuthenticationProvider;
+import org.infinity.passport.config.oauth2.repository.impl.MongoOAuth2RegisteredClientRepository;
+import org.infinity.passport.repository.OAuth2ClientRepository;
 import org.infinity.passport.repository.UserAuthorityRepository;
 import org.infinity.passport.service.UserService;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,19 +31,13 @@ import org.springframework.security.config.annotation.web.configurers.oauth2.ser
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.core.AuthorizationGrantType;
-import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
-import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 import org.springframework.security.oauth2.server.authorization.InMemoryOAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
-import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
-import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
-import org.springframework.security.oauth2.server.authorization.config.ClientSettings;
 import org.springframework.security.oauth2.server.authorization.config.ProviderSettings;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenGenerator;
 import org.springframework.security.oauth2.server.authorization.web.authentication.DelegatingAuthenticationConverter;
@@ -60,20 +56,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-import static org.infinity.passport.domain.useless.MongoOAuth2ClientDetails.INTERNAL_CLIENT_ID;
-import static org.infinity.passport.domain.useless.MongoOAuth2ClientDetails.INTERNAL_RAW_CLIENT_SECRET;
-
 @Configuration
 public class OAuth2AuthServerSecurityConfiguration {
-    public static final String AUTHORIZATION_BEARER       = "Bearer ";
-    public static final String AUTHORIZATION_BASIC        = "Basic ";
-    public static final String AUTH_CODE_CLIENT_ID        = "login-client";
-    public static final String TOKEN_URI                  = "/oauth2/token";
-    public static final String INTROSPECT_TOKEN_URI       = "/oauth2/introspect";
-    public static final String VIEW_JWK_URI               = "/oauth2/jwks";
-    public static final String REVOKE_TOKEN_URI           = "/oauth2/revoke";
-    public static final String CUSTOM_LOGIN_PAGE_URI      = "/oauth2/login";
-    public static final String CUSTOM_CONSENT_PAGE_URI    = "/oauth2/consent";
+    public static final String AUTHORIZATION_BEARER    = "Bearer ";
+    public static final String AUTHORIZATION_BASIC     = "Basic ";
+    public static final String TOKEN_URI               = "/oauth2/token";
+    public static final String INTROSPECT_TOKEN_URI    = "/oauth2/introspect";
+    public static final String VIEW_JWK_URI            = "/oauth2/jwks";
+    public static final String REVOKE_TOKEN_URI        = "/oauth2/revoke";
+    public static final String CUSTOM_LOGIN_PAGE_URI   = "/oauth2/login";
+    public static final String CUSTOM_CONSENT_PAGE_URI = "/oauth2/consent";
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -130,47 +122,15 @@ public class OAuth2AuthServerSecurityConfiguration {
                     authorize.antMatchers("/api/**").authenticated();
                 })
                 .formLogin(Customizer.withDefaults())
-                // Support third-party login authentication
+                // Supports third-party login authentication
                 .apply(federatedIdentityConfigurer);
         // @formatter:on
         return http.build();
     }
 
     @Bean
-    public RegisteredClientRepository registeredClientRepository() {
-        // @formatter:off
-        RegisteredClient loginClient = RegisteredClient
-                .withId(UUID.randomUUID().toString())
-                .clientId(AUTH_CODE_CLIENT_ID)
-                .clientSecret(passwordEncoder().encode(INTERNAL_RAW_CLIENT_SECRET))
-                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-                // 最安全的流程，需要用户的参与
-                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                // Supports multiple valid redirect URIs
-                .redirectUri("http://127.0.0.1:9020")
-                .redirectUri("https://www.baidu.com")
-                .scope(OidcScopes.OPENID)
-                .scope(OidcScopes.PROFILE)
-                .clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
-                .build();
-        RegisteredClient registeredClient = RegisteredClient
-                .withId(UUID.randomUUID().toString())
-                .clientId(INTERNAL_CLIENT_ID)
-                .clientSecret(passwordEncoder().encode(INTERNAL_RAW_CLIENT_SECRET))
-                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-                // 全局只有一个账号密码，使用这一个账号便可以访问资源，一般用于内部系统间调用
-                .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-                // 每个用户有不同的账号密码，每个用户可以使用自己的账号访问资源
-                .authorizationGrantType(AuthorizationGrantType.PASSWORD)
-                // 根据refresh token可以重新生成access token
-                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                .scope(OidcScopes.OPENID)
-                .scope("message:read")
-                .scope("message:write")
-                .build();
-        // @formatter:on
-        return new InMemoryRegisteredClientRepository(loginClient, registeredClient);
+    public RegisteredClientRepository registeredClientRepository(OAuth2ClientRepository oauth2ClientRepository) {
+        return new MongoOAuth2RegisteredClientRepository(oauth2ClientRepository);
     }
 
     @Bean

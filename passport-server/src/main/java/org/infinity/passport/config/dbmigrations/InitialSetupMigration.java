@@ -4,16 +4,16 @@ import io.mongock.api.annotations.ChangeUnit;
 import io.mongock.api.annotations.Execution;
 import io.mongock.api.annotations.RollbackExecution;
 import org.infinity.passport.domain.*;
-import org.infinity.passport.domain.useless.MongoOAuth2ClientDetails;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
+import org.springframework.security.oauth2.core.oidc.OidcScopes;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.concurrent.TimeUnit;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Set;
 
 /**
  * Creates the initial database
@@ -21,14 +21,17 @@ import java.util.concurrent.TimeUnit;
 @ChangeUnit(id = "InitialSetupMigration", order = "01")
 public class InitialSetupMigration {
 
-    private static final String        APP_NAME       = "passport-server";
-    public static final  String        USERNAME       = "louis";
-    public static final  String        PASSWORD       = "louis";
-    private static final String        MENU_PARENT_ID = "0";
-    private final        MongoTemplate mongoTemplate;
+    private static final String          APP_NAME       = "passport-server";
+    public static final  String          USERNAME       = "louis";
+    public static final  String          PASSWORD       = "louis";
+    private static final String          MENU_PARENT_ID = "0";
+    private final        MongoTemplate   mongoTemplate;
+    private final        PasswordEncoder passwordEncoder;
 
-    public InitialSetupMigration(MongoTemplate mongoTemplate) {
+    public InitialSetupMigration(MongoTemplate mongoTemplate,
+                                 PasswordEncoder passwordEncoder) {
         this.mongoTemplate = mongoTemplate;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Execution
@@ -37,7 +40,7 @@ public class InitialSetupMigration {
         addAuthorities();
         addUserAndAuthorities();
         addAuthorityAdminMenu();
-        addOAuth2ClientDetails();
+        addOAuth2Client();
     }
 
     @RollbackExecution
@@ -218,26 +221,43 @@ public class InitialSetupMigration {
         mongoTemplate.save(AuthorityAdminMenu.of(Authority.ADMIN, oAuth2ApprovalDetails.getId()));
     }
 
-    public void addOAuth2ClientDetails() {
-        MongoOAuth2ClientDetails oAuth2ClientDetails = new MongoOAuth2ClientDetails();
-        oAuth2ClientDetails.setClientId(MongoOAuth2ClientDetails.INTERNAL_CLIENT_ID);
-        oAuth2ClientDetails.setRawClientSecret(MongoOAuth2ClientDetails.INTERNAL_RAW_CLIENT_SECRET);
-        oAuth2ClientDetails.setClientSecret(
-                new BCryptPasswordEncoder().encode(MongoOAuth2ClientDetails.INTERNAL_RAW_CLIENT_SECRET));
-        oAuth2ClientDetails.setScope(Arrays.asList("read", "write"));
-        // It will auto approve if autoApproveScopes exactly match the scopes.
-        oAuth2ClientDetails.setAutoApproveScopes(Collections.singletonList("read"));
-        oAuth2ClientDetails.setAuthorizedGrantTypes(
-                Arrays.asList("password", "authorization_code", "refresh_token", "client_credentials"));
+    public void addOAuth2Client() {
+        OAuth2Client oAuth2Client1 = new OAuth2Client();
+        oAuth2Client1.setClientId(OAuth2Client.AUTH_CODE_CLIENT_ID);
+        oAuth2Client1.setClientSecret(passwordEncoder.encode(OAuth2Client.INTERNAL_RAW_CLIENT_SECRET));
+        oAuth2Client1.setClientAuthenticationMethods(Set.of(ClientAuthenticationMethod.CLIENT_SECRET_BASIC.getValue()));
+        oAuth2Client1.setAuthorizationGrantTypes(
+                // 最安全的流程，需要用户的参与
+                Set.of(AuthorizationGrantType.AUTHORIZATION_CODE.getValue(),
+                        AuthorizationGrantType.REFRESH_TOKEN.getValue()));
         // Note: localhost and 127.0.0.1 must be save twice.
-        oAuth2ClientDetails.setRegisteredRedirectUri(
-                new HashSet<>(Arrays.asList("http://127.0.0.1:9020/login", "http://localhost:9020/login")));
-        oAuth2ClientDetails.setAccessTokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(7));
-        oAuth2ClientDetails.setRefreshTokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(7));
-        // 这个authority还不知道其作用
-        oAuth2ClientDetails.setAuthorities(Arrays.asList(new SimpleGrantedAuthority(Authority.DEVELOPER),
-                new SimpleGrantedAuthority(Authority.ADMIN), new SimpleGrantedAuthority(Authority.USER),
-                new SimpleGrantedAuthority(Authority.ANONYMOUS)));
-        mongoTemplate.save(oAuth2ClientDetails);
+        oAuth2Client1.setRedirectUris(Set.of("http://127.0.0.1:9020", "http://localhost:9020", "https://www.baidu.com"));
+        oAuth2Client1.setScopes(Set.of(OAuth2Client.OAuth2Scope.builder().scope(OidcScopes.OPENID).description("openid").build(),
+                OAuth2Client.OAuth2Scope.builder().scope(OidcScopes.PROFILE).description("profile").build()));
+        OAuth2Client.OAuth2ClientSettings oAuth2ClientSettings = new OAuth2Client.OAuth2ClientSettings();
+        oAuth2ClientSettings.setRequireAuthorizationConsent(true);
+        oAuth2Client1.setOAuth2ClientSettings(oAuth2ClientSettings);
+
+        oAuth2Client1.setClientIdIssuedAt(Instant.now());
+        oAuth2Client1.setClientSecretExpiresAt(Instant.now().plus(30, ChronoUnit.DAYS));
+        mongoTemplate.save(oAuth2Client1);
+
+        OAuth2Client oAuth2Client2 = new OAuth2Client();
+        oAuth2Client2.setClientId(OAuth2Client.INTERNAL_CLIENT_ID);
+        oAuth2Client2.setClientSecret(passwordEncoder.encode(OAuth2Client.INTERNAL_RAW_CLIENT_SECRET));
+        oAuth2Client2.setClientAuthenticationMethods(Set.of(ClientAuthenticationMethod.CLIENT_SECRET_BASIC.getValue()));
+        oAuth2Client2.setAuthorizationGrantTypes(
+                // 全局只有一个账号密码，使用这一个账号便可以访问资源，一般用于内部系统间调用
+                Set.of(AuthorizationGrantType.CLIENT_CREDENTIALS.getValue(),
+                        // 每个用户有不同的账号密码，每个用户可以使用自己的账号访问资源
+                        AuthorizationGrantType.PASSWORD.getValue(),
+                        // 根据refresh token可以重新生成access token
+                        AuthorizationGrantType.REFRESH_TOKEN.getValue()));
+        oAuth2Client2.setScopes(Set.of(OAuth2Client.OAuth2Scope.builder().scope(OidcScopes.OPENID).description("openid").build(),
+                OAuth2Client.OAuth2Scope.builder().scope("message:read").description("read").build(),
+                OAuth2Client.OAuth2Scope.builder().scope("message:write").description("write").build()));
+        oAuth2Client2.setClientIdIssuedAt(Instant.now());
+        oAuth2Client2.setClientSecretExpiresAt(Instant.now().plus(30, ChronoUnit.DAYS));
+        mongoTemplate.save(oAuth2Client2);
     }
 }

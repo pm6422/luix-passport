@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.infinity.passport.component.HttpHeaderCreator;
 import org.infinity.passport.domain.Authority;
+import org.infinity.passport.domain.OAuth2Client;
 import org.infinity.passport.domain.useless.MongoOAuth2ClientDetails;
 import org.infinity.passport.exception.DataNotFoundException;
 import org.infinity.passport.exception.DuplicationException;
@@ -105,8 +106,7 @@ public class OAuth2ClientDetailsController {
     @Operation(summary = "检索内部单点登录客户端")
     @GetMapping("/open-api/oauth2-client/internal-client")
     public ResponseEntity<Pair<String, String>> findInternalClient() {
-        return ResponseEntity.ok(Pair.of(MongoOAuth2ClientDetails.INTERNAL_CLIENT_ID,
-                MongoOAuth2ClientDetails.INTERNAL_RAW_CLIENT_SECRET));
+        return ResponseEntity.ok(Pair.of(OAuth2Client.INTERNAL_CLIENT_ID, OAuth2Client.INTERNAL_RAW_CLIENT_SECRET));
     }
 
     @Operation(summary = "更新单点登录客户端")

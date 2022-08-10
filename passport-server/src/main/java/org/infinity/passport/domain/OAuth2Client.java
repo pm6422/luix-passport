@@ -1,6 +1,7 @@
 package org.infinity.passport.domain;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.*;
@@ -32,6 +33,7 @@ import java.util.stream.Collectors;
 public class OAuth2Client implements Serializable {
     private static final long                 serialVersionUID            = 8481969837769002598L;
     public static final  String               INTERNAL_CLIENT_ID          = "internal-client";
+    public static final  String               AUTH_CODE_CLIENT_ID         = "login-client";
     public static final  String               INTERNAL_RAW_CLIENT_SECRET  = "65G-HD9-4PD-j9F-HP5";
     public static final  String               CLIENT_NAME                 = "passport-client";
     @Id
@@ -39,15 +41,14 @@ public class OAuth2Client implements Serializable {
     private              String               clientId;
     private              String               clientSecret;
     private              String               clientName;
-    // @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private              Instant              clientIdIssuedAt;
     private              Instant              clientSecretExpiresAt;
     private              Set<String>          clientAuthenticationMethods = new HashSet<>();
     private              Set<String>          authorizationGrantTypes     = new HashSet<>();
     private              Set<String>          redirectUris                = new HashSet<>();
-    private              Set<Oauth2Scope>     scopes                      = new HashSet<>();
-    private              Oauth2ClientSettings clientSettings;
-    private              Oauth2TokenSettings  tokenSettings;
+    private              Set<OAuth2Scope>     scopes                      = new HashSet<>();
+    private              OAuth2ClientSettings oAuth2ClientSettings;
+    private              OAuth2TokenSettings  oAuth2TokenSettings;
     @CreatedBy
     protected            String               createdBy;
     @CreatedDate
@@ -58,9 +59,10 @@ public class OAuth2Client implements Serializable {
     protected            Instant              modifiedTime;
 
     @Data
+    @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class Oauth2Scope implements Serializable {
+    public static class OAuth2Scope implements Serializable {
         private static final long   serialVersionUID = 8481969837769002234L;
         private              String scope;
         private              String description;
@@ -69,7 +71,7 @@ public class OAuth2Client implements Serializable {
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class Oauth2ClientSettings implements Serializable {
+    public static class OAuth2ClientSettings implements Serializable {
         private static final long    serialVersionUID = -7956711700342643896L;
         private              boolean requireProofKey;
         private              boolean requireAuthorizationConsent;
@@ -102,8 +104,8 @@ public class OAuth2Client implements Serializable {
          * @param clientSettings the clientSettings
          * @return the oauth2ClientSettings
          */
-        public static Oauth2ClientSettings fromClientSettings(ClientSettings clientSettings) {
-            Oauth2ClientSettings oAuth2ClientSettings = new Oauth2ClientSettings();
+        public static OAuth2ClientSettings fromClientSettings(ClientSettings clientSettings) {
+            OAuth2ClientSettings oAuth2ClientSettings = new OAuth2ClientSettings();
             oAuth2ClientSettings.setRequireProofKey(clientSettings.isRequireProofKey());
             oAuth2ClientSettings.setRequireAuthorizationConsent(clientSettings.isRequireAuthorizationConsent());
             oAuth2ClientSettings.setJwkSetUrl(clientSettings.getJwkSetUrl());
@@ -118,7 +120,7 @@ public class OAuth2Client implements Serializable {
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class Oauth2TokenSettings implements Serializable {
+    public static class OAuth2TokenSettings implements Serializable {
         private static final long     serialVersionUID   = -7077164876986169673L;
         private              Duration accessTokenTimeToLive;
         private              String   tokenFormat;
@@ -154,8 +156,8 @@ public class OAuth2Client implements Serializable {
          * @param tokenSettings the tokenSettings
          * @return the oauth2TokenSettings
          */
-        public static Oauth2TokenSettings fromTokenSettings(TokenSettings tokenSettings) {
-            Oauth2TokenSettings oAuth2TokenSettings = new Oauth2TokenSettings();
+        public static OAuth2TokenSettings fromTokenSettings(TokenSettings tokenSettings) {
+            OAuth2TokenSettings oAuth2TokenSettings = new OAuth2TokenSettings();
             oAuth2TokenSettings.setAccessTokenTimeToLive(tokenSettings.getAccessTokenTimeToLive());
             oAuth2TokenSettings.setTokenFormat(tokenSettings.getAccessTokenFormat().getValue());
             oAuth2TokenSettings.setReuseRefreshTokens(tokenSettings.isReuseRefreshTokens());
@@ -163,40 +165,6 @@ public class OAuth2Client implements Serializable {
             oAuth2TokenSettings.setIdTokenSignatureAlgorithm(tokenSettings.getIdTokenSignatureAlgorithm().getName());
             return oAuth2TokenSettings;
         }
-    }
-
-    /**
-     * To registered client.
-     *
-     * @return the registered client
-     */
-    public RegisteredClient toRegisteredClient() {
-        RegisteredClient.Builder builder = RegisteredClient
-                .withId(this.id)
-                .clientId(this.clientId)
-                .clientSecret(this.clientSecret)
-                .clientName(this.clientName)
-                .clientIdIssuedAt(this.clientIdIssuedAt.atZone(ZoneId.systemDefault()).toInstant())
-                .clientSecretExpiresAt(this.clientSecretExpiresAt.atZone(ZoneId.systemDefault()).toInstant())
-                .clientAuthenticationMethods(clientAuthenticationMethodSet ->
-                        clientAuthenticationMethodSet.addAll(this.clientAuthenticationMethods
-                                .stream()
-                                .map(ClientAuthenticationMethod::new)
-                                .collect(Collectors.toSet())))
-                .authorizationGrantTypes(authorizationGrantTypeSet ->
-                        authorizationGrantTypeSet.addAll(this.authorizationGrantTypes
-                                .stream()
-                                .map(AuthorizationGrantType::new)
-                                .collect(Collectors.toSet())))
-                .redirectUris(redirectUriSet -> redirectUriSet.addAll(this.redirectUris))
-                .scopes(scopeSet -> scopeSet.addAll(this.scopes
-                        .stream()
-                        .map(Oauth2Scope::getScope)
-                        .collect(Collectors.toSet())))
-                .scope(OidcScopes.OPENID)
-                .clientSettings(this.clientSettings.toClientSettings())
-                .tokenSettings(this.tokenSettings.toTokenSettings());
-        return builder.build();
     }
 
     /**
@@ -226,16 +194,55 @@ public class OAuth2Client implements Serializable {
                 .stream()
                 .filter(scope -> !OidcScopes.OPENID.equals(scope))
                 .map(scope -> {
-                    Oauth2Scope oauth2Scope = new Oauth2Scope();
+                    OAuth2Scope oauth2Scope = new OAuth2Scope();
                     oauth2Scope.setScope(scope);
                     return oauth2Scope;
                 })
                 .collect(Collectors.toSet()));
-        Oauth2ClientSettings clientSettings = Oauth2ClientSettings.fromClientSettings(registeredClient.getClientSettings());
-        oauth2Client.setClientSettings(clientSettings);
-        Oauth2TokenSettings tokenSettings = Oauth2TokenSettings.fromTokenSettings(registeredClient.getTokenSettings());
-        oauth2Client.setTokenSettings(tokenSettings);
+        OAuth2ClientSettings clientSettings = OAuth2ClientSettings.fromClientSettings(registeredClient.getClientSettings());
+        oauth2Client.setOAuth2ClientSettings(clientSettings);
+        OAuth2TokenSettings tokenSettings = OAuth2TokenSettings.fromTokenSettings(registeredClient.getTokenSettings());
+        oauth2Client.setOAuth2TokenSettings(tokenSettings);
         return oauth2Client;
+    }
+
+    /**
+     * To registered client.
+     *
+     * @return the registered client
+     */
+    public RegisteredClient toRegisteredClient() {
+        RegisteredClient.Builder builder = RegisteredClient
+                .withId(this.id)
+                .clientId(this.clientId)
+                .clientSecret(this.clientSecret)
+                .clientName(this.clientName)
+                .clientIdIssuedAt(this.clientIdIssuedAt.atZone(ZoneId.systemDefault()).toInstant())
+                .clientSecretExpiresAt(this.clientSecretExpiresAt.atZone(ZoneId.systemDefault()).toInstant())
+                .clientAuthenticationMethods(clientAuthenticationMethodSet ->
+                        clientAuthenticationMethodSet.addAll(this.clientAuthenticationMethods
+                                .stream()
+                                .map(ClientAuthenticationMethod::new)
+                                .collect(Collectors.toSet())))
+                .authorizationGrantTypes(authorizationGrantTypeSet ->
+                        authorizationGrantTypeSet.addAll(this.authorizationGrantTypes
+                                .stream()
+                                .map(AuthorizationGrantType::new)
+                                .collect(Collectors.toSet())))
+                .redirectUris(redirectUriSet -> redirectUriSet.addAll(this.redirectUris))
+                .scopes(scopeSet -> scopeSet.addAll(this.scopes
+                        .stream()
+                        .map(OAuth2Scope::getScope)
+                        .collect(Collectors.toSet())))
+                .scope(OidcScopes.OPENID);
+
+        if (this.oAuth2ClientSettings != null) {
+            builder.clientSettings(this.oAuth2ClientSettings.toClientSettings());
+        }
+        if (this.oAuth2TokenSettings != null) {
+            builder.tokenSettings(this.oAuth2TokenSettings.toTokenSettings());
+        }
+        return builder.build();
     }
 }
 
