@@ -139,25 +139,6 @@ public class OAuth2AuthServerSecurityConfiguration {
     }
 
     @Bean
-    public JWKSource<SecurityContext> jwkSource(KeyPair keyPair) {
-        RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
-        RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
-        // @formatter:off
-        RSAKey rsaKey = new RSAKey.Builder(publicKey)
-                .privateKey(privateKey)
-                .keyID(UUID.randomUUID().toString())
-                .build();
-        // @formatter:on
-        JWKSet jwkSet = new JWKSet(rsaKey);
-        return new ImmutableJWKSet<>(jwkSet);
-    }
-
-    @Bean
-    public JwtDecoder jwtDecoder(KeyPair keyPair) {
-        return NimbusJwtDecoder.withPublicKey((RSAPublicKey) keyPair.getPublic()).build();
-    }
-
-    @Bean
     public ProviderSettings providerSettings(ApplicationProperties applicationProperties) {
         return ProviderSettings.builder().issuer(applicationProperties.getServer().getAddress()).build();
     }
@@ -205,6 +186,25 @@ public class OAuth2AuthServerSecurityConfiguration {
     @Bean
     public OAuth2AuthorizationService oAuth2AuthorizationService() {
         return new InMemoryOAuth2AuthorizationService();
+    }
+
+    @Bean
+    public JWKSource<SecurityContext> jwkSource(KeyPair keyPair) {
+        RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
+        RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
+        // @formatter:off
+        RSAKey rsaKey = new RSAKey.Builder(publicKey)
+                .privateKey(privateKey)
+                .keyID(UUID.randomUUID().toString())
+                .build();
+        // @formatter:on
+        JWKSet jwkSet = new JWKSet(rsaKey);
+        return new ImmutableJWKSet<>(jwkSet);
+    }
+
+    @Bean
+    public JwtDecoder jwtDecoder(KeyPair keyPair) {
+        return NimbusJwtDecoder.withPublicKey((RSAPublicKey) keyPair.getPublic()).build();
     }
 
     @Bean
