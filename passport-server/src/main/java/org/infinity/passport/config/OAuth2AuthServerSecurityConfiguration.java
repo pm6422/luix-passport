@@ -67,11 +67,6 @@ public class OAuth2AuthServerSecurityConfiguration {
     public static final String CUSTOM_CONSENT_PAGE_URI = "/oauth2/consent";
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
     @Order(1)
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http,
                                                                       OAuth2PasswordAuthenticationProvider oAuth2PasswordAuthenticationProvider,
@@ -125,6 +120,17 @@ public class OAuth2AuthServerSecurityConfiguration {
                 .apply(federatedIdentityConfigurer);
         // @formatter:on
         return http.build();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService(UserService userService,
+                                                 UserAuthorityRepository userAuthorityRepository) {
+        return new SecurityUserDetailsServiceImpl(userService, userAuthorityRepository);
     }
 
     @Bean
@@ -199,12 +205,6 @@ public class OAuth2AuthServerSecurityConfiguration {
     @Bean
     public OAuth2AuthorizationService oAuth2AuthorizationService() {
         return new InMemoryOAuth2AuthorizationService();
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService(UserService userService,
-                                                 UserAuthorityRepository userAuthorityRepository) {
-        return new SecurityUserDetailsServiceImpl(userService, userAuthorityRepository);
     }
 
     @Bean
