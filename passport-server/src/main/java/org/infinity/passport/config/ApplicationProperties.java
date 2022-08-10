@@ -29,7 +29,7 @@ public class ApplicationProperties {
     private final CorsConfiguration  cors               = new CorsConfiguration();
     private final UserEventAudit     userEventAudit     = new UserEventAudit();
     private final Account            account            = new Account();
-    private final Redis              redis              = new Redis();
+    private final Server             server             = new Server();
     private final Ribbon             ribbon             = new Ribbon();
 
     @Data
@@ -119,8 +119,8 @@ public class ApplicationProperties {
     }
 
     @Data
-    public static class Redis {
-        private String adminUrl;
+    public static class Server {
+        private String address;
     }
 
     @Data

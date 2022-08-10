@@ -15,7 +15,6 @@ import org.infinity.passport.config.oauth2.repository.impl.MongoOAuth2Registered
 import org.infinity.passport.repository.OAuth2ClientRepository;
 import org.infinity.passport.repository.UserAuthorityRepository;
 import org.infinity.passport.service.UserService;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -153,9 +152,8 @@ public class OAuth2AuthServerSecurityConfiguration {
     }
 
     @Bean
-    public ProviderSettings providerSettings(@Value("${server.port}") Integer port) {
-        //TODO: 配置化 生产应该使用域名
-        return ProviderSettings.builder().issuer("http://localhost:" + port).build();
+    public ProviderSettings providerSettings(ApplicationProperties applicationProperties) {
+        return ProviderSettings.builder().issuer(applicationProperties.getServer().getAddress()).build();
     }
 
     @Bean

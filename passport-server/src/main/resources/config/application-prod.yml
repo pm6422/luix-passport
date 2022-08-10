@@ -19,3 +19,6 @@ spring:
 # ===================================================================
 # Application specific properties
 # ===================================================================
+application:
+    server:
+        address: http://localhost:${server.port}

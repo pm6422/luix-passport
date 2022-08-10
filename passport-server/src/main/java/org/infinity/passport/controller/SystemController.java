@@ -115,12 +115,6 @@ public class SystemController {
         return ResponseEntity.ok(applicationContext.getBean(name));
     }
 
-    @GetMapping("/api/systems/redis-admin")
-    @PreAuthorize("hasAuthority(\"" + Authority.DEVELOPER + "\")")
-    public void redirectToRedisAdmin(HttpServletResponse response) throws IOException {
-        response.sendRedirect(applicationProperties.getRedis().getAdminUrl());
-    }
-
     @GetMapping("/api/systems/intranet-ip")
     @PreAuthorize("hasAuthority(\"" + Authority.DEVELOPER + "\")")
     public ResponseEntity<String> getIntranetIp() {
