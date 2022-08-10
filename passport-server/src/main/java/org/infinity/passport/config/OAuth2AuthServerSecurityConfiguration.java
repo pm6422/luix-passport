@@ -71,6 +71,12 @@ public class OAuth2AuthServerSecurityConfiguration {
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http,
                                                                       OAuth2PasswordAuthenticationProvider oAuth2PasswordAuthenticationProvider,
                                                                       DaoAuthenticationProvider daoAuthenticationProvider) throws Exception {
+
+        // Password grant authentication provider
+        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
+        authenticationManagerBuilder.authenticationProvider(oAuth2PasswordAuthenticationProvider);
+        authenticationManagerBuilder.authenticationProvider(daoAuthenticationProvider);
+
         OAuth2AuthorizationServerConfigurer<HttpSecurity> authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer<>();
         // Apply authorization grant type authentication converters
         authorizationServerConfigurer.tokenEndpoint(endpoint -> endpoint.accessTokenRequestConverter(getAuthorizationGrantTypeConverters()));
@@ -90,9 +96,6 @@ public class OAuth2AuthServerSecurityConfiguration {
                 .apply(authorizationServerConfigurer);
         // Configure custom login page URI
         http.apply(new FederatedIdentityConfigurer(CUSTOM_LOGIN_PAGE_URI));
-
-        // Password grant authentication provider
-        setPasswordGrantAuthentication(http, daoAuthenticationProvider, oAuth2PasswordAuthenticationProvider);
         return http.build();
     }
 
@@ -168,14 +171,6 @@ public class OAuth2AuthServerSecurityConfiguration {
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
         daoAuthenticationProvider.setUserDetailsService(userDetailsService);
         return daoAuthenticationProvider;
-    }
-
-    private static void setPasswordGrantAuthentication(HttpSecurity http,
-                                                       DaoAuthenticationProvider daoAuthenticationProvider,
-                                                       OAuth2PasswordAuthenticationProvider oAuth2PasswordAuthenticationProvider) {
-        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
-        authenticationManagerBuilder.authenticationProvider(daoAuthenticationProvider);
-        authenticationManagerBuilder.authenticationProvider(oAuth2PasswordAuthenticationProvider);
     }
 
     @Bean
