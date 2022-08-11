@@ -9,7 +9,7 @@ import org.infinity.passport.component.HttpHeaderCreator;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.useless.MongoOAuth2RefreshToken;
 import org.infinity.passport.exception.DataNotFoundException;
-import org.infinity.passport.repository.useless.OAuth2RefreshTokenRepository;
+import org.infinity.passport.repository.OAuth2RefreshTokenRepository;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;

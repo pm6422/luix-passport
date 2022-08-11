@@ -5,15 +5,14 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
-import org.infinity.passport.config.oauth2.FederatedIdentityConfigurer;
-import org.infinity.passport.config.oauth2.OAuth2ConfigurerUtils;
-import org.infinity.passport.config.oauth2.SecurityUserDetailsServiceImpl;
-import org.infinity.passport.config.oauth2.UserRepositoryOAuth2UserHandler;
+import org.infinity.passport.config.oauth2.*;
 import org.infinity.passport.config.oauth2.passwordgrant.OAuth2PasswordAuthenticationConverter;
 import org.infinity.passport.config.oauth2.passwordgrant.OAuth2PasswordAuthenticationProvider;
 import org.infinity.passport.config.oauth2.repository.impl.MongoOAuth2RegisteredClientRepository;
 import org.infinity.passport.repository.OAuth2ClientRepository;
 import org.infinity.passport.repository.UserAuthorityRepository;
+import org.infinity.passport.repository.OAuth2AccessTokenRepository;
+import org.infinity.passport.repository.OAuth2RefreshTokenRepository;
 import org.infinity.passport.service.UserService;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Bean;
@@ -33,7 +32,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 import org.springframework.security.oauth2.server.authorization.InMemoryOAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
@@ -173,8 +171,9 @@ public class OAuth2AuthServerSecurityConfiguration {
     }
 
     @Bean
-    public TokenStore tokenStore() {
-        return new InMemoryTokenStore();
+    public TokenStore tokenStore(OAuth2AccessTokenRepository oAuth2AccessTokenRepository,
+                                 OAuth2RefreshTokenRepository oAuth2RefreshTokenRepository) {
+        return new MongoTokenStore(oAuth2AccessTokenRepository, oAuth2RefreshTokenRepository);
     }
 
     @Bean

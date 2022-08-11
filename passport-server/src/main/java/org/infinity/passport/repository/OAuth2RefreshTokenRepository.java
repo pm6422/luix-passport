@@ -1,4 +1,4 @@
-package org.infinity.passport.repository.useless;
+package org.infinity.passport.repository;
 
 import org.infinity.passport.domain.useless.MongoOAuth2RefreshToken;
 import org.springframework.data.mongodb.repository.MongoRepository;

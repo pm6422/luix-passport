@@ -1,9 +1,9 @@
-package org.infinity.passport.config.security;
+package org.infinity.passport.config.oauth2;
 
 import org.infinity.passport.domain.useless.MongoOAuth2AccessToken;
 import org.infinity.passport.domain.useless.MongoOAuth2RefreshToken;
-import org.infinity.passport.repository.useless.OAuth2AccessTokenRepository;
-import org.infinity.passport.repository.useless.OAuth2RefreshTokenRepository;
+import org.infinity.passport.repository.OAuth2AccessTokenRepository;
+import org.infinity.passport.repository.OAuth2RefreshTokenRepository;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2RefreshToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
