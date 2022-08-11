@@ -71,7 +71,6 @@ public class OAuth2AuthServerSecurityConfiguration {
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http,
                                                                       OAuth2PasswordAuthenticationProvider oAuth2PasswordAuthenticationProvider,
                                                                       DaoAuthenticationProvider daoAuthenticationProvider) throws Exception {
-
         // Password grant authentication provider
         AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
         authenticationManagerBuilder.authenticationProvider(oAuth2PasswordAuthenticationProvider);
