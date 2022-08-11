@@ -1,4 +1,4 @@
-package org.infinity.passport.domain.useless;
+package org.infinity.passport.domain;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

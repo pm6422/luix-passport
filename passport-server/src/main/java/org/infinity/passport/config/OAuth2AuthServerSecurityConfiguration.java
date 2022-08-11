@@ -9,11 +9,9 @@ import org.infinity.passport.config.oauth2.*;
 import org.infinity.passport.config.oauth2.passwordgrant.OAuth2PasswordAuthenticationConverter;
 import org.infinity.passport.config.oauth2.passwordgrant.OAuth2PasswordAuthenticationProvider;
 import org.infinity.passport.config.oauth2.repository.impl.MongoOAuth2RegisteredClientRepository;
-import org.infinity.passport.repository.OAuth2ClientRepository;
-import org.infinity.passport.repository.UserAuthorityRepository;
-import org.infinity.passport.repository.OAuth2AccessTokenRepository;
-import org.infinity.passport.repository.OAuth2RefreshTokenRepository;
+import org.infinity.passport.repository.*;
 import org.infinity.passport.service.UserService;
+import org.infinity.passport.service.impl.OAuth2AuthorizationServiceImpl;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -177,7 +175,9 @@ public class OAuth2AuthServerSecurityConfiguration {
     }
 
     @Bean
-    public OAuth2AuthorizationService oAuth2AuthorizationService() {
+    public OAuth2AuthorizationService oAuth2AuthorizationService(OAuth2AuthorizationRepository oAuth2AuthorizationRepository,
+                                                                 RegisteredClientRepository registeredClientRepository) {
+//        return new OAuth2AuthorizationServiceImpl(oAuth2AuthorizationRepository, registeredClientRepository);
         return new InMemoryOAuth2AuthorizationService();
     }
 

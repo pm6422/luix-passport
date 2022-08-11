@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.infinity.passport.component.HttpHeaderCreator;
 import org.infinity.passport.domain.Authority;
-import org.infinity.passport.domain.useless.MongoOAuth2RefreshToken;
+import org.infinity.passport.domain.MongoOAuth2RefreshToken;
 import org.infinity.passport.exception.DataNotFoundException;
 import org.infinity.passport.repository.OAuth2RefreshTokenRepository;
 import org.springdoc.api.annotations.ParameterObject;
