@@ -8,10 +8,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.io.Serializable;
 import java.time.Instant;
 
-@Document(collection = "Authorization")
+@Document(collection = "MongoOAuth2Authorization")
 @Data
 @NoArgsConstructor
-public class Authorization implements Serializable {
+public class MongoOAuth2Authorization implements Serializable {
     private static final long   serialVersionUID     = 5961084257759790938L;
     public static final  String AUTHORIZATION_BEARER = "Bearer ";
     public static final  String AUTHORIZATION_BASIC  = "Basic ";

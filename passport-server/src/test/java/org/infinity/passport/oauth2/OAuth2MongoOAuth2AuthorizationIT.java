@@ -50,7 +50,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @IntegrationTest
 @AutoConfigureMockMvc
 @Slf4j
-public class OAuth2AuthorizationIT {
+public class OAuth2MongoOAuth2AuthorizationIT {
     private static final String    REDIRECT_URI = "https://www.baidu.com";
     @Resource
     private              MockMvc   mockMvc;
