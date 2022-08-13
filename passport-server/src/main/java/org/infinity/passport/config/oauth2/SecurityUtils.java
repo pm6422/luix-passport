@@ -14,17 +14,17 @@ public abstract class SecurityUtils {
      */
     public static String getCurrentUserName() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userName = null;
+        String username = null;
         if (authentication != null) {
             if (authentication instanceof JwtAuthenticationToken) {
                 return authentication.getName();
             } else if (authentication.getPrincipal() instanceof UserDetails) {
                 UserDetails springSecurityUser = (UserDetails) authentication.getPrincipal();
-                userName = springSecurityUser.getUsername();
+                username = springSecurityUser.getUsername();
             } else if (authentication.getPrincipal() instanceof String) {
-                userName = (String) authentication.getPrincipal();
+                username = (String) authentication.getPrincipal();
             }
         }
-        return userName;
+        return username;
     }
 }

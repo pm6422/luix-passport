@@ -22,7 +22,7 @@
                             <table width="100%" cellpadding="0" cellspacing="0">
                                 <tr>
                                     <td class="content-block">
-                                        <span th:text="#{emailGreeting(${user.userName})}"></span>:
+                                        <span th:text="#{emailGreeting(${user.username})}"></span>:
                                     </td>
                                 </tr>
                                 <tr>
@@ -33,7 +33,7 @@
                                 <tr>
                                     <td class="content-block">
                                         <a th:href="@{|${baseUrl}/#/reset-password?key=${user.resetKey}|}"
-                                           th:text="|${user.userName}|">Login</a>
+                                           th:text="|${user.username}|">Login</a>
                                     </td>
                                 </tr>
                                 <tr>

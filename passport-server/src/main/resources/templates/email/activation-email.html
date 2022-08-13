@@ -22,7 +22,7 @@
                             <table width="100%" cellpadding="0" cellspacing="0">
                                 <tr>
                                     <td class="content-block">
-                                        <span th:text="#{emailGreeting(${user.userName})}"></span>:
+                                        <span th:text="#{emailGreeting(${user.username})}"></span>:
                                     </td>
                                 </tr>
                                 <tr>
@@ -33,7 +33,7 @@
                                 <tr>
                                     <td class="content-block">
                                         <a th:href="@{|${baseUrl}/#/activate?key=${user.activationKey}|}"
-                                           th:text="|${user.userName}|">Activation Link</a>
+                                           th:text="|${user.username}|">Activation Link</a>
                                     </td>
                                 </tr>
                                 <tr>

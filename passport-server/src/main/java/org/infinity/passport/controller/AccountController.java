@@ -30,6 +30,7 @@ import org.infinity.passport.service.MailService;
 import org.infinity.passport.service.UserProfilePhotoService;
 import org.infinity.passport.service.UserService;
 import org.infinity.passport.utils.RandomUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
@@ -124,7 +125,7 @@ public class AccountController {
     @PreAuthorize("hasAuthority(\"" + Authority.USER + "\")")
     @Timed
     public ResponseEntity<User> getCurrentUser() {
-        User user = userService.findOneByUserName(SecurityUtils.getCurrentUserName());
+        User user = userService.findOneByUsername(SecurityUtils.getCurrentUserName());
         List<UserAuthority> userAuthorities = Optional.ofNullable(userAuthorityRepository.findByUserId(user.getId()))
                 .orElseThrow(() -> new NoAuthorityException(SecurityUtils.getCurrentUserName()));
         Set<String> authorities = userAuthorities.stream().map(UserAuthority::getAuthorityName).collect(Collectors.toSet());
@@ -150,8 +151,7 @@ public class AccountController {
                     if (principal != null && principal instanceof SecurityUser) {
                         SecurityUser securityUser = (SecurityUser) principal;
                         User user = new User();
-                        user.setId(securityUser.getId());
-                        user.setUserName(securityUser.getUsername());
+                        BeanUtils.copyProperties(securityUser, user);
                         user.setAuthorities(securityUser.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet()));
                         user.setEnabled(securityUser.isEnabled());
                         return ResponseEntity.ok(user);
@@ -201,11 +201,11 @@ public class AccountController {
     @Timed
     public ResponseEntity<Void> updateCurrentAccount(@Parameter(description = "新的用户", required = true) @Valid @RequestBody User domain) {
         // For security reason
-        User currentUser = userService.findOneByUserName(SecurityUtils.getCurrentUserName());
+        User currentUser = userService.findOneByUsername(SecurityUtils.getCurrentUserName());
         domain.setId(currentUser.getId());
-        domain.setUserName(currentUser.getUserName());
+        domain.setUsername(currentUser.getUsername());
         userService.update(domain);
-        return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1002", domain.getUserName())).build();
+        return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1002", domain.getUsername())).build();
     }
 
     @Operation(summary = "修改当前用户的密码")
@@ -214,7 +214,7 @@ public class AccountController {
     @Timed
     public ResponseEntity<Void> changePassword(@Parameter(description = "新密码", required = true) @RequestBody @Valid UserNameAndPasswordDTO dto) {
         // For security reason
-        dto.setUserName(SecurityUtils.getCurrentUserName());
+        dto.setUsername(SecurityUtils.getCurrentUserName());
         userService.changePassword(dto);
         // Logout asynchronously
         applicationEventPublisher.publishEvent(new LogoutEvent(this));
@@ -246,7 +246,7 @@ public class AccountController {
     public void uploadProfilePhoto(@Parameter(description = "文件描述", required = true) @RequestPart String description,
                                    @Parameter(description = "用户头像文件", required = true) @RequestPart MultipartFile file) throws IOException {
         log.debug("Upload profile with file name {} and description {}", file.getOriginalFilename(), description);
-        User user = userService.findOneByUserName(SecurityUtils.getCurrentUserName());
+        User user = userService.findOneByUsername(SecurityUtils.getCurrentUserName());
         userProfilePhotoService.save(user, file.getBytes());
     }
 

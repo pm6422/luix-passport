@@ -150,7 +150,7 @@ function LoginController($rootScope, $state, AuthenticationService) {
     var vm = this;
 
     vm.pageTitle = $state.current.data.pageTitle;
-    vm.userName = 'louis';
+    vm.username = 'louis';
     vm.password = 'louis';
     vm.errorMsg = null;
     vm.login = login;
@@ -161,7 +161,7 @@ function LoginController($rootScope, $state, AuthenticationService) {
         event.preventDefault();
         vm.isSaving = true;
         AuthenticationService.login({
-                userName: vm.userName,
+                username: vm.username,
                 password: vm.password,
                 rememberMe: vm.rememberMe
             },
@@ -258,7 +258,7 @@ function ProfileController($state, PrincipalService, AccountService, AuthServerS
             mobileNo: parseInt(account.mobileNo),
             firstName: account.firstName,
             lastName: account.lastName,
-            userName: account.userName,
+            username: account.username,
             hasProfilePhoto: account.hasProfilePhoto
         };
     };
@@ -318,7 +318,7 @@ function RegisterController($state, $timeout, AuthenticationService, RegisterSer
     vm.passwordNotMatch = false;
 
     $timeout(function () {
-        angular.element('#userName').focus();
+        angular.element('#username').focus();
     });
 
     function register() {
@@ -1594,7 +1594,7 @@ function UserListController($state, AlertUtils, ParseLinksUtils, PAGINATION_CONS
         }, function (result, headers) {
             //hide anonymous user from user management: it's a required user for Spring Security
             for (var i in result) {
-                if (result[i]['userName'] === 'anonymoususer') {
+                if (result[i]['username'] === 'anonymousUser') {
                     result.splice(i, co1);
                 }
             }
@@ -1655,10 +1655,10 @@ function UserListController($state, AlertUtils, ParseLinksUtils, PAGINATION_CONS
             });
     }
 
-    function del(userName) {
+    function del(username) {
         AlertUtils.createDeleteConfirmation('数据有可能被其他数据所引用，删除之后可能出现一些问题，您确定删除吗?', function (isConfirm) {
             if (isConfirm) {
-                UserService.del({userName: userName},
+                UserService.del({username: username},
                     function () {
                         vm.loadAll();
                     },
@@ -1668,10 +1668,10 @@ function UserListController($state, AlertUtils, ParseLinksUtils, PAGINATION_CONS
         });
     }
 
-    function resetPassword(userName) {
+    function resetPassword(username) {
         AlertUtils.createResetPasswordConfirmation('密码恢复到初始值?', function (isConfirm) {
             if (isConfirm) {
-                UserService.resetPassword({userName: userName},
+                UserService.resetPassword({username: username},
                     function () {
                     });
             }
@@ -1733,7 +1733,7 @@ function UserDetailsController($state, $stateParams, entity, AuthServerService) 
 
     var authToken = AuthServerService.getToken();
     if (authToken) {
-        vm.entity.profilePhotoUrl = '/api/users/profile-photo/' + vm.entity.userName + '?access_token=' + authToken.access_token;
+        vm.entity.profilePhotoUrl = '/api/users/profile-photo/' + vm.entity.username + '?access_token=' + authToken.access_token;
     }
 }
 
@@ -2290,7 +2290,7 @@ function OAuth2AccessTokenListController($state, AlertUtils, ParseLinksUtils, PA
             sort: sort(),
             tokenId: vm.criteria.tokenId,
             clientId: vm.criteria.clientId,
-            userName: vm.criteria.userName,
+            username: vm.criteria.username,
             refreshToken: vm.criteria.refreshToken
         }, function (result, headers) {
             vm.links = ParseLinksUtils.parse(headers('link'));
@@ -2320,7 +2320,7 @@ function OAuth2AccessTokenListController($state, AlertUtils, ParseLinksUtils, PA
             sort: vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc'),
             tokenId: vm.criteria.tokenId,
             clientId: vm.criteria.clientId,
-            userName: vm.criteria.userName,
+            username: vm.criteria.username,
             refreshToken: vm.criteria.refreshToken
         });
     }
@@ -2394,7 +2394,7 @@ function OAuth2RefreshTokenListController($state, AlertUtils, ParseLinksUtils, P
             sort: sort(),
             tokenId: vm.criteria.tokenId,
             clientId: vm.criteria.clientId,
-            userName: vm.criteria.userName
+            username: vm.criteria.username
         }, function (result, headers) {
             vm.links = ParseLinksUtils.parse(headers('link'));
             vm.totalItems = headers('X-Total-Count');
@@ -2423,7 +2423,7 @@ function OAuth2RefreshTokenListController($state, AlertUtils, ParseLinksUtils, P
             sort: vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc'),
             tokenId: vm.criteria.tokenId,
             clientId: vm.criteria.clientId,
-            userName: vm.criteria.userName
+            username: vm.criteria.username
         });
     }
 
@@ -2491,7 +2491,7 @@ function OAuth2ApprovalListController($state, AlertUtils, ParseLinksUtils, PAGIN
             sort: sort(),
             approvalId: vm.criteria.approvalId,
             clientId: vm.criteria.clientId,
-            userName: vm.criteria.userName
+            username: vm.criteria.username
         }, function (result, headers) {
             vm.links = ParseLinksUtils.parse(headers('link'));
             vm.totalItems = headers('X-Total-Count');
@@ -2520,7 +2520,7 @@ function OAuth2ApprovalListController($state, AlertUtils, ParseLinksUtils, PAGIN
             sort: vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc'),
             approvalId: vm.criteria.approvalId,
             clientId: vm.criteria.clientId,
-            userName: vm.criteria.userName
+            username: vm.criteria.username
         });
     }
 

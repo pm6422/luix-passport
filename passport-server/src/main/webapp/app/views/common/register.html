@@ -9,19 +9,19 @@
                 两次输入的密码不匹配!
             </div>
              <div class="form-group">
-                <input type="text" class="form-control" id="userName" name="userName" placeholder="输入用户名"
-                       ng-model="vm.registerAccount.userName" required ng-minlength="3" ng-maxlength="20" ng-pattern="/^[a-zA-Z0-9-]+$/">
-                <div ng-show="form.userName.$dirty && form.userName.$invalid">
-                    <p class="help-block text-left" ng-show="form.userName.$error.required">
+                <input type="text" class="form-control" id="username" name="username" placeholder="输入用户名"
+                       ng-model="vm.registerAccount.username" required ng-minlength="3" ng-maxlength="20" ng-pattern="/^[a-zA-Z0-9-]+$/">
+                <div ng-show="form.username.$dirty && form.username.$invalid">
+                    <p class="help-block text-left" ng-show="form.username.$error.required">
                         必填字段
                     </p>
-                    <p class="help-block text-left" ng-show="form.userName.$error.minlength">
+                    <p class="help-block text-left" ng-show="form.username.$error.minlength">
                         最小长度为3个字符
                     </p>
-                    <p class="help-block text-left" ng-show="form.userName.$error.maxlength">
+                    <p class="help-block text-left" ng-show="form.username.$error.maxlength">
                         最大长度为20个字符
                     </p>
-                    <p class="help-block text-left" ng-show="form.userName.$error.pattern">
+                    <p class="help-block text-left" ng-show="form.username.$error.pattern">
                         只可以包含小写字母和数字
                     </p>
                 </div>

@@ -88,12 +88,12 @@ public class UserController {
     }
 
     @Operation(summary = "根据用户名检索用户")
-    @GetMapping("/api/users/{userName:[a-zA-Z0-9-]+}")
+    @GetMapping("/api/users/{username:[a-zA-Z0-9-]+}")
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
-    public ResponseEntity<ManagedUserDTO> findByName(@Parameter(description = "用户名", required = true) @PathVariable String userName) {
-        User domain = userService.findOneByUserName(userName);
+    public ResponseEntity<ManagedUserDTO> findByName(@Parameter(description = "用户名", required = true) @PathVariable String username) {
+        User domain = userService.findOneByUsername(username);
         List<UserAuthority> userAuthorities = Optional.ofNullable(userAuthorityRepository.findByUserId(domain.getId()))
-                .orElseThrow(() -> new NoAuthorityException(userName));
+                .orElseThrow(() -> new NoAuthorityException(username));
         Set<String> authorities = userAuthorities.stream().map(UserAuthority::getAuthorityName).collect(Collectors.toSet());
         return ResponseEntity.ok(new ManagedUserDTO(domain, authorities));
     }
@@ -104,29 +104,29 @@ public class UserController {
     public ResponseEntity<Void> update(@Parameter(description = "新的用户", required = true) @Valid @RequestBody User domain) {
         log.debug("REST request to update user: {}", domain);
         userService.update(domain);
-        if (domain.getUserName().equals(SecurityUtils.getCurrentUserName())) {
+        if (domain.getUsername().equals(SecurityUtils.getCurrentUserName())) {
             // Logout if current user were changed
             applicationEventPublisher.publishEvent(new LogoutEvent(this));
         }
-        return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1002", domain.getUserName())).build();
+        return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1002", domain.getUsername())).build();
     }
 
     @Operation(summary = "根据用户名删除用户", description = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
-    @DeleteMapping("/api/users/{userName:[a-zA-Z0-9-]+}")
+    @DeleteMapping("/api/users/{username:[a-zA-Z0-9-]+}")
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
-    public ResponseEntity<Void> delete(@Parameter(description = "用户名", required = true) @PathVariable String userName) {
-        log.debug("REST request to delete user: {}", userName);
-        userService.deleteByUserName(userName);
-        return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1003", userName)).build();
+    public ResponseEntity<Void> delete(@Parameter(description = "用户名", required = true) @PathVariable String username) {
+        log.debug("REST request to delete user: {}", username);
+        userService.deleteByUsername(username);
+        return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1003", username)).build();
     }
 
     @Operation(summary = "根据用户名重置密码")
-    @PutMapping("/api/users/{userName:[a-zA-Z0-9-]+}")
+    @PutMapping("/api/users/{username:[a-zA-Z0-9-]+}")
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
-    public ResponseEntity<Void> resetPassword(@Parameter(description = "用户名", required = true) @PathVariable String userName) {
-        log.debug("REST reset the password of user: {}", userName);
+    public ResponseEntity<Void> resetPassword(@Parameter(description = "用户名", required = true) @PathVariable String username) {
+        log.debug("REST reset the password of user: {}", username);
         UserNameAndPasswordDTO dto = UserNameAndPasswordDTO.builder()
-                .userName(userName)
+                .username(username)
                 .newPassword(applicationProperties.getAccount().getDefaultPassword()).build();
         userService.changePassword(dto);
         HttpHeaders headers = httpHeaderCreator.createSuccessHeader("NM2012", applicationProperties.getAccount().getDefaultPassword());
@@ -136,10 +136,10 @@ public class UserController {
     public static final String GET_PROFILE_PHOTO_URL = "/api/users/profile-photo/";
 
     @Operation(summary = "检索用户头像")
-    @GetMapping(GET_PROFILE_PHOTO_URL + "{userName:[a-zA-Z0-9-]+}")
+    @GetMapping(GET_PROFILE_PHOTO_URL + "{username:[a-zA-Z0-9-]+}")
     @PreAuthorize("hasAuthority(\"" + Authority.USER + "\")")
-    public ResponseEntity<byte[]> getProfilePhoto(@Parameter(description = "用户名", required = true) @PathVariable String userName) {
-        User user = userService.findOneByUserName(userName);
+    public ResponseEntity<byte[]> getProfilePhoto(@Parameter(description = "用户名", required = true) @PathVariable String username) {
+        User user = userService.findOneByUsername(username);
         Optional<UserProfilePhoto> userProfilePhoto = userProfilePhotoRepository.findByUserId(user.getId());
         return userProfilePhoto.map(photo -> ResponseEntity.ok(photo.getProfilePhoto().getData())).orElse(null);
     }

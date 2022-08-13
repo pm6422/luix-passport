@@ -68,7 +68,7 @@ public class InitialSetupMigration {
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         // Creates 'user' user and corresponding authorities
         User userRoleUser = new User();
-        userRoleUser.setUserName("user");
+        userRoleUser.setUsername("user");
         userRoleUser.setFirstName("User");
         userRoleUser.setLastName("User");
         userRoleUser.setEmail("user@localhost");
@@ -86,7 +86,7 @@ public class InitialSetupMigration {
 
         // Creates 'admin' user and corresponding authorities
         User adminRoleUser = new User();
-        adminRoleUser.setUserName("admin");
+        adminRoleUser.setUsername("admin");
         adminRoleUser.setFirstName("Admin");
         adminRoleUser.setLastName("Admin");
         adminRoleUser.setEmail("admin@localhost");
@@ -105,7 +105,7 @@ public class InitialSetupMigration {
 
         // Creates 'system' user and corresponding authorities
         User adminRoleSystemUser = new User();
-        adminRoleSystemUser.setUserName("system");
+        adminRoleSystemUser.setUsername("system");
         adminRoleSystemUser.setFirstName("System");
         adminRoleSystemUser.setLastName("System");
         adminRoleSystemUser.setEmail("system@localhost");
@@ -124,7 +124,7 @@ public class InitialSetupMigration {
 
         // Creates 'louis' user and corresponding authorities
         User developerRoleUser = new User();
-        developerRoleUser.setUserName(USERNAME);
+        developerRoleUser.setUsername(USERNAME);
         developerRoleUser.setFirstName("Louis");
         developerRoleUser.setLastName("Lau");
         developerRoleUser.setEmail("louis@luixtech.com");

@@ -48,7 +48,7 @@ public class OAuth2ApprovalController {
     public ResponseEntity<List<MongoOAuth2Approval>> find(@ParameterObject Pageable pageable,
                                                           @Parameter(description = "授权ID") @RequestParam(value = "approvalId", required = false) String approvalId,
                                                           @Parameter(description = "客户端ID") @RequestParam(value = "clientId", required = false) String clientId,
-                                                          @Parameter(description = "用户名") @RequestParam(value = "userName", required = false) String userName) {
+                                                          @Parameter(description = "用户名") @RequestParam(value = "username", required = false) String username) {
         Query query = new Query();
         if (StringUtils.isNotEmpty(approvalId)) {
             query.addCriteria(Criteria.where("id").is(approvalId));
@@ -56,8 +56,8 @@ public class OAuth2ApprovalController {
         if (StringUtils.isNotEmpty(clientId)) {
             query.addCriteria(Criteria.where("clientId").is(clientId));
         }
-        if (StringUtils.isNotEmpty(userName)) {
-            query.addCriteria(Criteria.where("userId").is(userName));
+        if (StringUtils.isNotEmpty(username)) {
+            query.addCriteria(Criteria.where("userId").is(username));
         }
         long totalCount = mongoTemplate.count(query, MongoOAuth2Approval.class);
         query.with(pageable);

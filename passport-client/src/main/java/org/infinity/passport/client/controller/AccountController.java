@@ -10,7 +10,7 @@ public class AccountController {
     @GetMapping("/open-api/accounts/user")
     public ResponseEntity<User> getTokenUser() {
         User user = User.builder()
-                .userName("louis")
+                .username("louis")
                 .mobileNo("13800138000")
                 .build();
         return ResponseEntity.ok(user);

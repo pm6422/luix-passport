@@ -58,14 +58,14 @@ public class OAuth2AuthenticationReadConverter implements Converter<Document, OA
             Document principalDBObject = (Document) principal;
 
             String userId = (String) principalDBObject.get("userId");
-            String userName = (String) principalDBObject.get("username");
+            String username = (String) principalDBObject.get("username");
             String password = "";
             boolean enabled = (boolean) principalDBObject.get("enabled");
             boolean accountNonExpired = (boolean) principalDBObject.get("accountNonExpired");
             boolean credentialsNonExpired = (boolean) principalDBObject.get("credentialsNonExpired");
             boolean accountNonLocked = (boolean) principalDBObject.get("accountNonLocked");
 
-            return new SecurityUser(userId, userName, password, enabled,
+            return new SecurityUser(userId, username, password, enabled,
                     accountNonExpired, credentialsNonExpired, accountNonLocked,
                     getAuthorities((List<Map<String, String>>) principalDBObject.get("authorities")));
         } else {

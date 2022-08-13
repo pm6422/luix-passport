@@ -16,9 +16,9 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends MongoRepository<User, String> {
 
-    Optional<User> findOneByUserName(String userName);
+    Optional<User> findOneByUsername(String username);
 
-    Optional<User> findOneByUserNameLike(String userName);
+    Optional<User> findOneByUsernameLike(String username);
 
     Optional<User> findOneByEmail(String email);
 
@@ -26,15 +26,15 @@ public interface UserRepository extends MongoRepository<User, String> {
 
     Optional<User> findOneByMobileNo(String mobileNo);
 
-    Optional<User> findOneByUserNameOrEmailOrMobileNo(String userName, String email, String mobileNo);
+    Optional<User> findOneByUsernameOrEmailOrMobileNo(String username, String email, String mobileNo);
 
-    Page<User> findByUserNameOrEmailOrMobileNo(Pageable pageable, String userName, String email, String mobileNo);
+    Page<User> findByUsernameOrEmailOrMobileNo(Pageable pageable, String username, String email, String mobileNo);
 
     Optional<User> findOneByResetKey(String resetKey);
 
     Optional<User> findOneByActivationKey(String activationKey);
 
-    Page<User> findByUserNameNot(Pageable pageable, String userName);
+    Page<User> findByUsernameNot(Pageable pageable, String username);
 
     List<User> findByActivatedIsFalseAndCreatedTimeBefore(Instant createdTime);
 }

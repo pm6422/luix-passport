@@ -917,7 +917,7 @@ function PrincipalService($q, $http, AccountService, TrackerService) {
         // retrieve the identity data from the server, update the identity object, and then resolve.
 //      AccountService.get({}, getAccountThen, getAccountCatch);
         $http.get('open-api/accounts/user').then(function (response) {
-            if (response.data.userName) {
+            if (response.data.enabled) {
                 getAccountThen(response);
             } else {
                 getAccountCatch();
@@ -975,7 +975,7 @@ function AuthServerService($http, $localStorage) {
     function login(credentials, successCallback, errorCallback) {
         $http.get('open-api/oauth2-client/internal-client').then(function (response) {
             var params = '?grant_type=password'
-                + '&username=' + encodeURIComponent(credentials.userName)
+                + '&username=' + encodeURIComponent(credentials.username)
                 + '&password=' + encodeURIComponent(credentials.password);
 
             return $http.post('oauth2/token' + params, {}, {
@@ -984,11 +984,15 @@ function AuthServerService($http, $localStorage) {
                     'Authorization': 'Basic ' + btoa(response.data.first + ':' + response.data.second)
                 }
             }).success(function (data) {
-                var expiredAt = new Date();
-                expiredAt.setSeconds(expiredAt.getSeconds() + data.expires_in);
-                data.expires_at = expiredAt.getTime();
-                $localStorage.authenticationToken = data;
-                successCallback(data);
+                if(data.access_token) {
+                    var expiredAt = new Date();
+                    expiredAt.setSeconds(expiredAt.getSeconds() + data.expires_in);
+                    data.expires_at = expiredAt.getTime();
+                    $localStorage.authenticationToken = data;
+                    successCallback(data);
+                } else {
+                    errorCallback({'error_description': 'Invalid username or password'});
+                }
             }).error(function (data) {
                 errorCallback(data);
             });
@@ -1186,7 +1190,7 @@ function AppAuthorityService($resource) {
  * UserService
  */
 function UserService($resource) {
-    var service = $resource('api/users/:userName', {}, {
+    var service = $resource('api/users/:username', {}, {
         'query': {method: 'GET', isArray: true},
         'get': {
             method: 'GET',
@@ -1198,7 +1202,7 @@ function UserService($resource) {
         'create': {method: 'POST'},
         'update': {method: 'PUT'},
         'del': {method: 'DELETE'},
-        'resetPassword': {method: 'PUT', params: {userName: '@userName'}}
+        'resetPassword': {method: 'PUT', params: {username: '@username'}}
     });
     return service;
 }

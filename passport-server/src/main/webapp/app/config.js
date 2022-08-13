@@ -736,7 +736,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                     resolve: {
                         entity: {
                             userId: null,
-                            userName: null,
+                            username: null,
                             firstName: null,
                             lastName: null,
                             email: null,
@@ -758,7 +758,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
             }]
         })
         .state('user-authority.user-list.edit', {
-            url: '/edit/:userName',
+            url: '/edit/:username',
             data: {
                 pageTitle: '编辑用户信息',
                 mode: 'edit'
@@ -772,7 +772,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                     size: 'lg',
                     resolve: {
                         entity: ['UserService', function (UserService) {
-                            return UserService.get({userName: $stateParams.userName}).$promise;
+                            return UserService.get({username: $stateParams.username}).$promise;
                         }]
                     }
                 }).result.then(function (result) {
@@ -783,7 +783,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
             }]
         })
         .state('user-authority.user-list.view', {
-            url: '/view/:userName',
+            url: '/view/:username',
             views: {
                 'content@': {
                     templateUrl: 'app/views/admin/user/user-details.html',
@@ -796,7 +796,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
             },
             resolve: {
                 entity: ['UserService', '$stateParams', function (UserService, $stateParams) {
-                    return UserService.get({userName: $stateParams.userName}).$promise;
+                    return UserService.get({username: $stateParams.username}).$promise;
                 }]
             }
         })
@@ -1158,7 +1158,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
             }
         })
         .state('security.oauth2-access-token-list', {
-            url: '/oauth2-access-token-list?page&sort&tokenId&clientId&userName&refreshToken',
+            url: '/oauth2-access-token-list?page&sort&tokenId&clientId&username&refreshToken',
             /** The stateParam name 'tokenId' cannot be identical to the stateParam name 'id' of view or edit state */
             views: {
                 'content@': {
@@ -1193,7 +1193,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                     return {
                         tokenId: $stateParams.tokenId,
                         clientId: $stateParams.clientId,
-                        userName: $stateParams.userName,
+                        username: $stateParams.username,
                         refreshToken: $stateParams.refreshToken
                     };
                 }]
@@ -1218,7 +1218,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
             }
         })
         .state('security.oauth2-refresh-token-list', {
-            url: '/oauth2-refresh-token-list?page&sort&tokenId&clientId&userName',
+            url: '/oauth2-refresh-token-list?page&sort&tokenId&clientId&username',
             /** The stateParam name 'tokenId' cannot be identical to the stateParam name 'id' of view or edit state */
             views: {
                 'content@': {
@@ -1253,7 +1253,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                     return {
                         tokenId: $stateParams.tokenId,
                         clientId: $stateParams.clientId,
-                        userName: $stateParams.userName
+                        username: $stateParams.username
                     };
                 }]
             }
@@ -1277,7 +1277,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
             }
         })
         .state('security.oauth2-approval-list', {
-            url: '/oauth2-approval-list?page&sort&approvalId&clientId&userName',
+            url: '/oauth2-approval-list?page&sort&approvalId&clientId&username',
             /** The stateParam name 'approvalId' cannot be identical to the stateParam name 'id' of view or edit state */
             views: {
                 'content@': {
@@ -1312,7 +1312,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                     return {
                         approvalId: $stateParams.approvalId,
                         clientId: $stateParams.clientId,
-                        userName: $stateParams.userName
+                        username: $stateParams.username
                     };
                 }]
             }

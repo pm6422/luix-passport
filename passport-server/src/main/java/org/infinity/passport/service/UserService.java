@@ -15,7 +15,7 @@ public interface UserService {
 
     void update(User user);
 
-    User findOneByUserName(String userName);
+    User findOneByUsername(String username);
 
     Optional<User> findOneByEmail(String email);
 
@@ -31,5 +31,5 @@ public interface UserService {
 
     User completePasswordReset(String newRawPassword, String resetKey);
 
-    void deleteByUserName(String userName);
+    void deleteByUsername(String username);
 }

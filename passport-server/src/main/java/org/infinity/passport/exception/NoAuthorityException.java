@@ -8,10 +8,10 @@ import lombok.EqualsAndHashCode;
 public class NoAuthorityException extends RuntimeException {
 
     private static final long   serialVersionUID = 3389857462571862367L;
-    private final        String userName;
+    private final        String username;
 
-    public NoAuthorityException(String userName) {
+    public NoAuthorityException(String username) {
         super("No authority!");
-        this.userName = userName;
+        this.username = username;
     }
 }

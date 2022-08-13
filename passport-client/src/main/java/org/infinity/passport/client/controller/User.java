@@ -10,7 +10,7 @@ import java.util.Set;
 @Builder
 public class User implements Serializable {
     private static final long serialVersionUID = 5015416047116474093L;
-    private String userName;
+    private String username;
 
     private String mobileNo;
 

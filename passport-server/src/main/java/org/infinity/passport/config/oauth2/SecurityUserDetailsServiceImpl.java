@@ -41,7 +41,7 @@ public class SecurityUserDetailsServiceImpl implements org.springframework.secur
                 .stream().map(userAuthority -> new SimpleGrantedAuthority(userAuthority.getAuthorityName()))
                 .collect(Collectors.toList());
 
-        return new SecurityUser(userFromDatabase.getId(), userFromDatabase.getUserName(),
+        return new SecurityUser(userFromDatabase.getId(), userFromDatabase.getUsername(),
                 userFromDatabase.getPasswordHash(), userFromDatabase.getEnabled(),
                 true, true, true, grantedAuthorities);
     }

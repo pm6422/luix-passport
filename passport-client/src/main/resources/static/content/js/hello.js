@@ -20,9 +20,9 @@ function($rootScope, $http, $location, $route) {
 	};
 
 	$http.get('open-api/accounts/user').then(function(response) {
-		if (response.data.userName) {
+		if (response.data.username) {
 			$rootScope.authenticated = true;
-			$rootScope.userName = response.data.userName;
+			$rootScope.username = response.data.username;
 			
 		} else {
 			$rootScope.authenticated = false;

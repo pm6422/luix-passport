@@ -15,7 +15,7 @@ import javax.validation.constraints.Size;
 @Builder
 public class UserNameAndPasswordDTO {
     @Schema(description = "用户名")
-    private String userName;
+    private String username;
 
     @Schema(description = "新密码")
     @NotNull

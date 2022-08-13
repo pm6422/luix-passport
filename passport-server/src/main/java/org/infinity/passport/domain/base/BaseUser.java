@@ -24,7 +24,7 @@ import java.util.Set;
 public class BaseUser extends AbstractAuditableDomain implements Serializable {
 
     private static final long   serialVersionUID = -8677592622292657950L;
-    public static final  String FIELD_USER_NAME  = "userName";
+    public static final  String FIELD_USER_NAME  = "username";
     public static final  String FIELD_EMAIL      = "email";
     public static final  String FIELD_MOBILE_NO  = "mobileNo";
 
@@ -33,7 +33,7 @@ public class BaseUser extends AbstractAuditableDomain implements Serializable {
     @Pattern(regexp = "^[a-z0-9-]+$", message = "{EP5901}")
     @Size(min = 3, max = 20)
     @Indexed(unique = true)
-    private String userName;
+    private String username;
 
     @Schema(description = "名", required = true)
     @NotNull
