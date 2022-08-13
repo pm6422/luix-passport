@@ -16,8 +16,8 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.infinity.passport.config.OAuth2AuthServerSecurityConfiguration.CUSTOM_CONSENT_PAGE_URI;
-import static org.infinity.passport.config.OAuth2AuthServerSecurityConfiguration.CUSTOM_LOGIN_PAGE_URI;
+import static org.infinity.passport.config.OAuth2ServerSecurityConfiguration.CUSTOM_CONSENT_PAGE_URI;
+import static org.infinity.passport.config.OAuth2ServerSecurityConfiguration.CUSTOM_LOGIN_PAGE_URI;
 
 /**
  * Controller for OAuth2 server.

@@ -11,7 +11,6 @@ import org.infinity.passport.config.oauth2.passwordgrant.OAuth2PasswordAuthentic
 import org.infinity.passport.config.oauth2.repository.impl.MongoOAuth2RegisteredClientRepository;
 import org.infinity.passport.repository.*;
 import org.infinity.passport.service.UserService;
-import org.infinity.passport.service.impl.OAuth2AuthorizationServiceImpl;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -52,7 +51,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Configuration
-public class OAuth2AuthServerSecurityConfiguration {
+public class OAuth2ServerSecurityConfiguration {
     public static final String AUTHORIZATION_BEARER    = "Bearer ";
     public static final String AUTHORIZATION_BASIC     = "Basic ";
     public static final String TOKEN_URI               = "/oauth2/token";

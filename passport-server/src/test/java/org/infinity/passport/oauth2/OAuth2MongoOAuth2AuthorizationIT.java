@@ -38,7 +38,7 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.infinity.passport.config.OAuth2AuthServerSecurityConfiguration.*;
+import static org.infinity.passport.config.OAuth2ServerSecurityConfiguration.*;
 import static org.infinity.passport.config.dbmigrations.InitialSetupMigration.PASSWORD;
 import static org.infinity.passport.config.dbmigrations.InitialSetupMigration.USERNAME;
 import static org.infinity.passport.domain.OAuth2Client.*;
