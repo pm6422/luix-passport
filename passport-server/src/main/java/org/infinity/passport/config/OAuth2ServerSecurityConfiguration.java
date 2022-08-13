@@ -10,7 +10,9 @@ import org.infinity.passport.config.oauth2.*;
 import org.infinity.passport.config.oauth2.passwordgrant.OAuth2PasswordAuthenticationConverter;
 import org.infinity.passport.config.oauth2.passwordgrant.OAuth2PasswordAuthenticationProvider;
 import org.infinity.passport.config.oauth2.repository.impl.MongoOAuth2RegisteredClientRepository;
-import org.infinity.passport.repository.*;
+import org.infinity.passport.repository.OAuth2AuthorizationRepository;
+import org.infinity.passport.repository.OAuth2ClientRepository;
+import org.infinity.passport.repository.UserAuthorityRepository;
 import org.infinity.passport.service.UserService;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Bean;
@@ -29,7 +31,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
-import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.server.authorization.InMemoryOAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
@@ -55,16 +56,14 @@ import java.util.UUID;
 @Configuration
 @AllArgsConstructor
 public class OAuth2ServerSecurityConfiguration {
-    public static final String                       AUTHORIZATION_BEARER    = "Bearer ";
-    public static final String                       AUTHORIZATION_BASIC     = "Basic ";
-    public static final String                       TOKEN_URI               = "/oauth2/token";
-    public static final String                       INTROSPECT_TOKEN_URI    = "/oauth2/introspect";
-    public static final String                       VIEW_JWK_URI            = "/oauth2/jwks";
-    public static final String                       REVOKE_TOKEN_URI        = "/oauth2/revoke";
-    public static final String                       CUSTOM_LOGIN_PAGE_URI   = "/oauth2/login";
-    public static final String                       CUSTOM_CONSENT_PAGE_URI = "/oauth2/consent";
-    private final       OAuth2AccessTokenRepository  oAuth2AccessTokenRepository;
-    private final       OAuth2RefreshTokenRepository oAuth2RefreshTokenRepository;
+    public static final String AUTHORIZATION_BEARER    = "Bearer ";
+    public static final String AUTHORIZATION_BASIC     = "Basic ";
+    public static final String TOKEN_URI               = "/oauth2/token";
+    public static final String INTROSPECT_TOKEN_URI    = "/oauth2/introspect";
+    public static final String VIEW_JWK_URI            = "/oauth2/jwks";
+    public static final String REVOKE_TOKEN_URI        = "/oauth2/revoke";
+    public static final String CUSTOM_LOGIN_PAGE_URI   = "/oauth2/login";
+    public static final String CUSTOM_CONSENT_PAGE_URI = "/oauth2/consent";
 
     @Bean
     @Order(1)
@@ -177,12 +176,7 @@ public class OAuth2ServerSecurityConfiguration {
 
     @Bean
     public LogoutSuccessHandler logoutSuccessHandler() {
-        return new AjaxLogoutSuccessHandler(tokenStore());
-    }
-
-    @Bean
-    public TokenStore tokenStore() {
-        return new MongoTokenStore(oAuth2AccessTokenRepository, oAuth2RefreshTokenRepository);
+        return new AjaxLogoutSuccessHandler();
     }
 
     @Bean

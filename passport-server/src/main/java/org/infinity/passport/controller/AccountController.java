@@ -37,11 +37,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2TokenType;
-import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.web.bind.annotation.*;
@@ -83,8 +81,6 @@ public class AccountController {
     private              AuthorityService           authorityService;
     @Resource
     private              MailService                mailService;
-    @Resource
-    private              TokenStore                 tokenStore;
     @Resource
     private              OAuth2AuthorizationService authorizationService;
     @Resource
