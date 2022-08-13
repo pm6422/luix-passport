@@ -996,7 +996,7 @@ function AuthServerService($http, $localStorage) {
     }
 
     function logout() {
-        $http.post('api/accounts/logout').then(function () {
+        $http.post('logout').then(function () {
             delete $localStorage.authenticationToken;
         });
     }

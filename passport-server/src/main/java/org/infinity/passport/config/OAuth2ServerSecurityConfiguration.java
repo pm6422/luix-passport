@@ -5,6 +5,7 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import lombok.AllArgsConstructor;
 import org.infinity.passport.config.oauth2.*;
 import org.infinity.passport.config.oauth2.passwordgrant.OAuth2PasswordAuthenticationConverter;
 import org.infinity.passport.config.oauth2.passwordgrant.OAuth2PasswordAuthenticationProvider;
@@ -40,6 +41,7 @@ import org.springframework.security.oauth2.server.authorization.web.authenticati
 import org.springframework.security.oauth2.server.authorization.web.authentication.OAuth2RefreshTokenAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationConverter;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import java.security.KeyPair;
@@ -51,15 +53,18 @@ import java.util.List;
 import java.util.UUID;
 
 @Configuration
+@AllArgsConstructor
 public class OAuth2ServerSecurityConfiguration {
-    public static final String AUTHORIZATION_BEARER    = "Bearer ";
-    public static final String AUTHORIZATION_BASIC     = "Basic ";
-    public static final String TOKEN_URI               = "/oauth2/token";
-    public static final String INTROSPECT_TOKEN_URI    = "/oauth2/introspect";
-    public static final String VIEW_JWK_URI            = "/oauth2/jwks";
-    public static final String REVOKE_TOKEN_URI        = "/oauth2/revoke";
-    public static final String CUSTOM_LOGIN_PAGE_URI   = "/oauth2/login";
-    public static final String CUSTOM_CONSENT_PAGE_URI = "/oauth2/consent";
+    public static final String                       AUTHORIZATION_BEARER    = "Bearer ";
+    public static final String                       AUTHORIZATION_BASIC     = "Basic ";
+    public static final String                       TOKEN_URI               = "/oauth2/token";
+    public static final String                       INTROSPECT_TOKEN_URI    = "/oauth2/introspect";
+    public static final String                       VIEW_JWK_URI            = "/oauth2/jwks";
+    public static final String                       REVOKE_TOKEN_URI        = "/oauth2/revoke";
+    public static final String                       CUSTOM_LOGIN_PAGE_URI   = "/oauth2/login";
+    public static final String                       CUSTOM_CONSENT_PAGE_URI = "/oauth2/consent";
+    private final       OAuth2AccessTokenRepository  oAuth2AccessTokenRepository;
+    private final       OAuth2RefreshTokenRepository oAuth2RefreshTokenRepository;
 
     @Bean
     @Order(1)
@@ -113,6 +118,9 @@ public class OAuth2ServerSecurityConfiguration {
                     authorize.antMatchers("/api/**").authenticated();
                 })
                 .formLogin(Customizer.withDefaults())
+                .logout() // Logout is handled by LogoutFilter
+                .logoutSuccessHandler(logoutSuccessHandler())
+                .and()
                 // Supports third-party login authentication
                 .apply(federatedIdentityConfigurer);
         // @formatter:on
@@ -168,8 +176,12 @@ public class OAuth2ServerSecurityConfiguration {
     }
 
     @Bean
-    public TokenStore tokenStore(OAuth2AccessTokenRepository oAuth2AccessTokenRepository,
-                                 OAuth2RefreshTokenRepository oAuth2RefreshTokenRepository) {
+    public LogoutSuccessHandler logoutSuccessHandler() {
+        return new AjaxLogoutSuccessHandler(tokenStore());
+    }
+
+    @Bean
+    public TokenStore tokenStore() {
         return new MongoTokenStore(oAuth2AccessTokenRepository, oAuth2RefreshTokenRepository);
     }
 

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.infinity.passport.domain.base.AbstractAuditableDomain;
 import org.springframework.data.annotation.PersistenceConstructor;
+import org.springframework.data.annotation.PersistenceCreator;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
@@ -37,7 +38,7 @@ public class MongoOAuth2AccessToken extends AbstractAuditableDomain implements S
     private              OAuth2Authentication authentication;
     private              String               refreshToken;
 
-    @PersistenceConstructor
+    @PersistenceCreator
     public MongoOAuth2AccessToken(OAuth2AccessToken oAuth2AccessToken, OAuth2Authentication authentication,
                                   String authenticationId) {
         this.id = oAuth2AccessToken.getValue();

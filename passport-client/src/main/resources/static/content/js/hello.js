@@ -35,7 +35,7 @@ function($rootScope, $http, $location, $route) {
 
 	self.logout = function() {
 //           console.log('Post logout to auth server');
-//           $http.post('api/accounts/logout', { withCredentials: true }).finally(function() {
+//           $http.post('logout', { withCredentials: true }).finally(function() {
 //           });
            console.log('Post logout to ui client');
            $http.post('logout', {}).finally(function() {

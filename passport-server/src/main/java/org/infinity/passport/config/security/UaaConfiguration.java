@@ -4,7 +4,7 @@
 //import org.infinity.passport.config.security.MongoAuthorizationCodeServices;
 //import org.infinity.passport.config.security.MongoClientDetailsService;
 //import org.infinity.passport.domain.Authority;
-//import org.infinity.passport.security.AjaxLogoutSuccessHandler;
+//import org.infinity.passport.config.oauth2.AjaxLogoutSuccessHandler;
 //import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 //import org.springframework.context.annotation.Configuration;
 //import org.springframework.context.annotation.Import;
