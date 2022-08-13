@@ -37,6 +37,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2TokenType;
@@ -82,7 +84,7 @@ public class AccountController {
     @Resource
     private              MailService                mailService;
     @Resource
-    private              OAuth2AuthorizationService authorizationService;
+    private              OAuth2AuthorizationService oAuth2AuthorizationService;
     @Resource
     private              UserDetailsService         userDetailsService;
     @Resource
@@ -139,16 +141,21 @@ public class AccountController {
         String token = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (token != null && token.toLowerCase().startsWith(OAuth2AccessToken.BEARER_TYPE.toLowerCase())) {
             String accessToken = StringUtils.substringAfter(token, OAuth2AccessToken.BEARER_TYPE).trim();
-//            OAuth2Authentication oAuth2Authentication = tokenStore.readAuthentication(accessToken);
-            OAuth2Authorization authorization = authorizationService.findByToken(accessToken, OAuth2TokenType.ACCESS_TOKEN);
-            if (authorization != null) {
-                User user = userService.findOneByUserName(authorization.getPrincipalName());
-                List<UserAuthority> userAuthorities = Optional.ofNullable(userAuthorityRepository.findByUserId(user.getId()))
-                        .orElseThrow(() -> new NoAuthorityException(SecurityUtils.getCurrentUserName()));
-                Set<String> authorities = userAuthorities.stream().map(UserAuthority::getAuthorityName).collect(Collectors.toSet());
-                if (user != null) {
-                    user.setAuthorities(authorities);
-                    return ResponseEntity.ok(user);
+            OAuth2Authorization oAuth2Authorization = oAuth2AuthorizationService.findByToken(accessToken, OAuth2TokenType.ACCESS_TOKEN);
+            if (oAuth2Authorization != null && oAuth2Authorization.getAttribute(Principal.class.getName()) != null) {
+                Object attribute = oAuth2Authorization.getAttribute(Principal.class.getName());
+                if (attribute instanceof Authentication) {
+                    Authentication authentication = (Authentication) attribute;
+                    Object principal = authentication.getPrincipal();
+                    if (principal != null && principal instanceof SecurityUser) {
+                        SecurityUser securityUser = (SecurityUser) principal;
+                        User user = new User();
+                        user.setId(securityUser.getId());
+                        user.setUserName(securityUser.getUsername());
+                        user.setAuthorities(securityUser.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet()));
+                        user.setEnabled(securityUser.isEnabled());
+                        return ResponseEntity.ok(user);
+                    }
                 }
             }
         }
@@ -249,7 +256,7 @@ public class AccountController {
     @Timed
     public ResponseEntity<org.springframework.core.io.Resource> downloadProfilePhoto() {
         SecurityUser userDetails = (SecurityUser) userDetailsService.loadUserByUsername(SecurityUtils.getCurrentUserName());
-        Optional<UserProfilePhoto> existingPhoto = userProfilePhotoRepository.findByUserId(userDetails.getUserId());
+        Optional<UserProfilePhoto> existingPhoto = userProfilePhotoRepository.findByUserId(userDetails.getId());
         if (!existingPhoto.isPresent()) {
             return ResponseEntity.ok().body(null);
         }

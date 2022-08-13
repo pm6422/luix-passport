@@ -6,12 +6,13 @@ import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.oauth2.server.authorization.authentication.OAuth2AuthorizationGrantAuthenticationToken;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class OAuth2PasswordAuthenticationToken extends OAuth2AuthorizationGrantAuthenticationToken {
+public class OAuth2PasswordAuthenticationToken extends OAuth2AuthorizationGrantAuthenticationToken implements Serializable {
     private static final long        serialVersionUID = -7793318818051403023L;
     private final        Set<String> scopes;
 

@@ -117,7 +117,7 @@ public class OAuth2ServerSecurityConfiguration {
                     authorize.antMatchers("/api/**").authenticated();
                 })
                 .formLogin(Customizer.withDefaults())
-                .logout() // Logout is handled by LogoutFilter
+                .logout() // Logout is handled by {@link org.springframework.security.web.authentication.logout.LogoutFilter}
                 .logoutSuccessHandler(logoutSuccessHandler())
                 .and()
                 // Supports third-party login authentication

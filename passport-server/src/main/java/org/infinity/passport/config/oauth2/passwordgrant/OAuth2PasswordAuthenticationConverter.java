@@ -1,6 +1,7 @@
 package org.infinity.passport.config.oauth2.passwordgrant;
 
 import com.google.common.collect.Maps;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
@@ -11,7 +12,6 @@ import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.web.authentication.AuthenticationConverter;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
@@ -35,15 +35,15 @@ public class OAuth2PasswordAuthenticationConverter implements AuthenticationConv
 
         // scope (OPTIONAL)
         String scope = parameters.getFirst(OAuth2ParameterNames.SCOPE);
-        if (StringUtils.hasText(scope) && parameters.get(OAuth2ParameterNames.SCOPE).size() != 1) {
+        if (StringUtils.isNotEmpty(scope) && parameters.get(OAuth2ParameterNames.SCOPE).size() != 1) {
             throwError(
                     OAuth2ErrorCodes.INVALID_REQUEST,
                     OAuth2ParameterNames.SCOPE,
                     ACCESS_TOKEN_REQUEST_ERROR_URI);
         }
         Set<String> requestedScopes = null;
-        if (StringUtils.hasText(scope)) {
-            requestedScopes = new HashSet<>(Arrays.asList(StringUtils.delimitedListToStringArray(scope, " ")));
+        if (StringUtils.isNotEmpty(scope)) {
+            requestedScopes = new HashSet<>(Arrays.asList(StringUtils.split(scope, " ")));
         }
 
         Map<String, Object> additionalParameters = Maps.newHashMap();
@@ -54,7 +54,7 @@ public class OAuth2PasswordAuthenticationConverter implements AuthenticationConv
         });
 
         String username = parameters.getFirst(OAuth2ParameterNames.USERNAME);
-        if (!StringUtils.hasText(username)) {
+        if (StringUtils.isEmpty(username)) {
             throwError(
                     OAuth2ErrorCodes.INVALID_REQUEST,
                     OAuth2ParameterNames.USERNAME,
@@ -62,7 +62,7 @@ public class OAuth2PasswordAuthenticationConverter implements AuthenticationConv
         }
 
         String password = parameters.getFirst(OAuth2ParameterNames.PASSWORD);
-        if (!StringUtils.hasText(password)) {
+        if (StringUtils.isEmpty(password)) {
             throwError(
                     OAuth2ErrorCodes.INVALID_REQUEST,
                     OAuth2ParameterNames.PASSWORD,

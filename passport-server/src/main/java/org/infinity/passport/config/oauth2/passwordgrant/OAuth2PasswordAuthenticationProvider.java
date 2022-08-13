@@ -3,6 +3,7 @@ package org.infinity.passport.config.oauth2.passwordgrant;
 import com.google.common.collect.Maps;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -27,7 +28,6 @@ import org.springframework.security.oauth2.server.authorization.context.Provider
 import org.springframework.security.oauth2.server.authorization.token.DefaultOAuth2TokenContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenGenerator;
-import org.springframework.util.CollectionUtils;
 
 import java.security.Principal;
 import java.util.Collections;
@@ -48,14 +48,14 @@ public class OAuth2PasswordAuthenticationProvider implements AuthenticationProvi
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        OAuth2PasswordAuthenticationToken resourceOwnerPasswordAuthentication = (OAuth2PasswordAuthenticationToken) authentication;
-        OAuth2ClientAuthenticationToken clientPrincipal = getAuthenticatedClientElseThrowInvalidClient(resourceOwnerPasswordAuthentication);
+        OAuth2PasswordAuthenticationToken passwordAuthenticationToken = (OAuth2PasswordAuthenticationToken) authentication;
+        OAuth2ClientAuthenticationToken clientPrincipal = getAuthenticatedClientElseThrowInvalidClient(passwordAuthenticationToken);
         RegisteredClient registeredClient = clientPrincipal.getRegisteredClient();
 
         if (!registeredClient.getAuthorizationGrantTypes().contains(AuthorizationGrantType.PASSWORD)) {
             throw new OAuth2AuthenticationException(OAuth2ErrorCodes.UNAUTHORIZED_CLIENT);
         }
-        Map<String, Object> additionalParameters = resourceOwnerPasswordAuthentication.getAdditionalParameters();
+        Map<String, Object> additionalParameters = passwordAuthenticationToken.getAdditionalParameters();
         String password = (String) additionalParameters.get(OAuth2ParameterNames.PASSWORD);
         if (StringUtils.isEmpty(password)) {
             log.warn("password must not be empty!");
@@ -63,24 +63,24 @@ public class OAuth2PasswordAuthenticationProvider implements AuthenticationProvi
         }
 
         String username = (String) additionalParameters.get(OAuth2ParameterNames.USERNAME);
-        UserDetails user = userDetailsService.loadUserByUsername(username);
-        if (!passwordEncoder.matches(password, user.getPassword())) {
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        if (!passwordEncoder.matches(password, userDetails.getPassword())) {
             log.warn("invalid password: {}", password);
             throw new BadCredentialsException("invalid password: " + password);
         }
         // Default to configured scopes
         Set<String> authorizedScopes = registeredClient.getScopes();
-        if (!CollectionUtils.isEmpty(resourceOwnerPasswordAuthentication.getScopes())) {
-            Set<String> unauthorizedScopes = resourceOwnerPasswordAuthentication.getScopes().stream()
+        if (CollectionUtils.isNotEmpty(passwordAuthenticationToken.getScopes())) {
+            Set<String> unauthorizedScopes = passwordAuthenticationToken.getScopes().stream()
                     .filter(requestedScope -> !registeredClient.getScopes().contains(requestedScope))
                     .collect(Collectors.toSet());
-            if (!CollectionUtils.isEmpty(unauthorizedScopes)) {
+            if (CollectionUtils.isNotEmpty(unauthorizedScopes)) {
                 throw new OAuth2AuthenticationException(OAuth2ErrorCodes.INVALID_SCOPE);
             }
-            authorizedScopes = new LinkedHashSet<>(resourceOwnerPasswordAuthentication.getScopes());
+            authorizedScopes = new LinkedHashSet<>(passwordAuthenticationToken.getScopes());
         }
 
-        UsernamePasswordAuthenticationToken principal = new UsernamePasswordAuthenticationToken(user, password);
+        UsernamePasswordAuthenticationToken principal = new UsernamePasswordAuthenticationToken(userDetails, password);
         // ----- Access token -----
         // @formatter:off
         OAuth2TokenContext tokenContext = DefaultOAuth2TokenContext.builder()
@@ -90,7 +90,7 @@ public class OAuth2PasswordAuthenticationProvider implements AuthenticationProvi
                 .authorizedScopes(authorizedScopes)
                 .tokenType(OAuth2TokenType.ACCESS_TOKEN)
                 .authorizationGrantType(AuthorizationGrantType.PASSWORD)
-                .authorizationGrant(resourceOwnerPasswordAuthentication)
+                .authorizationGrant(passwordAuthenticationToken)
                 .build();
         // @formatter:on
 
@@ -131,7 +131,7 @@ public class OAuth2PasswordAuthenticationProvider implements AuthenticationProvi
                     .authorizedScopes(authorizedScopes)
                     .tokenType(OAuth2TokenType.REFRESH_TOKEN)
                     .authorizationGrantType(AuthorizationGrantType.PASSWORD)
-                    .authorizationGrant(resourceOwnerPasswordAuthentication)
+                    .authorizationGrant(passwordAuthenticationToken)
                     .build();
 
             OAuth2Token generatedRefreshToken = this.tokenGenerator.generate(refreshTokenContext);
@@ -154,7 +154,7 @@ public class OAuth2PasswordAuthenticationProvider implements AuthenticationProvi
                     .authorizedScopes(authorizedScopes)
                     .tokenType(ID_TOKEN_TOKEN_TYPE)
                     .authorizationGrantType(AuthorizationGrantType.PASSWORD)
-                    .authorizationGrant(resourceOwnerPasswordAuthentication)
+                    .authorizationGrant(passwordAuthenticationToken)
                     .build();
             OAuth2Token generatedIdToken = this.tokenGenerator.generate(idTokenContext);
             if (!(generatedIdToken instanceof Jwt)) {
@@ -177,7 +177,7 @@ public class OAuth2PasswordAuthenticationProvider implements AuthenticationProvi
 
         OAuth2Authorization authorization = authorizationBuilder.build();
         this.authorizationService.save(authorization);
-        log.debug("OAuth2Authorization saved successfully");
+        log.debug("Saved OAuth2Authorization");
         return new OAuth2AccessTokenAuthenticationToken(registeredClient, clientPrincipal, accessToken, refreshToken, add);
     }
 

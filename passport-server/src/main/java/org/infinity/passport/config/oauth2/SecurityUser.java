@@ -12,17 +12,17 @@ public class SecurityUser extends org.springframework.security.core.userdetails.
     private static final long   serialVersionUID = -8021915441738843058L;
     @Setter
     @Getter
-    private              String userId;
+    private              String id;
 
-    public SecurityUser(String userId, String username, String password, Collection<? extends GrantedAuthority> authorities) {
+    public SecurityUser(String id, String username, String password, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
-        this.userId = userId;
+        this.id = id;
     }
 
-    public SecurityUser(String userId, String username, String password, boolean enabled,
+    public SecurityUser(String id, String username, String password, boolean enabled,
                         boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked,
                         Collection<? extends GrantedAuthority> authorities) {
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
-        this.userId = userId;
+        this.id = id;
     }
 }
