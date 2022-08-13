@@ -1,10 +1,8 @@
-package org.infinity.passport.config.oauth2.repository.impl;
+package org.infinity.passport.repository;
 
 import lombok.AllArgsConstructor;
-import org.infinity.passport.config.oauth2.repository.OAuth2RegisteredClientRepository;
 import org.infinity.passport.domain.OAuth2Client;
 import org.infinity.passport.exception.DataNotFoundException;
-import org.infinity.passport.repository.OAuth2ClientRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +12,7 @@ import org.springframework.util.Assert;
 import java.time.Instant;
 
 @AllArgsConstructor
-public class MongoOAuth2RegisteredClientRepository implements OAuth2RegisteredClientRepository {
+public class OAuth2CustomRegisteredClientRepositoryImpl implements OAuth2CustomRegisteredClientRepository {
     private OAuth2ClientRepository oauth2ClientRepository;
 
     @Override

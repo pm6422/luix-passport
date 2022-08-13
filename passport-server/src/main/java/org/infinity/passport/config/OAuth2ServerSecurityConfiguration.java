@@ -9,7 +9,7 @@ import lombok.AllArgsConstructor;
 import org.infinity.passport.config.oauth2.*;
 import org.infinity.passport.config.oauth2.passwordgrant.OAuth2PasswordAuthenticationConverter;
 import org.infinity.passport.config.oauth2.passwordgrant.OAuth2PasswordAuthenticationProvider;
-import org.infinity.passport.config.oauth2.repository.impl.MongoOAuth2RegisteredClientRepository;
+import org.infinity.passport.repository.OAuth2CustomRegisteredClientRepositoryImpl;
 import org.infinity.passport.repository.OAuth2AuthorizationRepository;
 import org.infinity.passport.repository.OAuth2ClientRepository;
 import org.infinity.passport.repository.UserAuthorityRepository;
@@ -154,7 +154,7 @@ public class OAuth2ServerSecurityConfiguration {
 
     @Bean
     public RegisteredClientRepository registeredClientRepository(OAuth2ClientRepository oauth2ClientRepository) {
-        return new MongoOAuth2RegisteredClientRepository(oauth2ClientRepository);
+        return new OAuth2CustomRegisteredClientRepositoryImpl(oauth2ClientRepository);
     }
 
     @Bean
