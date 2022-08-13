@@ -1,4 +1,4 @@
-package org.infinity.passport.event;
+package org.infinity.passport.config.oauth2;
 
 import org.springframework.context.ApplicationEvent;
 

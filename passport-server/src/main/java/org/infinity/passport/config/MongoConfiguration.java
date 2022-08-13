@@ -2,21 +2,19 @@ package org.infinity.passport.config;
 
 import io.mongock.runner.springboot.EnableMongock;
 import lombok.extern.slf4j.Slf4j;
-import org.infinity.passport.config.security.OAuth2AccessTokenReadConverter;
-import org.infinity.passport.config.security.OAuth2AuthenticationReadConverter;
-import org.infinity.passport.config.security.OAuth2GrantedAuthorityTokenReadConverter;
-import org.infinity.passport.config.security.OAuth2RefreshTokenReadConverter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.event.EventListener;
-import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.mongodb.MongoDatabaseFactory;
 import org.springframework.data.mongodb.config.EnableMongoAuditing;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.convert.*;
+import org.springframework.data.mongodb.core.convert.DbRefResolver;
+import org.springframework.data.mongodb.core.convert.DefaultDbRefResolver;
+import org.springframework.data.mongodb.core.convert.DefaultMongoTypeMapper;
+import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
 import org.springframework.data.mongodb.core.index.IndexOperations;
 import org.springframework.data.mongodb.core.index.MongoPersistentEntityIndexResolver;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -24,9 +22,6 @@ import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
 import org.springframework.data.mongodb.core.mapping.MongoPersistentEntity;
 import org.springframework.data.mongodb.core.mapping.event.ValidatingMongoEventListener;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Using @EnableMongock with minimal configuration only requires changeLog package to scan

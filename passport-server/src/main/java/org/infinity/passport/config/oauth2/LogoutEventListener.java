@@ -2,7 +2,6 @@ package org.infinity.passport.config.oauth2;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.infinity.passport.event.LogoutEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;

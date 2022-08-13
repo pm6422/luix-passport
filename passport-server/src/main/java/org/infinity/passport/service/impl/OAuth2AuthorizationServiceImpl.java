@@ -4,14 +4,13 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
-import org.infinity.passport.domain.MongoOAuth2Authorization;
+import org.infinity.passport.domain.OAuth2Authorization;
 import org.infinity.passport.repository.OAuth2AuthorizationRepository;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.security.jackson2.SecurityJackson2Modules;
 import org.springframework.security.oauth2.core.*;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
-import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
@@ -27,6 +26,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 @AllArgsConstructor
+@Deprecated
 public class OAuth2AuthorizationServiceImpl implements OAuth2AuthorizationService {
     private static final ObjectMapper                  OBJECT_MAPPER = new ObjectMapper();
     private              OAuth2AuthorizationRepository oAuth2AuthorizationRepository;
@@ -40,28 +40,28 @@ public class OAuth2AuthorizationServiceImpl implements OAuth2AuthorizationServic
     }
 
     @Override
-    public void save(OAuth2Authorization authorization) {
+    public void save(org.springframework.security.oauth2.server.authorization.OAuth2Authorization authorization) {
         Assert.notNull(authorization, "authorization cannot be null");
         this.oAuth2AuthorizationRepository.save(toEntity(authorization));
     }
 
     @Override
-    public void remove(OAuth2Authorization authorization) {
+    public void remove(org.springframework.security.oauth2.server.authorization.OAuth2Authorization authorization) {
         Assert.notNull(authorization, "authorization cannot be null");
         this.oAuth2AuthorizationRepository.deleteById(authorization.getId());
     }
 
     @Override
-    public OAuth2Authorization findById(String id) {
+    public org.springframework.security.oauth2.server.authorization.OAuth2Authorization findById(String id) {
         Assert.hasText(id, "id cannot be empty");
         return this.oAuth2AuthorizationRepository.findById(id).map(this::toObject).orElse(null);
     }
 
     @Override
-    public OAuth2Authorization findByToken(String token, OAuth2TokenType tokenType) {
+    public org.springframework.security.oauth2.server.authorization.OAuth2Authorization findByToken(String token, OAuth2TokenType tokenType) {
         Assert.hasText(token, "token cannot be empty");
 
-        Optional<MongoOAuth2Authorization> result;
+        Optional<OAuth2Authorization> result;
         if (tokenType == null) {
             result = this.oAuth2AuthorizationRepository.findByStateOrAuthorizationCodeValueOrAccessTokenValueOrRefreshTokenValue(token);
         } else if (OAuth2ParameterNames.STATE.equals(tokenType.getValue())) {
@@ -79,14 +79,14 @@ public class OAuth2AuthorizationServiceImpl implements OAuth2AuthorizationServic
         return result.map(this::toObject).orElse(null);
     }
 
-    private OAuth2Authorization toObject(MongoOAuth2Authorization entity) {
+    private org.springframework.security.oauth2.server.authorization.OAuth2Authorization toObject(OAuth2Authorization entity) {
         RegisteredClient registeredClient = this.registeredClientRepository.findById(entity.getRegisteredClientId());
         if (registeredClient == null) {
             throw new DataRetrievalFailureException(
                     "The RegisteredClient with id '" + entity.getRegisteredClientId() + "' was not found in the RegisteredClientRepository.");
         }
 
-        OAuth2Authorization.Builder builder = OAuth2Authorization.withRegisteredClient(registeredClient)
+        org.springframework.security.oauth2.server.authorization.OAuth2Authorization.Builder builder = org.springframework.security.oauth2.server.authorization.OAuth2Authorization.withRegisteredClient(registeredClient)
                 .id(entity.getId())
                 .principalName(entity.getPrincipalName())
                 .authorizationGrantType(resolveAuthorizationGrantType(entity.getAuthorizationGrantType()))
@@ -133,8 +133,8 @@ public class OAuth2AuthorizationServiceImpl implements OAuth2AuthorizationServic
         return builder.build();
     }
 
-    private MongoOAuth2Authorization toEntity(OAuth2Authorization authorization) {
-        MongoOAuth2Authorization entity = new MongoOAuth2Authorization();
+    private OAuth2Authorization toEntity(org.springframework.security.oauth2.server.authorization.OAuth2Authorization authorization) {
+        OAuth2Authorization entity = new OAuth2Authorization();
         entity.setId(authorization.getId());
         entity.setRegisteredClientId(authorization.getRegisteredClientId());
         entity.setPrincipalName(authorization.getPrincipalName());
@@ -142,14 +142,14 @@ public class OAuth2AuthorizationServiceImpl implements OAuth2AuthorizationServic
         entity.setAttributes(writeMap(authorization.getAttributes()));
         entity.setState(authorization.getAttribute(OAuth2ParameterNames.STATE));
 
-        OAuth2Authorization.Token<OAuth2AuthorizationCode> authorizationCode =
+        org.springframework.security.oauth2.server.authorization.OAuth2Authorization.Token<OAuth2AuthorizationCode> authorizationCode =
                 authorization.getToken(OAuth2AuthorizationCode.class);
         setTokenValues(authorizationCode, entity::setAuthorizationCodeValue,
                 entity::setAuthorizationCodeIssuedAt,
                 entity::setAuthorizationCodeExpiresAt, entity::setAuthorizationCodeMetadata
         );
 
-        OAuth2Authorization.Token<OAuth2AccessToken> accessToken = authorization.getToken(OAuth2AccessToken.class);
+        org.springframework.security.oauth2.server.authorization.OAuth2Authorization.Token<OAuth2AccessToken> accessToken = authorization.getToken(OAuth2AccessToken.class);
         setTokenValues(accessToken, entity::setAccessTokenValue, entity::setAccessTokenIssuedAt,
                 entity::setAccessTokenExpiresAt, entity::setAccessTokenMetadata
         );
@@ -157,12 +157,12 @@ public class OAuth2AuthorizationServiceImpl implements OAuth2AuthorizationServic
             entity.setAccessTokenScopes(StringUtils.collectionToDelimitedString(accessToken.getToken().getScopes(), ","));
         }
 
-        OAuth2Authorization.Token<OAuth2RefreshToken> refreshToken = authorization.getToken(OAuth2RefreshToken.class);
+        org.springframework.security.oauth2.server.authorization.OAuth2Authorization.Token<OAuth2RefreshToken> refreshToken = authorization.getToken(OAuth2RefreshToken.class);
         setTokenValues(refreshToken, entity::setRefreshTokenValue, entity::setRefreshTokenIssuedAt,
                 entity::setRefreshTokenExpiresAt, entity::setRefreshTokenMetadata
         );
 
-        OAuth2Authorization.Token<OidcIdToken> oidcIdToken =
+        org.springframework.security.oauth2.server.authorization.OAuth2Authorization.Token<OidcIdToken> oidcIdToken =
                 authorization.getToken(OidcIdToken.class);
         setTokenValues(oidcIdToken, entity::setOidcIdTokenValue, entity::setOidcIdTokenIssuedAt,
                 entity::setOidcIdTokenExpiresAt, entity::setOidcIdTokenMetadata
@@ -173,7 +173,7 @@ public class OAuth2AuthorizationServiceImpl implements OAuth2AuthorizationServic
         return entity;
     }
 
-    private void setTokenValues(OAuth2Authorization.Token<?> token, Consumer<String> tokenValueConsumer,
+    private void setTokenValues(org.springframework.security.oauth2.server.authorization.OAuth2Authorization.Token<?> token, Consumer<String> tokenValueConsumer,
                                 Consumer<Instant> issuedAtConsumer, Consumer<Instant> expiresAtConsumer,
                                 Consumer<String> metadataConsumer) {
         if (token != null) {

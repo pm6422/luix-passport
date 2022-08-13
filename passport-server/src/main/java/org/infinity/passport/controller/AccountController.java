@@ -21,7 +21,7 @@ import org.infinity.passport.domain.UserProfilePhoto;
 import org.infinity.passport.dto.ManagedUserDTO;
 import org.infinity.passport.dto.ResetKeyAndPasswordDTO;
 import org.infinity.passport.dto.UserNameAndPasswordDTO;
-import org.infinity.passport.event.LogoutEvent;
+import org.infinity.passport.config.oauth2.LogoutEvent;
 import org.infinity.passport.exception.DataNotFoundException;
 import org.infinity.passport.exception.NoAuthorityException;
 import org.infinity.passport.repository.UserAuthorityRepository;

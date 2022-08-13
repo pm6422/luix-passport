@@ -14,11 +14,11 @@ import java.util.stream.Collectors;
  * An implementation of Spring Boot's HttpTraceRepository.
  */
 @Repository
-public class CustomTraceRepository implements HttpTraceRepository {
+public class CustomHttpTraceRepository implements HttpTraceRepository {
 
     private final PersistenceHttpTraceRepository persistenceHttpTraceRepository;
 
-    public CustomTraceRepository(PersistenceHttpTraceRepository persistenceHttpTraceRepository) {
+    public CustomHttpTraceRepository(PersistenceHttpTraceRepository persistenceHttpTraceRepository) {
         this.persistenceHttpTraceRepository = persistenceHttpTraceRepository;
     }
 

@@ -15,21 +15,22 @@
  */
 package org.infinity.passport.repository;
 
-import org.infinity.passport.domain.MongoOAuth2Authorization;
+import org.infinity.passport.domain.OAuth2Authorization;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface OAuth2AuthorizationRepository extends MongoRepository<MongoOAuth2Authorization, String> {
-    Optional<MongoOAuth2Authorization> findByState(String state);
+@Deprecated
+public interface OAuth2AuthorizationRepository extends MongoRepository<OAuth2Authorization, String> {
+    Optional<OAuth2Authorization> findByState(String state);
 
-    Optional<MongoOAuth2Authorization> findByAuthorizationCodeValue(String authorizationCode);
+    Optional<OAuth2Authorization> findByAuthorizationCodeValue(String authorizationCode);
 
-    Optional<MongoOAuth2Authorization> findByAccessTokenValue(String accessToken);
+    Optional<OAuth2Authorization> findByAccessTokenValue(String accessToken);
 
-    Optional<MongoOAuth2Authorization> findByRefreshTokenValue(String refreshToken);
+    Optional<OAuth2Authorization> findByRefreshTokenValue(String refreshToken);
 
-    Optional<MongoOAuth2Authorization> findByStateOrAuthorizationCodeValueOrAccessTokenValueOrRefreshTokenValue(String token);
+    Optional<OAuth2Authorization> findByStateOrAuthorizationCodeValueOrAccessTokenValueOrRefreshTokenValue(String token);
 }

@@ -11,7 +11,8 @@ import java.time.Instant;
 @Document(collection = "MongoOAuth2Authorization")
 @Data
 @NoArgsConstructor
-public class MongoOAuth2Authorization implements Serializable {
+@Deprecated
+public class OAuth2Authorization implements Serializable {
     private static final long   serialVersionUID     = 5961084257759790938L;
     public static final  String AUTHORIZATION_BEARER = "Bearer ";
     public static final  String AUTHORIZATION_BASIC  = "Basic ";
