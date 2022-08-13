@@ -104,7 +104,7 @@ public class UserController {
     public ResponseEntity<Void> update(@Parameter(description = "新的用户", required = true) @Valid @RequestBody User domain) {
         log.debug("REST request to update user: {}", domain);
         userService.update(domain);
-        if (domain.getUsername().equals(SecurityUtils.getCurrentUserName())) {
+        if (domain.getUsername().equals(SecurityUtils.getCurrentUsername())) {
             // Logout if current user were changed
             applicationEventPublisher.publishEvent(new LogoutEvent(this));
         }

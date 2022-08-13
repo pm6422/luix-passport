@@ -12,7 +12,7 @@ public abstract class SecurityUtils {
     /**
      * Get the name of the current user.
      */
-    public static String getCurrentUserName() {
+    public static String getCurrentUsername() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = null;
         if (authentication != null) {

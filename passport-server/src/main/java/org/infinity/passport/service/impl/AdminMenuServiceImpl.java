@@ -78,7 +78,7 @@ public class AdminMenuServiceImpl implements AdminMenuService {
 
     private List<String> getEnabledUserAuthorities() {
         List<String> allEnabledAuthorities = authorityService.findAllAuthorityNames(true);
-        UserDetails userDetails = userDetailsService.loadUserByUsername(SecurityUtils.getCurrentUserName());
+        UserDetails userDetails = userDetailsService.loadUserByUsername(SecurityUtils.getCurrentUsername());
         return userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .filter(allEnabledAuthorities::contains).collect(Collectors.toList());

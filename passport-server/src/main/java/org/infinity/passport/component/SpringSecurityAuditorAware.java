@@ -17,7 +17,7 @@ public class SpringSecurityAuditorAware implements AuditorAware<String> {
     @Override
     @Nonnull
     public Optional<String> getCurrentAuditor() {
-        String username = SecurityUtils.getCurrentUserName();
+        String username = SecurityUtils.getCurrentUsername();
         return Optional.of(username != null ? username : Authority.SYSTEM_ACCOUNT);
     }
 }

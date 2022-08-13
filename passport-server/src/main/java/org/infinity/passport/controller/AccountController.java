@@ -121,9 +121,9 @@ public class AccountController {
     @PreAuthorize("hasAuthority(\"" + Authority.USER + "\")")
     @Timed
     public ResponseEntity<User> getCurrentUser() {
-        User user = userService.findOneByUsername(SecurityUtils.getCurrentUserName());
+        User user = userService.findOneByUsername(SecurityUtils.getCurrentUsername());
         List<UserAuthority> userAuthorities = Optional.ofNullable(userAuthorityRepository.findByUserId(user.getId()))
-                .orElseThrow(() -> new NoAuthorityException(SecurityUtils.getCurrentUserName()));
+                .orElseThrow(() -> new NoAuthorityException(SecurityUtils.getCurrentUsername()));
         Set<String> authorities = userAuthorities.stream().map(UserAuthority::getAuthorityName).collect(Collectors.toSet());
         user.setAuthorities(authorities);
         HttpHeaders headers = new HttpHeaders();
@@ -183,7 +183,7 @@ public class AccountController {
     @Timed
     public ResponseEntity<Void> updateCurrentAccount(@Parameter(description = "新的用户", required = true) @Valid @RequestBody User domain) {
         // For security reason
-        User currentUser = userService.findOneByUsername(SecurityUtils.getCurrentUserName());
+        User currentUser = userService.findOneByUsername(SecurityUtils.getCurrentUsername());
         domain.setId(currentUser.getId());
         domain.setUsername(currentUser.getUsername());
         userService.update(domain);
@@ -196,7 +196,7 @@ public class AccountController {
     @Timed
     public ResponseEntity<Void> changePassword(@Parameter(description = "新密码", required = true) @RequestBody @Valid UserNameAndPasswordDTO dto) {
         // For security reason
-        dto.setUsername(SecurityUtils.getCurrentUserName());
+        dto.setUsername(SecurityUtils.getCurrentUsername());
         userService.changePassword(dto);
         // Logout asynchronously
         applicationEventPublisher.publishEvent(new LogoutEvent(this));
@@ -228,7 +228,7 @@ public class AccountController {
     public void uploadProfilePhoto(@Parameter(description = "文件描述", required = true) @RequestPart String description,
                                    @Parameter(description = "用户头像文件", required = true) @RequestPart MultipartFile file) throws IOException {
         log.debug("Upload profile with file name {} and description {}", file.getOriginalFilename(), description);
-        User user = userService.findOneByUsername(SecurityUtils.getCurrentUserName());
+        User user = userService.findOneByUsername(SecurityUtils.getCurrentUsername());
         userProfilePhotoService.save(user, file.getBytes());
     }
 
@@ -237,7 +237,7 @@ public class AccountController {
     @PreAuthorize("hasAuthority(\"" + Authority.USER + "\")")
     @Timed
     public ResponseEntity<org.springframework.core.io.Resource> downloadProfilePhoto() {
-        SecurityUser userDetails = (SecurityUser) userDetailsService.loadUserByUsername(SecurityUtils.getCurrentUserName());
+        SecurityUser userDetails = (SecurityUser) userDetailsService.loadUserByUsername(SecurityUtils.getCurrentUsername());
         Optional<UserProfilePhoto> existingPhoto = userProfilePhotoRepository.findByUserId(userDetails.getId());
         if (!existingPhoto.isPresent()) {
             return ResponseEntity.ok().body(null);
@@ -261,7 +261,7 @@ public class AccountController {
     @Timed
     public ModelAndView getProfilePhoto() {
         // @RestController下使用return forwardUrl不好使
-        String forwardUrl = "forward:".concat(UserController.GET_PROFILE_PHOTO_URL).concat(SecurityUtils.getCurrentUserName());
+        String forwardUrl = "forward:".concat(UserController.GET_PROFILE_PHOTO_URL).concat(SecurityUtils.getCurrentUsername());
         log.info(forwardUrl);
         return new ModelAndView(forwardUrl);
     }
