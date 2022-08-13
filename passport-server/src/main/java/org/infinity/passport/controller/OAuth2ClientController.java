@@ -21,7 +21,7 @@ import static org.infinity.passport.config.api.SpringDocConfiguration.AUTH;
 @Tag(name = "单点登录客户端")
 @SecurityRequirement(name = AUTH)
 @AllArgsConstructor
-public class OAuth2ClientDetailsController {
+public class OAuth2ClientController {
     private final MongoTemplate     mongoTemplate;
     private final HttpHeaderCreator httpHeaderCreator;
     private final PasswordEncoder   passwordEncoder;
