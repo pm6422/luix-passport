@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
 import org.infinity.passport.component.HttpHeaderCreator;
 import org.infinity.passport.config.oauth2.SecurityUser;
+import org.infinity.passport.config.oauth2.SecurityUserDetailsServiceImpl;
 import org.infinity.passport.config.oauth2.SecurityUtils;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.User;
@@ -37,12 +38,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
-import org.springframework.security.oauth2.core.OAuth2TokenType;
-import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -70,27 +67,27 @@ import static org.infinity.passport.utils.NetworkUtils.getRequestUrl;
 @SecurityRequirement(name = AUTH)
 @Slf4j
 public class AccountController {
-    private static final FastDateFormat             DATETIME_FORMAT = FastDateFormat.getInstance("yyyyMMdd-HHmmss");
+    private static final FastDateFormat                 DATETIME_FORMAT = FastDateFormat.getInstance("yyyyMMdd-HHmmss");
     @Resource
-    private              UserService                userService;
+    private              UserService                    userService;
     @Resource
-    private              UserAuthorityRepository    userAuthorityRepository;
+    private              UserAuthorityRepository        userAuthorityRepository;
     @Resource
-    private              UserProfilePhotoRepository userProfilePhotoRepository;
+    private              UserProfilePhotoRepository     userProfilePhotoRepository;
     @Resource
-    private              UserProfilePhotoService    userProfilePhotoService;
+    private              UserProfilePhotoService        userProfilePhotoService;
     @Resource
-    private              AuthorityService           authorityService;
+    private              AuthorityService               authorityService;
     @Resource
-    private              MailService                mailService;
+    private              MailService                    mailService;
     @Resource
-    private              OAuth2AuthorizationService oAuth2AuthorizationService;
+    private              OAuth2AuthorizationService     oAuth2AuthorizationService;
     @Resource
-    private              UserDetailsService         userDetailsService;
+    private              SecurityUserDetailsServiceImpl userDetailsService;
     @Resource
-    private              ApplicationEventPublisher  applicationEventPublisher;
+    private              ApplicationEventPublisher      applicationEventPublisher;
     @Resource
-    private              HttpHeaderCreator          httpHeaderCreator;
+    private              HttpHeaderCreator              httpHeaderCreator;
 
     @Operation(summary = "检索访问令牌", description = "登录成功返回当前访问令牌")
     @GetMapping("/api/accounts/access-token")
@@ -138,27 +135,15 @@ public class AccountController {
     @GetMapping("/open-api/accounts/user")
     @Timed
     public ResponseEntity<Object> getTokenUser(HttpServletRequest request) {
-        String token = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (token != null && token.toLowerCase().startsWith(OAuth2AccessToken.BEARER_TYPE.toLowerCase())) {
-            String accessToken = StringUtils.substringAfter(token, OAuth2AccessToken.BEARER_TYPE).trim();
-            OAuth2Authorization oAuth2Authorization = oAuth2AuthorizationService.findByToken(accessToken, OAuth2TokenType.ACCESS_TOKEN);
-            if (oAuth2Authorization != null && oAuth2Authorization.getAttribute(Principal.class.getName()) != null) {
-                Object attribute = oAuth2Authorization.getAttribute(Principal.class.getName());
-                if (attribute instanceof Authentication) {
-                    Authentication authentication = (Authentication) attribute;
-                    Object principal = authentication.getPrincipal();
-                    if (principal != null && principal instanceof SecurityUser) {
-                        SecurityUser securityUser = (SecurityUser) principal;
-                        User user = userService.findOneByUsername(securityUser.getUsername());
-                        user.setAuthorities(securityUser.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet()));
-                        return ResponseEntity.ok(user);
-                    }
-                }
-            }
+        SecurityUser securityUser = userDetailsService.getUserByAccessToken(request);
+        if (securityUser == null) {
+            // UserInfoTokenServices.loadAuthentication里会判断是否返回结果里包含error字段值，如果返回null会有空指针异常
+            // 这个也许是客户端的一个BUG，升级后观察是否已经修复
+            return ResponseEntity.ok(ImmutableMap.of("error", true));
         }
-        // UserInfoTokenServices.loadAuthentication里会判断是否返回结果里包含error字段值，如果返回null会有空指针异常
-        // 这个也许是客户端的一个BUG，升级后观察是否已经修复
-        return ResponseEntity.ok(ImmutableMap.of("error", true));
+        User user = userService.findOneByUsername(securityUser.getUsername());
+        user.setAuthorities(securityUser.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet()));
+        return ResponseEntity.ok(user);
     }
 
     @Operation(summary = "注册新用户并发送激活邮件")

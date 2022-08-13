@@ -146,9 +146,10 @@ public class OAuth2ServerSecurityConfiguration {
     }
 
     @Bean
-    public UserDetailsService userDetailsService(UserService userService,
-                                                 UserAuthorityRepository userAuthorityRepository) {
-        return new SecurityUserDetailsServiceImpl(userService, userAuthorityRepository);
+    public UserDetailsService userDetailsService(UserAuthorityRepository userAuthorityRepository,
+                                                 UserService userService,
+                                                 OAuth2AuthorizationService oAuth2AuthorizationService) {
+        return new SecurityUserDetailsServiceImpl(userAuthorityRepository, userService, oAuth2AuthorizationService);
     }
 
     @Bean
