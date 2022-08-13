@@ -30,7 +30,6 @@ import org.infinity.passport.service.MailService;
 import org.infinity.passport.service.UserProfilePhotoService;
 import org.infinity.passport.service.UserService;
 import org.infinity.passport.utils.RandomUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
@@ -150,10 +149,8 @@ public class AccountController {
                     Object principal = authentication.getPrincipal();
                     if (principal != null && principal instanceof SecurityUser) {
                         SecurityUser securityUser = (SecurityUser) principal;
-                        User user = new User();
-                        BeanUtils.copyProperties(securityUser, user);
+                        User user = userService.findOneByUsername(securityUser.getUsername());
                         user.setAuthorities(securityUser.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet()));
-                        user.setEnabled(securityUser.isEnabled());
                         return ResponseEntity.ok(user);
                     }
                 }
