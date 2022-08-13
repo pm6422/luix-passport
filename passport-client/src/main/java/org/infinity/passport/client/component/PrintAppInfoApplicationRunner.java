@@ -1,5 +1,6 @@
 package org.infinity.passport.client.component;
 
+import lombok.AllArgsConstructor;
 import org.infinity.passport.client.utils.NetworkUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -16,11 +17,10 @@ import java.nio.charset.Charset;
 import java.util.Date;
 
 @Component
+@AllArgsConstructor
 @Slf4j
 public class PrintAppInfoApplicationRunner implements ApplicationRunner {
-
-    @Resource
-    private Environment env;
+    private final Environment env;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
