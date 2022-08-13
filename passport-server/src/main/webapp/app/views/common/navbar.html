@@ -19,7 +19,7 @@
             <li uib-dropdown ng-switch-when="true" has-authority-directive="ROLE_DEVELOPER">
                 <a class="count-info" href uib-dropdown-toggle>
                     <span class="fas fa-wrench text-navy"></span>&nbsp;
-                    <span class="text-navy">开发者工具</span>
+                    <span class="text-navy">Developer tools</span>
                 </a>
                 <ul uib-dropdown-menu class="animated fadeInDown m-t-xs">
                     <li ng-show="{{ENABLE_SWAGGER}}" ui-sref-active="active">
@@ -83,18 +83,6 @@
                         </a>
                     </li>
                     <li ui-sref-active="active">
-                        <a ui-sref="dict-list" ng-click="vm.collapseNavbar()">
-                            <span class="fa fa-th-large"></span>&nbsp;
-                            <span>Dictionary</span>
-                        </a>
-                    </li>
-                    <li ui-sref-active="active">
-                        <a ui-sref="dict-item-list" ng-click="vm.collapseNavbar()">
-                            <span class="fa fa-th"></span>&nbsp;
-                            <span>Dictionary Items</span>
-                        </a>
-                    </li>
-                    <li ui-sref-active="active">
                         <a ui-sref="logger" ng-click="vm.collapseNavbar()">
                             <span class="fa fa-tasks"></span>&nbsp;
                             <span>Loggers</span>
@@ -127,7 +115,7 @@
             <li>
                 <a ng-click="vm.logout()">
                     <span class="fas fa-sign-out-alt text-navy"></span>&nbsp;
-                    <span class="text-navy">退出</span>
+                    <span class="text-navy">Sign out</span>
                 </a>
             </li>
         </ul>
