@@ -19,7 +19,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @SpringBootTest
 @Slf4j
 public class TestControllerTest {
-
     @Resource
     private MockMvc mockMvc;
 

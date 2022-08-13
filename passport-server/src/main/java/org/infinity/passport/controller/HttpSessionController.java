@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.infinity.passport.component.HttpHeaderCreator;
@@ -31,13 +32,11 @@ import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
 @RestController
 @Tag(name = "Http会话")
 @SecurityRequirement(name = AUTH)
+@AllArgsConstructor
 @Slf4j
 public class HttpSessionController {
-
-    @Resource
-    private HttpSessionRepository httpSessionRepository;
-    @Resource
-    private HttpHeaderCreator     httpHeaderCreator;
+    private final HttpSessionRepository httpSessionRepository;
+    private final HttpHeaderCreator     httpHeaderCreator;
 
     @Operation(summary = "分页检索Http会话列表")
     @GetMapping("/api/http-sessions")

@@ -1,6 +1,7 @@
 package org.infinity.passport.component;
 
 import com.luixtech.utilities.network.AddressUtils;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -11,16 +12,14 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StreamUtils;
 
-import javax.annotation.Resource;
 import java.nio.charset.Charset;
 import java.util.Date;
 
 @Component
+@AllArgsConstructor
 @Slf4j
 public class PrintAppInfoApplicationRunner implements ApplicationRunner {
-
-    @Resource
-    private Environment env;
+    private final Environment env;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {

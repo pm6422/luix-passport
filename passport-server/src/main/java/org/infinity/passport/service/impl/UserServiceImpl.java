@@ -1,6 +1,7 @@
 package org.infinity.passport.service.impl;
 
 import com.google.common.collect.ImmutableMap;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.infinity.passport.component.MessageCreator;
@@ -8,8 +9,8 @@ import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.User;
 import org.infinity.passport.domain.UserAuthority;
 import org.infinity.passport.dto.UserNameAndPasswordDTO;
-import org.infinity.passport.exception.DuplicationException;
 import org.infinity.passport.exception.DataNotFoundException;
+import org.infinity.passport.exception.DuplicationException;
 import org.infinity.passport.repository.UserAuthorityRepository;
 import org.infinity.passport.repository.UserRepository;
 import org.infinity.passport.service.UserService;
@@ -21,24 +22,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.thymeleaf.util.StringUtils;
 
-import javax.annotation.Resource;
 import java.time.Instant;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 @Service
+@AllArgsConstructor
 @Slf4j
 public class UserServiceImpl implements UserService {
-
-    @Resource
-    private UserRepository          userRepository;
-    @Resource
-    private UserAuthorityRepository userAuthorityRepository;
-    @Resource
-    private PasswordEncoder         passwordEncoder;
-    @Resource
-    private MessageCreator          messageCreator;
+    private final UserRepository          userRepository;
+    private final UserAuthorityRepository userAuthorityRepository;
+    private final PasswordEncoder         passwordEncoder;
+    private final MessageCreator          messageCreator;
 
     // private void removeUserToken(User user) {
     // String clientId =

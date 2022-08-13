@@ -1,5 +1,6 @@
 package org.infinity.passport.service.impl;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.infinity.passport.domain.User;
 import org.infinity.passport.service.MailService;
@@ -13,7 +14,6 @@ import org.springframework.util.StringUtils;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
-import javax.annotation.Resource;
 import javax.mail.internet.MimeMessage;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
@@ -22,19 +22,16 @@ import java.util.Locale;
  * Service for sending emails.
  */
 @Service
+@AllArgsConstructor
 @Slf4j
 public class MailServiceImpl implements MailService {
 
     private static final String               USER     = "user";
     private static final String               BASE_URL = "baseUrl";
-    @Resource
-    private              MailProperties       mailProperties;
-    @Resource
-    private              JavaMailSenderImpl   javaMailSender;
-    @Resource
-    private              MessageSource        messageSource;
-    @Resource
-    private              SpringTemplateEngine springTemplateEngine;
+    private final        MailProperties       mailProperties;
+    private final        JavaMailSenderImpl   javaMailSender;
+    private final        MessageSource        messageSource;
+    private final        SpringTemplateEngine springTemplateEngine;
 
     /**
      * System default email address that sends the e-mails.

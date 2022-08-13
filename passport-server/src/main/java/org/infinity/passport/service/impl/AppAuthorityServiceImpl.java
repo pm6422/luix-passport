@@ -1,5 +1,6 @@
 package org.infinity.passport.service.impl;
 
+import lombok.AllArgsConstructor;
 import org.infinity.passport.domain.AppAuthority;
 import org.infinity.passport.repository.AppAuthorityRepository;
 import org.infinity.passport.service.AppAuthorityService;
@@ -9,13 +10,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
-
 @Service
+@AllArgsConstructor
 public class AppAuthorityServiceImpl implements AppAuthorityService {
-
-    @Resource
-    private AppAuthorityRepository appAuthorityRepository;
+    private final AppAuthorityRepository appAuthorityRepository;
 
     @Override
     public Page<AppAuthority> find(Pageable pageable, String appName, String authorityName) {

@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.AllArgsConstructor;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.PersistentAuditEvent;
 import org.infinity.passport.repository.PersistenceAuditEventRepository;
@@ -13,13 +14,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -32,9 +31,9 @@ import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
 @RestController
 @Tag(name = "用户审计")
 @SecurityRequirement(name = AUTH)
+@AllArgsConstructor
 public class UserAuditEventController {
-    @Resource
-    private PersistenceAuditEventRepository persistenceAuditEventRepository;
+    private final PersistenceAuditEventRepository persistenceAuditEventRepository;
 
     /**
      * 分页检索用户审计事件列表

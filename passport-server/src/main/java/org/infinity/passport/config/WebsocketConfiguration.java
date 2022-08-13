@@ -1,5 +1,6 @@
 package org.infinity.passport.config;
 
+import lombok.AllArgsConstructor;
 import org.infinity.passport.domain.Authority;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +18,6 @@ import org.springframework.web.socket.server.HandshakeInterceptor;
 import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Resource;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,11 +26,10 @@ import java.util.Optional;
 
 @Configuration
 @EnableWebSocketMessageBroker
+@AllArgsConstructor
 public class WebsocketConfiguration implements WebSocketMessageBrokerConfigurer {
-
     public static final String                IP_ADDRESS = "IP_ADDRESS";
-    @Resource
-    private             ApplicationProperties applicationProperties;
+    private final       ApplicationProperties applicationProperties;
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {

@@ -1,5 +1,6 @@
 package org.infinity.passport.service.impl;
 
+import lombok.AllArgsConstructor;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
 import org.infinity.passport.domain.User;
@@ -9,16 +10,13 @@ import org.infinity.passport.repository.UserRepository;
 import org.infinity.passport.service.UserProfilePhotoService;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class UserProfilePhotoServiceImpl implements UserProfilePhotoService {
-
-    @Resource
-    private UserProfilePhotoRepository userProfilePhotoRepository;
-    @Resource
-    private UserRepository             userRepository;
+    private final UserProfilePhotoRepository userProfilePhotoRepository;
+    private final UserRepository             userRepository;
 
     @Override
     public void insert(String userId, byte[] photoData) {

@@ -1,5 +1,6 @@
 package org.infinity.passport.service.impl;
 
+import lombok.AllArgsConstructor;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.repository.AuthorityRepository;
 import org.infinity.passport.service.AuthorityService;
@@ -7,15 +8,13 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class AuthorityServiceImpl implements AuthorityService {
-
-    @Resource
-    private AuthorityRepository authorityRepository;
+    private final AuthorityRepository authorityRepository;
 
     @Override
     public List<String> findAllAuthorityNames(Boolean enabled) {

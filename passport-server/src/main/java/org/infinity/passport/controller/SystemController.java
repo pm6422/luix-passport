@@ -46,7 +46,6 @@ import static org.infinity.passport.config.api.SpringDocConfiguration.AUTH;
 @SecurityRequirement(name = AUTH)
 @Slf4j
 public class SystemController {
-
     @Resource
     private Environment                          env;
     @Resource

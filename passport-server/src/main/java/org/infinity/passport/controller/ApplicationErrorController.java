@@ -1,5 +1,6 @@
 package org.infinity.passport.controller;
 
+import lombok.AllArgsConstructor;
 import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.boot.web.servlet.error.ErrorController;
@@ -13,7 +14,6 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
@@ -21,6 +21,7 @@ import java.util.Map;
  * Basic Controller which is called for unhandled errors
  */
 @Controller
+@AllArgsConstructor
 public class ApplicationErrorController implements ErrorController {
 
     /**
@@ -30,8 +31,7 @@ public class ApplicationErrorController implements ErrorController {
     /**
      * Error Attributes in the Application
      */
-    @Resource
-    private              ErrorAttributes errorAttributes;
+    private final        ErrorAttributes errorAttributes;
 
     /**
      * Returns the path of the error page.

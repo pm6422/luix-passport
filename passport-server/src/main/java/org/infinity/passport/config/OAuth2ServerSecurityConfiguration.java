@@ -9,9 +9,11 @@ import lombok.AllArgsConstructor;
 import org.infinity.passport.config.oauth2.*;
 import org.infinity.passport.config.oauth2.passwordgrant.OAuth2PasswordAuthenticationConverter;
 import org.infinity.passport.config.oauth2.passwordgrant.OAuth2PasswordAuthenticationProvider;
-import org.infinity.passport.repository.OAuth2CustomRegisteredClientRepositoryImpl;
+import org.infinity.passport.config.oauth2.service.CustomUserDetailsService;
+import org.infinity.passport.config.oauth2.service.SecurityUserService;
 import org.infinity.passport.repository.OAuth2AuthorizationRepository;
 import org.infinity.passport.repository.OAuth2ClientRepository;
+import org.infinity.passport.repository.OAuth2CustomRegisteredClientRepositoryImpl;
 import org.infinity.passport.repository.UserAuthorityRepository;
 import org.infinity.passport.service.UserService;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -147,9 +149,13 @@ public class OAuth2ServerSecurityConfiguration {
 
     @Bean
     public UserDetailsService userDetailsService(UserAuthorityRepository userAuthorityRepository,
-                                                 UserService userService,
-                                                 OAuth2AuthorizationService oAuth2AuthorizationService) {
-        return new SecurityUserDetailsServiceImpl(userAuthorityRepository, userService, oAuth2AuthorizationService);
+                                                 UserService userService) {
+        return new CustomUserDetailsService(userAuthorityRepository, userService);
+    }
+
+    @Bean
+    public SecurityUserService securityUserService(OAuth2AuthorizationService oAuth2AuthorizationService) {
+        return new SecurityUserService(oAuth2AuthorizationService);
     }
 
     @Bean

@@ -3,6 +3,7 @@ package org.infinity.passport.controller.advice;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.infinity.passport.component.MessageCreator;
@@ -36,6 +37,7 @@ import java.util.List;
  * Exception list refer to {@link org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler}
  */
 @ControllerAdvice
+@AllArgsConstructor
 @Slf4j
 public class ExceptionTranslatorAdvice {
 
@@ -48,8 +50,7 @@ public class ExceptionTranslatorAdvice {
     public static final String SYS_EXCEPTION_CODE         = "ES7001";
     public static final String CONCURRENCY_EXCEPTION_CODE = "ES7002";
 
-    @Resource
-    private MessageCreator messageCreator;
+    private final MessageCreator messageCreator;
 
     /**
      * JSR 303 bean validation exception handler

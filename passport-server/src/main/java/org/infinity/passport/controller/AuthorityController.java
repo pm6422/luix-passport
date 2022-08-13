@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.infinity.passport.component.HttpHeaderCreator;
 import org.infinity.passport.domain.Authority;
@@ -19,7 +20,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -32,13 +32,11 @@ import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
 @RestController
 @Tag(name = "权限管理")
 @SecurityRequirement(name = AUTH)
+@AllArgsConstructor
 @Slf4j
 public class AuthorityController {
-
-    @Resource
-    private AuthorityRepository authorityRepository;
-    @Resource
-    private HttpHeaderCreator   httpHeaderCreator;
+    private final AuthorityRepository authorityRepository;
+    private final HttpHeaderCreator   httpHeaderCreator;
 
     @Operation(summary = "创建权限")
     @PostMapping("/api/authorities")

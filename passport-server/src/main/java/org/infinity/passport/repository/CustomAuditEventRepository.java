@@ -1,5 +1,6 @@
 package org.infinity.passport.repository;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.infinity.passport.component.AuditEventConverter;
 import org.infinity.passport.config.ApplicationProperties;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
@@ -22,21 +22,17 @@ import java.util.Map;
  * An implementation of Spring Boot's AuditEventRepository.
  */
 @Repository
+@AllArgsConstructor
 @Slf4j
 public class CustomAuditEventRepository implements AuditEventRepository {
-
-    private static final String AUTHORIZATION_FAILURE = "AUTHORIZATION_FAILURE";
-
+    private static final String                          AUTHORIZATION_FAILURE        = "AUTHORIZATION_FAILURE";
     /**
      * Should be the same as in Liquibase migration.
      */
-    protected static final int                             EVENT_DATA_COLUMN_MAX_LENGTH = 255;
-    @Resource
-    private                PersistenceAuditEventRepository persistenceAuditEventRepository;
-    @Resource
-    private                AuditEventConverter             auditEventConverter;
-    @Resource
-    private                ApplicationProperties           applicationProperties;
+    private static final int                             EVENT_DATA_COLUMN_MAX_LENGTH = 255;
+    private final        PersistenceAuditEventRepository persistenceAuditEventRepository;
+    private final        AuditEventConverter             auditEventConverter;
+    private final        ApplicationProperties           applicationProperties;
 
     @Override
     public List<AuditEvent> find(String principal, Instant after, String type) {

@@ -1,5 +1,6 @@
 package org.infinity.passport.controller;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.infinity.passport.config.oauth2.consent.ScopeWithDescription;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
@@ -23,11 +24,10 @@ import static org.infinity.passport.config.OAuth2ServerSecurityConfiguration.CUS
  * Controller for OAuth2 server.
  */
 @Controller
+@AllArgsConstructor
 @Slf4j
 public class OAuth2ServerController {
-
-    @Resource
-    private RegisteredClientRepository registeredClientRepository;
+    private final RegisteredClientRepository registeredClientRepository;
 
     @GetMapping(CUSTOM_LOGIN_PAGE_URI)
     public String forwardToLoginPage() {

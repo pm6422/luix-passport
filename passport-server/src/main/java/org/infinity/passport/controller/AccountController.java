@@ -7,12 +7,14 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
 import org.infinity.passport.component.HttpHeaderCreator;
+import org.infinity.passport.config.oauth2.LogoutEvent;
 import org.infinity.passport.config.oauth2.SecurityUser;
-import org.infinity.passport.config.oauth2.SecurityUserDetailsServiceImpl;
+import org.infinity.passport.config.oauth2.service.SecurityUserService;
 import org.infinity.passport.config.oauth2.SecurityUtils;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.User;
@@ -21,7 +23,6 @@ import org.infinity.passport.domain.UserProfilePhoto;
 import org.infinity.passport.dto.ManagedUserDTO;
 import org.infinity.passport.dto.ResetKeyAndPasswordDTO;
 import org.infinity.passport.dto.UserNameAndPasswordDTO;
-import org.infinity.passport.config.oauth2.LogoutEvent;
 import org.infinity.passport.exception.DataNotFoundException;
 import org.infinity.passport.exception.NoAuthorityException;
 import org.infinity.passport.repository.UserAuthorityRepository;
@@ -39,13 +40,12 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
-import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
@@ -65,29 +65,20 @@ import static org.infinity.passport.utils.NetworkUtils.getRequestUrl;
 @RestController
 @Tag(name = "账号管理")
 @SecurityRequirement(name = AUTH)
+@AllArgsConstructor
 @Slf4j
 public class AccountController {
-    private static final FastDateFormat                 DATETIME_FORMAT = FastDateFormat.getInstance("yyyyMMdd-HHmmss");
-    @Resource
-    private              UserService                    userService;
-    @Resource
-    private              UserAuthorityRepository        userAuthorityRepository;
-    @Resource
-    private              UserProfilePhotoRepository     userProfilePhotoRepository;
-    @Resource
-    private              UserProfilePhotoService        userProfilePhotoService;
-    @Resource
-    private              AuthorityService               authorityService;
-    @Resource
-    private              MailService                    mailService;
-    @Resource
-    private              OAuth2AuthorizationService     oAuth2AuthorizationService;
-    @Resource
-    private              SecurityUserDetailsServiceImpl userDetailsService;
-    @Resource
-    private              ApplicationEventPublisher      applicationEventPublisher;
-    @Resource
-    private              HttpHeaderCreator              httpHeaderCreator;
+    private static final FastDateFormat             DATETIME_FORMAT = FastDateFormat.getInstance("yyyyMMdd-HHmmss");
+    private final        UserService                userService;
+    private final        UserAuthorityRepository    userAuthorityRepository;
+    private final        UserProfilePhotoRepository userProfilePhotoRepository;
+    private final        UserProfilePhotoService    userProfilePhotoService;
+    private final        AuthorityService           authorityService;
+    private final        MailService                mailService;
+    private final        UserDetailsService         userDetailsService;
+    private final        SecurityUserService        securityUserService;
+    private final        ApplicationEventPublisher  applicationEventPublisher;
+    private final        HttpHeaderCreator          httpHeaderCreator;
 
     @Operation(summary = "检索访问令牌", description = "登录成功返回当前访问令牌")
     @GetMapping("/api/accounts/access-token")
@@ -135,7 +126,7 @@ public class AccountController {
     @GetMapping("/open-api/accounts/user")
     @Timed
     public ResponseEntity<Object> getTokenUser(HttpServletRequest request) {
-        SecurityUser securityUser = userDetailsService.getUserByAccessToken(request);
+        SecurityUser securityUser = securityUserService.getUserByAccessToken(request);
         if (securityUser == null) {
             // UserInfoTokenServices.loadAuthentication里会判断是否返回结果里包含error字段值，如果返回null会有空指针异常
             // 这个也许是客户端的一个BUG，升级后观察是否已经修复

@@ -4,22 +4,23 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.infinity.passport.component.HttpHeaderCreator;
 import org.infinity.passport.config.ApplicationProperties;
+import org.infinity.passport.config.oauth2.LogoutEvent;
+import org.infinity.passport.config.oauth2.SecurityUtils;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.User;
 import org.infinity.passport.domain.UserAuthority;
 import org.infinity.passport.domain.UserProfilePhoto;
 import org.infinity.passport.dto.ManagedUserDTO;
 import org.infinity.passport.dto.UserNameAndPasswordDTO;
-import org.infinity.passport.config.oauth2.LogoutEvent;
 import org.infinity.passport.exception.NoAuthorityException;
 import org.infinity.passport.repository.UserAuthorityRepository;
 import org.infinity.passport.repository.UserProfilePhotoRepository;
 import org.infinity.passport.service.MailService;
 import org.infinity.passport.service.UserService;
-import org.infinity.passport.config.oauth2.SecurityUtils;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
@@ -30,7 +31,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
@@ -48,23 +48,16 @@ import static org.infinity.passport.utils.NetworkUtils.getRequestUrl;
 @RestController
 @Tag(name = "用户管理")
 @SecurityRequirement(name = AUTH)
+@AllArgsConstructor
 @Slf4j
 public class UserController {
-
-    @Resource
-    private ApplicationProperties      applicationProperties;
-    @Resource
-    private UserProfilePhotoRepository userProfilePhotoRepository;
-    @Resource
-    private UserAuthorityRepository    userAuthorityRepository;
-    @Resource
-    private UserService                userService;
-    @Resource
-    private MailService                mailService;
-    @Resource
-    private ApplicationEventPublisher  applicationEventPublisher;
-    @Resource
-    private HttpHeaderCreator          httpHeaderCreator;
+    private final ApplicationProperties      applicationProperties;
+    private final UserProfilePhotoRepository userProfilePhotoRepository;
+    private final UserAuthorityRepository    userAuthorityRepository;
+    private final UserService                userService;
+    private final MailService                mailService;
+    private final ApplicationEventPublisher  applicationEventPublisher;
+    private final HttpHeaderCreator          httpHeaderCreator;
 
     @Operation(summary = "创建新用户并发送激活邮件")
     @PostMapping("/api/users")

@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.infinity.passport.component.HttpHeaderCreator;
 import org.infinity.passport.domain.App;
@@ -21,7 +22,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Set;
@@ -36,17 +36,13 @@ import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
 @RestController
 @Tag(name = "应用管理")
 @SecurityRequirement(name = AUTH)
+@AllArgsConstructor
 @Slf4j
 public class AppController {
-
-    @Resource
-    private AppRepository          appRepository;
-    @Resource
-    private AppAuthorityRepository appAuthorityRepository;
-    @Resource
-    private AppService             appService;
-    @Resource
-    private HttpHeaderCreator      httpHeaderCreator;
+    private final AppRepository          appRepository;
+    private final AppAuthorityRepository appAuthorityRepository;
+    private final AppService             appService;
+    private final HttpHeaderCreator      httpHeaderCreator;
 
     @Operation(summary = "创建应用")
     @PostMapping("/api/apps")

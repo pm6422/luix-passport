@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.infinity.passport.component.HttpHeaderCreator;
@@ -15,11 +16,9 @@ import org.infinity.passport.repository.AdminMenuRepository;
 import org.infinity.passport.repository.AuthorityAdminMenuRepository;
 import org.infinity.passport.service.AdminMenuService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,17 +33,13 @@ import static org.infinity.passport.config.api.SpringDocConfiguration.AUTH;
 @RestController
 @Tag(name = "权限管理菜单")
 @SecurityRequirement(name = AUTH)
+@AllArgsConstructor
 @Slf4j
 public class AuthorityAdminMenuController {
-
-    @Resource
-    private AuthorityAdminMenuRepository authorityAdminMenuRepository;
-    @Resource
-    private AdminMenuRepository          adminMenuRepository;
-    @Resource
-    private AdminMenuService             adminMenuService;
-    @Resource
-    private HttpHeaderCreator            httpHeaderCreator;
+    private final AuthorityAdminMenuRepository authorityAdminMenuRepository;
+    private final AdminMenuRepository          adminMenuRepository;
+    private final AdminMenuService             adminMenuService;
+    private final HttpHeaderCreator            httpHeaderCreator;
 
     @Operation(summary = "根据权限名称检索菜单树")
     @GetMapping("/api/authority-admin-menus")

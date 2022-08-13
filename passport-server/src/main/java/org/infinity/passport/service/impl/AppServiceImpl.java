@@ -1,5 +1,6 @@
 package org.infinity.passport.service.impl;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.infinity.passport.domain.App;
@@ -10,16 +11,12 @@ import org.infinity.passport.repository.AppRepository;
 import org.infinity.passport.service.AppService;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
-
 @Service
+@AllArgsConstructor
 @Slf4j
 public class AppServiceImpl implements AppService {
-
-    @Resource
-    private AppRepository          appRepository;
-    @Resource
-    private AppAuthorityRepository appAuthorityRepository;
+    private final AppRepository          appRepository;
+    private final AppAuthorityRepository appAuthorityRepository;
 
     @Override
     public App insert(App domain) {
