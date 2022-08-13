@@ -1,34 +1,35 @@
 package org.infinity.passport.service.impl;
 
+import lombok.AllArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
+import org.infinity.passport.config.oauth2.SecurityUtils;
 import org.infinity.passport.domain.AdminMenu;
 import org.infinity.passport.exception.DataNotFoundException;
 import org.infinity.passport.repository.AdminMenuRepository;
 import org.infinity.passport.service.AdminMenuService;
 import org.infinity.passport.service.AuthorityAdminMenuService;
 import org.infinity.passport.service.AuthorityService;
-import org.infinity.passport.config.oauth2.SecurityUtils;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.*;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class AdminMenuServiceImpl implements AdminMenuService {
 
-    @Resource
     private AdminMenuRepository       adminMenuRepository;
-    @Resource
     private AuthorityService          authorityService;
-    @Resource
     private AuthorityAdminMenuService authorityAdminMenuService;
+    private UserDetailsService        userDetailsService;
 
     @Override
     public Page<AdminMenu> find(Pageable pageable, String appName) {
@@ -77,7 +78,8 @@ public class AdminMenuServiceImpl implements AdminMenuService {
 
     private List<String> getEnabledUserAuthorities() {
         List<String> allEnabledAuthorities = authorityService.findAllAuthorityNames(true);
-        return SecurityUtils.getCurrentUserRoles().parallelStream()
+        UserDetails userDetails = userDetailsService.loadUserByUsername(SecurityUtils.getCurrentUserName());
+        return userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .filter(allEnabledAuthorities::contains).collect(Collectors.toList());
     }

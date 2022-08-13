@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
 import org.infinity.passport.component.HttpHeaderCreator;
 import org.infinity.passport.config.oauth2.SecurityUser;
+import org.infinity.passport.config.oauth2.SecurityUtils;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.User;
 import org.infinity.passport.domain.UserAuthority;
@@ -29,7 +30,6 @@ import org.infinity.passport.service.MailService;
 import org.infinity.passport.service.UserProfilePhotoService;
 import org.infinity.passport.service.UserService;
 import org.infinity.passport.utils.RandomUtils;
-import org.infinity.passport.config.oauth2.SecurityUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
@@ -37,6 +37,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2TokenType;
 import org.springframework.security.oauth2.provider.token.TokenStore;
@@ -85,6 +87,8 @@ public class AccountController {
     private              TokenStore                 tokenStore;
     @Resource
     private              OAuth2AuthorizationService authorizationService;
+    @Resource
+    private              UserDetailsService         userDetailsService;
     @Resource
     private              ApplicationEventPublisher  applicationEventPublisher;
     @Resource
@@ -248,8 +252,8 @@ public class AccountController {
     @PreAuthorize("hasAuthority(\"" + Authority.USER + "\")")
     @Timed
     public ResponseEntity<org.springframework.core.io.Resource> downloadProfilePhoto() {
-        SecurityUser currentUser = SecurityUtils.getCurrentUser();
-        Optional<UserProfilePhoto> existingPhoto = userProfilePhotoRepository.findByUserId(currentUser.getUserId());
+        SecurityUser userDetails = (SecurityUser) userDetailsService.loadUserByUsername(SecurityUtils.getCurrentUserName());
+        Optional<UserProfilePhoto> existingPhoto = userProfilePhotoRepository.findByUserId(userDetails.getUserId());
         if (!existingPhoto.isPresent()) {
             return ResponseEntity.ok().body(null);
         }

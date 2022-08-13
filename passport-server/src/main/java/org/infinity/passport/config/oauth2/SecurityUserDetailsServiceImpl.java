@@ -19,8 +19,8 @@ import java.util.stream.Collectors;
 /**
  * Authenticate a user from the database.
  */
-@AllArgsConstructor
 @Slf4j
+@AllArgsConstructor
 public class SecurityUserDetailsServiceImpl implements org.springframework.security.core.userdetails.UserDetailsService {
     private final UserService             userService;
     private final UserAuthorityRepository userAuthorityRepository;
