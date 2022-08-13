@@ -16,7 +16,7 @@ import java.io.Serializable;
  * Spring Data MongoDB collection for the Dict entity.
  */
 @Schema(description = "数据字典")
-@Document(collection = "Dict")
+@Document
 @Data
 @ToString(callSuper = true)
 @NoArgsConstructor

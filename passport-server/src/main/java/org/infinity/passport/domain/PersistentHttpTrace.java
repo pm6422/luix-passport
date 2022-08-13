@@ -9,7 +9,7 @@ import java.time.Instant;
 /**
  * Persist HttpTrace managed by the Spring Boot actuator @see org.springframework.boot.actuate.trace.http.HttpTrace
  */
-@Document(collection = "PersistentHttpTrace")
+@Document
 @Data
 public class PersistentHttpTrace implements Serializable {
 

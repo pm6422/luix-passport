@@ -17,7 +17,7 @@ import java.io.Serializable;
  * Spring Data MongoDB collection for the UserProfilePhoto entity.
  */
 @Schema(description = "用户照片")
-@Document(collection = "UserProfilePhoto")
+@Document
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

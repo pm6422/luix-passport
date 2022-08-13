@@ -12,7 +12,7 @@ import java.io.Serializable;
 /**
  * Spring Data MongoDB collection for the AuthorityAdminMenu entity.
  */
-@Document(collection = "AuthorityAdminMenu")
+@Document
 @Data
 @NoArgsConstructor
 public class AuthorityAdminMenu implements Serializable {

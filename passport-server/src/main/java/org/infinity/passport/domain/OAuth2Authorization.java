@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.io.Serializable;
 import java.time.Instant;
 
-@Document(collection = "MongoOAuth2Authorization")
+@Document
 @Data
 @NoArgsConstructor
 @Deprecated

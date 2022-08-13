@@ -17,7 +17,7 @@ import java.time.Instant;
  * {@link org.springframework.session.data.mongo.MongoSession}
  */
 @Schema(description = "Http会话")
-@Document(collection = "HttpSession")
+@Document
 @Data
 public class HttpSession implements Serializable {
 

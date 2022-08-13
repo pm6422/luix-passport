@@ -15,7 +15,7 @@ import java.util.Map;
  * Persist AuditEvent managed by the Spring Boot actuator
  * {@link org.springframework.boot.actuate.audit.AuditEvent}
  */
-@Document(collection = "PersistentAuditEvent")
+@Document
 @Data
 public class PersistentAuditEvent implements Serializable {
 

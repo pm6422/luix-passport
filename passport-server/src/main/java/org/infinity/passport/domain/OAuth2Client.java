@@ -27,7 +27,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Document(collection = "OAuth2Client")
+@Document
 @Data
 @NoArgsConstructor
 public class OAuth2Client implements Serializable {

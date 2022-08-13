@@ -16,7 +16,7 @@ import java.io.Serializable;
  * Spring Data MongoDB collection for the Authority entity.
  */
 @Schema(description = "权限")
-@Document(collection = "Authority")
+@Document
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

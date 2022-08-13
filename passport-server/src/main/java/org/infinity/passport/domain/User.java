@@ -14,7 +14,7 @@ import java.io.Serializable;
  * Spring Data MongoDB collection for the User entity.
  */
 @Schema(description = "用户")
-@Document(collection = "User")
+@Document
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)

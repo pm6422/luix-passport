@@ -18,7 +18,7 @@ import java.util.List;
  * Spring Data MongoDB collection for the AdminMenu entity.
  */
 @Schema(description = "管理系统菜单")
-@Document(collection = "AdminMenu")
+@Document
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
