@@ -4,9 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.infinity.passport.config.oauth2.SecurityUser;
-import org.springframework.http.HttpHeaders;
+import org.infinity.passport.config.oauth2.SecurityUtils;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2TokenType;
 import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
@@ -23,9 +22,8 @@ public class SecurityUserService {
     private final OAuth2AuthorizationService oAuth2AuthorizationService;
 
     public SecurityUser getUserByAccessToken(HttpServletRequest request) {
-        String token = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (token != null && token.toLowerCase().startsWith(OAuth2AccessToken.BEARER_TYPE.toLowerCase())) {
-            String accessToken = StringUtils.substringAfter(token, OAuth2AccessToken.BEARER_TYPE).trim();
+        String accessToken = SecurityUtils.getAccessToken(request);
+        if (StringUtils.isNotEmpty(accessToken)) {
             OAuth2Authorization oAuth2Authorization = oAuth2AuthorizationService.findByToken(accessToken, OAuth2TokenType.ACCESS_TOKEN);
             if (oAuth2Authorization != null && oAuth2Authorization.getAttribute(Principal.class.getName()) != null) {
                 Object attribute = oAuth2Authorization.getAttribute(Principal.class.getName());

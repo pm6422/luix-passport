@@ -1,5 +1,6 @@
 package org.infinity.passport.config.oauth2;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Utility class for Spring Security.
  */
+@Slf4j
 public abstract class SecurityUtils {
     /**
      * Get the name of the current user.
@@ -42,9 +44,9 @@ public abstract class SecurityUtils {
     public static String getAccessToken(HttpServletRequest request) {
         String token = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (StringUtils.isNotEmpty(token) && token.toLowerCase().startsWith(OAuth2AccessToken.BEARER_TYPE.toLowerCase())) {
-            String accessToken = StringUtils.substringAfter(token.toLowerCase(), OAuth2AccessToken.BEARER_TYPE.toLowerCase()).trim();
-            return accessToken;
+            return StringUtils.substringAfter(token, OAuth2AccessToken.BEARER_TYPE).trim();
         }
+        log.warn("Couldn't find access token in request headers!");
         return StringUtils.EMPTY;
     }
 }
