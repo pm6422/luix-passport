@@ -46,7 +46,6 @@ import static org.infinity.passport.utils.NetworkUtils.getRequestUrl;
  * REST controller for managing users.
  */
 @RestController
-@Tag(name = "用户管理")
 @SecurityRequirement(name = AUTH)
 @AllArgsConstructor
 @Slf4j

@@ -29,7 +29,6 @@ import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
  * REST controller for managing the user audit events.
  */
 @RestController
-@Tag(name = "用户审计")
 @SecurityRequirement(name = AUTH)
 @AllArgsConstructor
 public class UserAuditEventController {

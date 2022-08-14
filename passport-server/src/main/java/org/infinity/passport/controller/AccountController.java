@@ -6,16 +6,14 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
 import org.infinity.passport.component.HttpHeaderCreator;
 import org.infinity.passport.config.oauth2.LogoutEvent;
 import org.infinity.passport.config.oauth2.SecurityUser;
-import org.infinity.passport.config.oauth2.service.SecurityUserService;
 import org.infinity.passport.config.oauth2.SecurityUtils;
+import org.infinity.passport.config.oauth2.service.SecurityUserService;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.User;
 import org.infinity.passport.domain.UserAuthority;
@@ -38,10 +36,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -49,7 +45,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.security.Principal;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -63,7 +58,6 @@ import static org.infinity.passport.utils.NetworkUtils.getRequestUrl;
  * REST controller for managing the user's account.
  */
 @RestController
-@Tag(name = "账号管理")
 @SecurityRequirement(name = AUTH)
 @AllArgsConstructor
 @Slf4j
@@ -80,36 +74,15 @@ public class AccountController {
     private final        ApplicationEventPublisher  applicationEventPublisher;
     private final        HttpHeaderCreator          httpHeaderCreator;
 
-    @Operation(summary = "检索访问令牌", description = "登录成功返回当前访问令牌")
+    @Operation(summary = "get access token from request")
     @GetMapping("/api/accounts/access-token")
     @Timed
     public ResponseEntity<String> getAccessToken(HttpServletRequest request) {
-        String token = request.getHeader("authorization");
-        if (StringUtils.isEmpty(token) || !token.toLowerCase().startsWith(OAuth2AccessToken.BEARER_TYPE.toLowerCase())) {
-            return ResponseEntity.ok(StringUtils.EMPTY);
-        }
-        return ResponseEntity.ok(StringUtils.substringAfter(token.toLowerCase(), OAuth2AccessToken.BEARER_TYPE.toLowerCase()).trim());
+        return ResponseEntity.ok(SecurityUtils.getAccessToken(request));
     }
 
-    @Operation(summary = "检索当前登录的用户名", description = "登录成功返回当前用户名")
-    @GetMapping("/api/accounts/authenticate")
-    @Timed
-    public ResponseEntity<String> isAuthenticated(HttpServletRequest request) {
-        log.debug("REST request to check if the current user is authenticated");
-        return ResponseEntity.ok(request.getRemoteUser());
-    }
-
-    @Operation(summary = "检索当前登录的用户名", description = "用于SSO客户端调用，理论上不会返回null，因为未登录则会出错，登录成功返回当前用户")
-    @GetMapping("/api/accounts/principal")
-    @Timed
-    public ResponseEntity<Principal> getPrincipal(Principal user) {
-        log.debug("REST request to get current user if the user is authenticated");
-        return ResponseEntity.ok(user);
-    }
-
-    @Operation(summary = "检索当前用户")
+    @Operation(summary = "get current user")
     @GetMapping("/api/accounts/user")
-    @PreAuthorize("hasAuthority(\"" + Authority.USER + "\")")
     @Timed
     public ResponseEntity<User> getCurrentUser() {
         User user = userService.findOneByUsername(SecurityUtils.getCurrentUsername());
@@ -122,14 +95,12 @@ public class AccountController {
         return ResponseEntity.ok().headers(headers).body(user);
     }
 
-    @Operation(summary = "根据访问令牌检索绑定的用户")
+    @Operation(summary = "get user based on access token")
     @GetMapping("/open-api/accounts/user")
     @Timed
     public ResponseEntity<Object> getTokenUser(HttpServletRequest request) {
         SecurityUser securityUser = securityUserService.getUserByAccessToken(request);
         if (securityUser == null) {
-            // UserInfoTokenServices.loadAuthentication里会判断是否返回结果里包含error字段值，如果返回null会有空指针异常
-            // 这个也许是客户端的一个BUG，升级后观察是否已经修复
             return ResponseEntity.ok(ImmutableMap.of("error", true));
         }
         User user = userService.findOneByUsername(securityUser.getUsername());
@@ -137,11 +108,11 @@ public class AccountController {
         return ResponseEntity.ok(user);
     }
 
-    @Operation(summary = "注册新用户并发送激活邮件")
+    @Operation(summary = "register a new user and send an activation email")
     @PostMapping("/open-api/accounts/register")
     @Timed
     public ResponseEntity<Void> registerAccount(
-            @Parameter(description = "用户", required = true) @Valid @RequestBody ManagedUserDTO dto,
+            @Parameter(description = "user", required = true) @Valid @RequestBody ManagedUserDTO dto,
             HttpServletRequest request) {
         log.debug("REST request to register user: {}", dto);
         User newUser = userService.insert(dto.toUser(), dto.getPassword());
@@ -150,29 +121,26 @@ public class AccountController {
         return ResponseEntity.status(HttpStatus.CREATED).headers(headers).build();
     }
 
-    @Operation(summary = "根据激活码激活账户")
-    @GetMapping("/open-api/accounts/activate/{key:[0-9]+}")
+    @Operation(summary = "activate the account according to the activation code")
+    @GetMapping("/open-api/accounts/activate/{code:[0-9]+}")
     @Timed
-    public void activateAccount(@Parameter(description = "激活码", required = true) @PathVariable String key) {
-        userService.activateRegistration(key).orElseThrow(() -> new DataNotFoundException(key));
+    public void activateAccount(@Parameter(description = "activation code", required = true) @PathVariable String code) {
+        userService.activateRegistration(code).orElseThrow(() -> new DataNotFoundException(code));
     }
 
-    @Operation(summary = "检索权限值列表")
+    @Operation(summary = "get authority name list")
     @GetMapping("/api/accounts/authority-names")
-    @PreAuthorize("hasAuthority(\"" + Authority.USER + "\")")
     @Timed
     public ResponseEntity<List<String>> getAuthorityNames(
-            @Parameter(description = "是否可用,null代表全部", schema = @Schema(allowableValues = "false,true,null"))
-            @RequestParam(value = "enabled", required = false) Boolean enabled) {
+            @Parameter(schema = @Schema(allowableValues = {"false", "true", "null"})) @RequestParam(value = "enabled", required = false) Boolean enabled) {
         List<String> authorities = authorityService.find(enabled).stream().map(Authority::getName).collect(Collectors.toList());
         return ResponseEntity.ok(authorities);
     }
 
-    @Operation(summary = "更新当前用户")
+    @Operation(summary = "update current user")
     @PutMapping("/api/accounts/user")
-    @PreAuthorize("hasAuthority(\"" + Authority.USER + "\")")
     @Timed
-    public ResponseEntity<Void> updateCurrentAccount(@Parameter(description = "新的用户", required = true) @Valid @RequestBody User domain) {
+    public ResponseEntity<Void> updateCurrentAccount(@Parameter(description = "new user", required = true) @Valid @RequestBody User domain) {
         // For security reason
         User currentUser = userService.findOneByUsername(SecurityUtils.getCurrentUsername());
         domain.setId(currentUser.getId());
@@ -181,11 +149,10 @@ public class AccountController {
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1002", domain.getUsername())).build();
     }
 
-    @Operation(summary = "修改当前用户的密码")
+    @Operation(summary = "modify the password of the current user")
     @PutMapping("/api/accounts/password")
-    @PreAuthorize("hasAuthority(\"" + Authority.USER + "\")")
     @Timed
-    public ResponseEntity<Void> changePassword(@Parameter(description = "新密码", required = true) @RequestBody @Valid UserNameAndPasswordDTO dto) {
+    public ResponseEntity<Void> changePassword(@Parameter(description = "new password", required = true) @RequestBody @Valid UserNameAndPasswordDTO dto) {
         // For security reason
         dto.setUsername(SecurityUtils.getCurrentUsername());
         userService.changePassword(dto);
@@ -194,38 +161,36 @@ public class AccountController {
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1002", "password")).build();
     }
 
-    @Operation(summary = "发送重置密码邮件")
+    @Operation(summary = "send reset password email")
     @PostMapping("/open-api/accounts/reset-password/init")
     @Timed
-    public ResponseEntity<Void> requestPasswordReset(@Parameter(description = "电子邮件", required = true) @RequestBody String email,
+    public ResponseEntity<Void> requestPasswordReset(@Parameter(description = "email", required = true) @RequestBody String email,
                                                      HttpServletRequest request) {
         User user = userService.requestPasswordReset(email, RandomUtils.generateResetKey());
         mailService.sendPasswordResetMail(user, getRequestUrl(request));
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("NM2002")).build();
     }
 
-    @Operation(summary = "重置密码")
+    @Operation(summary = "reset password")
     @PostMapping("/open-api/accounts/reset-password/finish")
     @Timed
-    public ResponseEntity<Void> finishPasswordReset(@Parameter(description = "重置码及新密码", required = true) @Valid @RequestBody ResetKeyAndPasswordDTO dto) {
+    public ResponseEntity<Void> finishPasswordReset(@Parameter(description = "reset code and new password", required = true) @Valid @RequestBody ResetKeyAndPasswordDTO dto) {
         userService.completePasswordReset(dto.getNewPassword(), dto.getKey());
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("NM2003")).build();
     }
 
-    @Operation(summary = "上传当前用户头像")
+    @Operation(summary = "upload current user profile picture")
     @PostMapping("/api/accounts/profile-photo/upload")
-    @PreAuthorize("hasAuthority(\"" + Authority.USER + "\")")
     @Timed
-    public void uploadProfilePhoto(@Parameter(description = "文件描述", required = true) @RequestPart String description,
-                                   @Parameter(description = "用户头像文件", required = true) @RequestPart MultipartFile file) throws IOException {
-        log.debug("Upload profile with file name {} and description {}", file.getOriginalFilename(), description);
+    public void uploadProfilePhoto(@Parameter(description = "file description", required = true) @RequestPart String description,
+                                   @Parameter(description = "user profile picture", required = true) @RequestPart MultipartFile file) throws IOException {
         User user = userService.findOneByUsername(SecurityUtils.getCurrentUsername());
         userProfilePhotoService.save(user, file.getBytes());
+        log.info("Uploaded profile with file name {} and description {}", file.getOriginalFilename(), description);
     }
 
-    @Operation(summary = "下载用户头像")
+    @Operation(summary = "download user profile picture")
     @GetMapping("/api/accounts/profile-photo/download")
-    @PreAuthorize("hasAuthority(\"" + Authority.USER + "\")")
     @Timed
     public ResponseEntity<org.springframework.core.io.Resource> downloadProfilePhoto() {
         SecurityUser userDetails = (SecurityUser) userDetailsService.loadUserByUsername(SecurityUtils.getCurrentUsername());
@@ -246,9 +211,8 @@ public class AccountController {
 //        FileUtils.writeLines(outFile, strList);
     }
 
-    @Operation(summary = "检索当前用户头像")
+    @Operation(summary = "get the current user avatar")
     @GetMapping("/api/accounts/profile-photo")
-    @PreAuthorize("hasAuthority(\"" + Authority.USER + "\")")
     @Timed
     public ModelAndView getProfilePhoto() {
         // @RestController下使用return forwardUrl不好使

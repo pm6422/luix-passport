@@ -30,7 +30,6 @@ import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
  * REST controller for managing http sessions.
  */
 @RestController
-@Tag(name = "Http会话")
 @SecurityRequirement(name = AUTH)
 @AllArgsConstructor
 @Slf4j

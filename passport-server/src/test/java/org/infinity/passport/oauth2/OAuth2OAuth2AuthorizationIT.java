@@ -344,7 +344,7 @@ public class OAuth2OAuth2AuthorizationIT {
 
     private void assertRequestResource(Map<String, Object> resultMap) throws Exception {
         // unauthorized if request has no access token
-        mockMvc.perform(get("/api/dicts")
+        mockMvc.perform(get("/api/apps")
                         .contentType(APPLICATION_JSON_VALUE)
                         .accept(APPLICATION_JSON_VALUE))
                 // Note: this is not a bug, it's a feature!
@@ -352,7 +352,7 @@ public class OAuth2OAuth2AuthorizationIT {
 
         // authorized if request has an access token
         String accessToken = resultMap.get("access_token").toString();
-        mockMvc.perform(get("/api/dicts")
+        mockMvc.perform(get("/api/apps")
                         .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_BEARER + accessToken)
                         .contentType(APPLICATION_JSON_VALUE)
                         .accept(APPLICATION_JSON_VALUE))

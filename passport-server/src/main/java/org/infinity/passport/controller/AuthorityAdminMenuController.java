@@ -31,7 +31,6 @@ import static org.infinity.passport.config.api.SpringDocConfiguration.AUTH;
  * REST controller for managing the authority admin menu.
  */
 @RestController
-@Tag(name = "权限管理菜单")
 @SecurityRequirement(name = AUTH)
 @AllArgsConstructor
 @Slf4j

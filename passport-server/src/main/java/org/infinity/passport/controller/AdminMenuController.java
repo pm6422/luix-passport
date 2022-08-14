@@ -41,7 +41,6 @@ import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
  * REST controller for managing the admin menu.
  */
 @RestController
-@Tag(name = "管理菜单")
 @SecurityRequirement(name = AUTH)
 @AllArgsConstructor
 @Slf4j

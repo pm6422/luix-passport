@@ -42,7 +42,6 @@ import java.util.stream.Stream;
 import static org.infinity.passport.config.api.SpringDocConfiguration.AUTH;
 
 @RestController
-@Tag(name = "系统管理")
 @SecurityRequirement(name = AUTH)
 @Slf4j
 public class SystemController {

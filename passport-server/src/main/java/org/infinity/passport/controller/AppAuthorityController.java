@@ -33,7 +33,6 @@ import static org.infinity.passport.utils.HttpHeaderUtils.generatePageHeaders;
  * REST controller for managing the app authority.
  */
 @RestController
-@Tag(name = "应用权限")
 @SecurityRequirement(name = AUTH)
 @AllArgsConstructor
 @Slf4j
