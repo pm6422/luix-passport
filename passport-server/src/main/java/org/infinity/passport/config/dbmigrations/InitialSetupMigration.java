@@ -144,51 +144,51 @@ public class InitialSetupMigration {
     }
 
     public void addAuthorityAdminMenu() {
-        AdminMenu userAuthority = new AdminMenu(APP_NAME, "user-authority", "用户权限", 1, "user-authority", 100, MENU_PARENT_ID);
+        AdminMenu userAuthority = new AdminMenu(APP_NAME, "user-authority", "User authority", 1, "user-authority", 100, MENU_PARENT_ID);
         mongoTemplate.save(userAuthority);
 
-        AdminMenu authorityList = new AdminMenu(APP_NAME, "authority-list", "权限", 2, "user-authority.authority-list",
+        AdminMenu authorityList = new AdminMenu(APP_NAME, "authority-list", "Authority", 2, "user-authority.authority-list",
                 101, userAuthority.getId());
         mongoTemplate.save(authorityList);
 
-        AdminMenu userList = new AdminMenu(APP_NAME, "user-list", "用户", 2, "user-authority.user-list", 102,
+        AdminMenu userList = new AdminMenu(APP_NAME, "user-list", "User", 2, "user-authority.user-list", 102,
                 userAuthority.getId());
         mongoTemplate.save(userList);
 
-        AdminMenu app = new AdminMenu(APP_NAME, "app", "应用系统", 1, "app", 200, MENU_PARENT_ID);
+        AdminMenu app = new AdminMenu(APP_NAME, "app", "Application", 1, "app", 200, MENU_PARENT_ID);
         mongoTemplate.save(app);
 
-        AdminMenu appList = new AdminMenu(APP_NAME, "app-list", "应用", 2, "app.app-list", 201, app.getId());
+        AdminMenu appList = new AdminMenu(APP_NAME, "app-list", "Application", 2, "app.app-list", 201, app.getId());
         mongoTemplate.save(appList);
 
-        AdminMenu adminMenuAuthority = new AdminMenu(APP_NAME, "admin-menu-authority", "菜单权限", 1,
+        AdminMenu adminMenuAuthority = new AdminMenu(APP_NAME, "admin-menu-authority", "Menu authority", 1,
                 "admin-menu-authority", 300, MENU_PARENT_ID);
         mongoTemplate.save(adminMenuAuthority);
 
-        AdminMenu adminMenuList = new AdminMenu(APP_NAME, "admin-menu-list", "管理菜单", 2,
+        AdminMenu adminMenuList = new AdminMenu(APP_NAME, "admin-menu-list", "Menu", 2,
                 "admin-menu-authority.admin-menu-list", 301, adminMenuAuthority.getId());
         mongoTemplate.save(adminMenuList);
 
-        AdminMenu authorityAdminMenu = new AdminMenu(APP_NAME, "authority-admin-menu", "权限管理菜单", 2,
+        AdminMenu authorityAdminMenu = new AdminMenu(APP_NAME, "authority-admin-menu", "Authority menu", 2,
                 "admin-menu-authority.authority-admin-menu", 302, adminMenuAuthority.getId());
         mongoTemplate.save(authorityAdminMenu);
 
-        AdminMenu security = new AdminMenu(APP_NAME, "security", "安全信息", 1, "security", 400, MENU_PARENT_ID);
+        AdminMenu security = new AdminMenu(APP_NAME, "security", "Security", 1, "security", 400, MENU_PARENT_ID);
         mongoTemplate.save(security);
 
-        AdminMenu oAuth2ClientDetails = new AdminMenu(APP_NAME, "oauth2-client-list", "单点登录客户端", 2,
+        AdminMenu oAuth2ClientDetails = new AdminMenu(APP_NAME, "oauth2-client-list", "OAuth2 client", 2,
                 "security.oauth2-client-list", 401, security.getId());
         mongoTemplate.save(oAuth2ClientDetails);
 
-        AdminMenu oAuth2AccessTokenDetails = new AdminMenu(APP_NAME, "oauth2-access-token-list", "访问令牌", 2,
+        AdminMenu oAuth2AccessTokenDetails = new AdminMenu(APP_NAME, "oauth2-access-token-list", "Access token", 2,
                 "security.oauth2-access-token-list", 402, security.getId());
         mongoTemplate.save(oAuth2AccessTokenDetails);
 
-        AdminMenu oAuth2RefreshTokenDetails = new AdminMenu(APP_NAME, "oauth2-refresh-token-list", "刷新令牌", 2,
+        AdminMenu oAuth2RefreshTokenDetails = new AdminMenu(APP_NAME, "oauth2-refresh-token-list", "Refresh token", 2,
                 "security.oauth2-refresh-token-list", 403, security.getId());
         mongoTemplate.save(oAuth2RefreshTokenDetails);
 
-        AdminMenu oAuth2ApprovalDetails = new AdminMenu(APP_NAME, "oauth2-approval-list", "登录授权", 2,
+        AdminMenu oAuth2ApprovalDetails = new AdminMenu(APP_NAME, "oauth2-approval-list", "OAuth2 approval", 2,
                 "security.oauth2-approval-list", 404, security.getId());
         mongoTemplate.save(oAuth2ApprovalDetails);
 
