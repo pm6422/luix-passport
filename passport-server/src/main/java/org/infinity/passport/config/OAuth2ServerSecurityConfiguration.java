@@ -6,7 +6,10 @@ import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import lombok.AllArgsConstructor;
-import org.infinity.passport.config.oauth2.*;
+import org.infinity.passport.config.oauth2.AjaxLogoutSuccessHandler;
+import org.infinity.passport.config.oauth2.FederatedIdentityConfigurer;
+import org.infinity.passport.config.oauth2.OAuth2ConfigurerUtils;
+import org.infinity.passport.config.oauth2.UserRepositoryOAuth2UserHandler;
 import org.infinity.passport.config.oauth2.passwordgrant.OAuth2PasswordAuthenticationConverter;
 import org.infinity.passport.config.oauth2.passwordgrant.OAuth2PasswordAuthenticationProvider;
 import org.infinity.passport.config.oauth2.service.CustomUserDetailsService;
@@ -121,6 +124,8 @@ public class OAuth2ServerSecurityConfiguration {
                 .formLogin(Customizer.withDefaults())
                 .logout() // Logout is handled by {@link org.springframework.security.web.authentication.logout.LogoutFilter}
                 .logoutSuccessHandler(logoutSuccessHandler())
+                .and()
+                .headers().frameOptions().sameOrigin() // Allow any request from same domain
                 .and()
                 // Supports third-party login authentication
                 .apply(federatedIdentityConfigurer);
