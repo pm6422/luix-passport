@@ -28,7 +28,7 @@
                             </div>
                             <div class="text-center">
                                 <p>
-                                    {{vm.metrics.gauges['jvm.memory.total.used'].value / 1000000 | number:0}}M / {{vm.metrics.gauges['jvm.memory.total.max'].value / 1000000 | number:0}}M
+                                    {{vm.metrics.gauges['jvm.memory.total.used'].value / 1048576 | number:0}}M / {{vm.metrics.gauges['jvm.memory.total.max'].value / 1048576 | number:0}}M
                                 </p>
                             </div>
                         </div>
@@ -39,40 +39,40 @@
                             </div>
                             <div class="text-center">
                                 <p>
-                                    {{vm.metrics.gauges['jvm.memory.heap.used'].value / 1000000 | number:0}}M / {{vm.metrics.gauges['jvm.memory.heap.max'].value / 1000000 | number:0}}M
+                                    {{vm.metrics.gauges['jvm.memory.heap.used'].value / 1048576 | number:0}}M / {{vm.metrics.gauges['jvm.memory.heap.max'].value / 1048576 | number:0}}M
                                 </p>
                             </div>
                         </div>
                         <div class="col-lg-2">
-                            <h5 class="text-center">Eden Space</h5>
+                            <h5 class="text-center">G1 Eden Space</h5>
                             <div>
                                 <canvas doughnutchart options="vm.doughnutOptions" data="vm.edenSpaceMemory" responsive=true></canvas>
                             </div>
                             <div class="text-center">
                                 <p>
-                                    {{vm.edenSpaceUsed / 1000000 | number:0}}M / {{vm.edenSpaceMax / 1000000 | number:0}}M
+                                    {{vm.edenSpaceUsed / 1048576 | number:0}}M / {{vm.edenSpaceMax / 1048576 | number:0}}M
                                 </p>
                             </div>
                         </div>
                         <div class="col-lg-2">
-                            <h5 class="text-center">Survivor Space</h5>
+                            <h5 class="text-center">G1 Survivor Space</h5>
                             <div>
                                 <canvas doughnutchart options="vm.doughnutOptions" data="vm.survivorSpaceMemory" responsive=true></canvas>
                             </div>
                             <div class="text-center">
                                 <p>
-                                    {{vm.survivorSpaceUsed / 1000000 | number:0}}M / {{vm.survivorSpaceMax / 1000000 | number:0}}M
+                                    {{vm.survivorSpaceUsed / 1048576 | number:0}}M / {{vm.survivorSpaceMax / 1048576 | number:0}}M
                                 </p>
                             </div>
                         </div>
                         <div class="col-lg-2">
-                            <h5 class="text-center">Old Space</h5>
+                            <h5 class="text-center">G1 Old Space</h5>
                             <div>
                                 <canvas doughnutchart options="vm.doughnutOptions" data="vm.oldSpaceMemory" responsive=true></canvas>
                             </div>
                             <div class="text-center">
                                 <p>
-                                    {{vm.oldGenUsed / 1000000 | number:0}}M / {{vm.oldGenMax / 1000000 | number:0}}M
+                                    {{vm.oldGenUsed / 1048576 | number:0}}M / {{vm.oldGenMax / 1048576 | number:0}}M
                                 </p>
                             </div>
                         </div>
@@ -83,38 +83,9 @@
                             </div>
                             <div class="text-center">
                                 <p>
-                                    {{vm.metrics.gauges['jvm.memory.non-heap.used'].value / 1000000 | number:0}}M / {{vm.metrics.gauges['jvm.memory.non-heap.committed'].value / 1000000 | number:0}}M
+                                    {{vm.metrics.gauges['jvm.memory.non-heap.used'].value / 1048576 | number:0}}M / {{vm.metrics.gauges['jvm.memory.non-heap.committed'].value / 1048576 | number:0}}M
                                 </p>
                             </div>
-                        </div>
-                    </div>
-                    <div class="well well-lg" ng-show="vm.updatingMetrics">Updating...</div>
-                </div>
-            </div>
-            <div class="ibox m-b-sm">
-                <div class="ibox-content">
-                    <h3>Garbage collections</h3>
-                    <hr>
-                    <div class="row" ng-hide="vm.updatingMetrics">
-                        <div class="col-md-12">
-                            <table class="table table-striped">
-                                <thead>
-                                <tr>
-                                    <th>Mark Sweep count</th>
-                                    <th>Mark Sweep time(ms)</th>
-                                    <th>Scavenge count</th>
-                                    <th>Scavenge time(ms)</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>{{vm.markSweepCount}}</td>
-                                    <td>{{vm.markSweepTime}}</td>
-                                    <td>{{vm.scavengeCount}}</td>
-                                    <td>{{vm.scavengeTime}}</td>
-                                </tr>
-                                </tbody>
-                            </table>
                         </div>
                     </div>
                     <div class="well well-lg" ng-show="vm.updatingMetrics">Updating...</div>
@@ -308,7 +279,7 @@
             </div>
             <div class="ibox m-b-sm">
                 <div class="ibox-content">
-                    <h3>HTTP responses & service results</h3>
+                    <h3>Controller & Service process time</h3>
                     <hr>
                     <div class="table-responsive">
                         <table class="table table-striped">
