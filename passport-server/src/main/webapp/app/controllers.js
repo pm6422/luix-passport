@@ -988,7 +988,7 @@ function HttpSessionController($state, AlertUtils, ParseLinksUtils, PAGINATION_C
     }
 
     function del(id) {
-        AlertUtils.createDeleteConfirmation('数据有可能被其他数据所引用，删除之后可能出现一些问题，您确定删除吗?', function (isConfirm) {
+        AlertUtils.createDeleteConfirmation('The data may be referenced by other data, and there may be some problems after deletion, are you sure to delete?', function (isConfirm) {
             if (isConfirm) {
                 HttpSessionService.del({id: id},
                     function () {
@@ -1170,7 +1170,7 @@ function DictListController($state, AlertUtils, ParseLinksUtils, PAGINATION_CONS
     }
 
     function del(id) {
-        AlertUtils.createDeleteConfirmation('数据有可能被其他数据所引用，删除之后可能出现一些问题，您确定删除吗?', function (isConfirm) {
+        AlertUtils.createDeleteConfirmation('The data may be referenced by other data, and there may be some problems after deletion, are you sure to delete?', function (isConfirm) {
             if (isConfirm) {
                 DictService.del({id: id},
                     function () {
@@ -1301,7 +1301,7 @@ function DictItemListController($state, AlertUtils, ParseLinksUtils, PAGINATION_
     }
 
     function del(id) {
-        AlertUtils.createDeleteConfirmation('数据有可能被其他数据所引用，删除之后可能出现一些问题，您确定删除吗?', function (isConfirm) {
+        AlertUtils.createDeleteConfirmation('The data may be referenced by other data, and there may be some problems after deletion, are you sure to delete?', function (isConfirm) {
             if (isConfirm) {
                 DictItemService.del({id: id},
                     function () {
@@ -1491,7 +1491,7 @@ function AuthorityListController($state, AlertUtils, ParseLinksUtils, PAGINATION
     }
 
     function del(name) {
-        AlertUtils.createDeleteConfirmation('数据有可能被其他数据所引用，删除之后可能出现一些问题，您确定删除吗?', function (isConfirm) {
+        AlertUtils.createDeleteConfirmation('The data may be referenced by other data, and there may be some problems after deletion, are you sure to delete?', function (isConfirm) {
             if (isConfirm) {
                 AuthorityService.del({name: name},
                     function () {
@@ -1643,7 +1643,7 @@ function UserListController($state, AlertUtils, ParseLinksUtils, PAGINATION_CONS
     }
 
     function del(username) {
-        AlertUtils.createDeleteConfirmation('数据有可能被其他数据所引用，删除之后可能出现一些问题，您确定删除吗?', function (isConfirm) {
+        AlertUtils.createDeleteConfirmation('The data may be referenced by other data, and there may be some problems after deletion, are you sure to delete?', function (isConfirm) {
             if (isConfirm) {
                 UserService.del({username: username},
                     function () {
@@ -1802,7 +1802,7 @@ function AppListController($state, AlertUtils, ParseLinksUtils, PAGINATION_CONST
     }
 
     function del(name) {
-        AlertUtils.createDeleteConfirmation('数据有可能被其他数据所引用，删除之后可能出现一些问题，您确定删除吗?', function (isConfirm) {
+        AlertUtils.createDeleteConfirmation('The data may be referenced by other data, and there may be some problems after deletion, are you sure to delete?', function (isConfirm) {
             if (isConfirm) {
                 AppService.del({name: name},
                     function () {
@@ -1935,7 +1935,7 @@ function AdminMenuListController($state, AlertUtils, ParseLinksUtils, PAGINATION
     }
 
     function del(id) {
-        AlertUtils.createDeleteConfirmation('数据有可能被其他数据所引用，删除之后可能出现一些问题，您确定删除吗?', function (isConfirm) {
+        AlertUtils.createDeleteConfirmation('The data may be referenced by other data, and there may be some problems after deletion, are you sure to delete?', function (isConfirm) {
             if (isConfirm) {
                 AdminMenuService.del({id: id},
                     function () {
@@ -2150,7 +2150,7 @@ function OAuth2ClientListController($state, AlertUtils, ParseLinksUtils, PAGINAT
     }
 
     function del(id) {
-        AlertUtils.createDeleteConfirmation('数据有可能被其他数据所引用，删除之后可能出现一些问题，您确定删除吗?', function (isConfirm) {
+        AlertUtils.createDeleteConfirmation('The data may be referenced by other data, and there may be some problems after deletion, are you sure to delete?', function (isConfirm) {
             if (isConfirm) {
                 OAuth2ClientService.del({id: id},
                     function () {
