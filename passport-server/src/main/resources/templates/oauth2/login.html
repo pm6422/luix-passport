@@ -29,22 +29,19 @@
             <input type="password" name="password" class="form-control" placeholder="password" required="required"/>
         </div>
         <button id="signInBtn" type="submit" class="btn btn-primary block full-width m-b font-bold">Sign in</button>
-        <a class="btn btn-light btn-block bg-white" href="/oauth2/authorization/google-idp" role="link" style="text-transform: none;">
-            <img width="20" style="margin-right: 5px;" alt="Sign in with Google" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" />
-            Sign in with Google
+        <a class="btn btn-danger full-width m-b font-bold" href="/oauth2/authorization/google-idp">
+            <i class="fa fa-google"> </i> Sign in with Google
         </a>
-        <a class="btn btn-light btn-block bg-white" href="/oauth2/authorization/github-idp" role="link" style="text-transform: none;">
-            <img width="24" style="margin-right: 5px;" alt="Sign in with GitHub" src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" />
-            Sign in with Github
+        <a class="btn btn-success full-width m-b font-bold" href="/oauth2/authorization/github-idp">
+            <i class="fa fa-github"> </i> Sign in with GitHub
         </a>
-
-        <a href=".#/reset/request" class="text-warning font-bold">
+        <a href="../.#/forgot-password" class="text-warning font-bold">
             <small>Forgot password?</small>
         </a>
         <p class="text-muted text-center font-bold">
             <small>Still no account?</small>
         </p>
-        <a class="btn btn-sm btn-white btn-block font-bold" href=".#/register">Create account</a>
+        <a class="btn btn-sm btn-white btn-block font-bold" href="../.#/register">Create account</a>
     </form>
 </div>
 <div class="navbar-fixed-bottom text-center">
@@ -57,9 +54,9 @@
 <script th:src="@{/content/js/bootstrap/bootstrap.min.js}"></script>
 
 <script type="text/javascript">
-    $.get("open-api/systems/profile-info", function (result) {
-        if (result.ribbonEnv) {
-            $('div.ribbon').removeClass('hidden').find('a').text(result.ribbonEnv.toUpperCase());
+    $.get("../open-api/systems/ribbon-profile", function (result) {
+        if (result) {
+            $('div.ribbon').removeClass('hidden').find('a').text(result.toUpperCase());
         }
     });
     $('#signInBtn').focus();

@@ -9,10 +9,10 @@ import io.mongock.runner.springboot.MongockSpringboot;
 import io.mongock.runner.springboot.RunnerSpringbootBuilder;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.infinity.passport.config.ApplicationProperties;
 import org.infinity.passport.domain.Authority;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.env.Environment;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,8 +30,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -104,12 +101,18 @@ public class SystemController {
         List<String> ribbonProfiles = Stream.of(displayOnActiveProfiles).collect(Collectors.toList());
         ribbonProfiles.retainAll(Arrays.asList(env.getActiveProfiles()));
 
-        return CollectionUtils.isNotEmpty(ribbonProfiles) ? ribbonProfiles.get(0) : null;
+        return CollectionUtils.isNotEmpty(ribbonProfiles) ? ribbonProfiles.get(0) : StringUtils.EMPTY;
     }
 
-    @Operation(summary = "get bean")
+    @Operation(summary = "get ribbon profile")
+    @GetMapping("/open-api/systems/ribbon-profile")
+    public ResponseEntity<String> getRibbonProfileInfo() {
+        return ResponseEntity.ok(getRibbonProfile());
+    }
+
+    @Operation(summary = "introspect bean")
     @GetMapping("/api/systems/bean")
-    public ResponseEntity<Object> getBean(@RequestParam(value = "name") String name) {
+    public ResponseEntity<Object> introspectBean(@RequestParam(value = "name") String name) {
         return ResponseEntity.ok(applicationContext.getBean(name));
     }
 
