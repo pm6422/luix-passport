@@ -77,7 +77,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 }
             },
             data: {
-                pageTitle: '错误页面',
+                pageTitle: 'Error page',
                 authorities: []
             },
             params: {
@@ -93,7 +93,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 }
             },
             data: {
-                pageTitle: '访问拒绝',
+                pageTitle: 'Access denied',
                 authorities: []
             }
         })
@@ -103,7 +103,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
             controller: 'LoginController',
             controllerAs: 'vm',
             data: {
-                pageTitle: '登录',
+                pageTitle: 'Login',
                 specialClass: 'gray-bg'
             }
         })
@@ -113,7 +113,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
             controller: 'RegisterController',
             controllerAs: 'vm',
             data: {
-                pageTitle: '注册',
+                pageTitle: 'Registration',
                 specialClass: 'gray-bg register-background-img'
             }
         })
@@ -123,7 +123,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
             controller: 'ActivationController',
             controllerAs: 'vm',
             data: {
-                pageTitle: '激活账号',
+                pageTitle: 'Activate account',
                 specialClass: 'gray-bg activate-background-img'
             }
         })
@@ -133,7 +133,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
             controller: 'ForgotPasswordController',
             controllerAs: 'vm',
             data: {
-                pageTitle: '发送密码重置邮件',
+                pageTitle: 'Send reset password email',
                 specialClass: 'gray-bg forget-password-background-img'
             }
         })
@@ -143,7 +143,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
             controller: 'ResetPasswordController',
             controllerAs: 'vm',
             data: {
-                pageTitle: '重置密码',
+                pageTitle: 'Reset password',
                 specialClass: 'gray-bg'
             }
         })
@@ -165,7 +165,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 }
             },
             data: {
-                pageTitle: '个人信息'
+                pageTitle: 'User info'
             }
         })
         .state('password', {
@@ -179,7 +179,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 }
             },
             data: {
-                pageTitle: '修改密码'
+                pageTitle: 'Change password'
             }
         })
         .state('developer', {
@@ -616,7 +616,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
             abstract: true,
             parent: 'admin',
             data: {
-                pageTitle: '用户权限'
+                pageTitle: 'User authority'
             }
         })
         .state('user-authority.authority-list', {
@@ -629,7 +629,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 }
             },
             data: {
-                pageTitle: '权限列表'
+                pageTitle: 'Authority list'
             },
             params: {
                 page: {
@@ -658,7 +658,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
         .state('user-authority.authority-list.create', {
             url: '/create',
             data: {
-                pageTitle: '新建权限信息',
+                pageTitle: 'Create authority',
                 mode: 'create'
             },
             onEnter: ['$state', '$uibModal', function ($state, $uibModal) {
@@ -692,7 +692,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 }
             },
             data: {
-                pageTitle: '用户列表'
+                pageTitle: 'User list'
             },
             params: {
                 page: {
@@ -723,7 +723,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
         .state('user-authority.user-list.create', {
             url: '/create',
             data: {
-                pageTitle: '新建用户信息',
+                pageTitle: 'Create user',
                 mode: 'create'
             },
             onEnter: ['$state', '$uibModal', function ($state, $uibModal) {
@@ -760,7 +760,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
         .state('user-authority.user-list.edit', {
             url: '/edit/:username',
             data: {
-                pageTitle: '编辑用户信息',
+                pageTitle: 'Edit user',
                 mode: 'edit'
             },
             onEnter: ['$state', '$stateParams', '$uibModal', function ($state, $stateParams, $uibModal) {
@@ -792,7 +792,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 }
             },
             data: {
-                pageTitle: '查看用户信息'
+                pageTitle: 'View user'
             },
             resolve: {
                 entity: ['UserService', '$stateParams', function (UserService, $stateParams) {
@@ -804,7 +804,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
             abstract: true,
             parent: 'admin',
             data: {
-                pageTitle: '应用系统'
+                pageTitle: 'Application management'
             }
         })
         .state('app.app-list', {
@@ -817,7 +817,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 }
             },
             data: {
-                pageTitle: '应用列表'
+                pageTitle: 'Application list'
             },
             params: {
                 page: {
@@ -846,7 +846,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
         .state('app.app-list.create', {
             url: '/create',
             data: {
-                pageTitle: '新建应用信息',
+                pageTitle: 'Create application',
                 mode: 'create'
             },
             onEnter: ['$state', '$uibModal', function ($state, $uibModal) {
@@ -873,7 +873,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
         .state('app.app-list.edit', {
             url: '/edit/:name',
             data: {
-                pageTitle: '编辑应用信息',
+                pageTitle: 'Edit application',
                 mode: 'edit'
             },
             onEnter: ['$state', '$stateParams', '$uibModal', function ($state, $stateParams, $uibModal) {
@@ -905,7 +905,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 }
             },
             data: {
-                pageTitle: '查看应用信息'
+                pageTitle: 'View application'
             },
             resolve: {
                 entity: ['AppService', '$stateParams', function (AppService, $stateParams) {
@@ -917,7 +917,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
             abstract: true,
             parent: 'admin',
             data: {
-                pageTitle: '管理菜单权限'
+                pageTitle: 'Menu authority management'
             }
         })
         .state('admin-menu-authority.admin-menu-list', {
@@ -930,7 +930,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 }
             },
             data: {
-                pageTitle: '管理菜单列表'
+                pageTitle: 'Menu authority list'
             },
             params: {
                 page: {
@@ -961,7 +961,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
         .state('admin-menu-authority.admin-menu-list.create', {
             url: '/create',
             data: {
-                pageTitle: '新建管理菜单信息',
+                pageTitle: 'Create menu',
                 mode: 'create'
             },
             onEnter: ['$state', '$uibModal', function ($state, $uibModal) {
@@ -993,7 +993,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
         .state('admin-menu-authority.admin-menu-list.edit', {
             url: '/edit/:id',
             data: {
-                pageTitle: '编辑管理菜单信息',
+                pageTitle: 'Edit menu',
                 mode: 'edit'
             },
             onEnter: ['$state', '$stateParams', '$uibModal', function ($state, $stateParams, $uibModal) {
@@ -1025,7 +1025,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 }
             },
             data: {
-                pageTitle: '权限管理菜单'
+                pageTitle: 'Authority admin menu'
             },
             criteria: ['$stateParams', function ($stateParams) {
                 return {
@@ -1037,7 +1037,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
             abstract: true,
             parent: 'admin',
             data: {
-                pageTitle: '安全信息'
+                pageTitle: 'Security'
             }
         })
         .state('security.oauth2-client-list', {

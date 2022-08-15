@@ -3,7 +3,7 @@
         <h2>{{vm.pageTitle}}</h2>
         <ol class="breadcrumb">
             <li>
-                <a href="#">首页</a>
+                <a href="#">Homepage</a>
             </li>
             <li>
                 <a style="pointer-events: none">{{vm.grandfatherPageTitle}}</a>
@@ -25,25 +25,25 @@
                     <table class="table table-bordered">
                         <thead>
                         <tr>
-                            <th>参数名称</th>
-                            <th>参数值</th>
+                            <th>Key</th>
+                            <th>Value</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
-                            <td>用户ID:</td>
+                            <td>ID:</td>
                             <td>{{vm.entity.id}}</td>
                         </tr>
                         <tr>
-                            <td>用户名:</td>
+                            <td>Name:</td>
                             <td>{{vm.entity.username}}</td>
                         </tr>
                         <tr>
-                            <td>名:</td>
+                            <td>First name:</td>
                             <td>{{vm.entity.firstName}}</td>
                         </tr>
                         <tr>
-                            <td>姓:</td>
+                            <td>Last name:</td>
                             <td>{{vm.entity.lastName}}</td>
                         </tr>
                         <tr>
@@ -51,27 +51,27 @@
                             <td>{{vm.entity.email}}</td>
                         </tr>
                         <tr>
-                            <td>手机号码:</td>
+                            <td>Mobile Number:</td>
                             <td>{{vm.entity.mobileNo}}</td>
                         </tr>
                         <tr>
-                            <td>是否激活:</td>
+                            <td>Activated:</td>
                             <td>{{vm.entity.activated}}</td>
                         </tr>
                         <tr>
-                            <td>激活码:</td>
+                            <td>Activation code:</td>
                             <td>{{vm.entity.activationKey}}</td>
                         </tr>
                         <tr>
-                            <td>重置码:</td>
+                            <td>Reset key:</td>
                             <td>{{vm.entity.resetKey}}</td>
                         </tr>
                         <tr>
-                            <td>重置时间:</td>
+                            <td>Reset time:</td>
                             <td>{{vm.entity.resetTime}}</td>
                         </tr>
                         <tr>
-                            <td>用户权限:</td>
+                            <td>User authorities:</td>
                             <td>
                                 <ul class="list-unstyled m-b-none">
                                     <li ng-repeat="item in vm.entity.authorities"><span>{{item}}</span></li>
@@ -79,42 +79,42 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>是否有头像:</td>
+                            <td>Has profile photo:</td>
                             <td>{{vm.entity.hasProfilePhoto}}</td>
                         </tr>
                         <tr ng-show="vm.entity.hasProfilePhoto">
-                            <td>头像:</td>
+                            <td>Photo:</td>
                             <td><img class="thumb" style="width:50px" ng-src="{{vm.entity.profilePhotoUrl}}"></td>
                         </tr>
                         <tr>
-                            <td>是否可用:</td>
+                            <td>Enabled:</td>
                             <td>{{vm.entity.enabled}}</td>
                         </tr>
                         <tr>
-                            <td>备注:</td>
+                            <td>Remarks:</td>
                             <td>{{vm.entity.remarks}}</td>
                         </tr>
                         <tr>
-                            <td>创建者:</td>
+                            <td>Creator:</td>
                             <td>{{vm.entity.createdBy}}</td>
                         </tr>
                         <tr>
-                            <td>创建时间</td>
+                            <td>Created time</td>
                             <td>{{vm.entity.createdTime | date:'yyyy/MM/dd HH:mm:ss' }}</td>
                         </tr>
                         <tr>
-                            <td>最后修改者:</td>
+                            <td>Updater:</td>
                             <td>{{vm.entity.modifiedBy}}</td>
                         </tr>
                         <tr>
-                            <td>最后修改时间:</td>
+                            <td>Updated time:</td>
                             <td>{{vm.entity.modifiedTime | date:'yyyy/MM/dd HH:mm:ss'}}</td>
                         </tr>
                         </tbody>
                     </table>
                     <div class="text-right">
                         <button type="button" class="btn btn-default btn-sm" ui-sref="^">
-                            <span class="fa fa-arrow-left"></span>&nbsp;<span>返回</span>
+                            <span class="fa fa-arrow-left"></span>&nbsp;<span>Back</span>
                         </button>
                     </div>
                 </div>

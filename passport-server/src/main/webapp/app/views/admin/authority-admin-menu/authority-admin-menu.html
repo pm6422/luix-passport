@@ -3,7 +3,7 @@
         <h2>{{vm.pageTitle}}</h2>
         <ol class="breadcrumb">
             <li>
-                <a href="#">首页</a>
+                <a href="#">Homepage</a>
             </li>
             <li>
                 <a style="pointer-events: none">{{vm.parentPageTitle}}</a>
@@ -19,23 +19,23 @@
         <div class="row p-h-xs">
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label class="control-label">应用</label>
+                    <label class="control-label">Application</label>
                     <select class="form-control" ng-model="vm.criteria.appName" ng-options="item.name as item.name for item in vm.apps" ng-change="vm.searchAuthorities()">
-                        <option value="">请选择...</option>
+                        <option value="">Select...</option>
                     </select>
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label class="control-label">权限</label>
+                    <label class="control-label">Authority</label>
                     <select class="form-control" ng-model="vm.criteria.authorityName" ng-options="item.authorityName as item.authorityName for item in vm.authorities" ng-change="vm.searchMenus()" ng-disabled="vm.criteria.appName == null" required>
-                        <option value="">请选择...</option>
+                        <option value="">Select...</option>
                     </select>
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="form-group">
-                    <label class="control-label">菜单</label>
+                    <label class="control-label">Menu</label>
                     <tree-view tree-data="vm.allMenus" text-field="name" value-field='id'
                                check-field="checked"
                                children-field="children" item-clicked="itemClicked($item)"
@@ -47,7 +47,7 @@
                 <button type="button"
                         ng-disabled="form.$invalid || vm.isSaving || vm.criteria.appName == null || vm.criteria.authorityName == null"
                         ng-click="vm.save()" class="btn btn-default btn-sm pull-right">
-                    <span class="fa fa-check"></span>&nbsp;<span>保存</span>
+                    <span class="fa fa-check"></span>&nbsp;<span>Save</span>
                 </button>
             </div>
         </div>

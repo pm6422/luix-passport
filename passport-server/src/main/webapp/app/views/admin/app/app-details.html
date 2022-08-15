@@ -3,7 +3,7 @@
         <h2>{{vm.pageTitle}}</h2>
         <ol class="breadcrumb">
             <li>
-                <a href="#">首页</a>
+                <a href="#">Homepage</a>
             </li>
             <li>
                 <a style="pointer-events: none">{{vm.grandfatherPageTitle}}</a>
@@ -25,17 +25,17 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>参数名称</th>
-                                <th>参数值</th>
+                                <th>Key</th>
+                                <th>Value</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>名称:</td>
+                                <td>Name:</td>
                                 <td>{{vm.entity.name}}</td>
                             </tr>
                             <tr>
-                                <td>应用权限:</td>
+                                <td>Authority:</td>
                                 <td>
                                     <ul class="list-unstyled m-b-none">
                                         <li ng-repeat="item in vm.entity.authorities"><span>{{item}}</span></li>
@@ -43,14 +43,14 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>是否可用:</td>
+                                <td>Enabled:</td>
                                 <td>{{vm.entity.enabled}}</td>
                             </tr>
                         </tbody>
                     </table>
                     <div class="text-right">
                         <button type="button" class="btn btn-default btn-sm" ui-sref="^">
-                            <span class="fa fa-arrow-left"></span>&nbsp;<span>返回</span>
+                            <span class="fa fa-arrow-left"></span>&nbsp;<span>Back</span>
                         </button>
                     </div>
                 </div>

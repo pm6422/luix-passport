@@ -5,26 +5,26 @@
     </div>
     <div class="modal-body">
         <div class="form-group">
-            <label class="control-label">权限名称</label>
+            <label class="control-label">name</label>
             <input type="text" class="form-control" name="name" ng-model="vm.entity.name"
                    required ng-minlength="3" ng-maxlength="16" ng-pattern="/^[A-Z_]+$/" ng-disabled="vm.mode == 'edit'">
             <div ng-show="editForm.name.$invalid">
                 <p class="help-block" ng-show="editForm.name.$error.required">
-                    必填字段
+                    Required
                 </p>
                 <p class="help-block" ng-show="editForm.name.$error.minlength">
-                    最小长度为3个字符
+                    Min length: 3
                 </p>
                 <p class="help-block" ng-show="editForm.name.$error.maxlength">
-                    最大长度为16个字符
+                    Max length: 16
                 </p>
                 <p class="help-block" ng-show="editForm.name.$error.pattern">
-                    只支持大写字母、下划线
+                    Only supports upper case letters and underscores
                 </p>
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label">系统权限</label>
+            <label class="control-label">System level</label>
             <div class="onoffswitch">
                 <input type="checkbox" id="systemLevel" ng-model="vm.entity.systemLevel" class="onoffswitch-checkbox"
                        ng-disabled="vm.entity.name === null">
@@ -35,7 +35,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label">是否可用</label>
+            <label class="control-label">Enabled</label>
             <div class="onoffswitch">
                 <input type="checkbox" id="enabled" ng-model="vm.entity.enabled" class="onoffswitch-checkbox"
                        ng-disabled="vm.entity.name === null">
@@ -48,12 +48,12 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default btn-sm" data-dismiss="modal" ng-click="vm.cancel()">
-            <span class="fa fa-times"></span>&nbsp;<span>取消</span>
+            <span class="fa fa-times"></span>&nbsp;<span>Cancel</span>
         </button>
         <button type="submit" class="btn btn-default btn-sm" ng-disabled="editForm.$invalid || vm.isSaving">
             <span class='fa fa-circle-o-notch fa-spin' ng-show="vm.isSaving"></span>
             <span class="fa fa-check" ng-hide="vm.isSaving"></span>
-            &nbsp;<span>保存</span>
+            &nbsp;<span>Save</span>
         </button>
     </div>
 </form>
