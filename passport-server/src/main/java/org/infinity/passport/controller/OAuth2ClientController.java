@@ -25,7 +25,7 @@ public class OAuth2ClientController {
     private final HttpHeaderCreator httpHeaderCreator;
     private final PasswordEncoder   passwordEncoder;
 
-    @Operation(summary = "检索内部单点登录客户端")
+    @Operation(summary = "get internal client")
     @GetMapping("/open-api/oauth2-client/internal-client")
     public ResponseEntity<Pair<String, String>> findInternalClient() {
         return ResponseEntity.ok(Pair.of(OAuth2Client.INTERNAL_CLIENT_ID, OAuth2Client.INTERNAL_RAW_CLIENT_SECRET));

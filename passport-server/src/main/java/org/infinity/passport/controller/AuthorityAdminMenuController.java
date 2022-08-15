@@ -3,7 +3,6 @@ package org.infinity.passport.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -40,21 +39,21 @@ public class AuthorityAdminMenuController {
     private final AdminMenuService             adminMenuService;
     private final HttpHeaderCreator            httpHeaderCreator;
 
-    @Operation(summary = "根据权限名称检索菜单树")
+    @Operation(summary = "get authority menu list")
     @GetMapping("/api/authority-admin-menus")
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<List<AdminMenu>> findAuthorityMenus(
-            @Parameter(description = "应用名称", required = true) @RequestParam(value = "appName") String appName,
-            @Parameter(description = "权限名称", required = true) @RequestParam(value = "authorityName") String authorityName) {
+            @Parameter(description = "application name", required = true) @RequestParam(value = "appName") String appName,
+            @Parameter(description = "authority name", required = true) @RequestParam(value = "authorityName") String authorityName) {
         List<AdminMenu> results = adminMenuService.getAuthorityMenus(appName, authorityName);
         return ResponseEntity.ok(results);
     }
 
-    @Operation(summary = "更新权限菜单")
+    @Operation(summary = "update authority menu")
     @PutMapping("/api/authority-admin-menus")
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<Void> update(
-            @Parameter(description = "新的权限菜单信息", required = true) @Valid @RequestBody AdminAuthorityMenusDTO dto) {
+            @Parameter(description = "new authority menu", required = true) @Valid @RequestBody AdminAuthorityMenusDTO dto) {
         log.debug("REST request to update admin authority menus: {}", dto);
         // 删除当前权限下的所有菜单
         Set<String> appAdminMenuIds = adminMenuRepository.findByAppName(dto.getAppName()).stream().map(AdminMenu::getId)
@@ -73,20 +72,20 @@ public class AuthorityAdminMenuController {
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1012")).build();
     }
 
-    @Operation(summary = "检索当前用户权限关联的菜单列表")
+    @Operation(summary = "find menus associated with current user")
     @GetMapping("/api/authority-admin-menus/user-links")
     @PreAuthorize("hasAuthority(\"" + Authority.USER + "\")")
     public ResponseEntity<List<AdminMenu>> findUserAuthorityLinks(
-            @Parameter(description = "应用名称", required = true) @RequestParam(value = "appName") String appName) {
+            @Parameter(description = "application name", required = true) @RequestParam(value = "appName") String appName) {
         List<AdminMenu> results = adminMenuService.getUserAuthorityLinks(appName);
         return ResponseEntity.ok(results);
     }
 
-    @Operation(summary = "检索当前用户权限关联的菜单树")
+    @Operation(summary = "find menu tree associated with current user")
     @GetMapping("/api/authority-admin-menus/user-menus")
     @PreAuthorize("hasAuthority(\"" + Authority.USER + "\")")
     public ResponseEntity<List<AdminMenu>> findUserAuthorityMenus(
-            @Parameter(description = "应用名称", required = true) @RequestParam(value = "appName") String appName) {
+            @Parameter(description = "application name", required = true) @RequestParam(value = "appName") String appName) {
         List<AdminMenu> results = adminMenuService.getUserAuthorityMenus(appName);
         return ResponseEntity.ok(results);
     }

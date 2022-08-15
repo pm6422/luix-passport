@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
     private final MailService mailService;
 
-    @Operation(summary = "测试发送邮件功能")
+    @Operation(summary = "test to send mail")
     @GetMapping("/api/tests/email")
     public void testEmail() {
         mailService.sendEmail(new String[]{"louis@luixtech.com"}, "test", "test", false, false);

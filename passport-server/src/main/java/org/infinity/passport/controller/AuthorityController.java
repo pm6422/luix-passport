@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableMap;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.infinity.passport.component.HttpHeaderCreator;
@@ -37,10 +36,10 @@ public class AuthorityController {
     private final AuthorityRepository authorityRepository;
     private final HttpHeaderCreator   httpHeaderCreator;
 
-    @Operation(summary = "创建权限")
+    @Operation(summary = "create authority")
     @PostMapping("/api/authorities")
     public ResponseEntity<Void> create(
-            @Parameter(description = "权限", required = true) @Valid @RequestBody Authority domain) {
+            @Parameter(description = "authority", required = true) @Valid @RequestBody Authority domain) {
         log.debug("REST request to create authority: {}", domain);
         authorityRepository.findById(domain.getName()).ifPresent(app -> {
             throw new DuplicationException(ImmutableMap.of("name", domain.getName()));
@@ -51,7 +50,7 @@ public class AuthorityController {
                 .build();
     }
 
-    @Operation(summary = "分页检索权限列表")
+    @Operation(summary = "find authority list")
     @GetMapping("/api/authorities")
     public ResponseEntity<List<Authority>> find(@ParameterObject Pageable pageable) {
         Page<Authority> authorities = authorityRepository.findAll(pageable);
@@ -59,27 +58,27 @@ public class AuthorityController {
         return ResponseEntity.ok().headers(headers).body(authorities.getContent());
     }
 
-    @Operation(summary = "根据权限名称检索权限")
+    @Operation(summary = "find authority by name")
     @GetMapping("/api/authorities/{name}")
     public ResponseEntity<Authority> findById(
-            @Parameter(description = "权限名称", required = true) @PathVariable String name) {
+            @Parameter(description = "name", required = true) @PathVariable String name) {
         Authority domain = authorityRepository.findById(name).orElseThrow(() -> new DataNotFoundException(name));
         return ResponseEntity.ok(domain);
     }
 
-    @Operation(summary = "更新权限")
+    @Operation(summary = "update authority")
     @PutMapping("/api/authorities")
     public ResponseEntity<Void> update(
-            @Parameter(description = "新的权限", required = true) @Valid @RequestBody Authority domain) {
+            @Parameter(description = "new authority", required = true) @Valid @RequestBody Authority domain) {
         log.debug("REST request to update authority: {}", domain);
         authorityRepository.findById(domain.getName()).orElseThrow(() -> new DataNotFoundException(domain.getName()));
         authorityRepository.save(domain);
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1002", domain.getName())).build();
     }
 
-    @Operation(summary = "根据名称删除权限", description = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
+    @Operation(summary = "delete authority by name", description = "the data may be referenced by other data, and some problems may occur after deletion")
     @DeleteMapping("/api/authorities/{name}")
-    public ResponseEntity<Void> delete(@Parameter(description = "权限名称", required = true) @PathVariable String name) {
+    public ResponseEntity<Void> delete(@Parameter(description = "name", required = true) @PathVariable String name) {
         log.debug("REST request to delete authority: {}", name);
         authorityRepository.findById(name).orElseThrow(() -> new DataNotFoundException(name));
         authorityRepository.deleteById(name);

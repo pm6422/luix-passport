@@ -3,7 +3,6 @@ package org.infinity.passport.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.infinity.passport.component.HttpHeaderCreator;
@@ -43,17 +42,17 @@ public class AppController {
     private final AppService             appService;
     private final HttpHeaderCreator      httpHeaderCreator;
 
-    @Operation(summary = "创建应用")
+    @Operation(summary = "create application")
     @PostMapping("/api/apps")
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
-    public ResponseEntity<Void> create(@Parameter(description = "应用", required = true) @Valid @RequestBody App domain) {
+    public ResponseEntity<Void> create(@Parameter(description = "application", required = true) @Valid @RequestBody App domain) {
         log.debug("REST request to create app: {}", domain);
         appService.insert(domain);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .headers(httpHeaderCreator.createSuccessHeader("SM1001", domain.getName())).build();
     }
 
-    @Operation(summary = "分页检索应用列表")
+    @Operation(summary = "find application list")
     @GetMapping("/api/apps")
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<List<App>> find(@ParameterObject Pageable pageable) {
@@ -61,10 +60,10 @@ public class AppController {
         return ResponseEntity.ok().headers(generatePageHeaders(apps)).body(apps.getContent());
     }
 
-    @Operation(summary = "根据名称检索应用")
+    @Operation(summary = "find application by name")
     @GetMapping("/api/apps/{name}")
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
-    public ResponseEntity<App> findById(@Parameter(description = "应用名称", required = true) @PathVariable String name) {
+    public ResponseEntity<App> findById(@Parameter(description = "application name", required = true) @PathVariable String name) {
         App app = appRepository.findById(name).orElseThrow(() -> new DataNotFoundException(name));
         List<AppAuthority> appAuthorities = appAuthorityRepository.findByAppName(name);
         Set<String> authorities = appAuthorities.stream().map(AppAuthority::getAuthorityName).collect(Collectors.toSet());
@@ -72,19 +71,19 @@ public class AppController {
         return ResponseEntity.ok(app);
     }
 
-    @Operation(summary = "更新应用")
+    @Operation(summary = "update application")
     @PutMapping("/api/apps")
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
-    public ResponseEntity<Void> update(@Parameter(description = "新的应用", required = true) @Valid @RequestBody App domain) {
+    public ResponseEntity<Void> update(@Parameter(description = "new application", required = true) @Valid @RequestBody App domain) {
         log.debug("REST request to update app: {}", domain);
         appService.update(domain);
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1002", domain.getName())).build();
     }
 
-    @Operation(summary = "根据名称删除应用", description = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
+    @Operation(summary = "delete application by name", description = "the data may be referenced by other data, and some problems may occur after deletion")
     @DeleteMapping("/api/apps/{name}")
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
-    public ResponseEntity<Void> delete(@Parameter(description = "应用名称", required = true) @PathVariable String name) {
+    public ResponseEntity<Void> delete(@Parameter(description = "application name", required = true) @PathVariable String name) {
         log.debug("REST request to delete app: {}", name);
         appRepository.findById(name).orElseThrow(() -> new DataNotFoundException(name));
         appRepository.deleteById(name);

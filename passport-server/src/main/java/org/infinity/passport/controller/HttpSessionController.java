@@ -3,7 +3,6 @@ package org.infinity.passport.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -20,7 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 import static org.infinity.passport.config.api.SpringDocConfiguration.AUTH;
@@ -37,20 +35,20 @@ public class HttpSessionController {
     private final HttpSessionRepository httpSessionRepository;
     private final HttpHeaderCreator     httpHeaderCreator;
 
-    @Operation(summary = "分页检索Http会话列表")
+    @Operation(summary = "find http session list")
     @GetMapping("/api/http-sessions")
     @PreAuthorize("hasAuthority(\"" + Authority.DEVELOPER + "\")")
     public ResponseEntity<List<HttpSession>> find(@ParameterObject Pageable pageable,
-                                                  @Parameter(description = "用户名称") @RequestParam(value = "principal", required = false) String principal) {
+                                                  @Parameter(description = "user name") @RequestParam(value = "principal", required = false) String principal) {
         Page<HttpSession> sessions = StringUtils.isEmpty(principal) ? httpSessionRepository.findAll(pageable) : httpSessionRepository.findByPrincipal(pageable, principal);
         HttpHeaders headers = generatePageHeaders(sessions);
         return ResponseEntity.ok().headers(headers).body(sessions.getContent());
     }
 
-    @Operation(summary = "根据ID删除Http会话", description = "数据有可能被其他数据所引用，删除之后可能出现一些问题")
+    @Operation(summary = "delete http session by ID", description = "the data may be referenced by other data, and some problems may occur after deletion")
     @DeleteMapping("/api/http-sessions/{id}")
     @PreAuthorize("hasAuthority(\"" + Authority.DEVELOPER + "\")")
-    public ResponseEntity<Void> delete(@Parameter(description = "Http会话ID", required = true) @PathVariable String id) {
+    public ResponseEntity<Void> delete(@Parameter(description = "ID", required = true) @PathVariable String id) {
         log.debug("REST request to delete http session: {}", id);
         httpSessionRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
         httpSessionRepository.deleteById(id);
