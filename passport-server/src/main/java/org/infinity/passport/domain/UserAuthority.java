@@ -14,23 +14,20 @@ import java.io.Serializable;
 /**
  * Spring Data MongoDB collection for the UserAuthority entity.
  */
-@Schema(description = "用户权限")
 @Document
 @Data
 @ToString(callSuper = true)
 @NoArgsConstructor
 public class UserAuthority extends AbstractAuditableDomain implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
-    @Schema(description = "用户ID", required = true)
+    private static final long   serialVersionUID = 1L;
+    @Schema(required = true)
     @NotNull
     @Indexed
-    private String userId;
-
-    @Schema(description = "权限名称", required = true)
+    private              String userId;
+    @Schema(required = true)
     @NotNull
-    private String authorityName;
+    private              String authorityName;
 
     public UserAuthority(String userId, String authorityName) {
         super();

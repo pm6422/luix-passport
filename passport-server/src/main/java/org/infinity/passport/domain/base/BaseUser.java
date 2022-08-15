@@ -28,31 +28,31 @@ public class BaseUser extends AbstractAuditableDomain implements Serializable {
     public static final  String FIELD_EMAIL      = "email";
     public static final  String FIELD_MOBILE_NO  = "mobileNo";
 
-    @Schema(description = "用户名", required = true)
+    @Schema(description = "username", required = true)
     @NotNull
     @Pattern(regexp = "^[a-z0-9-]+$", message = "{EP5901}")
     @Size(min = 3, max = 20)
     @Indexed(unique = true)
     private String username;
 
-    @Schema(description = "名", required = true)
+    @Schema(description = "first name", required = true)
     @NotNull
     @Size(min = 1, max = 20)
     private String firstName;
 
-    @Schema(description = "姓", required = true)
+    @Schema(description = "last name", required = true)
     @NotNull
     @Size(min = 1, max = 20)
     private String lastName;
 
-    @Schema(description = "电子邮件", required = true)
+    @Schema(description = "email", required = true)
     @NotNull
     @Email
     @Size(min = 3, max = 30)
     @Indexed
     private String email;
 
-    @Schema(description = "手机号", required = true)
+    @Schema(description = "mobile number", required = true)
     @NotNull
     @Pattern(regexp = "^(13[0-9]|15[012356789]|17[03678]|18[0-9]|14[57])[0-9]{8}$", message = "{EP5951}")
     @Size(min = 11, max = 13)
@@ -62,30 +62,30 @@ public class BaseUser extends AbstractAuditableDomain implements Serializable {
     @JsonIgnore
     private String passwordHash;
 
-    @Schema(description = "是否激活")
+    @Schema(description = "activated")
     private Boolean activated;
 
-    @Schema(description = "激活密钥")
+    @Schema(description = "activation code")
     @JsonIgnore
     private String activationKey;
 
-    @Schema(description = "重置密钥")
+    @Schema(description = "reset code")
     @JsonIgnore
     private String resetKey;
 
-    @Schema(description = "重置密码时间")
+    @Schema(description = "reset time")
     private Instant resetTime;
 
-    @Schema(description = "是否包含个人头像")
+    @Schema(description = "has profile photo")
     private Boolean hasProfilePhoto;
 
-    @Schema(description = "是否可用")
+    @Schema(description = "enabled")
     private Boolean enabled;
 
-    @Schema(description = "备注")
+    @Schema(description = "remarks")
     private String remarks;
 
-    @Schema(description = "权限列表")
+    @Schema(description = "authorities")
     @Transient
     private Set<String> authorities;
 }

@@ -1,7 +1,7 @@
 package org.infinity.passport.service;
 
 import org.infinity.passport.domain.User;
-import org.infinity.passport.dto.UserNameAndPasswordDTO;
+import org.infinity.passport.dto.UsernameAndPasswordDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface UserService {
 
-    void changePassword(UserNameAndPasswordDTO dto);
+    void changePassword(UsernameAndPasswordDTO dto);
 
     User insert(User user, String rawPassword);
 

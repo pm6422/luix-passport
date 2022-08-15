@@ -20,7 +20,7 @@ import org.infinity.passport.domain.UserAuthority;
 import org.infinity.passport.domain.UserProfilePhoto;
 import org.infinity.passport.dto.ManagedUserDTO;
 import org.infinity.passport.dto.ResetKeyAndPasswordDTO;
-import org.infinity.passport.dto.UserNameAndPasswordDTO;
+import org.infinity.passport.dto.UsernameAndPasswordDTO;
 import org.infinity.passport.exception.DataNotFoundException;
 import org.infinity.passport.exception.NoAuthorityException;
 import org.infinity.passport.repository.UserAuthorityRepository;
@@ -152,7 +152,7 @@ public class AccountController {
     @Operation(summary = "modify the password of the current user")
     @PutMapping("/api/accounts/password")
     @Timed
-    public ResponseEntity<Void> changePassword(@Parameter(description = "new password", required = true) @RequestBody @Valid UserNameAndPasswordDTO dto) {
+    public ResponseEntity<Void> changePassword(@Parameter(description = "new password", required = true) @RequestBody @Valid UsernameAndPasswordDTO dto) {
         // For security reason
         dto.setUsername(SecurityUtils.getCurrentUsername());
         userService.changePassword(dto);

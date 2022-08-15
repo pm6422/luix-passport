@@ -8,7 +8,7 @@ import org.infinity.passport.component.MessageCreator;
 import org.infinity.passport.domain.Authority;
 import org.infinity.passport.domain.User;
 import org.infinity.passport.domain.UserAuthority;
-import org.infinity.passport.dto.UserNameAndPasswordDTO;
+import org.infinity.passport.dto.UsernameAndPasswordDTO;
 import org.infinity.passport.exception.DataNotFoundException;
 import org.infinity.passport.exception.DuplicationException;
 import org.infinity.passport.repository.UserAuthorityRepository;
@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
     // }
 
     @Override
-    public void changePassword(UserNameAndPasswordDTO dto) {
+    public void changePassword(UsernameAndPasswordDTO dto) {
         userRepository.findOneByUsername(dto.getUsername()).ifPresent(user -> {
             user.setPasswordHash(passwordEncoder.encode(dto.getNewPassword()));
             userRepository.save(user);

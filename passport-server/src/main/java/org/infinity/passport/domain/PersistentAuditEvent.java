@@ -19,22 +19,18 @@ import java.util.Map;
 @Data
 public class PersistentAuditEvent implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
+    private static final long                serialVersionUID = 1L;
     @NotNull
-    private String principal;
-
+    private              String              principal;
     @Field("event_date")
-    private Instant auditEventDate;
-
+    private              Instant             auditEventDate;
     @Field("event_type")
-    private String  auditEventType;
+    private              String              auditEventType;
     /**
      * Delete records at a specific time automatically by mongoDB
      */
     @Indexed(expireAfterSeconds = 0)
-    private Instant expiryTime;
-
-    private Map<String, String> data = new HashMap<>();
+    private              Instant             expiryTime;
+    private              Map<String, String> data             = new HashMap<>();
 
 }

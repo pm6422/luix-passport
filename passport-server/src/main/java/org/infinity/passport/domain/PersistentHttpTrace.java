@@ -12,7 +12,6 @@ import java.time.Instant;
 @Document
 @Data
 public class PersistentHttpTrace implements Serializable {
-
     private static final long    serialVersionUID = 4090431427130666650L;
     private              Instant timestamp;
     private              String  uri;

@@ -14,7 +14,6 @@ import java.io.Serializable;
 /**
  * Spring Data MongoDB collection for the AppAuthority entity.
  */
-@Schema(description = "应用权限")
 @Document
 @Data
 @NoArgsConstructor
@@ -25,13 +24,13 @@ public class AppAuthority implements Serializable {
     @Id
     private String id;
 
-    @Schema(description = "应用名称", required = true)
+    @Schema(required = true)
     @NotNull
     @Size(min = 2, max = 20)
     @Indexed
     private String appName;
 
-    @Schema(description = "权限名称", required = true)
+    @Schema(required = true)
     @NotNull
     @Size(min = 2, max = 20)
     @Indexed

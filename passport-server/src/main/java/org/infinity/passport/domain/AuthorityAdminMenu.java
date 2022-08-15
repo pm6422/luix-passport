@@ -16,19 +16,15 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 public class AuthorityAdminMenu implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
+    private static final long   serialVersionUID = 1L;
     @Id
-    private String id;
-
+    private              String id;
     @NotNull
     @Indexed
-    private String authorityName;
-
+    private              String authorityName;
     @NotNull
     @Indexed
-    private String adminMenuId;
+    private              String adminMenuId;
 
     public AuthorityAdminMenu(String authorityName, String adminMenuId) {
         super();

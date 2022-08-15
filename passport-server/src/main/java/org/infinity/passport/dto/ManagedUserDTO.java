@@ -15,7 +15,7 @@ import java.util.Set;
 /**
  * A DTO extending the UserDTO, which is meant to be used in the user management UI.
  */
-@Schema(description = "用户扩展DTO")
+@Schema(description = "extended user DTO")
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
@@ -25,7 +25,7 @@ public class ManagedUserDTO extends BaseUser {
     public static final  int  RAW_PASSWORD_MIN_LENGTH = 5;
     public static final  int  RAW_PASSWORD_MAX_LENGTH = 50;
 
-    @Schema(description  = "密码", required = true)
+    @Schema(required = true)
     @NotNull
     @Size(min = RAW_PASSWORD_MIN_LENGTH, max = RAW_PASSWORD_MAX_LENGTH)
     private String password;

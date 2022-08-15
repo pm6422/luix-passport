@@ -14,7 +14,7 @@ import org.infinity.passport.domain.User;
 import org.infinity.passport.domain.UserAuthority;
 import org.infinity.passport.domain.UserProfilePhoto;
 import org.infinity.passport.dto.ManagedUserDTO;
-import org.infinity.passport.dto.UserNameAndPasswordDTO;
+import org.infinity.passport.dto.UsernameAndPasswordDTO;
 import org.infinity.passport.exception.NoAuthorityException;
 import org.infinity.passport.repository.UserAuthorityRepository;
 import org.infinity.passport.repository.UserProfilePhotoRepository;
@@ -117,7 +117,7 @@ public class UserController {
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<Void> resetPassword(@Parameter(description = "username", required = true) @PathVariable String username) {
         log.debug("REST reset the password of user: {}", username);
-        UserNameAndPasswordDTO dto = UserNameAndPasswordDTO.builder()
+        UsernameAndPasswordDTO dto = UsernameAndPasswordDTO.builder()
                 .username(username)
                 .newPassword(applicationProperties.getAccount().getDefaultPassword()).build();
         userService.changePassword(dto);

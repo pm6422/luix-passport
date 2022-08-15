@@ -1,6 +1,5 @@
 package org.infinity.passport.domain;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -13,13 +12,11 @@ import java.io.Serializable;
 /**
  * Spring Data MongoDB collection for the User entity.
  */
-@Schema(description = "用户")
 @Document
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @NoArgsConstructor
 public class User extends BaseUser implements Serializable {
-
     private static final long serialVersionUID = 5164123668745353298L;
 }

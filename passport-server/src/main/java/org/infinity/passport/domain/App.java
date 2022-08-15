@@ -17,7 +17,6 @@ import java.util.Set;
 /**
  * Spring Data MongoDB collection for the App entity.
  */
-@Schema(description = "应用")
 @Document
 @Data
 @NoArgsConstructor
@@ -25,17 +24,17 @@ import java.util.Set;
 public class App implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @Schema(description = "应用名称", required = true)
+    @Schema(required = true)
     @NotNull
     @Size(min = 3, max = 20)
     @Pattern(regexp = "^[a-zA-Z0-9-]+$", message = "{EP5903}")
     @Id
     private String name;
 
-    @Schema(description = "是否可用")
+    @Schema
     private Boolean enabled;
 
-    @Schema(description = "权限名称")
+    @Schema
     @Transient
     private Set<String> authorities;
 

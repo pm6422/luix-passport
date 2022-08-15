@@ -8,7 +8,7 @@ import java.time.Instant;
 /**
  * DTO for storing a user's activity.
  */
-@Schema(description = "用户追踪")
+@Schema(description = "user trace DTO")
 @Data
 public class TrackerDTO {
 

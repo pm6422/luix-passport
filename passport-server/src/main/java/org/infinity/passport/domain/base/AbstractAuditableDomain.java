@@ -27,28 +27,28 @@ public abstract class AbstractAuditableDomain implements Serializable {
     /**
      * Set the proper value when inserting. Value comes from SpringSecurityAuditorAware.getCurrentAuditor()
      */
-    @Schema(description = "创建者")
+    @Schema(description = "creator")
     @CreatedBy
     protected String createdBy;
 
     /**
      * Set the current time when inserting.
      */
-    @Schema(description = "创建时间")
+    @Schema(description = "created time")
     @CreatedDate
     protected Instant createdTime;
 
     /**
      * Set the proper value when updating. Value comes from SpringSecurityAuditorAware.getCurrentAuditor()
      */
-    @Schema(description = "更新者")
+    @Schema(description = "updater")
     @LastModifiedBy
     protected String modifiedBy;
 
     /**
      * Set the current time when updating.
      */
-    @Schema(description = "更新时间")
+    @Schema(description = "updated time")
     @LastModifiedDate
     protected Instant modifiedTime;
 }

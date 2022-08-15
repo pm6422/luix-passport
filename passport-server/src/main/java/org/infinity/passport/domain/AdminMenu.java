@@ -17,7 +17,6 @@ import java.util.List;
 /**
  * Spring Data MongoDB collection for the AdminMenu entity.
  */
-@Schema(description = "管理系统菜单")
 @Document
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -29,47 +28,47 @@ public class AdminMenu extends AbstractAuditableDomain implements Serializable {
     public static final  String FIELD_LEVEL      = "level";
     public static final  String FIELD_SEQUENCE   = "sequence";
 
-    @Schema(description = "应用名称", required = true)
+    @Schema(required = true)
     @NotNull
     @Size(min = 1, max = 20)
     @Indexed
     private String appName;
 
-    @Schema(description = "代码", required = true)
+    @Schema(required = true)
     @NotNull
     @Size(min = 1, max = 30)
     @Pattern(regexp = "^[a-z0-9-]+$", message = "{EP5901}")
     @Indexed(unique = true)
     private String code;
 
-    @Schema(description = "名称", required = true)
+    @Schema(required = true)
     @NotNull
     @Size(min = 1, max = 30)
     private String name;
 
-    @Schema(description = "层级", required = true)
+    @Schema(required = true)
     @Min(1)
     @Max(9)
     private Integer level;
 
-    @Schema(description = "链接地址", required = true)
+    @Schema(required = true)
     @NotNull
     @Size(min = 3, max = 200)
     private String url;
 
-    @Schema(description = "排序序号", required = true)
+    @Schema(required = true)
     @Min(1)
     @Max(999)
     private Integer sequence;
 
-    @Schema(description = "父菜单ID")
+    @Schema
     private String parentId;
 
-    @Schema(description = "是否选中")
+    @Schema
     @Transient
     private Boolean checked;
 
-    @Schema(description = "叶子节点")
+    @Schema
     @Transient
     private List<AdminMenu> children;
 
