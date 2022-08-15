@@ -8,7 +8,7 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="form-group">
-                    <label class="control-label">用户名</label>
+                    <label class="control-label">Username</label>
                     <input type="text" class="form-control" ng-model="vm.criteria.principal"
                            ng-keydown="vm.checkPressEnter($event)">
                 </div>
@@ -21,12 +21,12 @@
                 <thead>
                 <tr sort-directive="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
                     <th>ID</th>
-                    <th sort-by-directive="principal"><span>用户名</span> <span class="fa fa-sort"></span></th>
-                    <th sort-by-directive="created"><span>创建时间</span> <span class="fa fa-sort"></span></th>
-                    <th sort-by-directive="accessed"><span>访问时间</span> <span class="fa fa-sort"></span></th>
-                    <th sort-by-directive="interval"><span>有效期</span> <span class="fa fa-sort"></span></th>
-                    <th sort-by-directive="expireAt"><span>失效时间</span> <span class="fa fa-sort"></span></th>
-                    <th>操作</th>
+                    <th sort-by-directive="principal"><span>Username</span> <span class="fa fa-sort"></span></th>
+                    <th sort-by-directive="created"><span>Created time</span> <span class="fa fa-sort"></span></th>
+                    <th sort-by-directive="accessed"><span>Accessed time</span> <span class="fa fa-sort"></span></th>
+                    <th sort-by-directive="interval"><span>Validity period</span> <span class="fa fa-sort"></span></th>
+                    <th sort-by-directive="expireAt"><span>Expired time</span> <span class="fa fa-sort"></span></th>
+                    <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -39,7 +39,7 @@
                     <td>{{entity.expireAt | date:'yyyy/MM/dd HH:mm:ss'}}</td>
                     <td>
                         <div class="btn-group">
-                            <button class="btn-white btn btn-xs" ng-click="vm.del(entity.id)">删除</button>
+                            <button class="btn-white btn btn-xs" ng-click="vm.del(entity.id)">Delete</button>
                         </div>
                     </td>
                 </tr>
