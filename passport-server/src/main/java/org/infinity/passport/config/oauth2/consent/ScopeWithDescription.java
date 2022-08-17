@@ -10,15 +10,11 @@ public class ScopeWithDescription {
     static {
         scopeDescriptions.put(
                 "profile",
-                "验证您的身份"
+                "profile information"
         );
         scopeDescriptions.put(
-                "message.read",
-                "了解您可以访问哪些权限"
-        );
-        scopeDescriptions.put(
-                "message.write",
-                "代表您行事"
+                "openid",
+                "open ID"
         );
     }
 
@@ -28,5 +24,10 @@ public class ScopeWithDescription {
     public ScopeWithDescription(String scope) {
         this.scope = scope;
         this.description = scopeDescriptions.getOrDefault(scope, DEFAULT_DESCRIPTION);
+    }
+
+    @Override
+    public String toString() {
+        return scope + "(" + description + ")";
     }
 }
