@@ -70,8 +70,6 @@ public class OAuth2ServerSecurityConfiguration {
     public static final String CUSTOM_LOGIN_PAGE_URI   = "/oauth2/login";
     public static final String CUSTOM_CONSENT_PAGE_URI = "/oauth2/consent";
 
-    public static final String CUSTOM_AUTHORIZE_PAGE_URI = "/oauth2/authorize";
-
     @Bean
     @Order(1)
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http,
@@ -94,7 +92,8 @@ public class OAuth2ServerSecurityConfiguration {
                 .authorizeRequests(authorizeRequests -> {
                     authorizeRequests.antMatchers(CUSTOM_LOGIN_PAGE_URI).permitAll();
                     authorizeRequests.antMatchers("/open-api/**").permitAll();
-                    authorizeRequests.antMatchers("/api/**").authenticated();
+//                    authorizeRequests.antMatchers("/api/**").authenticated();
+                    authorizeRequests.anyRequest().authenticated();
                 })
                 .csrf(csrf -> csrf.ignoringRequestMatchers(endpointsMatcher))
                 .formLogin(Customizer.withDefaults())

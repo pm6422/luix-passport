@@ -32,11 +32,6 @@ public class OAuth2ServerController {
         return CUSTOM_LOGIN_PAGE_URI;
     }
 
-    @GetMapping(CUSTOM_AUTHORIZE_PAGE_URI)
-    public String forwardToAuthorizePage() {
-        return CUSTOM_AUTHORIZE_PAGE_URI;
-    }
-
     @GetMapping(CUSTOM_CONSENT_PAGE_URI)
     public String forwardToConsentPage(Principal principal, Model model,
                                        @RequestParam(OAuth2ParameterNames.CLIENT_ID) String clientId,
