@@ -70,6 +70,8 @@ public class OAuth2ServerSecurityConfiguration {
     public static final String CUSTOM_LOGIN_PAGE_URI   = "/oauth2/login";
     public static final String CUSTOM_CONSENT_PAGE_URI = "/oauth2/consent";
 
+    public static final String CUSTOM_AUTHORIZE_PAGE_URI = "/oauth2/authorize";
+
     @Bean
     @Order(1)
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http,

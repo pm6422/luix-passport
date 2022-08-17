@@ -11,14 +11,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.annotation.Resource;
 import java.security.Principal;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.infinity.passport.config.OAuth2ServerSecurityConfiguration.CUSTOM_CONSENT_PAGE_URI;
-import static org.infinity.passport.config.OAuth2ServerSecurityConfiguration.CUSTOM_LOGIN_PAGE_URI;
+import static org.infinity.passport.config.OAuth2ServerSecurityConfiguration.*;
 
 /**
  * Controller for OAuth2 server.
@@ -32,6 +30,11 @@ public class OAuth2ServerController {
     @GetMapping(CUSTOM_LOGIN_PAGE_URI)
     public String forwardToLoginPage() {
         return CUSTOM_LOGIN_PAGE_URI;
+    }
+
+    @GetMapping(CUSTOM_AUTHORIZE_PAGE_URI)
+    public String forwardToAuthorizePage() {
+        return CUSTOM_AUTHORIZE_PAGE_URI;
     }
 
     @GetMapping(CUSTOM_CONSENT_PAGE_URI)
