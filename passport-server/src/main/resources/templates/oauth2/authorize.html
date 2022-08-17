@@ -47,9 +47,9 @@
 
 <script type="text/javascript">
     <!-- Note: the front slash '/' cannot be deleted -->
-    $.get("/open-api/systems/info", function (result) {
-        if (result.ribbonEnv) {
-            $('div.ribbon').removeClass('hidden').find('a').text(result.ribbonEnv.toUpperCase());
+    $.get("../open-api/systems/ribbon-profile", function (result) {
+        if (result) {
+            $('div.ribbon').removeClass('hidden').find('a').text(result.toUpperCase());
         }
     });
     $('#authorize').focus();
