@@ -34,14 +34,14 @@ spring:
                 registration:
                     felord:
                         client-id: login-client
-                        client-secret: secret
-                        redirect-uri: 'http://127.0.0.1:9020'
+                        client-secret: 65G-HD9-4PD-j9F-HP5
+                        redirect-uri: http://127.0.0.1:9020
                         authorization-grant-type: authorization_code
                         client-authentication-method: client_secret_basic
-                        scope: openid,profile
+                        scope: profile
                 provider:
                     felord:
-                        issuer-uri: http://localhost:9010
+                        issuer-uri: http://127.0.0.1:9010
 server:
     # It can be overridden by `--server.port` value passed in the commandline or `-Dserver.port` set in `JAVA_OPTS`
     port: 9020
