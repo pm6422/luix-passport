@@ -19,17 +19,17 @@ function($rootScope, $http, $location, $route) {
 		return $route.current && route === $route.current.controller;
 	};
 
-	$http.get('open-api/accounts/user').then(function(response) {
-		if (response.data.username) {
-			$rootScope.authenticated = true;
-			$rootScope.username = response.data.username;
-			
-		} else {
-			$rootScope.authenticated = false;
-		}
-	}, function() {
-		$rootScope.authenticated = false;
-	});
+	// $http.get('open-api/accounts/user').then(function(response) {
+	// 	if (response.data.username) {
+	// 		$rootScope.authenticated = true;
+	// 		$rootScope.username = response.data.username;
+	//
+	// 	} else {
+	// 		$rootScope.authenticated = false;
+	// 	}
+	// }, function() {
+	// 	$rootScope.authenticated = false;
+	// });
 
 	self.credentials = {};
 
