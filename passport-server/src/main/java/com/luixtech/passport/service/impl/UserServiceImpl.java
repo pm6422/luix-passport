@@ -1,9 +1,6 @@
 package com.luixtech.passport.service.impl;
 
 import com.google.common.collect.ImmutableMap;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
 import com.luixtech.passport.component.MessageCreator;
 import com.luixtech.passport.domain.Authority;
 import com.luixtech.passport.domain.User;
@@ -14,7 +11,10 @@ import com.luixtech.passport.exception.DuplicationException;
 import com.luixtech.passport.repository.UserAuthorityRepository;
 import com.luixtech.passport.repository.UserRepository;
 import com.luixtech.passport.service.UserService;
-import com.luixtech.passport.utils.RandomUtils;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -63,9 +63,9 @@ public class UserServiceImpl implements UserService {
         user.setUsername(user.getUsername().toLowerCase());
         user.setEmail(user.getEmail().toLowerCase());
         user.setPasswordHash(passwordEncoder.encode(rawPassword));
-        user.setActivationKey(RandomUtils.generateActivationKey());
+        user.setActivationKey(RandomStringUtils.randomNumeric(20));
         user.setActivated(false);
-        user.setResetKey(RandomUtils.generateResetKey());
+        user.setResetKey(RandomStringUtils.randomNumeric(20));
         user.setResetTime(Instant.now());
         user.setEnabled(true);
         userRepository.save(user);
@@ -168,7 +168,7 @@ public class UserServiceImpl implements UserService {
     public User requestPasswordReset(String email, String resetKey) {
         User user = userRepository.findOneByEmailAndActivatedIsTrue(email)
                 .orElseThrow(() -> new DataNotFoundException(messageCreator.getMessage("email")));
-        user.setResetKey(RandomUtils.generateResetKey());
+        user.setResetKey(RandomStringUtils.randomNumeric(20));
         user.setResetTime(Instant.now());
         userRepository.save(user);
         log.debug("Requested reset user password for reset key {}", resetKey);

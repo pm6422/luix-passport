@@ -2,13 +2,6 @@ package com.luixtech.passport.controller;
 
 import com.codahale.metrics.annotation.Timed;
 import com.google.common.collect.ImmutableMap;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.time.FastDateFormat;
 import com.luixtech.passport.component.HttpHeaderCreator;
 import com.luixtech.passport.config.oauth2.LogoutEvent;
 import com.luixtech.passport.config.oauth2.SecurityUser;
@@ -29,7 +22,14 @@ import com.luixtech.passport.service.AuthorityService;
 import com.luixtech.passport.service.MailService;
 import com.luixtech.passport.service.UserProfilePhotoService;
 import com.luixtech.passport.service.UserService;
-import com.luixtech.passport.utils.RandomUtils;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
@@ -166,7 +166,7 @@ public class AccountController {
     @Timed
     public ResponseEntity<Void> requestPasswordReset(@Parameter(description = "email", required = true) @RequestBody String email,
                                                      HttpServletRequest request) {
-        User user = userService.requestPasswordReset(email, RandomUtils.generateResetKey());
+        User user = userService.requestPasswordReset(email, RandomStringUtils.randomNumeric(20));
         mailService.sendPasswordResetMail(user, getRequestUrl(request));
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("NM2002")).build();
     }
