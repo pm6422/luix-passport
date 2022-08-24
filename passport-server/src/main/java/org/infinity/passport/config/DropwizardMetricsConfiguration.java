@@ -29,7 +29,6 @@ import java.util.concurrent.TimeUnit;
 @AllArgsConstructor
 @Slf4j
 public class DropwizardMetricsConfiguration {
-
     private static final String                PROP_METRIC_REG_JVM_MEMORY  = "jvm.memory";
     private static final String                PROP_METRIC_REG_JVM_GARBAGE = "jvm.garbage";
     private static final String                PROP_METRIC_REG_JVM_THREADS = "jvm.threads";
