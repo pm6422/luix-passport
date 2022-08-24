@@ -3,7 +3,7 @@ package org.infinity.passport.repository;
 import org.infinity.passport.domain.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.Instant;
@@ -11,10 +11,10 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Spring Data MongoDB repository for the User entity.
+ * Spring Data JPA repository for the {@link User} entity.
  */
 @Repository
-public interface UserRepository extends MongoRepository<User, String> {
+public interface UserRepository extends JpaRepository<User, String> {
 
     Optional<User> findOneByUsername(String username);
 

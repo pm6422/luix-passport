@@ -46,9 +46,9 @@ angular
     .controller('OAuth2RefreshTokenDetailsController', OAuth2RefreshTokenDetailsController)
     .controller('OAuth2ApprovalListController', OAuth2ApprovalListController)
     .controller('OAuth2ApprovalDetailsController', OAuth2ApprovalDetailsController)
-    .controller('AdminMenuListController', AdminMenuListController)
-    .controller('AdminMenuDialogController', AdminMenuDialogController)
-    .controller('AuthorityAdminMenuController', AuthorityAdminMenuController)
+    .controller('MenuListController', MenuListController)
+    .controller('MenuDialogController', MenuDialogController)
+    .controller('AuthorityMenuController', AuthorityMenuController)
     .controller('UserListController', UserListController)
     .controller('UserDialogController', UserDialogController)
     .controller('UserDetailsController', UserDetailsController);
@@ -58,7 +58,7 @@ angular
  * Contains several global data used in different view
  *
  */
-function MainController($http, $rootScope, $scope, $state, AuthenticationService, PrincipalService, AuthorityAdminMenuService, AuthServerService, AlertUtils, APP_NAME) {
+function MainController($http, $rootScope, $scope, $state, AuthenticationService, PrincipalService, AuthorityMenuService, AuthServerService, AlertUtils, APP_NAME) {
     var main = this;
     main.account = null;
     main.isAuthenticated = null;
@@ -79,7 +79,7 @@ function MainController($http, $rootScope, $scope, $state, AuthenticationService
 
     function loadLinks() {
         if (PrincipalService.isAuthenticated() == true) {
-            main.links = AuthorityAdminMenuService.queryUserLinks({appName: APP_NAME});
+            main.links = AuthorityMenuService.queryUserLinks({appName: APP_NAME});
         }
     }
 
@@ -110,7 +110,7 @@ function MainController($http, $rootScope, $scope, $state, AuthenticationService
 /**
  * LeftSidebarController
  */
-function LeftSidebarController($scope, $state, $element, $timeout, APP_NAME, AuthorityAdminMenuService, PrincipalService) {
+function LeftSidebarController($scope, $state, $element, $timeout, APP_NAME, AuthorityMenuService, PrincipalService) {
     var vm = this;
 
     vm.init = init;
@@ -122,7 +122,7 @@ function LeftSidebarController($scope, $state, $element, $timeout, APP_NAME, Aut
 
     function init() {
         if (PrincipalService.isAuthenticated() == true) {
-            AuthorityAdminMenuService.queryUserMenus({appName: APP_NAME}, function (response) {
+            AuthorityMenuService.queryUserMenus({appName: APP_NAME}, function (response) {
                 if (response) {
                     vm.groups = response;
                     // Call the metsiMenu plugin and plug it to sidebar navigation
@@ -1865,9 +1865,9 @@ function AppDetailsController($state, $stateParams, entity) {
 }
 
 /**
- * AdminMenuListController
+ * MenuListController
  */
-function AdminMenuListController($state, AlertUtils, ParseLinksUtils, PAGINATION_CONSTANTS, pagingParams, criteria, AdminMenuService, AppService, APP_NAME) {
+function MenuListController($state, AlertUtils, ParseLinksUtils, PAGINATION_CONSTANTS, pagingParams, criteria, MenuService, AppService, APP_NAME) {
     var vm = this;
 
     vm.pageTitle = $state.current.data.pageTitle;
@@ -1892,7 +1892,7 @@ function AdminMenuListController($state, AlertUtils, ParseLinksUtils, PAGINATION
     vm.loadAll();
 
     function loadAll() {
-        AdminMenuService.query({
+        MenuService.query({
             page: pagingParams.page - 1,
             size: vm.itemsPerPage,
             sort: sort(),
@@ -1937,7 +1937,7 @@ function AdminMenuListController($state, AlertUtils, ParseLinksUtils, PAGINATION
     function del(id) {
         AlertUtils.createDeleteConfirmation('The data may be referenced by other data, and there may be some problems after deletion, are you sure to delete?', function (isConfirm) {
             if (isConfirm) {
-                AdminMenuService.del({id: id},
+                MenuService.del({id: id},
                     function () {
                         vm.loadAll();
                     },
@@ -1948,14 +1948,14 @@ function AdminMenuListController($state, AlertUtils, ParseLinksUtils, PAGINATION
     }
 
     function moveUp(id) {
-        AdminMenuService.moveUp({id: id},
+        MenuService.moveUp({id: id},
             function () {
                 vm.loadAll()
             });
     }
 
     function moveDown(id) {
-        AdminMenuService.moveDown({id: id},
+        MenuService.moveDown({id: id},
             function () {
                 vm.loadAll()
             });
@@ -1963,9 +1963,9 @@ function AdminMenuListController($state, AlertUtils, ParseLinksUtils, PAGINATION
 }
 
 /**
- * AdminMenuDialogController
+ * MenuDialogController
  */
-function AdminMenuDialogController($state, $stateParams, $uibModalInstance, AdminMenuService, AppService, APP_NAME, entity) {
+function MenuDialogController($state, $stateParams, $uibModalInstance, MenuService, AppService, APP_NAME, entity) {
     var vm = this;
 
     vm.pageTitle = $state.current.data.pageTitle;
@@ -1986,15 +1986,15 @@ function AdminMenuDialogController($state, $stateParams, $uibModalInstance, Admi
             vm.entity.level = 2;
         }
         if (vm.mode == 'edit') {
-            AdminMenuService.update(vm.entity, onSaveSuccess, onSaveError);
+            MenuService.update(vm.entity, onSaveSuccess, onSaveError);
         } else {
-            AdminMenuService.create(vm.entity, onSaveSuccess, onSaveError);
+            MenuService.create(vm.entity, onSaveSuccess, onSaveError);
         }
     }
 
     function searchParentMenus() {
         if (vm.entity && vm.entity.appName) {
-            vm.parentMenus = AdminMenuService.queryParents({appName: vm.entity.appName, level: 1});
+            vm.parentMenus = MenuService.queryParents({appName: vm.entity.appName, level: 1});
         }
         else {
             vm.parentMenus = [];
@@ -2016,9 +2016,9 @@ function AdminMenuDialogController($state, $stateParams, $uibModalInstance, Admi
 }
 
 /**
- * AuthorityAdminMenuController
+ * AuthorityMenuController
  */
-function AuthorityAdminMenuController($state, AuthorityAdminMenuService, AppAuthorityService, AppService) {
+function AuthorityMenuController($state, AuthorityMenuService, AppAuthorityService, AppService) {
     var vm = this;
 
     vm.pageTitle = $state.current.data.pageTitle;
@@ -2043,7 +2043,7 @@ function AuthorityAdminMenuController($state, AuthorityAdminMenuService, AppAuth
     function searchMenus() {
         vm.allMenus = [];
         if (vm.criteria.authorityName) {
-            AuthorityAdminMenuService.query({
+            AuthorityMenuService.query({
                 appName: vm.criteria.appName,
                 authorityName: vm.criteria.authorityName
             }, function (response) {
@@ -2055,11 +2055,11 @@ function AuthorityAdminMenuController($state, AuthorityAdminMenuService, AppAuth
     function save() {
         vm.isSaving = true;
         if (vm.criteria.appName && vm.criteria.authorityName) {
-            var adminMenuIds = getAllCheckIds(vm.allMenus, []);
-            AuthorityAdminMenuService.update({
+            var menuIds = getAllCheckIds(vm.allMenus, []);
+            AuthorityMenuService.update({
                     appName: vm.criteria.appName,
                     authorityName: vm.criteria.authorityName,
-                    adminMenuIds: adminMenuIds
+                    menuIds: menuIds
                 },
                 function (response) {
                     vm.isSaving = false;
@@ -2069,16 +2069,16 @@ function AuthorityAdminMenuController($state, AuthorityAdminMenuService, AppAuth
         }
     }
 
-    function getAllCheckIds(allMenus, adminMenuIds) {
+    function getAllCheckIds(allMenus, menuIds) {
         for (var i = 0; i < allMenus.length; i++) {
             if (allMenus[i].checked) {
-                adminMenuIds.push(allMenus[i].id);
+                menuIds.push(allMenus[i].id);
             }
             if (allMenus[i].children) {
-                getAllCheckIds(allMenus[i].children, adminMenuIds);
+                getAllCheckIds(allMenus[i].children, menuIds);
             }
         }
-        return adminMenuIds;
+        return menuIds;
     }
 }
 

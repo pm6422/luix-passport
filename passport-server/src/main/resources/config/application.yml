@@ -30,6 +30,7 @@ management: # Management http server configuration, used by ManagementServerProp
                     - loggers
                     - prometheus
                     - threaddump
+                    - liquibase
     endpoint:
         health: # used by HealthEndpointProperties, Note: it will show health details if it has the access token by Ajax
             enabled: true
@@ -40,8 +41,6 @@ management: # Management http server configuration, used by ManagementServerProp
             enabled: true # explicitly enable
     health:
         mail:
-            enabled: true
-        mongo:
             enabled: true
     metrics:
         export:
@@ -91,6 +90,7 @@ spring:
                 size: 2
     thymeleaf: #ThymeleafAutoConfiguration
         mode: HTML
+        cache: true
     servlet:
         multipart: # Management http multipart configuration, used by MultipartProperties
             enabled: true
@@ -107,11 +107,39 @@ spring:
     banner:
         location: classpath:config/banner-company.txt
     data:
-        mongodb:
-            auto-index-creation: false
-    mongodb:
-        embedded:
-            version: 4.0.0
+        jpa:
+            repositories:
+                bootstrap-mode: deferred
+    jpa:
+        open-in-view: false
+        properties:
+            hibernate.jdbc.time_zone: Asia/Shanghai
+            hibernate.id.new_generator_mappings: true
+            hibernate.connection.provider_disables_autocommit: true
+            hibernate.cache.use_second_level_cache: true
+            hibernate.cache.use_query_cache: false
+            hibernate.generate_statistics: false
+            # modify batch size as necessary
+            hibernate.jdbc.batch_size: 25
+            hibernate.order_inserts: true
+            hibernate.order_updates: true
+            hibernate.query.fail_on_pagination_over_collection_fetch: true
+            hibernate.query.in_clause_parameter_padding: true
+        hibernate:
+            ddl-auto: none
+            naming:
+                physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+                implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+    datasource:
+        type: com.zaxxer.hikari.HikariDataSource
+        hikari:
+            poolName: Hikari
+            auto-commit: false
+            data-source-properties:
+                cachePrepStmts: true
+                prepStmtCacheSize: 250
+                prepStmtCacheSqlLimit: 2048
+                useServerPrepStmts: true
     security:
         oauth2:
             client:
@@ -143,11 +171,15 @@ server:
             timeout: 1D # Session timeout in 1 day, Note: this parameter can control the login expiration
             # and this statement can effect spring session, used by SessionProperties
 logging:
-    config: classpath:config/logback-spring.xml
-    file:
-        path: ${user.home}${file.separator}Log${file.separator}${spring.application.name}${file.separator}${spring.application.name}
     level:
         root: DEBUG
+        org.springframework.boot.devtools.autoconfigure: INFO
+        org.apache: WARN
+        sun.rmi: WARN
+        jdk.event.security: WARN
+        javax.xml.bind: INFO
+        com.zaxxer.hikari.pool.HikariPool: INFO
+        org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener: INFO
 mongock:
     enabled: false
     track-ignored: true

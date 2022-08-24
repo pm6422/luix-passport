@@ -1,0 +1,3 @@
+client_id;require_proof_key;require_authorization_consent;jwk_set_url;signing_algorithm
+internal-client;0;1;;
+login-client;0;1;;

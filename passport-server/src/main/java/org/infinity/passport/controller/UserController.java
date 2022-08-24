@@ -131,6 +131,6 @@ public class UserController {
     public ResponseEntity<byte[]> getProfilePhoto(@Parameter(description = "username", required = true) @PathVariable String username) {
         User user = userService.findOneByUsername(username);
         Optional<UserProfilePhoto> userProfilePhoto = userProfilePhotoRepository.findByUserId(user.getId());
-        return userProfilePhoto.map(photo -> ResponseEntity.ok(photo.getProfilePhoto().getData())).orElse(null);
+        return userProfilePhoto.map(photo -> ResponseEntity.ok(photo.getProfilePhoto())).orElse(null);
     }
 }

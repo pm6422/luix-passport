@@ -44,7 +44,7 @@ public class AuthorityController {
         authorityRepository.findById(domain.getName()).ifPresent(app -> {
             throw new DuplicationException(ImmutableMap.of("name", domain.getName()));
         });
-        authorityRepository.insert(domain);
+        authorityRepository.save(domain);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .headers(httpHeaderCreator.createSuccessHeader("SM1001", domain.getName()))
                 .build();

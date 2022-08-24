@@ -6,9 +6,10 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.mongodb.core.index.Indexed;
 
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -21,8 +22,8 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @NoArgsConstructor
+@MappedSuperclass
 public class BaseUser extends AbstractAuditableDomain implements Serializable {
-
     private static final long   serialVersionUID = -8677592622292657950L;
     public static final  String FIELD_USER_NAME  = "username";
     public static final  String FIELD_EMAIL      = "email";
@@ -32,58 +33,61 @@ public class BaseUser extends AbstractAuditableDomain implements Serializable {
     @NotNull
     @Pattern(regexp = "^[a-z0-9-]+$", message = "{EP5901}")
     @Size(min = 3, max = 20)
-    @Indexed(unique = true)
+    @Column(unique = true, length = 20, nullable = false)
     private String username;
-
-    @Schema(description = "first name", required = true)
-    @NotNull
-    @Size(min = 1, max = 20)
-    private String firstName;
-
-    @Schema(description = "last name", required = true)
-    @NotNull
-    @Size(min = 1, max = 20)
-    private String lastName;
 
     @Schema(description = "email", required = true)
     @NotNull
     @Email
     @Size(min = 3, max = 30)
-    @Indexed
+    @Column(unique = true, length = 30, nullable = false)
     private String email;
 
     @Schema(description = "mobile number", required = true)
     @NotNull
     @Pattern(regexp = "^(13[0-9]|15[012356789]|17[03678]|18[0-9]|14[57])[0-9]{8}$", message = "{EP5951}")
     @Size(min = 11, max = 13)
-    @Indexed
+    @Column(unique = true, length = 13, nullable = false)
     private String mobileNo;
 
+    @Schema(description = "first name")
+    @NotNull
+    @Size(min = 1, max = 20)
+    @Column(length = 20)
+    private String firstName;
+
+    @Schema(description = "last name")
+    @NotNull
+    @Size(min = 1, max = 20)
+    @Column(length = 20)
+    private String lastName;
+
     @JsonIgnore
+    @Column(nullable = false)
     private String passwordHash;
 
-    @Schema(description = "activated")
-    private Boolean activated;
-
-    @Schema(description = "activation code")
+    @Schema(description = "activation key")
     @JsonIgnore
     private String activationKey;
 
-    @Schema(description = "reset code")
+    @Schema(description = "reset key")
     @JsonIgnore
     private String resetKey;
 
     @Schema(description = "reset time")
     private Instant resetTime;
 
-    @Schema(description = "has profile photo")
-    private Boolean hasProfilePhoto;
-
-    @Schema(description = "enabled")
-    private Boolean enabled;
+    @Schema(description = "profile photo enabled")
+    private Boolean profilePhotoEnabled;
 
     @Schema(description = "remarks")
     private String remarks;
+
+    @Schema(description = "activated")
+    private Boolean activated;
+
+    @Schema(description = "enabled")
+    private Boolean enabled;
 
     @Schema(description = "authorities")
     @Transient

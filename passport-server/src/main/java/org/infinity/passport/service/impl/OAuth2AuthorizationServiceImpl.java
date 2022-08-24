@@ -4,8 +4,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
-import org.infinity.passport.domain.OAuth2Authorization;
-import org.infinity.passport.repository.OAuth2AuthorizationRepository;
+import org.infinity.passport.domain.oauth2.OAuth2Authorization;
+import org.infinity.passport.repository.oauth2.OAuth2AuthorizationRepository;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.security.jackson2.SecurityJackson2Modules;
 import org.springframework.security.oauth2.core.*;
@@ -63,7 +63,7 @@ public class OAuth2AuthorizationServiceImpl implements OAuth2AuthorizationServic
 
         Optional<OAuth2Authorization> result;
         if (tokenType == null) {
-            result = this.oAuth2AuthorizationRepository.findByStateOrAuthorizationCodeValueOrAccessTokenValueOrRefreshTokenValue(token);
+            result = this.oAuth2AuthorizationRepository.findByStateOrAuthorizationCodeValueOrAccessTokenValueOrRefreshTokenValue(token, token, token, token);
         } else if (OAuth2ParameterNames.STATE.equals(tokenType.getValue())) {
             result = this.oAuth2AuthorizationRepository.findByState(token);
         } else if (OAuth2ParameterNames.CODE.equals(tokenType.getValue())) {

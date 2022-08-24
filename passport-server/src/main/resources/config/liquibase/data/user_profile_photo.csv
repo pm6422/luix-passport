@@ -1,0 +1,10 @@
+id;user_id;authority_id;created_by;created_time;modified_by;modified_time
+11;11;11;system;now;system;now
+12;11;12;system;now;system;now
+13;12;11;system;now;system;now
+14;12;12;system;now;system;now
+15;12;13;system;now;system;now
+16;13;11;system;now;system;now
+17;13;12;system;now;system;now
+18;13;13;system;now;system;now
+19;13;14;system;now;system;now

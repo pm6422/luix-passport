@@ -10,6 +10,8 @@ import org.infinity.passport.repository.AppAuthorityRepository;
 import org.infinity.passport.repository.AppRepository;
 import org.infinity.passport.service.AppService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
@@ -21,26 +23,27 @@ public class AppServiceImpl implements AppService {
     @Override
     public App insert(App domain) {
         appRepository.save(domain);
-        domain.getAuthorities().forEach(authorityName -> appAuthorityRepository.insert(new AppAuthority(domain.getName(), authorityName)));
-        log.debug("Created Information for app: {}", domain);
+        domain.getAuthorities().forEach(authorityName -> appAuthorityRepository.save(new AppAuthority(domain.getName(), authorityName)));
+        log.debug("Created information for app: {}", domain);
         return domain;
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, noRollbackFor = Exception.class)
     public void update(App domain) {
-        appRepository.findById(domain.getName()).map(app -> {
+        appRepository.findById(domain.getId()).map(app -> {
             app.setEnabled(domain.getEnabled());
             appRepository.save(app);
             log.debug("Updated app: {}", app);
 
             if (CollectionUtils.isNotEmpty(domain.getAuthorities())) {
-                appAuthorityRepository.deleteByAppName(domain.getName());
-                domain.getAuthorities().forEach(authorityName -> appAuthorityRepository.insert(new AppAuthority(domain.getName(), authorityName)));
+                appAuthorityRepository.deleteByAppId(domain.getId());
+                domain.getAuthorities().forEach(authorityName -> appAuthorityRepository.save(new AppAuthority(domain.getId(), authorityName)));
                 log.debug("Updated user authorities");
             } else {
-                appAuthorityRepository.deleteByAppName(app.getName());
+                appAuthorityRepository.deleteByAppId(app.getId());
             }
             return app;
-        }).orElseThrow(() -> new DataNotFoundException(domain.getName()));
+        }).orElseThrow(() -> new DataNotFoundException(domain.getId()));
     }
 }

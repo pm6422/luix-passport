@@ -6,15 +6,12 @@
 # https://docs.spring.io/spring-boot/docs/2.7.1/reference/html/application-properties.html#application-properties
 # ===================================================================
 spring:
-    devtools:
-        restart:
-            enabled: true # enable on test environment
-        livereload:
-            enabled: false
-    thymeleaf:
-        cache: false
-mongock:
-    enabled: true
+    datasource:
+        url: jdbc:mysql://localhost:3306/luix-passport?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai
+        username: root
+        password:
+    liquibase:
+        change-log: classpath:config/liquibase/master.xml
 # ===================================================================
 # Application specific properties
 # ===================================================================

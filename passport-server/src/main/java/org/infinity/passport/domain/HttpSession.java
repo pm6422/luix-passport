@@ -1,9 +1,9 @@
 package org.infinity.passport.domain;
 
 import lombok.Data;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.infinity.passport.domain.base.AbstractAuditableDomain;
 
+import javax.persistence.Entity;
 import java.io.Serializable;
 import java.time.Duration;
 import java.time.Instant;
@@ -15,13 +15,10 @@ import java.time.Instant;
  * {@link org.springframework.session.data.mongo.JdkMongoSessionConverter}
  * {@link org.springframework.session.data.mongo.MongoSession}
  */
-@Document
+@Entity
 @Data
-public class HttpSession implements Serializable {
-
-    private static final long     serialVersionUID = -1L;
-    @Id
-    protected            String   id;
+public class HttpSession extends AbstractAuditableDomain implements Serializable {
+    private static final long     serialVersionUID = 4707283652283161571L;
     private              String   principal;
     private              Instant  created;
     private              Instant  accessed;

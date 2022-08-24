@@ -1,0 +1,80 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>{{vm.pageTitle}}</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="#">Homepage</a>
+            </li>
+            <li>
+                <a style="pointer-events: none">{{vm.parentPageTitle}}</a>
+            </li>
+            <li class="active">
+                <a href="#{{$state.$current.url.sourcePath}}"><strong>{{vm.pageTitle}}</strong></a>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="wrapper wrapper-content p-h-xs animated fadeInDown">
+    <div class="ibox-content m-b-sm">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="control-label">Application</label>
+                    <select class="form-control" ng-model="vm.criteria.app" ng-options="item.name as item.name for item in vm.apps" ng-change="vm.transition()">
+                        <option value="">Select...</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ibox">
+        <div class="ibox-title">
+            <div ibox-tools-directive></div>
+        </div>
+        <div class="ibox-content p-w-m">
+            <table class="table table-striped">
+                <thead>
+                <tr sort-directive="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                    <th sort-by-directive="id"><span>Menu ID</span> <span class="fa fa-sort"></span></th>
+                    <th sort-by-directive="appName"><span>Application ID</span> <span class="fa fa-sort"></span></th>
+                    <th sort-by-directive="code"><span>Code</span> <span class="fa fa-sort"></span></th>
+                    <th sort-by-directive="name"><span>Name</span> <span class="fa fa-sort"></span></th>
+                    <th sort-by-directive="level"><span>Level</span> <span class="fa fa-sort"></span></th>
+                    <th sort-by-directive="url"><span>Url</span> <span class="fa fa-sort"></span></th>
+                    <th sort-by-directive="sequence"><span>Sequence</span> <span class="fa fa-sort"></span></th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="entity in vm.entities track by entity.id">
+                    <td>{{entity.id}}</td>
+                    <td>{{entity.appId}}</td>
+                    <td>{{entity.code}}</td>
+                    <td>{{entity.name}}</td>
+                    <td>{{entity.level}}</td>
+                    <td>{{entity.url}}</td>
+                    <td>{{entity.sequence}}</td>
+                    <td>
+                        <div class="btn-group">
+                            <button class="btn-white btn btn-xs" ui-sref=".edit({id: entity.id})">Edit</button>
+                            <button class="btn-white btn btn-xs" ng-click="vm.del(entity.id)">Delete</button>
+                            <button class="btn-white btn btn-xs" ng-click="vm.moveUp(entity.id)">Up
+                            </button>
+                            <button class="btn-white btn btn-xs" ng-click="vm.moveDown(entity.id)">Down
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="12" class="text-center">
+                            <strong><item-count-component page="vm.page" total="vm.totalItems" items-per-page="vm.itemsPerPage"></item-count-component></strong>
+                            <uib-pagination class="pagination-sm m-xs" total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()"></uib-pagination>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>

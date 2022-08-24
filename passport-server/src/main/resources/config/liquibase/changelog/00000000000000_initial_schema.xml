@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <!--
+        Core tables.
+        The initial schema has the '00000000000001' id, so that it is over-written if we re-generate it.
+    -->
+    <changeSet id="00000000000001" author="luix">
+        <createTable tableName="app">
+            <column name="id" type="varchar(20)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="enabled" type="boolean" valueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_time" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="varchar(50)"/>
+            <column name="modified_time" type="timestamp"/>
+        </createTable>
+        <loadData
+                file="config/liquibase/data/app.csv"
+                separator=";"
+                tableName="app"
+                usePreparedStatements="true">
+        </loadData>
+
+        <createTable tableName="authority">
+            <column name="name" type="varchar(16)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="system_level" type="boolean" valueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="enabled" type="boolean" valueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <loadData
+                file="config/liquibase/data/authority.csv"
+                separator=";"
+                tableName="authority"
+                usePreparedStatements="true">
+        </loadData>
+
+        <createTable tableName="app_authority">
+            <column name="id" type="varchar(20)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="app_id" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="authority_name" type="varchar(16)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_time" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="varchar(50)"/>
+            <column name="modified_time" type="timestamp"/>
+        </createTable>
+        <loadData
+                file="config/liquibase/data/app_authority.csv"
+                separator=";"
+                tableName="app_authority"
+                usePreparedStatements="true">
+        </loadData>
+
+        <createTable tableName="user">
+            <column name="id" type="varchar(20)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="username" type="varchar(20)">
+                <constraints unique="true" nullable="false" uniqueConstraintName="ux_user_username"/>
+            </column>
+            <column name="email" type="varchar(30)">
+                <constraints unique="true" nullable="false" uniqueConstraintName="ux_user_email"/>
+            </column>
+            <column name="mobile_no" type="varchar(13)">
+                <constraints unique="true" nullable="false" uniqueConstraintName="ux_user_mobile"/>
+            </column>
+            <column name="first_name" type="varchar(20)"/>
+            <column name="last_name" type="varchar(20)"/>
+            <column name="password_hash" type="varchar(256)">
+                <constraints nullable="false" uniqueConstraintName="ux_user_password"/>
+            </column>
+            <column name="activation_key" type="varchar(256)"/>
+            <column name="reset_key" type="varchar(256)"/>
+            <column name="reset_time" type="timestamp"/>
+            <column name="profile_photo_enabled" type="boolean" valueBoolean="false">
+                <constraints nullable="false" />
+            </column>
+            <column name="remarks" type="varchar(256)"/>
+            <column name="activated" type="boolean" valueBoolean="false">
+                <constraints nullable="false" />
+            </column>
+            <column name="enabled" type="boolean" valueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_time" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="varchar(50)"/>
+            <column name="modified_time" type="timestamp"/>
+        </createTable>
+        <loadData
+                  file="config/liquibase/data/user.csv"
+                  separator=";"
+                  tableName="user"
+                  usePreparedStatements="true">
+        </loadData>
+
+        <createTable tableName="user_profile_photo">
+            <column name="id" type="varchar(20)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="profile_photo" type="longblob">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_time" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="varchar(50)"/>
+            <column name="modified_time" type="timestamp"/>
+        </createTable>
+
+        <createTable tableName="user_authority">
+            <column name="id" type="varchar(20)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="authority_name" type="varchar(16)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_time" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="varchar(50)"/>
+            <column name="modified_time" type="timestamp"/>
+        </createTable>
+        <loadData
+                file="config/liquibase/data/user_authority.csv"
+                separator=";"
+                tableName="user_authority"
+                usePreparedStatements="true">
+        </loadData>
+
+        <createTable tableName="menu">
+            <column name="id" type="varchar(20)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="app_id" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="varchar(30)">
+                <constraints unique="true" nullable="false" uniqueConstraintName="ux_menu_code"/>
+            </column>
+            <column name="name" type="varchar(30)"/>
+            <column name="depth" type="int"/>
+            <column name="url" type="varchar(200)"/>
+            <column name="sequence" type="int"/>
+            <column name="parent_id" type="varchar(20)"/>
+            <column name="enabled" type="boolean" valueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_time" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="varchar(50)"/>
+            <column name="modified_time" type="timestamp"/>
+        </createTable>
+        <loadData
+                file="config/liquibase/data/menu.csv"
+                separator=";"
+                tableName="menu"
+                usePreparedStatements="true">
+        </loadData>
+
+        <createTable tableName="authority_menu">
+            <column name="id" type="varchar(20)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="authority_name" type="varchar(16)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="menu_id" type="varchar(16)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_time" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="varchar(50)"/>
+            <column name="modified_time" type="timestamp"/>
+        </createTable>
+        <loadData
+                file="config/liquibase/data/authority_menu.csv"
+                separator=";"
+                tableName="authority_menu"
+                usePreparedStatements="true">
+        </loadData>
+
+        <createTable tableName="client_auth_method">
+            <column name="client_id" type="varchar(255)"/>
+            <column name="client_authentication_method" type="varchar(255)"/>
+        </createTable>
+        <addPrimaryKey columnNames="client_id, client_authentication_method"
+           constraintName="pk_client_auth_method"
+           tableName="client_auth_method"
+           validate="true"/>
+        <loadData
+                file="config/liquibase/data/client_auth_method.csv"
+                separator=";"
+                tableName="client_auth_method"
+                usePreparedStatements="true">
+        </loadData>
+
+        <createTable tableName="oauth2_grant_type">
+            <column name="client_id" type="varchar(255)"/>
+            <column name="grant_type_name" type="varchar(255)"/>
+        </createTable>
+        <addPrimaryKey columnNames="client_id, grant_type_name"
+                       constraintName="pk_oauth2_grant_type"
+                       tableName="oauth2_grant_type"
+                       validate="true"/>
+        <loadData
+                file="config/liquibase/data/oauth2_grant_type.csv"
+                separator=";"
+                tableName="oauth2_grant_type"
+                usePreparedStatements="true">
+        </loadData>
+
+        <createTable tableName="redirect_uri">
+            <column name="client_id" type="varchar(255)"/>
+            <column name="redirect_uri" type="varchar(255)"/>
+        </createTable>
+        <addPrimaryKey columnNames="client_id, redirect_uri"
+                       constraintName="pk_redirect_uri"
+                       tableName="redirect_uri"
+                       validate="true"/>
+        <loadData
+                file="config/liquibase/data/redirect_uri.csv"
+                separator=";"
+                tableName="redirect_uri"
+                usePreparedStatements="true">
+        </loadData>
+
+        <createTable tableName="oauth2_scope">
+            <column name="client_id" type="varchar(255)"/>
+            <column name="scope" type="varchar(255)"/>
+            <column name="description" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey columnNames="client_id, scope"
+                       constraintName="pk_oauth2_scope"
+                       tableName="oauth2_scope"
+                       validate="true"/>
+        <loadData
+                file="config/liquibase/data/oauth2_scope.csv"
+                separator=";"
+                tableName="oauth2_scope"
+                usePreparedStatements="true">
+        </loadData>
+
+        <createTable tableName="oauth2_client_settings">
+            <column name="client_id" type="varchar(255)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="require_proof_key" type="tinyint(1)" defaultValue="0"/>
+            <column name="require_authorization_consent" type="tinyint(1)" defaultValue="0"/>
+            <column name="jwk_set_url" type="varchar(255)"/>
+            <column name="signing_algorithm" type="varchar(255)"/>
+        </createTable>
+        <loadData
+                file="config/liquibase/data/oauth2_client_settings.csv"
+                separator=";"
+                tableName="oauth2_client_settings"
+                usePreparedStatements="true">
+        </loadData>
+
+        <createTable tableName="oauth2_token_settings">
+            <column name="client_id" type="varchar(255)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="access_token_time_to_live" type="bigint"/>
+            <column name="refresh_token_time_to_live" type="bigint"/>
+            <column name="token_format" type="varchar(255)"/>
+            <column name="reuse_refresh_tokens" type="tinyint(1)" defaultValue="1"/>
+            <column name="id_token_signature_algorithm" type="varchar(255)"/>
+        </createTable>
+        <loadData
+                file="config/liquibase/data/oauth2_token_settings.csv"
+                separator=";"
+                tableName="oauth2_token_settings"
+                usePreparedStatements="true">
+        </loadData>
+
+        <createTable tableName="oauth2_client">
+            <column name="id" type="varchar(20)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="client_id" type="varchar(100)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="client_name" type="varchar(200)"/>
+            <column name="client_secret" type="varchar(200)"/>
+            <column name="client_secret_expires_at" type="timestamp"/>
+            <column name="client_id_issued_at" type="timestamp"/>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_time" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="varchar(50)"/>
+            <column name="modified_time" type="timestamp"/>
+        </createTable>
+        <loadData
+                file="config/liquibase/data/oauth2_client.csv"
+                separator=";"
+                tableName="oauth2_client"
+                usePreparedStatements="true">
+        </loadData>
+
+        <addForeignKeyConstraint baseTableName="app_authority"
+                                 constraintName="fk_app_authority_app_id"
+                                 baseColumnNames="app_id"
+                                 referencedTableName="app"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint baseTableName="app_authority"
+                                 constraintName="fk_app_authority_authority_name"
+                                 baseColumnNames="authority_name"
+                                 referencedTableName="authority"
+                                 referencedColumnNames="name"/>
+
+        <addForeignKeyConstraint baseTableName="user_authority"
+                                 constraintName="fk_user_authority_user_id"
+                                 baseColumnNames="user_id"
+                                 referencedTableName="user"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint baseTableName="user_authority"
+                                 constraintName="fk_user_authority_authority_id"
+                                 baseColumnNames="authority_name"
+                                 referencedTableName="authority"
+                                 referencedColumnNames="name"/>
+
+        <addForeignKeyConstraint baseTableName="authority_menu"
+                                 constraintName="fk_authority_menu_authority_name"
+                                 baseColumnNames="authority_name"
+                                 referencedTableName="authority"
+                                 referencedColumnNames="name"/>
+
+        <addForeignKeyConstraint baseTableName="authority_menu"
+                                 constraintName="fk_authority_menu_menu_id"
+                                 baseColumnNames="menu_id"
+                                 referencedTableName="menu"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+</databaseChangeLog>

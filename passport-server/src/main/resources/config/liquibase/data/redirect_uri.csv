@@ -1,0 +1,4 @@
+client_id;redirect_uri
+login-client;http://127.0.0.1:9020
+login-client;http://localhost:9020
+login-client;https://www.baidu.com

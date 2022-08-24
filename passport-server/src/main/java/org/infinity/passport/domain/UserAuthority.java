@@ -5,25 +5,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.infinity.passport.domain.base.AbstractAuditableDomain;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
-/**
- * Spring Data MongoDB collection for the UserAuthority entity.
- */
-@Document
+@Entity
 @Data
 @ToString(callSuper = true)
 @NoArgsConstructor
 public class UserAuthority extends AbstractAuditableDomain implements Serializable {
-
-    private static final long   serialVersionUID = 1L;
+    private static final long   serialVersionUID = 8740966797330793766L;
     @Schema(required = true)
     @NotNull
-    @Indexed
     private              String userId;
     @Schema(required = true)
     @NotNull

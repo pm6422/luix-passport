@@ -1,16 +1,16 @@
 package org.infinity.passport.repository;
 
 import org.infinity.passport.domain.UserProfilePhoto;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 /**
- * Spring Data MongoDB repository for the UserProfilePhoto entity.
+ * Spring Data JPA repository for the {@link UserProfilePhoto} entity.
  */
 @Repository
-public interface UserProfilePhotoRepository extends MongoRepository<UserProfilePhoto, String> {
+public interface UserProfilePhotoRepository extends JpaRepository<UserProfilePhoto, String> {
 
     Optional<UserProfilePhoto> findByUserId(String userId);
 }

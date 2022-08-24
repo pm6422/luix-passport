@@ -12,6 +12,6 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@SpringBootTest(classes = PassportServerLauncher.class)
+@SpringBootTest(classes = PassportServerApplication.class)
 public @interface IntegrationTest {
 }

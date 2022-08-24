@@ -1,0 +1,11 @@
+id;app_id;code;name;depth;url;sequence;parent_id;enabled;created_by;created_time;modified_by;modified_time
+11;passport-server;user-authority;User authority;1;user-authority;100;0;true;system;now;system;now
+12;passport-server;authority-list;Authority;2;user-authority.authority-list;101;11;true;system;now;system;now
+13;passport-server;user-list;User;2;user-authority.user-list;102;11;true;system;now;system;now
+14;passport-server;app;Application;1;app;200;0;true;system;now;system;now
+15;passport-server;app-list;Application;2;app.app-list;201;14;true;system;now;system;now
+16;passport-server;menu-authority;Menu authority;1;menu-authority;300;0;true;system;now;system;now
+17;passport-server;menu-list;Menu;2;menu-authority.menu-list;301;16;true;system;now;system;now
+18;passport-server;authority-menu;Authority menu;2;menu-authority.authority-menu;302;16;true;system;now;system;now
+19;passport-server;security;Security;1;security;400;0;true;system;now;system;now
+20;passport-server;oauth2-client-list;OAuth2 client;2;security.oauth2-client-list;401;19;true;system;now;system;now

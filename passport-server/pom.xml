@@ -14,16 +14,14 @@
     <name>${project.artifactId}</name>
     <properties>
         <java.version>17</java.version>
+        <liquibase.version>4.6.1</liquibase.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.version>3.2.1</maven.version>
+        <spring-boot.version>2.7.1</spring-boot.version>
+        <validation-api.version>2.0.1.Final</validation-api.version>
     </properties>
     <dependencies>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>transmittable-thread-local</artifactId>
-            <version>2.10.2</version>
-        </dependency>
         <dependency>
             <groupId>com.alibaba.fastjson2</groupId>
             <artifactId>fastjson2</artifactId>
@@ -104,24 +102,35 @@
             <artifactId>micrometer-registry-prometheus</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.mongock</groupId>
-            <artifactId>mongock-springboot</artifactId>
-            <version>5.1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>io.mongock</groupId>
-            <artifactId>mongodb-springdata-v3-driver</artifactId>
-            <version>5.1.0</version>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.28</version>
         </dependency>
         <dependency>
             <groupId>net.sourceforge.htmlunit</groupId>
             <artifactId>htmlunit</artifactId>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-io</groupId>
+                    <artifactId>commons-io</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-jcache</artifactId>
         </dependency>
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
             <version>6.1.7.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <!-- Inherited version from Spring Boot can't be used because of regressions -->
+            <version>${liquibase.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springdoc</groupId>
@@ -157,7 +166,7 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-mongodb</artifactId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -225,10 +234,6 @@
             <groupId>org.springframework.security.oauth</groupId>
             <artifactId>spring-security-oauth2</artifactId>
             <version>2.3.6.RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.session</groupId>
-            <artifactId>spring-session-data-mongodb</artifactId>
         </dependency>
         <dependency>
             <groupId>org.zalando</groupId>
@@ -388,13 +393,59 @@
             <properties>
                 <spring.profiles.active>test</spring.profiles.active>
             </properties>
-            <dependencies>
-                <dependency>
-                    <groupId>de.flapdoodle.embed</groupId>
-                    <artifactId>de.flapdoodle.embed.mongo.spring</artifactId>
-                    <version>1.1.0-spring27x</version>
-                </dependency>
-            </dependencies>
+            <!--            <build>-->
+            <!--                <pluginManagement>-->
+            <!--                    <plugins>-->
+            <!--                        <plugin>-->
+            <!--                            <groupId>org.liquibase</groupId>-->
+            <!--                            <artifactId>liquibase-maven-plugin</artifactId>-->
+            <!--                            <version>${liquibase.version}</version>-->
+            <!--                            <configuration>-->
+            <!--                                <changeLogFile>${project.basedir}/src/main/resources/config/liquibase/master.xml</changeLogFile>-->
+            <!--                                <diffChangeLogFile>${project.basedir}/src/main/resources/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>-->
+            <!--                                <driver>com.mysql.cj.jdbc.Driver</driver>-->
+            <!--                                <url>jdbc:mysql://localhost:3306/luix-passport</url>-->
+            <!--                                <defaultSchemaName>luix-passport</defaultSchemaName>-->
+            <!--                                <username>root</username>-->
+            <!--                                <password/>-->
+            <!--                                <referenceUrl>hibernate:spring:org.infinity.passport.domain?dialect=org.hibernate.dialect.MySQL8Dialect&amp;hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy</referenceUrl>-->
+            <!--                                <verbose>true</verbose>-->
+            <!--                                <logging>debug</logging>-->
+            <!--                                <contexts>!test</contexts>-->
+            <!--                                <diffExcludeObjects>oauth_access_token, oauth_approvals, oauth_client_details, oauth_client_token, oauth_code, oauth_refresh_token</diffExcludeObjects>-->
+            <!--                            </configuration>-->
+            <!--                            <dependencies>-->
+            <!--                                <dependency>-->
+            <!--                                    <groupId>javax.validation</groupId>-->
+            <!--                                    <artifactId>validation-api</artifactId>-->
+            <!--                                    <version>${validation-api.version}</version>-->
+            <!--                                </dependency>-->
+            <!--                                <dependency>-->
+            <!--                                    <groupId>org.liquibase</groupId>-->
+            <!--                                    <artifactId>liquibase-core</artifactId>-->
+            <!--                                    <version>${liquibase.version}</version>-->
+            <!--                                </dependency>-->
+            <!--                                <dependency>-->
+            <!--                                    <groupId>org.liquibase.ext</groupId>-->
+            <!--                                    <artifactId>liquibase-hibernate5</artifactId>-->
+            <!--                                    <version>${liquibase.version}</version>-->
+            <!--                                </dependency>-->
+            <!--                                <dependency>-->
+            <!--                                    <groupId>org.springframework.boot</groupId>-->
+            <!--                                    <artifactId>spring-boot-starter-data-jpa</artifactId>-->
+            <!--                                    <version>${spring-boot.version}</version>-->
+            <!--                                </dependency>-->
+            <!--                            </dependencies>-->
+            <!--                        </plugin>-->
+            <!--                    </plugins>-->
+            <!--                </pluginManagement>-->
+            <!--                <plugins>-->
+            <!--                    <plugin>-->
+            <!--                        <groupId>org.liquibase</groupId>-->
+            <!--                        <artifactId>liquibase-maven-plugin</artifactId>-->
+            <!--                    </plugin>-->
+            <!--                </plugins>-->
+            <!--            </build>-->
         </profile>
         <profile>
             <id>prod</id>

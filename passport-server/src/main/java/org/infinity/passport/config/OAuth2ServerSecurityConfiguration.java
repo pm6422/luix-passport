@@ -14,9 +14,9 @@ import org.infinity.passport.config.oauth2.passwordgrant.OAuth2PasswordAuthentic
 import org.infinity.passport.config.oauth2.passwordgrant.OAuth2PasswordAuthenticationProvider;
 import org.infinity.passport.config.oauth2.service.CustomUserDetailsService;
 import org.infinity.passport.config.oauth2.service.SecurityUserService;
-import org.infinity.passport.repository.OAuth2AuthorizationRepository;
-import org.infinity.passport.repository.OAuth2ClientRepository;
-import org.infinity.passport.repository.OAuth2CustomRegisteredClientRepositoryImpl;
+import org.infinity.passport.repository.oauth2.OAuth2AuthorizationRepository;
+import org.infinity.passport.repository.oauth2.OAuth2ClientRepository;
+import org.infinity.passport.repository.oauth2.OAuth2CustomRegisteredClientRepositoryImpl;
 import org.infinity.passport.repository.UserAuthorityRepository;
 import org.infinity.passport.service.UserService;
 import org.springframework.beans.factory.config.BeanDefinition;

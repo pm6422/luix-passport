@@ -198,12 +198,12 @@ public class AccountController {
         if (!existingPhoto.isPresent()) {
             return ResponseEntity.ok().body(null);
         }
-        ByteArrayResource resource = new ByteArrayResource(existingPhoto.get().getProfilePhoto().getData());
+        ByteArrayResource resource = new ByteArrayResource(existingPhoto.get().getProfilePhoto());
         String fileName = "profile-" + DATETIME_FORMAT.format(new Date()) + ".jpg";
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName)
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                .contentLength(existingPhoto.get().getProfilePhoto().getData().length)
+                .contentLength(existingPhoto.get().getProfilePhoto().length)
                 .body(resource);
 
 //        String path = System.getProperty("user.home") + File.separator + "fileName.txt";

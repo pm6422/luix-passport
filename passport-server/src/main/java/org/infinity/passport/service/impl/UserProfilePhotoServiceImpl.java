@@ -1,8 +1,6 @@
 package org.infinity.passport.service.impl;
 
 import lombok.AllArgsConstructor;
-import org.bson.BsonBinarySubType;
-import org.bson.types.Binary;
 import org.infinity.passport.domain.User;
 import org.infinity.passport.domain.UserProfilePhoto;
 import org.infinity.passport.repository.UserProfilePhotoRepository;
@@ -20,13 +18,13 @@ public class UserProfilePhotoServiceImpl implements UserProfilePhotoService {
 
     @Override
     public void insert(String userId, byte[] photoData) {
-        UserProfilePhoto photo = new UserProfilePhoto(userId, new Binary(BsonBinarySubType.BINARY, photoData));
-        userProfilePhotoRepository.insert(photo);
+        UserProfilePhoto photo = new UserProfilePhoto(userId, photoData);
+        userProfilePhotoRepository.save(photo);
     }
 
     @Override
     public void update(UserProfilePhoto photo, byte[] photoData) {
-        photo.setProfilePhoto(new Binary(BsonBinarySubType.BINARY, photoData));
+        photo.setProfilePhoto(photoData);
         userProfilePhotoRepository.save(photo);
     }
 
@@ -40,7 +38,7 @@ public class UserProfilePhotoServiceImpl implements UserProfilePhotoService {
             // Insert if not exists
             insert(user.getId(), photoData);
             // Update hasProfilePhoto to true
-            user.setHasProfilePhoto(true);
+            user.setProfilePhotoEnabled(true);
             userRepository.save(user);
         }
     }

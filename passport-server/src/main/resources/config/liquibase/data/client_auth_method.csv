@@ -1,0 +1,3 @@
+client_id;client_authentication_method
+internal-client;client_secret_basic
+login-client;client_secret_basic

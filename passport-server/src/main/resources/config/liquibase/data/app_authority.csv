@@ -1,0 +1,5 @@
+id;app_id;authority_name;created_by;created_time;modified_by;modified_time
+11;11;ROLE_ANONYMOUS;system;now;system;now
+12;11;ROLE_USER;system;now;system;now
+13;11;ROLE_ADMIN;system;now;system;now
+14;11;ROLE_DEVELOPER;system;now;system;now

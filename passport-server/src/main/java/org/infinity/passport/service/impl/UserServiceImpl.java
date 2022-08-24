@@ -19,6 +19,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.thymeleaf.util.StringUtils;
 
@@ -35,14 +37,6 @@ public class UserServiceImpl implements UserService {
     private final UserAuthorityRepository userAuthorityRepository;
     private final PasswordEncoder         passwordEncoder;
     private final MessageCreator          messageCreator;
-
-    // private void removeUserToken(User user) {
-    // String clientId =
-    // applicationProperties.getSecurity().getAuthentication().getOauth().getClientId();
-    // tokenStore.findTokensByClientIdAndUserName(clientId,
-    // user.getUserName()).stream()
-    // .forEach(token -> tokenStore.removeAccessToken(token));
-    // }
 
     @Override
     public void changePassword(UsernameAndPasswordDTO dto) {
@@ -80,7 +74,7 @@ public class UserServiceImpl implements UserService {
             if (!user.getAuthorities().contains(Authority.USER)) {
                 throw new IllegalArgumentException("[ROLE_USER] authority must be specified!");
             }
-            user.getAuthorities().forEach(authorityName -> userAuthorityRepository.insert(new UserAuthority(user.getId(), authorityName)));
+            user.getAuthorities().forEach(authorityName -> userAuthorityRepository.save(new UserAuthority(user.getId(), authorityName)));
         }
 
         log.debug("Created information for user: {}", user);
@@ -88,6 +82,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, noRollbackFor = Exception.class)
     public void update(User user) {
         // 因为其他表的创建者和更新者使用的是username，所以不能更新
         userRepository.findById(user.getId()).map(u -> {
@@ -117,7 +112,7 @@ public class UserServiceImpl implements UserService {
                     throw new IllegalArgumentException("[ROLE_USER] authority must be specified!");
                 }
                 userAuthorityRepository.deleteByUserId(user.getId());
-                user.getAuthorities().forEach(authorityName -> userAuthorityRepository.insert(new UserAuthority(user.getId(), authorityName)));
+                user.getAuthorities().forEach(authorityName -> userAuthorityRepository.save(new UserAuthority(user.getId(), authorityName)));
                 log.debug("Updated user authorities");
             }
             return u;

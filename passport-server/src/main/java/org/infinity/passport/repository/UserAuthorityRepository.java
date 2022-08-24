@@ -1,16 +1,16 @@
 package org.infinity.passport.repository;
 
 import org.infinity.passport.domain.UserAuthority;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 /**
- * Spring Data MongoDB repository for the UserAuthority entity.
+ * Spring Data JPA repository for the {@link UserAuthority} entity.
  */
 @Repository
-public interface UserAuthorityRepository extends MongoRepository<UserAuthority, String> {
+public interface UserAuthorityRepository extends JpaRepository<UserAuthority, String> {
 
     List<UserAuthority> findByUserId(String userId);
 

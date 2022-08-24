@@ -1,12 +1,6 @@
 package org.infinity.passport.controller;
 
 import com.luixtech.utilities.network.AddressUtils;
-import io.mongock.api.config.MongockConfiguration;
-import io.mongock.driver.api.driver.ConnectionDriver;
-import io.mongock.driver.mongodb.springdata.v3.config.MongoDBConfiguration;
-import io.mongock.driver.mongodb.springdata.v3.config.SpringDataMongoV3Context;
-import io.mongock.runner.springboot.MongockSpringboot;
-import io.mongock.runner.springboot.RunnerSpringbootBuilder;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +15,6 @@ import org.springframework.boot.info.BuildProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.env.Environment;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -55,17 +48,11 @@ public class SystemController {
     @Value("${springdoc.api-docs.enabled}")
     private boolean                              enabledApiDocs;
     @Resource
-    private MongoTemplate                        mongoTemplate;
-    @Resource
     private ApplicationContext                   applicationContext;
     @Autowired(required = false)
     private BuildProperties                      buildProperties;
     @Resource
-    private MongockConfiguration                 mongockConfiguration;
-    @Resource
     private ApplicationEventPublisher            applicationEventPublisher;
-    @Resource
-    private MongoDBConfiguration                 mongoDBConfiguration;
     @Resource
     private Optional<PlatformTransactionManager> txManagerOpt;
 
@@ -122,18 +109,4 @@ public class SystemController {
         return ResponseEntity.ok(AddressUtils.getIntranetIp());
     }
 
-    @Operation(summary = "reset database")
-    @GetMapping("/open-api/systems/reset-database")
-    public String resetDatabase() {
-        mongoTemplate.getDb().drop();
-        ConnectionDriver connectionDriver = new SpringDataMongoV3Context()
-                .connectionDriver(mongoTemplate, mongockConfiguration, mongoDBConfiguration, txManagerOpt);
-        RunnerSpringbootBuilder runnerSpringbootBuilder = MongockSpringboot.builder()
-                .setDriver(connectionDriver)
-                .setConfig(mongockConfiguration)
-                .setSpringContext(applicationContext)
-                .setEventPublisher(applicationEventPublisher);
-        runnerSpringbootBuilder.buildRunner().execute();
-        return "Reset database successfully.";
-    }
 }

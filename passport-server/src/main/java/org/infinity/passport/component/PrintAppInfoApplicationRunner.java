@@ -37,7 +37,6 @@ public class PrintAppInfoApplicationRunner implements ApplicationRunner {
                 org.springframework.util.StringUtils.arrayToCommaDelimitedString(env.getActiveProfiles()),
                 env.getProperty("PID"),
                 Charset.defaultCharset(),
-                env.getProperty("logging.level.root"),
-                env.getProperty("LOG_PATH") + "-" + DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.format(new Date()) + ".log");
+                env.getProperty("logging.level.root"));
     }
 }

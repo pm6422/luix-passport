@@ -871,7 +871,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
             }]
         })
         .state('app.app-list.edit', {
-            url: '/edit/:name',
+            url: '/edit/:id',
             data: {
                 pageTitle: 'Edit application',
                 mode: 'edit'
@@ -885,7 +885,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                     size: 'lg',
                     resolve: {
                         entity: ['AppService', function (AppService) {
-                            return AppService.get({name: $stateParams.name}).$promise;
+                            return AppService.get({id: $stateParams.id}).$promise;
                         }]
                     }
                 }).result.then(function (result) {
@@ -896,7 +896,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
             }]
         })
         .state('app.app-list.view', {
-            url: '/view/:name',
+            url: '/view/:id',
             views: {
                 'content@': {
                     templateUrl: 'app/views/admin/app/app-details.html',
@@ -909,23 +909,23 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
             },
             resolve: {
                 entity: ['AppService', '$stateParams', function (AppService, $stateParams) {
-                    return AppService.get({name: $stateParams.name}).$promise;
+                    return AppService.get({id: $stateParams.id}).$promise;
                 }]
             }
         })
-        .state('admin-menu-authority', {
+        .state('menu-authority', {
             abstract: true,
             parent: 'admin',
             data: {
                 pageTitle: 'Menu authority management'
             }
         })
-        .state('admin-menu-authority.admin-menu-list', {
-            url: '/admin-menu-list?page&sort&app',
+        .state('menu-authority.menu-list', {
+            url: '/menu-list?page&sort&app',
             views: {
                 'content@': {
-                    templateUrl: 'app/views/admin/admin-menu/admin-menu-list.html',
-                    controller: 'AdminMenuListController',
+                    templateUrl: 'app/views/admin/menu/menu-list.html',
+                    controller: 'MenuListController',
                     controllerAs: 'vm'
                 }
             },
@@ -958,7 +958,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 }]
             }
         })
-        .state('admin-menu-authority.admin-menu-list.create', {
+        .state('menu-authority.menu-list.create', {
             url: '/create',
             data: {
                 pageTitle: 'Create menu',
@@ -966,8 +966,8 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
             },
             onEnter: ['$state', '$uibModal', function ($state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/views/admin/admin-menu/admin-menu-dialog.html',
-                    controller: 'AdminMenuDialogController',
+                    templateUrl: 'app/views/admin/menu/menu-dialog.html',
+                    controller: 'MenuDialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',
                     size: 'lg',
@@ -990,7 +990,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 });
             }]
         })
-        .state('admin-menu-authority.admin-menu-list.edit', {
+        .state('menu-authority.menu-list.edit', {
             url: '/edit/:id',
             data: {
                 pageTitle: 'Edit menu',
@@ -998,14 +998,14 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
             },
             onEnter: ['$state', '$stateParams', '$uibModal', function ($state, $stateParams, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/views/admin/admin-menu/admin-menu-dialog.html',
-                    controller: 'AdminMenuDialogController',
+                    templateUrl: 'app/views/admin/menu/menu-dialog.html',
+                    controller: 'MenuDialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',
                     size: 'lg',
                     resolve: {
-                        entity: ['AdminMenuService', function (AdminMenuService) {
-                            return AdminMenuService.get({id: $stateParams.id}).$promise;
+                        entity: ['MenuService', function (MenuService) {
+                            return MenuService.get({id: $stateParams.id}).$promise;
                         }]
                     }
                 }).result.then(function (result) {
@@ -1015,12 +1015,12 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 });
             }]
         })
-        .state('admin-menu-authority.authority-admin-menu', {
-            url: '/authority-admin-menu',
+        .state('menu-authority.authority-menu', {
+            url: '/authority-menu',
             views: {
                 'content@': {
-                    templateUrl: 'app/views/admin/authority-admin-menu/authority-admin-menu.html',
-                    controller: 'AuthorityAdminMenuController',
+                    templateUrl: 'app/views/admin/authority-menu/authority-menu.html',
+                    controller: 'AuthorityMenuController',
                     controllerAs: 'vm'
                 }
             },

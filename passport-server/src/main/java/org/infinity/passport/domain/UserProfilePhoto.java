@@ -5,18 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.bson.types.Binary;
 import org.infinity.passport.domain.base.AbstractAuditableDomain;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
-/**
- * Spring Data MongoDB collection for the UserProfilePhoto entity.
- */
-@Document
+@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,10 +20,13 @@ public class UserProfilePhoto extends AbstractAuditableDomain implements Seriali
     private static final long   serialVersionUID = -8375847941374800940L;
     @Schema(required = true)
     @NotNull
-    @Indexed(unique = true)
+    @Column(unique = true, nullable = false)
     private              String userId;
+
     @Schema(required = true)
     @NotNull
-    private              Binary profilePhoto;
-
+    @Basic(fetch = FetchType.LAZY)
+    @Lob
+    @Column(columnDefinition = "longblob", nullable = false)
+    private byte[] profilePhoto;
 }

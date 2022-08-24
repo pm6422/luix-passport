@@ -41,7 +41,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.infinity.passport.config.OAuth2ServerSecurityConfiguration.*;
 import static org.infinity.passport.config.dbmigrations.InitialSetupMigration.PASSWORD;
 import static org.infinity.passport.config.dbmigrations.InitialSetupMigration.USERNAME;
-import static org.infinity.passport.domain.OAuth2Client.*;
+import static org.infinity.passport.domain.oauth2.OAuth2Client.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;

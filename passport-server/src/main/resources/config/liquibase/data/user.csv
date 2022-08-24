@@ -1,0 +1,4 @@
+id;username;email;mobile_no;first_name;last_name;password_hash;profile_photo_enabled;activated;enabled;created_by;created_time;modified_by;modified_time
+11;user;user@localhost;15000899471;User;User;$2a$10$4BrM5W7ySTcjRJ.w.tSFs.VK.pciRmoExb8UmEgH8fYD7Yj2Hb6Ue;false;true;true;system;now;system;now
+12;admin;admin@localhost;15000899472;Admin;Admin;$2a$10$gUoLi.ICUNWymQRLD46VjeqPEDrk1LtO1z9EoU6SxwgoDY4j/FxDC;false;true;true;system;now;system;now
+13;louis;louis@luixtech.com;15000899478;Louis;Lau;$2a$10$5bD//RIhb2W3TrHQ5faSgeVAgoahpmexiLU/vEZ9MXbg5KvKtgzSS;false;true;true;system;now;system;now

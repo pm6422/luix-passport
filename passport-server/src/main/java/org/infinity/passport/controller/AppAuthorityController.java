@@ -46,12 +46,12 @@ public class AppAuthorityController {
     public ResponseEntity<Void> create(
             @Parameter(description = "application authority", required = true) @Valid @RequestBody AppAuthority domain) {
         log.debug("REST request to create app authority: {}", domain);
-        appAuthorityRepository.findOneByAppNameAndAuthorityName(domain.getAppName(), domain.getAuthorityName())
+        appAuthorityRepository.findOneByAppIdAndAuthorityName(domain.getAppId(), domain.getAuthorityName())
                 .ifPresent((existingEntity) -> {
-                    throw new DuplicationException(ImmutableMap.of("appName", domain.getAppName(), "authorityName", domain.getAuthorityName()));
+                    throw new DuplicationException(ImmutableMap.of("appName", domain.getAppId(), "authorityName", domain.getAuthorityName()));
                 });
 
-        AppAuthority appAuthority = appAuthorityRepository.insert(domain);
+        AppAuthority appAuthority = appAuthorityRepository.save(domain);
         return ResponseEntity
                 .status(HttpStatus.CREATED).headers(httpHeaderCreator.createSuccessHeader("SM1001", appAuthority.getAuthorityName()))
                 .build();

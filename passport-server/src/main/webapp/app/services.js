@@ -28,7 +28,7 @@ angular
     .factory('PrincipalService', PrincipalService)
     .factory('AuthServerService', AuthServerService)
     .factory('AuthenticationService', AuthenticationService)
-    .factory('AuthorityAdminMenuService', AuthorityAdminMenuService)
+    .factory('AuthorityMenuService', AuthorityMenuService)
     .factory('AppService', AppService)
     .factory('AuthorityService', AuthorityService)
     .factory('AppAuthorityService', AppAuthorityService)
@@ -37,7 +37,7 @@ angular
     .factory('OAuth2AccessTokenService', OAuth2AccessTokenService)
     .factory('OAuth2RefreshTokenService', OAuth2RefreshTokenService)
     .factory('OAuth2ApprovalService', OAuth2ApprovalService)
-    .factory('AdminMenuService', AdminMenuService);
+    .factory('MenuService', MenuService);
 
 /**
  * StateHandler
@@ -1111,10 +1111,10 @@ function AuthenticationService($rootScope, $state, $sessionStorage, $q, $locatio
     }
 }
 /**
- * AuthorityAdminMenuService
+ * AuthorityMenuService
  */
-function AuthorityAdminMenuService($resource) {
-    return $resource('api/authority-admin-menus/:extension', {}, {
+function AuthorityMenuService($resource) {
+    return $resource('api/authority-menus/:extension', {}, {
         'query': {method: 'GET', isArray: true},
         'update': {
             method: 'PUT',
@@ -1133,7 +1133,7 @@ function AuthorityAdminMenuService($resource) {
  * AppService
  */
 function AppService($resource) {
-    var service = $resource('api/apps/:name', {}, {
+    var service = $resource('api/apps/:id', {}, {
         'query': {method: 'GET', isArray: true},
         'get': {
             method: 'GET',
@@ -1281,10 +1281,10 @@ function OAuth2ApprovalService($resource) {
     return service;
 }
 /**
- * AdminMenuService
+ * MenuService
  */
-function AdminMenuService($resource) {
-    var service = $resource('api/admin-menus/:extension/:id', {}, {
+function MenuService($resource) {
+    var service = $resource('api/menus/:extension/:id', {}, {
         'query': {method: 'GET', isArray: true},
         'queryParents': {method: 'GET', isArray: true, params: {extension: 'parents'}},
         'get': {
