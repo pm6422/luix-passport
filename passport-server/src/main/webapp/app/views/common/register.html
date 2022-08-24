@@ -9,7 +9,7 @@
             Passwords don't match
         </div>
         <div class="form-group">
-            <input type="text" class="form-control" id="username" name="username" placeholder="User name"
+            <input type="text" class="form-control" id="username" name="username" placeholder="Username"
                    ng-model="vm.registerAccount.username" required ng-minlength="3" ng-maxlength="20" ng-pattern="/^[a-zA-Z0-9-]+$/">
             <div ng-show="form.username.$dirty && form.username.$invalid">
                 <p class="help-block text-left" ng-show="form.username.$error.required">
