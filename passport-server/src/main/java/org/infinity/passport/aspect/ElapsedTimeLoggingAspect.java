@@ -19,8 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * Aspect for logging execution time of Spring components
- * <p>
- * http://www.imooc.com/article/297283
  */
 @Aspect
 @ConditionalOnProperty("application.elapsed-time-logging.enabled")
