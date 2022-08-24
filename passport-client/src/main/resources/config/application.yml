@@ -10,7 +10,7 @@ app:
     id: passport-client
     name: passport-client
     version: 1.0.0
-    package: org.infinity.passport.client
+    package: com.luixtech.client
     companyName: Infinity Organization
 spring:
     application:

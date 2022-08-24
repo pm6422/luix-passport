@@ -10,7 +10,7 @@ app:
     id: passport-server
     name: passport-server
     version: 1.0.0
-    package: org.infinity.passport
+    package: com.luixtech.passport
     companyName: Infinity Organization
 management: # Management http server configuration, used by ManagementServerProperties
     endpoints:
