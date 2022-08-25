@@ -63,10 +63,8 @@ public class UserServiceImpl implements UserService {
         user.setEmail(user.getEmail().toLowerCase());
         user.setPasswordHash(passwordEncoder.encode(rawPassword));
         user.setActivationKey(RandomStringUtils.randomNumeric(20));
-        user.setActivated(false);
         user.setResetKey(RandomStringUtils.randomNumeric(20));
         user.setResetTime(Instant.now());
-        user.setEnabled(true);
         userRepository.save(user);
 
         log.debug("Created information for user: {}", user);

@@ -84,10 +84,10 @@ public class BaseUser extends AbstractAuditableDomain implements Serializable {
     private String remarks;
 
     @Schema(description = "activated")
-    private Boolean activated;
+    private Boolean activated = false;
 
     @Schema(description = "enabled")
-    private Boolean enabled;
+    private Boolean enabled  =true;
 
     @Schema(description = "authorities")
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
