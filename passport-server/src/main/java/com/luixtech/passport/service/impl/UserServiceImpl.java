@@ -47,28 +47,28 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, noRollbackFor = Exception.class)
-    public User insert(User user, String rawPassword) {
-        Optional<User> existingUser = userRepository.findOneByUsername(user.getUsername().toLowerCase(Locale.ENGLISH));
+    public User insert(User domain, String rawPassword) {
+        Optional<User> existingUser = userRepository.findOneByUsername(domain.getUsername().toLowerCase(Locale.ENGLISH));
         if (existingUser.isPresent()) {
-            throw new DuplicationException(ImmutableMap.of("username", user.getUsername()));
+            throw new DuplicationException(ImmutableMap.of("username", domain.getUsername()));
         }
-        if (findOneByEmail(user.getEmail()).isPresent()) {
-            throw new DuplicationException(ImmutableMap.of("email", user.getEmail()));
+        if (findOneByEmail(domain.getEmail()).isPresent()) {
+            throw new DuplicationException(ImmutableMap.of("email", domain.getEmail()));
         }
-        if (findOneByMobileNo(user.getMobileNo()).isPresent()) {
-            throw new DuplicationException(ImmutableMap.of("mobileNo", user.getMobileNo()));
+        if (findOneByMobileNo(domain.getMobileNo()).isPresent()) {
+            throw new DuplicationException(ImmutableMap.of("mobileNo", domain.getMobileNo()));
         }
 
-        user.setUsername(user.getUsername().toLowerCase());
-        user.setEmail(user.getEmail().toLowerCase());
-        user.setPasswordHash(passwordEncoder.encode(rawPassword));
-        user.setActivationKey(RandomStringUtils.randomNumeric(20));
-        user.setResetKey(RandomStringUtils.randomNumeric(20));
-        user.setResetTime(Instant.now());
-        userRepository.save(user);
+        domain.setUsername(domain.getUsername().toLowerCase());
+        domain.setEmail(domain.getEmail().toLowerCase());
+        domain.setPasswordHash(passwordEncoder.encode(rawPassword));
+        domain.setActivationKey(RandomStringUtils.randomNumeric(20));
+        domain.setResetKey(RandomStringUtils.randomNumeric(20));
+        domain.setResetTime(Instant.now());
+        userRepository.save(domain);
 
-        log.debug("Created information for user: {}", user);
-        return user;
+        log.debug("Created information for user: {}", domain);
+        return domain;
     }
 
     @Override
