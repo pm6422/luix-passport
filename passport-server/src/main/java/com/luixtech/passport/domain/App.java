@@ -45,5 +45,4 @@ public class App extends AbstractAuditableDomain implements Serializable {
             this.authorities.addAll(authorities);
         }
     }
-
 }
