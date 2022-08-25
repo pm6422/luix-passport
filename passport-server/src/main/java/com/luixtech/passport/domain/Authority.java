@@ -30,7 +30,7 @@ public class Authority implements Serializable {
     @Pattern(regexp = "^[A-Z_]+$", message = "{EP5902}")
     @Id
     private String  name;
-    private Boolean systemLevel;
+
     private Boolean enabled;
 
     public Authority(Boolean enabled) {

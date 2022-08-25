@@ -12,6 +12,8 @@ import java.util.List;
 @Repository
 public interface AuthorityRepository extends JpaRepository<Authority, String> {
 
+    int countByName(String name);
+
     List<Authority> findByEnabled(Boolean enabled);
 
 }

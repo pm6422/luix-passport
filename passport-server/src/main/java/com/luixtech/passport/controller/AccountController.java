@@ -9,13 +9,11 @@ import com.luixtech.passport.config.oauth2.SecurityUtils;
 import com.luixtech.passport.config.oauth2.service.SecurityUserService;
 import com.luixtech.passport.domain.Authority;
 import com.luixtech.passport.domain.User;
-import com.luixtech.passport.domain.UserAuthority;
 import com.luixtech.passport.domain.UserProfilePhoto;
 import com.luixtech.passport.dto.ManagedUserDTO;
 import com.luixtech.passport.dto.ResetKeyAndPasswordDTO;
 import com.luixtech.passport.dto.UsernameAndPasswordDTO;
 import com.luixtech.passport.exception.DataNotFoundException;
-import com.luixtech.passport.exception.NoAuthorityException;
 import com.luixtech.passport.repository.UserAuthorityRepository;
 import com.luixtech.passport.repository.UserProfilePhotoRepository;
 import com.luixtech.passport.service.AuthorityService;
@@ -36,7 +34,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -48,7 +45,6 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.luixtech.passport.config.api.SpringDocConfiguration.AUTH;
@@ -86,10 +82,6 @@ public class AccountController {
     @Timed
     public ResponseEntity<User> getCurrentUser() {
         User user = userService.findOneByUsername(SecurityUtils.getCurrentUsername());
-        List<UserAuthority> userAuthorities = Optional.ofNullable(userAuthorityRepository.findByUserId(user.getId()))
-                .orElseThrow(() -> new NoAuthorityException(SecurityUtils.getCurrentUsername()));
-        Set<String> authorities = userAuthorities.stream().map(UserAuthority::getAuthorityName).collect(Collectors.toSet());
-        user.setAuthorities(authorities);
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-User-Signed-In", "true");
         return ResponseEntity.ok().headers(headers).body(user);
@@ -103,9 +95,7 @@ public class AccountController {
         if (securityUser == null) {
             return ResponseEntity.ok(ImmutableMap.of("error", true));
         }
-        User user = userService.findOneByUsername(securityUser.getUsername());
-        user.setAuthorities(securityUser.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet()));
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(securityUser);
     }
 
     @Operation(summary = "register a new user and send an activation email")

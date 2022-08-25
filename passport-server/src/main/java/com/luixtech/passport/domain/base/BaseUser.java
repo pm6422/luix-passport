@@ -1,21 +1,21 @@
 package com.luixtech.passport.domain.base;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.luixtech.passport.domain.UserAuthority;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -90,6 +90,8 @@ public class BaseUser extends AbstractAuditableDomain implements Serializable {
     private Boolean enabled;
 
     @Schema(description = "authorities")
-    @Transient
-    private Set<String> authorities;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @ToString.Exclude
+    private Set<UserAuthority> authorities = new HashSet<>();
 }

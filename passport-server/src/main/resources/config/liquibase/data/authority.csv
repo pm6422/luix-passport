@@ -1,5 +1,5 @@
-name;system_level;enabled
-ROLE_ANONYMOUS;true;true
-ROLE_USER;true;true
-ROLE_ADMIN;true;true
-ROLE_DEVELOPER;true;true
+name;enabled
+ROLE_ANONYMOUS;true
+ROLE_USER;true
+ROLE_ADMIN;true
+ROLE_DEVELOPER;true

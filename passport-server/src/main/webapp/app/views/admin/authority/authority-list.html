@@ -24,7 +24,6 @@
                 <thead>
                     <tr sort-directive="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
                         <th sort-by-directive="name"><span>Name</span> <span class="fa fa-sort"></span></th>
-                        <th sort-by-directive="systemLevel"><span>System level</span> <span class="fa fa-sort"></span></th>
                         <th sort-by-directive="enabled"><span>Enabled</span> <span class="fa fa-sort"></span></th>
                         <th>Actions</th>
                     </tr>
@@ -32,10 +31,6 @@
                 <tbody>
                     <tr ng-repeat="entity in vm.entities">
                         <td>{{entity.name}}</td>
-                        <td>
-                            <span class="label label-danger" ng-show="!entity.systemLevel">No</span>
-                            <span class="label label-primary" ng-show="entity.systemLevel">Yes</span>
-                        </td>
                         <td>
                             <span class="label label-danger" ng-click="vm.setEnabled(entity, true)" ng-show="!entity.enabled"
                                   style="cursor: pointer;">No</span>

@@ -111,7 +111,7 @@ spring:
             repositories:
                 bootstrap-mode: deferred
     jpa:
-        open-in-view: false
+        open-in-view: true
         properties:
             hibernate.jdbc.time_zone: Asia/Shanghai
             hibernate.id.new_generator_mappings: true

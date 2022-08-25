@@ -1,16 +1,15 @@
 package com.luixtech.passport.dto;
 
+import com.luixtech.passport.domain.User;
+import com.luixtech.passport.domain.base.BaseUser;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import com.luixtech.passport.domain.User;
-import com.luixtech.passport.domain.base.BaseUser;
 import org.springframework.beans.BeanUtils;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Set;
 
 /**
  * A DTO extending the UserDTO, which is meant to be used in the user management UI.
@@ -30,9 +29,8 @@ public class ManagedUserDTO extends BaseUser {
     @Size(min = RAW_PASSWORD_MIN_LENGTH, max = RAW_PASSWORD_MAX_LENGTH)
     private String password;
 
-    public ManagedUserDTO(User user, Set<String> authorities) {
+    public ManagedUserDTO(User user) {
         BeanUtils.copyProperties(user, this);
-        setAuthorities(authorities);
     }
 
     public User toUser() {

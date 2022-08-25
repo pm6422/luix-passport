@@ -1,25 +1,23 @@
 package com.luixtech.passport.controller;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import com.luixtech.passport.component.HttpHeaderCreator;
 import com.luixtech.passport.config.ApplicationProperties;
 import com.luixtech.passport.config.oauth2.LogoutEvent;
 import com.luixtech.passport.config.oauth2.SecurityUtils;
 import com.luixtech.passport.domain.Authority;
 import com.luixtech.passport.domain.User;
-import com.luixtech.passport.domain.UserAuthority;
 import com.luixtech.passport.domain.UserProfilePhoto;
 import com.luixtech.passport.dto.ManagedUserDTO;
 import com.luixtech.passport.dto.UsernameAndPasswordDTO;
-import com.luixtech.passport.exception.NoAuthorityException;
 import com.luixtech.passport.repository.UserAuthorityRepository;
 import com.luixtech.passport.repository.UserProfilePhotoRepository;
 import com.luixtech.passport.service.MailService;
 import com.luixtech.passport.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
@@ -34,8 +32,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import static com.luixtech.passport.config.api.SpringDocConfiguration.AUTH;
 import static com.luixtech.passport.utils.HttpHeaderUtils.generatePageHeaders;
@@ -84,10 +80,7 @@ public class UserController {
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<ManagedUserDTO> findByName(@Parameter(description = "username", required = true) @PathVariable String username) {
         User domain = userService.findOneByUsername(username);
-        List<UserAuthority> userAuthorities = Optional.ofNullable(userAuthorityRepository.findByUserId(domain.getId()))
-                .orElseThrow(() -> new NoAuthorityException(username));
-        Set<String> authorities = userAuthorities.stream().map(UserAuthority::getAuthorityName).collect(Collectors.toSet());
-        return ResponseEntity.ok(new ManagedUserDTO(domain, authorities));
+        return ResponseEntity.ok(new ManagedUserDTO(domain));
     }
 
     @Operation(summary = "update user")

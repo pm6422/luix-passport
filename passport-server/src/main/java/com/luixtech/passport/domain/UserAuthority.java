@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import com.luixtech.passport.domain.base.AbstractAuditableDomain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -18,6 +19,7 @@ public class UserAuthority extends AbstractAuditableDomain implements Serializab
     private static final long   serialVersionUID = 8740966797330793766L;
     @Schema(required = true)
     @NotNull
+    @Column(name = "user_id", insertable = false, updatable = false)
     private              String userId;
     @Schema(required = true)
     @NotNull

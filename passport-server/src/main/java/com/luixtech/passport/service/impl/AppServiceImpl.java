@@ -21,6 +21,7 @@ public class AppServiceImpl implements AppService {
     private final AppAuthorityRepository appAuthorityRepository;
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, noRollbackFor = Exception.class)
     public App insert(App domain) {
         appRepository.save(domain);
         domain.getAuthorities().forEach(authorityName -> appAuthorityRepository.save(new AppAuthority(domain.getName(), authorityName)));

@@ -41,9 +41,9 @@ public class AuthorityController {
     public ResponseEntity<Void> create(
             @Parameter(description = "authority", required = true) @Valid @RequestBody Authority domain) {
         log.debug("REST request to create authority: {}", domain);
-        authorityRepository.findById(domain.getName()).ifPresent(app -> {
+        if(authorityRepository.countByName(domain.getName()) > 0) {
             throw new DuplicationException(ImmutableMap.of("name", domain.getName()));
-        });
+        }
         authorityRepository.save(domain);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .headers(httpHeaderCreator.createSuccessHeader("SM1001", domain.getName()))

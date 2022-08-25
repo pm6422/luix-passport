@@ -671,7 +671,6 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                     resolve: {
                         entity: {
                             name: null,
-                            systemLevel: false,
                             enabled: true
                         }
                     }

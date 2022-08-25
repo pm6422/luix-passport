@@ -2,9 +2,7 @@ package com.luixtech.passport.service.impl;
 
 import com.google.common.collect.ImmutableMap;
 import com.luixtech.passport.component.MessageCreator;
-import com.luixtech.passport.domain.Authority;
 import com.luixtech.passport.domain.User;
-import com.luixtech.passport.domain.UserAuthority;
 import com.luixtech.passport.dto.UsernameAndPasswordDTO;
 import com.luixtech.passport.exception.DataNotFoundException;
 import com.luixtech.passport.exception.DuplicationException;
@@ -13,7 +11,6 @@ import com.luixtech.passport.repository.UserRepository;
 import com.luixtech.passport.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,6 +36,7 @@ public class UserServiceImpl implements UserService {
     private final MessageCreator          messageCreator;
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, noRollbackFor = Exception.class)
     public void changePassword(UsernameAndPasswordDTO dto) {
         userRepository.findOneByUsername(dto.getUsername()).ifPresent(user -> {
             user.setPasswordHash(passwordEncoder.encode(dto.getNewPassword()));
@@ -48,6 +46,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, noRollbackFor = Exception.class)
     public User insert(User user, String rawPassword) {
         Optional<User> existingUser = userRepository.findOneByUsername(user.getUsername().toLowerCase(Locale.ENGLISH));
         if (existingUser.isPresent()) {
@@ -69,13 +68,6 @@ public class UserServiceImpl implements UserService {
         user.setResetTime(Instant.now());
         user.setEnabled(true);
         userRepository.save(user);
-
-        if (CollectionUtils.isNotEmpty(user.getAuthorities())) {
-            if (!user.getAuthorities().contains(Authority.USER)) {
-                throw new IllegalArgumentException("[ROLE_USER] authority must be specified!");
-            }
-            user.getAuthorities().forEach(authorityName -> userAuthorityRepository.save(new UserAuthority(user.getId(), authorityName)));
-        }
 
         log.debug("Created information for user: {}", user);
         return user;
@@ -107,14 +99,6 @@ public class UserServiceImpl implements UserService {
             userRepository.save(u);
             log.debug("Updated user: {}", user);
 
-            if (CollectionUtils.isNotEmpty(user.getAuthorities())) {
-                if (!user.getAuthorities().contains(Authority.USER)) {
-                    throw new IllegalArgumentException("[ROLE_USER] authority must be specified!");
-                }
-                userAuthorityRepository.deleteByUserId(user.getId());
-                user.getAuthorities().forEach(authorityName -> userAuthorityRepository.save(new UserAuthority(user.getId(), authorityName)));
-                log.debug("Updated user authorities");
-            }
             return u;
         }).orElseThrow(() -> new DataNotFoundException(user.getId()));
     }
@@ -154,6 +138,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, noRollbackFor = Exception.class)
     public Optional<User> activateRegistration(String activationKey) {
         return userRepository.findOneByActivationKey(activationKey).map(user -> {
             user.setActivated(true);
@@ -165,6 +150,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, noRollbackFor = Exception.class)
     public User requestPasswordReset(String email, String resetKey) {
         User user = userRepository.findOneByEmailAndActivatedIsTrue(email)
                 .orElseThrow(() -> new DataNotFoundException(messageCreator.getMessage("email")));
@@ -176,6 +162,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, noRollbackFor = Exception.class)
     public User completePasswordReset(String newRawPassword, String resetKey) {
         User user = userRepository.findOneByResetKey(resetKey)
                 .filter(u -> u.getResetTime().isAfter(Instant.now().minusSeconds(TimeUnit.DAYS.toSeconds(1))))
@@ -189,6 +176,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, noRollbackFor = Exception.class)
     public void deleteByUsername(String username) {
         User user = findOneByUsername(username);
         userRepository.deleteById(user.getId());

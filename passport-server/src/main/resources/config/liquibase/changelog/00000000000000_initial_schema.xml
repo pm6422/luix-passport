@@ -40,9 +40,6 @@
             <column name="name" type="varchar(16)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="system_level" type="boolean" valueBoolean="false">
-                <constraints nullable="false"/>
-            </column>
             <column name="enabled" type="boolean" valueBoolean="false">
                 <constraints nullable="false"/>
             </column>
@@ -127,26 +124,6 @@
                   usePreparedStatements="true">
         </loadData>
 
-        <createTable tableName="user_profile_photo">
-            <column name="id" type="varchar(20)">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="user_id" type="varchar(20)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="profile_photo" type="longblob">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created_by" type="varchar(50)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created_time" type="timestamp">
-                <constraints nullable="false"/>
-            </column>
-            <column name="modified_by" type="varchar(50)"/>
-            <column name="modified_time" type="timestamp"/>
-        </createTable>
-
         <createTable tableName="user_authority">
             <column name="id" type="varchar(20)">
                 <constraints primaryKey="true" nullable="false"/>
@@ -172,6 +149,26 @@
                 tableName="user_authority"
                 usePreparedStatements="true">
         </loadData>
+
+        <createTable tableName="user_profile_photo">
+            <column name="id" type="varchar(20)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="profile_photo" type="longblob">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_time" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="varchar(50)"/>
+            <column name="modified_time" type="timestamp"/>
+        </createTable>
 
         <createTable tableName="menu">
             <column name="id" type="varchar(20)">

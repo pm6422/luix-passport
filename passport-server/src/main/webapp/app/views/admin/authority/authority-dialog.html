@@ -5,7 +5,7 @@
     </div>
     <div class="modal-body">
         <div class="form-group">
-            <label class="control-label">name</label>
+            <label class="control-label">Name</label>
             <input type="text" class="form-control" name="name" ng-model="vm.entity.name"
                    required ng-minlength="3" ng-maxlength="16" ng-pattern="/^[A-Z_]+$/" ng-disabled="vm.mode == 'edit'">
             <div ng-show="editForm.name.$invalid">
@@ -21,17 +21,6 @@
                 <p class="help-block" ng-show="editForm.name.$error.pattern">
                     Only supports upper case letters and underscores
                 </p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label">System level</label>
-            <div class="onoffswitch">
-                <input type="checkbox" id="systemLevel" ng-model="vm.entity.systemLevel" class="onoffswitch-checkbox"
-                       ng-disabled="vm.entity.name === null">
-                <label class="onoffswitch-label" for="systemLevel">
-                    <span class="onoffswitch-inner"></span>
-                    <span class="onoffswitch-switch"></span>
-                </label>
             </div>
         </div>
         <div class="form-group">

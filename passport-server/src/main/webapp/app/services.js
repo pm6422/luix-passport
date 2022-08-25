@@ -879,7 +879,7 @@ function PrincipalService($q, $http, AccountService, TrackerService) {
         }
 
         for (var i = 0; i < authorities.length; i++) {
-            if (_identity.authorities.indexOf(authorities[i]) !== -1) {
+            if (_.findIndex(_identity.authorities, {'authority': authorities[i]}) != -1) {
                 return true;
             }
         }
@@ -893,7 +893,7 @@ function PrincipalService($q, $http, AccountService, TrackerService) {
         }
 
         return this.identity().then(function (_id) {
-            return _id.authorities && _id.authorities.indexOf(authority) !== -1;
+            return _id.authorities && _.findIndex(_id.authorities, {'authority': authority}) != -1;
         }, function () {
             return false;
         });
@@ -928,7 +928,7 @@ function PrincipalService($q, $http, AccountService, TrackerService) {
             _identity = response.data;
             _authenticated = true;
             deferred.resolve(_identity);
-            TrackerService.connect();
+            // TrackerService.connect();
         }
 
         function getAccountCatch() {

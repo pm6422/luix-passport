@@ -1,11 +1,5 @@
 package com.luixtech.passport.config;
 
-import com.nimbusds.jose.jwk.JWKSet;
-import com.nimbusds.jose.jwk.RSAKey;
-import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
-import com.nimbusds.jose.jwk.source.JWKSource;
-import com.nimbusds.jose.proc.SecurityContext;
-import lombok.AllArgsConstructor;
 import com.luixtech.passport.config.oauth2.AjaxLogoutSuccessHandler;
 import com.luixtech.passport.config.oauth2.FederatedIdentityConfigurer;
 import com.luixtech.passport.config.oauth2.OAuth2ConfigurerUtils;
@@ -17,8 +11,13 @@ import com.luixtech.passport.config.oauth2.service.SecurityUserService;
 import com.luixtech.passport.repository.oauth2.OAuth2AuthorizationRepository;
 import com.luixtech.passport.repository.oauth2.OAuth2ClientRepository;
 import com.luixtech.passport.repository.oauth2.OAuth2CustomRegisteredClientRepositoryImpl;
-import com.luixtech.passport.repository.UserAuthorityRepository;
 import com.luixtech.passport.service.UserService;
+import com.nimbusds.jose.jwk.JWKSet;
+import com.nimbusds.jose.jwk.RSAKey;
+import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
+import com.nimbusds.jose.jwk.source.JWKSource;
+import com.nimbusds.jose.proc.SecurityContext;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -154,9 +153,8 @@ public class OAuth2ServerSecurityConfiguration {
     }
 
     @Bean
-    public UserDetailsService userDetailsService(UserAuthorityRepository userAuthorityRepository,
-                                                 UserService userService) {
-        return new CustomUserDetailsService(userAuthorityRepository, userService);
+    public UserDetailsService userDetailsService(UserService userService) {
+        return new CustomUserDetailsService(userService);
     }
 
     @Bean
