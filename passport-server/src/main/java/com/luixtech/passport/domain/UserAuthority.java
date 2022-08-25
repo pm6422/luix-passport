@@ -1,33 +1,35 @@
 package com.luixtech.passport.domain;
 
-import com.luixtech.passport.domain.base.BaseDomain;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.validation.constraints.NotNull;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
 import java.io.Serializable;
 
 @Entity
 @Data
-@ToString(callSuper = true)
+@IdClass(UserAuthority.UserAuthorityId.class)
 @NoArgsConstructor
-public class UserAuthority extends BaseDomain implements Serializable {
+@AllArgsConstructor
+public class UserAuthority implements Serializable {
     private static final long   serialVersionUID = 8740966797330793766L;
     @Schema(required = true)
-    @NotNull
-    @Column(name = "user_id", insertable = false, updatable = false)
+    @Column(name = "user_id", updatable = false)
+    @Id
     private              String userId;
     @Schema(required = true)
-    @NotNull
+    @Id
     private              String authorityName;
 
-    public UserAuthority(String userId, String authorityName) {
-        super();
-        this.userId = userId;
-        this.authorityName = authorityName;
+    @Data
+    public static class UserAuthorityId implements Serializable {
+        private static final long   serialVersionUID = -6855173161392372070L;
+        private              String userId;
+        private              String authorityName;
     }
 }

@@ -230,7 +230,7 @@ function NavbarController($rootScope, $scope, $translate, $state, Authentication
 /**
  * ProfileController
  */
-function ProfileController($state, PrincipalService, AccountService, AuthServerService, Upload) {
+function ProfileController($state, $http, PrincipalService, AccountService, AuthServerService, Upload) {
     var vm = this;
 
     vm.pageTitle = $state.current.data.pageTitle;
@@ -247,24 +247,11 @@ function ProfileController($state, PrincipalService, AccountService, AuthServerS
         vm.profilePhotoUrl = '/api/accounts/profile-photo?access_token=' + authToken.access_token;
     }
 
-    /**
-     * Store the 'profile account' in a separate variable, and not in the shared 'account' variable.
-     */
-    var copyAccount = function (account) {
-        return {
-            id: account.id,
-            activated: account.activated,
-            email: account.email,
-            mobileNo: parseInt(account.mobileNo),
-            firstName: account.firstName,
-            lastName: account.lastName,
-            username: account.username,
-            hasProfilePhoto: account.hasProfilePhoto
-        };
-    };
-
     PrincipalService.identity().then(function (account) {
-        vm.profileAccount = copyAccount(account);
+        $http.get('api/accounts/user').then(function (response) {
+            vm.profileAccount = response.data;
+            vm.profileAccount.mobileNo = parseInt(response.data.mobileNo);
+        });
     });
 
     function save() {
@@ -272,9 +259,6 @@ function ProfileController($state, PrincipalService, AccountService, AuthServerS
         AccountService.update(vm.profileAccount,
             function (response) {
                 vm.isSaving = false;
-                PrincipalService.identity(true).then(function (account) {
-                    vm.profileAccount = copyAccount(account);
-                });
             },
             function (response) {
                 vm.isSaving = false;
@@ -1681,14 +1665,18 @@ function UserDialogController($state, $stateParams, $uibModalInstance, UserServi
     vm.cancel = cancel;
 
     if (vm.mode == 'create') {
-        vm.entity.authorities = ["ROLE_USER"];
+        vm.entity.authorityNames = ['ROLE_USER'];
+    } else {
+        vm.entity.authorityNames = _.map(vm.entity.authorities, function(item){ return item.authorityName; })
     }
 
     function save() {
         vm.isSaving = true;
         if (vm.mode == 'edit') {
+            vm.entity.authorities = _.map(vm.entity.authorityNames, function(item){ return { 'userId': vm.entity.id, 'authorityName': item}})
             UserService.update(vm.entity, onSaveSuccess, onSaveError);
         } else {
+            vm.entity.authorities = _.map(vm.entity.authorityNames, function(item){ return { 'authorityName': item}})
             UserService.create(vm.entity, onSaveSuccess, onSaveError);
         }
     }
@@ -1825,15 +1813,22 @@ function AppDialogController($state, $stateParams, $uibModalInstance, AppService
     vm.mode = $state.current.data.mode;
     vm.authorities = AccountService.queryAuthorityNames({enabled: true});
     vm.entity = entity;
+    vm.entity.authorityNames = [];
     vm.isSaving = false;
     vm.save = save;
     vm.cancel = cancel;
 
+    if (vm.mode == 'edit') {
+        vm.entity.authorityNames = _.map(vm.entity.authorities, function(item){ return item.authorityName; })
+    }
+
     function save() {
         vm.isSaving = true;
         if (vm.mode == 'edit') {
+            vm.entity.authorities = _.map(vm.entity.authorityNames, function(item){ return { 'appId': vm.entity.id, 'authorityName': item}})
             AppService.update(vm.entity, onSaveSuccess, onSaveError);
         } else {
+            vm.entity.authorities = _.map(vm.entity.authorityNames, function(item){ return { 'authorityName': item}})
             AppService.create(vm.entity, onSaveSuccess, onSaveError);
         }
     }

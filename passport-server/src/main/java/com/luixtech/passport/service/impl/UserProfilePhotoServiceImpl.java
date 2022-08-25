@@ -37,7 +37,6 @@ public class UserProfilePhotoServiceImpl implements UserProfilePhotoService {
         } else {
             // Insert if not exists
             insert(user.getId(), photoData);
-            // Update hasProfilePhoto to true
             user.setProfilePhotoEnabled(true);
             userRepository.save(user);
         }

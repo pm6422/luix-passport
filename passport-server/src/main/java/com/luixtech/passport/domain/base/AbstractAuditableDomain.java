@@ -50,7 +50,6 @@ public abstract class AbstractAuditableDomain extends BaseDomain implements Seri
 
     @PrePersist
     public void prePersist() {
-        super.prePersist();
         createdTime = modifiedTime = Instant.now();
         createdBy = modifiedBy = defaultIfEmpty(getCurrentUsername(), SYSTEM_ACCOUNT);
     }

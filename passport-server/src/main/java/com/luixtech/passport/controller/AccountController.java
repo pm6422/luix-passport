@@ -14,7 +14,6 @@ import com.luixtech.passport.dto.ManagedUserDTO;
 import com.luixtech.passport.dto.ResetKeyAndPasswordDTO;
 import com.luixtech.passport.dto.UsernameAndPasswordDTO;
 import com.luixtech.passport.exception.DataNotFoundException;
-import com.luixtech.passport.repository.UserAuthorityRepository;
 import com.luixtech.passport.repository.UserProfilePhotoRepository;
 import com.luixtech.passport.service.AuthorityService;
 import com.luixtech.passport.service.MailService;
@@ -60,7 +59,6 @@ import static com.luixtech.passport.utils.NetworkUtils.getRequestUrl;
 public class AccountController {
     private static final FastDateFormat             DATETIME_FORMAT = FastDateFormat.getInstance("yyyyMMdd-HHmmss");
     private final        UserService                userService;
-    private final        UserAuthorityRepository    userAuthorityRepository;
     private final        UserProfilePhotoRepository userProfilePhotoRepository;
     private final        UserProfilePhotoService    userProfilePhotoService;
     private final        AuthorityService           authorityService;
@@ -135,6 +133,11 @@ public class AccountController {
         User currentUser = userService.findOneByUsername(SecurityUtils.getCurrentUsername());
         domain.setId(currentUser.getId());
         domain.setUsername(currentUser.getUsername());
+        domain.setEnabled(currentUser.getEnabled());
+        domain.setActivated(currentUser.getActivated());
+        domain.setProfilePhotoEnabled(currentUser.getProfilePhotoEnabled());
+        domain.setAuthorities(currentUser.getAuthorities());
+
         userService.update(domain);
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1002", domain.getUsername())).build();
     }

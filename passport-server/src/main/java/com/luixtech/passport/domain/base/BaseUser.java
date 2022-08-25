@@ -78,7 +78,7 @@ public class BaseUser extends AbstractAuditableDomain implements Serializable {
     private Instant resetTime;
 
     @Schema(description = "profile photo enabled")
-    private Boolean profilePhotoEnabled;
+    private Boolean profilePhotoEnabled = false;
 
     @Schema(description = "remarks")
     private String remarks;
@@ -91,7 +91,16 @@ public class BaseUser extends AbstractAuditableDomain implements Serializable {
 
     @Schema(description = "authorities")
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", updatable = false)
     @ToString.Exclude
     private Set<UserAuthority> authorities = new HashSet<>();
+
+    public void setAuthorities(Set<UserAuthority> authorities) {
+        if (this.authorities == null) {
+            this.authorities = authorities;
+        } else {
+            this.authorities.clear();
+            this.authorities.addAll(authorities);
+        }
+    }
 }

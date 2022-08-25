@@ -5,9 +5,9 @@
                 <div class="profile-element" uib-dropdown>
                     <div class="text-center">
                         <img alt="image" class="img-circle" style="width:50px" ng-src="{{main.account.profilePhotoUrl}}"
-                             ng-show="main.account.hasProfilePhoto"/>
+                             ng-show="main.account.profilePhotoEnabled"/>
                         <img alt="image" class="img-circle" style="width:50px" ng-src="content/img/profile_small.png"
-                             ng-hide="main.account.hasProfilePhoto"/>
+                             ng-hide="main.account.profilePhotoEnabled"/>
                     </div>
                     <a uib-dropdown-toggle>
                         <span class="clear forum-info">

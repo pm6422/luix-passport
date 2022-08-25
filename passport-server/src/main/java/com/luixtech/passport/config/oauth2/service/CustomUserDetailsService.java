@@ -45,6 +45,7 @@ public class CustomUserDetailsService implements org.springframework.security.co
                 .collect(Collectors.toList());
 
         return new SecurityUser(user.getId(), user.getUsername(),
+                user.getFirstName(), user.getLastName(),
                 user.getPasswordHash(), user.getEnabled(),
                 true, true,
                 true, grantedAuthorities);

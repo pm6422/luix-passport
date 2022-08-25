@@ -4,9 +4,12 @@
         <h4 class="modal-title">{{vm.pageTitle}}</h4>
     </div>
     <div class="modal-body">
+        <div class="form-group" ng-show="vm.mode == 'edit'">
+            <label class="control-label">ID</label>
+            <input type="text" class="form-control" name="id" ng-model="vm.entity.id" ng-disabled="true">
+        </div>
         <div class="form-group">
             <label class="control-label">Username</label>
-            <a tooltip-placement="right" uib-tooltip="Username"><i class="fa fa-question"></i></a>
             <input type="text" class="form-control" name="username" ng-model="vm.entity.username"
                    ng-disabled="vm.mode=='edit'" required ng-minlength="3" ng-maxlength="20" ng-pattern="/^[a-z0-9-]+$/">
             <div ng-show="editForm.username.$invalid">
@@ -105,7 +108,7 @@
         <div class="form-group">
             <label class="control-label">Authority</label>
             <a tooltip-placement="right" uib-tooltip="ROLE_USER is required"><i class="fa fa-exclamation"></i></a>
-            <select class="form-control" multiple name="authority" ng-model="vm.entity.authorities"
+            <select class="form-control" multiple name="authority" ng-model="vm.entity.authorityNames"
                     ng-options="authority for authority in vm.authorities">
             </select>
         </div>

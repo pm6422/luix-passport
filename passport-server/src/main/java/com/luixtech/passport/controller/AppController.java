@@ -1,18 +1,17 @@
 package com.luixtech.passport.controller;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import com.luixtech.passport.component.HttpHeaderCreator;
 import com.luixtech.passport.domain.App;
-import com.luixtech.passport.domain.AppAuthority;
 import com.luixtech.passport.domain.Authority;
 import com.luixtech.passport.exception.DataNotFoundException;
 import com.luixtech.passport.repository.AppAuthorityRepository;
 import com.luixtech.passport.repository.AppRepository;
 import com.luixtech.passport.service.AppService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,8 +22,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import static com.luixtech.passport.config.api.SpringDocConfiguration.AUTH;
 import static com.luixtech.passport.utils.HttpHeaderUtils.generatePageHeaders;
@@ -65,9 +62,6 @@ public class AppController {
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<App> findById(@Parameter(description = "ID", required = true) @PathVariable String id) {
         App app = appRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
-        List<AppAuthority> appAuthorities = appAuthorityRepository.findByAppId(id);
-        Set<String> authorities = appAuthorities.stream().map(AppAuthority::getAuthorityName).collect(Collectors.toSet());
-        app.setAuthorities(authorities);
         return ResponseEntity.ok(app);
     }
 

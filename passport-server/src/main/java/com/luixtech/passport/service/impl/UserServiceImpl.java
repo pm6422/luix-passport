@@ -75,32 +75,33 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, noRollbackFor = Exception.class)
-    public void update(User user) {
+    public void update(User domain) {
         // 因为其他表的创建者和更新者使用的是username，所以不能更新
-        userRepository.findById(user.getId()).map(u -> {
-            Optional<User> existingUser = findOneByEmail(user.getEmail());
-            if (existingUser.isPresent() && (!existingUser.get().getId().equalsIgnoreCase(user.getId()))) {
-                throw new DuplicationException(ImmutableMap.of("email", user.getEmail()));
+        userRepository.findById(domain.getId()).map(u -> {
+            Optional<User> existingUser = findOneByEmail(domain.getEmail());
+            if (existingUser.isPresent() && (!existingUser.get().getId().equalsIgnoreCase(domain.getId()))) {
+                throw new DuplicationException(ImmutableMap.of("email", domain.getEmail()));
             }
-            existingUser = findOneByMobileNo(user.getMobileNo());
-            if (existingUser.isPresent() && (!existingUser.get().getId().equalsIgnoreCase(user.getId()))) {
-                throw new DuplicationException(ImmutableMap.of("mobileNo", user.getMobileNo()));
+            existingUser = findOneByMobileNo(domain.getMobileNo());
+            if (existingUser.isPresent() && (!existingUser.get().getId().equalsIgnoreCase(domain.getId()))) {
+                throw new DuplicationException(ImmutableMap.of("mobileNo", domain.getMobileNo()));
             }
-            if (existingUser.isPresent() && !Boolean.TRUE.equals(user.getActivated()) && Boolean.TRUE.equals(existingUser.get().getActivated())) {
+            if (existingUser.isPresent() && !Boolean.TRUE.equals(domain.getActivated()) && Boolean.TRUE.equals(existingUser.get().getActivated())) {
                 throw new IllegalArgumentException(messageCreator.getMessage("EP5021"));
             }
 
-            u.setFirstName(user.getFirstName());
-            u.setLastName(user.getLastName());
-            u.setEmail(user.getEmail().toLowerCase());
-            u.setMobileNo(user.getMobileNo());
-            u.setEnabled(user.getEnabled());
-            u.setRemarks(user.getRemarks());
+            u.setFirstName(domain.getFirstName());
+            u.setLastName(domain.getLastName());
+            u.setEmail(domain.getEmail().toLowerCase());
+            u.setMobileNo(domain.getMobileNo());
+            u.setEnabled(domain.getEnabled());
+            u.setRemarks(domain.getRemarks());
+            u.setAuthorities(domain.getAuthorities());
             userRepository.save(u);
-            log.debug("Updated user: {}", user);
+            log.debug("Updated user: {}", domain);
 
             return u;
-        }).orElseThrow(() -> new DataNotFoundException(user.getId()));
+        }).orElseThrow(() -> new DataNotFoundException(domain.getId()));
     }
 
     @Override

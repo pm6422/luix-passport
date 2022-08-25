@@ -1,17 +1,18 @@
 package com.luixtech.passport.domain;
 
+import com.luixtech.passport.domain.base.AbstractAuditableDomain;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import com.luixtech.passport.domain.base.AbstractAuditableDomain;
+import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -30,12 +31,19 @@ public class App extends AbstractAuditableDomain implements Serializable {
     @Schema
     private Boolean enabled;
 
-    @Schema
-    @Transient
-    private Set<String> authorities;
+    @Schema(description = "authorities")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JoinColumn(name = "app_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @ToString.Exclude
+    private Set<AppAuthority> authorities = new HashSet<>();
 
-    public App(String name, Boolean enabled) {
-        this.name = name;
-        this.enabled = enabled;
+    public void setAuthorities(Set<AppAuthority> authorities) {
+        if (this.authorities == null) {
+            this.authorities = authorities;
+        } else {
+            this.authorities.clear();
+            this.authorities.addAll(authorities);
+        }
     }
+
 }

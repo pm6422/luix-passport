@@ -11,7 +11,7 @@
     -->
     <changeSet id="00000000000001" author="luix">
         <createTable tableName="app">
-            <column name="id" type="varchar(20)">
+            <column name="id" type="varchar(36)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="varchar(20)">
@@ -52,9 +52,6 @@
         </loadData>
 
         <createTable tableName="app_authority">
-            <column name="id" type="varchar(20)">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
             <column name="app_id" type="varchar(20)">
                 <constraints nullable="false"/>
             </column>
@@ -62,6 +59,10 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+        <addPrimaryKey columnNames="app_id, authority_name"
+                       constraintName="pk_app_authority"
+                       tableName="app_authority"
+                       validate="true"/>
         <loadData
                 file="config/liquibase/data/app_authority.csv"
                 separator=";"
@@ -70,7 +71,7 @@
         </loadData>
 
         <createTable tableName="user">
-            <column name="id" type="varchar(20)">
+            <column name="id" type="varchar(36)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="username" type="varchar(20)">
@@ -117,9 +118,6 @@
         </loadData>
 
         <createTable tableName="user_authority">
-            <column name="id" type="varchar(20)">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
             <column name="user_id" type="varchar(20)">
                 <constraints nullable="false"/>
             </column>
@@ -127,6 +125,10 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+        <addPrimaryKey columnNames="user_id, authority_name"
+                       constraintName="pk_user_authority"
+                       tableName="user_authority"
+                       validate="true"/>
         <loadData
                 file="config/liquibase/data/user_authority.csv"
                 separator=";"
@@ -135,7 +137,7 @@
         </loadData>
 
         <createTable tableName="user_profile_photo">
-            <column name="id" type="varchar(20)">
+            <column name="id" type="varchar(36)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="user_id" type="varchar(20)">
@@ -155,7 +157,7 @@
         </createTable>
 
         <createTable tableName="menu">
-            <column name="id" type="varchar(20)">
+            <column name="id" type="varchar(36)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="app_id" type="varchar(20)">
@@ -189,7 +191,7 @@
         </loadData>
 
         <createTable tableName="authority_menu">
-            <column name="id" type="varchar(20)">
+            <column name="id" type="varchar(36)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="authority_name" type="varchar(16)">
@@ -311,7 +313,7 @@
         </loadData>
 
         <createTable tableName="oauth2_client">
-            <column name="id" type="varchar(20)">
+            <column name="id" type="varchar(36)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="client_id" type="varchar(100)">
