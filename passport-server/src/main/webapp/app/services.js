@@ -1190,7 +1190,7 @@ function AppAuthorityService($resource) {
  * UserService
  */
 function UserService($resource) {
-    var service = $resource('api/users/:username', {}, {
+    var service = $resource('api/users/:id', {}, {
         'query': {method: 'GET', isArray: true},
         'get': {
             method: 'GET',
@@ -1202,7 +1202,7 @@ function UserService($resource) {
         'create': {method: 'POST'},
         'update': {method: 'PUT'},
         'del': {method: 'DELETE'},
-        'resetPassword': {method: 'PUT', params: {username: '@username'}}
+        'resetPassword': {method: 'PUT', params: {id: '@id'}}
     });
     return service;
 }

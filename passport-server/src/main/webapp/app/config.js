@@ -734,7 +734,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                     size: 'lg',
                     resolve: {
                         entity: {
-                            userId: null,
+                            id: null,
                             username: null,
                             firstName: null,
                             lastName: null,
@@ -757,7 +757,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
             }]
         })
         .state('user-authority.user-list.edit', {
-            url: '/edit/:username',
+            url: '/edit/:id',
             data: {
                 pageTitle: 'Edit user',
                 mode: 'edit'
@@ -771,7 +771,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                     size: 'lg',
                     resolve: {
                         entity: ['UserService', function (UserService) {
-                            return UserService.get({username: $stateParams.username}).$promise;
+                            return UserService.get({id: $stateParams.id}).$promise;
                         }]
                     }
                 }).result.then(function (result) {
@@ -782,7 +782,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
             }]
         })
         .state('user-authority.user-list.view', {
-            url: '/view/:username',
+            url: '/view/:id',
             views: {
                 'content@': {
                     templateUrl: 'app/views/admin/user/user-details.html',
@@ -795,7 +795,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
             },
             resolve: {
                 entity: ['UserService', '$stateParams', function (UserService, $stateParams) {
-                    return UserService.get({username: $stateParams.username}).$promise;
+                    return UserService.get({id: $stateParams.id}).$promise;
                 }]
             }
         })

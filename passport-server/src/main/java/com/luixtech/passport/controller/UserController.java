@@ -4,13 +4,15 @@ import com.luixtech.passport.component.HttpHeaderCreator;
 import com.luixtech.passport.config.ApplicationProperties;
 import com.luixtech.passport.config.oauth2.LogoutEvent;
 import com.luixtech.passport.config.oauth2.SecurityUtils;
+import com.luixtech.passport.domain.App;
 import com.luixtech.passport.domain.Authority;
 import com.luixtech.passport.domain.User;
 import com.luixtech.passport.domain.UserProfilePhoto;
 import com.luixtech.passport.dto.ManagedUserDTO;
 import com.luixtech.passport.dto.UsernameAndPasswordDTO;
-import com.luixtech.passport.repository.UserAuthorityRepository;
+import com.luixtech.passport.exception.DataNotFoundException;
 import com.luixtech.passport.repository.UserProfilePhotoRepository;
+import com.luixtech.passport.repository.UserRepository;
 import com.luixtech.passport.service.MailService;
 import com.luixtech.passport.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -48,7 +50,7 @@ public class UserController {
     public static final String                     GET_PROFILE_PHOTO_URL = "/api/users/profile-photo/";
     private final       ApplicationProperties      applicationProperties;
     private final       UserProfilePhotoRepository userProfilePhotoRepository;
-    private final       UserAuthorityRepository    userAuthorityRepository;
+    private final       UserRepository             userRepository;
     private final       UserService                userService;
     private final       MailService                mailService;
     private final       ApplicationEventPublisher  applicationEventPublisher;
@@ -75,12 +77,12 @@ public class UserController {
         return ResponseEntity.ok().headers(generatePageHeaders(users)).body(users.getContent());
     }
 
-    @Operation(summary = "find user by username")
-    @GetMapping("/api/users/{username:[a-zA-Z0-9-]+}")
+    @Operation(summary = "find user by id")
+    @GetMapping("/api/users/{id}")
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
-    public ResponseEntity<ManagedUserDTO> findByName(@Parameter(description = "username", required = true) @PathVariable String username) {
-        User domain = userService.findOneByUsername(username);
-        return ResponseEntity.ok(new ManagedUserDTO(domain));
+    public ResponseEntity<ManagedUserDTO> findById(@Parameter(description = "ID", required = true) @PathVariable String id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
+        return ResponseEntity.ok(new ManagedUserDTO(user));
     }
 
     @Operation(summary = "update user")
