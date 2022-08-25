@@ -74,7 +74,6 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED, noRollbackFor = Exception.class)
     public void update(User domain) {
-        // 因为其他表的创建者和更新者使用的是username，所以不能更新
         userRepository.findById(domain.getId()).map(u -> {
             Optional<User> existingUser = findOneByEmail(domain.getEmail());
             if (existingUser.isPresent() && (!existingUser.get().getId().equalsIgnoreCase(domain.getId()))) {
