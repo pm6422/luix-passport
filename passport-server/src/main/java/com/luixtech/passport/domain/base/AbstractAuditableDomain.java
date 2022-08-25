@@ -1,33 +1,26 @@
 package com.luixtech.passport.domain.base;
 
-import com.luixtech.uidgenerator.core.id.IdGenerator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import java.io.Serializable;
 import java.time.Instant;
 
-import static org.apache.commons.lang3.StringUtils.defaultIfEmpty;
 import static com.luixtech.passport.config.oauth2.SecurityUtils.getCurrentUsername;
 import static com.luixtech.passport.domain.Authority.SYSTEM_ACCOUNT;
+import static org.apache.commons.lang3.StringUtils.defaultIfEmpty;
 
 /**
  * Abstract auditable domain for log createdBy, createdTime, modifiedBy and modifiedTime automatically.
  */
 @Data
 @MappedSuperclass
-public abstract class AbstractAuditableDomain implements Serializable {
+public abstract class AbstractAuditableDomain extends BaseDomain implements Serializable {
     private static final long serialVersionUID = -322694592498870599L;
-
-    /**
-     * ID should NOT be Long type, because the number which exceeds 16 digits will be display as 0 in front end.
-     * e.g. the value 526373442322434543 will be displayed as 526373442322434500 in front end
-     * If id is null, save operation equals insert, or else save operation equals update
-     */
-    @Schema(description = "ID")
-    @Id
-    protected String id;
 
     /**
      * Set the proper value when inserting.
@@ -57,7 +50,7 @@ public abstract class AbstractAuditableDomain implements Serializable {
 
     @PrePersist
     public void prePersist() {
-        id = IdGenerator.generateTraceId();
+        super.prePersist();
         createdTime = modifiedTime = Instant.now();
         createdBy = modifiedBy = defaultIfEmpty(getCurrentUsername(), SYSTEM_ACCOUNT);
     }

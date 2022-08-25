@@ -35,6 +35,7 @@
             <table class="table table-striped">
                 <thead>
                     <tr sort-directive="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                        <th sort-by-directive="id"><span>ID</span> <span class="fa fa-sort"></span></th>
                         <th sort-by-directive="username"><span>Username</span> <span class="fa fa-sort"></span></th>
                         <th sort-by-directive="email"><span>Email</span> <span class="fa fa-sort"></span></th>
                         <th sort-by-directive="mobileNo"><span>Mobile Number</span> <span class="fa fa-sort"></span></th>
@@ -47,8 +48,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="entity in vm.entities track by entity.username">
-                        <td><a class="text-navy" ui-sref=".view({username: entity.username})">{{entity.username}}</a></td>
+                    <tr ng-repeat="entity in vm.entities track by entity.id">
+                        <td>{{entity.id}}</td>
+                        <td><a class="text-navy" ui-sref=".view({id: entity.id})">{{entity.username}}</a></td>
                         <td>{{entity.email}}</td>
                         <td>{{entity.mobileNo}}</td>
                         <td>

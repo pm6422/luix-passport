@@ -74,15 +74,15 @@
                             <td>User authorities:</td>
                             <td>
                                 <ul class="list-unstyled m-b-none">
-                                    <li ng-repeat="item in vm.entity.authorities"><span>{{item}}</span></li>
+                                    <li ng-repeat="item in vm.entity.authorities"><span>{{item.authorityName}}</span></li>
                                 </ul>
                             </td>
                         </tr>
                         <tr>
-                            <td>Has profile photo:</td>
-                            <td>{{vm.entity.hasProfilePhoto}}</td>
+                            <td>Profile photo enabled:</td>
+                            <td>{{vm.entity.profilePhotoEnabled}}</td>
                         </tr>
-                        <tr ng-show="vm.entity.hasProfilePhoto">
+                        <tr ng-show="vm.entity.profilePhotoEnabled">
                             <td>Photo:</td>
                             <td><img class="thumb" style="width:50px" ng-src="{{vm.entity.profilePhotoUrl}}"></td>
                         </tr>
