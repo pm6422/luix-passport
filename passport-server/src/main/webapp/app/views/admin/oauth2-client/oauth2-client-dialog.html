@@ -22,15 +22,6 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label">Client name</label>
-            <input type="text" class="form-control" name="clientName" ng-model="vm.entity.clientName" ng-maxlength="50">
-            <div ng-show="editForm.clientName.$invalid">
-                <p class="help-block" ng-show="editForm.clientName.$error.maxlength">
-                    <small>Max length: 50</small>
-                </p>
-            </div>
-        </div>
-        <div class="form-group">
             <label class="control-label">Resource IDs</label>
             <input type="text" class="form-control" name="resourceIds" ng-model="vm.entity.resource_ids"
                    ng-maxlength="50">
@@ -167,6 +158,15 @@
                 <p class="help-block" ng-show="editForm.additionalInformation.$error.maxlength"
                    translate-value-max="100">
                     <small>最大长度为100个字符</small>
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Remarks</label>
+            <input type="text" class="form-control" name="remarks" ng-model="vm.entity.remarks" ng-maxlength="50">
+            <div ng-show="editForm.remarks.$invalid">
+                <p class="help-block" ng-show="editForm.remarks.$error.maxlength">
+                    <small>Max length: 200</small>
                 </p>
             </div>
         </div>
