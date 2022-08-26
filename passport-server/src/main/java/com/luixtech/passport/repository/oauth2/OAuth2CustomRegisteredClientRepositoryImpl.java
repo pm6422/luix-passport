@@ -1,8 +1,8 @@
 package com.luixtech.passport.repository.oauth2;
 
-import lombok.AllArgsConstructor;
 import com.luixtech.passport.domain.oauth2.OAuth2Client;
 import com.luixtech.passport.exception.DataNotFoundException;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -61,15 +61,5 @@ public class OAuth2CustomRegisteredClientRepositoryImpl implements OAuth2CustomR
     @Override
     public Page<OAuth2Client> find(Pageable pageable) {
         return oauth2ClientRepository.findAll(pageable);
-    }
-
-    @Override
-    public OAuth2Client findClientById(String id) {
-        return oauth2ClientRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
-    }
-
-    @Override
-    public void deleteById(String id) {
-        oauth2ClientRepository.deleteById(id);
     }
 }

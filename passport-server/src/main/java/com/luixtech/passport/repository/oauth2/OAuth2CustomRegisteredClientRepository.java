@@ -12,8 +12,4 @@ public interface OAuth2CustomRegisteredClientRepository extends RegisteredClient
     void update(OAuth2Client client);
 
     Page<OAuth2Client> find(Pageable pageable);
-
-    OAuth2Client findClientById(String id);
-
-    void deleteById(String id);
 }
