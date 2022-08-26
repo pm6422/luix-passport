@@ -39,7 +39,7 @@ public class OAuth2ClientController {
 
     @Operation(summary = "get internal client")
     @GetMapping("/open-api/oauth2-client/internal-client")
-    public ResponseEntity<Pair<String, String>> findInternalClient() {
+    public ResponseEntity<Pair<String, String>> getInternalClient() {
         return ResponseEntity.ok(Pair.of(OAuth2Client.INTERNAL_CLIENT_ID, OAuth2Client.INTERNAL_RAW_CLIENT_SECRET));
     }
 
@@ -50,22 +50,13 @@ public class OAuth2ClientController {
                                                    @Parameter(description = "Client ID") @RequestParam(value = "clientId", required = false) String clientId) {
         Page<OAuth2Client> clients = oAuth2ClientService.find(pageable, clientId);
         HttpHeaders headers = generatePageHeaders(clients);
-        clients.getContent().forEach(client -> {
-            client.setClientAuthenticationMethods(null);
-            client.setAuthorizationGrantTypes(null);
-            client.setRedirectUris(null);
-            client.setScopes(null);
-            client.setClientSettings(null);
-            client.setTokenSettings(null);
-        });
         return ResponseEntity.ok().headers(headers).body(clients.getContent());
     }
 
     @Operation(summary = "find oauth2 client by ID")
     @GetMapping("/api/oauth2-clients/{id}")
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
-    public ResponseEntity<OAuth2Client> findById(
-            @Parameter(description = "客户端ID", required = true) @PathVariable String id) {
+    public ResponseEntity<OAuth2Client> findById(@Parameter(description = "ID", required = true) @PathVariable String id) {
         OAuth2Client domain = oAuth2ClientService.findById(id).orElseThrow(() -> new DataNotFoundException(id));
         return ResponseEntity.ok(domain);
     }
