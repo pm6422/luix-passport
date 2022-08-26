@@ -612,14 +612,14 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 authorities: ['ROLE_ADMIN']
             }
         })
-        .state('user-authority', {
+        .state('authority', {
             abstract: true,
             parent: 'admin',
             data: {
-                pageTitle: 'User authority'
+                pageTitle: 'Authority'
             }
         })
-        .state('user-authority.authority-list', {
+        .state('authority.authority-list', {
             url: '/authority-list?page&sort',
             views: {
                 'content@': {
@@ -655,7 +655,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 }]
             }
         })
-        .state('user-authority.authority-list.create', {
+        .state('authority.authority-list.create', {
             url: '/create',
             data: {
                 pageTitle: 'Create authority',
@@ -681,7 +681,113 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 });
             }]
         })
-        .state('user-authority.user-list', {
+        .state('authority.app-list', {
+            url: '/app-list?page&sort',
+            views: {
+                'content@': {
+                    templateUrl: 'app/views/admin/app/app-list.html',
+                    controller: 'AppListController',
+                    controllerAs: 'vm'
+                }
+            },
+            data: {
+                pageTitle: 'Application list'
+            },
+            params: {
+                page: {
+                    value: '1',
+                    squash: true
+                },
+                sort: {
+                    value: 'name,asc',
+                    squash: true
+                }
+            },
+            resolve: {
+                pagingParams: ['$stateParams', 'PaginationUtils', function ($stateParams, PaginationUtils) {
+                    return {
+                        page: PaginationUtils.parsePage($stateParams.page),
+                        sort: $stateParams.sort,
+                        predicate: PaginationUtils.parsePredicate($stateParams.sort),
+                        ascending: PaginationUtils.parseAscending($stateParams.sort)
+                    };
+                }],
+                criteria: ['$stateParams', function ($stateParams) {
+                    return {};
+                }]
+            }
+        })
+        .state('authority.app-list.create', {
+            url: '/create',
+            data: {
+                pageTitle: 'Create application',
+                mode: 'create'
+            },
+            onEnter: ['$state', '$uibModal', function ($state, $uibModal) {
+                $uibModal.open({
+                    templateUrl: 'app/views/admin/app/app-dialog.html',
+                    controller: 'AppDialogController',
+                    controllerAs: 'vm',
+                    backdrop: 'static',
+                    size: 'lg',
+                    resolve: {
+                        entity: {
+                            name: null,
+                            authorities: null,
+                            enabled: true
+                        }
+                    }
+                }).result.then(function () {
+                    $state.go('^', null, {reload: true});
+                }, function () {
+                    $state.go('^');
+                });
+            }]
+        })
+        .state('authority.app-list.edit', {
+            url: '/edit/:id',
+            data: {
+                pageTitle: 'Edit application',
+                mode: 'edit'
+            },
+            onEnter: ['$state', '$stateParams', '$uibModal', function ($state, $stateParams, $uibModal) {
+                $uibModal.open({
+                    templateUrl: 'app/views/admin/app/app-dialog.html',
+                    controller: 'AppDialogController',
+                    controllerAs: 'vm',
+                    backdrop: 'static',
+                    size: 'lg',
+                    resolve: {
+                        entity: ['AppService', function (AppService) {
+                            return AppService.get({id: $stateParams.id}).$promise;
+                        }]
+                    }
+                }).result.then(function (result) {
+                    $state.go('^', null, {reload: true});
+                }, function () {
+                    $state.go('^');
+                });
+            }]
+        })
+        .state('authority.app-list.view', {
+            url: '/view/:id',
+            views: {
+                'content@': {
+                    templateUrl: 'app/views/admin/app/app-details.html',
+                    controller: 'AppDetailsController',
+                    controllerAs: 'vm'
+                }
+            },
+            data: {
+                pageTitle: 'View application'
+            },
+            resolve: {
+                entity: ['AppService', '$stateParams', function (AppService, $stateParams) {
+                    return AppService.get({id: $stateParams.id}).$promise;
+                }]
+            }
+        })
+        .state('authority.user-list', {
             url: '/user-list?page&sort&login',
             views: {
                 'content@': {
@@ -719,7 +825,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 }]
             }
         })
-        .state('user-authority.user-list.create', {
+        .state('authority.user-list.create', {
             url: '/create',
             data: {
                 pageTitle: 'Create user',
@@ -756,7 +862,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 });
             }]
         })
-        .state('user-authority.user-list.edit', {
+        .state('authority.user-list.edit', {
             url: '/edit/:id',
             data: {
                 pageTitle: 'Edit user',
@@ -781,7 +887,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 });
             }]
         })
-        .state('user-authority.user-list.view', {
+        .state('authority.user-list.view', {
             url: '/view/:id',
             views: {
                 'content@': {
@@ -799,127 +905,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 }]
             }
         })
-        .state('app', {
-            abstract: true,
-            parent: 'admin',
-            data: {
-                pageTitle: 'Application management'
-            }
-        })
-        .state('app.app-list', {
-            url: '/app-list?page&sort',
-            views: {
-                'content@': {
-                    templateUrl: 'app/views/admin/app/app-list.html',
-                    controller: 'AppListController',
-                    controllerAs: 'vm'
-                }
-            },
-            data: {
-                pageTitle: 'Application list'
-            },
-            params: {
-                page: {
-                    value: '1',
-                    squash: true
-                },
-                sort: {
-                    value: 'name,asc',
-                    squash: true
-                }
-            },
-            resolve: {
-                pagingParams: ['$stateParams', 'PaginationUtils', function ($stateParams, PaginationUtils) {
-                    return {
-                        page: PaginationUtils.parsePage($stateParams.page),
-                        sort: $stateParams.sort,
-                        predicate: PaginationUtils.parsePredicate($stateParams.sort),
-                        ascending: PaginationUtils.parseAscending($stateParams.sort)
-                    };
-                }],
-                criteria: ['$stateParams', function ($stateParams) {
-                    return {};
-                }]
-            }
-        })
-        .state('app.app-list.create', {
-            url: '/create',
-            data: {
-                pageTitle: 'Create application',
-                mode: 'create'
-            },
-            onEnter: ['$state', '$uibModal', function ($state, $uibModal) {
-                $uibModal.open({
-                    templateUrl: 'app/views/admin/app/app-dialog.html',
-                    controller: 'AppDialogController',
-                    controllerAs: 'vm',
-                    backdrop: 'static',
-                    size: 'lg',
-                    resolve: {
-                        entity: {
-                            name: null,
-                            authorities: null,
-                            enabled: true
-                        }
-                    }
-                }).result.then(function () {
-                    $state.go('^', null, {reload: true});
-                }, function () {
-                    $state.go('^');
-                });
-            }]
-        })
-        .state('app.app-list.edit', {
-            url: '/edit/:id',
-            data: {
-                pageTitle: 'Edit application',
-                mode: 'edit'
-            },
-            onEnter: ['$state', '$stateParams', '$uibModal', function ($state, $stateParams, $uibModal) {
-                $uibModal.open({
-                    templateUrl: 'app/views/admin/app/app-dialog.html',
-                    controller: 'AppDialogController',
-                    controllerAs: 'vm',
-                    backdrop: 'static',
-                    size: 'lg',
-                    resolve: {
-                        entity: ['AppService', function (AppService) {
-                            return AppService.get({id: $stateParams.id}).$promise;
-                        }]
-                    }
-                }).result.then(function (result) {
-                    $state.go('^', null, {reload: true});
-                }, function () {
-                    $state.go('^');
-                });
-            }]
-        })
-        .state('app.app-list.view', {
-            url: '/view/:id',
-            views: {
-                'content@': {
-                    templateUrl: 'app/views/admin/app/app-details.html',
-                    controller: 'AppDetailsController',
-                    controllerAs: 'vm'
-                }
-            },
-            data: {
-                pageTitle: 'View application'
-            },
-            resolve: {
-                entity: ['AppService', '$stateParams', function (AppService, $stateParams) {
-                    return AppService.get({id: $stateParams.id}).$promise;
-                }]
-            }
-        })
-        .state('menu-authority', {
-            abstract: true,
-            parent: 'admin',
-            data: {
-                pageTitle: 'Menu management'
-            }
-        })
-        .state('menu-authority.menu-list', {
+        .state('authority.menu-list', {
             url: '/menu-list?page&sort&appId',
             views: {
                 'content@': {
@@ -957,7 +943,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 }]
             }
         })
-        .state('menu-authority.menu-list.create', {
+        .state('authority.menu-list.create', {
             url: '/create',
             data: {
                 pageTitle: 'Create menu',
@@ -990,7 +976,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 });
             }]
         })
-        .state('menu-authority.menu-list.edit', {
+        .state('authority.menu-list.edit', {
             url: '/edit/:id',
             data: {
                 pageTitle: 'Edit menu',
@@ -1015,7 +1001,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 });
             }]
         })
-        .state('menu-authority.authority-menu', {
+        .state('authority.authority-menus', {
             url: '/authority-menu',
             views: {
                 'content@': {
