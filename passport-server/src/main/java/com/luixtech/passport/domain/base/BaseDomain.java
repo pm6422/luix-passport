@@ -3,9 +3,8 @@ package com.luixtech.passport.domain.base;
 import com.luixtech.uidgenerator.core.id.IdGenerator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import org.hibernate.annotations.GenericGenerator;
+import org.apache.commons.lang3.StringUtils;
 
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
@@ -23,12 +22,12 @@ public abstract class BaseDomain implements Serializable {
      */
     @Schema(description = "ID")
     @Id
-//    @GenericGenerator(name = "uuid-hex", strategy = "uuid.hex")
-//    @GeneratedValue(generator = "uuid-hex")
     protected String id;
 
     @PrePersist
     public void prePersist() {
-        id = IdGenerator.generateTraceId();
+        if (StringUtils.isEmpty(id)) {
+            id = IdGenerator.generateTraceId();
+        }
     }
 }

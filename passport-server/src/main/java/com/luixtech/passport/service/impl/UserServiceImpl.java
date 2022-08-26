@@ -66,7 +66,6 @@ public class UserServiceImpl implements UserService {
         domain.setResetKey(RandomStringUtils.randomNumeric(20));
         domain.setResetTime(Instant.now());
         userRepository.save(domain);
-
         log.debug("Created information for user: {}", domain);
         return domain;
     }

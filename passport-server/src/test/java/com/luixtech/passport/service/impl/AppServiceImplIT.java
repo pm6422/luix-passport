@@ -24,11 +24,12 @@ public class AppServiceImplIT {
 
     @Test
     @DisplayName("insert app and authorities")
-    public void insert() throws Exception {
+    public void insert() {
         String appName = IdGenerator.generateTraceId();
         App app = new App();
+        app.setId(IdGenerator.generateTraceId());
         app.setName(appName);
-        app.setAuthorities(Set.of(new AppAuthority(null, "ROLE_ADMIN")));
+        app.setAuthorities(Set.of(new AppAuthority(app.getId(), "ROLE_ADMIN")));
         appService.insert(app);
         appRepository.deleteById(app.getId());
     }

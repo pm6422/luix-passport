@@ -2,9 +2,9 @@ package com.luixtech.passport.service.impl;
 
 import com.luixtech.passport.domain.App;
 import com.luixtech.passport.exception.DataNotFoundException;
-import com.luixtech.passport.repository.AppAuthorityRepository;
 import com.luixtech.passport.repository.AppRepository;
 import com.luixtech.passport.service.AppService;
+import com.luixtech.uidgenerator.core.id.IdGenerator;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,15 +15,15 @@ import org.springframework.transaction.annotation.Transactional;
 @AllArgsConstructor
 @Slf4j
 public class AppServiceImpl implements AppService {
-    private final AppRepository          appRepository;
-    private final AppAuthorityRepository appAuthorityRepository;
+    private final AppRepository appRepository;
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, noRollbackFor = Exception.class)
-    public App insert(App domain) {
+    public void insert(App domain) {
+        domain.setId(IdGenerator.generateTraceId());
+        domain.getAuthorities().forEach(auth -> auth.setAppId(domain.getId()));
         appRepository.save(domain);
         log.debug("Created information for app: {}", domain);
-        return domain;
     }
 
     @Override

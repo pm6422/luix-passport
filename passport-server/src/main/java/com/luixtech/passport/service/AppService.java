@@ -4,7 +4,7 @@ import com.luixtech.passport.domain.App;
 
 public interface AppService {
 
-    App insert(App domain);
+    void insert(App domain);
 
     void update(App domain);
 
