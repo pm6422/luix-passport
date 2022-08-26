@@ -88,11 +88,40 @@
                             </tr>
                             <tr>
                                 <td>Client settings:</td>
-                                <td>{{vm.entity.clientSettings | json}}</td>
+                                <td>
+                                    <ul class="list-unstyled m-b-none">
+                                        requireProofKey: {{vm.entity.clientSettings.requireProofKey}}
+                                    </ul>
+                                    <ul class="list-unstyled m-b-none">
+                                        requireAuthorizationConsent: {{vm.entity.clientSettings.requireAuthorizationConsent}}
+                                    </ul>
+                                    <ul class="list-unstyled m-b-none">
+                                        jwkSetUrl: {{vm.entity.clientSettings.jwkSetUrl}}
+                                    </ul>
+                                    <ul class="list-unstyled m-b-none">
+                                        signingAlgorithm: {{vm.entity.clientSettings.signingAlgorithm}}
+                                    </ul>
+                                </td>
                             </tr>
                             <tr>
                                 <td>Token settings:</td>
-                                <td>{{vm.entity.tokenSettings | json}}</td>
+                                <td>
+                                    <ul class="list-unstyled m-b-none">
+                                        accessTokenTimeToLive: {{vm.entity.tokenSettings.accessTokenTimeToLive}}
+                                    </ul>
+                                    <ul class="list-unstyled m-b-none">
+                                        tokenFormat: {{vm.entity.tokenSettings.tokenFormat}}
+                                    </ul>
+                                    <ul class="list-unstyled m-b-none">
+                                        reuseRefreshTokens: {{vm.entity.tokenSettings.reuseRefreshTokens}}
+                                    </ul>
+                                    <ul class="list-unstyled m-b-none">
+                                        refreshTokenTimeToLive: {{vm.entity.tokenSettings.refreshTokenTimeToLive}}
+                                    </ul>
+                                    <ul class="list-unstyled m-b-none">
+                                        idTokenSignatureAlgorithm: {{vm.entity.tokenSettings.idTokenSignatureAlgorithm}}
+                                    </ul>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
