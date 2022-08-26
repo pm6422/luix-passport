@@ -48,6 +48,14 @@ public class OAuth2ClientController {
                                                    @Parameter(description = "Client ID") @RequestParam(value = "clientId", required = false) String clientId) {
         Page<OAuth2Client> clients = oAuth2ClientService.find(pageable, clientId);
         HttpHeaders headers = generatePageHeaders(clients);
+        clients.getContent().forEach(client -> {
+            client.setClientAuthenticationMethods(null);
+            client.setAuthorizationGrantTypes(null);
+            client.setRedirectUris(null);
+            client.setScopes(null);
+            client.setClientSettings(null);
+            client.setTokenSettings(null);
+        });
         return ResponseEntity.ok().headers(headers).body(clients.getContent());
     }
 }
