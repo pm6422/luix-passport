@@ -25,7 +25,6 @@ import java.util.Locale;
 @AllArgsConstructor
 @Slf4j
 public class MailServiceImpl implements MailService {
-
     private static final String               USER     = "user";
     private static final String               BASE_URL = "baseUrl";
     private final        MailProperties       mailProperties;

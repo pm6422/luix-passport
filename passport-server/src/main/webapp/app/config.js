@@ -1037,7 +1037,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 }
             },
             data: {
-                pageTitle: '单点登录客户端列表'
+                pageTitle: 'OAuth2 client list'
             },
             params: {
                 page: {

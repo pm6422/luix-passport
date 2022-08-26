@@ -23,34 +23,34 @@ public class OAuth2Client extends AbstractAuditableDomain implements Serializabl
     public static final  String                INTERNAL_RAW_CLIENT_SECRET  = "65G-HD9-4PD-j9F-HP5";
     public static final  String                CLIENT_NAME                 = "passport-client";
 
-    @Column(name = "client_id")
+//    @Column(name = "client_id")
     private              String                clientId;
     private              String                clientSecret;
     private              String                clientName;
     private              Instant               clientIdIssuedAt;
     private              Instant               clientSecretExpiresAt;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "client_id", referencedColumnName = "client_id", insertable = false, updatable = false)
+    @JoinColumn(name = "clientId", referencedColumnName = "clientId", insertable = false, updatable = false)
     @ToString.Exclude
     private              Set<ClientAuthMethod> clientAuthenticationMethods = new HashSet<>();
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "client_id", referencedColumnName = "client_id", insertable = false, updatable = false)
+    @JoinColumn(name = "clientId", referencedColumnName = "clientId", insertable = false, updatable = false)
     @ToString.Exclude
     private              Set<OAuth2GrantType>  authorizationGrantTypes     = new HashSet<>();
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "client_id", referencedColumnName = "client_id", insertable = false, updatable = false)
+    @JoinColumn(name = "clientId", referencedColumnName = "clientId", insertable = false, updatable = false)
     @ToString.Exclude
     private              Set<RedirectUri>      redirectUris                = new HashSet<>();
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "client_id", referencedColumnName = "client_id", insertable = false, updatable = false)
+    @JoinColumn(name = "clientId", referencedColumnName = "clientId", insertable = false, updatable = false)
     @ToString.Exclude
     private              Set<OAuth2Scope>      scopes                      = new HashSet<>();
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "client_id", referencedColumnName = "client_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT), insertable = false, updatable = false)
+    @JoinColumn(name = "clientId", referencedColumnName = "clientId", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT), insertable = false, updatable = false)
     @ToString.Exclude
     private              OAuth2ClientSettings  clientSettings;
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "client_id", referencedColumnName = "client_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT), insertable = false, updatable = false)
+    @JoinColumn(name = "clientId", referencedColumnName = "clientId", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT), insertable = false, updatable = false)
     @ToString.Exclude
     private              OAuth2TokenSettings   tokenSettings;
 

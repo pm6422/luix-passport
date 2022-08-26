@@ -3,7 +3,7 @@
         <h2>{{vm.pageTitle}}</h2>
         <ol class="breadcrumb">
             <li>
-                <a href="#">首页</a>
+                <a href="#">Homepage</a>
             </li>
             <li>
                 <a style="pointer-events: none">{{vm.parentPageTitle}}</a>
@@ -19,7 +19,7 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="form-group">
-                    <label class="control-label">客户端ID</label>
+                    <label class="control-label">Client ID</label>
                     <input type="text" name="clientId" class="form-control" ng-model="vm.criteria.clientId"
                            ng-keydown="vm.checkPressEnter($event)">
                 </div>
@@ -41,7 +41,7 @@
                     <th>Authorized Grant Types</th>
                     <th>Scope</th>
                     <th>Authorities</th>
-                    <th>操作</th>
+                    <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -53,11 +53,11 @@
                     <td>{{entity.authorities}}</td>
                     <td>
                         <div class="btn-group">
-                            <button class="btn-white btn btn-xs" ui-sref=".view({id: entity.client_id})">查看
+                            <button class="btn-white btn btn-xs" ui-sref=".view({id: entity.client_id})">View
                             </button>
-                            <button class="btn-white btn btn-xs" ui-sref=".edit({id: entity.client_id})">编辑
+                            <button class="btn-white btn btn-xs" ui-sref=".edit({id: entity.client_id})">Edit
                             </button>
-                            <button class="btn-white btn btn-xs" ng-click="vm.del(entity.client_id)">删除</button>
+                            <button class="btn-white btn btn-xs" ng-click="vm.del(entity.client_id)">Delete</button>
                         </div>
                     </td>
                 </tr>

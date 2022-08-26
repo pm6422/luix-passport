@@ -17,7 +17,7 @@ import java.util.Optional;
 public class OAuth2TokenSettings implements Serializable {
     private static final long     serialVersionUID   = -5553158850748376505L;
     @Id
-    @Column(name = "client_id", insertable = false, updatable = false)
+    @Column(insertable = false, updatable = false)
     private              String   clientId;
     private              Duration accessTokenTimeToLive;
     private              String   tokenFormat;

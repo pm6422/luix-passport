@@ -18,7 +18,7 @@ import java.io.Serializable;
 public class RedirectUri implements Serializable {
     private static final long   serialVersionUID = 4206129330992904722L;
     @Id
-    @Column(name = "client_id", insertable = false, updatable = false)
+    @Column(insertable = false, updatable = false)
     private              String clientId;
     @Id
     private              String redirectUri;

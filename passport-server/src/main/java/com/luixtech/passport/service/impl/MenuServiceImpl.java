@@ -27,10 +27,10 @@ import static com.luixtech.passport.domain.Menu.EMPTY_MENU_ID;
 @Service
 @AllArgsConstructor
 public class MenuServiceImpl implements MenuService {
-    private MenuRepository       menuRepository;
-    private AuthorityService     authorityService;
-    private AuthorityMenuService authorityMenuService;
-    private UserDetailsService   userDetailsService;
+    private final MenuRepository       menuRepository;
+    private final AuthorityService     authorityService;
+    private final AuthorityMenuService authorityMenuService;
+    private final UserDetailsService   userDetailsService;
 
     @Override
     public Page<Menu> find(Pageable pageable, String appId) {

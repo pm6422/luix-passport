@@ -18,7 +18,7 @@ import java.io.Serializable;
 public class OAuth2Scope implements Serializable {
     private static final long   serialVersionUID = -706216766442096613L;
     @Id
-    @Column(name = "client_id", insertable = false, updatable = false)
+    @Column(insertable = false, updatable = false)
     private              String clientId;
     @Id
     private              String scope;

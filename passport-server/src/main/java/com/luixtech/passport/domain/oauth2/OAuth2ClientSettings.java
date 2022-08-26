@@ -21,7 +21,7 @@ import java.io.Serializable;
 public class OAuth2ClientSettings implements Serializable {
     private static final long    serialVersionUID = -5191372174843198204L;
     @Id
-    @Column(name = "client_id", insertable = false, updatable = false)
+    @Column(insertable = false, updatable = false)
     private              String  clientId;
     private              boolean requireProofKey;
     private              boolean requireAuthorizationConsent;

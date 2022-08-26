@@ -19,7 +19,7 @@ import java.io.Serializable;
 public class OAuth2GrantType implements Serializable {
     private static final long   serialVersionUID = 6668862096580386130L;
     @Id
-    @Column(name = "client_id", insertable = false, updatable = false)
+    @Column(insertable = false, updatable = false)
     private              String clientId;
     @Id
     private              String grantTypeName;
