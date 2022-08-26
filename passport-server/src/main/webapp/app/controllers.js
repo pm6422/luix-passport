@@ -2067,7 +2067,6 @@ function AuthorityMenuController($state, AuthorityMenuService, AppService) {
         if (vm.criteria.appId && vm.criteria.authorityName) {
             var menuIds = getAllCheckIds(vm.allMenus, []);
             AuthorityMenuService.update({
-                    appId: vm.criteria.appId,
                     authorityName: vm.criteria.authorityName,
                     menuIds: menuIds
                 },

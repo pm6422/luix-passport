@@ -12,10 +12,6 @@ import java.util.List;
 public class AuthorityMenusDTO implements Serializable {
     private static final long serialVersionUID = -3119877507448443380L;
 
-    @Schema(description = "application id")
-    @NotNull
-    private String appId;
-
     @Schema(description = "authority name")
     @NotNull
     private String authorityName;
