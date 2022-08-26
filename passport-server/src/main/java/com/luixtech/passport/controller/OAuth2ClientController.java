@@ -47,10 +47,10 @@ public class OAuth2ClientController {
     @GetMapping("/api/oauth2-clients")
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<List<OAuth2Client>> find(@ParameterObject Pageable pageable,
-                                                   @Parameter(description = "Client ID") @RequestParam(value = "clientId", required = false) String clientId) {
-        Page<OAuth2Client> clients = oAuth2ClientService.find(pageable, clientId);
-        HttpHeaders headers = generatePageHeaders(clients);
-        return ResponseEntity.ok().headers(headers).body(clients.getContent());
+                                                   @Parameter(description = "ID") @RequestParam(value = "id", required = false) String id) {
+        Page<OAuth2Client> domains = oAuth2ClientService.find(pageable, id);
+        HttpHeaders headers = generatePageHeaders(domains);
+        return ResponseEntity.ok().headers(headers).body(domains.getContent());
     }
 
     @Operation(summary = "find oauth2 client by ID")
