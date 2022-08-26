@@ -322,10 +322,10 @@
             <column name="client_id" type="varchar(100)">
                 <constraints unique="true" nullable="false"/>
             </column>
-            <column name="client_name" type="varchar(200)"/>
             <column name="client_secret" type="varchar(200)"/>
             <column name="client_secret_expires_at" type="timestamp"/>
             <column name="client_id_issued_at" type="timestamp"/>
+            <column name="remarks" type="varchar(200)"/>
             <column name="created_by" type="varchar(50)">
                 <constraints nullable="false"/>
             </column>

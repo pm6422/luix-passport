@@ -1,10 +1,10 @@
 package com.luixtech.passport.domain.oauth2;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.luixtech.passport.domain.base.AbstractAuditableDomain;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import com.luixtech.passport.domain.base.AbstractAuditableDomain;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 
@@ -23,13 +23,12 @@ public class OAuth2Client extends AbstractAuditableDomain implements Serializabl
     public static final  String                AUTH_CODE_CLIENT_ID         = "login-client";
     public static final  String                INTERNAL_RAW_CLIENT_SECRET  = "65G-HD9-4PD-j9F-HP5";
     public static final  String                CLIENT_NAME                 = "passport-client";
-
     private              String                clientId;
     @JsonIgnore
     private              String                clientSecret;
-    private              String                clientName;
     private              Instant               clientIdIssuedAt;
     private              Instant               clientSecretExpiresAt;
+    private              String                remarks;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "clientId", referencedColumnName = "clientId", insertable = false, updatable = false)
     @ToString.Exclude
@@ -69,7 +68,7 @@ public class OAuth2Client extends AbstractAuditableDomain implements Serializabl
         oAuth2Client.setClientIdIssuedAt(registeredClient.getClientIdIssuedAt());
         // Ignore clientSecret clientSecretExpiresAt
         oAuth2Client.setClientSecret(registeredClient.getClientSecret());
-        oAuth2Client.setClientName(registeredClient.getClientName());
+        oAuth2Client.setRemarks(registeredClient.getClientName());
 
         oAuth2Client.setClientAuthenticationMethods(registeredClient.getClientAuthenticationMethods()
                 .stream()
@@ -132,7 +131,7 @@ public class OAuth2Client extends AbstractAuditableDomain implements Serializabl
                 .clientSecret(this.clientSecret)
                 .clientIdIssuedAt(this.clientIdIssuedAt)
                 .clientSecretExpiresAt(this.clientSecretExpiresAt)
-                .clientName(this.clientName)
+                .clientName(this.remarks)
                 .clientAuthenticationMethods(clientAuthenticationMethodSet ->
                         clientAuthenticationMethodSet.addAll(clientAuthMethods.stream()
                                 .map(ClientAuthMethod::toAuthenticationMethod)

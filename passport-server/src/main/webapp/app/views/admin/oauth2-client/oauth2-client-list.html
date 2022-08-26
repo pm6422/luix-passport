@@ -37,9 +37,9 @@
                     <th sort-by-directive="id"><span>ID</span> <span class="fa fa-sort"></span>
                     <th sort-by-directive="clientId"><span>Client ID</span> <span class="fa fa-sort"></span>
                     </th>
-                    <th sort-by-directive="clientName"><span>Client name</span> <span class="fa fa-sort"></span></th>
                     <th>Client ID issued at</th>
                     <th>Client secret expires at</th>
+                    <th>Remarks</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -47,9 +47,9 @@
                 <tr ng-repeat="entity in vm.entities track by entity.id">
                     <td>{{entity.id}}</td>
                     <td><a ui-sref=".view({id: entity.id})">{{entity.clientId}}</a></td>
-                    <td>{{entity.clientName}}</td>
                     <td>{{entity.clientIdIssuedAt | date:'yyyy/MM/dd HH:mm:ss'}}</td>
                     <td>{{entity.clientSecretExpiresAt | date:'yyyy/MM/dd HH:mm:ss'}}</td>
+                    <td>{{entity.remarks}}</td>
                     <td>
                         <div class="btn-group">
                             <button class="btn-white btn btn-xs" ui-sref=".view({id: entity.id})">View
