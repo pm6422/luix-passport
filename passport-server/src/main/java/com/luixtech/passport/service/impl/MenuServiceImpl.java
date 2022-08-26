@@ -1,7 +1,5 @@
 package com.luixtech.passport.service.impl;
 
-import lombok.AllArgsConstructor;
-import org.apache.commons.collections4.CollectionUtils;
 import com.luixtech.passport.config.oauth2.SecurityUtils;
 import com.luixtech.passport.domain.Menu;
 import com.luixtech.passport.exception.DataNotFoundException;
@@ -9,6 +7,8 @@ import com.luixtech.passport.repository.MenuRepository;
 import com.luixtech.passport.service.AuthorityMenuService;
 import com.luixtech.passport.service.AuthorityService;
 import com.luixtech.passport.service.MenuService;
+import lombok.AllArgsConstructor;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
@@ -44,7 +44,7 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public List<Menu> getUserAuthorityLinks(String appName) {
-        Set<String> adminMenuIds = getAdminMenuIds(getEnabledUserAuthorities());
+        Set<String> adminMenuIds = getMenuIds(getEnabledUserAuthorities());
         if (CollectionUtils.isEmpty(adminMenuIds)) {
             return Collections.emptyList();
         }
@@ -54,7 +54,7 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public List<Menu> getUserAuthorityMenus(String appName) {
-        Set<String> adminMenuIds = getAdminMenuIds(getEnabledUserAuthorities());
+        Set<String> adminMenuIds = getMenuIds(getEnabledUserAuthorities());
         if (CollectionUtils.isEmpty(adminMenuIds)) {
             return Collections.emptyList();
         }
@@ -64,16 +64,15 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public List<Menu> getAuthorityMenus(String appId, String authorityName) {
-        Set<String> authorityAdminMenuIds = getAdminMenuIds(Collections.singletonList(authorityName));
-        if (CollectionUtils.isEmpty(authorityAdminMenuIds)) {
-            return Collections.emptyList();
-        }
+        Set<String> authorityMenuIds = getMenuIds(Collections.singletonList(authorityName));
         // 检索所有菜单并将已赋权菜单的checked字段设置为true
-        List<Menu> allMenus = menuRepository.findByAppId(appId).stream().peek(menu -> {
-            if (authorityAdminMenuIds.contains(menu.getId())) {
-                menu.setChecked(true);
-            }
-        }).collect(Collectors.toList());
+        List<Menu> allMenus = menuRepository.findByAppId(appId)
+                .stream()
+                .peek(menu -> {
+                    if (authorityMenuIds.contains(menu.getId())) {
+                        menu.setChecked(true);
+                    }
+                }).collect(Collectors.toList());
         return convertToTree(allMenus);
     }
 
@@ -85,7 +84,7 @@ public class MenuServiceImpl implements MenuService {
                 .filter(allEnabledAuthorities::contains).collect(Collectors.toList());
     }
 
-    private Set<String> getAdminMenuIds(List<String> authorityNames) {
+    private Set<String> getMenuIds(List<String> authorityNames) {
         if (CollectionUtils.isEmpty(authorityNames)) {
             return Collections.emptySet();
         }
