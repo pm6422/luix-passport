@@ -12,9 +12,9 @@ import java.util.List;
 public class AuthorityMenusDTO implements Serializable {
     private static final long serialVersionUID = -3119877507448443380L;
 
-    @Schema(description = "application name")
+    @Schema(description = "application id")
     @NotNull
-    private String appName;
+    private String appId;
 
     @Schema(description = "authority name")
     @NotNull

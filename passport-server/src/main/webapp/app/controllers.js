@@ -2025,7 +2025,7 @@ function MenuDialogController($state, $stateParams, $uibModalInstance, MenuServi
 /**
  * AuthorityMenuController
  */
-function AuthorityMenuController($state, AuthorityMenuService, AppService, AppService) {
+function AuthorityMenuController($state, AuthorityMenuService, AppService) {
     var vm = this;
 
     vm.pageTitle = $state.current.data.pageTitle;

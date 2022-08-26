@@ -1,11 +1,5 @@
 package com.luixtech.passport.controller;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
 import com.luixtech.passport.component.HttpHeaderCreator;
 import com.luixtech.passport.domain.Authority;
 import com.luixtech.passport.domain.AuthorityMenu;
@@ -14,12 +8,17 @@ import com.luixtech.passport.dto.AuthorityMenusDTO;
 import com.luixtech.passport.repository.AuthorityMenuRepository;
 import com.luixtech.passport.repository.MenuRepository;
 import com.luixtech.passport.service.MenuService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -56,14 +55,12 @@ public class AuthorityMenuController {
             @Parameter(description = "new authority menu", required = true) @Valid @RequestBody AuthorityMenusDTO dto) {
         log.debug("REST request to update authority menus: {}", dto);
         // 删除当前权限下的所有菜单
-        Set<String> appAdminMenuIds = menuRepository.findByAppName(dto.getAppName()).stream().map(Menu::getId)
-                .collect(Collectors.toSet());
-        authorityMenuRepository.deleteByAuthorityNameAndMenuIdIn(dto.getAuthorityName(),
-                new ArrayList<>(appAdminMenuIds));
+        authorityMenuRepository.deleteByAuthorityNameAndMenuIdIn(dto.getAuthorityName(), dto.getMenuIds());
 
         // 构建权限映射集合
         if (CollectionUtils.isNotEmpty(dto.getMenuIds())) {
-            List<AuthorityMenu> adminAuthorityMenus = dto.getMenuIds().stream()
+            List<AuthorityMenu> adminAuthorityMenus = dto.getMenuIds()
+                    .stream()
                     .map(adminMenuId -> new AuthorityMenu(dto.getAuthorityName(), adminMenuId))
                     .collect(Collectors.toList());
             // 批量插入
