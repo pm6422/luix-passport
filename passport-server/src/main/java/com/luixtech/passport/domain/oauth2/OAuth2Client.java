@@ -1,5 +1,6 @@
 package com.luixtech.passport.domain.oauth2;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -24,6 +25,7 @@ public class OAuth2Client extends AbstractAuditableDomain implements Serializabl
     public static final  String                CLIENT_NAME                 = "passport-client";
 
     private              String                clientId;
+    @JsonIgnore
     private              String                clientSecret;
     private              String                clientName;
     private              Instant               clientIdIssuedAt;

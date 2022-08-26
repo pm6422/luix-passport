@@ -106,6 +106,9 @@ spring:
         password: LoU-UHR-9dH-8G9-F3G
     banner:
         location: classpath:config/banner-company.txt
+    jackson:
+        serialization:
+            fail-on-empty-beans: false
     data:
         jpa:
             repositories:

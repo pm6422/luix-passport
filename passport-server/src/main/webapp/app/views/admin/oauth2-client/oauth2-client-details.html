@@ -3,7 +3,7 @@
         <h2>{{vm.pageTitle}}</h2>
         <ol class="breadcrumb">
             <li>
-                <a href="#">首页</a>
+                <a href="#">Homepage</a>
             </li>
             <li>
                 <a style="pointer-events: none">{{vm.grandfatherPageTitle}}</a>
@@ -25,88 +25,80 @@
                     <table class="table table-bordered">
                         <thead>
                         <tr>
-                            <th>参数名称</th>
-                            <th>参数值</th>
+                            <th>Key</th>
+                            <th>Value</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>Client ID:</td>
-                            <td>{{vm.entity.client_id}}</td>
-                        </tr>
-                        <tr>
-                            <td>Resource IDs:</td>
-                            <td>{{vm.entity.resource_ids}}</td>
-                        </tr>
-                        <tr>
-                            <td>Raw Client Secret:</td>
-                            <td>{{vm.entity.raw_client_secret}}</td>
-                        </tr>
-                        <tr>
-                            <td>Client Secret:</td>
-                            <td>{{vm.entity.client_secret}}</td>
-                        </tr>
-                        <tr>
-                            <td>Scope:</td>
-                            <td>
-                                <ul class="list-unstyled m-b-none">
-                                    <li ng-repeat="item in vm.entity.scope"><span>{{item}}</span></li>
-                                </ul>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Auto Approve Scopes:</td>
-                            <td>
-                                <ul class="list-unstyled m-b-none">
-                                    <li ng-repeat="item in vm.entity.autoapprove"><span>{{item}}</span></li>
-                                </ul>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Authorized Grant Types:</td>
-                            <td>
-                                <ul class="list-unstyled m-b-none">
-                                    <li ng-repeat="item in vm.entity.authorized_grant_types"><span>{{item}}</span></li>
-                                </ul>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Web Server Redirect URI:</td>
-                            <td>
-                                <ul class="list-unstyled m-b-none">
-                                    <li ng-repeat="item in vm.entity.redirect_uri"><span>{{item}}</span></li>
-                                </ul>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Authorities:</td>
-                            <td>
-                                <ul class="list-unstyled m-b-none">
-                                    <li ng-repeat="authority in vm.entity.authorities"><span>{{authority}}</span></li>
-                                </ul>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Access Token Validity:</td>
-                            <td>{{vm.entity.access_token_validity}} Seconds (={{vm.entity.access_token_validity/(60 * 60
-                                * 24)}} Days)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Refresh Token Validity:</td>
-                            <td>{{vm.entity.refresh_token_validity}} Seconds (={{vm.entity.refresh_token_validity/(60 *
-                                60 * 24)}} Days)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Additional Information:</td>
-                            <td>{{vm.entity.additional_information}}</td>
-                        </tr>
+                            <tr>
+                                <td>ID:</td>
+                                <td>{{vm.entity.id}}</td>
+                            </tr>
+                            <tr>
+                                <td>Client ID:</td>
+                                <td>{{vm.entity.clientId}}</td>
+                            </tr>
+                            <tr>
+                                <td>Client name:</td>
+                                <td>{{vm.entity.clientName}}</td>
+                            </tr>
+                            <tr>
+                                <td>Client secret:</td>
+                                <td>******</td>
+                            </tr>
+                            <tr>
+                                <td>Client ID issued at:</td>
+                                <td>{{vm.entity.clientIdIssuedAt | date:'yyyy/MM/dd HH:mm:ss'}}</td>
+                            </tr>
+                            <tr>
+                                <td>Client secret expires at:</td>
+                                <td>{{vm.entity.clientSecretExpiresAt | date:'yyyy/MM/dd HH:mm:ss'}}</td>
+                            </tr>
+                            <tr>
+                                <td>Client authentication methods:</td>
+                                <td>
+                                    <ul class="list-unstyled m-b-none">
+                                        <li ng-repeat="item in vm.entity.clientAuthenticationMethods"><span>{{item.clientAuthenticationMethod}}</span></li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Authorization grant types:</td>
+                                <td>
+                                    <ul class="list-unstyled m-b-none">
+                                        <li ng-repeat="item in vm.entity.authorizationGrantTypes"><span>{{item.grantTypeName}}</span></li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Redirect URIs:</td>
+                                <td>
+                                    <ul class="list-unstyled m-b-none">
+                                        <li ng-repeat="item in vm.entity.redirectUris"><span>{{item.redirectUri}}</span></li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Scopes:</td>
+                                <td>
+                                    <ul class="list-unstyled m-b-none">
+                                        <li ng-repeat="item in vm.entity.scopes"><span>scope: {{item.scope}}, description: {{item.description}}</span></li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Client settings:</td>
+                                <td>{{vm.entity.clientSettings | json}}</td>
+                            </tr>
+                            <tr>
+                                <td>Token settings:</td>
+                                <td>{{vm.entity.tokenSettings | json}}</td>
+                            </tr>
                         </tbody>
                     </table>
                     <div class="text-right">
                         <button type="button" class="btn btn-default btn-sm" ui-sref="^">
-                            <span class="fa fa-arrow-left"></span>&nbsp;<span>返回</span>
+                            <span class="fa fa-arrow-left"></span>&nbsp;<span>Back</span>
                         </button>
                     </div>
                 </div>

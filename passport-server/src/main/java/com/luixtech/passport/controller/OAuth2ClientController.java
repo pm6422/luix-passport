@@ -3,6 +3,7 @@ package com.luixtech.passport.controller;
 import com.luixtech.passport.component.HttpHeaderCreator;
 import com.luixtech.passport.domain.Authority;
 import com.luixtech.passport.domain.oauth2.OAuth2Client;
+import com.luixtech.passport.exception.DataNotFoundException;
 import com.luixtech.passport.service.OAuth2ClientService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -18,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -57,5 +59,14 @@ public class OAuth2ClientController {
             client.setTokenSettings(null);
         });
         return ResponseEntity.ok().headers(headers).body(clients.getContent());
+    }
+
+    @Operation(summary = "find oauth2 client by ID")
+    @GetMapping("/api/oauth2-clients/{id}")
+    @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
+    public ResponseEntity<OAuth2Client> findById(
+            @Parameter(description = "客户端ID", required = true) @PathVariable String id) {
+        OAuth2Client domain = oAuth2ClientService.findById(id).orElseThrow(() -> new DataNotFoundException(id));
+        return ResponseEntity.ok(domain);
     }
 }

@@ -1068,7 +1068,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
         .state('security.oauth2-client-list.create', {
             url: '/create',
             data: {
-                pageTitle: '新建单点登录客户端信息',
+                pageTitle: 'Create OAuth2 client',
                 mode: 'create'
             },
             onEnter: ['$state', '$uibModal', function ($state, $uibModal) {
@@ -1103,7 +1103,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
         .state('security.oauth2-client-list.edit', {
             url: '/edit/:id',
             data: {
-                pageTitle: '编辑单点登录客户端信息',
+                pageTitle: 'Edit OAuth2 client',
                 mode: 'edit'
             },
             onEnter: ['$state', '$stateParams', '$uibModal', function ($state, $stateParams, $uibModal) {
@@ -1135,7 +1135,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 }
             },
             data: {
-                pageTitle: '查看单点登录客户端信息'
+                pageTitle: 'View OAuth2 client'
             },
             resolve: {
                 entity: ['OAuth2ClientService', '$stateParams', function (OAuth2ClientService, $stateParams) {

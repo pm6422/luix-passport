@@ -9,6 +9,10 @@ import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -24,5 +28,11 @@ public class OAuth2ClientServiceImpl implements OAuth2ClientService {
         client.setClientId(clientId);
         Example<OAuth2Client> queryExample = Example.of(client, matcher);
         return oAuth2ClientRepository.findAll(queryExample, pageable);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true, noRollbackFor = Exception.class)
+    public Optional<OAuth2Client> findById(String id) {
+        return oAuth2ClientRepository.findById(id);
     }
 }
