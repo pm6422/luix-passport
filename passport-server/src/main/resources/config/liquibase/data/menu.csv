@@ -6,4 +6,4 @@ id;app_id;app_name;code;text;depth;path;sequence;parent_id;enabled;created_by;cr
 15;11;passport-server;menu-list;Menu list;2;authority.menu-list;104;11;true;system;now;system;now
 16;11;passport-server;authority-menus;Authority menus;2;authority.authority-menus;105;11;true;system;now;system;now
 17;11;passport-server;security;Security;1;security;200;0;true;system;now;system;now
-18;11;passport-server;oauth2-client-list;OAuth2 client;2;security.oauth2-client-list;201;17;true;system;now;system;now
+18;11;passport-server;oauth2-client-list;OAuth2 client list;2;security.oauth2-client-list;201;17;true;system;now;system;now
