@@ -30,6 +30,4 @@ public interface UserService {
     User requestPasswordReset(String email, String resetKey);
 
     User completePasswordReset(String newRawPassword, String resetKey);
-
-    void deleteByUsername(String username);
 }

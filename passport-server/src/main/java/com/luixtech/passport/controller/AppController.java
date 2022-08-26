@@ -4,7 +4,6 @@ import com.luixtech.passport.component.HttpHeaderCreator;
 import com.luixtech.passport.domain.App;
 import com.luixtech.passport.domain.Authority;
 import com.luixtech.passport.exception.DataNotFoundException;
-import com.luixtech.passport.repository.AppAuthorityRepository;
 import com.luixtech.passport.repository.AppRepository;
 import com.luixtech.passport.service.AppService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,7 +34,6 @@ import static com.luixtech.passport.utils.HttpHeaderUtils.generatePageHeaders;
 @Slf4j
 public class AppController {
     private final AppRepository          appRepository;
-    private final AppAuthorityRepository appAuthorityRepository;
     private final AppService             appService;
     private final HttpHeaderCreator      httpHeaderCreator;
 
@@ -81,7 +79,6 @@ public class AppController {
         log.debug("REST request to delete app: {}", id);
         appRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
         appRepository.deleteById(id);
-        appAuthorityRepository.deleteByAppId(id);
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1003", id)).build();
     }
 }

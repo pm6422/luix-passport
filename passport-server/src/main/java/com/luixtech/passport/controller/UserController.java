@@ -98,13 +98,13 @@ public class UserController {
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1002", domain.getUsername())).build();
     }
 
-    @Operation(summary = "delete user by username", description = "the data may be referenced by other data, and some problems may occur after deletion")
-    @DeleteMapping("/api/users/{username:[a-zA-Z0-9-]+}")
+    @Operation(summary = "delete user by id", description = "the data may be referenced by other data, and some problems may occur after deletion")
+    @DeleteMapping("/api/users/{id}")
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
-    public ResponseEntity<Void> delete(@Parameter(description = "username", required = true) @PathVariable String username) {
-        log.debug("REST request to delete user: {}", username);
-        userService.deleteByUsername(username);
-        return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1003", username)).build();
+    public ResponseEntity<Void> delete(@Parameter(description = "ID", required = true) @PathVariable String id) {
+        log.debug("REST request to delete user: {}", id);
+        userRepository.deleteById(id);
+        return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1003", id)).build();
     }
 
     @Operation(summary = "reset password")

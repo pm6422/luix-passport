@@ -6,7 +6,6 @@ import com.luixtech.passport.domain.User;
 import com.luixtech.passport.dto.UsernameAndPasswordDTO;
 import com.luixtech.passport.exception.DataNotFoundException;
 import com.luixtech.passport.exception.DuplicationException;
-import com.luixtech.passport.repository.UserAuthorityRepository;
 import com.luixtech.passport.repository.UserRepository;
 import com.luixtech.passport.service.UserService;
 import com.luixtech.uidgenerator.core.id.IdGenerator;
@@ -31,10 +30,9 @@ import java.util.concurrent.TimeUnit;
 @AllArgsConstructor
 @Slf4j
 public class UserServiceImpl implements UserService {
-    private final UserRepository          userRepository;
-    private final UserAuthorityRepository userAuthorityRepository;
-    private final PasswordEncoder         passwordEncoder;
-    private final MessageCreator          messageCreator;
+    private final UserRepository  userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final MessageCreator  messageCreator;
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, noRollbackFor = Exception.class)
@@ -173,13 +171,5 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
         log.debug("Reset user password for reset key {}", resetKey);
         return user;
-    }
-
-    @Override
-    @Transactional(propagation = Propagation.REQUIRED, noRollbackFor = Exception.class)
-    public void deleteByUsername(String username) {
-        User user = findOneByUsername(username);
-        userRepository.deleteById(user.getId());
-        userAuthorityRepository.deleteByUserId(user.getId());
     }
 }

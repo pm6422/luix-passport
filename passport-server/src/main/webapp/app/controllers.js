@@ -1626,10 +1626,10 @@ function UserListController($state, AlertUtils, ParseLinksUtils, PAGINATION_CONS
             });
     }
 
-    function del(username) {
+    function del(id) {
         AlertUtils.createDeleteConfirmation('The data may be referenced by other data, and there may be some problems after deletion, are you sure to delete?', function (isConfirm) {
             if (isConfirm) {
-                UserService.del({username: username},
+                UserService.del({id: id},
                     function () {
                         vm.loadAll();
                     },
