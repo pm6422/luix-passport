@@ -7,17 +7,26 @@
     <div class="modal-body">
         <div class="form-group">
             <label class="control-label">Client ID</label>
-            <input type="text" class="form-control" name="clientId" ng-model="vm.entity.client_id" ng-maxlength="50"
+            <input type="text" class="form-control" name="clientId" ng-model="vm.entity.clientId" ng-maxlength="50"
                    ng-disabled="vm.mode == 'edit'">
             <div ng-show="editForm.clientId.$invalid">
                 <p class="help-block" ng-show="editForm.clientId.$error.maxlength">
-                    <small>最大长度为50个字符</small>
+                    <small>Max length: 50</small>
                 </p>
             </div>
             <div>
                 <p class="label label-warning" ng-show="vm.mode == 'create'">
                     <span class="fa fa-exclamation-circle" aria-hidden="true"></span>
-                    该字段输入时则使用指定的值，未输入时则使用系统自动生成值
+                    Leave blank to generate automatically
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Client name</label>
+            <input type="text" class="form-control" name="clientName" ng-model="vm.entity.clientName" ng-maxlength="50">
+            <div ng-show="editForm.clientName.$invalid">
+                <p class="help-block" ng-show="editForm.clientName.$error.maxlength">
+                    <small>Max length: 50</small>
                 </p>
             </div>
         </div>
