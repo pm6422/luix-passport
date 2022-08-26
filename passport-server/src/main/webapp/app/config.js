@@ -1045,7 +1045,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                     squash: true
                 },
                 sort: {
-                    value: 'client_id,asc',
+                    value: 'clientId,asc',
                     squash: true
                 }
             },

@@ -2131,9 +2131,9 @@ function OAuth2ClientListController($state, AlertUtils, ParseLinksUtils, PAGINAT
 
     function sort() {
         var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
-        if (vm.predicate !== 'client_id') {
+        if (vm.predicate !== 'clientId') {
             // default sort column
-            result.push('client_id,asc');
+            result.push('clientId,asc');
         }
         return result;
     }

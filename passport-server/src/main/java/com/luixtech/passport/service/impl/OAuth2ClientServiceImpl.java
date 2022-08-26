@@ -20,9 +20,9 @@ public class OAuth2ClientServiceImpl implements OAuth2ClientService {
     public Page<OAuth2Client> find(Pageable pageable, String clientId) {
         // Ignore query parameter if it has a null value
         ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreNullValues();
-        OAuth2Client oAuth2Client = new OAuth2Client();
-        oAuth2Client.setClientId(clientId);
-        Example<OAuth2Client> queryExample = Example.of(oAuth2Client, matcher);
+        OAuth2Client client = new OAuth2Client();
+        client.setClientId(clientId);
+        Example<OAuth2Client> queryExample = Example.of(client, matcher);
         return oAuth2ClientRepository.findAll(queryExample, pageable);
     }
 }
