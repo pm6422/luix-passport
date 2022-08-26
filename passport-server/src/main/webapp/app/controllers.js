@@ -1789,10 +1789,10 @@ function AppListController($state, AlertUtils, ParseLinksUtils, PAGINATION_CONST
             });
     }
 
-    function del(name) {
+    function del(id) {
         AlertUtils.createDeleteConfirmation('The data may be referenced by other data, and there may be some problems after deletion, are you sure to delete?', function (isConfirm) {
             if (isConfirm) {
-                AppService.del({name: name},
+                AppService.del({id: id},
                     function () {
                         vm.loadAll();
                     },
