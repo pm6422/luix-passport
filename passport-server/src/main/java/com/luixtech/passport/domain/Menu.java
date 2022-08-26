@@ -42,7 +42,7 @@ public class Menu extends AbstractAuditableDomain implements Serializable {
     @Schema(required = true)
     @NotNull
     @Size(min = 1, max = 30)
-    private String name;
+    private String text;
 
     @Schema(required = true)
     @Min(1)
@@ -70,12 +70,12 @@ public class Menu extends AbstractAuditableDomain implements Serializable {
     @Transient
     private List<Menu> children;
 
-    public Menu(String appId, String code, String name, Integer depth, String path,
+    public Menu(String appId, String code, String text, Integer depth, String path,
                 Integer sequence, String parentId) {
         super();
         this.appId = appId;
         this.code = code;
-        this.name = name;
+        this.text = text;
         this.depth = depth;
         this.path = path;
         this.sequence = sequence;

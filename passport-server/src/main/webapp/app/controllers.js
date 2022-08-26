@@ -1976,9 +1976,9 @@ function MenuDialogController($state, $stateParams, $uibModalInstance, MenuServi
 
     function save() {
         vm.isSaving = true;
-        vm.entity.level = 1;
+        vm.entity.depth = 1;
         if (vm.entity.parentId) {
-            vm.entity.level = 2;
+            vm.entity.depth = 2;
         }
         if (vm.mode == 'edit') {
             MenuService.update(vm.entity, onSaveSuccess, onSaveError);
@@ -1989,7 +1989,7 @@ function MenuDialogController($state, $stateParams, $uibModalInstance, MenuServi
 
     function searchParentMenus() {
         if (vm.entity && vm.entity.appName) {
-            vm.parentMenus = MenuService.queryParents({appName: vm.entity.appName, level: 1});
+            vm.parentMenus = MenuService.queryParents({appName: vm.entity.appName, depth: 1});
         }
         else {
             vm.parentMenus = [];

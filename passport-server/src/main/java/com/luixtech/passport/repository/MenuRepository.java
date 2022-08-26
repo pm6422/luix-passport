@@ -22,7 +22,7 @@ public interface MenuRepository extends JpaRepository<Menu, String> {
 
     List<Menu> findByAppName(String appId);
 
-    List<Menu> findByAppIdAndDepth(String appId, Integer depth);
+    List<Menu> findByAppNameAndDepth(String appId, Integer depth);
 
     List<Menu> findByAppIdAndDepthOrderBySequenceAsc(String appId, Integer depth);
 }

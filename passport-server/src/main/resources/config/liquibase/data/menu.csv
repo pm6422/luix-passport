@@ -1,4 +1,4 @@
-id;app_id;app_name;code;name;depth;path;sequence;parent_id;enabled;created_by;created_time;modified_by;modified_time
+id;app_id;app_name;code;text;depth;path;sequence;parent_id;enabled;created_by;created_time;modified_by;modified_time
 11;11;passport-server;user-authority;User authority;1;user-authority;100;0;true;system;now;system;now
 12;11;passport-server;authority-list;Authority;2;user-authority.authority-list;101;11;true;system;now;system;now
 13;11;passport-server;user-list;User;2;user-authority.user-list;102;11;true;system;now;system;now

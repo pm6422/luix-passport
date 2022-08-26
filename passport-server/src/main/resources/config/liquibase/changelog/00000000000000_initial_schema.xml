@@ -169,7 +169,7 @@
             <column name="code" type="varchar(30)">
                 <constraints unique="true" nullable="false" uniqueConstraintName="ux_menu_code"/>
             </column>
-            <column name="name" type="varchar(30)"/>
+            <column name="text" type="varchar(30)"/>
             <column name="depth" type="int"/>
             <column name="path" type="varchar(200)"/>
             <column name="sequence" type="int"/>

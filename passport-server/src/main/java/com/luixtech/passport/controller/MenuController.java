@@ -104,13 +104,13 @@ public class MenuController {
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1003", menu.getCode())).build();
     }
 
-    @Operation(summary = "find menu by application name and level")
+    @Operation(summary = "find menu by application name and depth")
     @GetMapping("/api/menus/parents")
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<List<Menu>> findParents(
             @Parameter(description = "application name", required = true) @RequestParam(value = "appName") String appName,
-            @Parameter(description = "level", required = true) @RequestParam(value = "level") Integer level) {
-        List<Menu> all = menuRepository.findByAppIdAndDepth(appName, level);
+            @Parameter(description = "depth", required = true) @RequestParam(value = "depth") Integer depth) {
+        List<Menu> all = menuRepository.findByAppNameAndDepth(appName, depth);
         return ResponseEntity.ok(all);
     }
 
