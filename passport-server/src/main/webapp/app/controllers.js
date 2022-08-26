@@ -66,7 +66,7 @@ function MainController($http, $rootScope, $scope, $state, AuthenticationService
     main.selectedLink = null;
     main.selectLink = selectLink;
 
-    // Authenticate user whether has logged in
+    // Authenticate user whether it has logged in
     AuthenticationService.authorize(false, getAccount);
 
     $scope.$on('authenticationSuccess', function () {
@@ -104,7 +104,7 @@ function MainController($http, $rootScope, $scope, $state, AuthenticationService
     }
 
     function selectLink($item, $model, $label, $event) {
-        $state.go(main.selectedLink.url);
+        $state.go(main.selectedLink.path);
     }
 }
 /**

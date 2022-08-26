@@ -11,7 +11,7 @@
             <div class="form-group">
                 <input type="text" id="top-search" name="top-search" placeholder="{{ 'SEARCH' | translate }}"
                        class="form-control" ng-model="main.selectedLink"
-                       uib-typeahead="item as item.name for item in main.links | filter:$viewValue | limitTo:5"
+                       uib-typeahead="item as item.text for item in main.links | filter:$viewValue | limitTo:5"
                        typeahead-on-select="main.selectLink($item, $model, $label, $event)">
             </div>
         </form>
