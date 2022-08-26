@@ -18,12 +18,6 @@ public class OAuth2CustomRegisteredClientRepositoryImpl implements OAuth2CustomR
     private OAuth2ClientRepository oauth2ClientRepository;
 
     @Override
-    public void save(RegisteredClient registeredClient) {
-        Assert.notNull(registeredClient, "registeredClient cannot be null");
-        oauth2ClientRepository.save(OAuth2Client.fromRegisteredClient(registeredClient));
-    }
-
-    @Override
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true, noRollbackFor = Exception.class)
     public RegisteredClient findById(String id) {
         Assert.hasText(id, "id cannot be empty");
@@ -41,11 +35,21 @@ public class OAuth2CustomRegisteredClientRepositoryImpl implements OAuth2CustomR
                 .orElse(null);
     }
 
+    @Override
+    public Page<OAuth2Client> find(Pageable pageable) {
+        return oauth2ClientRepository.findAll(pageable);
+    }
 
     @Override
     public void save(OAuth2Client oauth2Client) {
         oauth2Client.setClientIdIssuedAt(Instant.now());
         oauth2ClientRepository.save(oauth2Client);
+    }
+
+    @Override
+    public void save(RegisteredClient registeredClient) {
+        Assert.notNull(registeredClient, "registeredClient cannot be null");
+        oauth2ClientRepository.save(OAuth2Client.fromRegisteredClient(registeredClient));
     }
 
     @Override
@@ -56,10 +60,5 @@ public class OAuth2CustomRegisteredClientRepositoryImpl implements OAuth2CustomR
         source.setClientSecret(null);
         BeanUtils.copyProperties(source, existingClient);
         oauth2ClientRepository.save(existingClient);
-    }
-
-    @Override
-    public Page<OAuth2Client> find(Pageable pageable) {
-        return oauth2ClientRepository.findAll(pageable);
     }
 }
