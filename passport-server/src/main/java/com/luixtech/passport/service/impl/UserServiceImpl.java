@@ -9,6 +9,7 @@ import com.luixtech.passport.exception.DuplicationException;
 import com.luixtech.passport.repository.UserAuthorityRepository;
 import com.luixtech.passport.repository.UserRepository;
 import com.luixtech.passport.service.UserService;
+import com.luixtech.uidgenerator.core.id.IdGenerator;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -59,12 +60,14 @@ public class UserServiceImpl implements UserService {
             throw new DuplicationException(ImmutableMap.of("mobileNo", domain.getMobileNo()));
         }
 
+        domain.setId(IdGenerator.generateTraceId());
         domain.setUsername(domain.getUsername().toLowerCase());
         domain.setEmail(domain.getEmail().toLowerCase());
         domain.setPasswordHash(passwordEncoder.encode(rawPassword));
         domain.setActivationKey(RandomStringUtils.randomNumeric(20));
         domain.setResetKey(RandomStringUtils.randomNumeric(20));
         domain.setResetTime(Instant.now());
+        domain.getAuthorities().forEach(auth -> auth.setUserId(domain.getId()));
         userRepository.save(domain);
         log.debug("Created information for user: {}", domain);
         return domain;
