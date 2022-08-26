@@ -42,6 +42,7 @@
                     <th sort-by-directive="path"><span>Path</span> <span class="fa fa-sort"></span></th>
                     <th sort-by-directive="depth"><span>Depth</span> <span class="fa fa-sort"></span></th>
                     <th sort-by-directive="sequence"><span>Sequence</span> <span class="fa fa-sort"></span></th>
+                    <th sort-by-directive="enabled"><span>Enabled</span> <span class="fa fa-sort"></span></th>
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -54,6 +55,12 @@
                     <td>{{entity.path}}</td>
                     <td>{{entity.depth}}</td>
                     <td>{{entity.sequence}}</td>
+                    <td>
+                        <span class="label label-danger" ng-click="vm.setEnabled(entity, true)" ng-show="!entity.enabled"
+                                  style="cursor: pointer;">No</span>
+                        <span class="label label-primary" ng-click="vm.setEnabled(entity, false)" ng-show="entity.enabled"
+                              style="cursor: pointer;">Yes</span>
+                    </td>
                     <td>
                         <div class="btn-group">
                             <button class="btn-white btn btn-xs" ui-sref=".edit({id: entity.id})">Edit</button>

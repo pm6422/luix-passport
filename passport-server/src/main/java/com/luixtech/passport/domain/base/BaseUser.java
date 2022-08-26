@@ -78,16 +78,16 @@ public class BaseUser extends AbstractAuditableDomain implements Serializable {
     private Instant resetTime;
 
     @Schema(description = "profile photo enabled")
-    private Boolean profilePhotoEnabled = false;
+    private Boolean profilePhotoEnabled;
 
     @Schema(description = "remarks")
     private String remarks;
 
     @Schema(description = "activated")
-    private Boolean activated = false;
+    private Boolean activated;
 
     @Schema(description = "enabled")
-    private Boolean enabled  =true;
+    private Boolean enabled;
 
     @Schema(description = "authorities")
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)

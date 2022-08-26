@@ -29,7 +29,7 @@ public class App extends AbstractAuditableDomain implements Serializable {
     private String name;
 
     @Schema
-    private Boolean enabled = true;
+    private Boolean enabled;
 
     @Schema(description = "authorities")
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)

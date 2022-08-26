@@ -49,6 +49,10 @@
             </div>
         </div>
         <div class="form-group">
+            <label class="control-label">Path</label>
+            <input type="text" class="form-control" name="path" ng-model="vm.entity.path">
+        </div>
+        <div class="form-group">
             <label class="control-label">Parent menu ID</label>
             <select class="form-control" ng-model="vm.entity.parentId" name="parentId"
                     ng-options="item.id as item.text for item in vm.parentMenus"
@@ -64,10 +68,6 @@
                     Required
                 </p>
             </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label">Path</label>
-            <input type="text" class="form-control" name="path" ng-model="vm.entity.path">
         </div>
     </div>
     <div class="modal-footer">

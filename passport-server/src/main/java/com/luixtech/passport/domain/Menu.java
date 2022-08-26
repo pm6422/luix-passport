@@ -62,6 +62,8 @@ public class Menu extends AbstractAuditableDomain implements Serializable {
     @Schema
     private String parentId;
 
+    private Boolean enabled;
+
     @Schema
     @Transient
     private Boolean checked;

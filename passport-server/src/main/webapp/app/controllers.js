@@ -1872,6 +1872,7 @@ function MenuListController($state, AlertUtils, ParseLinksUtils, PAGINATION_CONS
     vm.loadAll = loadAll;
     vm.loadPage = loadPage;
     vm.checkPressEnter = checkPressEnter;
+    vm.setEnabled = setEnabled;
     vm.page = 1;
     vm.totalItems = null;
     vm.entities = [];
@@ -1929,6 +1930,17 @@ function MenuListController($state, AlertUtils, ParseLinksUtils, PAGINATION_CONS
         }
     }
 
+    function setEnabled(entity, enabled) {
+        entity.enabled = enabled;
+        MenuService.update(entity,
+            function () {
+                vm.loadAll();
+            },
+            function () {
+                entity.enabled = !enabled;
+            });
+    }
+
     function del(id) {
         AlertUtils.createDeleteConfirmation('The data may be referenced by other data, and there may be some problems after deletion, are you sure to delete?', function (isConfirm) {
             if (isConfirm) {
@@ -1977,7 +1989,7 @@ function MenuDialogController($state, $stateParams, $uibModalInstance, MenuServi
     function save() {
         vm.isSaving = true;
         vm.entity.depth = 1;
-        if (vm.entity.parentId) {
+        if (vm.entity.parentId != '0') {
             vm.entity.depth = 2;
         }
         if (vm.mode == 'edit') {

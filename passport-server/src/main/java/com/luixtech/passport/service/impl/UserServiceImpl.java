@@ -36,16 +36,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, noRollbackFor = Exception.class)
-    public void changePassword(UsernameAndPasswordDTO dto) {
-        userRepository.findOneByUsername(dto.getUsername()).ifPresent(user -> {
-            user.setPasswordHash(passwordEncoder.encode(dto.getNewPassword()));
-            userRepository.save(user);
-            log.debug("Changed password for user: {}", user);
-        });
-    }
-
-    @Override
-    @Transactional(propagation = Propagation.REQUIRED, noRollbackFor = Exception.class)
     public User insert(User domain, String rawPassword) {
         Optional<User> existingUser = userRepository.findOneByUsername(domain.getUsername().toLowerCase(Locale.ENGLISH));
         if (existingUser.isPresent()) {
@@ -66,6 +56,10 @@ public class UserServiceImpl implements UserService {
         domain.setResetKey(RandomStringUtils.randomNumeric(20));
         domain.setResetTime(Instant.now());
         domain.getAuthorities().forEach(auth -> auth.setUserId(domain.getId()));
+        domain.setProfilePhotoEnabled(false);
+        domain.setActivated(false);
+        domain.setEnabled(true);
+
         userRepository.save(domain);
         log.debug("Created information for user: {}", domain);
         return domain;
@@ -133,6 +127,16 @@ public class UserServiceImpl implements UserService {
             return userRepository.findAll(pageable);
         }
         return userRepository.findByUsernameOrEmailOrMobileNo(pageable, login, login, login);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, noRollbackFor = Exception.class)
+    public void changePassword(UsernameAndPasswordDTO dto) {
+        userRepository.findOneByUsername(dto.getUsername()).ifPresent(user -> {
+            user.setPasswordHash(passwordEncoder.encode(dto.getNewPassword()));
+            userRepository.save(user);
+            log.debug("Changed password for user: {}", user);
+        });
     }
 
     @Override
