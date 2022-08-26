@@ -5,6 +5,8 @@ import com.luixtech.passport.domain.AuthorityMenu;
 import com.luixtech.passport.repository.AuthorityMenuRepository;
 import com.luixtech.passport.service.AuthorityMenuService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -19,5 +21,11 @@ public class AuthorityMenuServiceImpl implements AuthorityMenuService {
     public Set<String> findAdminMenuIds(List<String> authorityNames) {
         return authorityMenuRepository.findByAuthorityNameIn(authorityNames).stream()
                 .map(AuthorityMenu::getMenuId).collect(Collectors.toSet());
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, noRollbackFor = Exception.class)
+    public void deleteByAuthorityName(String authorityName) {
+        authorityMenuRepository.deleteByAuthorityName(authorityName);
     }
 }

@@ -14,5 +14,5 @@ public interface AuthorityMenuRepository extends JpaRepository<AuthorityMenu, St
 
     List<AuthorityMenu> findByAuthorityNameIn(List<String> authorityNames);
 
-    void deleteByAuthorityNameAndMenuIdIn(String authorityName, List<String> menuIds);
+    void deleteByAuthorityName(String authorityName);
 }

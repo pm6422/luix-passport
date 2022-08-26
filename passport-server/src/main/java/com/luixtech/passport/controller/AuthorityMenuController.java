@@ -6,7 +6,7 @@ import com.luixtech.passport.domain.AuthorityMenu;
 import com.luixtech.passport.domain.Menu;
 import com.luixtech.passport.dto.AuthorityMenusDTO;
 import com.luixtech.passport.repository.AuthorityMenuRepository;
-import com.luixtech.passport.repository.MenuRepository;
+import com.luixtech.passport.service.AuthorityMenuService;
 import com.luixtech.passport.service.MenuService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.luixtech.passport.config.api.SpringDocConfiguration.AUTH;
@@ -34,7 +33,7 @@ import static com.luixtech.passport.config.api.SpringDocConfiguration.AUTH;
 @Slf4j
 public class AuthorityMenuController {
     private final AuthorityMenuRepository authorityMenuRepository;
-    private final MenuRepository          menuRepository;
+    private final AuthorityMenuService    authorityMenuService;
     private final MenuService             menuService;
     private final HttpHeaderCreator       httpHeaderCreator;
 
@@ -55,7 +54,7 @@ public class AuthorityMenuController {
             @Parameter(description = "new authority menu", required = true) @Valid @RequestBody AuthorityMenusDTO dto) {
         log.debug("REST request to update authority menus: {}", dto);
         // 删除当前权限下的所有菜单
-        authorityMenuRepository.deleteByAuthorityNameAndMenuIdIn(dto.getAuthorityName(), dto.getMenuIds());
+        authorityMenuService.deleteByAuthorityName(dto.getAuthorityName());
 
         // 构建权限映射集合
         if (CollectionUtils.isNotEmpty(dto.getMenuIds())) {

@@ -7,4 +7,6 @@ public interface AuthorityMenuService {
 
     Set<String> findAdminMenuIds(List<String> authorityNames);
 
+    void deleteByAuthorityName(String authorityName);
+
 }
