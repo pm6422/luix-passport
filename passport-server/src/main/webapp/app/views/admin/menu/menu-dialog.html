@@ -6,12 +6,12 @@
     <div class="modal-body">
         <div class="form-group">
             <label class="control-label">Application</label>
-            <select class="form-control" ng-model="vm.entity.appName" name="appName" ng-options="item.name as item.name for item in vm.apps"
+            <select class="form-control" ng-model="vm.entity.appId" name="appId" ng-options="item.id as item.name for item in vm.apps"
                     ng-change="vm.searchParentMenus()" required>
                 <option value="">Select...</option>
             </select>
-            <div ng-show="editForm.appName.$invalid">
-                <p class="help-block" ng-show="editForm.appName.$error.required">
+            <div ng-show="editForm.appId.$invalid">
+                <p class="help-block" ng-show="editForm.appId.$error.required">
                     Required
                 </p>
             </div>
@@ -49,16 +49,16 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label">Path</label>
-            <input type="text" class="form-control" name="path" ng-model="vm.entity.path">
-        </div>
-        <div class="form-group">
             <label class="control-label">Parent menu ID</label>
             <select class="form-control" ng-model="vm.entity.parentId" name="parentId"
                     ng-options="item.id as item.text for item in vm.parentMenus"
-                    ng-disabled="vm.entity.appName == null">
+                    ng-disabled="vm.entity.appId == null">
                 <option value="">Select...</option>
             </select>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Path</label>
+            <input type="text" class="form-control" name="path" ng-model="vm.entity.path">
         </div>
         <div class="form-group">
             <label class="control-label">Sequence</label>
@@ -67,6 +67,16 @@
                 <p class="help-block" ng-show="editForm.sequence.$error.required">
                     Required
                 </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Enabled</label>
+            <div class="onoffswitch">
+                <input type="checkbox" id="enabled" ng-model="vm.entity.enabled" class="onoffswitch-checkbox" ng-disabled="vm.entity.appId === null">
+                <label class="onoffswitch-label" for="enabled">
+                    <span class="onoffswitch-inner"></span>
+                    <span class="onoffswitch-switch"></span>
+                </label>
             </div>
         </div>
     </div>

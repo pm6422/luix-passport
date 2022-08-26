@@ -20,9 +20,11 @@ public interface MenuRepository extends JpaRepository<Menu, String> {
 
     List<Menu> findByAppNameAndIdInAndParentIdNotNull(String appId, Set<String> ids);
 
-    List<Menu> findByAppName(String appId);
+    List<Menu> findByAppName(String appName);
 
-    List<Menu> findByAppNameAndDepth(String appId, Integer depth);
+    List<Menu> findByAppId(String appId);
+
+    List<Menu> findByAppIdAndDepth(String appId, Integer depth);
 
     List<Menu> findByAppIdAndDepthOrderBySequenceAsc(String appId, Integer depth);
 }

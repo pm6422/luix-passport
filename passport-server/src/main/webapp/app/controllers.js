@@ -2000,8 +2000,8 @@ function MenuDialogController($state, $stateParams, $uibModalInstance, MenuServi
     }
 
     function searchParentMenus() {
-        if (vm.entity && vm.entity.appName) {
-            vm.parentMenus = MenuService.queryParents({appName: vm.entity.appName, depth: 1});
+        if (vm.entity && vm.entity.appId) {
+            vm.parentMenus = MenuService.queryParents({appId: vm.entity.appId, depth: 1});
         }
         else {
             vm.parentMenus = [];
@@ -2025,7 +2025,7 @@ function MenuDialogController($state, $stateParams, $uibModalInstance, MenuServi
 /**
  * AuthorityMenuController
  */
-function AuthorityMenuController($state, AuthorityMenuService, AppAuthorityService, AppService) {
+function AuthorityMenuController($state, AuthorityMenuService, AppService, AppService) {
     var vm = this;
 
     vm.pageTitle = $state.current.data.pageTitle;
@@ -2039,8 +2039,11 @@ function AuthorityMenuController($state, AuthorityMenuService, AppAuthorityServi
     vm.save = save;
 
     function searchAuthorities() {
-        if (vm.criteria && vm.criteria.appName) {
-            vm.authorities = AppAuthorityService.query({appName: vm.criteria.appName});
+        if (vm.criteria && vm.criteria.appId) {
+            AppService.get({id: vm.criteria.appId},
+                function (result) {
+                    vm.authorities = result.authorities;
+                });
         }
         else {
             vm.authorities = [];
@@ -2051,7 +2054,7 @@ function AuthorityMenuController($state, AuthorityMenuService, AppAuthorityServi
         vm.allMenus = [];
         if (vm.criteria.authorityName) {
             AuthorityMenuService.query({
-                appName: vm.criteria.appName,
+                appId: vm.criteria.appId,
                 authorityName: vm.criteria.authorityName
             }, function (response) {
                 vm.allMenus = response;
@@ -2061,10 +2064,10 @@ function AuthorityMenuController($state, AuthorityMenuService, AppAuthorityServi
 
     function save() {
         vm.isSaving = true;
-        if (vm.criteria.appName && vm.criteria.authorityName) {
+        if (vm.criteria.appId && vm.criteria.authorityName) {
             var menuIds = getAllCheckIds(vm.allMenus, []);
             AuthorityMenuService.update({
-                    appName: vm.criteria.appName,
+                    appId: vm.criteria.appId,
                     authorityName: vm.criteria.authorityName,
                     menuIds: menuIds
                 },

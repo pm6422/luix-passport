@@ -43,9 +43,9 @@ public class AuthorityMenuController {
     @GetMapping("/api/authority-menus")
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<List<Menu>> findAuthorityMenus(
-            @Parameter(description = "application name", required = true) @RequestParam(value = "appName") String appName,
+            @Parameter(description = "application id", required = true) @RequestParam(value = "appId") String appId,
             @Parameter(description = "authority name", required = true) @RequestParam(value = "authorityName") String authorityName) {
-        List<Menu> results = menuService.getAuthorityMenus(appName, authorityName);
+        List<Menu> results = menuService.getAuthorityMenus(appId, authorityName);
         return ResponseEntity.ok(results);
     }
 

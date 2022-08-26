@@ -63,13 +63,13 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public List<Menu> getAuthorityMenus(String appName, String authorityName) {
+    public List<Menu> getAuthorityMenus(String appId, String authorityName) {
         Set<String> authorityAdminMenuIds = getAdminMenuIds(Collections.singletonList(authorityName));
         if (CollectionUtils.isEmpty(authorityAdminMenuIds)) {
             return Collections.emptyList();
         }
         // 检索所有菜单并将已赋权菜单的checked字段设置为true
-        List<Menu> allMenus = menuRepository.findByAppName(appName).stream().peek(menu -> {
+        List<Menu> allMenus = menuRepository.findByAppId(appId).stream().peek(menu -> {
             if (authorityAdminMenuIds.contains(menu.getId())) {
                 menu.setChecked(true);
             }

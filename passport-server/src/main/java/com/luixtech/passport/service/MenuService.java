@@ -14,7 +14,7 @@ public interface MenuService {
 
     List<Menu> getUserAuthorityMenus(String appName);
 
-    List<Menu> getAuthorityMenus(String appName, String authorityName);
+    List<Menu> getAuthorityMenus(String appId, String authorityName);
 
     void moveUp(String id);
 

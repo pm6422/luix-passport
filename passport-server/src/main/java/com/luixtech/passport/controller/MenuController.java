@@ -1,6 +1,15 @@
 package com.luixtech.passport.controller;
 
 import com.google.common.collect.ImmutableMap;
+import com.luixtech.passport.component.HttpHeaderCreator;
+import com.luixtech.passport.domain.App;
+import com.luixtech.passport.domain.Authority;
+import com.luixtech.passport.domain.Menu;
+import com.luixtech.passport.exception.DataNotFoundException;
+import com.luixtech.passport.exception.DuplicationException;
+import com.luixtech.passport.repository.AppRepository;
+import com.luixtech.passport.repository.MenuRepository;
+import com.luixtech.passport.service.MenuService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -9,13 +18,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import com.luixtech.passport.component.HttpHeaderCreator;
-import com.luixtech.passport.domain.Authority;
-import com.luixtech.passport.domain.Menu;
-import com.luixtech.passport.exception.DataNotFoundException;
-import com.luixtech.passport.exception.DuplicationException;
-import com.luixtech.passport.repository.MenuRepository;
-import com.luixtech.passport.service.MenuService;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -46,6 +48,7 @@ import static com.luixtech.passport.utils.HttpHeaderUtils.generatePageHeaders;
 @Slf4j
 public class MenuController {
     private final MenuRepository    menuRepository;
+    private final AppRepository     appRepository;
     private final MenuService       menuService;
     private final HttpHeaderCreator httpHeaderCreator;
 
@@ -53,15 +56,17 @@ public class MenuController {
     @PostMapping("/api/menus")
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<Void> create(
-            @Parameter(description = "menu", required = true) @Valid @RequestBody Menu entity) {
-        log.debug("REST request to create menu: {}", entity);
-        menuRepository.findOneByAppIdAndDepthAndSequence(entity.getAppId(), entity.getDepth(), entity.getSequence())
+            @Parameter(description = "menu", required = true) @Valid @RequestBody Menu domain) {
+        log.debug("REST request to create menu: {}", domain);
+        menuRepository.findOneByAppIdAndDepthAndSequence(domain.getAppId(), domain.getDepth(), domain.getSequence())
                 .ifPresent((existingEntity) -> {
-                    throw new DuplicationException(ImmutableMap.of("appName", entity.getAppId(), "level", entity.getDepth(), "sequence", entity.getSequence()));
+                    throw new DuplicationException(ImmutableMap.of("appName", domain.getAppId(), "level", domain.getDepth(), "sequence", domain.getSequence()));
                 });
-        menuRepository.save(entity);
+        App app = appRepository.findById(domain.getAppId()).orElseThrow(() -> new DataNotFoundException(domain.getAppId()));
+        domain.setAppName(app.getName());
+        menuRepository.save(domain);
         return ResponseEntity.status(HttpStatus.CREATED).headers(
-                        httpHeaderCreator.createSuccessHeader("SM1001", entity.getCode()))
+                        httpHeaderCreator.createSuccessHeader("SM1001", domain.getCode()))
                 .build();
     }
 
@@ -90,6 +95,8 @@ public class MenuController {
             @Parameter(description = "new menu", required = true) @Valid @RequestBody Menu domain) {
         log.debug("REST request to update menu: {}", domain);
         menuRepository.findById(domain.getId()).orElseThrow(() -> new DataNotFoundException(domain.getId()));
+        App app = appRepository.findById(domain.getAppId()).orElseThrow(() -> new DataNotFoundException(domain.getAppId()));
+        domain.setAppName(app.getName());
         menuRepository.save(domain);
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1002", domain.getCode())).build();
     }
@@ -104,14 +111,13 @@ public class MenuController {
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1003", menu.getCode())).build();
     }
 
-    @Operation(summary = "find menu by application name and depth")
+    @Operation(summary = "find parent menus by application id and depth")
     @GetMapping("/api/menus/parents")
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<List<Menu>> findParents(
-            @Parameter(description = "application name", required = true) @RequestParam(value = "appName") String appName,
+            @Parameter(description = "application name", required = true) @RequestParam(value = "appId") String appId,
             @Parameter(description = "depth", required = true) @RequestParam(value = "depth") Integer depth) {
-        List<Menu> all = menuRepository.findByAppNameAndDepth(appName, depth);
-        return ResponseEntity.ok(all);
+        return ResponseEntity.ok(menuRepository.findByAppIdAndDepth(appId, depth));
     }
 
     @Operation(summary = "change-to-higher-order")

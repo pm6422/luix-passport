@@ -973,13 +973,14 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                     resolve: {
                         entity: {
                             id: null,
-                            name: null,
-                            label: null,
-                            level: null,
-                            url: null,
+                            appId: null,
+                            code: null,
+                            text: null,
+                            path: null,
+                            depth: null,
                             sequence: null,
                             parentId: null,
-                            appName: null
+                            enabled: true
                         }
                     }
                 }).result.then(function () {
@@ -1024,7 +1025,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 }
             },
             data: {
-                pageTitle: 'Authority admin menu'
+                pageTitle: 'Authority menus'
             },
             criteria: ['$stateParams', function ($stateParams) {
                 return {
