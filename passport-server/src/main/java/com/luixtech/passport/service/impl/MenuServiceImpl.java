@@ -33,11 +33,11 @@ public class MenuServiceImpl implements MenuService {
     private UserDetailsService   userDetailsService;
 
     @Override
-    public Page<Menu> find(Pageable pageable, String appName) {
+    public Page<Menu> find(Pageable pageable, String appId) {
         // Ignore query parameter if it has a null value
         ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreNullValues();
         Menu menu = new Menu();
-        menu.setAppName(appName);
+        menu.setAppId(appId);
         Example<Menu> queryExample = Example.of(menu, matcher);
         return menuRepository.findAll(queryExample, pageable);
     }

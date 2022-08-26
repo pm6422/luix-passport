@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label">Menu code</label>
+            <label class="control-label">Code</label>
             <input type="text" class="form-control" name="code" ng-model="vm.entity.code"
                    required ng-minlength="1" ng-maxlength="30">
             <div ng-show="editForm.code.$invalid">
@@ -33,17 +33,17 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label">Menu name</label>
-            <input type="text" class="form-control" name="label" ng-model="vm.entity.name"
+            <label class="control-label">Text</label>
+            <input type="text" class="form-control" name="label" ng-model="vm.entity.text"
                    required ng-minlength="1" ng-maxlength="30">
-            <div ng-show="editForm.name.$invalid">
-                <p class="help-block" ng-show="editForm.name.$error.required">
+            <div ng-show="editForm.text.$invalid">
+                <p class="help-block" ng-show="editForm.text.$error.required">
                     Required
                 </p>
-                <p class="help-block" ng-show="editForm.name.$error.minlength">
+                <p class="help-block" ng-show="editForm.text.$error.minlength">
                     Min length: 1
                 </p>
-                <p class="help-block" ng-show="editForm.name.$error.maxlength">
+                <p class="help-block" ng-show="editForm.text.$error.maxlength">
                     Max length: 30
                 </p>
             </div>
@@ -51,7 +51,7 @@
         <div class="form-group">
             <label class="control-label">Parent menu ID</label>
             <select class="form-control" ng-model="vm.entity.parentId" name="parentId"
-                    ng-options="item.id as item.name for item in vm.parentMenus"
+                    ng-options="item.id as item.text for item in vm.parentMenus"
                     ng-disabled="vm.entity.appName == null">
                 <option value="">Select...</option>
             </select>

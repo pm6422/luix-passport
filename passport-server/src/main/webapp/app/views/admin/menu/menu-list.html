@@ -20,7 +20,7 @@
             <div class="col-sm-12">
                 <div class="form-group">
                     <label class="control-label">Application</label>
-                    <select class="form-control" ng-model="vm.criteria.app" ng-options="item.name as item.name for item in vm.apps" ng-change="vm.transition()">
+                    <select class="form-control" ng-model="vm.criteria.appId" ng-options="item.id as item.name for item in vm.apps" ng-change="vm.transition()">
                         <option value="">Select...</option>
                     </select>
                 </div>

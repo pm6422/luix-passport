@@ -920,7 +920,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
             }
         })
         .state('menu-authority.menu-list', {
-            url: '/menu-list?page&sort&app',
+            url: '/menu-list?page&sort&appId',
             views: {
                 'content@': {
                     templateUrl: 'app/views/admin/menu/menu-list.html',
@@ -952,7 +952,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 }],
                 criteria: ['$stateParams', function ($stateParams) {
                     return {
-                        app: $stateParams.app
+                        appId: $stateParams.appId
                     };
                 }]
             }

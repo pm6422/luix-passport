@@ -1891,7 +1891,7 @@ function MenuListController($state, AlertUtils, ParseLinksUtils, PAGINATION_CONS
             page: pagingParams.page - 1,
             size: vm.itemsPerPage,
             sort: sort(),
-            appName: vm.criteria.app
+            appId: vm.criteria.appId
         }, function (result, headers) {
             vm.links = ParseLinksUtils.parse(headers('link'));
             vm.totalItems = headers('X-Total-Count');
@@ -1918,7 +1918,7 @@ function MenuListController($state, AlertUtils, ParseLinksUtils, PAGINATION_CONS
         $state.transitionTo($state.$current, {
             page: vm.page,
             sort: vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc'),
-            app: vm.criteria.app
+            appId: vm.criteria.appId
         });
     }
 
