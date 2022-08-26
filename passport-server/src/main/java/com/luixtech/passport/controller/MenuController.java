@@ -34,10 +34,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.luixtech.passport.config.api.SpringDocConfiguration.AUTH;
+import static com.luixtech.passport.domain.Menu.EMPTY_MENU_ID;
 import static com.luixtech.passport.utils.HttpHeaderUtils.generatePageHeaders;
 
 /**
- * REST controller for managing the admin menu.
+ * REST controller for managing the menu.
  */
 @RestController
 @SecurityRequirement(name = AUTH)
@@ -53,7 +54,7 @@ public class MenuController {
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<Void> create(
             @Parameter(description = "menu", required = true) @Valid @RequestBody Menu entity) {
-        log.debug("REST request to create admin menu: {}", entity);
+        log.debug("REST request to create menu: {}", entity);
         menuRepository.findOneByAppIdAndDepthAndSequence(entity.getAppId(), entity.getDepth(), entity.getSequence())
                 .ifPresent((existingEntity) -> {
                     throw new DuplicationException(ImmutableMap.of("appName", entity.getAppId(), "level", entity.getDepth(), "sequence", entity.getSequence()));
@@ -64,17 +65,17 @@ public class MenuController {
                 .build();
     }
 
-    @Operation(summary = "find admin menu list")
+    @Operation(summary = "find menu list")
     @GetMapping("/api/menus")
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<List<Menu>> find(@ParameterObject Pageable pageable,
                                            @Parameter(description = "application name") @RequestParam(value = "appName", required = false) String appName) {
-        Page<Menu> adminMenus = menuService.find(pageable, appName);
-        HttpHeaders headers = generatePageHeaders(adminMenus);
-        return ResponseEntity.ok().headers(headers).body(adminMenus.getContent());
+        Page<Menu> menus = menuService.find(pageable, appName);
+        HttpHeaders headers = generatePageHeaders(menus);
+        return ResponseEntity.ok().headers(headers).body(menus.getContent());
     }
 
-    @Operation(summary = "find admin menu by ID")
+    @Operation(summary = "find menu by ID")
     @GetMapping("/api/menus/{id}")
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<Menu> findById(@Parameter(description = "ID", required = true) @PathVariable String id) {
@@ -82,28 +83,28 @@ public class MenuController {
         return ResponseEntity.ok(domain);
     }
 
-    @Operation(summary = "update admin menu")
+    @Operation(summary = "update menu")
     @PutMapping("/api/menus")
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<Void> update(
-            @Parameter(description = "new admin menu", required = true) @Valid @RequestBody Menu domain) {
-        log.debug("REST request to update admin menu: {}", domain);
+            @Parameter(description = "new menu", required = true) @Valid @RequestBody Menu domain) {
+        log.debug("REST request to update menu: {}", domain);
         menuRepository.findById(domain.getId()).orElseThrow(() -> new DataNotFoundException(domain.getId()));
         menuRepository.save(domain);
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1002", domain.getCode())).build();
     }
 
-    @Operation(summary = "delete admin menu by ID")
+    @Operation(summary = "delete menu by ID")
     @DeleteMapping("/api/menus/{id}")
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<Void> delete(@Parameter(description = "ID", required = true) @PathVariable String id) {
-        log.debug("REST request to delete admin menu: {}", id);
+        log.debug("REST request to delete menu: {}", id);
         Menu menu = menuRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
         menuRepository.deleteById(id);
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1003", menu.getCode())).build();
     }
 
-    @Operation(summary = "find admin menu by application name and level")
+    @Operation(summary = "find menu by application name and level")
     @GetMapping("/api/menus/parents")
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<List<Menu>> findParents(
@@ -132,7 +133,7 @@ public class MenuController {
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public void copyMenus(@Parameter(description = "source application name", required = true, schema = @Schema(defaultValue = "Passport")) @RequestParam(value = "sourceAppName") String sourceAppName,
                           @Parameter(description = "target application name", required = true) @RequestParam(value = "targetAppName") String targetAppName) {
-        List<Menu> sourceMenus = menuRepository.findByAppId(sourceAppName);
+        List<Menu> sourceMenus = menuRepository.findByAppName(sourceAppName);
         sourceMenus.forEach(menu -> {
             menu.setAppId(targetAppName);
             menu.setId(null);
@@ -150,7 +151,7 @@ public class MenuController {
             if (StringUtils.isNotEmpty(line)) {
                 String[] lineParts = line.split("\t");
                 Menu entity = new Menu(lineParts[0], lineParts[1], lineParts[2],
-                        Integer.parseInt(lineParts[3]), lineParts[4], Integer.parseInt(lineParts[5]), null);
+                        Integer.parseInt(lineParts[3]), lineParts[4], Integer.parseInt(lineParts[5]), EMPTY_MENU_ID);
                 list.add(entity);
             }
         }

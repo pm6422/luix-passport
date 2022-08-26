@@ -22,6 +22,8 @@ import java.util.*;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
+import static com.luixtech.passport.domain.Menu.EMPTY_MENU_ID;
+
 @Service
 @AllArgsConstructor
 public class MenuServiceImpl implements MenuService {
@@ -35,7 +37,7 @@ public class MenuServiceImpl implements MenuService {
         // Ignore query parameter if it has a null value
         ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreNullValues();
         Menu menu = new Menu();
-        menu.setAppId(appName);
+        menu.setAppName(appName);
         Example<Menu> queryExample = Example.of(menu, matcher);
         return menuRepository.findAll(queryExample, pageable);
     }
@@ -47,7 +49,7 @@ public class MenuServiceImpl implements MenuService {
             return Collections.emptyList();
         }
         // 检索二级及以上级别菜单
-        return menuRepository.findByAppIdAndIdInAndParentIdNotNull(appName, adminMenuIds);
+        return menuRepository.findByAppNameAndIdInAndParentIdNotNull(appName, adminMenuIds);
     }
 
     @Override
@@ -56,7 +58,7 @@ public class MenuServiceImpl implements MenuService {
         if (CollectionUtils.isEmpty(adminMenuIds)) {
             return Collections.emptyList();
         }
-        List<Menu> menus = menuRepository.findByAppIdAndIdIn(appName, adminMenuIds);
+        List<Menu> menus = menuRepository.findByAppNameAndIdIn(appName, adminMenuIds);
         return convertToTree(menus);
     }
 
@@ -67,7 +69,7 @@ public class MenuServiceImpl implements MenuService {
             return Collections.emptyList();
         }
         // 检索所有菜单并将已赋权菜单的checked字段设置为true
-        List<Menu> allMenus = menuRepository.findByAppId(appName).stream().peek(menu -> {
+        List<Menu> allMenus = menuRepository.findByAppName(appName).stream().peek(menu -> {
             if (authorityAdminMenuIds.contains(menu.getId())) {
                 menu.setChecked(true);
             }
@@ -91,7 +93,7 @@ public class MenuServiceImpl implements MenuService {
     }
 
     private List<Menu> convertToTree(List<Menu> menus) {
-        return convertToTree(menus, "0");
+        return convertToTree(menus, EMPTY_MENU_ID);
     }
 
     private List<Menu> convertToTree(List<Menu> menus, String parentId) {

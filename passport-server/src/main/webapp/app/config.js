@@ -916,7 +916,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
             abstract: true,
             parent: 'admin',
             data: {
-                pageTitle: 'Menu authority management'
+                pageTitle: 'Menu management'
             }
         })
         .state('menu-authority.menu-list', {
@@ -929,7 +929,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                 }
             },
             data: {
-                pageTitle: 'Menu authority list'
+                pageTitle: 'Menu list'
             },
             params: {
                 page: {

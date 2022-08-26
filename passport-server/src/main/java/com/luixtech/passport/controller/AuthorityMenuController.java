@@ -56,7 +56,7 @@ public class AuthorityMenuController {
             @Parameter(description = "new authority menu", required = true) @Valid @RequestBody AuthorityMenusDTO dto) {
         log.debug("REST request to update authority menus: {}", dto);
         // 删除当前权限下的所有菜单
-        Set<String> appAdminMenuIds = menuRepository.findByAppId(dto.getAppName()).stream().map(Menu::getId)
+        Set<String> appAdminMenuIds = menuRepository.findByAppName(dto.getAppName()).stream().map(Menu::getId)
                 .collect(Collectors.toSet());
         authorityMenuRepository.deleteByAuthorityNameAndMenuIdIn(dto.getAuthorityName(),
                 new ArrayList<>(appAdminMenuIds));

@@ -1,11 +1,11 @@
 package com.luixtech.passport.domain;
 
+import com.luixtech.passport.domain.base.AbstractAuditableDomain;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import com.luixtech.passport.domain.base.AbstractAuditableDomain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,11 +23,14 @@ public class Menu extends AbstractAuditableDomain implements Serializable {
     private static final long   serialVersionUID = 5423774898556939254L;
     public static final  String FIELD_LEVEL      = "level";
     public static final  String FIELD_SEQUENCE   = "sequence";
+    public static final  String EMPTY_MENU_ID    = "0";
 
     @Schema(required = true)
     @NotNull
     @Size(max = 20)
     private String appId;
+
+    private String appName;
 
     @Schema(required = true)
     @NotNull
@@ -49,7 +52,7 @@ public class Menu extends AbstractAuditableDomain implements Serializable {
     @Schema(required = true)
     @NotNull
     @Size(min = 3, max = 200)
-    private String url;
+    private String path;
 
     @Schema(required = true)
     @Min(1)
@@ -67,14 +70,14 @@ public class Menu extends AbstractAuditableDomain implements Serializable {
     @Transient
     private List<Menu> children;
 
-    public Menu(String appId, String code, String name, Integer depth, String url,
+    public Menu(String appId, String code, String name, Integer depth, String path,
                 Integer sequence, String parentId) {
         super();
         this.appId = appId;
         this.code = code;
         this.name = name;
         this.depth = depth;
-        this.url = url;
+        this.path = path;
         this.sequence = sequence;
         this.parentId = parentId;
     }
