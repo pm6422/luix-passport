@@ -51,8 +51,8 @@ public class AppController {
     @GetMapping("/api/apps")
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<List<App>> find(@ParameterObject Pageable pageable) {
-        Page<App> apps = appRepository.findAll(pageable);
-        return ResponseEntity.ok().headers(generatePageHeaders(apps)).body(apps.getContent());
+        Page<App> domains = appRepository.findAll(pageable);
+        return ResponseEntity.ok().headers(generatePageHeaders(domains)).body(domains.getContent());
     }
 
     @Operation(summary = "find application by id")

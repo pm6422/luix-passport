@@ -53,9 +53,9 @@ public class AuthorityController {
     @Operation(summary = "find authority list")
     @GetMapping("/api/authorities")
     public ResponseEntity<List<Authority>> find(@ParameterObject Pageable pageable) {
-        Page<Authority> authorities = authorityRepository.findAll(pageable);
-        HttpHeaders headers = generatePageHeaders(authorities);
-        return ResponseEntity.ok().headers(headers).body(authorities.getContent());
+        Page<Authority> domains = authorityRepository.findAll(pageable);
+        HttpHeaders headers = generatePageHeaders(domains);
+        return ResponseEntity.ok().headers(headers).body(domains.getContent());
     }
 
     @Operation(summary = "find authority by name")

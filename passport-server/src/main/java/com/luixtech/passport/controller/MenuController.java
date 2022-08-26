@@ -75,9 +75,9 @@ public class MenuController {
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<List<Menu>> find(@ParameterObject Pageable pageable,
                                            @Parameter(description = "application id") @RequestParam(value = "appId", required = false) String appId) {
-        Page<Menu> menus = menuService.find(pageable, appId);
-        HttpHeaders headers = generatePageHeaders(menus);
-        return ResponseEntity.ok().headers(headers).body(menus.getContent());
+        Page<Menu> domains = menuService.find(pageable, appId);
+        HttpHeaders headers = generatePageHeaders(domains);
+        return ResponseEntity.ok().headers(headers).body(domains.getContent());
     }
 
     @Operation(summary = "find menu by ID")
