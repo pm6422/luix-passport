@@ -73,8 +73,8 @@ public class UserController {
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<List<User>> find(@ParameterObject Pageable pageable,
                                            @Parameter(description = "username/email/mobile") @RequestParam(value = "login", required = false) String login) {
-        Page<User> users = userService.findByLogin(pageable, login);
-        return ResponseEntity.ok().headers(generatePageHeaders(users)).body(users.getContent());
+        Page<User> domains = userService.findByLogin(pageable, login);
+        return ResponseEntity.ok().headers(generatePageHeaders(domains)).body(domains.getContent());
     }
 
     @Operation(summary = "find user by id")
