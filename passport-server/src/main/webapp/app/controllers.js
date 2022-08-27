@@ -2001,7 +2001,14 @@ function MenuDialogController($state, $stateParams, $uibModalInstance, MenuServi
 
     function searchParentMenus() {
         if (vm.entity && vm.entity.appId) {
-            vm.parentMenus = MenuService.queryParents({appId: vm.entity.appId, depth: 1});
+            MenuService.query({
+                page: 0,
+                size: 1000,
+                appId: vm.entity.appId,
+                depth: 1
+            }, function (result, headers) {
+                vm.parentMenus = result;
+            });
         }
         else {
             vm.parentMenus = [];
