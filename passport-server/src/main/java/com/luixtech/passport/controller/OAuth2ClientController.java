@@ -76,7 +76,7 @@ public class OAuth2ClientController {
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<Void> update(@Parameter(description = "OAuth2 client", required = true) @Valid @RequestBody OAuth2Client domain) {
         log.debug("REST request to update oauth client detail: {}", domain);
-        oAuth2ClientRepository.findById(domain.getClientId()).orElseThrow(() -> new DataNotFoundException(domain.getClientId()));
+        oAuth2ClientRepository.findById(domain.getId()).orElseThrow(() -> new DataNotFoundException(domain.getId()));
         oAuth2ClientRepository.save(domain);
         return ResponseEntity.ok()
                 .headers(httpHeaderCreator.createSuccessHeader("SM1002", domain.getClientId()))
@@ -89,9 +89,9 @@ public class OAuth2ClientController {
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<Void> delete(@Parameter(description = "ID", required = true) @PathVariable String id) {
         log.debug("REST request to delete oauth client detail: {}", id);
-        oAuth2ClientRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
+        OAuth2Client client = oAuth2ClientRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
         oAuth2ClientRepository.deleteById(id);
         return ResponseEntity.ok()
-                .headers(httpHeaderCreator.createSuccessHeader("SM1003", id)).build();
+                .headers(httpHeaderCreator.createSuccessHeader("SM1003", client.getClientId())).build();
     }
 }
