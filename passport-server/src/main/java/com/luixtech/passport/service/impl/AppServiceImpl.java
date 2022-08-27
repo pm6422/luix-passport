@@ -3,6 +3,7 @@ package com.luixtech.passport.service.impl;
 import com.luixtech.passport.domain.App;
 import com.luixtech.passport.exception.DataNotFoundException;
 import com.luixtech.passport.repository.AppRepository;
+import com.luixtech.passport.repository.MenuRepository;
 import com.luixtech.passport.service.AppService;
 import com.luixtech.uidgenerator.core.id.IdGenerator;
 import lombok.AllArgsConstructor;
@@ -15,7 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 @AllArgsConstructor
 @Slf4j
 public class AppServiceImpl implements AppService {
-    private final AppRepository appRepository;
+    private final AppRepository  appRepository;
+    private final MenuRepository menuRepository;
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, noRollbackFor = Exception.class)
@@ -34,6 +36,12 @@ public class AppServiceImpl implements AppService {
             app.setAuthorities(domain.getAuthorities());
             appRepository.save(app);
             log.debug("Updated app: {}", app);
+
+            menuRepository.findByAppName(app.getName()).forEach(menu -> {
+                menu.setEnabled(domain.getEnabled());
+                menuRepository.save(menu);
+                log.debug("Updated menu: {}", menu);
+            });
             return app;
         }).orElseThrow(() -> new DataNotFoundException(domain.getId()));
     }
