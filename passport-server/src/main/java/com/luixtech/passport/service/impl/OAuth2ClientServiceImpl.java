@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
 @Service
@@ -28,12 +30,13 @@ public class OAuth2ClientServiceImpl implements OAuth2ClientService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED, noRollbackFor = Exception.class)
     public void insert(OAuth2Client domain) {
-        domain.setClientId(StringUtils.defaultIfEmpty(domain.getClientId(), IdGenerator.generateTraceId()));
         oAuth2ClientRepository.findById(domain.getClientId()).ifPresent((existingEntity) -> {
             throw new DuplicationException(ImmutableMap.of("clientId", domain.getClientId()));
         });
-        domain.setRawClientSecret(StringUtils.defaultIfEmpty(domain.getRawClientSecret(), IdGenerator.generateTraceId()));
         domain.setClientSecret(passwordEncoder.encode(domain.getRawClientSecret()));
+        domain.setClientIdIssuedAt(Instant.now());
+        domain.setClientSecretExpiresAt(domain.getClientIdIssuedAt().plus(domain.getValidityDays(), ChronoUnit.DAYS));
+
         domain.getClientAuthenticationMethods().forEach(method -> method.setClientId(domain.getClientId()));
         domain.getAuthorizationGrantTypes().forEach(type -> type.setClientId(domain.getClientId()));
         domain.getRedirectUris().forEach(uri -> uri.setClientId(domain.getClientId()));

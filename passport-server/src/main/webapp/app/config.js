@@ -1081,16 +1081,13 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                     resolve: {
                         entity: {
                             client_id: null,
-                            resource_ids: null,
-                            client_secret: null,
-                            scope: null,
-                            authorized_grant_types: 'authorization_code,password,refresh_token',
-                            redirect_uri: [],
-                            authorities: null,
-                            access_token_validity: null,
-                            refresh_token_validity: null,
-                            additional_information: '{}',
-                            autoapprove: []
+                            rawClientSecret: null,
+                            clientSecret: null,
+                            validityDays: 30,
+                            clientAuthenticationMethods: [],
+                            authorizationGrantTypes: [],
+                            redirectUris: [],
+                            scopes: []
                         }
                     }
                 }).result.then(function () {

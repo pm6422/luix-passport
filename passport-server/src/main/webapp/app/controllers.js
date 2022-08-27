@@ -2203,11 +2203,31 @@ function OAuth2ClientDialogController($scope, $state, $stateParams, $uibModalIns
     vm.isSaving = false;
     vm.save = save;
     vm.cancel = cancel;
-    vm.addUri = addUri;
-    vm.delUri = delUri;
+    vm.addClientAuthenticationMethod = addClientAuthenticationMethod;
+    vm.delClientAuthenticationMethod = delClientAuthenticationMethod;
+    vm.addAuthorizationGrantType = addAuthorizationGrantType;
+    vm.delAuthorizationGrantType = delAuthorizationGrantType;
+    vm.addRedirectUri = addRedirectUri;
+    vm.delRedirectUri = delRedirectUri;
+    vm.addScope = addScope;
+    vm.delScope = delScope;
+    vm.clientAuthenticationMethodOptions = [{'clientId': null, 'clientAuthenticationMethod': 'client_secret_basic'},
+        {'clientId': null, 'clientAuthenticationMethod': 'client_secret_post'},
+        {'clientId': null, 'clientAuthenticationMethod': 'client_secret_jwt'},
+        {'clientId': null, 'clientAuthenticationMethod': 'private_key_jwt'},
+        {'clientId': null, 'clientAuthenticationMethod': 'none'}];
+    vm.authorizationGrantTypeOptions = [{'clientId': null, 'grantTypeName': 'client_credentials'},
+        {'clientId': null, 'grantTypeName': 'password'},
+        {'clientId': null, 'grantTypeName': 'refresh_token'},
+        {'clientId': null, 'grantTypeName': 'authorization_code'}];
 
     if (vm.mode == 'create') {
-        vm.entity.redirect_uri.push("");
+        vm.entity.clientAuthenticationMethods.push(null);
+        vm.entity.authorizationGrantTypes.push(null);
+        vm.entity.redirectUris.push(null);
+        vm.entity.scopes.push(null);
+        vm.entity.clientId = generateMixed(10);
+        vm.entity.rawClientSecret = generateMixed(20);
     }
 
     $scope.$watch('vm.entity.scope', function (newValue) {
@@ -2224,6 +2244,17 @@ function OAuth2ClientDialogController($scope, $state, $stateParams, $uibModalIns
     });
     vm.entity.scopeArray = vm.entity.scope;
 
+    function generateMixed(n) {
+        var str = ['0','1','2','3','4','5','6','7','8','9',
+            'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
+            'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
+        var res = "";
+        for(var i = 0; i < n ; i ++) {
+            var id = Math.ceil(Math.random()*50);
+            res += str[id];
+        }
+        return res;
+    }
 
     function save() {
         vm.isSaving = true;
@@ -2250,13 +2281,40 @@ function OAuth2ClientDialogController($scope, $state, $stateParams, $uibModalIns
         $uibModalInstance.dismiss('cancel');
     }
 
-    function addUri() {
-        vm.entity.redirect_uri.length++;
+    function addClientAuthenticationMethod() {
+        vm.entity.clientAuthenticationMethods.length++;
     }
 
-    function delUri(index) {
+    function delClientAuthenticationMethod(index) {
         // Remove element
-        vm.entity.redirect_uri.splice(index, 1);
+        vm.entity.clientAuthenticationMethods.splice(index, 1);
+    }
+
+    function addAuthorizationGrantType() {
+        vm.entity.authorizationGrantTypes.length++;
+    }
+
+    function delAuthorizationGrantType(index) {
+        // Remove element
+        vm.entity.authorizationGrantTypes.splice(index, 1);
+    }
+
+    function addRedirectUri() {
+        vm.entity.redirectUris.length++;
+    }
+
+    function delRedirectUri(index) {
+        // Remove element
+        vm.entity.redirectUris.splice(index, 1);
+    }
+
+    function addScope() {
+        vm.entity.scopes.length++;
+    }
+
+    function delScope(index) {
+        // Remove element
+        vm.entity.scopes.splice(index, 1);
     }
 }
 

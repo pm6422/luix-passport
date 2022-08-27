@@ -8,154 +8,161 @@
         <div class="form-group">
             <label class="control-label">Client ID</label>
             <input type="text" class="form-control" name="clientId" ng-model="vm.entity.clientId" ng-maxlength="50"
-                   ng-disabled="vm.mode == 'edit'">
+                   disabled required>
+            <div ng-show="editForm.clientId.$invalid">
+                <p class="help-block" ng-show="editForm.clientId.$error.required">
+                    Required
+                </p>
+            </div>
             <div ng-show="editForm.clientId.$invalid">
                 <p class="help-block" ng-show="editForm.clientId.$error.maxlength">
+                    <small>Max length: 50</small>
+                </p>
+            </div>
+        </div>
+        <div class="form-group" ng-show="vm.mode == 'create'">
+            <label class="control-label">Raw client secret</label>
+            <input type="text" class="form-control" name="rawClientSecret" ng-model="vm.entity.rawClientSecret"
+                   ng-maxlength="50" required>
+            <div ng-show="editForm.rawClientSecret.$invalid">
+                <p class="help-block" ng-show="editForm.rawClientSecret.$error.required">
+                    Required
+                </p>
+            </div>
+            <div ng-show="editForm.rawClientSecret.$invalid">
+                <p class="help-block" ng-show="editForm.rawClientSecret.$error.maxlength">
                     <small>Max length: 50</small>
                 </p>
             </div>
             <div>
                 <p class="label label-warning" ng-show="vm.mode == 'create'">
                     <span class="fa fa-exclamation-circle" aria-hidden="true"></span>
-                    Leave blank to generate automatically
+                    Remember to copy the raw client secret for later use
                 </p>
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label">Raw Client Secret</label>
-            <input type="text" class="form-control" name="rawClientSecret" ng-model="vm.entity.raw_client_secret"
-                   ng-maxlength="50">
-            <div ng-show="editForm.rawClientSecret.$invalid">
-                <p class="help-block" ng-show="editForm.rawClientSecret.$error.maxlength>
-                    <small>最大长度为50个字符</small>
-                </p>
-            </div>
-            <div>
-                <p class="label label-warning" ng-show="vm.mode == 'create'">
-                    <span class="fa fa-exclamation-circle" aria-hidden="true"></span>
-                    该字段输入时则使用指定的值，未输入时则使用系统自动生成值
+            <label class="control-label">Validity in days</label>
+            <input type="number" class="form-control" name="validityDays" ng-model="vm.entity.validityDays" required>
+            <div ng-show="editForm.validityDays.$invalid">
+                <p class="help-block" ng-show="editForm.validityDays.$error.required">
+                    Required
                 </p>
             </div>
         </div>
+        <div class="hr-line-dashed"></div>
         <div class="form-group">
-            <label class="control-label">Scopes</label>
-            <input type="text" class="form-control" name="scope" ng-model="vm.entity.scope" ng-maxlength="50">
-            <div ng-show="editForm.scope.$invalid">
-                <p class="help-block" ng-show="editForm.scope.$error.maxlength">
-                    <small>最大长度为50个字符</small>
-                </p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label">Auto Approve Scopes</label>
-            <div class="control-label">
-                <label ng-repeat="s in vm.entity.scopeArray">
-                    <input type="checkbox" checklist-model="vm.entity.autoapprove" checklist-value="s"/>&nbsp;&nbsp;{{s}}&nbsp;&nbsp;
-                </label>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label">Authorized Grant Types</label>
-            <input type="text" class="form-control" name="authorizedGrantTypes"
-                   ng-model="vm.entity.authorized_grant_types" ng-maxlength="100">
-            <div>
-                <p class="label label-primary">
-                    <span class="fa fa-exclamation-circle" aria-hidden="true"></span>
-                    authorization_code: 授权码模式(即先登录获取code,再获取token) [最常用]
-                </p>
-            </div>
-            <div>
-                <p class="label label-primary">
-                    <span class="fa fa-exclamation-circle" aria-hidden="true"></span>
-                    password: 密码模式(将用户名,密码传过去,直接获取token) [适用于移动设备]
-                </p>
-            </div>
-            <div>
-                <p class="label label-primary">
-                    <span class="fa fa-exclamation-circle" aria-hidden="true"></span>
-                    refresh_token: 刷新access_token
-                </p>
-            </div>
-            <div>
-                <p class="label label-primary">
-                    <span class="fa fa-exclamation-circle" aria-hidden="true"></span>
-                    client_credentials: 客户端模式(无用户和密码,然后客户端以自己的名义获取token，此方式很危险，用户无需密码验证便可以获得最高权限接口访问能力)
-                </p>
-            </div>
-            <div>
-                <p class="label label-primary">
-                    <span class="fa fa-exclamation-circle" aria-hidden="true"></span>
-                    implicit: 简化模式(直接在redirect_uri末尾传递token) [适用于浏览器,如JS,Flash]
-                </p>
-            </div>
-            <div ng-show="editForm.authorizedGrantTypes.$invalid">
-                <p class="help-block" ng-show="editForm.authorizedGrantTypes.$error.maxlength"
-                   translate-value-max="100">
-                    最大长度为100个字符
-                </p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label">Client Redirect URI</label>
-            <div ng-repeat="v in vm.entity.redirect_uri track by $index">
+            <label class="control-label">Client authentication methods</label>
+            <div ng-repeat="v in vm.entity.clientAuthenticationMethods track by $index">
                 <div class="input-group">
-                    <input type="text" name="redirectUri" class="form-control" ng-model="vm.entity.redirect_uri[$index]"
-                           placeholder="客户端重定向地址" required>
+                    <select class="form-control" ng-model="vm.entity.clientAuthenticationMethods[$index]" name="clientAuthenticationMethod"
+                            ng-options="item.clientAuthenticationMethod as item.clientAuthenticationMethod for item in vm.clientAuthenticationMethodOptions" required>
+                        <option value="">Select...</option>
+                    </select>
                     <span class="input-group-btn">
-                        <button type="button" class="btn btn-danger" ng-click="vm.delUri($index)"><i
-                                class="fa fa-minus"></i></button>
+                        <button type="button" class="btn btn-danger" ng-click="vm.delClientAuthenticationMethod($index)"><i class="fa fa-minus"></i></button>
                     </span>
                 </div>
-                <div ng-show="editForm.redirectUri.$invalid">
-                    <p class="help-block" ng-show="editForm.redirectUri.$error.required">
-                        必填字段
+                <div ng-show="editForm.clientAuthenticationMethod.$invalid">
+                    <p class="help-block" ng-show="editForm.clientAuthenticationMethod.$error.required">
+                        Required
                     </p>
                 </div>
-                <div class="hr-line-dashed"></div>
+                <div class="p-h-xs"/>
             </div>
         </div>
         <div class="form-group">
             <div class="control-label">
-                <button class="btn btn-primary pull-right m-t-n-sm" type="button" ng-click="vm.addUri()">
+                <button class="btn btn-primary pull-right m-t-n-sm" type="button" ng-click="vm.addClientAuthenticationMethod()">
                     <i class="fa fa-plus"></i>
                 </button>
             </div>
         </div>
         <div class="row"/>
+        <div class="hr-line-dashed"></div>
         <div class="form-group">
-            <label class="control-label">Authorities</label>
-            <input type="text" class="form-control" name="authorities" ng-model="vm.entity.authorities"
-                   ng-maxlength="100" required>
-            <div ng-show="editForm.authorities.$invalid">
-                <p class="help-block" ng-show="editForm.authorities.$error.required">
-                    必填字段
-                </p>
-                <p class="help-block" ng-show="editForm.authorities.$error.maxlength" translate-value-max="100">
-                    <small>最大长度为100个字符</small>
-                </p>
+            <label class="control-label">Authorization grant types</label>
+            <div ng-repeat="v in vm.entity.authorizationGrantTypes track by $index">
+                <div class="input-group">
+                    <select class="form-control" ng-model="vm.entity.authorizationGrantTypes[$index]" name="authorizationGrantType"
+                            ng-options="item.grantTypeName as item.grantTypeName for item in vm.authorizationGrantTypeOptions" required>
+                        <option value="">Select...</option>
+                    </select>
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-danger" ng-click="vm.delAuthorizationGrantType($index)"><i class="fa fa-minus"></i></button>
+                    </span>
+                </div>
+                <div ng-show="editForm.authorizationGrantType.$invalid">
+                    <p class="help-block" ng-show="editForm.authorizationGrantType.$error.required">
+                        Required
+                    </p>
+                </div>
+                <div class="p-h-xs"/>
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label">Access Token Validity in Seconds</label>
-            <input type="number" class="form-control" name="accessTokenValidity"
-                   ng-model="vm.entity.access_token_validity">
-        </div>
-        <div class="form-group">
-            <label class="control-label">Refresh Token Validity in Seconds</label>
-            <input type="number" class="form-control" name="refreshTokenValidity"
-                   ng-model="vm.entity.refresh_token_validity">
-        </div>
-        <div class="form-group">
-            <label class="control-label">Additional Information</label>
-            <input type="text" class="form-control" name="additionalInformation"
-                   ng-model="vm.entity.additional_information" ng-maxlength="100">
-            <div ng-show="editForm.additionalInformation.$invalid">
-                <p class="help-block" ng-show="editForm.additionalInformation.$error.maxlength"
-                   translate-value-max="100">
-                    <small>最大长度为100个字符</small>
-                </p>
+            <div class="control-label">
+                <button class="btn btn-primary pull-right m-t-n-sm" type="button" ng-click="vm.addAuthorizationGrantType()">
+                    <i class="fa fa-plus"></i>
+                </button>
             </div>
         </div>
+        <div class="row"/>
+        <div class="hr-line-dashed"></div>
+        <div class="form-group">
+            <label class="control-label">Client redirect URIs</label>
+            <div ng-repeat="v in vm.entity.redirectUris track by $index">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="redirectUri" ng-model="vm.entity.redirectUris[$index]" required>
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-danger" ng-click="vm.delRedirectUri($index)"><i class="fa fa-minus"></i></button>
+                    </span>
+                </div>
+                <div ng-show="editForm.redirectUri.$invalid">
+                    <p class="help-block" ng-show="editForm.redirectUri.$error.required">
+                        Required
+                    </p>
+                </div>
+                <div class="p-h-xs"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="control-label">
+                <button class="btn btn-primary pull-right m-t-n-sm" type="button" ng-click="vm.addRedirectUri()">
+                    <i class="fa fa-plus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="row"/>
+        <div class="hr-line-dashed"></div>
+        <div class="form-group">
+            <label class="control-label">Scopes</label>
+            <div ng-repeat="v in vm.entity.scopes track by $index">
+                <div class="input-group col-md-12">
+                    <div class="input-group">
+                        <div class="col-md-6"><input type="text" class="form-control" name="scope" ng-model="vm.entity.scopes[$index].scope" placeholder="scope" required></div>
+                        <div class="col-md-6"><input type="text" class="form-control" name="description" ng-model="vm.entity.scopes[$index].description" placeholder="description" required></div>
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-danger" ng-click="vm.delScope($index)"><i class="fa fa-minus"></i></button>
+                        </span>
+                    </div>
+                    <div ng-show="editForm.scope.$invalid || editForm.description.$invalid">
+                        <p class="help-block" ng-show="editForm.scope.$error.required || editForm.description.$error.required">
+                            Required
+                        </p>
+                    </div>
+                </div>
+                <div class="p-h-xs"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="control-label">
+                <button class="btn btn-primary pull-right m-t-n-sm" type="button" ng-click="vm.addScope()">
+                    <i class="fa fa-plus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="row"/>
         <div class="form-group">
             <label class="control-label">Remarks</label>
             <input type="text" class="form-control" name="remarks" ng-model="vm.entity.remarks" ng-maxlength="50">
