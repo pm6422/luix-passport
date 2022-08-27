@@ -965,7 +965,7 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                             path: null,
                             depth: null,
                             sequence: null,
-                            parentId: null,
+                            parentId: '0',
                             enabled: true
                         }
                     }
