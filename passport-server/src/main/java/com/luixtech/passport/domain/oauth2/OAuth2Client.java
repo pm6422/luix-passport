@@ -29,6 +29,7 @@ public class OAuth2Client extends AbstractAuditableDomain implements Serializabl
     private              Instant               clientIdIssuedAt;
     private              Instant               clientSecretExpiresAt;
     private              String                remarks;
+    private              Boolean               enabled;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "clientId", referencedColumnName = "clientId", insertable = false, updatable = false)
     @ToString.Exclude

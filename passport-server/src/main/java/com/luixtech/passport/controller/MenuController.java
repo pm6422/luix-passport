@@ -80,6 +80,15 @@ public class MenuController {
         return ResponseEntity.ok().headers(headers).body(domains.getContent());
     }
 
+    @Operation(summary = "find parent menus by application id and depth")
+    @GetMapping("/api/menus/parents")
+    @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
+    public ResponseEntity<List<Menu>> findParents(
+            @Parameter(description = "application ID", required = true) @RequestParam(value = "appId") String appId,
+            @Parameter(description = "depth", required = true) @RequestParam(value = "depth") Integer depth) {
+        return ResponseEntity.ok(menuRepository.findByAppIdAndDepth(appId, depth));
+    }
+
     @Operation(summary = "find menu by ID")
     @GetMapping("/api/menus/{id}")
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
@@ -109,15 +118,6 @@ public class MenuController {
         Menu menu = menuRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
         menuRepository.deleteById(id);
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1003", menu.getCode())).build();
-    }
-
-    @Operation(summary = "find parent menus by application id and depth")
-    @GetMapping("/api/menus/parents")
-    @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
-    public ResponseEntity<List<Menu>> findParents(
-            @Parameter(description = "application name", required = true) @RequestParam(value = "appId") String appId,
-            @Parameter(description = "depth", required = true) @RequestParam(value = "depth") Integer depth) {
-        return ResponseEntity.ok(menuRepository.findByAppIdAndDepth(appId, depth));
     }
 
     @Operation(summary = "change-to-higher-order")

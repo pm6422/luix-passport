@@ -21,7 +21,7 @@
                 <div class="form-group">
                     <label class="control-label" for="login">Username</label>
                     <input type="text" id="login" name="login" class="form-control"
-                           placeholder="username/email/mobile"
+                           placeholder="username/email/mobile number"
                            ng-model="vm.criteria.login" ng-keydown="vm.checkPressEnter($event)">
                 </div>
             </div>
@@ -41,8 +41,8 @@
                         <th sort-by-directive="mobileNo"><span>Mobile number</span> <span class="fa fa-sort"></span></th>
                         <th sort-by-directive="activated"><span>Activated</span> <span class="fa fa-sort"></span></th>
                         <th sort-by-directive="enabled"><span>Enabled</span> <span class="fa fa-sort"></span></th>
-                        <th sort-by-directive="remarks"><span>Remarks</span> <span class="fa fa-sort"></span></th>
-                        <th sort-by-directive="modifiedTime"><span>Updated time</span> <span class="fa fa-sort"></span></th>
+                        <th sort-by-directive="createdTime"><span>Created time</span> <span class="fa fa-sort"></span></th>
+                        <th sort-by-directive="modifiedTime"><span>Modified time</span> <span class="fa fa-sort"></span></th>
                         <th>Current user</th>
                         <th>Actions</th>
                     </tr>
@@ -65,7 +65,7 @@
                             <span class="label label-primary" ng-click="vm.setEnabled(entity, false)" ng-show="entity.enabled"
                                   style="cursor: pointer;">Yes</span>
                         </td>
-                        <td>{{entity.remarks}}</td>
+                        <td>{{entity.createdTime | date:'yyyy/MM/dd HH:mm:ss'}}</td>
                         <td>{{entity.modifiedTime | date:'yyyy/MM/dd HH:mm:ss'}}</td>
                         <td><i class="fa fa-check text-navy" ng-show="vm.currentAccount.username==entity.username"></i></td>
                         <td>

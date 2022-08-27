@@ -27,6 +27,10 @@
                         <th sort-by-directive="id"><span>ID</span> <span class="fa fa-sort"></span></th>
                         <th sort-by-directive="name"><span>Name</span> <span class="fa fa-sort"></span></th>
                         <th sort-by-directive="enabled"><span>Enabled</span> <span class="fa fa-sort"></span></th>
+                        <th sort-by-directive="createdBy"><span>Created by</span> <span class="fa fa-sort"></span></th>
+                        <th sort-by-directive="createdTime"><span>Created time</span> <span class="fa fa-sort"></span></th>
+                        <th sort-by-directive="modifiedBy"><span>ModifiedBy by</span> <span class="fa fa-sort"></span></th>
+                        <th sort-by-directive="modifiedTime"><span>Modified time</span> <span class="fa fa-sort"></span></th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -40,6 +44,10 @@
                             <span class="label label-primary" ng-click="vm.setEnabled(entity, false)" ng-show="entity.enabled"
                                   style="cursor: pointer;">Yes</span>
                         </td>
+                        <td>{{entity.createdBy}}</td>
+                        <td>{{entity.createdTime | date:'yyyy/MM/dd HH:mm:ss'}}</td>
+                        <td>{{entity.modifiedBy}}</td>
+                        <td>{{entity.modifiedTime | date:'yyyy/MM/dd HH:mm:ss'}}</td>
                         <td>
                             <div class="btn-group">
                                 <button class="btn-white btn btn-xs" ui-sref=".view({id: entity.id})">View</button>
