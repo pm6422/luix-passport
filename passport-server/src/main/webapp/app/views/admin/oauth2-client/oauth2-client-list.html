@@ -40,6 +40,8 @@
                     <th>Client ID issued at</th>
                     <th>Client secret expires at</th>
                     <th>Remarks</th>
+                    <th sort-by-directive="enabled"><span>Enabled</span> <span class="fa fa-sort"></span></th>
+                    <th sort-by-directive="modifiedTime"><span>Modified time</span> <span class="fa fa-sort"></span></th>
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -50,6 +52,13 @@
                     <td>{{entity.clientIdIssuedAt | date:'yyyy/MM/dd HH:mm:ss'}}</td>
                     <td>{{entity.clientSecretExpiresAt | date:'yyyy/MM/dd HH:mm:ss'}}</td>
                     <td>{{entity.remarks}}</td>
+                    <td>
+                        <span class="label label-danger" ng-click="vm.setEnabled(entity, true)" ng-show="!entity.enabled"
+                              style="cursor: pointer;">No</span>
+                        <span class="label label-primary" ng-click="vm.setEnabled(entity, false)" ng-show="entity.enabled"
+                              style="cursor: pointer;">Yes</span>
+                    </td>
+                    <td>{{entity.modifiedTime | date:'yyyy/MM/dd HH:mm:ss'}}</td>
                     <td>
                         <div class="btn-group">
                             <button class="btn-white btn btn-xs" ui-sref=".view({id: entity.id})">View
