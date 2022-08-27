@@ -1,13 +1,18 @@
 package com.luixtech.passport.service.impl;
 
+import com.google.common.collect.ImmutableMap;
 import com.luixtech.passport.domain.oauth2.OAuth2Client;
+import com.luixtech.passport.exception.DuplicationException;
 import com.luixtech.passport.repository.oauth2.OAuth2ClientRepository;
 import com.luixtech.passport.service.OAuth2ClientService;
+import com.luixtech.uidgenerator.core.id.IdGenerator;
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +24,19 @@ import java.util.Optional;
 public class OAuth2ClientServiceImpl implements OAuth2ClientService {
 
     private final OAuth2ClientRepository oAuth2ClientRepository;
+    private final PasswordEncoder        passwordEncoder;
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, noRollbackFor = Exception.class)
+    public void insert(OAuth2Client domain) {
+        domain.setClientId(StringUtils.defaultIfEmpty(domain.getClientId(), IdGenerator.generateTraceId()));
+        oAuth2ClientRepository.findById(domain.getClientId()).ifPresent((existingEntity) -> {
+            throw new DuplicationException(ImmutableMap.of("clientId", domain.getClientId()));
+        });
+        domain.setRawClientSecret(StringUtils.defaultIfEmpty(domain.getRawClientSecret(), IdGenerator.generateTraceId()));
+        domain.setClientSecret(passwordEncoder.encode(domain.getRawClientSecret()));
+        oAuth2ClientRepository.save(domain);
+    }
 
     @Override
     public Page<OAuth2Client> find(Pageable pageable, String clientId) {

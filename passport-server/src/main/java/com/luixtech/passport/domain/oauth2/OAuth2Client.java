@@ -24,6 +24,8 @@ public class OAuth2Client extends AbstractAuditableDomain implements Serializabl
     public static final  String                INTERNAL_RAW_CLIENT_SECRET  = "65G-HD9-4PD-j9F-HP5";
     public static final  String                CLIENT_NAME                 = "passport-client";
     private              String                clientId;
+    @Transient
+    private              String                rawClientSecret;
     @JsonIgnore
     private              String                clientSecret;
     private              Instant               clientIdIssuedAt;

@@ -15,14 +15,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.util.Pair;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static com.luixtech.passport.config.api.SpringDocConfiguration.AUTH;
@@ -34,8 +32,19 @@ import static com.luixtech.passport.utils.HttpHeaderUtils.generatePageHeaders;
 @AllArgsConstructor
 public class OAuth2ClientController {
     private final HttpHeaderCreator   httpHeaderCreator;
-    private final PasswordEncoder     passwordEncoder;
     private final OAuth2ClientService oAuth2ClientService;
+
+    @Operation(summary = "Create a new OAuth2 client")
+    @PostMapping("/api/oauth2-clients")
+    @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
+    public ResponseEntity<Void> create(
+            @Parameter(description = "单点登录客户端", required = true) @Valid @RequestBody OAuth2Client domain) {
+        log.debug("REST create oauth client: {}", domain);
+        oAuth2ClientService.insert(domain);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .headers(httpHeaderCreator.createSuccessHeader("SM1001", domain.getClientId()))
+                .build();
+    }
 
     @Operation(summary = "get internal client")
     @GetMapping("/open-api/oauth2-client/internal-client")
