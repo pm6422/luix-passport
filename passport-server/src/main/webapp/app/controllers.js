@@ -2103,6 +2103,7 @@ function OAuth2ClientListController($state, AlertUtils, ParseLinksUtils, PAGINAT
     vm.loadAll = loadAll;
     vm.loadPage = loadPage;
     vm.checkPressEnter = checkPressEnter;
+    vm.setEnabled = setEnabled;
     vm.page = 1;
     vm.totalItems = null;
     vm.entities = [];
@@ -2156,6 +2157,17 @@ function OAuth2ClientListController($state, AlertUtils, ParseLinksUtils, PAGINAT
         if ($event.keyCode == 13) {
             vm.transition();
         }
+    }
+
+    function setEnabled(entity, enabled) {
+        entity.enabled = enabled;
+        OAuth2ClientService.update(entity,
+            function () {
+                vm.loadAll();
+            },
+            function () {
+                entity.enabled = !enabled;
+            });
     }
 
     function del(id) {
