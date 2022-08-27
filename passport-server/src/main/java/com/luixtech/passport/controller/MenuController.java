@@ -74,19 +74,11 @@ public class MenuController {
     @GetMapping("/api/menus")
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<List<Menu>> find(@ParameterObject Pageable pageable,
-                                           @Parameter(description = "application id") @RequestParam(value = "appId", required = false) String appId) {
-        Page<Menu> domains = menuService.find(pageable, appId);
+                                           @Parameter(description = "application id") @RequestParam(value = "appId", required = false) String appId,
+                                           @Parameter(description = "depth") @RequestParam(value = "depth", required = false) Integer depth) {
+        Page<Menu> domains = menuService.find(pageable, appId, depth);
         HttpHeaders headers = generatePageHeaders(domains);
         return ResponseEntity.ok().headers(headers).body(domains.getContent());
-    }
-
-    @Operation(summary = "find parent menus by application id and depth")
-    @GetMapping("/api/menus/parents")
-    @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
-    public ResponseEntity<List<Menu>> findParents(
-            @Parameter(description = "application ID", required = true) @RequestParam(value = "appId") String appId,
-            @Parameter(description = "depth", required = true) @RequestParam(value = "depth") Integer depth) {
-        return ResponseEntity.ok(menuRepository.findByAppIdAndDepth(appId, depth));
     }
 
     @Operation(summary = "find menu by ID")

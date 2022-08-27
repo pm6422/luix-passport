@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface MenuService {
 
-    Page<Menu> find(Pageable pageable, String appName);
+    Page<Menu> find(Pageable pageable, String appId, Integer depth);
 
     List<Menu> getUserAuthorityLinks(String appName);
 
