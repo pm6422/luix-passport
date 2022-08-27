@@ -25,4 +25,6 @@ public interface MenuRepository extends JpaRepository<Menu, String> {
     List<Menu> findByAppId(String appId);
 
     List<Menu> findByAppIdAndDepthOrderBySequenceAsc(String appId, Integer depth);
+
+    void deleteByAppId(String id);
 }

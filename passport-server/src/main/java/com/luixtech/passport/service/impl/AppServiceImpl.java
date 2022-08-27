@@ -45,4 +45,12 @@ public class AppServiceImpl implements AppService {
             return app;
         }).orElseThrow(() -> new DataNotFoundException(domain.getId()));
     }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, noRollbackFor = Exception.class)
+    public void deleteById(String id) {
+        App app = appRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
+        appRepository.deleteById(id);
+        menuRepository.deleteByAppId(app.getId());
+    }
 }

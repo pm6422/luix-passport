@@ -77,8 +77,7 @@ public class AppController {
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<Void> delete(@Parameter(description = "ID", required = true) @PathVariable String id) {
         log.debug("REST request to delete app: {}", id);
-        appRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
-        appRepository.deleteById(id);
+        appService.deleteById(id);
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1003", id)).build();
     }
 }

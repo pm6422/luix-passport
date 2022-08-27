@@ -8,4 +8,5 @@ public interface AppService {
 
     void update(App domain);
 
+    void deleteById(String id);
 }
