@@ -102,7 +102,7 @@ public class MenuController {
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1002", domain.getCode())).build();
     }
 
-    @Operation(summary = "delete menu by ID")
+    @Operation(summary = "delete menu by ID", description = "the data may be referenced by other data, and some problems may occur after deletion")
     @DeleteMapping("/api/menus/{id}")
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<Void> delete(@Parameter(description = "ID", required = true) @PathVariable String id) {

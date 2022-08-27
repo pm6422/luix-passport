@@ -4,6 +4,7 @@ import com.luixtech.passport.component.HttpHeaderCreator;
 import com.luixtech.passport.domain.Authority;
 import com.luixtech.passport.domain.oauth2.OAuth2Client;
 import com.luixtech.passport.exception.DataNotFoundException;
+import com.luixtech.passport.repository.oauth2.OAuth2ClientRepository;
 import com.luixtech.passport.service.OAuth2ClientService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -31,14 +32,14 @@ import static com.luixtech.passport.utils.HttpHeaderUtils.generatePageHeaders;
 @SecurityRequirement(name = AUTH)
 @AllArgsConstructor
 public class OAuth2ClientController {
-    private final HttpHeaderCreator   httpHeaderCreator;
-    private final OAuth2ClientService oAuth2ClientService;
+    private final HttpHeaderCreator      httpHeaderCreator;
+    private final OAuth2ClientRepository oAuth2ClientRepository;
+    private final OAuth2ClientService    oAuth2ClientService;
 
-    @Operation(summary = "Create a new OAuth2 client")
+    @Operation(summary = "create a new OAuth2 client")
     @PostMapping("/api/oauth2-clients")
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
-    public ResponseEntity<Void> create(
-            @Parameter(description = "单点登录客户端", required = true) @Valid @RequestBody OAuth2Client domain) {
+    public ResponseEntity<Void> create(@Parameter(description = "OAuth2 client", required = true) @Valid @RequestBody OAuth2Client domain) {
         log.debug("REST create oauth client: {}", domain);
         oAuth2ClientService.insert(domain);
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -68,5 +69,29 @@ public class OAuth2ClientController {
     public ResponseEntity<OAuth2Client> findById(@Parameter(description = "ID", required = true) @PathVariable String id) {
         OAuth2Client domain = oAuth2ClientService.findById(id).orElseThrow(() -> new DataNotFoundException(id));
         return ResponseEntity.ok(domain);
+    }
+
+    @Operation(summary = "update oauth2 client")
+    @PutMapping("/api/oauth2-clients")
+    @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
+    public ResponseEntity<Void> update(@Parameter(description = "OAuth2 client", required = true) @Valid @RequestBody OAuth2Client domain) {
+        log.debug("REST request to update oauth client detail: {}", domain);
+        oAuth2ClientRepository.findById(domain.getClientId()).orElseThrow(() -> new DataNotFoundException(domain.getClientId()));
+        oAuth2ClientRepository.save(domain);
+        return ResponseEntity.ok()
+                .headers(httpHeaderCreator.createSuccessHeader("SM1002", domain.getClientId()))
+                .build();
+
+    }
+
+    @Operation(summary = "delete oauth2 client by ID", description = "the data may be referenced by other data, and some problems may occur after deletion")
+    @DeleteMapping("/api/oauth2-clients/{id}")
+    @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
+    public ResponseEntity<Void> delete(@Parameter(description = "ID", required = true) @PathVariable String id) {
+        log.debug("REST request to delete oauth client detail: {}", id);
+        oAuth2ClientRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
+        oAuth2ClientRepository.deleteById(id);
+        return ResponseEntity.ok()
+                .headers(httpHeaderCreator.createSuccessHeader("SM1003", id)).build();
     }
 }

@@ -22,7 +22,6 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class OAuth2ClientServiceImpl implements OAuth2ClientService {
-
     private final OAuth2ClientRepository oAuth2ClientRepository;
     private final PasswordEncoder        passwordEncoder;
 
@@ -35,6 +34,13 @@ public class OAuth2ClientServiceImpl implements OAuth2ClientService {
         });
         domain.setRawClientSecret(StringUtils.defaultIfEmpty(domain.getRawClientSecret(), IdGenerator.generateTraceId()));
         domain.setClientSecret(passwordEncoder.encode(domain.getRawClientSecret()));
+        domain.getClientAuthenticationMethods().forEach(method -> method.setClientId(domain.getClientId()));
+        domain.getAuthorizationGrantTypes().forEach(type -> type.setClientId(domain.getClientId()));
+        domain.getRedirectUris().forEach(uri -> uri.setClientId(domain.getClientId()));
+        domain.getScopes().forEach(scope -> scope.setClientId(domain.getClientId()));
+        domain.getClientSettings().setClientId(domain.getClientId());
+        domain.getTokenSettings().setClientId(domain.getClientId());
+
         oAuth2ClientRepository.save(domain);
     }
 
