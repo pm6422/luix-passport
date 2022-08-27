@@ -44,21 +44,21 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public List<Menu> getUserAuthorityLinks(String appName) {
-        Set<String> adminMenuIds = getMenuIds(getEnabledUserAuthorities());
-        if (CollectionUtils.isEmpty(adminMenuIds)) {
+        Set<String> menuIds = getMenuIds(getEnabledUserAuthorities());
+        if (CollectionUtils.isEmpty(menuIds)) {
             return Collections.emptyList();
         }
         // 检索二级及以上级别菜单
-        return menuRepository.findByAppNameAndIdInAndParentIdNotNull(appName, adminMenuIds);
+        return menuRepository.findByAppNameAndIdInAndEnabledIsTrueAndParentIdNotNull(appName, menuIds);
     }
 
     @Override
     public List<Menu> getUserAuthorityMenus(String appName) {
-        Set<String> adminMenuIds = getMenuIds(getEnabledUserAuthorities());
-        if (CollectionUtils.isEmpty(adminMenuIds)) {
+        Set<String> menuIds = getMenuIds(getEnabledUserAuthorities());
+        if (CollectionUtils.isEmpty(menuIds)) {
             return Collections.emptyList();
         }
-        List<Menu> menus = menuRepository.findByAppNameAndIdIn(appName, adminMenuIds);
+        List<Menu> menus = menuRepository.findByAppNameAndIdInAndEnabledIsTrue(appName, menuIds);
         return convertToTree(menus);
     }
 

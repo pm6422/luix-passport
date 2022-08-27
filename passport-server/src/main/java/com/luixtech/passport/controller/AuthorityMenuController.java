@@ -47,6 +47,24 @@ public class AuthorityMenuController {
         return ResponseEntity.ok(results);
     }
 
+    @Operation(summary = "find menus associated with current user")
+    @GetMapping("/api/authority-menus/user-links")
+    @PreAuthorize("hasAuthority(\"" + Authority.USER + "\")")
+    public ResponseEntity<List<Menu>> findUserAuthorityLinks(
+            @Parameter(description = "application name", required = true) @RequestParam(value = "appName") String appName) {
+        List<Menu> results = menuService.getUserAuthorityLinks(appName);
+        return ResponseEntity.ok(results);
+    }
+
+    @Operation(summary = "find menu tree associated with current user")
+    @GetMapping("/api/authority-menus/user-menus")
+    @PreAuthorize("hasAuthority(\"" + Authority.USER + "\")")
+    public ResponseEntity<List<Menu>> findUserAuthorityMenus(
+            @Parameter(description = "application name", required = true) @RequestParam(value = "appName") String appName) {
+        List<Menu> results = menuService.getUserAuthorityMenus(appName);
+        return ResponseEntity.ok(results);
+    }
+
     @Operation(summary = "update authority menu")
     @PutMapping("/api/authority-menus")
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
@@ -66,23 +84,5 @@ public class AuthorityMenuController {
             authorityMenuRepository.saveAll(adminAuthorityMenus);
         }
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1012")).build();
-    }
-
-    @Operation(summary = "find menus associated with current user")
-    @GetMapping("/api/authority-menus/user-links")
-    @PreAuthorize("hasAuthority(\"" + Authority.USER + "\")")
-    public ResponseEntity<List<Menu>> findUserAuthorityLinks(
-            @Parameter(description = "application name", required = true) @RequestParam(value = "appName") String appName) {
-        List<Menu> results = menuService.getUserAuthorityLinks(appName);
-        return ResponseEntity.ok(results);
-    }
-
-    @Operation(summary = "find menu tree associated with current user")
-    @GetMapping("/api/authority-menus/user-menus")
-    @PreAuthorize("hasAuthority(\"" + Authority.USER + "\")")
-    public ResponseEntity<List<Menu>> findUserAuthorityMenus(
-            @Parameter(description = "application name", required = true) @RequestParam(value = "appName") String appName) {
-        List<Menu> results = menuService.getUserAuthorityMenus(appName);
-        return ResponseEntity.ok(results);
     }
 }
