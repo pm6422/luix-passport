@@ -75,7 +75,7 @@ public class OAuth2ClientController {
     @PutMapping("/api/oauth2-clients")
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<Void> update(@Parameter(description = "OAuth2 client", required = true) @Valid @RequestBody OAuth2Client domain) {
-        log.debug("REST request to update oauth client detail: {}", domain);
+        log.debug("REST request to update oauth client: {}", domain);
         oAuth2ClientService.update(domain);
         return ResponseEntity.ok()
                 .headers(httpHeaderCreator.createSuccessHeader("SM1002", domain.getClientId()))
@@ -86,7 +86,7 @@ public class OAuth2ClientController {
     @DeleteMapping("/api/oauth2-clients/{id}")
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<Void> delete(@Parameter(description = "ID", required = true) @PathVariable String id) {
-        log.debug("REST request to delete oauth client detail: {}", id);
+        log.debug("REST request to delete oauth client: {}", id);
         OAuth2Client client = oAuth2ClientRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
         oAuth2ClientRepository.deleteById(id);
         return ResponseEntity.ok()
