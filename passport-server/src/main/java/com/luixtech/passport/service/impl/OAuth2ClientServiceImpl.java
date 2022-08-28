@@ -2,6 +2,8 @@ package com.luixtech.passport.service.impl;
 
 import com.google.common.collect.ImmutableMap;
 import com.luixtech.passport.domain.oauth2.OAuth2Client;
+import com.luixtech.passport.domain.oauth2.OAuth2ClientSettings;
+import com.luixtech.passport.domain.oauth2.OAuth2TokenSettings;
 import com.luixtech.passport.exception.DataNotFoundException;
 import com.luixtech.passport.exception.DuplicationException;
 import com.luixtech.passport.repository.oauth2.OAuth2ClientRepository;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
@@ -40,8 +43,20 @@ public class OAuth2ClientServiceImpl implements OAuth2ClientService {
         domain.getAuthorizationGrantTypes().forEach(type -> type.setClientId(domain.getClientId()));
         domain.getRedirectUris().forEach(uri -> uri.setClientId(domain.getClientId()));
         domain.getScopes().forEach(scope -> scope.setClientId(domain.getClientId()));
-        domain.getClientSettings().setClientId(domain.getClientId());
-        domain.getTokenSettings().setClientId(domain.getClientId());
+        OAuth2ClientSettings clientSettings = new OAuth2ClientSettings();
+        clientSettings.setClientId(domain.getClientId());
+        clientSettings.setRequireProofKey(false);
+        clientSettings.setRequireAuthorizationConsent(true);
+        domain.setClientSettings(clientSettings);
+
+        OAuth2TokenSettings tokenSettings = new OAuth2TokenSettings();
+        tokenSettings.setClientId(domain.getClientId());
+        tokenSettings.setAccessTokenTimeToLive(Duration.of(7, ChronoUnit.DAYS));
+        tokenSettings.setRefreshTokenTimeToLive(Duration.of(30, ChronoUnit.DAYS));
+        tokenSettings.setTokenFormat("self-contained");
+        tokenSettings.setReuseRefreshTokens(true);
+        tokenSettings.setIdTokenSignatureAlgorithm("RS256");
+        domain.setTokenSettings(tokenSettings);
 
         oAuth2ClientRepository.save(domain);
     }
