@@ -1,10 +1,45 @@
-= OAuth 2.0 Authorization Server Sample
+= LUI️✘ Passport
 
-This sample demonstrates Authorization Server with the `authorization_code` and `client_credentials` grant types, as well as OpenID Connect 1.0. This authorization server is configured to generate JWT tokens signed with the `RS256` algorithm.
+[[index]]
+== Index
+
+* <<website, Official website>>
+* <<repository, Code repository>>
+* <<requirements, Requirements>>
 
 * <<running-the-tests, Running the tests>>
 * <<running-the-app, Running the app>>
 * <<testing-with-a-resource-server, Testing with a resource server>>
+
+
+
+[[website]]
+== Official website
+http://www.luixtech.com
+
+[[repository]]
+== Code repository
+https://github.com/pm6422/passport
+
+[[overview]]
+== Overview
+This project provides you a standard auth2 server which is based on https://spring.io/projects/spring-authorization-server[spring-authorization-server] and client configuration powered by Spring Boot 2 with the ability to authenticate login and using MySQL DB as datastore.
+It demonstrates Authorization Server with the `authorization_code` and `client_credentials` grant types. This authorization server is configured to generate JWT tokens signed with the `RS256` algorithm.
+
+[[requirements]]
+== Requirements
+Before you can build this project, you must install JDK on your machine. You can install JDK by https://sdkman.io/install[SDK Man]. e.g.
+```bash
+sdk install java 18-zulu
+```
+Java compatability: JDK 9 ~ 18
+
+This project needs a MySQL database as the backend storage. e.g. to start a MySQL database in a docker container, run:
+
+```bash
+docker-compose -f passport-server/src/main/docker/mysql.yml up -d
+```
+
 
 [[running-the-tests]]
 == Running the tests
