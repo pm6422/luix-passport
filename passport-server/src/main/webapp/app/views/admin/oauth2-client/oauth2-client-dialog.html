@@ -165,11 +165,26 @@
         <div class="row"/>
         <div class="form-group">
             <label class="control-label">Remarks</label>
-            <input type="text" class="form-control" name="remarks" ng-model="vm.entity.remarks" ng-maxlength="50">
+            <input type="text" class="form-control" name="remarks" ng-model="vm.entity.remarks" ng-maxlength="50" required>
             <div ng-show="editForm.remarks.$invalid">
+                <div ng-show="editForm.remarks.$invalid">
+                    <p class="help-block" ng-show="editForm.remarks.$error.required">
+                        Required
+                    </p>
+                </div>
                 <p class="help-block" ng-show="editForm.remarks.$error.maxlength">
                     <small>Max length: 200</small>
                 </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Enabled</label>
+            <div class="onoffswitch">
+                <input type="checkbox" id="enabled" ng-model="vm.entity.enabled" class="onoffswitch-checkbox">
+                <label class="onoffswitch-label" for="enabled">
+                    <span class="onoffswitch-inner"></span>
+                    <span class="onoffswitch-switch"></span>
+                </label>
             </div>
         </div>
     </div>

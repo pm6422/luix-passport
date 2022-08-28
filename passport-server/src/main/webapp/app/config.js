@@ -1086,7 +1086,8 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                             clientAuthenticationMethods: [],
                             authorizationGrantTypes: [],
                             redirectUris: [],
-                            scopes: []
+                            scopes: [],
+                            enabled: true
                         }
                     }
                 }).result.then(function () {
