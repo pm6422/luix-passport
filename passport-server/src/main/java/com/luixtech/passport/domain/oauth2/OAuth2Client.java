@@ -30,8 +30,7 @@ public class OAuth2Client extends AbstractAuditableDomain implements Serializabl
     private              String                clientSecret;
     private              Instant               clientIdIssuedAt;
     private              Instant               clientSecretExpiresAt;
-    @Transient
-    private              Integer               validityDays;
+    private              Integer               validityInDays;
     private              String                remarks;
     private              Boolean               enabled;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)

@@ -6,9 +6,7 @@ import com.luixtech.passport.exception.DataNotFoundException;
 import com.luixtech.passport.exception.DuplicationException;
 import com.luixtech.passport.repository.oauth2.OAuth2ClientRepository;
 import com.luixtech.passport.service.OAuth2ClientService;
-import com.luixtech.uidgenerator.core.id.IdGenerator;
 import lombok.AllArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
@@ -36,7 +34,7 @@ public class OAuth2ClientServiceImpl implements OAuth2ClientService {
         });
         domain.setClientSecret(passwordEncoder.encode(domain.getRawClientSecret()));
         domain.setClientIdIssuedAt(Instant.now());
-        domain.setClientSecretExpiresAt(domain.getClientIdIssuedAt().plus(domain.getValidityDays(), ChronoUnit.DAYS));
+        domain.setClientSecretExpiresAt(domain.getClientIdIssuedAt().plus(domain.getValidityInDays(), ChronoUnit.DAYS));
 
         domain.getClientAuthenticationMethods().forEach(method -> method.setClientId(domain.getClientId()));
         domain.getAuthorizationGrantTypes().forEach(type -> type.setClientId(domain.getClientId()));
@@ -68,7 +66,7 @@ public class OAuth2ClientServiceImpl implements OAuth2ClientService {
     public void update(OAuth2Client domain) {
         OAuth2Client existingClient = oAuth2ClientRepository.findById(domain.getId()).orElseThrow(() -> new DataNotFoundException(domain.getId()));
 
-        existingClient.setClientSecretExpiresAt(domain.getClientIdIssuedAt().plus(domain.getValidityDays(), ChronoUnit.DAYS));
+        existingClient.setClientSecretExpiresAt(domain.getClientIdIssuedAt().plus(domain.getValidityInDays(), ChronoUnit.DAYS));
         existingClient.setRemarks(domain.getRemarks());
         existingClient.setClientAuthenticationMethods(domain.getClientAuthenticationMethods());
         existingClient.setAuthorizationGrantTypes(domain.getAuthorizationGrantTypes());
