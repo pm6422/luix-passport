@@ -14,7 +14,7 @@
     <name>${project.artifactId}</name>
     <properties>
         <java.version>17</java.version>
-        <liquibase.version>4.6.1</liquibase.version>
+        <liquibase.version>4.8.0</liquibase.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.version>3.2.1</maven.version>

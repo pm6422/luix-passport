@@ -3,7 +3,7 @@
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.8.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
     <!--
         Core tables.
@@ -32,8 +32,7 @@
         <loadData
                 file="config/liquibase/data/app.csv"
                 separator=";"
-                tableName="app"
-                usePreparedStatements="true">
+                tableName="app">
         </loadData>
 
         <createTable tableName="authority">
@@ -47,8 +46,7 @@
         <loadData
                 file="config/liquibase/data/authority.csv"
                 separator=";"
-                tableName="authority"
-                usePreparedStatements="true">
+                tableName="authority">
         </loadData>
 
         <createTable tableName="app_authority">
@@ -66,8 +64,7 @@
         <loadData
                 file="config/liquibase/data/app_authority.csv"
                 separator=";"
-                tableName="app_authority"
-                usePreparedStatements="true">
+                tableName="app_authority">
         </loadData>
 
         <createTable tableName="user">
@@ -113,8 +110,7 @@
         <loadData
                   file="config/liquibase/data/user.csv"
                   separator=";"
-                  tableName="user"
-                  usePreparedStatements="true">
+                  tableName="user">
         </loadData>
 
         <createTable tableName="user_authority">
@@ -132,8 +128,7 @@
         <loadData
                 file="config/liquibase/data/user_authority.csv"
                 separator=";"
-                tableName="user_authority"
-                usePreparedStatements="true">
+                tableName="user_authority">
         </loadData>
 
         <createTable tableName="user_profile_photo">
@@ -189,8 +184,7 @@
         <loadData
                 file="config/liquibase/data/menu.csv"
                 separator=";"
-                tableName="menu"
-                usePreparedStatements="true">
+                tableName="menu">
         </loadData>
 
         <createTable tableName="authority_menu">
@@ -215,8 +209,7 @@
         <loadData
                 file="config/liquibase/data/authority_menu.csv"
                 separator=";"
-                tableName="authority_menu"
-                usePreparedStatements="true">
+                tableName="authority_menu">
         </loadData>
 
         <createTable tableName="client_auth_method">
@@ -230,8 +223,7 @@
         <loadData
                 file="config/liquibase/data/client_auth_method.csv"
                 separator=";"
-                tableName="client_auth_method"
-                usePreparedStatements="true">
+                tableName="client_auth_method">
         </loadData>
 
         <createTable tableName="oauth2_grant_type">
@@ -245,8 +237,7 @@
         <loadData
                 file="config/liquibase/data/oauth2_grant_type.csv"
                 separator=";"
-                tableName="oauth2_grant_type"
-                usePreparedStatements="true">
+                tableName="oauth2_grant_type">
         </loadData>
 
         <createTable tableName="redirect_uri">
@@ -260,8 +251,7 @@
         <loadData
                 file="config/liquibase/data/redirect_uri.csv"
                 separator=";"
-                tableName="redirect_uri"
-                usePreparedStatements="true">
+                tableName="redirect_uri">
         </loadData>
 
         <createTable tableName="oauth2_scope">
@@ -278,8 +268,7 @@
         <loadData
                 file="config/liquibase/data/oauth2_scope.csv"
                 separator=";"
-                tableName="oauth2_scope"
-                usePreparedStatements="true">
+                tableName="oauth2_scope">
         </loadData>
 
         <createTable tableName="oauth2_client_settings">
@@ -294,8 +283,7 @@
         <loadData
                 file="config/liquibase/data/oauth2_client_settings.csv"
                 separator=";"
-                tableName="oauth2_client_settings"
-                usePreparedStatements="true">
+                tableName="oauth2_client_settings">
         </loadData>
 
         <createTable tableName="oauth2_token_settings">
@@ -311,8 +299,7 @@
         <loadData
                 file="config/liquibase/data/oauth2_token_settings.csv"
                 separator=";"
-                tableName="oauth2_token_settings"
-                usePreparedStatements="true">
+                tableName="oauth2_token_settings">
         </loadData>
 
         <createTable tableName="oauth2_client">
@@ -342,8 +329,7 @@
         <loadData
                 file="config/liquibase/data/oauth2_client.csv"
                 separator=";"
-                tableName="oauth2_client"
-                usePreparedStatements="true">
+                tableName="oauth2_client">
         </loadData>
 
         <addForeignKeyConstraint baseTableName="app_authority"
