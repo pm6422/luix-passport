@@ -323,8 +323,9 @@
                 <constraints unique="true" nullable="false"/>
             </column>
             <column name="client_secret" type="varchar(200)"/>
-            <column name="client_secret_expires_at" type="timestamp"/>
             <column name="client_id_issued_at" type="timestamp"/>
+            <column name="validity_in_days" type="int"/>
+            <column name="client_secret_expires_at" type="timestamp"/>
             <column name="remarks" type="varchar(200)"/>
             <column name="enabled" type="boolean" valueBoolean="false">
                 <constraints nullable="false"/>
