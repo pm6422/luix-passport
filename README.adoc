@@ -6,6 +6,7 @@
 * <<website, Official website>>
 * <<repository, Code repository>>
 * <<requirements, Requirements>>
+* <<build, Build>>
 
 * <<running-the-tests, Running the tests>>
 * <<running-the-app, Running the app>>
@@ -40,6 +41,14 @@ This project needs a MySQL database as the backend storage. e.g. to start a MySQ
 docker-compose -f passport-server/src/main/docker/mysql.yml up -d
 ```
 
+[[build]]
+== Build
+
+Run the following command to build the project:
+
+```
+./mvnw clean verify
+```
 
 [[running-the-tests]]
 == Running the tests
