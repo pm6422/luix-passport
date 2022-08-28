@@ -1082,7 +1082,6 @@ function stateConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, Id
                         entity: {
                             client_id: null,
                             rawClientSecret: null,
-                            clientSecret: null,
                             validityDays: 30,
                             clientAuthenticationMethods: [],
                             authorizationGrantTypes: [],

@@ -12,4 +12,6 @@ public interface OAuth2ClientService {
     Page<OAuth2Client> find(Pageable pageable, String clientId);
 
     Optional<OAuth2Client> findById(String id);
+
+    void update(OAuth2Client domain);
 }

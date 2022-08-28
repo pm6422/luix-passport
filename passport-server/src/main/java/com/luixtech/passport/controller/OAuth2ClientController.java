@@ -76,12 +76,10 @@ public class OAuth2ClientController {
     @PreAuthorize("hasAuthority(\"" + Authority.ADMIN + "\")")
     public ResponseEntity<Void> update(@Parameter(description = "OAuth2 client", required = true) @Valid @RequestBody OAuth2Client domain) {
         log.debug("REST request to update oauth client detail: {}", domain);
-        oAuth2ClientRepository.findById(domain.getId()).orElseThrow(() -> new DataNotFoundException(domain.getId()));
-        oAuth2ClientRepository.save(domain);
+        oAuth2ClientService.update(domain);
         return ResponseEntity.ok()
                 .headers(httpHeaderCreator.createSuccessHeader("SM1002", domain.getClientId()))
                 .build();
-
     }
 
     @Operation(summary = "delete oauth2 client by ID", description = "the data may be referenced by other data, and some problems may occur after deletion")

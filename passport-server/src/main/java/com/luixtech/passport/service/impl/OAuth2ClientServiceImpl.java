@@ -2,6 +2,7 @@ package com.luixtech.passport.service.impl;
 
 import com.google.common.collect.ImmutableMap;
 import com.luixtech.passport.domain.oauth2.OAuth2Client;
+import com.luixtech.passport.exception.DataNotFoundException;
 import com.luixtech.passport.exception.DuplicationException;
 import com.luixtech.passport.repository.oauth2.OAuth2ClientRepository;
 import com.luixtech.passport.service.OAuth2ClientService;
@@ -61,5 +62,24 @@ public class OAuth2ClientServiceImpl implements OAuth2ClientService {
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true, noRollbackFor = Exception.class)
     public Optional<OAuth2Client> findById(String id) {
         return oAuth2ClientRepository.findById(id);
+    }
+
+    @Override
+    public void update(OAuth2Client domain) {
+        OAuth2Client existingClient = oAuth2ClientRepository.findById(domain.getId()).orElseThrow(() -> new DataNotFoundException(domain.getId()));
+
+        existingClient.setClientSecretExpiresAt(domain.getClientIdIssuedAt().plus(domain.getValidityDays(), ChronoUnit.DAYS));
+        existingClient.setRemarks(domain.getRemarks());
+        existingClient.setClientAuthenticationMethods(domain.getClientAuthenticationMethods());
+        existingClient.setAuthorizationGrantTypes(domain.getAuthorizationGrantTypes());
+        existingClient.setRedirectUris(domain.getRedirectUris());
+        existingClient.setScopes(domain.getScopes());
+
+        existingClient.getClientAuthenticationMethods().forEach(method -> method.setClientId(existingClient.getClientId()));
+        existingClient.getAuthorizationGrantTypes().forEach(type -> type.setClientId(existingClient.getClientId()));
+        existingClient.getRedirectUris().forEach(uri -> uri.setClientId(existingClient.getClientId()));
+        existingClient.getScopes().forEach(scope -> scope.setClientId(existingClient.getClientId()));
+
+        oAuth2ClientRepository.save(existingClient);
     }
 }
