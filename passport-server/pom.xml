@@ -393,6 +393,7 @@
             <properties>
                 <spring.profiles.active>test</spring.profiles.active>
             </properties>
+<!--            https://blog.csdn.net/Myron_007/article/details/122722924-->
             <!--            <build>-->
             <!--                <pluginManagement>-->
             <!--                    <plugins>-->
