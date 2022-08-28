@@ -63,9 +63,9 @@ public class OAuth2ClientServiceImpl implements OAuth2ClientService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, noRollbackFor = Exception.class)
     public void update(OAuth2Client domain) {
         OAuth2Client existingClient = oAuth2ClientRepository.findById(domain.getId()).orElseThrow(() -> new DataNotFoundException(domain.getId()));
-
         existingClient.setClientIdIssuedAt(Instant.now());
         existingClient.setClientSecretExpiresAt(existingClient.getClientIdIssuedAt().plus(domain.getValidityInDays(), ChronoUnit.DAYS));
         existingClient.setRemarks(domain.getRemarks());

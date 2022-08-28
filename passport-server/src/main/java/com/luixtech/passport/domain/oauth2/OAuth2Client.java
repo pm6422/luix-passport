@@ -58,6 +58,43 @@ public class OAuth2Client extends AbstractAuditableDomain implements Serializabl
     @ToString.Exclude
     private              OAuth2TokenSettings   tokenSettings;
 
+
+    public void setClientAuthenticationMethods(Set<ClientAuthMethod> clientAuthenticationMethods) {
+        if (this.clientAuthenticationMethods == null) {
+            this.clientAuthenticationMethods = clientAuthenticationMethods;
+        } else {
+            this.clientAuthenticationMethods.clear();
+            this.clientAuthenticationMethods.addAll(clientAuthenticationMethods);
+        }
+    }
+
+    public void setAuthorizationGrantTypes(Set<OAuth2GrantType> authorizationGrantTypes) {
+        if (this.authorizationGrantTypes == null) {
+            this.authorizationGrantTypes = authorizationGrantTypes;
+        } else {
+            this.authorizationGrantTypes.clear();
+            this.authorizationGrantTypes.addAll(authorizationGrantTypes);
+        }
+    }
+
+    public void setRedirectUris(Set<RedirectUri> redirectUris) {
+        if (this.redirectUris == null) {
+            this.redirectUris = redirectUris;
+        } else {
+            this.redirectUris.clear();
+            this.redirectUris.addAll(redirectUris);
+        }
+    }
+
+    public void setScopes(Set<OAuth2Scope> scopes) {
+        if (this.scopes == null) {
+            this.scopes = scopes;
+        } else {
+            this.scopes.clear();
+            this.scopes.addAll(scopes);
+        }
+    }
+
     /**
      * From registeredClient to oauth2Client.
      *

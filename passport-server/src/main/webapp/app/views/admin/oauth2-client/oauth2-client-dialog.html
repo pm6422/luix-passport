@@ -23,7 +23,7 @@
         <div class="form-group" ng-show="vm.mode == 'create'">
             <label class="control-label">Raw client secret</label>
             <input type="text" class="form-control" name="rawClientSecret" ng-model="vm.entity.rawClientSecret"
-                   ng-maxlength="50" required>
+                   ng-maxlength="50" ng-required="vm.mode == 'create'">
             <div ng-show="editForm.rawClientSecret.$invalid">
                 <p class="help-block" ng-show="editForm.rawClientSecret.$error.required">
                     Required
