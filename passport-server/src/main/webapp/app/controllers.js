@@ -2211,15 +2211,8 @@ function OAuth2ClientDialogController($scope, $state, $stateParams, $uibModalIns
     vm.delRedirectUri = delRedirectUri;
     vm.addScope = addScope;
     vm.delScope = delScope;
-    vm.clientAuthenticationMethodOptions = [{'clientId': null, 'clientAuthenticationMethod': 'client_secret_basic'},
-        {'clientId': null, 'clientAuthenticationMethod': 'client_secret_post'},
-        {'clientId': null, 'clientAuthenticationMethod': 'client_secret_jwt'},
-        {'clientId': null, 'clientAuthenticationMethod': 'private_key_jwt'},
-        {'clientId': null, 'clientAuthenticationMethod': 'none'}];
-    vm.authorizationGrantTypeOptions = [{'clientId': null, 'grantTypeName': 'client_credentials'},
-        {'clientId': null, 'grantTypeName': 'password'},
-        {'clientId': null, 'grantTypeName': 'refresh_token'},
-        {'clientId': null, 'grantTypeName': 'authorization_code'}];
+    vm.clientAuthenticationMethodOptions = ['client_secret_basic', 'client_secret_post', 'client_secret_jwt', 'private_key_jwt','none'];
+    vm.authorizationGrantTypeOptions = ['client_credentials', 'password', 'refresh_token', 'authorization_code'];
 
     if (vm.mode == 'create') {
         vm.entity.clientAuthenticationMethods.push(null);
@@ -2228,6 +2221,7 @@ function OAuth2ClientDialogController($scope, $state, $stateParams, $uibModalIns
         vm.entity.scopes.push(null);
         vm.entity.clientId = generateMixed(10);
         vm.entity.rawClientSecret = generateMixed(20);
+    } else {
     }
 
     $scope.$watch('vm.entity.scope', function (newValue) {
@@ -2258,9 +2252,6 @@ function OAuth2ClientDialogController($scope, $state, $stateParams, $uibModalIns
 
     function save() {
         vm.isSaving = true;
-
-        vm.entity.autoapprove = _.intersection(vm.entity.autoapprove, vm.entity.scopeArray);
-
         if (vm.mode == 'edit') {
             OAuth2ClientService.update(vm.entity, onSaveSuccess, onSaveError);
         } else {

@@ -41,7 +41,7 @@
                 </p>
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group" ng-show="vm.mode == 'create'">
             <label class="control-label">Validity in days</label>
             <input type="number" class="form-control" name="validityDays" ng-model="vm.entity.validityDays" required>
             <div ng-show="editForm.validityDays.$invalid">
@@ -55,8 +55,8 @@
             <label class="control-label">Client authentication methods</label>
             <div ng-repeat="v in vm.entity.clientAuthenticationMethods track by $index">
                 <div class="input-group">
-                    <select class="form-control" ng-model="vm.entity.clientAuthenticationMethods[$index]" name="clientAuthenticationMethod"
-                            ng-options="item.clientAuthenticationMethod as item.clientAuthenticationMethod for item in vm.clientAuthenticationMethodOptions" required>
+                    <select class="form-control" ng-model="vm.entity.clientAuthenticationMethods[$index].clientAuthenticationMethod" name="clientAuthenticationMethod"
+                            ng-options="item as item for item in vm.clientAuthenticationMethodOptions" required>
                         <option value="">Select...</option>
                     </select>
                     <span class="input-group-btn">
@@ -84,8 +84,8 @@
             <label class="control-label">Authorization grant types</label>
             <div ng-repeat="v in vm.entity.authorizationGrantTypes track by $index">
                 <div class="input-group">
-                    <select class="form-control" ng-model="vm.entity.authorizationGrantTypes[$index]" name="authorizationGrantType"
-                            ng-options="item.grantTypeName as item.grantTypeName for item in vm.authorizationGrantTypeOptions" required>
+                    <select class="form-control" ng-model="vm.entity.authorizationGrantTypes[$index].grantTypeName" name="authorizationGrantType"
+                            ng-options="item as item for item in vm.authorizationGrantTypeOptions" required>
                         <option value="">Select...</option>
                     </select>
                     <span class="input-group-btn">
@@ -113,7 +113,7 @@
             <label class="control-label">Client redirect URIs</label>
             <div ng-repeat="v in vm.entity.redirectUris track by $index">
                 <div class="input-group">
-                    <input type="text" class="form-control" name="redirectUri" ng-model="vm.entity.redirectUris[$index]" required>
+                    <input type="text" class="form-control" name="redirectUri" ng-model="vm.entity.redirectUris[$index].redirectUri" required>
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-danger" ng-click="vm.delRedirectUri($index)"><i class="fa fa-minus"></i></button>
                     </span>
@@ -175,12 +175,12 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default btn-sm" data-dismiss="modal" ng-click="vm.cancel()">
-            <span class="fa fa-times"></span>&nbsp;<span>取消</span>
+            <span class="fa fa-times"></span>&nbsp;<span>Cancel</span>
         </button>
         <button type="submit" class="btn btn-default btn-sm" ng-disabled="editForm.$invalid || vm.isSaving">
             <span class='fa fa-circle-o-notch fa-spin' ng-show="vm.isSaving"></span>
             <span class="fa fa-check" ng-hide="vm.isSaving"></span>
-            &nbsp;<span>保存</span>
+            &nbsp;<span>Save</span>
         </button>
     </div>
 </form>
