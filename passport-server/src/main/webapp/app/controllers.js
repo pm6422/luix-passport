@@ -98,7 +98,7 @@ function MainController($http, $rootScope, $scope, $state, AuthenticationService
             main.isAuthenticated = PrincipalService.isAuthenticated;
 
             if (account) {
-                AlertUtils.success('登录成功');
+                AlertUtils.success('Signed in successfully');
             }
         });
     }
