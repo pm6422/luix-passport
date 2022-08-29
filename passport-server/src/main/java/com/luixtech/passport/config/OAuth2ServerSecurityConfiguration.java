@@ -91,7 +91,6 @@ public class OAuth2ServerSecurityConfiguration {
                 .authorizeRequests(authorizeRequests -> {
                     authorizeRequests.antMatchers(CUSTOM_LOGIN_PAGE_URI).permitAll();
                     authorizeRequests.antMatchers("/open-api/**").permitAll();
-//                    authorizeRequests.antMatchers("/api/**").authenticated();
                     authorizeRequests.anyRequest().authenticated();
                 })
                 .csrf(csrf -> csrf.ignoringRequestMatchers(endpointsMatcher))

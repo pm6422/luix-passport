@@ -357,5 +357,11 @@ public class OAuth2OAuth2AuthorizationIT {
                         .contentType(APPLICATION_JSON_VALUE)
                         .accept(APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk());
+
+        mockMvc.perform(get("/api/apps?access_token=" + accessToken)
+                        .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_BEARER + accessToken)
+                        .contentType(APPLICATION_JSON_VALUE)
+                        .accept(APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk());
     }
 }

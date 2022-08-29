@@ -35,11 +35,9 @@ public abstract class OAuth2ConfigurerUtils {
                 }
                 OAuth2RefreshTokenGenerator refreshTokenGenerator = new OAuth2RefreshTokenGenerator();
                 if (jwtGenerator != null) {
-                    tokenGenerator = new DelegatingOAuth2TokenGenerator(
-                            jwtGenerator, accessTokenGenerator, refreshTokenGenerator);
+                    tokenGenerator = new DelegatingOAuth2TokenGenerator(jwtGenerator, accessTokenGenerator, refreshTokenGenerator);
                 } else {
-                    tokenGenerator = new DelegatingOAuth2TokenGenerator(
-                            accessTokenGenerator, refreshTokenGenerator);
+                    tokenGenerator = new DelegatingOAuth2TokenGenerator(accessTokenGenerator, refreshTokenGenerator);
                 }
             }
             builder.setSharedObject(OAuth2TokenGenerator.class, tokenGenerator);

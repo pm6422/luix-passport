@@ -27,7 +27,7 @@ public abstract class BaseDomain implements Serializable {
     @PrePersist
     public void prePersist() {
         if (StringUtils.isEmpty(id)) {
-            id = IdGenerator.generateTraceId();
+            id = IdGenerator.generateId();
         }
     }
 }

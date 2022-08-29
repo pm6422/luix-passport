@@ -71,7 +71,7 @@ function authInterceptor ($rootScope, $q, $location, $localStorage, $sessionStor
             config.headers.Authorization = 'Bearer ' + token.access_token;
         }
 
-        // Generate request ID
+        // Generate a trace ID
         config.headers['traceId'] = 'T' + Date.now() + (Math.random() * 100000).toFixed();
         return config;
     }

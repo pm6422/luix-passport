@@ -25,9 +25,9 @@ public class AppServiceImplIT {
     @Test
     @DisplayName("insert app and authorities")
     public void insert() {
-        String appName = IdGenerator.generateTraceId();
+        String appName = IdGenerator.generateId();
         App app = new App();
-        app.setId(IdGenerator.generateTraceId());
+        app.setId(IdGenerator.generateId());
         app.setName(appName);
         app.setAuthorities(Set.of(new AppAuthority(app.getId(), "ROLE_ADMIN")));
         appService.insert(app);

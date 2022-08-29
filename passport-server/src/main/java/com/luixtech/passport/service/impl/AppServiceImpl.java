@@ -22,7 +22,7 @@ public class AppServiceImpl implements AppService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED, noRollbackFor = Exception.class)
     public void insert(App domain) {
-        domain.setId(IdGenerator.generateTraceId());
+        domain.setId(IdGenerator.generateId());
         domain.getAuthorities().forEach(auth -> auth.setAppId(domain.getId()));
         appRepository.save(domain);
         log.debug("Created information for app: {}", domain);

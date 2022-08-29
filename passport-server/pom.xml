@@ -50,7 +50,7 @@
         <dependency>
             <groupId>com.luixtech</groupId>
             <artifactId>luix-uid-generator-core</artifactId>
-            <version>1.0.9</version>
+            <version>1.1.0</version>
         </dependency>
         <dependency>
             <groupId>com.ryantenney.metrics</groupId>
@@ -393,7 +393,7 @@
             <properties>
                 <spring.profiles.active>test</spring.profiles.active>
             </properties>
-<!--            https://blog.csdn.net/Myron_007/article/details/122722924-->
+            <!--            https://blog.csdn.net/Myron_007/article/details/122722924-->
             <!--            <build>-->
             <!--                <pluginManagement>-->
             <!--                    <plugins>-->

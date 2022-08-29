@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.luixtech.uidgenerator.core.id.IdGenerator.generateTraceId;
+import static com.luixtech.uidgenerator.core.id.IdGenerator.generateId;
 
 /**
  * https://www.toutiao.com/i6807750667449401869/
@@ -21,7 +21,7 @@ public class TraceIdUtils {
         if (request == null) {
             return;
         }
-        String traceId = Optional.ofNullable(request.getHeader(TRACE_ID)).orElse(generateTraceId());
+        String traceId = Optional.ofNullable(request.getHeader(TRACE_ID)).orElse(generateId());
         MDC.put(TRACE_ID, traceId);
     }
 
@@ -30,7 +30,7 @@ public class TraceIdUtils {
     }
 
     public static String getTraceId() {
-        return Optional.ofNullable(MDC.get(TRACE_ID)).orElse(generateTraceId());
+        return Optional.ofNullable(MDC.get(TRACE_ID)).orElse(generateId());
     }
 
     public static void remove() {
@@ -53,7 +53,7 @@ public class TraceIdUtils {
 
     private static void putTraceIdIfAbsent() {
         if (MDC.get(TRACE_ID) == null) {
-            MDC.put(TRACE_ID, generateTraceId());
+            MDC.put(TRACE_ID, generateId());
         }
     }
 }

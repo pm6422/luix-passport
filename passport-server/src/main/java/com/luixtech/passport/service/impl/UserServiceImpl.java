@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
             throw new DuplicationException(ImmutableMap.of("mobileNo", domain.getMobileNo()));
         }
 
-        domain.setId(IdGenerator.generateTraceId());
+        domain.setId(IdGenerator.generateId());
         domain.setUsername(domain.getUsername().toLowerCase());
         domain.setEmail(domain.getEmail().toLowerCase());
         domain.setPasswordHash(passwordEncoder.encode(rawPassword));
