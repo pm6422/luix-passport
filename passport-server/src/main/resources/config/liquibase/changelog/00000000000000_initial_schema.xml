@@ -275,8 +275,8 @@
             <column name="client_id" type="varchar(255)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="require_proof_key" type="boolean" defaultValue="false"/>
-            <column name="require_authorization_consent" type="boolean" defaultValue="false"/>
+            <column name="require_proof_key" type="bit" defaultValue="0"/>
+            <column name="require_authorization_consent" type="bit" defaultValue="0"/>
             <column name="jwk_set_url" type="varchar(255)"/>
             <column name="signing_algorithm" type="varchar(255)"/>
         </createTable>
@@ -293,7 +293,7 @@
             <column name="access_token_time_to_live" type="bigint"/>
             <column name="refresh_token_time_to_live" type="bigint"/>
             <column name="token_format" type="varchar(255)"/>
-            <column name="reuse_refresh_tokens" type="boolean" defaultValue="true"/>
+            <column name="reuse_refresh_tokens" type="bit" defaultValue="1"/>
             <column name="id_token_signature_algorithm" type="varchar(255)"/>
         </createTable>
         <loadData
