@@ -95,7 +95,7 @@ image::passport-server/images/new/03.png[]
 [[contact]]
 == Contact
 - WeChat ID: pm6422
-- Email: louis@luixtech.com
+- Email: louis@luixtech.com, pm6422@126.com
 
 [[references]]
 == References
