@@ -11,7 +11,7 @@
 * <<run, Run>>
 * <<running-the-test-cases, Running the test cases>>
 * <<snapshots, Snapshots>>
-* <<contact, Contact>>
+* <<contacts, Contacts>>
 * <<references, References>>
 
 [[website]]
@@ -92,8 +92,8 @@ image::passport-server/images/new/01.png[]
 image::passport-server/images/new/02.png[]
 image::passport-server/images/new/03.png[]
 
-[[contact]]
-== Contact
+[[contacts]]
+== Contacts
 - WeChat ID: pm6422
 - Email: louis@luixtech.com, pm6422@126.com
 
