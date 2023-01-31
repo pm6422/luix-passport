@@ -17,7 +17,8 @@
         <liquibase.version>4.8.0</liquibase.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
-        <maven.version>3.2.1</maven.version>
+        <maven.version>3.5.0</maven.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring-boot.version>2.7.1</spring-boot.version>
         <validation-api.version>2.0.1.Final</validation-api.version>
     </properties>
