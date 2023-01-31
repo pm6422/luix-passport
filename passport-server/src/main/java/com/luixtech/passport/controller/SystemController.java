@@ -1,5 +1,7 @@
 package com.luixtech.passport.controller;
 
+import com.luixtech.passport.config.ApplicationProperties;
+import com.luixtech.passport.domain.Authority;
 import com.luixtech.utilities.network.AddressUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -7,8 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import com.luixtech.passport.config.ApplicationProperties;
-import com.luixtech.passport.domain.Authority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.info.BuildProperties;

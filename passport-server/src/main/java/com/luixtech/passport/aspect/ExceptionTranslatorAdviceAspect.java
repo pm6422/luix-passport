@@ -1,9 +1,9 @@
 package com.luixtech.passport.aspect;
 
+import com.luixtech.passport.utils.TraceIdUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import com.luixtech.passport.utils.TraceIdUtils;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 

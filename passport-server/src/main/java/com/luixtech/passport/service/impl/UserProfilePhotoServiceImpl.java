@@ -1,11 +1,11 @@
 package com.luixtech.passport.service.impl;
 
-import lombok.AllArgsConstructor;
 import com.luixtech.passport.domain.User;
 import com.luixtech.passport.domain.UserProfilePhoto;
 import com.luixtech.passport.repository.UserProfilePhotoRepository;
 import com.luixtech.passport.repository.UserRepository;
 import com.luixtech.passport.service.UserProfilePhotoService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;

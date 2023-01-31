@@ -1,8 +1,8 @@
 package com.luixtech.passport.controller;
 
+import com.luixtech.passport.config.oauth2.consent.ScopeWithDescription;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import com.luixtech.passport.config.oauth2.consent.ScopeWithDescription;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
@@ -16,7 +16,8 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.luixtech.passport.config.OAuth2ServerSecurityConfiguration.*;
+import static com.luixtech.passport.config.OAuth2ServerSecurityConfiguration.CUSTOM_CONSENT_PAGE_URI;
+import static com.luixtech.passport.config.OAuth2ServerSecurityConfiguration.CUSTOM_LOGIN_PAGE_URI;
 
 /**
  * Controller for OAuth2 server.

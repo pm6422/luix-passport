@@ -1,9 +1,9 @@
 package com.luixtech.passport.service.impl;
 
-import lombok.AllArgsConstructor;
 import com.luixtech.passport.domain.Authority;
 import com.luixtech.passport.repository.AuthorityRepository;
 import com.luixtech.passport.service.AuthorityService;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;

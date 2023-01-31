@@ -1,7 +1,7 @@
 package com.luixtech.passport.controller;
 
-import lombok.extern.slf4j.Slf4j;
 import com.luixtech.passport.dto.TrackerDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;

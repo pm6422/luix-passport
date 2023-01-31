@@ -1,11 +1,11 @@
 package com.luixtech.passport.config.api;
 
+import com.luixtech.passport.config.ApplicationProperties;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.models.info.Info;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import com.luixtech.passport.config.ApplicationProperties;
 import org.springdoc.core.GroupedOpenApi;
 import org.springdoc.core.SpringDocUtils;
 import org.springdoc.core.customizers.ActuatorOpenApiCustomizer;

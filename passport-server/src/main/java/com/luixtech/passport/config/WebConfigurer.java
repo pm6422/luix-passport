@@ -3,11 +3,11 @@ package com.luixtech.passport.config;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.servlet.InstrumentedFilter;
 import com.codahale.metrics.servlets.MetricsServlet;
+import com.luixtech.passport.filter.CachingHttpHeadersFilter;
 import io.undertow.server.DefaultByteBufferPool;
 import io.undertow.websockets.jsr.WebSocketDeploymentInfo;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import com.luixtech.passport.filter.CachingHttpHeadersFilter;
 import org.springframework.boot.web.embedded.undertow.UndertowServletWebServerFactory;
 import org.springframework.boot.web.server.MimeMappings;
 import org.springframework.boot.web.server.WebServerFactory;
@@ -30,8 +30,8 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.EnumSet;
 
-import static java.net.URLDecoder.decode;
 import static com.luixtech.passport.config.ApplicationConstants.SPRING_PROFILE_TEST;
+import static java.net.URLDecoder.decode;
 
 /**
  * Web application configuration

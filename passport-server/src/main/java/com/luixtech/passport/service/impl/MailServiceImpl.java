@@ -1,9 +1,9 @@
 package com.luixtech.passport.service.impl;
 
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import com.luixtech.passport.domain.User;
 import com.luixtech.passport.service.MailService;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.mail.MailProperties;
 import org.springframework.context.MessageSource;
 import org.springframework.mail.javamail.JavaMailSenderImpl;

@@ -1,6 +1,8 @@
 package com.luixtech.passport.aspect;
 
 import com.alibaba.fastjson2.JSON;
+import com.luixtech.passport.config.ApplicationProperties;
+import com.luixtech.passport.utils.TraceIdUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
@@ -9,8 +11,6 @@ import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
-import com.luixtech.passport.config.ApplicationProperties;
-import com.luixtech.passport.utils.TraceIdUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

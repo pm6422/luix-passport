@@ -1,16 +1,16 @@
 package com.luixtech.passport.controller;
 
 import com.google.common.collect.ImmutableMap;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import com.luixtech.passport.component.HttpHeaderCreator;
 import com.luixtech.passport.domain.Authority;
 import com.luixtech.passport.exception.DataNotFoundException;
 import com.luixtech.passport.exception.DuplicationException;
 import com.luixtech.passport.repository.AuthorityRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,7 +41,7 @@ public class AuthorityController {
     public ResponseEntity<Void> create(
             @Parameter(description = "authority", required = true) @Valid @RequestBody Authority domain) {
         log.debug("REST request to create authority: {}", domain);
-        if(authorityRepository.countByName(domain.getName()) > 0) {
+        if (authorityRepository.countByName(domain.getName()) > 0) {
             throw new DuplicationException(ImmutableMap.of("name", domain.getName()));
         }
         authorityRepository.save(domain);

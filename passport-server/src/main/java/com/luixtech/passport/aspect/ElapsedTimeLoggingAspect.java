@@ -1,12 +1,12 @@
 package com.luixtech.passport.aspect;
 
+import com.luixtech.passport.config.ApplicationConstants;
+import com.luixtech.passport.config.ApplicationProperties;
 import lombok.AllArgsConstructor;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import com.luixtech.passport.config.ApplicationConstants;
-import com.luixtech.passport.config.ApplicationProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

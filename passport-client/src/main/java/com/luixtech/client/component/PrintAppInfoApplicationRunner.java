@@ -1,7 +1,7 @@
 package com.luixtech.client.component;
 
-import lombok.AllArgsConstructor;
 import com.luixtech.client.utils.NetworkUtils;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -12,7 +12,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StreamUtils;
 
-import javax.annotation.Resource;
 import java.nio.charset.Charset;
 import java.util.Date;
 

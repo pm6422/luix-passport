@@ -33,9 +33,9 @@ import static com.luixtech.passport.utils.HttpHeaderUtils.generatePageHeaders;
 @AllArgsConstructor
 @Slf4j
 public class AppController {
-    private final AppRepository          appRepository;
-    private final AppService             appService;
-    private final HttpHeaderCreator      httpHeaderCreator;
+    private final AppRepository     appRepository;
+    private final AppService        appService;
+    private final HttpHeaderCreator httpHeaderCreator;
 
     @Operation(summary = "create application")
     @PostMapping("/api/apps")

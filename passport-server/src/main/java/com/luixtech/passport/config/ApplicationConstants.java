@@ -7,8 +7,8 @@ import java.util.Locale;
  */
 public final class ApplicationConstants {
 
-    public static final String   BASE_PACKAGE        = "com.luixtech.passport";
-    public static final String   SPRING_PROFILE_TEST = "test";
-    public static final String   SPRING_PROFILE_PROD = "prod";
-    public static final Locale   SYSTEM_LOCALE       = Locale.US;
+    public static final String BASE_PACKAGE        = "com.luixtech.passport";
+    public static final String SPRING_PROFILE_TEST = "test";
+    public static final String SPRING_PROFILE_PROD = "prod";
+    public static final Locale SYSTEM_LOCALE       = Locale.US;
 }

@@ -1,9 +1,9 @@
 package com.luixtech.passport.service.impl;
 
-import lombok.AllArgsConstructor;
 import com.luixtech.passport.domain.AuthorityMenu;
 import com.luixtech.passport.repository.AuthorityMenuRepository;
 import com.luixtech.passport.service.AuthorityMenuService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;

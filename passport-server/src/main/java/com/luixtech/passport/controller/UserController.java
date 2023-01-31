@@ -4,7 +4,6 @@ import com.luixtech.passport.component.HttpHeaderCreator;
 import com.luixtech.passport.config.ApplicationProperties;
 import com.luixtech.passport.config.oauth2.LogoutEvent;
 import com.luixtech.passport.config.oauth2.SecurityUtils;
-import com.luixtech.passport.domain.App;
 import com.luixtech.passport.domain.Authority;
 import com.luixtech.passport.domain.User;
 import com.luixtech.passport.domain.UserProfilePhoto;

@@ -1,7 +1,7 @@
 package com.luixtech.passport.listener;
 
-import lombok.extern.slf4j.Slf4j;
 import com.luixtech.passport.dto.TrackerDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;

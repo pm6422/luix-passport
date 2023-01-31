@@ -1,7 +1,7 @@
 package com.luixtech.passport.config;
 
-import lombok.AllArgsConstructor;
 import com.luixtech.passport.domain.Authority;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.server.ServerHttpRequest;

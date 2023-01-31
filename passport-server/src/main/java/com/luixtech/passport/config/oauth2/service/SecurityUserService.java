@@ -1,10 +1,10 @@
 package com.luixtech.passport.config.oauth2.service;
 
+import com.luixtech.passport.config.oauth2.SecurityUser;
+import com.luixtech.passport.config.oauth2.SecurityUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import com.luixtech.passport.config.oauth2.SecurityUser;
-import com.luixtech.passport.config.oauth2.SecurityUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.OAuth2TokenType;
 import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;

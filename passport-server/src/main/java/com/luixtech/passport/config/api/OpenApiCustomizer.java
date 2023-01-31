@@ -1,12 +1,12 @@
 package com.luixtech.passport.config.api;
 
+import com.luixtech.passport.config.ApplicationProperties;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.servers.Server;
 import lombok.Getter;
-import com.luixtech.passport.config.ApplicationProperties;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springframework.core.Ordered;
 

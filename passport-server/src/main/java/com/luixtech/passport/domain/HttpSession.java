@@ -1,7 +1,7 @@
 package com.luixtech.passport.domain;
 
-import lombok.Data;
 import com.luixtech.passport.domain.base.AbstractAuditableDomain;
+import lombok.Data;
 
 import javax.persistence.Entity;
 import java.io.Serializable;

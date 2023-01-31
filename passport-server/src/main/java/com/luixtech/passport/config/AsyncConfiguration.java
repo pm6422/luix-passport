@@ -1,8 +1,8 @@
 package com.luixtech.passport.config;
 
+import com.luixtech.passport.async.ExceptionHandlingAsyncTaskExecutor;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import com.luixtech.passport.async.ExceptionHandlingAsyncTaskExecutor;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.aop.interceptor.SimpleAsyncUncaughtExceptionHandler;
 import org.springframework.boot.autoconfigure.task.TaskExecutionProperties;

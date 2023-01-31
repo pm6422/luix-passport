@@ -1,8 +1,8 @@
 package com.luixtech.passport.domain.oauth2;
 
+import com.luixtech.passport.domain.base.AbstractAuditableDomain;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import com.luixtech.passport.domain.base.AbstractAuditableDomain;
 
 import javax.persistence.Entity;
 import java.io.Serializable;

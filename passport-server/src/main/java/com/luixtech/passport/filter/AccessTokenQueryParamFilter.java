@@ -3,13 +3,10 @@ package com.luixtech.passport.filter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import java.io.IOException;
-import java.util.Map;
 
 @WebFilter(filterName = "accessTokenQueryParamFilter", urlPatterns = "/*")
 @Order(Ordered.HIGHEST_PRECEDENCE)

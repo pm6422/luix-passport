@@ -29,7 +29,7 @@ public class Authority implements Serializable {
     @Size(min = 3, max = 16)
     @Pattern(regexp = "^[A-Z_]+$", message = "{EP5902}")
     @Id
-    private String  name;
+    private String name;
 
     private Boolean enabled;
 
