@@ -10,6 +10,8 @@ spring:
         url: jdbc:mysql://192.168.10.1:3306/luix-passport?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai
         username: root
         password: pass
+    liquibase:
+        change-log: classpath:config/liquibase/master.xml
 # ===================================================================
 # Application specific properties
 # ===================================================================
