@@ -31,9 +31,9 @@ It demonstrates Authorization Server with the `authorization_code` and `client_c
 == Requirements
 Before you can build this project, you must install JDK on your machine. You can install JDK by https://sdkman.io/install[SDK Man]. e.g.
 ```bash
-sdk install java 18-zulu
+sdk install java 17.0.6-tem
 ```
-NOTE: Java compatability: JDK 9 ~ 18
+NOTE: Java compatability: JDK 9 above
 
 This project needs a MySQL database as the backend storage. e.g. to start a MySQL database in a docker container, run:
 
