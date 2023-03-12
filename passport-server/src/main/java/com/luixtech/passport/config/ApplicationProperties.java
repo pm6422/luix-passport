@@ -20,8 +20,6 @@ import org.springframework.web.cors.CorsConfiguration;
 @Getter
 public class ApplicationProperties {
 
-    public static final String            SPRING_PROFILE_TEST = "test";
-    public static final String            SPRING_PROFILE_PROD = "prod";
     private final       CorsConfiguration cors                = new CorsConfiguration();
     private final       UserEventAudit    userEventAudit      = new UserEventAudit();
     private final       Account           account             = new Account();

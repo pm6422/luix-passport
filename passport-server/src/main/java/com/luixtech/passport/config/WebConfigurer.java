@@ -31,8 +31,8 @@ import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Objects;
 
-import static com.luixtech.passport.config.ApplicationProperties.SPRING_PROFILE_PROD;
-import static com.luixtech.passport.config.ApplicationProperties.SPRING_PROFILE_TEST;
+import static com.luixtech.framework.config.LuixProperties.SPRING_PROFILE_PROD;
+import static com.luixtech.framework.config.LuixProperties.SPRING_PROFILE_TEST;
 import static java.net.URLDecoder.decode;
 
 /**
