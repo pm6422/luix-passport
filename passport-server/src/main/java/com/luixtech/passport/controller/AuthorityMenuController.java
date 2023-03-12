@@ -1,6 +1,6 @@
 package com.luixtech.passport.controller;
 
-import com.luixtech.passport.component.HttpHeaderCreator;
+import com.luixtech.framework.component.HttpHeaderCreator;
 import com.luixtech.passport.domain.Authority;
 import com.luixtech.passport.domain.AuthorityMenu;
 import com.luixtech.passport.domain.Menu;
@@ -22,7 +22,8 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.luixtech.passport.config.api.SpringDocConfiguration.AUTH;
+import static com.luixtech.framework.config.api.SpringDocConfiguration.AUTH;
+
 
 /**
  * REST controller for managing the authority menu.
@@ -34,8 +35,8 @@ import static com.luixtech.passport.config.api.SpringDocConfiguration.AUTH;
 public class AuthorityMenuController {
     private final AuthorityMenuRepository authorityMenuRepository;
     private final AuthorityMenuService    authorityMenuService;
-    private final MenuService             menuService;
-    private final HttpHeaderCreator       httpHeaderCreator;
+    private final MenuService       menuService;
+    private final HttpHeaderCreator httpHeaderCreator;
 
     @Operation(summary = "get authority menu list")
     @GetMapping("/api/authority-menus")

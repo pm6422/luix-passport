@@ -5,6 +5,7 @@ import com.codahale.metrics.Slf4jReporter;
 import com.codahale.metrics.graphite.Graphite;
 import com.codahale.metrics.graphite.GraphiteReporter;
 import com.codahale.metrics.jvm.*;
+import com.luixtech.framework.config.LuixProperties;
 import com.ryantenney.metrics.spring.config.annotation.EnableMetrics;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,13 +29,13 @@ import java.util.concurrent.TimeUnit;
 @AllArgsConstructor
 @Slf4j
 public class DropwizardMetricsConfiguration {
-    private static final String                PROP_METRIC_REG_JVM_MEMORY  = "jvm.memory";
-    private static final String                PROP_METRIC_REG_JVM_GARBAGE = "jvm.garbage";
-    private static final String                PROP_METRIC_REG_JVM_THREADS = "jvm.threads";
-    private static final String                PROP_METRIC_REG_JVM_FILES   = "jvm.files";
-    private static final String                PROP_METRIC_REG_JVM_BUFFERS = "jvm.buffers";
-    private final        MetricRegistry        metricRegistry;
-    private final        ApplicationProperties applicationProperties;
+    private static final String         PROP_METRIC_REG_JVM_MEMORY  = "jvm.memory";
+    private static final String         PROP_METRIC_REG_JVM_GARBAGE = "jvm.garbage";
+    private static final String         PROP_METRIC_REG_JVM_THREADS = "jvm.threads";
+    private static final String         PROP_METRIC_REG_JVM_FILES   = "jvm.files";
+    private static final String         PROP_METRIC_REG_JVM_BUFFERS = "jvm.buffers";
+    private final        MetricRegistry metricRegistry;
+    private final        LuixProperties luixProperties;
 
     @PostConstruct
     public void init() {
@@ -45,12 +46,12 @@ public class DropwizardMetricsConfiguration {
         metricRegistry.register(PROP_METRIC_REG_JVM_BUFFERS, new BufferPoolMetricSet(ManagementFactory.getPlatformMBeanServer()));
         log.info("Registered JVM gauge");
 
-        if (applicationProperties.getMetrics().getLogs().isEnabled()) {
+        if (luixProperties.getMetrics().getLogs().isEnabled()) {
             Marker metricsMarker = MarkerFactory.getMarker("metrics");
             final Slf4jReporter reporter = Slf4jReporter.forRegistry(metricRegistry)
                     .outputTo(LoggerFactory.getLogger("metrics")).markWith(metricsMarker)
                     .convertRatesTo(TimeUnit.SECONDS).convertDurationsTo(TimeUnit.MILLISECONDS).build();
-            reporter.start(applicationProperties.getMetrics().getLogs().getReportFrequency(), TimeUnit.SECONDS);
+            reporter.start(luixProperties.getMetrics().getLogs().getReportFrequency(), TimeUnit.SECONDS);
             log.info("Registered metrics log reporting");
         }
     }
@@ -60,15 +61,15 @@ public class DropwizardMetricsConfiguration {
     @AllArgsConstructor
     @Slf4j
     public static class GraphiteRegistry {
-        private ApplicationProperties applicationProperties;
-        private MetricRegistry        metricRegistry;
+        private LuixProperties luixProperties;
+        private MetricRegistry metricRegistry;
 
         @PostConstruct
         private void init() {
-            if (applicationProperties.getMetrics().getGraphite().isEnabled()) {
-                String graphiteHost = applicationProperties.getMetrics().getGraphite().getHost();
-                Integer graphitePort = applicationProperties.getMetrics().getGraphite().getPort();
-                String graphitePrefix = applicationProperties.getMetrics().getGraphite().getPrefix();
+            if (luixProperties.getMetrics().getGraphite().isEnabled()) {
+                String graphiteHost = luixProperties.getMetrics().getGraphite().getHost();
+                int graphitePort = luixProperties.getMetrics().getGraphite().getPort();
+                String graphitePrefix = luixProperties.getMetrics().getGraphite().getPrefix();
                 Graphite graphite = new Graphite(new InetSocketAddress(graphiteHost, graphitePort));
                 GraphiteReporter graphiteReporter = GraphiteReporter.forRegistry(metricRegistry)
                         .convertRatesTo(TimeUnit.SECONDS).convertDurationsTo(TimeUnit.MILLISECONDS)

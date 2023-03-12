@@ -2,7 +2,7 @@ package com.luixtech.passport.controller;
 
 import com.codahale.metrics.annotation.Timed;
 import com.google.common.collect.ImmutableMap;
-import com.luixtech.passport.component.HttpHeaderCreator;
+import com.luixtech.framework.component.HttpHeaderCreator;
 import com.luixtech.passport.config.oauth2.LogoutEvent;
 import com.luixtech.passport.config.oauth2.SecurityUser;
 import com.luixtech.passport.config.oauth2.SecurityUtils;
@@ -43,11 +43,13 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.luixtech.passport.config.api.SpringDocConfiguration.AUTH;
-import static com.luixtech.passport.utils.NetworkUtils.getRequestUrl;
+import static com.luixtech.framework.config.api.SpringDocConfiguration.AUTH;
+import static com.luixtech.framework.utils.NetworkUtils.getRequestUrl;
+
 
 /**
  * REST controller for managing the user's account.
@@ -90,10 +92,7 @@ public class AccountController {
     @Timed
     public ResponseEntity<Object> getTokenUser(HttpServletRequest request) {
         SecurityUser securityUser = securityUserService.getUserByAccessToken(request);
-        if (securityUser == null) {
-            return ResponseEntity.ok(ImmutableMap.of("error", true));
-        }
-        return ResponseEntity.ok(securityUser);
+        return ResponseEntity.ok(Objects.requireNonNullElseGet(securityUser, () -> ImmutableMap.of("error", true)));
     }
 
     @Operation(summary = "register a new user and send an activation email")
@@ -188,7 +187,7 @@ public class AccountController {
     public ResponseEntity<org.springframework.core.io.Resource> downloadProfilePhoto() {
         SecurityUser userDetails = (SecurityUser) userDetailsService.loadUserByUsername(SecurityUtils.getCurrentUsername());
         Optional<UserProfilePhoto> existingPhoto = userProfilePhotoRepository.findByUserId(userDetails.getId());
-        if (!existingPhoto.isPresent()) {
+        if (existingPhoto.isEmpty()) {
             return ResponseEntity.ok().body(null);
         }
         ByteArrayResource resource = new ByteArrayResource(existingPhoto.get().getProfilePhoto());

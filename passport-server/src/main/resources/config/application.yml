@@ -198,9 +198,9 @@ springdoc: # https://springdoc.org/#migrating-from-springfox
         enabled: true
     show-actuator: true
 # ===================================================================
-# Application specific properties
+# Luix framework specific properties
 # ===================================================================
-application:
+luix:
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         logs: # print metrics info to the logs
             enabled: false
@@ -233,6 +233,13 @@ application:
     elapsed-time-logging:
         enabled: true
         slow-execution-threshold: 300 # unit: ms
+    ribbon:
+        # comma separated list of profiles to show a ribbon on the GUI
+        display-on-active-profiles: dev,test,demo
+# ===================================================================
+# Application specific properties
+# ===================================================================
+application:
     cors:
         allowed-methods: "*"
         allowed-headers: "*"
@@ -243,6 +250,3 @@ application:
         enabled: true
     account:
         default-password: ${spring.application.name}
-    ribbon:
-        # comma separated list of profiles to show a ribbon on the GUI
-        display-on-active-profiles: dev,test,demo

@@ -1,6 +1,6 @@
 package com.luixtech.passport.filter;
 
-import com.luixtech.passport.config.ApplicationProperties;
+import com.luixtech.framework.config.LuixProperties;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletResponse;
@@ -15,17 +15,17 @@ public class CachingHttpHeadersFilter implements Filter {
     /**
      * We consider the last modified date is the startup time of the server
      */
-    private final static long                  LAST_MODIFIED = System.currentTimeMillis();
-    private final        ApplicationProperties applicationProperties;
-    private              long                  expiredAfter;
+    private final static long           LAST_MODIFIED = System.currentTimeMillis();
+    private final        LuixProperties luixProperties;
+    private              long           expiredAfter;
 
-    public CachingHttpHeadersFilter(ApplicationProperties applicationProperties) {
-        this.applicationProperties = applicationProperties;
+    public CachingHttpHeadersFilter(LuixProperties luixProperties) {
+        this.luixProperties = luixProperties;
     }
 
     @Override
     public void init(FilterConfig filterConfig) {
-        expiredAfter = TimeUnit.DAYS.toMillis(applicationProperties.getHttp().getCache().getExpiredAfter());
+        expiredAfter = TimeUnit.DAYS.toMillis(luixProperties.getHttp().getCache().getExpiredAfter());
     }
 
     @Override

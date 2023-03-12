@@ -1,7 +1,7 @@
 package com.luixtech.passport.controller;
 
 import com.google.common.collect.ImmutableMap;
-import com.luixtech.passport.component.HttpHeaderCreator;
+import com.luixtech.framework.component.HttpHeaderCreator;
 import com.luixtech.passport.domain.App;
 import com.luixtech.passport.domain.Authority;
 import com.luixtech.passport.domain.Menu;
@@ -35,7 +35,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.luixtech.passport.config.api.SpringDocConfiguration.AUTH;
+import static com.luixtech.framework.config.api.SpringDocConfiguration.AUTH;
 import static com.luixtech.passport.domain.Menu.EMPTY_MENU_ID;
 import static com.luixtech.passport.utils.HttpHeaderUtils.generatePageHeaders;
 

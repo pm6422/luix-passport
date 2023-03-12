@@ -3,6 +3,7 @@ package com.luixtech.passport.config;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.servlet.InstrumentedFilter;
 import com.codahale.metrics.servlets.MetricsServlet;
+import com.luixtech.framework.config.LuixProperties;
 import com.luixtech.passport.filter.CachingHttpHeadersFilter;
 import io.undertow.server.DefaultByteBufferPool;
 import io.undertow.websockets.jsr.WebSocketDeploymentInfo;
@@ -24,13 +25,14 @@ import javax.servlet.FilterRegistration;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
 import java.io.File;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.Objects;
 
-import static com.luixtech.passport.config.ApplicationConstants.SPRING_PROFILE_TEST;
+import static com.luixtech.passport.config.ApplicationProperties.SPRING_PROFILE_PROD;
+import static com.luixtech.passport.config.ApplicationProperties.SPRING_PROFILE_TEST;
 import static java.net.URLDecoder.decode;
 
 /**
@@ -40,15 +42,15 @@ import static java.net.URLDecoder.decode;
 @AllArgsConstructor
 @Slf4j
 public class WebConfigurer implements ServletContextInitializer, WebServerFactoryCustomizer<UndertowServletWebServerFactory> {
-    private final Environment           env;
-    private final ApplicationProperties applicationProperties;
-    private final MetricRegistry        metricRegistry;
+    private final Environment    env;
+    private final LuixProperties luixProperties;
+    private final MetricRegistry metricRegistry;
 
     @Override
     public void onStartup(ServletContext servletContext) {
         EnumSet<DispatcherType> types = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.ASYNC);
         initMetrics(servletContext, types);
-        if (env.acceptsProfiles(Profiles.of(ApplicationConstants.SPRING_PROFILE_PROD))) {
+        if (env.acceptsProfiles(Profiles.of(SPRING_PROFILE_PROD))) {
             initCachingHttpHeadersFilter(servletContext, types);
         }
         log.info("Configured web application");
@@ -76,20 +78,18 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
     }
 
     private void setMimeMappings(WebServerFactory factory) {
-        if (factory instanceof ConfigurableServletWebServerFactory) {
+        if (factory instanceof ConfigurableServletWebServerFactory servletWebServer) {
             MimeMappings mappings = new MimeMappings(MimeMappings.DEFAULT);
             // IE issue, see https://github.com/jhipster/generator-jhipster/pull/711
             mappings.add("html", MediaType.TEXT_HTML_VALUE + ";charset=" + StandardCharsets.UTF_8.name().toLowerCase());
             // CloudFoundry issue, see https://github.com/cloudfoundry/gorouter/issues/64
             mappings.add("json", MediaType.TEXT_HTML_VALUE + ";charset=" + StandardCharsets.UTF_8.name().toLowerCase());
-            ConfigurableServletWebServerFactory servletWebServer = (ConfigurableServletWebServerFactory) factory;
             servletWebServer.setMimeMappings(mappings);
         }
     }
 
     private void setLocationForStaticAssets(WebServerFactory factory) {
-        if (factory instanceof ConfigurableServletWebServerFactory) {
-            ConfigurableServletWebServerFactory servletWebServer = (ConfigurableServletWebServerFactory) factory;
+        if (factory instanceof ConfigurableServletWebServerFactory servletWebServer) {
             File root;
             String prefixPath = resolvePathPrefix();
             root = new File(prefixPath + "src/main/webapp/");
@@ -104,12 +104,7 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
      */
     private String resolvePathPrefix() {
         String fullExecutablePath;
-        try {
-            fullExecutablePath = decode(this.getClass().getResource("").getPath(), StandardCharsets.UTF_8.name());
-        } catch (UnsupportedEncodingException e) {
-            /* try without decoding if this ever happens */
-            fullExecutablePath = this.getClass().getResource("").getPath();
-        }
+        fullExecutablePath = decode(Objects.requireNonNull(this.getClass().getResource("")).getPath(), StandardCharsets.UTF_8);
         String rootPath = Paths.get(".").toUri().normalize().getPath();
         String extractedPath = fullExecutablePath.replace(rootPath, "");
         int extractionEndIndex = extractedPath.indexOf("target/");
@@ -124,7 +119,7 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
      */
     private void initCachingHttpHeadersFilter(ServletContext servletContext, EnumSet<DispatcherType> types) {
         FilterRegistration.Dynamic cachingHttpHeadersFilter = servletContext.addFilter("cachingHttpHeadersFilter",
-                new CachingHttpHeadersFilter(applicationProperties));
+                new CachingHttpHeadersFilter(luixProperties));
         cachingHttpHeadersFilter.addMappingForUrlPatterns(types, true, "/i18n/*");
         cachingHttpHeadersFilter.addMappingForUrlPatterns(types, true, "/content/*");
         cachingHttpHeadersFilter.addMappingForUrlPatterns(types, true, "/app/*");

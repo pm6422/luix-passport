@@ -1,6 +1,6 @@
 package com.luixtech.passport.controller;
 
-import com.luixtech.passport.component.HttpHeaderCreator;
+import com.luixtech.framework.component.HttpHeaderCreator;
 import com.luixtech.passport.config.ApplicationProperties;
 import com.luixtech.passport.config.oauth2.LogoutEvent;
 import com.luixtech.passport.config.oauth2.SecurityUtils;
@@ -34,9 +34,9 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
-import static com.luixtech.passport.config.api.SpringDocConfiguration.AUTH;
+import static com.luixtech.framework.config.api.SpringDocConfiguration.AUTH;
+import static com.luixtech.framework.utils.NetworkUtils.getRequestUrl;
 import static com.luixtech.passport.utils.HttpHeaderUtils.generatePageHeaders;
-import static com.luixtech.passport.utils.NetworkUtils.getRequestUrl;
 
 /**
  * REST controller for managing users.
@@ -52,8 +52,8 @@ public class UserController {
     private final       UserRepository             userRepository;
     private final       UserService                userService;
     private final       MailService                mailService;
-    private final       ApplicationEventPublisher  applicationEventPublisher;
-    private final       HttpHeaderCreator          httpHeaderCreator;
+    private final ApplicationEventPublisher applicationEventPublisher;
+    private final HttpHeaderCreator         httpHeaderCreator;
 
     @Operation(summary = "create new user and send activation email")
     @PostMapping("/api/users")

@@ -1,6 +1,6 @@
 package com.luixtech.passport.controller;
 
-import com.luixtech.passport.config.ApplicationProperties;
+import com.luixtech.framework.config.LuixProperties;
 import com.luixtech.passport.domain.Authority;
 import com.luixtech.utilities.network.AddressUtils;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,11 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,11 +23,11 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.luixtech.passport.config.api.SpringDocConfiguration.AUTH;
+import static com.luixtech.framework.config.api.SpringDocConfiguration.AUTH;
+
 
 @RestController
 @SecurityRequirement(name = AUTH)
@@ -38,7 +36,7 @@ public class SystemController {
     @Resource
     private Environment                          env;
     @Resource
-    private ApplicationProperties                applicationProperties;
+    private LuixProperties                       luixProperties;
     @Value("${app.id}")
     private String                               appId;
     @Value("${app.version}")
@@ -51,36 +49,33 @@ public class SystemController {
     private ApplicationContext                   applicationContext;
     @Autowired(required = false)
     private BuildProperties                      buildProperties;
-    @Resource
-    private ApplicationEventPublisher            applicationEventPublisher;
-    @Resource
-    private Optional<PlatformTransactionManager> txManagerOpt;
 
     @GetMapping(value = "app/constants.js", produces = "application/javascript")
     public String getConstantsJs() {
         String id = buildProperties != null ? buildProperties.getArtifact() : appId;
         String version = buildProperties != null ? buildProperties.getVersion() : appVersion;
-        String js = "'use strict';\n" +
-                "(function () {\n" +
-                "    'use strict';\n" +
-                "    angular\n" +
-                "        .module('smartcloudserviceApp')\n" +
-                "        .constant('APP_NAME', '%s')\n" +
-                "        .constant('VERSION', '%s')\n" +
-                "        .constant('COMPANY', '%s')\n" +
-                "        .constant('RIBBON_PROFILE', '%s')\n" +
-                "        .constant('ENABLE_SWAGGER', '%s')\n" +
-                "        .constant('PAGINATION_CONSTANTS', {\n" +
-                "            'itemsPerPage': 10\n" +
-                "        })\n" +
-                "        .constant('DEBUG_INFO_ENABLED', true);\n" +
-                "})();";
+        String js = """
+                'use strict';
+                (function () {
+                    'use strict';
+                    angular
+                        .module('smartcloudserviceApp')
+                        .constant('APP_NAME', '%s')
+                        .constant('VERSION', '%s')
+                        .constant('COMPANY', '%s')
+                        .constant('RIBBON_PROFILE', '%s')
+                        .constant('ENABLE_SWAGGER', '%s')
+                        .constant('PAGINATION_CONSTANTS', {
+                            'itemsPerPage': 10
+                        })
+                        .constant('DEBUG_INFO_ENABLED', true);
+                })();""";
 
         return String.format(js, id, version, companyName, getRibbonProfile(), enabledApiDocs);
     }
 
     private String getRibbonProfile() {
-        String[] displayOnActiveProfiles = applicationProperties.getRibbon().getDisplayOnActiveProfiles();
+        String[] displayOnActiveProfiles = luixProperties.getRibbon().getDisplayOnActiveProfiles();
         if (ArrayUtils.isEmpty(displayOnActiveProfiles)) {
             return null;
         }
