@@ -75,15 +75,14 @@ public class SystemController {
     }
 
     private String getRibbonProfile() {
-        String[] displayOnActiveProfiles = luixProperties.getRibbon().getDisplayOnActiveProfiles();
-        if (ArrayUtils.isEmpty(displayOnActiveProfiles)) {
+        List<String> displayOnActiveProfiles = luixProperties.getRibbon().getDisplayOnActiveProfiles();
+        if (CollectionUtils.isEmpty(displayOnActiveProfiles)) {
             return null;
         }
 
-        List<String> ribbonProfiles = Stream.of(displayOnActiveProfiles).collect(Collectors.toList());
-        ribbonProfiles.retainAll(Arrays.asList(env.getActiveProfiles()));
+        displayOnActiveProfiles.retainAll(Arrays.asList(env.getActiveProfiles()));
 
-        return CollectionUtils.isNotEmpty(ribbonProfiles) ? ribbonProfiles.get(0) : StringUtils.EMPTY;
+        return CollectionUtils.isNotEmpty(displayOnActiveProfiles) ? displayOnActiveProfiles.get(0) : StringUtils.EMPTY;
     }
 
     @Operation(summary = "get ribbon profile")
