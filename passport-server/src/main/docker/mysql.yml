@@ -2,9 +2,9 @@
 version: '3.8'
 services:
   luix-mysql:
-    image: mysql:8.0.29
-    platform: linux/arm64
-    # platform: linux/x86_64 # Intel platform
+    image: mysql:8.1.0
+    platform: linux/arm64 # ARM platform
+#    platform: linux/amd64 # Intel platform
     # volumes:
     #   - ~/volumes/luix/mysql/:/var/lib/mysql/
     environment:
