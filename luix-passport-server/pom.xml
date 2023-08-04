@@ -50,8 +50,8 @@
         </dependency>
         <dependency>
             <groupId>com.luixtech</groupId>
-            <artifactId>luix-framework</artifactId>
-            <version>1.2.1.1</version>
+            <artifactId>luix-web-framework</artifactId>
+            <version>1.2.1.4</version>
         </dependency>
         <dependency>
             <groupId>com.ryantenney.metrics</groupId>

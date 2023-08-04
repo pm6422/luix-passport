@@ -176,7 +176,7 @@ server:
             # and this statement can effect spring session, used by SessionProperties
 logging:
     level:
-        root: DEBUG
+        root: INFO
         org.springframework.boot.devtools.autoconfigure: INFO
         org.apache: WARN
         sun.rmi: WARN
