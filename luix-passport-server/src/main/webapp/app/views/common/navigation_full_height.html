@@ -1,0 +1,36 @@
+<nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="sidebar-collapse" full-scroll>
+        <ul side-navigation-directive class="nav metismenu" id="side-menu">
+            <li class="nav-header">
+
+                <div class="profile-element" uib-dropdown>
+                    <img alt="image" class="img-circle" src="content/img/profile_small.jpg"/>
+                    <a uib-dropdown-toggle href>
+                            <span class="clear">
+                                <span class="block m-t-xs">
+                                    <strong class="font-bold">David Williams</strong>
+                             </span>
+                                <span class="text-muted text-xs block">Art Director <b class="caret"></b></span>
+                            </span>
+                    </a>
+                    <ul uib-dropdown-menu class="animated fadeInRight m-t-xs">
+                        <li><a ui-sref="profile">Profile</a></li>
+                        <li><a ui-sref="contacts">Contacts</a></li>
+                        <li><a ui-sref="inbox">Mailbox</a></li>
+                        <li class="divider"></li>
+                        <li><a href="../login.html">Logout</a></li>
+                    </ul>
+                </div>
+                <div class="logo-element">
+                    IN+
+                </div>
+            </li>
+            <li ng-class="{active: $state.includes('charts')}">
+                <a href=""><i class="fa fa-bar-chart-o"></i> <span class="nav-label">{{ 'GRAPHS' | translate }}</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level" ng-class="{in: $state.includes('charts')}">
+                    <li ui-sref-active="active"><a ui-sref="charts.rickshaw_chart">Rickshaw Charts</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</nav>

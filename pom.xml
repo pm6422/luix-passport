@@ -3,13 +3,13 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.luixtech</groupId>
-	<artifactId>passport</artifactId>
+	<artifactId>luix-passport</artifactId>
 	<name>${project.artifactId}</name>
 	<version>2.0.0</version>
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>passport-server</module>
-		<module>passport-client</module>
+		<module>luix-passport-server</module>
+		<module>luix-passport-client</module>
 	</modules>
 </project>
