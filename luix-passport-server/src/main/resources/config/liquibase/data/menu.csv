@@ -1,9 +1,9 @@
 id;app_id;app_name;code;text;depth;path;sequence;parent_id;enabled;created_by;created_time;modified_by;modified_time
-11;11;passport-server;authority;Authority;1;authority;100;0;true;system;now;system;now
-12;11;passport-server;authority-list;Authority list;2;authority.authority-list;101;11;true;system;now;system;now
-13;11;passport-server;app-list;Application list;2;authority.app-list;102;11;true;system;now;system;now
-14;11;passport-server;user-list;User list;2;authority.user-list;103;11;true;system;now;system;now
-15;11;passport-server;menu-list;Menu list;2;authority.menu-list;104;11;true;system;now;system;now
-16;11;passport-server;authority-menus;Authority menus;2;authority.authority-menus;105;11;true;system;now;system;now
-17;11;passport-server;security;Security;1;security;200;0;true;system;now;system;now
-18;11;passport-server;oauth2-client-list;OAuth2 client list;2;security.oauth2-client-list;201;17;true;system;now;system;now
+11;11;luix-passport-server;authority;Authority;1;authority;100;0;true;system;now;system;now
+12;11;luix-passport-server;authority-list;Authority list;2;authority.authority-list;101;11;true;system;now;system;now
+13;11;luix-passport-server;app-list;Application list;2;authority.app-list;102;11;true;system;now;system;now
+14;11;luix-passport-server;user-list;User list;2;authority.user-list;103;11;true;system;now;system;now
+15;11;luix-passport-server;menu-list;Menu list;2;authority.menu-list;104;11;true;system;now;system;now
+16;11;luix-passport-server;authority-menus;Authority menus;2;authority.authority-menus;105;11;true;system;now;system;now
+17;11;luix-passport-server;security;Security;1;security;200;0;true;system;now;system;now
+18;11;luix-passport-server;oauth2-client-list;OAuth2 client list;2;security.oauth2-client-list;201;17;true;system;now;system;now
