@@ -88,9 +88,9 @@ The tests are making requests to the token endpoint with the `client_credentials
 
 [[snapshots]]
 == Snapshots
-image::passport-server/images/new/01.png[]
-image::passport-server/images/new/02.png[]
-image::passport-server/images/new/03.png[]
+image::luix-passport-server/images/new/01.png[]
+image::luix-passport-server/images/new/02.png[]
+image::luix-passport-server/images/new/03.png[]
 
 [[contacts]]
 == Contacts
