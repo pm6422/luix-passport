@@ -41,7 +41,7 @@ management: # Management http server configuration, used by ManagementServerProp
             enabled: true # explicitly enable
     health:
         mail:
-            enabled: true
+            enabled: false
     metrics:
         export:
             prometheus: # Prometheus is the default metrics backend
