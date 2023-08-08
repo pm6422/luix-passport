@@ -197,6 +197,8 @@ springdoc: # https://springdoc.org/#migrating-from-springfox
     api-docs:
         enabled: true
     show-actuator: true
+    swagger-ui:
+        tags-sorter: alpha
 # ===================================================================
 # Luix framework specific properties
 # ===================================================================
