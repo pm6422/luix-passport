@@ -7,9 +7,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.context.ApplicationContext;
@@ -23,8 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.Optional;
 
 import static com.luixtech.framework.config.api.SpringDocConfiguration.AUTH;
 
@@ -34,26 +31,26 @@ import static com.luixtech.framework.config.api.SpringDocConfiguration.AUTH;
 @Slf4j
 public class SystemController {
     @Resource
-    private Environment                          env;
+    private Environment               env;
     @Resource
-    private LuixProperties                       luixProperties;
+    private LuixProperties            luixProperties;
     @Value("${app.id}")
-    private String                               appId;
+    private String                    appId;
     @Value("${app.version}")
-    private String                               appVersion;
+    private String                    appVersion;
     @Value("${app.companyName}")
-    private String                               companyName;
+    private String                    companyName;
     @Value("${springdoc.api-docs.enabled}")
-    private boolean                              enabledApiDocs;
+    private boolean                   enabledApiDocs;
     @Resource
-    private ApplicationContext                   applicationContext;
-    @Autowired(required = false)
-    private BuildProperties                      buildProperties;
+    private ApplicationContext        applicationContext;
+    @Resource
+    private Optional<BuildProperties> buildProperties;
 
     @GetMapping(value = "app/constants.js", produces = "application/javascript")
     public String getConstantsJs() {
-        String id = buildProperties != null ? buildProperties.getArtifact() : appId;
-        String version = buildProperties != null ? buildProperties.getVersion() : appVersion;
+        String id = buildProperties.isPresent() ? buildProperties.get().getArtifact() : appId;
+        String version = buildProperties.isPresent() ? buildProperties.get().getVersion() : appVersion;
         String js = """
                 'use strict';
                 (function () {
