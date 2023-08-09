@@ -1,6 +1,6 @@
 package com.luixtech.passport.filter;
 
-import com.luixtech.framework.config.LuixProperties;
+import com.luixtech.springbootframework.config.LuixProperties;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletResponse;

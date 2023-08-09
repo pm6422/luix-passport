@@ -1,7 +1,7 @@
 package com.luixtech.passport;
 
-import com.luixtech.framework.EnableLuixWebFramework;
 import com.luixtech.passport.config.ApplicationProperties;
+import com.luixtech.springbootframework.EnableLuixSpringBootFramework;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -13,7 +13,7 @@ import org.springframework.retry.annotation.EnableRetry;
 @ServletComponentScan
 // https://github.com/spring-projects/spring-retry
 @EnableRetry
-@EnableLuixWebFramework
+@EnableLuixSpringBootFramework
 public class PassportServerApplication {
     /**
      * Entrance method which used to run the application. Spring profiles can be configured with a program arguments

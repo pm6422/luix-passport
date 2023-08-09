@@ -3,7 +3,7 @@ package com.luixtech.passport.config;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.servlet.InstrumentedFilter;
 import com.codahale.metrics.servlets.MetricsServlet;
-import com.luixtech.framework.config.LuixProperties;
+import com.luixtech.springbootframework.config.LuixProperties;
 import com.luixtech.passport.filter.CachingHttpHeadersFilter;
 import io.undertow.server.DefaultByteBufferPool;
 import io.undertow.websockets.jsr.WebSocketDeploymentInfo;
@@ -31,8 +31,8 @@ import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Objects;
 
-import static com.luixtech.framework.config.LuixProperties.SPRING_PROFILE_PROD;
-import static com.luixtech.framework.config.LuixProperties.SPRING_PROFILE_TEST;
+import static com.luixtech.springbootframework.config.LuixProperties.SPRING_PROFILE_PROD;
+import static com.luixtech.springbootframework.config.LuixProperties.SPRING_PROFILE_TEST;
 import static java.net.URLDecoder.decode;
 
 /**

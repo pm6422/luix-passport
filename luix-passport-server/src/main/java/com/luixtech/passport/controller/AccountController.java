@@ -2,7 +2,7 @@ package com.luixtech.passport.controller;
 
 import com.codahale.metrics.annotation.Timed;
 import com.google.common.collect.ImmutableMap;
-import com.luixtech.framework.component.HttpHeaderCreator;
+import com.luixtech.springbootframework.component.HttpHeaderCreator;
 import com.luixtech.passport.config.oauth2.LogoutEvent;
 import com.luixtech.passport.config.oauth2.SecurityUser;
 import com.luixtech.passport.config.oauth2.SecurityUtils;
@@ -47,8 +47,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.luixtech.framework.config.api.SpringDocConfiguration.AUTH;
-import static com.luixtech.framework.utils.NetworkUtils.getRequestUrl;
+import static com.luixtech.springbootframework.config.apidoc.SpringDocConfiguration.AUTH;
+import static com.luixtech.springbootframework.utils.NetworkUtils.getRequestUrl;
 
 
 /**

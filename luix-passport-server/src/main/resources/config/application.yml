@@ -219,7 +219,9 @@ luix:
         api-include-pattern: /api/**
         open-api-include-pattern: /open-api/**
         management-include-pattern: /management/**
-        title: LUI️✘ Passport Server
+        api-title: LUI️✘ Passport Server API
+        open-api-title: LUI️✘ Passport Server API
+        management-title: LUI️✘ Passport Server Management API
         version: ${app.version}
         terms-of-service-url:
         contact-name: Louis

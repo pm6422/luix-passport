@@ -1,6 +1,6 @@
 package com.luixtech.passport.controller;
 
-import com.luixtech.framework.component.HttpHeaderCreator;
+import com.luixtech.springbootframework.component.HttpHeaderCreator;
 import com.luixtech.passport.domain.Authority;
 import com.luixtech.passport.domain.AuthorityMenu;
 import com.luixtech.passport.domain.Menu;
@@ -22,7 +22,7 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.luixtech.framework.config.api.SpringDocConfiguration.AUTH;
+import static com.luixtech.springbootframework.config.apidoc.SpringDocConfiguration.AUTH;
 
 
 /**

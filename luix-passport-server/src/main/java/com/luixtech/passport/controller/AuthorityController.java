@@ -1,7 +1,7 @@
 package com.luixtech.passport.controller;
 
 import com.google.common.collect.ImmutableMap;
-import com.luixtech.framework.component.HttpHeaderCreator;
+import com.luixtech.springbootframework.component.HttpHeaderCreator;
 import com.luixtech.passport.domain.Authority;
 import com.luixtech.passport.exception.DataNotFoundException;
 import com.luixtech.passport.exception.DuplicationException;
@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-import static com.luixtech.framework.config.api.SpringDocConfiguration.AUTH;
+import static com.luixtech.springbootframework.config.apidoc.SpringDocConfiguration.AUTH;
 import static com.luixtech.passport.utils.HttpHeaderUtils.generatePageHeaders;
 
 /**

@@ -1,7 +1,7 @@
 package com.luixtech.passport.service.impl;
 
 import com.google.common.collect.ImmutableMap;
-import com.luixtech.framework.component.MessageCreator;
+import com.luixtech.springbootframework.component.MessageCreator;
 import com.luixtech.passport.domain.User;
 import com.luixtech.passport.dto.UsernameAndPasswordDTO;
 import com.luixtech.passport.exception.DataNotFoundException;

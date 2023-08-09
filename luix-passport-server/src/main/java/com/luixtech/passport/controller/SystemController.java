@@ -1,6 +1,6 @@
 package com.luixtech.passport.controller;
 
-import com.luixtech.framework.config.LuixProperties;
+import com.luixtech.springbootframework.config.LuixProperties;
 import com.luixtech.passport.domain.Authority;
 import com.luixtech.utilities.network.AddressUtils;
 import io.swagger.v3.oas.annotations.Operation;
@@ -23,7 +23,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static com.luixtech.framework.config.api.SpringDocConfiguration.AUTH;
+import static com.luixtech.springbootframework.config.apidoc.SpringDocConfiguration.AUTH;
 
 
 @RestController

@@ -50,8 +50,8 @@
         </dependency>
         <dependency>
             <groupId>com.luixtech</groupId>
-            <artifactId>luix-web-framework</artifactId>
-            <version>1.2.1.4</version>
+            <artifactId>luix-springboot2-framework</artifactId>
+            <version>1.2.1.5</version>
         </dependency>
         <dependency>
             <groupId>com.ryantenney.metrics</groupId>
@@ -123,28 +123,14 @@
             <artifactId>hibernate-jcache</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.hibernate.validator</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <version>6.1.7.Final</version>
-        </dependency>
-        <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
             <!-- Inherited version from Spring Boot can't be used because of regressions -->
             <version>${liquibase.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-ui</artifactId>
-            <version>1.6.8</version>
-        </dependency>
-        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-autoconfigure</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

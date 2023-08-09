@@ -5,7 +5,7 @@ import com.codahale.metrics.Slf4jReporter;
 import com.codahale.metrics.graphite.Graphite;
 import com.codahale.metrics.graphite.GraphiteReporter;
 import com.codahale.metrics.jvm.*;
-import com.luixtech.framework.config.LuixProperties;
+import com.luixtech.springbootframework.config.LuixProperties;
 import com.ryantenney.metrics.spring.config.annotation.EnableMetrics;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
