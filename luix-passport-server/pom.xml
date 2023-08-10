@@ -33,10 +33,6 @@
             <artifactId>jackson-datatype-hppc</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-jsr310</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.luixtech</groupId>
             <artifactId>luix-springboot2-framework</artifactId>
             <version>1.2.1.6</version>
