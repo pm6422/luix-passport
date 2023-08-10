@@ -51,7 +51,7 @@
         <dependency>
             <groupId>com.luixtech</groupId>
             <artifactId>luix-springboot2-framework</artifactId>
-            <version>1.2.1.5</version>
+            <version>1.2.1.6</version>
         </dependency>
         <dependency>
             <groupId>com.ryantenney.metrics</groupId>
