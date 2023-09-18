@@ -38,7 +38,7 @@ NOTE: Java compatability: JDK 9 above
 This project needs a MySQL database as the backend storage. e.g. to start a MySQL database in a docker container, run:
 
 ```bash
-docker-compose -f passport-server/src/main/docker/mysql.yml up -d
+docker-compose -f luix-passport-server/src/main/docker/mysql.yml up -d
 ```
 
 [[dependencies]]
