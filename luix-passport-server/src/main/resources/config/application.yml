@@ -20,6 +20,7 @@ management: # Management http server configuration, used by ManagementServerProp
                 include:
                     - configprops
                     - env
+                    - info
                     - health
                     - beans
                     - mappings
