@@ -1,19 +1,5 @@
 = LUI️✘ Passport
 
-[[index]]
-== Index
-
-* <<website, Official website>>
-* <<repository, Code repository>>
-* <<requirements, Requirements>>
-* <<dependencies, Dependencies>>
-* <<build, Build>>
-* <<run, Run>>
-* <<running-the-test-cases, Running the test cases>>
-* <<snapshots, Snapshots>>
-* <<contacts, Contacts>>
-* <<references, References>>
-
 [[website]]
 == Official website
 http://www.luixtech.com
@@ -102,3 +88,9 @@ image::luix-passport-server/images/new/03.png[]
 https://www.ruanyifeng.com/blog/2019/04/oauth-grant-types.html[OAuth 2.0 的四种方式]
 
 https://spring.io/projects/spring-security-oauth[End-of-Life for Spring Security OAuth]
+
+[[thanks]]
+== Thanks
+Thanks for the license providing by JetBrains
+
+image::https://images.gitee.com/uploads/images/2020/0406/220236_f5275c90_5531506.png[]
