@@ -16,7 +16,7 @@ management: # Management http server configuration, used by ManagementServerProp
     endpoints:
         web:
             base-path: /management
-            exposure: # Refer to https://docs.spring.io/spring-boot/docs/2.7.1/reference/html/application-properties.html#application-properties.actuator
+            exposure:
                 include:
                     - configprops
                     - env
@@ -32,6 +32,7 @@ management: # Management http server configuration, used by ManagementServerProp
                     - prometheus
                     - threaddump
                     - liquibase
+                    - luixopenapigroups
     endpoint:
         health: # used by HealthEndpointProperties, Note: it will show health details if it has the access token by Ajax
             enabled: true
