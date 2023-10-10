@@ -3,10 +3,8 @@ package com.luixtech.passport.config;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.servlet.InstrumentedFilter;
 import com.codahale.metrics.servlets.MetricsServlet;
-import com.luixtech.springbootframework.config.LuixProperties;
 import com.luixtech.passport.filter.CachingHttpHeadersFilter;
-import io.undertow.server.DefaultByteBufferPool;
-import io.undertow.websockets.jsr.WebSocketDeploymentInfo;
+import com.luixtech.springbootframework.config.LuixProperties;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.embedded.undertow.UndertowServletWebServerFactory;
@@ -61,20 +59,11 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
      */
     @Override
     public void customize(UndertowServletWebServerFactory factory) {
-        setWebSocketDeploymentInfo(factory);
         setMimeMappings(factory);
         if (Arrays.asList(env.getActiveProfiles()).contains(SPRING_PROFILE_TEST)) {
             // When running in an IDE or with ./mvnw spring-boot:run, set location of the static web assets.
             setLocationForStaticAssets(factory);
         }
-    }
-
-    private void setWebSocketDeploymentInfo(UndertowServletWebServerFactory factory) {
-        factory.addDeploymentInfoCustomizers(deploymentInfo -> {
-            WebSocketDeploymentInfo webSocketDeploymentInfo = new WebSocketDeploymentInfo();
-            webSocketDeploymentInfo.setBuffers(new DefaultByteBufferPool(false, 1024));
-            deploymentInfo.addServletContextAttribute("io.undertow.websockets.jsr.WebSocketDeploymentInfo", webSocketDeploymentInfo);
-        });
     }
 
     private void setMimeMappings(WebServerFactory factory) {

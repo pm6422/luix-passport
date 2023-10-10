@@ -7,8 +7,8 @@
 # https://docs.spring.io/spring-boot/docs/2.7.1/reference/html/application-properties.html#application-properties
 # ===================================================================
 app:
-    id: passport-server
-    name: passport-server
+    id: luix-passport-server
+    name: luix-passport-server
     version: 1.0.0
     package: com.luixtech.passport
     companyName: www.luixtech.com
