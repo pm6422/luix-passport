@@ -49,7 +49,7 @@ This project contains two sub-modules, the server-side (passport-server) and the
 Run LUI️✘ passport server:
 
 ```bash
-java -jar passport-server/target/*.war
+java -jar luix-passport-server/target/*.war
 ```
 
 Then navigate to http://localhost:9010[http://localhost:9010] in your browser.
@@ -57,7 +57,7 @@ Then navigate to http://localhost:9010[http://localhost:9010] in your browser.
 Run LUI️✘ passport client:
 
 ```bash
-java -jar passport-client/target/*.war
+java -jar luix-passport-client/target/*.war
 ```
 
 Then navigate to http://localhost:9020[http://localhost:9020] in your browser.
