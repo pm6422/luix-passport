@@ -78,7 +78,7 @@ spring:
     main:
         allow-bean-definition-overriding: true
     messages:
-        basename: i18n/messages
+        basename: i18n/messages,i18n/luix-messages
         fallback-to-system-locale: false
     task:
         execution:
