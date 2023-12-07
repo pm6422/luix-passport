@@ -2,11 +2,9 @@
 version: '3.8'
 services:
   luix-mysql:
-    image: mysql:8.0.34
-    platform: linux/arm64 # ARM platform
-#    platform: linux/amd64 # Intel platform
-    # volumes:
-    #   - ~/volumes/luix/mysql/:/var/lib/mysql/
+    image: mysql:8.1.0
+#    volumes:
+    #   - ~/volumes/luix-passport/db/mysql/:/var/lib/mysql/
     environment:
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
       - MYSQL_DATABASE=passport
