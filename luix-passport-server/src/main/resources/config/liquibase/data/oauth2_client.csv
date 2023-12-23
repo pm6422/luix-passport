@@ -1,3 +1,3 @@
 id;client_id;remarks;enabled;client_id_issued_at;validity_in_days;client_secret_expires_at;created_by;created_time;modified_by;modified_time;client_secret
-11;login-client;third-party login;true;now;30;2023-09-22 21:33:35;system;now;system;now;$2a$10$MrgB48yHatYO3q6sIFos1.0Ae7me7yWshY0BOntCQr1C/9ZAXrrPm
-12;internal-client;for luix passport internal use;true;now;30;2023-09-22 21:33:35;system;now;system;now;$2a$10$Hkem5myQtc4UaPwJq7IiiuJBMn2po7lhauQcRe5o2P4zdrgLDzNnG
+11;login-client;third-party login;true;now;30;2028-09-22 21:33:35;system;now;system;now;$2a$10$MrgB48yHatYO3q6sIFos1.0Ae7me7yWshY0BOntCQr1C/9ZAXrrPm
+12;internal-client;for luix passport internal use;true;now;30;2028-09-22 21:33:35;system;now;system;now;$2a$10$Hkem5myQtc4UaPwJq7IiiuJBMn2po7lhauQcRe5o2P4zdrgLDzNnG
