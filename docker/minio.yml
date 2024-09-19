@@ -1,0 +1,16 @@
+# This configuration is intended for development purpose, it's **your** responsibility to harden it for production
+name: luix
+services:
+  minio:
+    image: quay.io/minio/minio
+    container_name: minio
+    volumes:
+      - ./config/minio/data:/data
+    environment:
+      MINIO_ROOT_USER: ROOTUSER
+      MINIO_ROOT_PASSWORD: CHANGEME123
+    user: "${UID}:${GID}"
+    ports:
+      - 127.0.0.1:9111:9001
+      - 9110:9000
+    command: server /data --console-address ":9001"

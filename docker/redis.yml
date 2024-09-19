@@ -1,0 +1,10 @@
+# This configuration is intended for development purpose, it's **your** responsibility to harden it for production
+name: luix
+services:
+  redis:
+    image: redis:7.2.0
+    container_name: redis
+    # If you want to expose these ports outside your dev PC,
+    # remove the "127.0.0.1:" prefix
+    ports:
+      - 127.0.0.1:6379:6379

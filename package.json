@@ -1,0 +1,15 @@
+{
+  "name": "luix-passport-server-ui",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Luix Passport Server UI Package Management",
+  "license": "UNLICENSED",
+  "scripts": {
+    "all:up": "docker compose -f docker/all.yml up --wait",
+    "all:down": "docker compose -f docker/all.yml down",
+    "docker:build": "./mvnw compile -ntp verify -DskipTests -Prelease,webapp",
+    "docker:build:arm64": "npm run docker:build -- -Djib.arch=arm64",
+    "docker:push": "npm run docker:build -- -Djib.goal=build",
+    "docker:push:arm64": "npm run docker:push -- -Djib.arch=arm64"
+  }
+}

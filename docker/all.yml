@@ -1,0 +1,64 @@
+# This configuration is intended for development purpose, it's **your** responsibility to harden it for production
+name: luix
+services:
+  postgresql:
+    extends:
+      file: ./postgresql.yml
+      service: postgresql
+  passport-server:
+    image: luix-passport-server
+    container_name: luix-passport-server
+    environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - SPRING_PROFILES_ACTIVE=test
+      - MANAGEMENT_PROMETHEUS_METRICS_EXPORT_ENABLED=true
+      # Note: It can NOT use localhost as the database URL
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresql:5432/luix-passport
+    ports:
+      - 127.0.0.1:6001:6001
+    depends_on:
+      postgresql:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6001/management/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 40
+  passport-resource-server:
+    image: luix-passport-resource-server
+    container_name: luix-passport-resource-server
+    environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - SPRING_PROFILES_ACTIVE=test
+      - MANAGEMENT_PROMETHEUS_METRICS_EXPORT_ENABLED=true
+    ports:
+      - 127.0.0.1:6002:6002
+    # host network mode can access auth server in docker environment
+    network_mode: host
+    depends_on:
+      postgresql:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6002/management/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 40
+  passport-client:
+    image: luix-passport-client
+    container_name: luix-passport-client
+    environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - SPRING_PROFILES_ACTIVE=test
+      - MANAGEMENT_PROMETHEUS_METRICS_EXPORT_ENABLED=true
+    ports:
+      - 127.0.0.1:6003:6003
+    # host network mode can access auth server in docker environment
+    network_mode: host
+    depends_on:
+      passport-server:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6003/management/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 40
