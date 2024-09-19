@@ -1,0 +1,11 @@
+{
+  "apiDocsEnabled" : true,
+  "ribbonProfile" : "disconnected",
+  "build" : {
+    "artifact" : "luix-passport",
+    "name" : "LUix Passport Server",
+    "time" : "2024-03-20T02:22:27.985Z",
+    "version" : "1.0.0",
+    "group" : "cn.luixtech"
+  }
+}
