@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/luix-passport
+    username: postgres
+    password: postgres
+  liquibase:
+    enabled: true
+    drop-first: true # reset database
+# ===================================================================
+# Application specific properties
+# ===================================================================
+application:
+  allowed-cors:
+    mappings:
+      "[/login]": http://localhost:4000/ # resolved CORS issue for vite dev env

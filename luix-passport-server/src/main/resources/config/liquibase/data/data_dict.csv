@@ -1,0 +1,10 @@
+id;num;category_code;dict_code;enabled;created_by;created_at;modified_at
+13;DCT1001;role;ROLE_ANONYMOUS;true;SYSTEM;now;now
+14;DCT1002;role;ROLE_USER;true;SYSTEM;now;now
+15;DCT1003;role;ROLE_ADMIN;true;SYSTEM;now;now
+16;DCT1004;role;ROLE_DEVELOPER;true;SYSTEM;now;now
+
+17;DCT1005;role2;ROLE_ANONYMOUS;true;SYSTEM;now;now
+18;DCT1006;role2;ROLE_USER;true;SYSTEM;now;now
+19;DCT1007;role2;ROLE_ADMIN;true;SYSTEM;now;now
+20;DCT1008;role2;ROLE_DEVELOPER;true;SYSTEM;now;now

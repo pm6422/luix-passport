@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Passport | Sign in</title>
+	<link rel="shortcut icon" th:href="@{/favicon.ico}"/>
+	<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-white rounded-lg py-10">
+	<div class="container relative grid h-svh flex-col items-center justify-center lg:max-w-none lg:grid-cols-2">
+		<div class="lg:flex relative hidden lg:px-28 ms-10 mb-36">
+			<div class="max-md:text-center">
+				<img alt="Logo" th:src="@{/assets/images/logos/logo-with-text.svg}" class="h-14 my-12" />
+				<h2 class="lg:text-5xl text-4xl font-extrabold lg:leading-[55px]">
+					Seamless Login for Exclusive Access
+				</h2>
+				<h4 class="mt-6">Immerse yourself in a hassle-free login journey with our account protection technology. Effortlessly access your account.</h4>
+				<p class="text-sm mt-10">Don't have an account. <a href="javascript:void(0);" class="text-blue-700 font-semibold hover:underline ml-1">Register here</a></p>
+			</div>
+		</div>
+		<div class="flex flex-col w-full h-full lg:px-48 px-5 text-center bg-white rounded-3xl">
+			<img alt="Logo" th:src="@{/assets/images/logos/logo-round.svg}" class="h-16 my-5" />
+			<h3 class="mb-3 text-2xl font-extrabold text-dark-gray-900">Sign In</h3>
+			<a href="/oauth2/authorization/github-idp"
+				 class="flex items-center justify-center w-full py-3 mb-6 text-sm font-medium transition duration-300 rounded-2xl bg-gray-200 hover:bg-gray-300 focus:ring-4 focus:ring-gray-200">
+				<svg width="30px"
+			 		x="0px" y="0px" viewBox="0 0 2350 2314.8" xml:space="preserve">
+						<path d="M1175,0C525.8,0,0,525.8,0,1175c0,552.2,378.9,1010.5,890.1,1139.7c-5.9-14.7-8.8-35.3-8.8-55.8v-199.8H734.4
+						c-79.3,0-152.8-35.2-185.1-99.9c-38.2-70.5-44.1-179.2-141-246.8c-29.4-23.5-5.9-47,26.4-44.1c61.7,17.6,111.6,58.8,158.6,120.4
+						c47,61.7,67.6,76.4,155.7,76.4c41.1,0,105.7-2.9,164.5-11.8c32.3-82.3,88.1-155.7,155.7-190.9c-393.6-47-581.6-240.9-581.6-505.3
+						c0-114.6,49.9-223.3,132.2-317.3c-26.4-91.1-61.7-279.1,11.8-352.5c176.3,0,282,114.6,308.4,143.9c88.1-29.4,185.1-47,284.9-47
+						c102.8,0,196.8,17.6,284.9,47c26.4-29.4,132.2-143.9,308.4-143.9c70.5,70.5,38.2,261.4,8.8,352.5c82.3,91.1,129.3,202.7,129.3,317.3
+						c0,264.4-185.1,458.3-575.7,499.4c108.7,55.8,185.1,214.4,185.1,331.9V2256c0,8.8-2.9,17.6-2.9,26.4
+						C2021,2123.8,2350,1689.1,2350,1175C2350,525.8,1824.2,0,1175,0L1175,0z"/>
+				</svg>
+				<span class="ml-3">
+					Sign in with GitHub
+				</span>
+			</a>
+			<div class="flex items-center mb-3">
+				<hr class="h-0 border-b border-b-muted grow">
+				<p class="mx-4 text-gray-600 uppercase">or continue with</p>
+				<hr class="h-0 border-b border-b-muted grow">
+			</div>
+			<form method="post" th:action="@{/login}">
+				<div th:if="${param.error}" class="py-5">
+					<div class="flex justify-center">
+						<div class="text-red-600">Invalid username or password.</div>
+					</div>
+				</div>
+				<div th:if="${param.logout}" class="py-5">
+					<div class="flex justify-center">
+						<div class="text-gray-500">You have been logged out.</div>
+					</div>
+				</div>
+
+				<label for="username" class="mb-2 text-sm flex justify-start text-gray-900">Username</label>
+				<input
+					id="username"
+					name="username"
+					type="text"
+					class="flex items-center w-full px-5 py-4 mb-7 mr-2 text-sm font-medium outline-none focus:bg-gray-300 placeholder:text-gray-300 bg-gray-100 text-dark-gray-800 rounded-2xl"
+					required
+				/>
+				<label for="password" class="mb-2 text-sm flex justify-start text-gray-900">Password</label>
+				<input
+					id="password"
+					name="password"
+					type="password"
+					class="flex items-center w-full px-5 py-4 mb-5 mr-2 text-sm font-medium outline-none focus:bg-gray-300 placeholder:text-gray-300 bg-gray-100 text-dark-gray-800 rounded-2xl"
+					required
+				/>
+				<div class="flex flex-row justify-end mb-8">
+					<a href="javascript:void(0)" class="mr-4 text-sm font-medium text-purple-500">Forget password?</a>
+				</div>
+				<button
+					type="submit"
+					class="w-full focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-2xl text-sm px-5 py-4 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">
+					Sign In
+				</button>
+			</form>
+			<p class="mt-3 text-sm leading-relaxed text-gray-900">Not registered yet? <a href="javascript:void(0)" class="font-bold hover:underline text-blue-700">Create an Account</a></p>
+			<p class="mt-5 px-8 text-center text-sm text-gray-900">
+				By clicking sign in, you agree to our Terms of Service and Privacy Policy.
+			</p>
+		</div>
+	</div>
+</body>
+</html>

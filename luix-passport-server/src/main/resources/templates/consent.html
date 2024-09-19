@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Passport | Authorization</title>
+	<link rel="shortcut icon" th:href="@{/favicon.ico}"/>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<script>
+		function cancelConsent() {
+			document.consent_form.reset();
+			document.consent_form.submit();
+		}
+	</script>
+</head>
+<body>
+<div class="flex flex-col items-center p-5">
+	<div class="card w-lg-650px px-10 py-5 shadow-lg rounded-lg">
+		<div class="card-body py-15 py-lg-20">
+			<div class="mb-14">
+				<div class="text-gray-500 font-semibold text-sm">
+					<div class="flex justify-center">
+						<img alt="Logo" th:src="@{/assets/images/logos/logo-with-text.svg}" class="h-12 my-12" />
+					</div>
+				</div>
+			</div>
+			<div class="font-bold text-gray-900 text-2xl text-center">Application <span th:text="${clientId}"></span> wants to access your account</div>
+			<div class="my-12">
+				<div class="font-bold text-gray-900 text-xl text-center"><span th:text="${principalName}"></span></div>
+			</div>
+			<div th:if="${userCode}" class="row">
+				<div class="col text-center">
+					<p class="alert alert-warning">
+						You have provided the code
+						<span class="font-bold" th:text="${userCode}"></span>.
+						Verify that this code matches what is shown on your device.
+					</p>
+				</div>
+			</div>
+			<div class="mb-15">
+				<div class="font-bold text-gray-900 text-xl text-center mb-5">When you allow this access, <span class="text-gray-800" th:text="${clientId}"></span> will be able to
+				</div>
+			</div>
+			<div class="row">
+				<div class="col text-center">
+					<form name="consent_form" method="post" th:action="${requestURI}">
+						<input type="hidden" name="client_id" th:value="${clientId}">
+						<input type="hidden" name="state" th:value="${state}">
+						<input th:if="${userCode}" type="hidden" name="user_code" th:value="${userCode}">
+
+						<div th:each="scope: ${scopes}">
+							<div class="border-b border-dashed"></div>
+							<div class="flex gap-3">
+								<div class="flex my-3 ms-3">
+									<label class="form-check form-check-custom form-check-solid me-5">
+										<input
+											type="checkbox"
+											name="scope"
+											th:value="${scope.scope}"
+											th:id="${scope.scope}"
+										/>
+									</label>
+								</div>
+								<div class="flex items-center justify-start">
+									<span class="font-bold" th:for="${scope.scope}" th:text="${scope.scope}"></span>
+									:&nbsp;
+									<span class="font-bold" th:text="${scope.description}"></span>
+								</div>
+							</div>
+							<div class="border-b border-dashed"></div>
+						</div>
+
+						<div th:if="${not #lists.isEmpty(previouslyApprovedScopes)}" class="mt-8 mb-3 font-bold text-warning">
+							You have already granted the following permissions to the above app:
+						</div>
+						<div th:each="scope: ${previouslyApprovedScopes}" class="">
+							<div class="border-b border-dashed"></div>
+							<div class="flex gap-3">
+								<div class="flex my-3 ms-3">
+									<label class="form-check form-check-custom form-check-solid me-5">
+										<input
+											class="form-check-input"
+											type="checkbox"
+											th:id="${scope.scope}"
+											disabled
+											checked
+										/>
+									</label>
+								</div>
+								<div class="flex items-center justify-start">
+									<span class="font-bold" th:for="${scope.scope}" th:text="${scope.scope}"></span>
+									:&nbsp;
+									<span class="font-bold" th:text="${scope.description}"></span>
+								</div>
+							</div>
+							<div class="border-b border-dashed"></div>
+						</div>
+
+						<div class="flex items-center justify-between gap-3 py-16">
+							<button
+								id="cancel-consent"
+								type="button"
+								class="w-full px-6 py-5 mb-5 text-sm font-bold leading-none text-white transition duration-300 rounded-2xl bg-gray-500"
+								onclick="cancelConsent();"
+							>
+								Cancel
+							</button>
+
+							<button
+								id="submit-consent"
+								type="submit"
+								class="w-full px-6 py-5 mb-5 text-sm font-bold leading-none text-white transition duration-300 rounded-2xl hover:bg-purple-blue-600 focus:ring-4 focus:ring-purple-blue-100 bg-purple-500"
+							>
+								Authorize
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Passport | Device Activated</title>
+    <link rel="shortcut icon" th:href="@{/favicon.ico}"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+<div class="container mx-auto">
+    <div class="flex flex-wrap py-5">
+        <div class="w-5/12">
+            <h2 class="text-2xl font-bold text-green-500">Success!</h2>
+            <p class="mt-2">
+                You have successfully activated your device.<br/>
+                Please return to your device to continue.
+            </p>
+        </div>
+        <div class="w-7/12">
+            <img src="/assets/images/misc/devices.png" th:src="@{/assets/images/misc/devices.png}" class="img-responsive" alt="Devices">
+        </div>
+    </div>
+</div>
+</body>
+</html>
