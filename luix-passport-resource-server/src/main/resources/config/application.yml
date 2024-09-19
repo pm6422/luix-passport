@@ -1,0 +1,76 @@
+server:
+  port: 6002
+management: # Management http server configuration, used by ManagementServerProperties
+  endpoints:
+    web:
+      base-path: /management
+      exposure:
+        include:
+          - configprops
+          - env
+          - info
+          - health
+          - beans
+          - mappings
+          - httptrace
+          - shutdown
+          - auditevents
+          - scheduledtasks
+          - loggers
+          - prometheus
+          - threaddump
+          - liquibase
+          - luixopenapigroups
+  endpoint:
+    health: # used by HealthEndpointProperties, Note: it will show health details if it has the access token by Ajax
+      enabled: true
+      show-details: WHEN_AUTHORIZED
+    httptrace:
+      enabled: true
+    shutdown:
+      enabled: true # explicitly enable
+spring:
+  application:
+    name: luix-passport-resource-server
+  profiles:
+    # The commented value for `active` can be replaced with valid spring profiles to load.
+    # Otherwise, it will be filled in by maven when building the WAR file
+    # Either way, it can be overridden by `--spring.profiles.active` value passed in the commandline or `-Dspring.profiles.active` set in `JAVA_OPTS`
+    active: test
+  banner:
+    location: classpath:config/banner-company.txt
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:6001
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    org.springframework.security: INFO
+    org.springframework.security.oauth2: INFO
+springdoc: # https://springdoc.org/#migrating-from-springfox
+  api-docs:
+    enabled: true
+  show-actuator: true
+  swagger-ui:
+    tags-sorter: alpha
+# ===================================================================
+# Luix framework specific properties
+# ===================================================================
+luix:
+  api-docs:
+    api-include-pattern: /api/**
+    open-api-include-pattern: /open-api/**
+    management-include-pattern: /management/**
+    api-title: Luix Passport Resource Server API
+    open-api-title: Luix Passport Resource Server Open API
+    management-title: Luix Passport Resource Server Management API
+    version: ${spring.application.name}
+    terms-of-service-url:
+    contact-name: Louis
+    contact-url:
+    contact-email: louis@luixtech.cn
+    license: Unlicensed
+    license-url:
