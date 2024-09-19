@@ -1,20 +1,20 @@
-# ===================================================================
-# Spring Boot configuration for the "prod" profile.
-#
-# This configuration overrides the application.yml file.
-# Full reference is available at:
-# https://docs.spring.io/spring-boot/docs/2.7.1/reference/html/application-properties.html#application-properties
-# ===================================================================
 spring:
-    datasource:
-        url: jdbc:mysql://192.168.10.1:3306/luix-passport?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai
-        username: root
-        password: pass
-    liquibase:
-        change-log: classpath:config/liquibase/master.xml
+  datasource:
+    url: jdbc:postgresql://aaa:5432/luix-passport
+    username: postgres
+    password:
+  liquibase:
+    enabled: true
+    drop-first: true # reset database
+server:
+  forward-headers-strategy: framework # Resolved http CORS block issue
 # ===================================================================
 # Application specific properties
 # ===================================================================
 application:
-    server:
-        address: http://127.0.0.1:${server.port}
+  company:
+    force-to-https: true
+  allowed-cors:
+    mappings:
+      "[/logout]": https://passport.luixtech.cn/
+      "[/login?logout]": http://passport.luixtech.cn/

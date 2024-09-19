@@ -1,2 +1,0 @@
-http://stackoverflow.com/questions/29509392/spring-boot-security-thymeleaf-and-csrf-token-not-injected-automatically
-http://blog.csdn.net/xiejx618/article/details/50570901

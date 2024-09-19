@@ -1,5 +1,0 @@
-client_id;scope;description
-internal-client;message:read;read
-internal-client;message:write;write
-login-client;openid;openid
-login-client;profile;profile

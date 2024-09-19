@@ -2,257 +2,178 @@
 # Spring Boot configuration.
 #
 # This configuration will be overridden by the Spring profile you use,
-# for example application-dev.yml if you use the "dev" profile.
+# for example application-test.yml if you use the "test" profile.
 # Full reference is available at:
-# https://docs.spring.io/spring-boot/docs/2.7.1/reference/html/application-properties.html#application-properties
+# https://docs.spring.io/spring-boot/docs/3.2.0/reference/html/application-properties.html#application-properties
 # ===================================================================
-app:
-    id: luix-passport-server
-    name: luix-passport-server
-    version: 1.0.0
-    package: com.luixtech.passport
-    companyName: www.luixtech.com
-management: # Management http server configuration, used by ManagementServerProperties
-    endpoints:
-        web:
-            base-path: /management
-            exposure:
-                include:
-                    - configprops
-                    - env
-                    - info
-                    - health
-                    - beans
-                    - mappings
-                    - httptrace
-                    - shutdown
-                    - auditevents
-                    - scheduledtasks
-                    - loggers
-                    - prometheus
-                    - threaddump
-                    - liquibase
-                    - luixopenapigroups
-    endpoint:
-        health: # used by HealthEndpointProperties, Note: it will show health details if it has the access token by Ajax
-            enabled: true
-            show-details: WHEN_AUTHORIZED
-        httptrace:
-            enabled: true
-        shutdown:
-            enabled: true # explicitly enable
-    health:
-        mail:
-            enabled: false
-    metrics:
-        export:
-            prometheus: # Prometheus is the default metrics backend
-                enabled: true
-                step: 60
-        enable:
-            http: true
-            jvm: true
-            logback: true
-            process: true
-            system: true
-        distribution:
-            percentiles-histogram:
-                all: true
-            percentiles:
-                all: 0, 0.5, 0.75, 0.95, 0.99, 1.0
-        tags:
-            application: ${spring.application.name}
-        web:
-            server:
-                request:
-                    autotime:
-                        enabled: true
-spring:
-    application:
-        name: ${app.id}
-    profiles:
-        # The commented value for `active` can be replaced with valid spring profiles to load.
-        # Otherwise, it will be filled in by maven when building the WAR file
-        # Either way, it can be overridden by `--spring.profiles.active` value passed in the commandline or `-Dspring.profiles.active` set in `JAVA_OPTS`
-        active: test
-    main:
-        allow-bean-definition-overriding: true
-    messages:
-        basename: i18n/messages,i18n/luix-messages
-        fallback-to-system-locale: false
-    task:
-        execution:
-            thread-name-prefix: global-async-task-
-            pool:
-                core-size: 5
-                max-size: 32
-                queue-capacity: 1000
-        scheduling:
-            thread-name-prefix: global-scheduling-
-            pool:
-                size: 2
-    thymeleaf: #ThymeleafAutoConfiguration
-        mode: HTML
-        cache: true
-    servlet:
-        multipart: # Management http multipart configuration, used by MultipartProperties
-            enabled: true
-            max-file-size: 30MB
-            max-request-size: 30MB
-    session: # used by MongoIndexedSessionRepository
-        store-type: MONGODB
-        mongodb:
-            collection-name: HttpSession
-    mail: # specific mail property, used by MailProperties
-        host: smtp.exmail.qq.com
-        username: test@luixtech.com
-        password: LoU-UHR-9dH-8G9-F3G
-    banner:
-        location: classpath:config/banner-company.txt
-    jackson:
-        serialization:
-            fail-on-empty-beans: false
-    data:
-        jpa:
-            repositories:
-                bootstrap-mode: deferred
-    jpa:
-        open-in-view: true
-        properties:
-            hibernate.jdbc.time_zone: Asia/Shanghai
-            hibernate.id.new_generator_mappings: true
-            hibernate.connection.provider_disables_autocommit: true
-            hibernate.cache.use_second_level_cache: true
-            hibernate.cache.use_query_cache: false
-            hibernate.generate_statistics: false
-            # modify batch size as necessary
-            hibernate.jdbc.batch_size: 25
-            hibernate.order_inserts: true
-            hibernate.order_updates: true
-            hibernate.query.fail_on_pagination_over_collection_fetch: true
-            hibernate.query.in_clause_parameter_padding: true
-        hibernate:
-            ddl-auto: none
-            naming:
-                physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
-                implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
-    datasource:
-        type: com.zaxxer.hikari.HikariDataSource
-        hikari:
-            poolName: Hikari
-            auto-commit: false
-            data-source-properties:
-                cachePrepStmts: true
-                prepStmtCacheSize: 250
-                prepStmtCacheSqlLimit: 2048
-                useServerPrepStmts: true
-    security:
-        oauth2:
-            client:
-                registration:
-                    google-idp:
-                        provider: google
-                        client-id: ${GOOGLE_CLIENT_ID:google-client-id}
-                        client-secret: ${GOOGLE_CLIENT_SECRET:google-client-secret}
-                        scope: openid, https://www.googleapis.com/auth/userinfo.profile, https://www.googleapis.com/auth/userinfo.email
-                        client-name: Sign in with Google
-                    github-idp:
-                        provider: github
-                        client-id: ${GITHUB_CLIENT_ID:0f25e4d118b8caa67371}
-                        client-secret: ${GITHUB_CLIENT_SECRET:b4eba530555b66efc49d4e4da558d59006ec873f}
-                        scope: user:email, read:user
-                        client-name: Sign in with GitHub
-                provider:
-                    google:
-                        user-name-attribute: email
-                    github:
-                        user-name-attribute: login
 server:
-    # It can be overridden by `--server.port` value passed in the commandline or `-Dserver.port` set in `JAVA_OPTS`
-    port: 9010
-    servlet:
-        session:
-            cookie:
-                name: ${spring.application.name}
-            timeout: 1D # Session timeout in 1 day, Note: this parameter can control the login expiration
-            # and this statement can effect spring session, used by SessionProperties
-logging:
-    level:
-        root: INFO
-        org.springframework.boot.devtools.autoconfigure: INFO
-        org.apache: WARN
-        sun.rmi: WARN
-        jdk.event.security: WARN
-        javax.xml.bind: INFO
-        com.zaxxer.hikari.pool.HikariPool: INFO
-        org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener: INFO
-mongock:
+  port: 6001
+  servlet:
+    session:
+      timeout: 1D # Session timeout in 1 day. This parameter can control the login expiration. And this statement can affect Spring Session, which is used by SessionProperties.
+management: # Management http server configuration, used by ManagementServerProperties
+  health:
+    mail:
+      enabled: false
+  endpoints:
+    web:
+      base-path: /management
+      exposure:
+        include:
+          - configprops
+          - env
+          - info
+          - health
+          - beans
+          - mappings
+          - httptrace
+          - shutdown
+          - auditevents
+          - scheduledtasks
+          - loggers
+          - prometheus
+          - threaddump
+          - liquibase
+          - luixopenapigroups
+  endpoint:
+    health: # used by HealthEndpointProperties, Note: it will show health details if it has the access token by Ajax
+      enabled: true
+      show-details: WHEN_AUTHORIZED
+    httptrace:
+      enabled: true
+    shutdown:
+      enabled: true # explicitly enable
+spring:
+  application:
+    name: luix-passport-server
+  profiles:
+    # The commented value for `active` can be replaced with valid spring profiles to load.
+    # Otherwise, it will be filled in by maven when building the WAR file
+    # Either way, it can be overridden by `--spring.profiles.active` value passed in the commandline or `-Dspring.profiles.active` set in `JAVA_OPTS`
+    active: dev
+  web:
+    locale: en_US # default locale
+  servlet:
+    multipart:
+      max-request-size: 15MB
+      max-file-size: 15MB
+  messages:
+    basename: i18n/messages,i18n/luix-messages
+  banner:
+    location: classpath:config/banner-company.txt
+  thymeleaf:
+    mode: HTML
+  data:
+    jpa:
+      repositories:
+        bootstrap-mode: deferred
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate.default_schema: public # public schema of PostgresSQL
+      hibernate.jdbc.time_zone: Asia/Shanghai
+      hibernate.timezone.default_storage: NORMALIZE
+#      hibernate.type.preferred_instant_jdbc_type: TIMESTAMP
+      hibernate.id.new_generator_mappings: true
+      hibernate.connection.provider_disables_autocommit: false
+      hibernate.cache.use_second_level_cache: false
+      hibernate.cache.use_query_cache: false
+      hibernate.generate_statistics: false
+      # modify batch size as necessary
+      hibernate.jdbc.batch_size: 25
+      hibernate.order_inserts: true
+      hibernate.order_updates: true
+      hibernate.query.fail_on_pagination_over_collection_fetch: true
+      hibernate.query.in_clause_parameter_padding: true
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      poolName: Hikari
+      auto-commit: true
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true
+  security:
+    oauth2:
+      client:
+        registration:
+          google-idp: # https://accounts.google.com/.well-known/openid-configuration
+            provider: google
+            client-id: ${GOOGLE_CLIENT_ID:google-client-id}
+            client-secret: ${GOOGLE_CLIENT_SECRET:google-client-secret}
+            scope: openid, https://www.googleapis.com/auth/userinfo.profile, https://www.googleapis.com/auth/userinfo.email
+            client-name: Sign in with Google
+          github-idp:
+            provider: github
+            client-id: ${GITHUB_CLIENT_ID:16dc9a9c9866efc8ea26}
+            client-secret: ${GITHUB_CLIENT_SECRET:48d2df23b64901f248e8a156eedac932ab579054}
+            scope: user:email, read:user
+            client-name: Sign in with GitHub
+        provider:
+          google:
+            user-name-attribute: email
+          github:
+            user-name-attribute: login
+  liquibase:
     enabled: false
-    track-ignored: true
-    migration-scan-package:
-        - ${app.package}.config.dbmigrations
-    mongo-db:
-        read-concern: local
-        write-concern:
-            journal: false
+    change-log: classpath:config/liquibase/master.xml
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    org.jooq.tools.LoggerListener: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.security.oauth2: DEBUG
 springdoc: # https://springdoc.org/#migrating-from-springfox
-    api-docs:
-        enabled: true
-    show-actuator: true
-    swagger-ui:
-        tags-sorter: alpha
+  api-docs:
+    enabled: true
+  show-actuator: true
+  swagger-ui:
+    tags-sorter: alpha
 # ===================================================================
 # Luix framework specific properties
 # ===================================================================
 luix:
-    metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
-        logs: # print metrics info to the logs
-            enabled: false
-            report-frequency: 60 # in seconds
-        graphite: # output metrics info to graphite server
-            enabled: false
-            host: localhost
-            port: 2003
-            prefix: ${spring.application.name}
-    http:
-        cache: # Used by the CachingHttpHeadersFilter
-            expired-after: 31
-    api-docs:
-        api-include-pattern: /api/**
-        open-api-include-pattern: /open-api/**
-        management-include-pattern: /management/**
-        api-title: LUI️✘ Passport Server API
-        open-api-title: LUI️✘ Passport Server API
-        management-title: LUI️✘ Passport Server Management API
-        version: ${app.version}
-        terms-of-service-url:
-        contact-name: Louis
-        contact-url:
-        contact-email: louis@luixtech.com
-        license: Unlicensed
-        license-url:
-    aop-logging:
-        enabled: true
-        method-whitelist-mode: true
-        method-whitelist:
-            - AccountController.getTokenUser
-    elapsed-time-logging:
-        enabled: true
-        slow-execution-threshold: 300 # unit: ms
-    ribbon:
-        # comma separated list of profiles to show a ribbon on the GUI
-        display-on-active-profiles: dev,test,demo
+  api-docs:
+    api-include-pattern: /api/**
+    open-api-include-pattern: /open-api/**
+    management-include-pattern: /management/**
+    api-title: Luix Passport Server API
+    open-api-title: Luix Passport Server Open API
+    management-title: Luix Passport Server Management API
+    version: ${spring.application.name}
+    terms-of-service-url:
+    contact-name: Louis
+    contact-url:
+    contact-email: louis@luixtech.cn
+    license: Unlicensed
+    license-url:
+  aop-logging:
+    enabled: true
+    method-whitelist-mode: false
+  elapsed-time-logging:
+    enabled: true
+    slow-execution-threshold: 300 # unit: ms
+  ribbon:
+    # comma separated list of profiles to show a ribbon on the GUI
+    display-on-active-profiles: dev,test,demo
 # ===================================================================
 # Application specific properties
 # ===================================================================
 application:
-    cors:
-        allowed-methods: "*"
-        allowed-headers: "*"
-        exposed-headers: "Authorization,Link,X-Total-Count,X-${spring.application.name}-alert,X-${spring.application.name}-error,X-${spring.application.name}-params"
-        allow-credentials: true
-        max-age: 1800
-    user-event-audit:
-        enabled: true
-    account:
-        default-password: ${spring.application.name}
+  account:
+    default-password: ${spring.application.name}
+  company:
+    name: Luix Passport
+    domain: https://passport.luixtech.cn
+  mail:
+    resend-api-key: ${RESEND_API_KEY:use-your-resend-api-key} # https://resend.com
+    from-user-name: louis@luixtech.cn
+    admin-email: ${luix.api-docs.contact-email}

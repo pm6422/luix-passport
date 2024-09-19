@@ -1,3 +1,0 @@
-client_id;access_token_time_to_live;refresh_token_time_to_live;token_format;reuse_refresh_tokens;id_token_signature_algorithm
-internal-client;604800000000000;2592000000000000;self-contained;1;RS256
-login-client;604800000000000;2592000000000000;self-contained;1;RS256

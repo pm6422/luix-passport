@@ -2,56 +2,135 @@
 # Spring Boot configuration.
 #
 # This configuration will be overridden by the Spring profile you use,
-# for example application-dev.yml if you use the "dev" profile.
+# for example application-test.yml if you use the "test" profile.
 # Full reference is available at:
-# https://docs.spring.io/spring-boot/docs/2.7.1/reference/html/application-properties.html#application-properties
+# https://docs.spring.io/spring-boot/docs/3.2.0/reference/html/application-properties.html#application-properties
 # ===================================================================
-app:
-    id: passport-client
-    name: passport-client
-    version: 1.0.0
-    package: com.luixtech.client
-    companyName: Infinity Organization
-spring:
-    application:
-        name: ${app.id}
-    profiles:
-        # The commented value for `active` can be replaced with valid spring profiles to load.
-        # Otherwise, it will be filled in by maven when building the WAR file
-        # Either way, it can be overridden by `--spring.profiles.active` value passed in the commandline or `-Dspring.profiles.active` set in `JAVA_OPTS`
-        active: test
-    messages:
-        basename: i18n/messages
-    thymeleaf: #ThymeleafAutoConfiguration
-        mode: HTML
-    banner:
-        location: classpath:config/banner-company.txt
-    aop:
-        proxy-target-class: true
-    security:
-        oauth2:
-            client:
-                registration:
-                    felord:
-                        client-id: login-client
-                        client-secret: 65G-HD9-4PD-j9F-HP5
-                        redirect-uri: http://127.0.0.1:9020
-                        authorization-grant-type: authorization_code
-                        client-authentication-method: client_secret_basic
-                        scope: profile
-                provider:
-                    felord:
-                        issuer-uri: http://127.0.0.1:9010
 server:
-    # It can be overridden by `--server.port` value passed in the commandline or `-Dserver.port` set in `JAVA_OPTS`
-    port: 9020
-    servlet:
-        session:
-            cookie:
-                name: ${spring.application.name}
+  port: 6003
+management: # Management http server configuration, used by ManagementServerProperties
+  endpoints:
+    web:
+      base-path: /management
+      exposure:
+        include:
+          - configprops
+          - env
+          - info
+          - health
+          - beans
+          - mappings
+          - httptrace
+          - shutdown
+          - auditevents
+          - scheduledtasks
+          - loggers
+          - prometheus
+          - threaddump
+          - liquibase
+          - luixopenapigroups
+  endpoint:
+    health: # used by HealthEndpointProperties, Note: it will show health details if it has the access token by Ajax
+      enabled: true
+      show-details: WHEN_AUTHORIZED
+    httptrace:
+      enabled: true
+    shutdown:
+      enabled: true # explicitly enable
+spring:
+  application:
+    name: luix-passport-client
+  profiles:
+    # The commented value for `active` can be replaced with valid spring profiles to load.
+    # Otherwise, it will be filled in by maven when building the WAR file
+    # Either way, it can be overridden by `--spring.profiles.active` value passed in the commandline or `-Dspring.profiles.active` set in `JAVA_OPTS`
+    active: test
+  thymeleaf:
+    cache: false
+  banner:
+    location: classpath:config/banner-company.txt
+  security:
+    oauth2:
+      client:
+        provider:
+          spring:
+            issuer-uri: http://localhost:6001
+        registration:
+          messaging-client-oidc:
+            provider: spring
+            client-id: messaging-client
+            client-name: messaging-client-oidc
+            client-secret: secret
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://127.0.0.1:6003/login/oauth2/code/{registrationId}"
+            scope: openid, profile
+          messaging-client-authorization-code:
+            provider: spring
+            client-id: messaging-client
+            client-name: messaging-client-authorization-code
+            client-secret: secret
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://127.0.0.1:6003/authorized"
+            scope: external:read, external:write
+          messaging-client-client-credentials:
+            provider: spring
+            client-id: messaging-client
+            client-name: messaging-client-client-credentials
+            client-secret: secret
+            authorization-grant-type: client_credentials
+            scope: external:read, external:write
+          messaging-client-device-code:
+            provider: spring
+            client-id: device-messaging-client
+            client-name: messaging-client-device-code
+            client-authentication-method: none
+            authorization-grant-type: urn:ietf:params:oauth:grant-type:device_code
+            scope: external:read, external:write
 logging:
-    level:
-        root: DEBUG
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    org.springframework.security: INFO
+    org.springframework.security.oauth2: INFO
+springdoc: # https://springdoc.org/#migrating-from-springfox
+  api-docs:
+    enabled: true
+  show-actuator: true
+  swagger-ui:
+    tags-sorter: alpha
+# ===================================================================
+# Luix framework specific properties
+# ===================================================================
+luix:
+  api-docs:
+    api-include-pattern: /api/**
+    open-api-include-pattern: /open-api/**
+    management-include-pattern: /management/**
+    api-title: Luix Passport Client API
+    open-api-title: Luix Passport Client API
+    management-title: Luix Passport Client Management API
+    version: ${spring.application.name}
+    terms-of-service-url:
+    contact-name: Louis
+    contact-url:
+    contact-email: louis@luixtech.cn
+    license: Unlicensed
+    license-url:
+  aop-logging:
+    enabled: true
+    method-whitelist-mode: false
+  elapsed-time-logging:
+    enabled: true
+    slow-execution-threshold: 300 # unit: ms
+  ribbon:
+    # comma separated list of profiles to show a ribbon on the GUI
+    display-on-active-profiles: dev,test,demo
 # ===================================================================
 # Application specific properties
 # ===================================================================
+application:
+  url:
+    auth-server-url: http://localhost:6001
+    resource-server-url: http://localhost:6002
+    auth-server-authorities: ${application.url.auth-server-url}/api/externals/authorities
+    resource-server-messages: ${application.url.resource-server-url}/api/messages
