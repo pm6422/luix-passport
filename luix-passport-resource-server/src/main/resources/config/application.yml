@@ -1,5 +1,5 @@
 server:
-  port: 6002
+  port: 4002
 management: # Management http server configuration, used by ManagementServerProperties
   endpoints:
     web:
@@ -43,7 +43,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:6001
+          issuer-uri: http://localhost:4001
 logging:
   level:
     root: INFO

@@ -7,7 +7,7 @@
 # https://docs.spring.io/spring-boot/docs/3.2.0/reference/html/application-properties.html#application-properties
 # ===================================================================
 server:
-  port: 6003
+  port: 4003
 management: # Management http server configuration, used by ManagementServerProperties
   endpoints:
     web:
@@ -54,7 +54,7 @@ spring:
       client:
         provider:
           spring:
-            issuer-uri: http://localhost:6001
+            issuer-uri: http://localhost:4001
         registration:
           messaging-client-oidc:
             provider: spring
@@ -62,7 +62,7 @@ spring:
             client-name: messaging-client-oidc
             client-secret: secret
             authorization-grant-type: authorization_code
-            redirect-uri: "http://127.0.0.1:6003/login/oauth2/code/{registrationId}"
+            redirect-uri: "http://127.0.0.1:4003/login/oauth2/code/{registrationId}"
             scope: openid, profile
           messaging-client-authorization-code:
             provider: spring
@@ -70,7 +70,7 @@ spring:
             client-name: messaging-client-authorization-code
             client-secret: secret
             authorization-grant-type: authorization_code
-            redirect-uri: "http://127.0.0.1:6003/authorized"
+            redirect-uri: "http://127.0.0.1:4003/authorized"
             scope: external:read, external:write
           messaging-client-client-credentials:
             provider: spring
@@ -130,7 +130,7 @@ luix:
 # ===================================================================
 application:
   url:
-    auth-server-url: http://localhost:6001
-    resource-server-url: http://localhost:6002
+    auth-server-url: http://localhost:4001
+    resource-server-url: http://localhost:4002
     auth-server-authorities: ${application.url.auth-server-url}/api/externals/authorities
     resource-server-messages: ${application.url.resource-server-url}/api/messages

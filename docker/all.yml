@@ -15,12 +15,12 @@ services:
       # Note: It can NOT use localhost as the database URL
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresql:5432/luix-passport
     ports:
-      - 127.0.0.1:6001:6001
+      - 127.0.0.1:4001:4001
     depends_on:
       postgresql:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:6001/management/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:4001/management/health"]
       interval: 5s
       timeout: 5s
       retries: 40
@@ -32,14 +32,14 @@ services:
       - SPRING_PROFILES_ACTIVE=test
       - MANAGEMENT_PROMETHEUS_METRICS_EXPORT_ENABLED=true
     ports:
-      - 127.0.0.1:6002:6002
+      - 127.0.0.1:4002:4002
     # host network mode can access auth server in docker environment
     network_mode: host
     depends_on:
       postgresql:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:6002/management/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:4002/management/health"]
       interval: 5s
       timeout: 5s
       retries: 40
@@ -51,14 +51,14 @@ services:
       - SPRING_PROFILES_ACTIVE=test
       - MANAGEMENT_PROMETHEUS_METRICS_EXPORT_ENABLED=true
     ports:
-      - 127.0.0.1:6003:6003
+      - 127.0.0.1:4003:4003
     # host network mode can access auth server in docker environment
     network_mode: host
     depends_on:
       passport-server:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:6003/management/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:4003/management/health"]
       interval: 5s
       timeout: 5s
       retries: 40

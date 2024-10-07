@@ -73,9 +73,9 @@ npm run all:up
 
 [[access_app]]
 == Application URLs
-* Navigate to `http://127.0.0.1:6001` to access authorization server
-* Navigate to `http://127.0.0.1:6002` to access resource server
-* Navigate to `http://127.0.0.1:6003` to access client
+* Navigate to `http://127.0.0.1:4001` to access authorization server
+* Navigate to `http://127.0.0.1:4002` to access resource server
+* Navigate to `http://127.0.0.1:4003` to access client
 
 |===
 |Username |Password |Roles
@@ -122,7 +122,7 @@ After completing the "Obtain OAuth 2.0 credentials" instructions, you should hav
 The redirect URI is the path in the application that the end-user's user-agent is redirected back to after they have authenticated with Google
 and have granted access to the OAuth Client _(created in the previous step)_ on the Consent page.
 
-In the "Set a redirect URI" sub-section, ensure that the *Authorized redirect URIs* field is set to `http://localhost:6001/login/oauth2/code/google-idp`.
+In the "Set a redirect URI" sub-section, ensure that the *Authorized redirect URIs* field is set to `http://localhost:4001/login/oauth2/code/google-idp`.
 
 TIP: The default redirect URI template is `{baseUrl}/login/oauth2/code/{registrationId}`.
 The *_registrationId_* is a unique identifier for the `ClientRegistration`.
@@ -168,7 +168,7 @@ This section shows how to configure GitHub as a social login provider.
 
 To use GitHub's OAuth 2.0 authentication system for login, you must https://github.com/settings/applications/new[Register a new OAuth application].
 
-When registering the OAuth application, ensure the *Authorization callback URL* is set to `http://localhost:6001/login/oauth2/code/github-idp`.
+When registering the OAuth application, ensure the *Authorization callback URL* is set to `http://localhost:4001/login/oauth2/code/github-idp`.
 
 The Authorization callback URL (redirect URI) is the path in the application that the end-user's user-agent is redirected back to after they have authenticated with GitHub
 and have granted access to the OAuth application on the _Authorize application_ page.

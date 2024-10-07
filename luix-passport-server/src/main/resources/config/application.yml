@@ -7,7 +7,7 @@
 # https://docs.spring.io/spring-boot/docs/3.2.0/reference/html/application-properties.html#application-properties
 # ===================================================================
 server:
-  port: 6001
+  port: 4001
   servlet:
     session:
       timeout: 1D # Session timeout in 1 day. This parameter can control the login expiration. And this statement can affect Spring Session, which is used by SessionProperties.
