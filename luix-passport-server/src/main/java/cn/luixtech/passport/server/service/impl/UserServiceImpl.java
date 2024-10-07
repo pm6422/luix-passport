@@ -46,7 +46,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.TemporalUnit;
@@ -221,7 +220,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
 
         domain.setModifiedBy(AuthUtils.getCurrentUsername());
-        domain.setModifiedAt(Instant.now());
+        domain.setModifiedAt(LocalDateTime.now());
 
         userRepository.save(domain);
         log.debug("Updated user: {}", domain);
@@ -360,7 +359,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         currentUser.setVerificationCode(StringUtils.EMPTY);
         currentUser.setVerificationCodeSentAt(null);
         currentUser.setModifiedBy(AuthUtils.getCurrentUsername());
-        currentUser.setModifiedAt(Instant.now());
+        currentUser.setModifiedAt(LocalDateTime.now());
 
         userRepository.save(currentUser);
     }

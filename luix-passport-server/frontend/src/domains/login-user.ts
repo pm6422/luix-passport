@@ -5,7 +5,7 @@ export const loginUserSchema = z.object({
   email: z.string(),
   firstName: z.string().optional(),
   lastName: z.string().optional(),
-  lastSignInAt: z.string()
+  signInAt: z.string()
 })
 
 export type LoginUser = z.infer<typeof loginUserSchema>

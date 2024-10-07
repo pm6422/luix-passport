@@ -15,8 +15,8 @@ export function RecentLoginUsers() {
   return (
     <div className='space-y-8'>
       {
-        loginUsers.map(loginUser => (
-          <LoginUserItem {...loginUser} />
+        loginUsers.map((loginUser, index) => (
+          <LoginUserItem key={index} {...loginUser} />
         ))
       }
     </div>

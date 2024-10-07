@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 import static cn.luixtech.passport.server.utils.AuthUtils.getCurrentUsername;
 import static org.apache.commons.lang3.StringUtils.defaultIfEmpty;
@@ -31,13 +31,13 @@ public abstract class AbstractCreationDomain extends AbstractBaseDomain implemen
      */
     @Schema(description = "created time")
     @Column(updatable = false)
-    protected Instant createdAt;
+    protected LocalDateTime createdAt;
 
     @PrePersist
     protected void prePersist() {
         super.prePersist();
 
         createdBy = defaultIfEmpty(getCurrentUsername(), "SYSTEM");
-        createdAt = Instant.now();
+        createdAt = LocalDateTime.now();
     }
 }

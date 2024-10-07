@@ -15,7 +15,7 @@ export function LoginUserItem(loginUser : LoginUser) {
                     {loginUser.email}
                 </p>
             </div>
-            <div className='ml-auto text-sm'><DateTime value={loginUser.lastSignInAt}/></div>
+            <div className='ml-auto text-sm'><DateTime value={loginUser.signInAt}/></div>
         </div>
     )
 }
