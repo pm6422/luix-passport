@@ -71,6 +71,7 @@ public class UserAuthEventController {
             if (user.isPresent()) {
                 LoginUser loginUser = new LoginUser();
                 BeanUtils.copyProperties(user.get(), loginUser);
+                loginUser.setSignInAt(domain.getCreatedAt());
                 loginUsers.add(loginUser);
             }
         }
