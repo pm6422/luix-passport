@@ -14,5 +14,4 @@ public class LoginUser {
     private String        lastName;
     private String        email;
     private LocalDateTime lastSignInAt;
-    private byte[]        profilePic;
 }
