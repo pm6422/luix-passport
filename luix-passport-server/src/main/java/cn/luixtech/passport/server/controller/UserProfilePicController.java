@@ -31,8 +31,9 @@ import static com.luixtech.utilities.encryption.JasyptEncryptUtils.DEFAULT_ALGOR
 @PreAuthorize("hasAuthority(\"" + ROLE_ADMIN + "\")")
 @Slf4j
 public class UserProfilePicController {
-    public static final String                   USER_PHOTO_TOKEN_KEY = "dw4rfer54g&^@dsfd#";
-    public static final String                   USER_PHOTO_URL       = "/open-api/user-profile-pics/";
+    public static final String                   USER_PHOTO_TOKEN_KEY   = "dw4rfer54g&^@dsfd#";
+    public static final String                   USER_PHOTO_URL         = "/open-api/user-profile-pics/";
+    public static final String                   DEFAULT_USER_PHOTO_URL = "/assets/images/cartoon/01.png";
     private final       UserProfilePicRepository userProfilePicRepository;
 
     @Operation(summary = "find user profile picture by user id")
@@ -45,7 +46,7 @@ public class UserProfilePicController {
         }
         // Set default profile picture
         byte[] bytes = StreamUtils.copyToByteArray(
-                new UrlResource(getRequestUrl(request) + "/assets/images/cartoon/01.png").getInputStream());
+                new UrlResource(getRequestUrl(request) + DEFAULT_USER_PHOTO_URL).getInputStream());
         return ResponseEntity.ok(bytes);
     }
 

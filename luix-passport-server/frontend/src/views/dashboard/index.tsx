@@ -1,6 +1,6 @@
 import {
   Card,
-  CardContent,
+  CardContent, CardDescription,
   // CardDescription,
   CardHeader,
   CardTitle,
@@ -8,7 +8,7 @@ import {
 import { useEffect, useState } from "react"
 import { Tabs, TabsContent } from "@/components/ui/tabs"
 import { LayoutBody } from "@/layouts/layout-definitions"
-import { RecentSales } from "./components/recent-sales"
+import { RecentLoginUsers } from "./components/recent-login-users.tsx"
 import { Overview } from "./components/overview"
 import { IconUsers, IconShieldCheckered, IconVector, IconUserPlus } from "@tabler/icons-react"
 import { UserService } from "@/services/user-service"
@@ -121,12 +121,12 @@ export default function Dashboard() {
             <Card className="col-span-1 lg:col-span-3">
               <CardHeader>
                 <CardTitle>Recent Login</CardTitle>
-                {/*<CardDescription>*/}
-                {/*  You made 265 sales this month.*/}
-                {/*</CardDescription>*/}
+                <CardDescription>
+                  Show recent login users.
+                </CardDescription>
               </CardHeader>
               <CardContent>
-                <RecentSales />
+                <RecentLoginUsers />
               </CardContent>
             </Card>
           </div>
