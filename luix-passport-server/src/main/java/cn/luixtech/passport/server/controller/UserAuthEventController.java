@@ -3,6 +3,7 @@ package cn.luixtech.passport.server.controller;
 import cn.luixtech.passport.server.domain.User;
 import cn.luixtech.passport.server.domain.UserAuthEvent;
 import cn.luixtech.passport.server.pojo.LoginUser;
+import cn.luixtech.passport.server.pojo.UserLoginCount;
 import cn.luixtech.passport.server.repository.UserAuthEventRepository;
 import cn.luixtech.passport.server.repository.UserRepository;
 import cn.luixtech.passport.server.service.UserAuthEventService;
@@ -20,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -76,6 +78,23 @@ public class UserAuthEventController {
             }
         }
         return ResponseEntity.ok().headers(generatePageHeaders(domains)).body(loginUsers);
+    }
+
+    @Operation(summary = "get user login count in last seven days")
+    @GetMapping("/api/user-auth-events/user-login-count")
+    public ResponseEntity<List<UserLoginCount>> getUserLoginCount() {
+        List<UserLoginCount> userLoginCounts = new ArrayList<>();
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime today = LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(), 0, 0, 0);
+        for (int i = 6; i >= 0; i--) {
+            LocalDateTime yesterday = today.minusDays(i);
+            Long loginCount = userAuthEventRepository.countByEventAndCreatedAtBetween(AUTH_SUCCESS, yesterday, yesterday.plusDays(1));
+            UserLoginCount userLoginCount = new UserLoginCount();
+            userLoginCount.setCalculatedAt(yesterday);
+            userLoginCount.setLoginCount(loginCount);
+            userLoginCounts.add(userLoginCount);
+        }
+        return ResponseEntity.ok().body(userLoginCounts);
     }
 
     @Operation(summary = "delete user auth event by id", description = "the data may be referenced by other data, and some problems may occur after deletion")
