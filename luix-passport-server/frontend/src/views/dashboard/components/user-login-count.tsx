@@ -1,5 +1,7 @@
+import { useEffect, useState } from "react"
+import { UserLoginCount } from "@/domains/user-login-count"
+import { UserAuthEventService } from "@/services/user-auth-event-service.ts"
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
-
 import {
   ChartConfig,
   ChartContainer,
@@ -7,53 +9,51 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 
-const chartData = [
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 73 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 214 },
-]
+export function SevenDaysUserLoginCount() {
+  const [ userLoginCount, setUserLoginCount ] = useState([] as Array<UserLoginCount>)
+  useEffect(() => {
+    UserAuthEventService.getUserLoginCount().then((resp) => {
+        setUserLoginCount(resp.data)
+    })
+  }, [])
 
-const chartConfig = {
-  desktop: {
-    label: "Desktop",
-    color: "hsl(var(--chart-1))",
-  },
-} satisfies ChartConfig
+  const chartConfig = {
+    loginCount: {
+        label: "Login Count",
+        color: "hsl(var(--chart-1))",
+    },
+  } satisfies ChartConfig
 
-export function UserLoginCount() {
   return (
     <ChartContainer config={chartConfig}>
-            <AreaChart
-                accessibilityLayer
-                data={chartData}
-                margin={{
-                  left: 12,
-                  right: 12,
-                }}
-            >
-              <CartesianGrid vertical={false} />
-              <XAxis
-                  dataKey="month"
-                  tickLine={false}
-                  axisLine={false}
-                  tickMargin={8}
-                  tickFormatter={(value) => value.slice(0, 3)}
-              />
-              <ChartTooltip
-                  cursor={false}
-                  content={<ChartTooltipContent indicator="line" />}
-              />
-              <Area
-                  dataKey="desktop"
-                  type="natural"
-                  fill="var(--color-desktop)"
-                  fillOpacity={0.4}
-                  stroke="var(--color-desktop)"
-              />
-            </AreaChart>
-          </ChartContainer>
+        <AreaChart
+            accessibilityLayer
+            data={userLoginCount}
+            margin={{
+              left: 12,
+              right: 12,
+            }}
+        >
+          <CartesianGrid vertical={false} />
+          <XAxis
+              dataKey="calculatedAt"
+              tickLine={false}
+              axisLine={false}
+              tickMargin={8}
+              tickFormatter={(value) => value.slice(0, 10)}
+          />
+          <ChartTooltip
+              cursor={false}
+              content={<ChartTooltipContent indicator="line" />}
+          />
+          <Area
+              dataKey="loginCount"
+              type="natural"
+              fill="var(--color-loginCount)"
+              fillOpacity={0.4}
+              stroke="var(--color-loginCount)"
+          />
+        </AreaChart>
+      </ChartContainer>
   )
 }

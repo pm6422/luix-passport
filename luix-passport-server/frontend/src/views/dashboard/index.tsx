@@ -9,7 +9,7 @@ import { useEffect, useState } from "react"
 import { Tabs, TabsContent } from "@/components/ui/tabs"
 import { LayoutBody } from "@/layouts/layout-definitions"
 import { RecentLoginUsers } from "./components/recent-login-users.tsx"
-import { UserLoginCount } from "./components/user-login-count.tsx"
+import { SevenDaysUserLoginCount } from "./components/user-login-count.tsx"
 import { IconUsers, IconShieldCheckered, IconVector, IconUserPlus } from "@tabler/icons-react"
 import { UserService } from "@/services/user-service"
 import { Oauth2ClientService } from "@/services/oauth2-client-service"
@@ -115,7 +115,7 @@ export default function Dashboard() {
                 <CardTitle>User Login Count in Last Seven Days</CardTitle>
               </CardHeader>
               <CardContent className="pl-2">
-                <UserLoginCount />
+                <SevenDaysUserLoginCount />
               </CardContent>
             </Card>
             <Card className="col-span-1 lg:col-span-3">
