@@ -23,7 +23,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-export function Overview() {
+export function UserLoginCount() {
   return (
     <ChartContainer config={chartConfig}>
             <AreaChart
