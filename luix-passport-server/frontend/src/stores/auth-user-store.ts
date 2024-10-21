@@ -1,5 +1,6 @@
 import { Exome } from "exome"
 import { DateTimeFormat } from "@/data/date-time-formats.tsx"
+import { isEmpty } from "lodash"
 
 export type AuthUser = {
     id: string
@@ -24,10 +25,12 @@ class AuthUserStore extends Exome {
 
     public setAuthUser(authUser: AuthUser) {
         this.authUser = authUser
-        this.authUser.isAdmin = authUser.roles && authUser.roles.includes("ROLE_ADMIN")
-        this.authUser.isDeveloper = authUser.roles && authUser.roles.includes("ROLE_DEVELOPER")
-        this.authUser.isOnlyUser = authUser.roles && authUser.roles.length === 2
-            && authUser.roles.includes("ROLE_USER") && authUser.roles.includes("ROLE_ANONYMOUS")
+        if (!isEmpty(authUser)) {
+            this.authUser.isAdmin = authUser.roles && authUser.roles.includes("ROLE_ADMIN")
+            this.authUser.isDeveloper = authUser.roles && authUser.roles.includes("ROLE_DEVELOPER")
+            this.authUser.isOnlyUser = authUser.roles && authUser.roles.length === 2
+                && authUser.roles.includes("ROLE_USER") && authUser.roles.includes("ROLE_ANONYMOUS")
+        }
     }
 }
 
