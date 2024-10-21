@@ -1,5 +1,5 @@
 import axios from "axios"
-import type { AppInfo } from "@/stores/app-info-provider"
+import type { AppInfo } from "@/stores/app-info-store.ts"
 
 export class AppInfoService {
 

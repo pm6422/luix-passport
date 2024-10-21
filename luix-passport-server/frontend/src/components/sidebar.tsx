@@ -3,9 +3,10 @@ import { IconChevronsLeft, IconMenu2, IconX } from "@tabler/icons-react"
 import { Layout, LayoutHeader } from "../layouts/layout-definitions"
 import { Button } from "./custom/button"
 import { sidelinks } from "@/data/sidelinks"
-import { useAppInfo } from "@/stores/app-info-provider"
 import SidebarMenu from "./sidebar-menu"
 import { cn } from "@/libs/utils"
+import { useStore } from "exome/react"
+import { appInfoStore } from "@/stores/app-info-store.ts"
 
 interface SidebarProps extends HTMLAttributes<HTMLElement> {
   isCollapsed: boolean
@@ -18,7 +19,7 @@ export default function Sidebar2({
   setIsCollapsed,
 }: SidebarProps) {
   const [navOpened, setNavOpened] = useState(false)
-  const { appInfo } = useAppInfo()
+  const { ribbonProfile } = useStore(appInfoStore)
 
   /* Make body not scrollable when navBar is opened */
   useEffect(() => {
@@ -56,7 +57,7 @@ export default function Sidebar2({
             <div
                 className={`flex flex-col ms-1 justify-end truncate ${isCollapsed ? "invisible w-0" : "visible w-auto"}`}
             >
-              <span className="flex justify-end text-[0.5rem]">{appInfo.ribbonProfile} env</span>
+              <span className="flex justify-end text-[0.5rem]">{ribbonProfile} env</span>
               <img
                   src="/assets/images/logos/logo-text.svg"
                   alt="logo"

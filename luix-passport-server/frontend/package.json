@@ -39,6 +39,7 @@
     "cmdk": "^0.2.1",
     "date-fns": "^3.6.0",
     "dayjs": "^1.11.10",
+    "exome": "^2.5.0",
     "libphonenumber-js": "^1.10.61",
     "lodash": "^4.17.21",
     "lucide-react": "^0.447.0",

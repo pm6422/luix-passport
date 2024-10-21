@@ -13,12 +13,13 @@ import {
 import { IconUser, IconCodeCircle2, IconApi, IconVocabulary, IconLogout } from "@tabler/icons-react"
 import { RoleDeveloper } from "@/components/custom/role/role-developer"
 import { useAuthUser } from "@/stores/auth-user-provider"
-import { useAppInfo } from "@/stores/app-info-provider"
-import { AccountService } from "@/services/account-service.ts";
+import { AccountService } from "@/services/account-service.ts"
+import { useStore } from "exome/react"
+import { appInfoStore } from "@/stores/app-info-store.ts"
 
 export function AccountNav() {
   const { authUser } = useAuthUser()
-  const { appInfo } = useAppInfo()
+  const { apiDocsEnabled } = useStore(appInfoStore)
 
   return (
     <DropdownMenu>
@@ -54,7 +55,7 @@ export function AccountNav() {
             <IconCodeCircle2 className="size-6"/>Developer Tools
           </DropdownMenuLabel>
           <DropdownMenuGroup>
-            { appInfo.apiDocsEnabled && <Link to="/api-docs">
+            { apiDocsEnabled && <Link to="/api-docs">
               <DropdownMenuItem className="cursor-pointer">
                 <IconApi className="size-4 mr-2"/>API Documentation
               </DropdownMenuItem>
