@@ -2,7 +2,8 @@ import { useEffect } from "react"
 import { Outlet } from "react-router-dom"
 import Sidebar from "@/components/sidebar"
 import useIsCollapsed from "@/hooks/use-is-collapsed"
-import { useAuthUser } from "@/stores/auth-user-provider"
+import { useStore } from "exome/react"
+import { authUserStore } from "@/stores/auth-user-store.ts"
 import { RoleAdmin } from "@/components/custom/role/role-admin"
 import { RoleOnlyUser } from "@/components/custom/role/role-only-user"
 import { useLocation } from "react-router-dom"
@@ -14,7 +15,7 @@ import { Layout, LayoutHeader } from "@/layouts/layout-definitions"
 import { isEmpty } from "lodash"
 
 export default function AuthLayout() {
-  const { authUser, isAdmin } = useAuthUser()
+  const { authUser } = useStore(authUserStore)
   const [isCollapsed, setIsCollapsed] = useIsCollapsed()
   const location = useLocation()
   const topNav = [
@@ -54,7 +55,7 @@ export default function AuthLayout() {
       </RoleAdmin>
       <main
         id="content"
-        className={`overflow-x-hidden pt-16 transition-[margin] md:overflow-y-hidden md:pt-0 ${!isAdmin() ? "" : isCollapsed ? "md:ml-14" : "md:ml-64"} h-full`}
+        className={`overflow-x-hidden pt-16 transition-[margin] md:overflow-y-hidden md:pt-0 ${!authUser.isAdmin ? "" : isCollapsed ? "md:ml-14" : "md:ml-64"} h-full`}
       >
         <Layout>
           <LayoutHeader>

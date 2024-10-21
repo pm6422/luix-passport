@@ -29,11 +29,12 @@ import { cn } from "@/libs/utils"
 import { IconCalendar } from "@tabler/icons-react"
 import { Button } from "@/components/custom/button"
 import { Calendar } from "@/components/ui/calendar"
-import { useAuthUser } from "@/stores/auth-user-provider"
+import { useStore } from "exome/react"
+import { authUserStore } from "@/stores/auth-user-store.ts"
 import { formatDate } from "@/libs/utils"
 
 export default function FormExample() {
-  const { authUser } = useAuthUser()
+  const { authUser } = useStore(authUserStore)
   const items = [
     { title: "Extra Components", href: "/extra-components" },
     { title: "Breadcrumb" },

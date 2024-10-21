@@ -11,7 +11,8 @@ import { locales } from "@/data/locales"
 import { timeZones } from "@/data/time-zones"
 import { dateTimeFormats } from "@/data/date-time-formats"
 import { toast } from "sonner"
-import { useAuthUser } from "@/stores/auth-user-provider"
+import { useStore } from "exome/react"
+import { authUserStore } from "@/stores/auth-user-store.ts"
 import { AccountService } from "@/services/account-service"
 import { getErrorMessage } from "@/libs/handle-error"
 import { isValidPhoneNumber } from "react-phone-number-input"
@@ -32,7 +33,7 @@ const formSchema = z.object({
 type FormSchema = z.infer<typeof formSchema>
 
 export function AccountForm() {
-  const { authUser } = useAuthUser()
+  const { authUser } = useStore(authUserStore)
   const [saving, setSaving] = useState(false)
 
   const form = useForm<FormSchema>({

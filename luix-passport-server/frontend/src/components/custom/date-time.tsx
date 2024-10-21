@@ -1,4 +1,5 @@
-import { useAuthUser } from "@/stores/auth-user-provider"
+import { useStore } from "exome/react"
+import { authUserStore } from "@/stores/auth-user-store.ts"
 import { formatDateTime } from "@/libs/utils"
 
 type Props = {
@@ -8,7 +9,7 @@ type Props = {
 export const DateTime = ({
   value
 }: Props) => {
-  const { authUser } = useAuthUser()
+  const { authUser } = useStore(authUserStore)
 
   return (
     <span >{formatDateTime(authUser.dateTimeFormatInstance.dateTimeFormat, value, authUser.timeZone)}</span>

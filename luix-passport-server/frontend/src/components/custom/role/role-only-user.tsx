@@ -1,4 +1,5 @@
-import { useAuthUser } from "@/stores/auth-user-provider"
+import { useStore } from "exome/react"
+import { authUserStore } from "@/stores/auth-user-store.ts"
 
 type Props = {
   children: React.ReactNode
@@ -7,9 +8,9 @@ type Props = {
 export const RoleOnlyUser = ({
   children
 }: Props) => {
-  const { isOnlyUser } = useAuthUser()
+  const { authUser } = useStore(authUserStore)
 
   return (
-    isOnlyUser() && children
+    authUser.isOnlyUser && children
   )
 }

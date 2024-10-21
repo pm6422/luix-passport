@@ -12,14 +12,14 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { IconUser, IconCodeCircle2, IconApi, IconVocabulary, IconLogout } from "@tabler/icons-react"
 import { RoleDeveloper } from "@/components/custom/role/role-developer"
-import { useAuthUser } from "@/stores/auth-user-provider"
 import { AccountService } from "@/services/account-service.ts"
 import { useStore } from "exome/react"
 import { appInfoStore } from "@/stores/app-info-store.ts"
+import { authUserStore } from "@/stores/auth-user-store.ts"
 
 export function AccountNav() {
-  const { authUser } = useAuthUser()
   const { appInfo } = useStore(appInfoStore)
+  const { authUser } = useStore(authUserStore)
 
   return (
     <DropdownMenu>
