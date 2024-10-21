@@ -7,12 +7,12 @@ import utc from "dayjs/plugin/utc"
 import timezone from "dayjs/plugin/timezone"
 import type { AppInfo } from "@/stores/app-info-store.ts"
 import type { AuthUser } from "@/stores/auth-user-store.ts"
+import { useStore } from "exome/react"
 import { appInfoStore } from "@/stores/app-info-store.ts"
 import { authUserStore } from "@/stores/auth-user-store.ts"
 import router from "@/router"
 import "@/main.css"
 import "@/assets/sass/intro.scss"
-import { useStore } from "exome/react"
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
