@@ -35,13 +35,9 @@ export default function Main({ appInfo, authUser }: Props) {
             </ThemeProvider>;
 
     // return <React.StrictMode>
-    //         <AppInfoProvider defaultValue={appInfo}>
-    //         <AuthUserProvider defaultValue={authUser}>
-    //             <ThemeProvider>
-    //                 <RouterProvider router={router}/>
-    //                 <Toaster/>
-    //             </ThemeProvider>
-    //         </AuthUserProvider>
-    //     </AppInfoProvider>
+    // <ThemeProvider>
+    //     <RouterProvider router={router}/>
+    //     <Toaster/>
+    // </ThemeProvider>
     // </React.StrictMode>;
 }
