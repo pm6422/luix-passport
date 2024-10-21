@@ -13,20 +13,10 @@ export type AppInfo = {
 }
 
 class AppInfoStore extends Exome {
-    public apiDocsEnabled = false
-    public ribbonProfile = ""
-    public build = {
-        artifact: "",
-        name: "",
-        time: "",
-        version: "",
-        group: ""
-    }
+    public appInfo = {} as AppInfo
 
     public setAppInfo(appInfo: AppInfo) {
-        this.apiDocsEnabled = appInfo.apiDocsEnabled
-        this.ribbonProfile = appInfo.ribbonProfile
-        this.build = appInfo.build
+        this.appInfo = appInfo
     }
 }
 

@@ -19,7 +19,7 @@ export default function Sidebar2({
   setIsCollapsed,
 }: SidebarProps) {
   const [navOpened, setNavOpened] = useState(false)
-  const { ribbonProfile } = useStore(appInfoStore)
+  const { appInfo } = useStore(appInfoStore)
 
   /* Make body not scrollable when navBar is opened */
   useEffect(() => {
@@ -57,7 +57,7 @@ export default function Sidebar2({
             <div
                 className={`flex flex-col ms-1 justify-end truncate ${isCollapsed ? "invisible w-0" : "visible w-auto"}`}
             >
-              <span className="flex justify-end text-[0.5rem]">{ribbonProfile} env</span>
+              <span className="flex justify-end text-[0.5rem]">{appInfo.ribbonProfile} env</span>
               <img
                   src="/assets/images/logos/logo-text.svg"
                   alt="logo"

@@ -19,7 +19,7 @@ import { appInfoStore } from "@/stores/app-info-store.ts"
 
 export function AccountNav() {
   const { authUser } = useAuthUser()
-  const { apiDocsEnabled } = useStore(appInfoStore)
+  const { appInfo } = useStore(appInfoStore)
 
   return (
     <DropdownMenu>
@@ -55,7 +55,7 @@ export function AccountNav() {
             <IconCodeCircle2 className="size-6"/>Developer Tools
           </DropdownMenuLabel>
           <DropdownMenuGroup>
-            { apiDocsEnabled && <Link to="/api-docs">
+            { appInfo.apiDocsEnabled && <Link to="/api-docs">
               <DropdownMenuItem className="cursor-pointer">
                 <IconApi className="size-4 mr-2"/>API Documentation
               </DropdownMenuItem>
