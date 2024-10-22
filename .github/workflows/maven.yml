@@ -1,0 +1,38 @@
+# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
+
+name: Push docker image to registry
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+jobs:
+  build:
+    runs-on: Macos-14
+    steps:
+      - name: Checkout codes
+        uses: actions/checkout@v4
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+      - name: Build and push docker image to registry
+        # run: mvn compile jib:build
+        run: npm run docker:push -- -Djib.image.version=${{vars.DOCKER_IMAGE_VERSION}} -Djib.registry.url=${{vars.DOCKER_REGISTRY_URL}} -Djib.registry.username=${{vars.DOCKER_REGISTRY_USERNAME}} -Djib.registry.password=${{vars.DOCKER_REGISTRY_PASSWORD}}
+      - name: Send successful ntfy notification
+        uses: niniyas/ntfy-action@master
+        if: success()
+        with:
+          url: 'https://ntfy.sh'
+          topic: 'luix-universe'
+          title: '😀Successfully built docker image'
+      - name: Send failed ntfy notification
+        uses: niniyas/ntfy-action@master
+        if: failure()
+        with:
+          url: 'https://ntfy.sh'
+          topic: 'luix-universe'
+          title: '😂Failed to build docker image'
