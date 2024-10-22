@@ -1,7 +1,7 @@
 import axios from "axios"
 import http from "@/axios"
 import { dateTimeFormats } from "@/data/date-time-formats"
-import type { AuthUser } from "@/stores/auth-user-provider"
+import type { AuthUser } from "@/stores/auth-user-store.ts"
 
 export class AccountService {
   constructor() {
