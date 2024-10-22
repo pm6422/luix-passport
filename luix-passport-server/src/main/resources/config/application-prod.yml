@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://aaa:5432/luix-passport
+    url: jdbc:postgresql://localhost:5432/luix-passport
     username: postgres
-    password:
+    password: postgres
   liquibase:
     enabled: true
     drop-first: true # reset database
