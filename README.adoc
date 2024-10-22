@@ -13,7 +13,7 @@ https://passport.luixtech.cn
 
 [[repository]]
 == Code repository
-https://github.com/pm6422/luix-passport2
+https://github.com/pm6422/luix-passport
 
 [[snapshots]]
 == Snapshots
