@@ -4,7 +4,6 @@ import { Button } from "@/components/custom/button"
 import { Input } from "@/components/ui/input"
 import { toBase64 } from "@/libs/utils"
 import { IconPencil, IconUserScan } from "@tabler/icons-react"
-import { cn } from "@/libs/utils"
 
 type Props = {
   defaultValue?: string
@@ -15,7 +14,6 @@ type Props = {
 export function ProfilePicUploader({
   defaultValue,
   onValueChange,
-  avatarClassName
 }: Props) {
   const [imageSrc, setImageSrc] = useState<string | undefined>(defaultValue)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -32,7 +30,7 @@ export function ProfilePicUploader({
   
   return (
     <div className="relative size-40">
-      <Avatar className={cn(avatarClassName, "w-full h-full")}>
+      <Avatar className="w-full h-full">
         <AvatarImage src={imageSrc} className="object-cover"/>
         <AvatarFallback className="bg-secondary">
           <IconUserScan className="size-16"/>
@@ -43,10 +41,10 @@ export function ProfilePicUploader({
         type="button"
         variant="ghost"
         size="icon"
-        className="absolute bottom-1 right-0 rounded-full p-1 bg-primary hover:bg-secondary-foreground/30 border"
+        className="absolute bottom-1 right-0 rounded-full p-1 bg-secondary-foreground/90 hover:bg-secondary-foreground"
         onClick={() => fileInputRef.current?.click()}
       >
-        <IconPencil className="size-5 ml-2 text-white"/>
+        <IconPencil className="size-5 text-gray-400"/>
       </Button>
 
       <Input
