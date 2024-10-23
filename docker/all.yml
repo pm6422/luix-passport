@@ -5,6 +5,10 @@ services:
     extends:
       file: ./postgresql.yml
       service: postgresql
+  adminer:
+    extends:
+      file: ./adminer.yml
+      service: adminer
   passport-server:
     image: luix-passport-server
     container_name: luix-passport-server

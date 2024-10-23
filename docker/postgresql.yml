@@ -18,14 +18,3 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
-  webdb:
-    image: webdb/app
-    container_name: webdb
-    volumes:
-      - "$HOME/.webdb:/usr/src/app/static/version"
-    ports:
-      - 127.0.0.1:22071:22071
-    network_mode: host
-    depends_on:
-      postgresql:
-        condition: service_healthy
