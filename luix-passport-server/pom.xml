@@ -212,7 +212,7 @@
                             <forcedTypes>
                                 <forcedType>
                                     <name>INSTANT</name>
-                                    <types>(TIMESTAMP)</types>
+                                    <types>TIMESTAMP</types>
                                 </forcedType>
                             </forcedTypes>
                             <name>org.jooq.meta.postgres.PostgresDatabase</name>
