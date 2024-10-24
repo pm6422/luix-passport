@@ -71,7 +71,7 @@ spring:
     open-in-view: false
     properties:
       hibernate.default_schema: public # public schema of PostgresSQL
-      hibernate.jdbc.time_zone: Asia/Shanghai
+      hibernate.jdbc.time_zone: UTC # The time zone must be identical to PostgresSQL
       hibernate.timezone.default_storage: NORMALIZE
 #      hibernate.type.preferred_instant_jdbc_type: TIMESTAMP
       hibernate.id.new_generator_mappings: true
