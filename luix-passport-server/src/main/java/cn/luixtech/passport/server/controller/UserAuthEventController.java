@@ -3,10 +3,13 @@ package cn.luixtech.passport.server.controller;
 import cn.luixtech.passport.server.domain.User;
 import cn.luixtech.passport.server.domain.UserAuthEvent;
 import cn.luixtech.passport.server.pojo.LoginUser;
+import cn.luixtech.passport.server.pojo.ManagedUser;
 import cn.luixtech.passport.server.pojo.UserLoginCount;
 import cn.luixtech.passport.server.repository.UserAuthEventRepository;
 import cn.luixtech.passport.server.repository.UserRepository;
 import cn.luixtech.passport.server.service.UserAuthEventService;
+import cn.luixtech.passport.server.service.UserService;
+import cn.luixtech.passport.server.utils.AuthUtils;
 import com.luixtech.springbootframework.component.HttpHeaderCreator;
 import com.luixtech.utilities.exception.DataNotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
@@ -21,7 +24,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -41,6 +47,7 @@ public class UserAuthEventController {
     private final UserAuthEventRepository userAuthEventRepository;
     private final UserRepository          userRepository;
     private final UserAuthEventService    userAuthEventService;
+    private final UserService             userService;
     private final HttpHeaderCreator       httpHeaderCreator;
 
 
@@ -83,12 +90,14 @@ public class UserAuthEventController {
     @Operation(summary = "get user login count in last seven days")
     @GetMapping("/api/user-auth-events/user-login-count")
     public ResponseEntity<List<UserLoginCount>> getUserLoginCount() {
+        ManagedUser user = userService.findById(AuthUtils.getCurrentUserId());
         List<UserLoginCount> userLoginCounts = new ArrayList<>();
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime today = LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(), 0, 0, 0);
+        Instant now = Instant.now();
+        ZonedDateTime zonedDateTime = now.atZone(ZoneId.of(user.getTimeZone()));
+        ZonedDateTime startOfDay = zonedDateTime.toLocalDate().atStartOfDay(zonedDateTime.getZone());
         for (int i = 6; i >= 0; i--) {
-            LocalDateTime yesterday = today.minusDays(i);
-            Long loginCount = userAuthEventRepository.countByEventAndCreatedAtBetween(AUTH_SUCCESS, yesterday, yesterday.plusDays(1));
+            Instant yesterday = startOfDay.toInstant().minus(i, ChronoUnit.DAYS);
+            Long loginCount = userAuthEventRepository.countByEventAndCreatedAtBetween(AUTH_SUCCESS, yesterday, yesterday.plus(1, ChronoUnit.DAYS));
             UserLoginCount userLoginCount = new UserLoginCount();
             userLoginCount.setCalculatedAt(yesterday);
             userLoginCount.setLoginCount(loginCount);

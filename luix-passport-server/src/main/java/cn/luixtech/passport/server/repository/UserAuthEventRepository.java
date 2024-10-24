@@ -4,7 +4,7 @@ import cn.luixtech.passport.server.domain.UserAuthEvent;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 /**
  * Spring Data JPA repository for the {@link UserAuthEvent} entity.
@@ -12,5 +12,5 @@ import java.time.LocalDateTime;
 @Repository
 public interface UserAuthEventRepository extends JpaRepository<UserAuthEvent, String> {
 
-    Long countByEventAndCreatedAtBetween(String authSuccess, LocalDateTime yesterday, LocalDateTime nextDay);
+    Long countByEventAndCreatedAtBetween(String authSuccess, Instant yesterday, Instant nextDay);
 }
