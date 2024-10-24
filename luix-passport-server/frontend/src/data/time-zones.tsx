@@ -7,6 +7,10 @@ export const timeZones = [
   {
     value: "America/New_York",
     label: "America/New_York (GMT -04:00)"
+  },
+  {
+    value: "Europe/Amsterdam",
+    label: "Europe/Amsterdam"
   }
 ]
 
