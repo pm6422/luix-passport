@@ -8,7 +8,7 @@ import cn.luixtech.passport.server.persistence.Keys;
 import cn.luixtech.passport.server.persistence.Public;
 import cn.luixtech.passport.server.persistence.tables.records.Oauth2RegisteredClientRecord;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.function.Function;
 
 import org.jooq.Field;
@@ -64,7 +64,7 @@ public class Oauth2RegisteredClient extends TableImpl<Oauth2RegisteredClientReco
      * The column
      * <code>public.oauth2_registered_client.client_id_issued_at</code>.
      */
-    public final TableField<Oauth2RegisteredClientRecord, LocalDateTime> CLIENT_ID_ISSUED_AT = createField(DSL.name("client_id_issued_at"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field(DSL.raw("now()"), SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<Oauth2RegisteredClientRecord, Instant> CLIENT_ID_ISSUED_AT = createField(DSL.name("client_id_issued_at"), SQLDataType.INSTANT.nullable(false).defaultValue(DSL.field(DSL.raw("now()"), SQLDataType.INSTANT)), this, "");
 
     /**
      * The column <code>public.oauth2_registered_client.client_secret</code>.
@@ -75,7 +75,7 @@ public class Oauth2RegisteredClient extends TableImpl<Oauth2RegisteredClientReco
      * The column
      * <code>public.oauth2_registered_client.client_secret_expires_at</code>.
      */
-    public final TableField<Oauth2RegisteredClientRecord, LocalDateTime> CLIENT_SECRET_EXPIRES_AT = createField(DSL.name("client_secret_expires_at"), SQLDataType.LOCALDATETIME(6), this, "");
+    public final TableField<Oauth2RegisteredClientRecord, Instant> CLIENT_SECRET_EXPIRES_AT = createField(DSL.name("client_secret_expires_at"), SQLDataType.INSTANT, this, "");
 
     /**
      * The column <code>public.oauth2_registered_client.client_name</code>.
@@ -138,7 +138,7 @@ public class Oauth2RegisteredClient extends TableImpl<Oauth2RegisteredClientReco
     /**
      * The column <code>public.oauth2_registered_client.created_at</code>.
      */
-    public final TableField<Oauth2RegisteredClientRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(6), this, "");
+    public final TableField<Oauth2RegisteredClientRecord, Instant> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.INSTANT, this, "");
 
     /**
      * The column <code>public.oauth2_registered_client.modified_by</code>.
@@ -148,7 +148,7 @@ public class Oauth2RegisteredClient extends TableImpl<Oauth2RegisteredClientReco
     /**
      * The column <code>public.oauth2_registered_client.modified_at</code>.
      */
-    public final TableField<Oauth2RegisteredClientRecord, LocalDateTime> MODIFIED_AT = createField(DSL.name("modified_at"), SQLDataType.LOCALDATETIME(6), this, "");
+    public final TableField<Oauth2RegisteredClientRecord, Instant> MODIFIED_AT = createField(DSL.name("modified_at"), SQLDataType.INSTANT, this, "");
 
     private Oauth2RegisteredClient(Name alias, Table<Oauth2RegisteredClientRecord> aliased) {
         this(alias, aliased, null);
@@ -239,14 +239,14 @@ public class Oauth2RegisteredClient extends TableImpl<Oauth2RegisteredClientReco
     // -------------------------------------------------------------------------
 
     @Override
-    public Row19<String, String, LocalDateTime, String, LocalDateTime, String, String, String, String, String, String, String, String, byte[], Boolean, String, LocalDateTime, String, LocalDateTime> fieldsRow() {
+    public Row19<String, String, Instant, String, Instant, String, String, String, String, String, String, String, String, byte[], Boolean, String, Instant, String, Instant> fieldsRow() {
         return (Row19) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function19<? super String, ? super String, ? super LocalDateTime, ? super String, ? super LocalDateTime, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super byte[], ? super Boolean, ? super String, ? super LocalDateTime, ? super String, ? super LocalDateTime, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function19<? super String, ? super String, ? super Instant, ? super String, ? super Instant, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super byte[], ? super Boolean, ? super String, ? super Instant, ? super String, ? super Instant, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -254,7 +254,7 @@ public class Oauth2RegisteredClient extends TableImpl<Oauth2RegisteredClientReco
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function19<? super String, ? super String, ? super LocalDateTime, ? super String, ? super LocalDateTime, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super byte[], ? super Boolean, ? super String, ? super LocalDateTime, ? super String, ? super LocalDateTime, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function19<? super String, ? super String, ? super Instant, ? super String, ? super Instant, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super byte[], ? super Boolean, ? super String, ? super Instant, ? super String, ? super Instant, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

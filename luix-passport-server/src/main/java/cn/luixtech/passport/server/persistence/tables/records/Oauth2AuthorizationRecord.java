@@ -6,7 +6,7 @@ package cn.luixtech.passport.server.persistence.tables.records;
 
 import cn.luixtech.passport.server.persistence.tables.Oauth2Authorization;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 import org.jooq.Record1;
 import org.jooq.impl.UpdatableRecordImpl;
@@ -140,7 +140,7 @@ public class Oauth2AuthorizationRecord extends UpdatableRecordImpl<Oauth2Authori
      * Setter for
      * <code>public.oauth2_authorization.authorization_code_issued_at</code>.
      */
-    public void setAuthorizationCodeIssuedAt(LocalDateTime value) {
+    public void setAuthorizationCodeIssuedAt(Instant value) {
         set(8, value);
     }
 
@@ -148,15 +148,15 @@ public class Oauth2AuthorizationRecord extends UpdatableRecordImpl<Oauth2Authori
      * Getter for
      * <code>public.oauth2_authorization.authorization_code_issued_at</code>.
      */
-    public LocalDateTime getAuthorizationCodeIssuedAt() {
-        return (LocalDateTime) get(8);
+    public Instant getAuthorizationCodeIssuedAt() {
+        return (Instant) get(8);
     }
 
     /**
      * Setter for
      * <code>public.oauth2_authorization.authorization_code_expires_at</code>.
      */
-    public void setAuthorizationCodeExpiresAt(LocalDateTime value) {
+    public void setAuthorizationCodeExpiresAt(Instant value) {
         set(9, value);
     }
 
@@ -164,8 +164,8 @@ public class Oauth2AuthorizationRecord extends UpdatableRecordImpl<Oauth2Authori
      * Getter for
      * <code>public.oauth2_authorization.authorization_code_expires_at</code>.
      */
-    public LocalDateTime getAuthorizationCodeExpiresAt() {
-        return (LocalDateTime) get(9);
+    public Instant getAuthorizationCodeExpiresAt() {
+        return (Instant) get(9);
     }
 
     /**
@@ -202,7 +202,7 @@ public class Oauth2AuthorizationRecord extends UpdatableRecordImpl<Oauth2Authori
      * Setter for
      * <code>public.oauth2_authorization.access_token_issued_at</code>.
      */
-    public void setAccessTokenIssuedAt(LocalDateTime value) {
+    public void setAccessTokenIssuedAt(Instant value) {
         set(12, value);
     }
 
@@ -210,15 +210,15 @@ public class Oauth2AuthorizationRecord extends UpdatableRecordImpl<Oauth2Authori
      * Getter for
      * <code>public.oauth2_authorization.access_token_issued_at</code>.
      */
-    public LocalDateTime getAccessTokenIssuedAt() {
-        return (LocalDateTime) get(12);
+    public Instant getAccessTokenIssuedAt() {
+        return (Instant) get(12);
     }
 
     /**
      * Setter for
      * <code>public.oauth2_authorization.access_token_expires_at</code>.
      */
-    public void setAccessTokenExpiresAt(LocalDateTime value) {
+    public void setAccessTokenExpiresAt(Instant value) {
         set(13, value);
     }
 
@@ -226,8 +226,8 @@ public class Oauth2AuthorizationRecord extends UpdatableRecordImpl<Oauth2Authori
      * Getter for
      * <code>public.oauth2_authorization.access_token_expires_at</code>.
      */
-    public LocalDateTime getAccessTokenExpiresAt() {
-        return (LocalDateTime) get(13);
+    public Instant getAccessTokenExpiresAt() {
+        return (Instant) get(13);
     }
 
     /**
@@ -292,7 +292,7 @@ public class Oauth2AuthorizationRecord extends UpdatableRecordImpl<Oauth2Authori
      * Setter for
      * <code>public.oauth2_authorization.oidc_id_token_issued_at</code>.
      */
-    public void setOidcIdTokenIssuedAt(LocalDateTime value) {
+    public void setOidcIdTokenIssuedAt(Instant value) {
         set(18, value);
     }
 
@@ -300,15 +300,15 @@ public class Oauth2AuthorizationRecord extends UpdatableRecordImpl<Oauth2Authori
      * Getter for
      * <code>public.oauth2_authorization.oidc_id_token_issued_at</code>.
      */
-    public LocalDateTime getOidcIdTokenIssuedAt() {
-        return (LocalDateTime) get(18);
+    public Instant getOidcIdTokenIssuedAt() {
+        return (Instant) get(18);
     }
 
     /**
      * Setter for
      * <code>public.oauth2_authorization.oidc_id_token_expires_at</code>.
      */
-    public void setOidcIdTokenExpiresAt(LocalDateTime value) {
+    public void setOidcIdTokenExpiresAt(Instant value) {
         set(19, value);
     }
 
@@ -316,8 +316,8 @@ public class Oauth2AuthorizationRecord extends UpdatableRecordImpl<Oauth2Authori
      * Getter for
      * <code>public.oauth2_authorization.oidc_id_token_expires_at</code>.
      */
-    public LocalDateTime getOidcIdTokenExpiresAt() {
-        return (LocalDateTime) get(19);
+    public Instant getOidcIdTokenExpiresAt() {
+        return (Instant) get(19);
     }
 
     /**
@@ -354,7 +354,7 @@ public class Oauth2AuthorizationRecord extends UpdatableRecordImpl<Oauth2Authori
      * Setter for
      * <code>public.oauth2_authorization.refresh_token_issued_at</code>.
      */
-    public void setRefreshTokenIssuedAt(LocalDateTime value) {
+    public void setRefreshTokenIssuedAt(Instant value) {
         set(22, value);
     }
 
@@ -362,15 +362,15 @@ public class Oauth2AuthorizationRecord extends UpdatableRecordImpl<Oauth2Authori
      * Getter for
      * <code>public.oauth2_authorization.refresh_token_issued_at</code>.
      */
-    public LocalDateTime getRefreshTokenIssuedAt() {
-        return (LocalDateTime) get(22);
+    public Instant getRefreshTokenIssuedAt() {
+        return (Instant) get(22);
     }
 
     /**
      * Setter for
      * <code>public.oauth2_authorization.refresh_token_expires_at</code>.
      */
-    public void setRefreshTokenExpiresAt(LocalDateTime value) {
+    public void setRefreshTokenExpiresAt(Instant value) {
         set(23, value);
     }
 
@@ -378,8 +378,8 @@ public class Oauth2AuthorizationRecord extends UpdatableRecordImpl<Oauth2Authori
      * Getter for
      * <code>public.oauth2_authorization.refresh_token_expires_at</code>.
      */
-    public LocalDateTime getRefreshTokenExpiresAt() {
-        return (LocalDateTime) get(23);
+    public Instant getRefreshTokenExpiresAt() {
+        return (Instant) get(23);
     }
 
     /**
@@ -415,29 +415,29 @@ public class Oauth2AuthorizationRecord extends UpdatableRecordImpl<Oauth2Authori
     /**
      * Setter for <code>public.oauth2_authorization.user_code_issued_at</code>.
      */
-    public void setUserCodeIssuedAt(LocalDateTime value) {
+    public void setUserCodeIssuedAt(Instant value) {
         set(26, value);
     }
 
     /**
      * Getter for <code>public.oauth2_authorization.user_code_issued_at</code>.
      */
-    public LocalDateTime getUserCodeIssuedAt() {
-        return (LocalDateTime) get(26);
+    public Instant getUserCodeIssuedAt() {
+        return (Instant) get(26);
     }
 
     /**
      * Setter for <code>public.oauth2_authorization.user_code_expires_at</code>.
      */
-    public void setUserCodeExpiresAt(LocalDateTime value) {
+    public void setUserCodeExpiresAt(Instant value) {
         set(27, value);
     }
 
     /**
      * Getter for <code>public.oauth2_authorization.user_code_expires_at</code>.
      */
-    public LocalDateTime getUserCodeExpiresAt() {
-        return (LocalDateTime) get(27);
+    public Instant getUserCodeExpiresAt() {
+        return (Instant) get(27);
     }
 
     /**
@@ -472,7 +472,7 @@ public class Oauth2AuthorizationRecord extends UpdatableRecordImpl<Oauth2Authori
      * Setter for
      * <code>public.oauth2_authorization.device_code_issued_at</code>.
      */
-    public void setDeviceCodeIssuedAt(LocalDateTime value) {
+    public void setDeviceCodeIssuedAt(Instant value) {
         set(30, value);
     }
 
@@ -480,15 +480,15 @@ public class Oauth2AuthorizationRecord extends UpdatableRecordImpl<Oauth2Authori
      * Getter for
      * <code>public.oauth2_authorization.device_code_issued_at</code>.
      */
-    public LocalDateTime getDeviceCodeIssuedAt() {
-        return (LocalDateTime) get(30);
+    public Instant getDeviceCodeIssuedAt() {
+        return (Instant) get(30);
     }
 
     /**
      * Setter for
      * <code>public.oauth2_authorization.device_code_expires_at</code>.
      */
-    public void setDeviceCodeExpiresAt(LocalDateTime value) {
+    public void setDeviceCodeExpiresAt(Instant value) {
         set(31, value);
     }
 
@@ -496,8 +496,8 @@ public class Oauth2AuthorizationRecord extends UpdatableRecordImpl<Oauth2Authori
      * Getter for
      * <code>public.oauth2_authorization.device_code_expires_at</code>.
      */
-    public LocalDateTime getDeviceCodeExpiresAt() {
-        return (LocalDateTime) get(31);
+    public Instant getDeviceCodeExpiresAt() {
+        return (Instant) get(31);
     }
 
     /**
@@ -537,7 +537,7 @@ public class Oauth2AuthorizationRecord extends UpdatableRecordImpl<Oauth2Authori
     /**
      * Create a detached, initialised Oauth2AuthorizationRecord
      */
-    public Oauth2AuthorizationRecord(String id, String registeredClientId, String principalName, String authorizationGrantType, String authorizedScopes, String attributes, String state, String authorizationCodeValue, LocalDateTime authorizationCodeIssuedAt, LocalDateTime authorizationCodeExpiresAt, String authorizationCodeMetadata, String accessTokenValue, LocalDateTime accessTokenIssuedAt, LocalDateTime accessTokenExpiresAt, String accessTokenMetadata, String accessTokenType, String accessTokenScopes, String oidcIdTokenValue, LocalDateTime oidcIdTokenIssuedAt, LocalDateTime oidcIdTokenExpiresAt, String oidcIdTokenMetadata, String refreshTokenValue, LocalDateTime refreshTokenIssuedAt, LocalDateTime refreshTokenExpiresAt, String refreshTokenMetadata, String userCodeValue, LocalDateTime userCodeIssuedAt, LocalDateTime userCodeExpiresAt, String userCodeMetadata, String deviceCodeValue, LocalDateTime deviceCodeIssuedAt, LocalDateTime deviceCodeExpiresAt, String deviceCodeMetadata) {
+    public Oauth2AuthorizationRecord(String id, String registeredClientId, String principalName, String authorizationGrantType, String authorizedScopes, String attributes, String state, String authorizationCodeValue, Instant authorizationCodeIssuedAt, Instant authorizationCodeExpiresAt, String authorizationCodeMetadata, String accessTokenValue, Instant accessTokenIssuedAt, Instant accessTokenExpiresAt, String accessTokenMetadata, String accessTokenType, String accessTokenScopes, String oidcIdTokenValue, Instant oidcIdTokenIssuedAt, Instant oidcIdTokenExpiresAt, String oidcIdTokenMetadata, String refreshTokenValue, Instant refreshTokenIssuedAt, Instant refreshTokenExpiresAt, String refreshTokenMetadata, String userCodeValue, Instant userCodeIssuedAt, Instant userCodeExpiresAt, String userCodeMetadata, String deviceCodeValue, Instant deviceCodeIssuedAt, Instant deviceCodeExpiresAt, String deviceCodeMetadata) {
         super(Oauth2Authorization.OAUTH2_AUTHORIZATION);
 
         setId(id);

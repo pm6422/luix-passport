@@ -8,7 +8,7 @@ import cn.luixtech.passport.server.persistence.Keys;
 import cn.luixtech.passport.server.persistence.Public;
 import cn.luixtech.passport.server.persistence.tables.records.DataDictRecord;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
@@ -95,7 +95,7 @@ public class DataDict extends TableImpl<DataDictRecord> {
     /**
      * The column <code>public.data_dict.created_at</code>.
      */
-    public final TableField<DataDictRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(6).nullable(false), this, "");
+    public final TableField<DataDictRecord, Instant> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.INSTANT.nullable(false), this, "");
 
     /**
      * The column <code>public.data_dict.modified_by</code>.
@@ -105,7 +105,7 @@ public class DataDict extends TableImpl<DataDictRecord> {
     /**
      * The column <code>public.data_dict.modified_at</code>.
      */
-    public final TableField<DataDictRecord, LocalDateTime> MODIFIED_AT = createField(DSL.name("modified_at"), SQLDataType.LOCALDATETIME(6), this, "");
+    public final TableField<DataDictRecord, Instant> MODIFIED_AT = createField(DSL.name("modified_at"), SQLDataType.INSTANT, this, "");
 
     private DataDict(Name alias, Table<DataDictRecord> aliased) {
         this(alias, aliased, null);
@@ -199,14 +199,14 @@ public class DataDict extends TableImpl<DataDictRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row11<String, String, String, String, String, String, Boolean, String, LocalDateTime, String, LocalDateTime> fieldsRow() {
+    public Row11<String, String, String, String, String, String, Boolean, String, Instant, String, Instant> fieldsRow() {
         return (Row11) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function11<? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super Boolean, ? super String, ? super LocalDateTime, ? super String, ? super LocalDateTime, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function11<? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super Boolean, ? super String, ? super Instant, ? super String, ? super Instant, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -214,7 +214,7 @@ public class DataDict extends TableImpl<DataDictRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function11<? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super Boolean, ? super String, ? super LocalDateTime, ? super String, ? super LocalDateTime, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function11<? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super Boolean, ? super String, ? super Instant, ? super String, ? super Instant, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

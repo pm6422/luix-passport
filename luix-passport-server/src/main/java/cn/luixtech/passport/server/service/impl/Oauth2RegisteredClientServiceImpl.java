@@ -15,12 +15,11 @@ import org.springframework.data.domain.*;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static cn.luixtech.passport.server.persistence.tables.DataDict.DATA_DICT;
 import static cn.luixtech.passport.server.persistence.tables.Oauth2RegisteredClient.OAUTH2_REGISTERED_CLIENT;
 
 @Service
@@ -40,8 +39,8 @@ public class Oauth2RegisteredClientServiceImpl implements Oauth2RegisteredClient
         registeredClientRepository.save(pojo.toRegisteredClient());
         dslContext.update(Tables.OAUTH2_REGISTERED_CLIENT)
                 .set(OAUTH2_REGISTERED_CLIENT.ENABLED, pojo.getEnabled())
-                .set(OAUTH2_REGISTERED_CLIENT.CREATED_AT, LocalDateTime.now())
-                .set(OAUTH2_REGISTERED_CLIENT.MODIFIED_AT, LocalDateTime.now())
+                .set(OAUTH2_REGISTERED_CLIENT.CREATED_AT, Instant.now())
+                .set(OAUTH2_REGISTERED_CLIENT.MODIFIED_AT, Instant.now())
                 .where(OAUTH2_REGISTERED_CLIENT.ID.eq(pojo.getId()))
                 .execute();
     }
@@ -85,7 +84,7 @@ public class Oauth2RegisteredClientServiceImpl implements Oauth2RegisteredClient
 
         dslContext.update(Tables.OAUTH2_REGISTERED_CLIENT)
                 .set(OAUTH2_REGISTERED_CLIENT.ENABLED, pojo.getEnabled())
-                .set(OAUTH2_REGISTERED_CLIENT.MODIFIED_AT, LocalDateTime.now())
+                .set(OAUTH2_REGISTERED_CLIENT.MODIFIED_AT, Instant.now())
                 .where(OAUTH2_REGISTERED_CLIENT.ID.eq(pojo.getId()))
                 .execute();
     }

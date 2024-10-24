@@ -8,7 +8,7 @@ import cn.luixtech.passport.server.persistence.Keys;
 import cn.luixtech.passport.server.persistence.Public;
 import cn.luixtech.passport.server.persistence.tables.records.Oauth2AuthorizationRecord;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
@@ -91,13 +91,13 @@ public class Oauth2Authorization extends TableImpl<Oauth2AuthorizationRecord> {
      * The column
      * <code>public.oauth2_authorization.authorization_code_issued_at</code>.
      */
-    public final TableField<Oauth2AuthorizationRecord, LocalDateTime> AUTHORIZATION_CODE_ISSUED_AT = createField(DSL.name("authorization_code_issued_at"), SQLDataType.LOCALDATETIME(6), this, "");
+    public final TableField<Oauth2AuthorizationRecord, Instant> AUTHORIZATION_CODE_ISSUED_AT = createField(DSL.name("authorization_code_issued_at"), SQLDataType.INSTANT, this, "");
 
     /**
      * The column
      * <code>public.oauth2_authorization.authorization_code_expires_at</code>.
      */
-    public final TableField<Oauth2AuthorizationRecord, LocalDateTime> AUTHORIZATION_CODE_EXPIRES_AT = createField(DSL.name("authorization_code_expires_at"), SQLDataType.LOCALDATETIME(6), this, "");
+    public final TableField<Oauth2AuthorizationRecord, Instant> AUTHORIZATION_CODE_EXPIRES_AT = createField(DSL.name("authorization_code_expires_at"), SQLDataType.INSTANT, this, "");
 
     /**
      * The column
@@ -114,13 +114,13 @@ public class Oauth2Authorization extends TableImpl<Oauth2AuthorizationRecord> {
      * The column
      * <code>public.oauth2_authorization.access_token_issued_at</code>.
      */
-    public final TableField<Oauth2AuthorizationRecord, LocalDateTime> ACCESS_TOKEN_ISSUED_AT = createField(DSL.name("access_token_issued_at"), SQLDataType.LOCALDATETIME(6), this, "");
+    public final TableField<Oauth2AuthorizationRecord, Instant> ACCESS_TOKEN_ISSUED_AT = createField(DSL.name("access_token_issued_at"), SQLDataType.INSTANT, this, "");
 
     /**
      * The column
      * <code>public.oauth2_authorization.access_token_expires_at</code>.
      */
-    public final TableField<Oauth2AuthorizationRecord, LocalDateTime> ACCESS_TOKEN_EXPIRES_AT = createField(DSL.name("access_token_expires_at"), SQLDataType.LOCALDATETIME(6), this, "");
+    public final TableField<Oauth2AuthorizationRecord, Instant> ACCESS_TOKEN_EXPIRES_AT = createField(DSL.name("access_token_expires_at"), SQLDataType.INSTANT, this, "");
 
     /**
      * The column
@@ -147,13 +147,13 @@ public class Oauth2Authorization extends TableImpl<Oauth2AuthorizationRecord> {
      * The column
      * <code>public.oauth2_authorization.oidc_id_token_issued_at</code>.
      */
-    public final TableField<Oauth2AuthorizationRecord, LocalDateTime> OIDC_ID_TOKEN_ISSUED_AT = createField(DSL.name("oidc_id_token_issued_at"), SQLDataType.LOCALDATETIME(6), this, "");
+    public final TableField<Oauth2AuthorizationRecord, Instant> OIDC_ID_TOKEN_ISSUED_AT = createField(DSL.name("oidc_id_token_issued_at"), SQLDataType.INSTANT, this, "");
 
     /**
      * The column
      * <code>public.oauth2_authorization.oidc_id_token_expires_at</code>.
      */
-    public final TableField<Oauth2AuthorizationRecord, LocalDateTime> OIDC_ID_TOKEN_EXPIRES_AT = createField(DSL.name("oidc_id_token_expires_at"), SQLDataType.LOCALDATETIME(6), this, "");
+    public final TableField<Oauth2AuthorizationRecord, Instant> OIDC_ID_TOKEN_EXPIRES_AT = createField(DSL.name("oidc_id_token_expires_at"), SQLDataType.INSTANT, this, "");
 
     /**
      * The column
@@ -170,13 +170,13 @@ public class Oauth2Authorization extends TableImpl<Oauth2AuthorizationRecord> {
      * The column
      * <code>public.oauth2_authorization.refresh_token_issued_at</code>.
      */
-    public final TableField<Oauth2AuthorizationRecord, LocalDateTime> REFRESH_TOKEN_ISSUED_AT = createField(DSL.name("refresh_token_issued_at"), SQLDataType.LOCALDATETIME(6), this, "");
+    public final TableField<Oauth2AuthorizationRecord, Instant> REFRESH_TOKEN_ISSUED_AT = createField(DSL.name("refresh_token_issued_at"), SQLDataType.INSTANT, this, "");
 
     /**
      * The column
      * <code>public.oauth2_authorization.refresh_token_expires_at</code>.
      */
-    public final TableField<Oauth2AuthorizationRecord, LocalDateTime> REFRESH_TOKEN_EXPIRES_AT = createField(DSL.name("refresh_token_expires_at"), SQLDataType.LOCALDATETIME(6), this, "");
+    public final TableField<Oauth2AuthorizationRecord, Instant> REFRESH_TOKEN_EXPIRES_AT = createField(DSL.name("refresh_token_expires_at"), SQLDataType.INSTANT, this, "");
 
     /**
      * The column
@@ -192,12 +192,12 @@ public class Oauth2Authorization extends TableImpl<Oauth2AuthorizationRecord> {
     /**
      * The column <code>public.oauth2_authorization.user_code_issued_at</code>.
      */
-    public final TableField<Oauth2AuthorizationRecord, LocalDateTime> USER_CODE_ISSUED_AT = createField(DSL.name("user_code_issued_at"), SQLDataType.LOCALDATETIME(6), this, "");
+    public final TableField<Oauth2AuthorizationRecord, Instant> USER_CODE_ISSUED_AT = createField(DSL.name("user_code_issued_at"), SQLDataType.INSTANT, this, "");
 
     /**
      * The column <code>public.oauth2_authorization.user_code_expires_at</code>.
      */
-    public final TableField<Oauth2AuthorizationRecord, LocalDateTime> USER_CODE_EXPIRES_AT = createField(DSL.name("user_code_expires_at"), SQLDataType.LOCALDATETIME(6), this, "");
+    public final TableField<Oauth2AuthorizationRecord, Instant> USER_CODE_EXPIRES_AT = createField(DSL.name("user_code_expires_at"), SQLDataType.INSTANT, this, "");
 
     /**
      * The column <code>public.oauth2_authorization.user_code_metadata</code>.
@@ -213,13 +213,13 @@ public class Oauth2Authorization extends TableImpl<Oauth2AuthorizationRecord> {
      * The column
      * <code>public.oauth2_authorization.device_code_issued_at</code>.
      */
-    public final TableField<Oauth2AuthorizationRecord, LocalDateTime> DEVICE_CODE_ISSUED_AT = createField(DSL.name("device_code_issued_at"), SQLDataType.LOCALDATETIME(6), this, "");
+    public final TableField<Oauth2AuthorizationRecord, Instant> DEVICE_CODE_ISSUED_AT = createField(DSL.name("device_code_issued_at"), SQLDataType.INSTANT, this, "");
 
     /**
      * The column
      * <code>public.oauth2_authorization.device_code_expires_at</code>.
      */
-    public final TableField<Oauth2AuthorizationRecord, LocalDateTime> DEVICE_CODE_EXPIRES_AT = createField(DSL.name("device_code_expires_at"), SQLDataType.LOCALDATETIME(6), this, "");
+    public final TableField<Oauth2AuthorizationRecord, Instant> DEVICE_CODE_EXPIRES_AT = createField(DSL.name("device_code_expires_at"), SQLDataType.INSTANT, this, "");
 
     /**
      * The column <code>public.oauth2_authorization.device_code_metadata</code>.

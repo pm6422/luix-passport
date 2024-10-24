@@ -29,7 +29,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -99,7 +98,7 @@ public class DataDictController {
         List<DataDict> all = new ArrayList<>(records.size());
         records.forEach(record -> {
             record.setId(null);
-            record.setCreatedAt(LocalDateTime.now());
+            record.setCreatedAt(Instant.now());
             record.setModifiedAt(record.getCreatedAt());
             all.add(record);
         });

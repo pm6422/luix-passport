@@ -6,7 +6,7 @@ package cn.luixtech.passport.server.persistence.tables.records;
 
 import cn.luixtech.passport.server.persistence.tables.User;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 import org.jooq.Record1;
 import org.jooq.impl.UpdatableRecordImpl;
@@ -149,15 +149,15 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> {
     /**
      * Setter for <code>public.user.verification_code_sent_at</code>.
      */
-    public void setVerificationCodeSentAt(LocalDateTime value) {
+    public void setVerificationCodeSentAt(Instant value) {
         set(9, value);
     }
 
     /**
      * Getter for <code>public.user.verification_code_sent_at</code>.
      */
-    public LocalDateTime getVerificationCodeSentAt() {
-        return (LocalDateTime) get(9);
+    public Instant getVerificationCodeSentAt() {
+        return (Instant) get(9);
     }
 
     /**
@@ -191,15 +191,15 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> {
     /**
      * Setter for <code>public.user.reset_at</code>.
      */
-    public void setResetAt(LocalDateTime value) {
+    public void setResetAt(Instant value) {
         set(12, value);
     }
 
     /**
      * Getter for <code>public.user.reset_at</code>.
      */
-    public LocalDateTime getResetAt() {
-        return (LocalDateTime) get(12);
+    public Instant getResetAt() {
+        return (Instant) get(12);
     }
 
     /**
@@ -247,155 +247,141 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> {
     /**
      * Setter for <code>public.user.account_expires_at</code>.
      */
-    public void setAccountExpiresAt(LocalDateTime value) {
+    public void setAccountExpiresAt(Instant value) {
         set(16, value);
     }
 
     /**
      * Getter for <code>public.user.account_expires_at</code>.
      */
-    public LocalDateTime getAccountExpiresAt() {
-        return (LocalDateTime) get(16);
+    public Instant getAccountExpiresAt() {
+        return (Instant) get(16);
     }
 
     /**
      * Setter for <code>public.user.password_expires_at</code>.
      */
-    public void setPasswordExpiresAt(LocalDateTime value) {
+    public void setPasswordExpiresAt(Instant value) {
         set(17, value);
     }
 
     /**
      * Getter for <code>public.user.password_expires_at</code>.
      */
-    public LocalDateTime getPasswordExpiresAt() {
-        return (LocalDateTime) get(17);
+    public Instant getPasswordExpiresAt() {
+        return (Instant) get(17);
     }
 
     /**
      * Setter for <code>public.user.last_sign_in_at</code>.
      */
-    public void setLastSignInAt(LocalDateTime value) {
+    public void setLastSignInAt(Instant value) {
         set(18, value);
     }
 
     /**
      * Getter for <code>public.user.last_sign_in_at</code>.
      */
-    public LocalDateTime getLastSignInAt() {
-        return (LocalDateTime) get(18);
-    }
-
-    /**
-     * Setter for <code>public.user.language</code>.
-     */
-    public void setLanguage(String value) {
-        set(19, value);
-    }
-
-    /**
-     * Getter for <code>public.user.language</code>.
-     */
-    public String getLanguage() {
-        return (String) get(19);
-    }
-
-    /**
-     * Setter for <code>public.user.created_by</code>.
-     */
-    public void setCreatedBy(String value) {
-        set(20, value);
-    }
-
-    /**
-     * Getter for <code>public.user.created_by</code>.
-     */
-    public String getCreatedBy() {
-        return (String) get(20);
-    }
-
-    /**
-     * Setter for <code>public.user.created_at</code>.
-     */
-    public void setCreatedAt(LocalDateTime value) {
-        set(21, value);
-    }
-
-    /**
-     * Getter for <code>public.user.created_at</code>.
-     */
-    public LocalDateTime getCreatedAt() {
-        return (LocalDateTime) get(21);
-    }
-
-    /**
-     * Setter for <code>public.user.modified_by</code>.
-     */
-    public void setModifiedBy(String value) {
-        set(22, value);
-    }
-
-    /**
-     * Getter for <code>public.user.modified_by</code>.
-     */
-    public String getModifiedBy() {
-        return (String) get(22);
-    }
-
-    /**
-     * Setter for <code>public.user.modified_at</code>.
-     */
-    public void setModifiedAt(LocalDateTime value) {
-        set(23, value);
-    }
-
-    /**
-     * Getter for <code>public.user.modified_at</code>.
-     */
-    public LocalDateTime getModifiedAt() {
-        return (LocalDateTime) get(23);
+    public Instant getLastSignInAt() {
+        return (Instant) get(18);
     }
 
     /**
      * Setter for <code>public.user.locale</code>.
      */
     public void setLocale(String value) {
-        set(24, value);
+        set(19, value);
     }
 
     /**
      * Getter for <code>public.user.locale</code>.
      */
     public String getLocale() {
-        return (String) get(24);
+        return (String) get(19);
+    }
+
+    /**
+     * Setter for <code>public.user.date_time_format</code>.
+     */
+    public void setDateTimeFormat(String value) {
+        set(20, value);
+    }
+
+    /**
+     * Getter for <code>public.user.date_time_format</code>.
+     */
+    public String getDateTimeFormat() {
+        return (String) get(20);
     }
 
     /**
      * Setter for <code>public.user.time_zone</code>.
      */
     public void setTimeZone(String value) {
-        set(25, value);
+        set(21, value);
     }
 
     /**
      * Getter for <code>public.user.time_zone</code>.
      */
     public String getTimeZone() {
-        return (String) get(25);
+        return (String) get(21);
     }
 
     /**
-     * Setter for <code>public.user.date_format</code>.
+     * Setter for <code>public.user.created_by</code>.
      */
-    public void setDateFormat(String value) {
-        set(26, value);
+    public void setCreatedBy(String value) {
+        set(22, value);
     }
 
     /**
-     * Getter for <code>public.user.date_format</code>.
+     * Getter for <code>public.user.created_by</code>.
      */
-    public String getDateFormat() {
-        return (String) get(26);
+    public String getCreatedBy() {
+        return (String) get(22);
+    }
+
+    /**
+     * Setter for <code>public.user.created_at</code>.
+     */
+    public void setCreatedAt(Instant value) {
+        set(23, value);
+    }
+
+    /**
+     * Getter for <code>public.user.created_at</code>.
+     */
+    public Instant getCreatedAt() {
+        return (Instant) get(23);
+    }
+
+    /**
+     * Setter for <code>public.user.modified_by</code>.
+     */
+    public void setModifiedBy(String value) {
+        set(24, value);
+    }
+
+    /**
+     * Getter for <code>public.user.modified_by</code>.
+     */
+    public String getModifiedBy() {
+        return (String) get(24);
+    }
+
+    /**
+     * Setter for <code>public.user.modified_at</code>.
+     */
+    public void setModifiedAt(Instant value) {
+        set(25, value);
+    }
+
+    /**
+     * Getter for <code>public.user.modified_at</code>.
+     */
+    public Instant getModifiedAt() {
+        return (Instant) get(25);
     }
 
     // -------------------------------------------------------------------------
@@ -421,7 +407,7 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> {
     /**
      * Create a detached, initialised UserRecord
      */
-    public UserRecord(String id, String username, String email, String mobileNo, String firstName, String lastName, String passwordHash, String activationCode, String verificationCode, LocalDateTime verificationCodeSentAt, String newEmail, String resetCode, LocalDateTime resetAt, String remark, Boolean activated, Boolean enabled, LocalDateTime accountExpiresAt, LocalDateTime passwordExpiresAt, LocalDateTime lastSignInAt, String language, String createdBy, LocalDateTime createdAt, String modifiedBy, LocalDateTime modifiedAt, String locale, String timeZone, String dateFormat) {
+    public UserRecord(String id, String username, String email, String mobileNo, String firstName, String lastName, String passwordHash, String activationCode, String verificationCode, Instant verificationCodeSentAt, String newEmail, String resetCode, Instant resetAt, String remark, Boolean activated, Boolean enabled, Instant accountExpiresAt, Instant passwordExpiresAt, Instant lastSignInAt, String locale, String dateTimeFormat, String timeZone, String createdBy, Instant createdAt, String modifiedBy, Instant modifiedAt) {
         super(User.USER);
 
         setId(id);
@@ -443,14 +429,13 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> {
         setAccountExpiresAt(accountExpiresAt);
         setPasswordExpiresAt(passwordExpiresAt);
         setLastSignInAt(lastSignInAt);
-        setLanguage(language);
+        setLocale(locale);
+        setDateTimeFormat(dateTimeFormat);
+        setTimeZone(timeZone);
         setCreatedBy(createdBy);
         setCreatedAt(createdAt);
         setModifiedBy(modifiedBy);
         setModifiedAt(modifiedAt);
-        setLocale(locale);
-        setTimeZone(timeZone);
-        setDateFormat(dateFormat);
         resetChangedOnNotNull();
     }
 }

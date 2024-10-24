@@ -8,7 +8,7 @@ import cn.luixtech.passport.server.persistence.Keys;
 import cn.luixtech.passport.server.persistence.Public;
 import cn.luixtech.passport.server.persistence.tables.records.UserLoginRecord;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
@@ -65,7 +65,7 @@ public class UserLogin extends TableImpl<UserLoginRecord> {
     /**
      * The column <code>public.user_login.logged_at</code>.
      */
-    public final TableField<UserLoginRecord, LocalDateTime> LOGGED_AT = createField(DSL.name("logged_at"), SQLDataType.LOCALDATETIME(6).nullable(false), this, "");
+    public final TableField<UserLoginRecord, Instant> LOGGED_AT = createField(DSL.name("logged_at"), SQLDataType.INSTANT.nullable(false), this, "");
 
     /**
      * The column <code>public.user_login.location</code>.
@@ -191,14 +191,14 @@ public class UserLogin extends TableImpl<UserLoginRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row7<String, String, LocalDateTime, String, String, String, String> fieldsRow() {
+    public Row7<String, String, Instant, String, String, String, String> fieldsRow() {
         return (Row7) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function7<? super String, ? super String, ? super LocalDateTime, ? super String, ? super String, ? super String, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function7<? super String, ? super String, ? super Instant, ? super String, ? super String, ? super String, ? super String, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -206,7 +206,7 @@ public class UserLogin extends TableImpl<UserLoginRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function7<? super String, ? super String, ? super LocalDateTime, ? super String, ? super String, ? super String, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function7<? super String, ? super String, ? super Instant, ? super String, ? super String, ? super String, ? super String, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

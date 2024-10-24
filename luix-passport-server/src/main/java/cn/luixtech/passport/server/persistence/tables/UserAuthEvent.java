@@ -8,7 +8,7 @@ import cn.luixtech.passport.server.persistence.Keys;
 import cn.luixtech.passport.server.persistence.Public;
 import cn.luixtech.passport.server.persistence.tables.records.UserAuthEventRecord;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.function.Function;
 
 import org.jooq.Field;
@@ -73,7 +73,7 @@ public class UserAuthEvent extends TableImpl<UserAuthEventRecord> {
     /**
      * The column <code>public.user_auth_event.created_at</code>.
      */
-    public final TableField<UserAuthEventRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(6).nullable(false), this, "");
+    public final TableField<UserAuthEventRecord, Instant> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.INSTANT.nullable(false), this, "");
 
     /**
      * The column <code>public.user_auth_event.created_by</code>.
@@ -167,14 +167,14 @@ public class UserAuthEvent extends TableImpl<UserAuthEventRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row6<String, String, String, String, LocalDateTime, String> fieldsRow() {
+    public Row6<String, String, String, String, Instant, String> fieldsRow() {
         return (Row6) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function6<? super String, ? super String, ? super String, ? super String, ? super LocalDateTime, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function6<? super String, ? super String, ? super String, ? super String, ? super Instant, ? super String, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -182,7 +182,7 @@ public class UserAuthEvent extends TableImpl<UserAuthEventRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function6<? super String, ? super String, ? super String, ? super String, ? super LocalDateTime, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function6<? super String, ? super String, ? super String, ? super String, ? super Instant, ? super String, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

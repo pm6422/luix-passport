@@ -8,7 +8,7 @@ import cn.luixtech.passport.server.persistence.Keys;
 import cn.luixtech.passport.server.persistence.Public;
 import cn.luixtech.passport.server.persistence.tables.records.UserRecord;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 
@@ -95,7 +95,7 @@ public class User extends TableImpl<UserRecord> {
     /**
      * The column <code>public.user.verification_code_sent_at</code>.
      */
-    public final TableField<UserRecord, LocalDateTime> VERIFICATION_CODE_SENT_AT = createField(DSL.name("verification_code_sent_at"), SQLDataType.LOCALDATETIME(6), this, "");
+    public final TableField<UserRecord, Instant> VERIFICATION_CODE_SENT_AT = createField(DSL.name("verification_code_sent_at"), SQLDataType.INSTANT, this, "");
 
     /**
      * The column <code>public.user.new_email</code>.
@@ -110,7 +110,7 @@ public class User extends TableImpl<UserRecord> {
     /**
      * The column <code>public.user.reset_at</code>.
      */
-    public final TableField<UserRecord, LocalDateTime> RESET_AT = createField(DSL.name("reset_at"), SQLDataType.LOCALDATETIME(6), this, "");
+    public final TableField<UserRecord, Instant> RESET_AT = createField(DSL.name("reset_at"), SQLDataType.INSTANT, this, "");
 
     /**
      * The column <code>public.user.remark</code>.
@@ -130,22 +130,32 @@ public class User extends TableImpl<UserRecord> {
     /**
      * The column <code>public.user.account_expires_at</code>.
      */
-    public final TableField<UserRecord, LocalDateTime> ACCOUNT_EXPIRES_AT = createField(DSL.name("account_expires_at"), SQLDataType.LOCALDATETIME(6), this, "");
+    public final TableField<UserRecord, Instant> ACCOUNT_EXPIRES_AT = createField(DSL.name("account_expires_at"), SQLDataType.INSTANT, this, "");
 
     /**
      * The column <code>public.user.password_expires_at</code>.
      */
-    public final TableField<UserRecord, LocalDateTime> PASSWORD_EXPIRES_AT = createField(DSL.name("password_expires_at"), SQLDataType.LOCALDATETIME(6), this, "");
+    public final TableField<UserRecord, Instant> PASSWORD_EXPIRES_AT = createField(DSL.name("password_expires_at"), SQLDataType.INSTANT, this, "");
 
     /**
      * The column <code>public.user.last_sign_in_at</code>.
      */
-    public final TableField<UserRecord, LocalDateTime> LAST_SIGN_IN_AT = createField(DSL.name("last_sign_in_at"), SQLDataType.LOCALDATETIME(6), this, "");
+    public final TableField<UserRecord, Instant> LAST_SIGN_IN_AT = createField(DSL.name("last_sign_in_at"), SQLDataType.INSTANT, this, "");
 
     /**
-     * The column <code>public.user.language</code>.
+     * The column <code>public.user.locale</code>.
      */
-    public final TableField<UserRecord, String> LANGUAGE = createField(DSL.name("language"), SQLDataType.VARCHAR(25).nullable(false), this, "");
+    public final TableField<UserRecord, String> LOCALE = createField(DSL.name("locale"), SQLDataType.VARCHAR(10).nullable(false), this, "");
+
+    /**
+     * The column <code>public.user.date_time_format</code>.
+     */
+    public final TableField<UserRecord, String> DATE_TIME_FORMAT = createField(DSL.name("date_time_format"), SQLDataType.VARCHAR(20).nullable(false), this, "");
+
+    /**
+     * The column <code>public.user.time_zone</code>.
+     */
+    public final TableField<UserRecord, String> TIME_ZONE = createField(DSL.name("time_zone"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
     /**
      * The column <code>public.user.created_by</code>.
@@ -155,7 +165,7 @@ public class User extends TableImpl<UserRecord> {
     /**
      * The column <code>public.user.created_at</code>.
      */
-    public final TableField<UserRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(6).nullable(false), this, "");
+    public final TableField<UserRecord, Instant> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.INSTANT.nullable(false), this, "");
 
     /**
      * The column <code>public.user.modified_by</code>.
@@ -165,22 +175,7 @@ public class User extends TableImpl<UserRecord> {
     /**
      * The column <code>public.user.modified_at</code>.
      */
-    public final TableField<UserRecord, LocalDateTime> MODIFIED_AT = createField(DSL.name("modified_at"), SQLDataType.LOCALDATETIME(6), this, "");
-
-    /**
-     * The column <code>public.user.locale</code>.
-     */
-    public final TableField<UserRecord, String> LOCALE = createField(DSL.name("locale"), SQLDataType.VARCHAR(10).nullable(false), this, "");
-
-    /**
-     * The column <code>public.user.time_zone</code>.
-     */
-    public final TableField<UserRecord, String> TIME_ZONE = createField(DSL.name("time_zone"), SQLDataType.VARCHAR(30).nullable(false), this, "");
-
-    /**
-     * The column <code>public.user.date_format</code>.
-     */
-    public final TableField<UserRecord, String> DATE_FORMAT = createField(DSL.name("date_format"), SQLDataType.VARCHAR(20).nullable(false), this, "");
+    public final TableField<UserRecord, Instant> MODIFIED_AT = createField(DSL.name("modified_at"), SQLDataType.INSTANT, this, "");
 
     private User(Name alias, Table<UserRecord> aliased) {
         this(alias, aliased, null);

@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 import static cn.luixtech.passport.server.utils.AuthUtils.getCurrentUsername;
 import static org.apache.commons.lang3.StringUtils.defaultIfEmpty;
@@ -34,7 +34,7 @@ public abstract class AbstractAuditableDomain extends AbstractCreationDomain imp
      * Set the current time when inserting or updating.
      */
     @Schema(description = "last modified time")
-    protected LocalDateTime modifiedAt;
+    protected Instant modifiedAt;
 
     @Override
     @PrePersist
@@ -47,7 +47,7 @@ public abstract class AbstractAuditableDomain extends AbstractCreationDomain imp
 
     @PreUpdate
     protected void preUpdate() {
-        modifiedAt = LocalDateTime.now();
+        modifiedAt = Instant.now();
         modifiedBy = defaultIfEmpty(getCurrentUsername(), "SYSTEM");
     }
 }

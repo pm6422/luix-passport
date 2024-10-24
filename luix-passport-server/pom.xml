@@ -209,6 +209,12 @@
                     </jdbc>
                     <generator>
                         <database>
+                            <forcedTypes>
+                                <forcedType>
+                                    <name>INSTANT</name>
+                                    <types>(TIMESTAMP)</types>
+                                </forcedType>
+                            </forcedTypes>
                             <name>org.jooq.meta.postgres.PostgresDatabase</name>
                             <excludes>databasechange.*</excludes>
                             <inputSchema>public</inputSchema>
