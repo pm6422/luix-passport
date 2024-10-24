@@ -14,6 +14,13 @@ export default defineConfig({
     // Output vite build results to target/classes/static/
     outDir: '../target/classes/static/'
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        api: 'modern-compiler' // or "modern"
+      }
+    }
+  },
   server: {
     host: 'localhost',
     port: 4000,
