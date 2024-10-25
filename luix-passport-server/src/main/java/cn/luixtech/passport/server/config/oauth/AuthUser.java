@@ -41,6 +41,11 @@ public class AuthUser extends User {
         super(username, password, authorities);
     }
 
+    public AuthUser(String username, String password, String email, Collection<? extends GrantedAuthority> authorities) {
+        super(username, password, authorities);
+        this.email = email;
+    }
+
     public AuthUser(String id, String username, String email, String mobileNo,
                     String firstName, String lastName, String password, boolean enabled,
                     boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked,

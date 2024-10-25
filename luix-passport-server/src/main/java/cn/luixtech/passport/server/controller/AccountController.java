@@ -67,9 +67,9 @@ public class AccountController {
     @Operation(summary = "get current user who are signed in")
     @GetMapping("/open-api/accounts/user")
     public ResponseEntity<AuthUser> getCurrentUser() {
-        return AuthUtils.getCurrentUserId() == null ?
+        return AuthUtils.getCurrentUser() == null ?
                 ResponseEntity.ok(null) :
-                ResponseEntity.ok(AuthUser.of(userService.findById(AuthUtils.getCurrentUserId())));
+                ResponseEntity.ok(AuthUser.of(userService.findByEmail(AuthUtils.getCurrentUser().getEmail())));
     }
 
     @Operation(summary = "update current user")
@@ -168,10 +168,17 @@ public class AccountController {
     @Operation(summary = "get profile picture of the current user")
     @GetMapping("/api/accounts/profile-pic")
     public ResponseEntity<byte[]> getProfilePicture(HttpServletRequest request) throws IOException {
-        Optional<UserProfilePic> userPhoto = userProfilePicRepository.findById(AuthUtils.getCurrentUserId());
-        if (userPhoto.isPresent()) {
-            return ResponseEntity.ok(userPhoto.get().getProfilePic());
+        cn.luixtech.passport.server.config.oauth.AuthUser currentUser = AuthUtils.getCurrentUser();
+        if (currentUser != null) {
+            Optional<User> user = userRepository.findOneByEmail(currentUser.getEmail());
+            if (user.isPresent()) {
+                Optional<UserProfilePic> userPhoto = userProfilePicRepository.findById(user.get().getId());
+                if (userPhoto.isPresent()) {
+                    return ResponseEntity.ok(userPhoto.get().getProfilePic());
+                }
+            }
         }
+
         // Set default profile picture
         byte[] bytes = StreamUtils.copyToByteArray(
                 new UrlResource(getRequestUrl(request) + "/assets/images/cartoon/01.png").getInputStream());

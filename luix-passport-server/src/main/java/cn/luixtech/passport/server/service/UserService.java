@@ -16,6 +16,8 @@ public interface UserService {
 
     ManagedUser findById(String id);
 
+    ManagedUser findByEmail(String email);
+
     ProfileScopeUser findByUsername(String username);
 
     Set<String> findRoles(String userId);

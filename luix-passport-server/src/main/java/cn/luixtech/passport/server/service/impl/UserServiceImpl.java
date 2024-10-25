@@ -136,6 +136,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    public ManagedUser findByEmail(String email) {
+        User user = userRepository.findOneByEmail(email).orElseThrow(() -> new DataNotFoundException(email));
+        ManagedUser managedUser = new ManagedUser();
+        BeanUtils.copyProperties(user, managedUser);
+        managedUser.setRoles(findRoles(user.getId()));
+        managedUser.setLocale(user.getLocale());
+        managedUser.setTimezone(user.getTimeZone());
+        managedUser.setPasswordHash("*");
+        return managedUser;
+    }
+
+    @Override
     public ProfileScopeUser findByUsername(String username) {
         User user = userRepository.findOneByUsername(username).orElseThrow(() -> new DataNotFoundException(username));
         return ProfileScopeUser.of(user.getUsername(), user.getEmail(), findRoles(user.getId()));

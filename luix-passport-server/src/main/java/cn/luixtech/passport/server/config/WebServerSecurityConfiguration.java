@@ -5,6 +5,8 @@ import cn.luixtech.passport.server.config.security.CsrfCookieFilter;
 import cn.luixtech.passport.server.config.security.LuixCsrfRequestMatcher;
 import cn.luixtech.passport.server.config.security.SpaCsrfTokenRequestHandler;
 import cn.luixtech.passport.server.event.FederatedIdentityLoginSuccessEventListener;
+import cn.luixtech.passport.server.repository.UserRepository;
+import cn.luixtech.passport.server.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,13 +14,11 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
  * Use org.springframework.security.crypto.password.DelegatingPasswordEncoder as default
@@ -28,6 +28,9 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @AllArgsConstructor
 @Configuration(proxyBeanMethods = false)
 public class WebServerSecurityConfiguration {
+
+	private final UserRepository userRepository;
+	private final UserService    userService;
 
 //    /**
 //     * Refer to <a href="https://docs.spring.io/spring-security/reference/servlet/authorization/method-security.html">Using a Custom Authorization Manager</a>
@@ -86,7 +89,7 @@ public class WebServerSecurityConfiguration {
 			.oauth2Login(oauth2Login ->
 				oauth2Login
 					.loginPage("/login")
-					.successHandler(new FederatedIdentityLoginSuccessHandler(new FederatedIdentityLoginSuccessEventListener()))
+					.successHandler(new FederatedIdentityLoginSuccessHandler(new FederatedIdentityLoginSuccessEventListener(userRepository, userService)))
 			);
 //			.headers(headers->headers.frameOptions(x->x.sameOrigin()));
 		/*

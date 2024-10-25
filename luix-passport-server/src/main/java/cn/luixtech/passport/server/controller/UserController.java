@@ -30,6 +30,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -58,7 +59,7 @@ public class UserController {
     @PostMapping("/api/users")
     public ResponseEntity<Void> create(HttpServletRequest request,
                                        @Parameter(description = "user", required = true) @Valid @RequestBody User domain) {
-        User newUser = userService.insert(domain, null, applicationProperties.getAccount().getDefaultPassword(), true);
+        User newUser = userService.insert(domain, new HashSet<>(), applicationProperties.getAccount().getDefaultPassword(), true);
         mailService.sendUserCreationEmail(newUser, getRequestUrl(request));
         HttpHeaders headers = httpHeaderCreator.createSuccessHeader("NM1011", applicationProperties.getAccount().getDefaultPassword());
         return ResponseEntity.status(HttpStatus.CREATED).headers(headers).build();

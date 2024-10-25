@@ -10,6 +10,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 
 import java.util.List;
@@ -49,7 +51,6 @@ public abstract class AuthUtils {
      */
     public static String getCurrentUserId(Authentication authentication) {
         AuthUser currentUser = getCurrentUser(authentication);
-        log.info("Current user: {}", currentUser);
         return currentUser != null ? currentUser.getId() : null;
     }
 
@@ -87,7 +88,12 @@ public abstract class AuthUtils {
                 // Use Client ID as username
                 user = new AuthUser(authentication.getName(), "protected", authentication.getAuthorities());
             } else if (authentication instanceof OAuth2AuthenticationToken) {
-                user = new AuthUser(authentication.getName(), "protected", authentication.getAuthorities());
+                if (authentication.getPrincipal() instanceof OAuth2User oAuth2User) {
+                    String email = oAuth2User.getAttribute("email");
+                    user = new AuthUser(authentication.getName(), "protected", email, authentication.getAuthorities());
+                } else {
+                    user = new AuthUser(authentication.getName(), "protected", authentication.getAuthorities());
+                }
             } else if (authentication.getPrincipal() instanceof String) {
                 user = new AuthUser((String) authentication.getPrincipal(), "protected",
                         List.of(new SimpleGrantedAuthority("unknown")));
