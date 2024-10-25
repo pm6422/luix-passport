@@ -49,6 +49,7 @@ public abstract class AuthUtils {
      */
     public static String getCurrentUserId(Authentication authentication) {
         AuthUser currentUser = getCurrentUser(authentication);
+        log.info("Current user: {}", currentUser);
         return currentUser != null ? currentUser.getId() : null;
     }
 
