@@ -11,7 +11,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
 import java.io.IOException;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 /**
  * An {@link AuthenticationSuccessHandler} for capturing the {@link OidcUser} or
@@ -19,11 +19,11 @@ import java.util.function.Consumer;
  */
 public final class FederatedIdentityLoginSuccessHandler implements AuthenticationSuccessHandler {
 
-    private final AuthenticationSuccessHandler defaultSuccessHandler = new SavedRequestAwareAuthenticationSuccessHandler();
-    private       Consumer<OAuth2User>         oauth2UserHandler;
-    private       Consumer<OidcUser>           oidcUserHandler       = (user) -> this.oauth2UserHandler.accept(user);
+    private final AuthenticationSuccessHandler           defaultSuccessHandler = new SavedRequestAwareAuthenticationSuccessHandler();
+    private       BiConsumer<OAuth2User, Authentication> oauth2UserHandler;
+    private final BiConsumer<OidcUser, Authentication>   oidcUserHandler       = (user, authentication) -> this.oauth2UserHandler.accept(user, authentication);
 
-    public FederatedIdentityLoginSuccessHandler(Consumer<OAuth2User> oauth2UserHandler) {
+    public FederatedIdentityLoginSuccessHandler(BiConsumer<OAuth2User, Authentication> oauth2UserHandler) {
         this.oauth2UserHandler = oauth2UserHandler;
     }
 
@@ -33,9 +33,9 @@ public final class FederatedIdentityLoginSuccessHandler implements Authenticatio
                                         Authentication authentication) throws IOException, ServletException {
         if (authentication instanceof OAuth2AuthenticationToken) {
             if (authentication.getPrincipal() instanceof OidcUser) {
-                this.oidcUserHandler.accept((OidcUser) authentication.getPrincipal());
-            } else if (authentication.getPrincipal() instanceof OAuth2User) {
-                this.oauth2UserHandler.accept((OAuth2User) authentication.getPrincipal());
+                this.oidcUserHandler.accept((OidcUser) authentication.getPrincipal(), authentication);
+            } else if (authentication.getPrincipal() != null) {
+                this.oauth2UserHandler.accept((OAuth2User) authentication.getPrincipal(), authentication);
             }
         }
 
