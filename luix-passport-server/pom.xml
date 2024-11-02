@@ -314,7 +314,7 @@
                         <version>3.4.0</version>
                         <configuration>
                             <from>
-                                <image>eclipse-temurin:21-jre-jammy</image>
+                                <image>alpine/java:21-jre</image>
                                 <platforms>
                                     <platform>
                                         <architecture>${jib.arch}</architecture>
