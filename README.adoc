@@ -249,6 +249,10 @@ Alternatively, you can set the following environment variables in the Spring Boo
 
 [[references]]
 == References
+https://www.toutiao.com/article/6848835275460706827/[如何设计一个通用的权限管理系统]
+
+https://www.toutiao.com/article/6926543668228735500/[一文搞定spring权限认证表设计]
+
 https://docs.spring.io/spring-security/reference/index.html[Spring Security Reference]
 
 https://oauth.net/code/java/[OAuth Libraries for Java]
