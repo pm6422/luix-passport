@@ -1,4 +1,4 @@
-import { IconCheck, IconCancel } from "@tabler/icons-react"
+import { IconCheck, IconX } from "@tabler/icons-react"
 
 export const yesNo = [
   {
@@ -9,7 +9,7 @@ export const yesNo = [
   {
     value: false,
     label: "No",
-    icon: IconCancel,
+    icon: IconX,
   }
 ]
 
