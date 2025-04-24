@@ -33,7 +33,7 @@ const FormErrors = ({
     Object.values(form.formState.errors).length > 0 && (
       <Alert variant={variant}>
         <AlertTitle className="flex items-center mb-3"><IconExclamationCircle className="size-5 me-1" />There was errors in your form, please check your inputs and try again.</AlertTitle>
-        { errors && errors.map(err => <p className="ms-1">- {err.field}: {err.message}</p>) }
+        { errors && errors.map((err, index) => <p key={`${err.field}-${index}`} className="ms-1">- {err.field}: {err.message}</p>) }
         {children && <AlertDescription className="pr-8 font-light">{children}</AlertDescription>}
       </Alert>
     )
