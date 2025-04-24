@@ -12,7 +12,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
-  DialogTrigger
+  DialogTrigger,
+  DialogDescription
 } from "@/components/ui/dialog"
 import {
   Form,
@@ -110,6 +111,7 @@ export function UploadDialog({
       <DialogContent className="lg:max-w-screen-sm max-h-screen overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="capitalize">Upload file</DialogTitle>
+          <DialogDescription></DialogDescription>
         </DialogHeader>
         <Separator/>
         <Form {...form}>
