@@ -10,7 +10,7 @@ import { Tabs, TabsContent } from "@/components/ui/tabs"
 import { LayoutBody } from "@/layouts/layout-definitions"
 import { RecentLoginUsers } from "./components/recent-login-users.tsx"
 import { SevenDaysUserLoginCount } from "./components/user-login-count.tsx"
-import { IconUsers, IconShieldCheckered, IconVector, IconUserPlus } from "@tabler/icons-react"
+import { IconUsers, IconShieldCheckered, IconCircles, IconUserShield } from "@tabler/icons-react"
 import { UserService } from "@/services/user-service"
 import { Oauth2ClientService } from "@/services/oauth2-client-service"
 import { OrgService } from "@/services/org-service"
@@ -80,7 +80,7 @@ export default function Dashboard() {
                 <CardTitle className="text-sm font-medium">
                   Total Roles
                 </CardTitle>
-                <IconUserPlus className="size-4"/>
+                <IconUserShield className="size-4"/>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">4</div>
@@ -91,7 +91,7 @@ export default function Dashboard() {
                 <CardTitle className="text-sm font-medium">
                   Total Organizations
                 </CardTitle>
-                <IconVector className="size-4"/>
+                <IconCircles className="size-4"/>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{orgCount}</div>
