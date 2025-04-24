@@ -4,7 +4,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogClose,
-  DialogFooter
+  DialogFooter,
+  DialogDescription
 } from "@/components/ui/dialog"
 import { Form } from "@/components/ui/form"
 import { UseFormReturn } from "react-hook-form"
@@ -73,6 +74,7 @@ const SaveDialogContent = ({
     <DialogContent className={cn("max-h-screen overflow-y-auto lg:max-w-screen-md", `lg:max-w-screen-${size}`)}>
       <DialogHeader>
         <DialogTitle className="capitalize">{id ? "Update" : "Create"} {entityName}</DialogTitle>
+        <DialogDescription></DialogDescription>
       </DialogHeader>
       <Separator/>
       <Form {...form}>
