@@ -34,6 +34,11 @@ public class LoginController {
         return "login";
     }
 
+    @GetMapping("/sign-up")
+    public String signUp() {
+        return "sign-up";
+    }
+
     @GetMapping(value = "/oauth2/consent")
     public String consent(Principal principal, Model model,
                           @RequestParam(OAuth2ParameterNames.CLIENT_ID) String clientId,
