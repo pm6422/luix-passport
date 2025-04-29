@@ -33,8 +33,7 @@ public class User extends AbstractAuditableDomain implements Serializable {
     @Column(nullable = false)
     private String email;
 
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotEmpty(message = "mobileNo:{Validation.NotEmpty}")
+    @Schema
     @Column(nullable = false)
     private String mobileNo;
 

@@ -22,10 +22,16 @@
 	<div class="flex flex-col w-full h-full lg:px-48 px-5 text-center bg-white rounded-3xl">
 		<img alt="Logo" th:src="@{/assets/images/logos/logo-round.svg}" class="h-16 my-5" />
 		<h3 class="mb-6 text-2xl font-extrabold text-dark-gray-900">Create Account</h3>
-		<form method="post" th:action="@{/open-api/accounts/register}">
+		<form method="post" th:action="@{/open-api/accounts/register}" onsubmit="return validatePasswords()">
 			<div th:if="${param.error}" class="py-5">
 				<div class="flex justify-center">
 					<div class="text-red-600">Registration error occurred. Please try again.</div>
+				</div>
+			</div>
+
+			<div id="passwordError" class="hidden py-2">
+				<div class="flex justify-center">
+					<div class="text-red-600">Passwords do not match</div>
 				</div>
 			</div>
 
@@ -54,6 +60,7 @@
 				type="password"
 				class="flex items-center w-full px-5 py-4 mb-5 mr-2 text-sm font-medium outline-none focus:bg-gray-300 placeholder:text-gray-300 bg-gray-100 text-dark-gray-800 rounded-2xl"
 				required
+				oninput="checkPasswordMatch()"
 			/>
 
 			<label for="confirmPassword" class="mb-2 text-sm flex justify-start text-gray-900">Confirm Password</label>
@@ -63,6 +70,7 @@
 				type="password"
 				class="flex items-center w-full px-5 py-4 mb-8 mr-2 text-sm font-medium outline-none focus:bg-gray-300 placeholder:text-gray-300 bg-gray-100 text-dark-gray-800 rounded-2xl"
 				required
+				oninput="checkPasswordMatch()"
 			/>
 
 			<button
@@ -77,5 +85,30 @@
 		</p>
 	</div>
 </div>
+
+<script>
+	function checkPasswordMatch() {
+		const password = document.getElementById('password').value;
+		const confirmPassword = document.getElementById('confirmPassword').value;
+		const errorDiv = document.getElementById('passwordError');
+
+		if (password && confirmPassword && password !== confirmPassword) {
+			errorDiv.classList.remove('hidden');
+		} else {
+			errorDiv.classList.add('hidden');
+		}
+	}
+
+	function validatePasswords() {
+		const password = document.getElementById('password').value;
+		const confirmPassword = document.getElementById('confirmPassword').value;
+
+		if (password !== confirmPassword) {
+			document.getElementById('passwordError').classList.remove('hidden');
+			return false;
+		}
+		return true;
+	}
+</script>
 </body>
 </html>

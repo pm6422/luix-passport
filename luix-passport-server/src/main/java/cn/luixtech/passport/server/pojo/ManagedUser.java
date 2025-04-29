@@ -12,7 +12,6 @@ import org.springframework.beans.BeanUtils;
 import java.io.Serial;
 import java.util.Set;
 
-
 /**
  * A DTO extending the UserDTO, which is meant to be used in the user management UI.
  */
