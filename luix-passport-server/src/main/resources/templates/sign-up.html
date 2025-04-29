@@ -22,28 +22,38 @@
 	<div class="flex flex-col w-full h-full lg:px-48 px-5 text-center bg-white rounded-3xl">
 		<img alt="Logo" th:src="@{/assets/images/logos/logo-round.svg}" class="h-16 my-5" />
 		<h3 class="mb-6 text-2xl font-extrabold text-dark-gray-900">Create Account</h3>
-		<form method="post" th:action="@{/open-api/accounts/register}" onsubmit="return validatePasswords()">
-			<div th:if="${param.error}" class="py-5">
+		<form method="post" th:action="@{/open-api/accounts/register}" onsubmit="return validateForm()">
+			<!-- Server-side errors -->
+			<div th:if="${param.error}" class="py-2">
 				<div class="flex justify-center">
 					<div class="text-red-600">Registration error occurred. Please try again.</div>
 				</div>
 			</div>
 
+			<!-- Client-side errors -->
+			<div id="emailError" class="hidden py-2">
+				<div class="flex justify-center">
+					<div class="text-red-600">Please enter a valid email address</div>
+				</div>
+			</div>
 			<div id="passwordError" class="hidden py-2">
 				<div class="flex justify-center">
 					<div class="text-red-600">Passwords do not match</div>
 				</div>
 			</div>
 
+			<!-- Email field -->
 			<label for="email" class="mb-2 text-sm flex justify-start text-gray-900">Email</label>
 			<input
 				id="email"
 				name="email"
 				type="email"
-				class="flex items-center w-full px-5 py-4 mb-5 mr-2 text-sm font-medium outline-none focus:bg-gray-300 placeholder:text-gray-300 bg-gray-100 text-dark-gray-800 rounded-2xl"
+				class="flex items-center w-full px-5 py-4 mb-2 mr-2 text-sm font-medium outline-none focus:bg-gray-300 placeholder:text-gray-300 bg-gray-100 text-dark-gray-800 rounded-2xl"
 				required
+				oninput="validateEmail()"
 			/>
 
+			<!-- Username field -->
 			<label for="username" class="mb-2 text-sm flex justify-start text-gray-900">Username</label>
 			<input
 				id="username"
@@ -53,22 +63,24 @@
 				required
 			/>
 
+			<!-- Password field -->
 			<label for="password" class="mb-2 text-sm flex justify-start text-gray-900">Password</label>
 			<input
 				id="password"
 				name="password"
 				type="password"
-				class="flex items-center w-full px-5 py-4 mb-5 mr-2 text-sm font-medium outline-none focus:bg-gray-300 placeholder:text-gray-300 bg-gray-100 text-dark-gray-800 rounded-2xl"
+				class="flex items-center w-full px-5 py-4 mb-2 mr-2 text-sm font-medium outline-none focus:bg-gray-300 placeholder:text-gray-300 bg-gray-100 text-dark-gray-800 rounded-2xl"
 				required
 				oninput="checkPasswordMatch()"
 			/>
 
+			<!-- Confirm Password field -->
 			<label for="confirmPassword" class="mb-2 text-sm flex justify-start text-gray-900">Confirm Password</label>
 			<input
 				id="confirmPassword"
 				name="confirmPassword"
 				type="password"
-				class="flex items-center w-full px-5 py-4 mb-8 mr-2 text-sm font-medium outline-none focus:bg-gray-300 placeholder:text-gray-300 bg-gray-100 text-dark-gray-800 rounded-2xl"
+				class="flex items-center w-full px-5 py-4 mb-5 mr-2 text-sm font-medium outline-none focus:bg-gray-300 placeholder:text-gray-300 bg-gray-100 text-dark-gray-800 rounded-2xl"
 				required
 				oninput="checkPasswordMatch()"
 			/>
@@ -87,6 +99,22 @@
 </div>
 
 <script>
+	// Email validation
+	function validateEmail() {
+		const email = document.getElementById('email').value;
+		const errorDiv = document.getElementById('emailError');
+		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+		if (email && !emailRegex.test(email)) {
+			errorDiv.classList.remove('hidden');
+			return false;
+		} else {
+			errorDiv.classList.add('hidden');
+			return true;
+		}
+	}
+
+	// Password match validation
 	function checkPasswordMatch() {
 		const password = document.getElementById('password').value;
 		const confirmPassword = document.getElementById('confirmPassword').value;
@@ -94,20 +122,19 @@
 
 		if (password && confirmPassword && password !== confirmPassword) {
 			errorDiv.classList.remove('hidden');
+			return false;
 		} else {
 			errorDiv.classList.add('hidden');
+			return true;
 		}
 	}
 
-	function validatePasswords() {
-		const password = document.getElementById('password').value;
-		const confirmPassword = document.getElementById('confirmPassword').value;
+	// Form validation
+	function validateForm() {
+		const isEmailValid = validateEmail();
+		const isPasswordValid = checkPasswordMatch();
 
-		if (password !== confirmPassword) {
-			document.getElementById('passwordError').classList.remove('hidden');
-			return false;
-		}
-		return true;
+		return isEmailValid && isPasswordValid;
 	}
 </script>
 </body>
