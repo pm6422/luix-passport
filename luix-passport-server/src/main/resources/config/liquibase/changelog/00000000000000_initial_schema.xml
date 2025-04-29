@@ -163,7 +163,7 @@
                 <constraints nullable="false" unique="true"/>
             </column>
             <column name="mobile_no" type="VARCHAR(18)">
-                <constraints nullable="false" unique="true"/>
+                <constraints unique="true"/>
             </column>
             <column name="first_name" type="VARCHAR(20)"/>
             <column name="last_name" type="VARCHAR(20)"/>
