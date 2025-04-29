@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -24,9 +25,12 @@ public class UserRoleServiceImpl implements UserRoleService {
 
     @Override
     public List<UserRole> generate(String userId, Set<String> newAuthorities) {
-        List<UserRole> userRoles = newAuthorities.stream()
-                .map(auth -> build(userId, auth))
-                .collect(Collectors.toList());
+        List<UserRole> userRoles = new ArrayList<>();
+        if (newAuthorities != null) {
+            userRoles = newAuthorities.stream()
+                    .map(auth -> build(userId, auth))
+                    .collect(Collectors.toList());
+        }
 
         // set default user newAuthorities
         UserRole anoAuth = build(userId, ROLE_ANONYMOUS);
