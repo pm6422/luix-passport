@@ -120,11 +120,11 @@ public class AccountController {
         }
 
         if (userRepository.findOneByEmail(managedUser.getEmail()).isPresent()) {
-            model.addAttribute("emailError", "Email is already taken!");
+            model.addAttribute("emailError", "This email is already registered. Please use a different one!");
             return "sign-up";
         }
         if (userRepository.findOneByUsername(managedUser.getUsername().toLowerCase()).isPresent()) {
-            model.addAttribute("usernameError", "Username is already taken!");
+            model.addAttribute("usernameError", "This username is already registered. Please use a different one!");
             return "sign-up";
         }
 
