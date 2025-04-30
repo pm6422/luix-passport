@@ -24,9 +24,15 @@
 		<h3 class="mb-6 text-2xl font-extrabold text-dark-gray-900">Create Account</h3>
 		<form method="post" th:action="@{/open-api/accounts/register}" onsubmit="return validateForm()">
 			<!-- Server-side errors -->
-			<div th:if="${param.error}" class="py-2">
+			<div th:if="${usernameError}" class="py-2">
 				<div class="flex justify-center">
-					<div class="text-red-600">Registration error occurred. Please try again.</div>
+					<div class="text-red-600" th:text="${usernameError}"></div>
+				</div>
+			</div>
+
+			<div th:if="${emailError}" class="py-2">
+				<div class="flex justify-center">
+					<div class="text-red-600" th:text="${emailError}"></div>
 				</div>
 			</div>
 

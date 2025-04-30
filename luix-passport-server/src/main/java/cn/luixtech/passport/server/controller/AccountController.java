@@ -31,10 +31,12 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.StreamUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -51,7 +53,7 @@ import static com.luixtech.springbootframework.utils.NetworkUtils.getRequestUrl;
 /**
  * REST controller for managing the user's account.
  */
-@RestController
+@Controller
 @AllArgsConstructor
 @Slf4j
 public class AccountController {
@@ -108,12 +110,27 @@ public class AccountController {
 
     @Operation(summary = "register a new user and send an account activation email")
     @PostMapping("/open-api/accounts/register")
-    public ResponseEntity<Void> register(HttpServletRequest request,
-                                         @Parameter(description = "user", required = true) @Valid ManagedUser managedUser) {
+    public String register(HttpServletRequest request,
+                           @Parameter(description = "user", required = true) @Valid @ModelAttribute ManagedUser managedUser,
+                           BindingResult bindingResult,
+                           Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("errors", bindingResult.getAllErrors());
+            return "sign-up";
+        }
+
+        if (userRepository.findOneByEmail(managedUser.getEmail()).isPresent()) {
+            model.addAttribute("emailError", "Email is already taken!");
+            return "sign-up";
+        }
+        if (userRepository.findOneByUsername(managedUser.getUsername().toLowerCase()).isPresent()) {
+            model.addAttribute("usernameError", "Username is already taken!");
+            return "sign-up";
+        }
+
         User newUser = userService.insert(managedUser.toUser(), managedUser.getRoles(), managedUser.getPassword(), false);
         mailService.sendAccountActivationEmail(newUser, getRequestUrl(request));
-        HttpHeaders headers = httpHeaderCreator.createSuccessHeader("SM1021", newUser.getUsername());
-        return ResponseEntity.status(HttpStatus.CREATED).headers(headers).build();
+        return "redirect:/login";
     }
 
     @Operation(summary = "activate the account by activation code")
