@@ -26,7 +26,7 @@ import { getErrorMessage } from "@/libs/handle-error"
 const formSchema = z.object({
   currentPassword: z.string().trim().min(1, { message: "Required" }),
   newPassword: z.string().trim().min(1, { message: "Required" }),
-  email: z.string().trim().min(1, { message: "Required" }),
+  email: z.string().trim(),
   verificationCode: z.string().trim().min(1, { message: "Required" })
 })
 
