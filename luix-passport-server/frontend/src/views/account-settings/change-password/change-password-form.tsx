@@ -94,7 +94,7 @@ export function ChangePasswordForm() {
             <FormItem className='space-y-1'>
               <RequiredFormLabel required={true}>Current Password</RequiredFormLabel>
               <FormControl>
-                <PasswordInput {...field} placeholder="********"/>
+                <PasswordInput {...field} placeholder=""/>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -107,7 +107,7 @@ export function ChangePasswordForm() {
             <FormItem className='space-y-1'>
               <RequiredFormLabel required={true}>New Password</RequiredFormLabel>
               <FormControl>
-                <PasswordInput {...field} placeholder="********"/>
+                <PasswordInput {...field} placeholder=""/>
               </FormControl>
               <FormMessage />
             </FormItem>
