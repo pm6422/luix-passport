@@ -38,7 +38,7 @@
           </svg>
         </a>
       </div>
-      <div class="mb-10 flex justify-center items-center">
+      <div class="mb-5 flex justify-center items-center">
         <svg width="73" height="70" viewBox="0 0 173 170" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M75.8156 3.80431C81.6963 1.36845 88.3037 1.36845 94.1844 3.8043L135.92 21.0916C141.8 23.5275 146.473 28.1997 148.908 34.0803L166.196 75.8156C168.632 81.6963 168.632 88.3037 166.196 94.1844L148.908 135.92C146.473 141.8 141.8 146.473 135.92 148.908L94.1844 166.196C88.3037 168.632 81.6963 168.632 75.8156 166.196L34.0803 148.908C28.1997 146.473 23.5275 141.8 21.0916 135.92L3.80431 94.1844C1.36845 88.3037 1.36845 81.6963 3.8043 75.8156L21.0916 34.0803C23.5275 28.1997 28.1997 23.5275 34.0803 21.0916L75.8156 3.80431Z"
                 fill="#FCFAFF"/>
@@ -85,9 +85,10 @@
 
       <!-- insert content here-->
       <div th:replace="${contentFragment} :: content"></div>
-    </div>
-    <div class="font-semibold mt-20">
-      <span th:text="#{sent.by}"></span><a th:href="${domain}">Luix Passport</a>
+
+      <div class="font-semibold mt-20">
+        <span th:text="#{sent.by}"></span><a th:href="${domain}">Luix Passport</a>
+      </div>
     </div>
   </div>
 </div>
