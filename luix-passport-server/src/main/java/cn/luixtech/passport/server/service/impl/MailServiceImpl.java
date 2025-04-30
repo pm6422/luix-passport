@@ -26,9 +26,11 @@ import java.util.Locale;
 @AllArgsConstructor
 @Slf4j
 public class MailServiceImpl implements MailService {
-    private static final String                USER     = "user";
-    private static final String                BASE_URL = "baseUrl";
-    private static final String                DOMAIN   = "domain";
+    private static final String                USER             = "user";
+    private static final String                BASE_URL         = "baseUrl";
+    private static final String                DOMAIN           = "domain";
+    private static final String                CONTENT_FRAGMENT = "contentFragment";
+    private static final String                EMAIL_LAYOUT     = "email/layouts/email-layout";
     private final        ApplicationProperties applicationProperties;
     private final        MessageSource         messageSource;
     private final        SpringTemplateEngine  springTemplateEngine;
@@ -51,14 +53,14 @@ public class MailServiceImpl implements MailService {
     }
 
     @Override
-    public void sendEmailFromTemplate(User user, String[] emailsTo, String templateName, String emailSubjectKey, String baseUrl) {
+    public void sendEmailFromTemplate(User user, String[] emailsTo, String contentFragment, String emailSubjectKey, String baseUrl) {
         Locale locale = LocaleUtils.toLocale(user.getLocale());
         Context context = new Context(locale);
         context.setVariable(USER, user);
         context.setVariable(BASE_URL, baseUrl);
         context.setVariable(DOMAIN, applicationProperties.getCompany().getDomain());
-        context.setVariable("bodyFragment", templateName);
-        String content = springTemplateEngine.process("email/layouts/email-layout", context);
+        context.setVariable(CONTENT_FRAGMENT, contentFragment);
+        String content = springTemplateEngine.process(EMAIL_LAYOUT, context);
         String subject = messageSource.getMessage(emailSubjectKey, null, locale);
         sendEmail(ArrayUtils.isNotEmpty(emailsTo) ? emailsTo : new String[]{user.getEmail()}, subject, content);
     }

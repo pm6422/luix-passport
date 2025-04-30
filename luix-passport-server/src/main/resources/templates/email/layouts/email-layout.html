@@ -84,9 +84,9 @@
       </div>
 
       <!-- insert content here-->
-      <div th:replace="${bodyFragment} :: content"></div>
+      <div th:replace="${contentFragment} :: content"></div>
     </div>
-    <div class="font-semibold mt-10">
+    <div class="font-semibold mt-20">
       <span th:text="#{sent.by}"></span><a th:href="${domain}">Luix Passport</a>
     </div>
   </div>
