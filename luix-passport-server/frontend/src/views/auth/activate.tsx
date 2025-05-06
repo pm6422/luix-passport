@@ -41,12 +41,6 @@ export default function ActivationPage() {
               <h1 className='text-3xl font-bold'>Activate Account</h1>
             </div>
 
-            {!success && errorMessage && (
-              <div className='mb-4 rounded p-3 text-center text-sm text-destructive'>
-                <strong>{errorMessage}</strong>
-              </div>
-            )}
-
             <div className='mb-6 flex flex-col space-y-5 text-center'>
               {success ? (
                 <p className='text-muted-foreground'>
@@ -57,6 +51,12 @@ export default function ActivationPage() {
                 <p className='font-bold'>Activation failed</p>
               )}
             </div>
+
+            {!success && errorMessage && (
+              <div className='mb-4 rounded p-3 text-center text-sm text-destructive'>
+                <strong>{errorMessage}</strong>
+              </div>
+            )}
 
             {!success && (
               <div className='mt-4 text-center'>
