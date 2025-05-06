@@ -1,8 +1,45 @@
 import { Card } from "@/components/ui/card"
-import { ForgotForm } from "./components/forgot-form"
 import { Link } from "react-router-dom"
+import { useState } from "react"
+import { cn } from "@/libs/utils"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+import { Button } from "@/components/custom/button"
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+
+const formSchema = z.object({
+  email: z
+    .string()
+    .min(1, { message: "Please enter your email" })
+    .email({ message: "Invalid email address" }),
+})
 
 export default function ForgotPassword() {
+  const [isLoading, setIsLoading] = useState(false)
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: { email: "" },
+  })
+
+  function onSubmit(data: z.infer<typeof formSchema>) {
+    setIsLoading(true)
+    console.log(data)
+
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 3000)
+  }
+
   return (
     <>
       <div className="container grid h-svh flex-col items-center justify-center bg-primary-foreground lg:max-w-none lg:px-0">
@@ -24,9 +61,35 @@ export default function ForgotPassword() {
                 to reset your password.
               </p>
             </div>
-            <ForgotForm />
+
+            {/* Former ForgotForm content now directly integrated */}
+            <div className={cn("grid gap-6")}>
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)}>
+                  <div className="grid gap-2">
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem className="space-y-1">
+                          <FormLabel>Email</FormLabel>
+                          <FormControl>
+                            <Input placeholder="name@example.com" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <Button className="mt-2" loading={isLoading}>
+                      Continue
+                    </Button>
+                  </div>
+                </form>
+              </Form>
+            </div>
+
             <p className="mt-4 px-8 text-center text-sm text-muted-foreground">
-              Don"t have an account?{" "}
+              Don't have an account?{" "}
               <Link
                 to="/sign-up"
                 className="underline underline-offset-4 hover:text-primary"
