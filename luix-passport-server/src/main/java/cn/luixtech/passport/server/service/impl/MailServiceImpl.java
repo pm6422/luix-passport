@@ -30,7 +30,7 @@ public class MailServiceImpl implements MailService {
     private static final String                BASE_URL         = "baseUrl";
     private static final String                DOMAIN           = "domain";
     private static final String                CONTENT_FRAGMENT = "contentFragment";
-    private static final String                EMAIL_LAYOUT     = "email/layouts/email-layout";
+    private static final String                EMAIL_LAYOUT     = "emails/layouts/email-layout";
     private final        ApplicationProperties applicationProperties;
     private final        MessageSource         messageSource;
     private final        SpringTemplateEngine  springTemplateEngine;
@@ -67,31 +67,31 @@ public class MailServiceImpl implements MailService {
 
     @Override
     public void sendAccountActivationEmail(User user, String baseUrl) {
-        sendEmailFromTemplate(user, null, "email/activate-account-email", "activate.account.email.subject", baseUrl);
+        sendEmailFromTemplate(user, null, "emails/activate-account-email", "activate.account.email.subject", baseUrl);
         log.info("Requested sending account activation email to [{}]", user.getEmail());
     }
 
     @Override
     public void sendUserCreationEmail(User user, String baseUrl) {
-        sendEmailFromTemplate(user, null, "email/create-user-email", "create.user.email.subject", baseUrl);
+        sendEmailFromTemplate(user, null, "emails/create-user-email", "create.user.email.subject", baseUrl);
         log.info("Requested sending user creation email to [{}]", user.getEmail());
     }
 
     @Override
     public void sendPasswordRecoveryMail(User user, String baseUrl) {
-        sendEmailFromTemplate(user, null, "email/recover-password-email", "reset.password.email.subject", baseUrl);
+        sendEmailFromTemplate(user, null, "emails/recover-password-email", "reset.password.email.subject", baseUrl);
         log.info("Requested sending password recovery email to [{}]", user.getEmail());
     }
 
     @Override
     public void sendPasswordChangedMail(User user, String baseUrl) {
-        sendEmailFromTemplate(user, null, "email/changed-password-email", "changed.password.email.subject", baseUrl);
+        sendEmailFromTemplate(user, null, "emails/changed-password-email", "changed.password.email.subject", baseUrl);
         log.info("Requested sending password changed email to [{}]", user.getEmail());
     }
 
     @Override
     public void sendVerificationCodeMail(User user, String emailTo, String baseUrl) {
-        sendEmailFromTemplate(user, new String[]{emailTo}, "email/verification-code-email", "verification.code.email.subject", baseUrl);
+        sendEmailFromTemplate(user, new String[]{emailTo}, "emails/verification-code-email", "verification.code.email.subject", baseUrl);
         log.info("Requested sending verification code email to [{}]", user.getEmail());
     }
 }
