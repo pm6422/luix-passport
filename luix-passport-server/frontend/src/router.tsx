@@ -14,6 +14,12 @@ const router = createHashRouter([
     }),
   },
   {
+    path: "/reset-password",
+    lazy: async () => ({
+      Component: (await import("./views/auth/reset-password")).default
+    }),
+  },
+  {
     path: "/activate",
     lazy: async () => ({
       Component: (await import("./views/auth/activate")).default

@@ -4,7 +4,6 @@ import { useState } from "react"
 import { cn } from "@/libs/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { useNavigate } from "react-router-dom"
 import { z } from "zod"
 import { Button } from "@/components/custom/button"
 import {
@@ -26,7 +25,6 @@ const formSchema = z.object({
 })
 
 export default function ForgotPassword() {
-  const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
@@ -43,7 +41,6 @@ export default function ForgotPassword() {
       .then(() => {
         setSuccess(true)
         setIsLoading(false)
-        navigate("/reset-password")
       })
       .catch((error) => {
         setSuccess(false)
@@ -66,7 +63,7 @@ export default function ForgotPassword() {
           <Card className="p-6">
             <div className="mb-2 flex flex-col space-y-2 text-left">
               <h1 className="text-md font-semibold tracking-tight">
-                Forgot Password
+                Reset Password
               </h1>
               <p className="text-sm text-muted-foreground">
                 Enter your registered email and <br /> we will send you a link
