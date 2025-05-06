@@ -1,5 +1,5 @@
 import { Card } from "@/components/ui/card"
-import { Link, useSearchParams } from "react-router-dom"
+import { useSearchParams } from "react-router-dom"
 import { useEffect, useState } from "react"
 import { AccountService } from "@/services/account-service"
 
@@ -19,6 +19,8 @@ export default function ActivationPage() {
           setSuccess(false)
           setErrorMessage(error.message || "Activation failed")
         })
+    } else {
+      setErrorMessage("Empty activation code")
     }
   }, [code])
 
@@ -36,31 +38,29 @@ export default function ActivationPage() {
           <Card className='p-6'>
             <div className='mb-6 flex flex-col space-y-5 text-center'>
               <h1 className='text-3xl font-bold'>Activate Account</h1>
-              {success ? (
-                <p className='text-muted-foreground'>
-                  账号已经激活，请{' '}
-                  <Link
-                    to='/login'
-                    className='text-primary underline-offset-4 hover:underline'
-                  >
-                    登录
-                  </Link>
-                </p>
-              ) : (
-                <p className='text-muted-foreground'>账号未能激活，请注册</p>
-              )}
             </div>
 
             {!success && errorMessage && (
-              <div className='mb-4 rounded bg-destructive/15 p-3 text-center text-sm text-destructive'>
+              <div className='mb-4 rounded p-3 text-center text-sm text-destructive'>
                 <strong>{errorMessage}</strong>
               </div>
             )}
 
+            <div className='mb-6 flex flex-col space-y-5 text-center'>
+              {success ? (
+                <p className='text-muted-foreground'>
+                  Account activation successful, please
+                  <a href="/login" className="text-primary underline-offset-4 hover:underline"> login</a>
+                </p>
+              ) : (
+                <p className='font-bold'>Activation failed</p>
+              )}
+            </div>
+
             {!success && (
               <div className='mt-4 text-center'>
                 <p className="mt-3 text-sm leading-relaxed text-gray-900">
-                  <a href="/login" className="font-bold hover:underline text-blue-700">Back to Sign In</a>
+                  <a href="/sign-up" className="font-bold hover:underline text-blue-700">Back to Sign Up</a>
                 </p>
               </div>
             )}
