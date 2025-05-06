@@ -37,24 +37,25 @@ export default function ActivationPage() {
             />
           </div>
           <Card className='p-6'>
-            <div className='mb-6 flex flex-col space-y-5 text-center'>
+            <div className='mb-5 flex flex-col space-y-5 text-center'>
               <h1 className='text-3xl font-bold'>Activate Account</h1>
             </div>
 
             <div className='mb-6 flex flex-col space-y-5 text-center'>
-              {success ? (
+              {success && (
                 <p className='text-muted-foreground'>
                   Account activation successful, please
                   <a href="/login" className="text-primary underline-offset-4 hover:underline"> login</a>
                 </p>
-              ) : (
-                <p className='font-bold'>Activation failed</p>
               )}
             </div>
 
             {!success && errorMessage && (
-              <div className='mb-4 rounded p-3 text-center text-sm text-destructive'>
-                <strong>{errorMessage}</strong>
+              <div>
+                <p className='text-center font-bold text-lg'>Activation failed</p>
+                <div className='text-center text-xs text-destructive'>
+                  <strong>{errorMessage}</strong>
+                </div>
               </div>
             )}
 
