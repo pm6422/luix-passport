@@ -312,7 +312,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void activate(String activationCode) {
-        User user = userRepository.findOneByActivationCode(activationCode).orElseThrow(() -> new DataNotFoundException(activationCode));
+        User user = userRepository.findOneByActivationCode(activationCode).orElseThrow(() -> new RuntimeException("Invalid activation code"));
 
         user.setActivated(true);
         user.setActivationCode(null);

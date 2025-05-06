@@ -18,7 +18,7 @@ export default function ActivationPage() {
         })
         .catch((error) => {
           setSuccess(false)
-          setErrorMessage(error.message || 'Activation failed')
+          setErrorMessage(error.response.data.message || 'Activation failed')
         })
     } else {
       setErrorMessage('Empty activation code')
