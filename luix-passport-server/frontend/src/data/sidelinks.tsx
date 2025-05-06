@@ -57,12 +57,6 @@ export const sidelinks: SideLink[] = [
         icon: <IconPoint size={25} />,
       },
       {
-        title: "Sign Up",
-        label: "",
-        href: "/sign-up",
-        icon: <IconPoint size={25} />,
-      },
-      {
         title: "Forgot Password",
         label: "",
         href: "/forgot-password",

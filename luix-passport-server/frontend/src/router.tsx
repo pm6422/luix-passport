@@ -8,18 +8,6 @@ import MaintenanceError from "./views/errors/maintenance-error"
 const router = createHashRouter([
   // Auth routes
   {
-    path: "/sign-in",
-    lazy: async () => ({
-      Component: (await import("./views/auth/sign-in")).default
-    }),
-  },
-  {
-    path: "/sign-up",
-    lazy: async () => ({
-      Component: (await import("./views/auth/sign-up")).default
-    }),
-  },
-  {
     path: "/forgot-password",
     lazy: async () => ({
       Component: (await import("./views/auth/forgot-password")).default
