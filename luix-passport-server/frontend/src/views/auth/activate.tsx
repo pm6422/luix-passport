@@ -1,12 +1,12 @@
-import { Card } from "@/components/ui/card"
-import { useSearchParams } from "react-router-dom"
-import { useEffect, useState } from "react"
-import { AccountService } from "@/services/account-service"
+import { Card } from '@/components/ui/card'
+import { useSearchParams } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { AccountService } from '@/services/account-service'
 import { Button } from '@/components/custom/button.tsx'
 
 export default function ActivationPage() {
   const [searchParams] = useSearchParams()
-  const code = searchParams.get("code")
+  const code = searchParams.get('code')
   const [success, setSuccess] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
@@ -18,10 +18,10 @@ export default function ActivationPage() {
         })
         .catch((error) => {
           setSuccess(false)
-          setErrorMessage(error.message || "Activation failed")
+          setErrorMessage(error.message || 'Activation failed')
         })
     } else {
-      setErrorMessage("Empty activation code")
+      setErrorMessage('Empty activation code')
     }
   }, [code])
 
@@ -45,7 +45,7 @@ export default function ActivationPage() {
               {success && (
                 <p className='text-muted-foreground'>
                   Account activation successful, please
-                  <a href="/login" className="text-primary underline-offset-4 hover:underline"> login</a>
+                  <a href='/login' className='text-primary underline-offset-4 hover:underline'> login</a>
                 </p>
               )}
             </div>
@@ -61,8 +61,8 @@ export default function ActivationPage() {
 
             {!success && (
               <div className='mt-4 text-center'>
-                <Button className="mt-2 w-full" >
-                  <a href="/sign-up">Sign Up</a>
+                <Button className='mt-2 w-full' >
+                  <a href='/sign-up'>Sign Up</a>
                 </Button>
               </div>
             )}
