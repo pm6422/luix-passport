@@ -69,7 +69,7 @@ public class AccountController {
     @Operation(summary = "get current user who are signed in")
     @GetMapping("/open-api/accounts/user")
     public ResponseEntity<AuthUser> getCurrentUser() {
-        return AuthUtils.getCurrentUser() == null ?
+        return AuthUtils.getCurrentUser() == null || AuthUtils.getCurrentUser().getEmail() == null ?
                 ResponseEntity.ok(null) :
                 ResponseEntity.ok(AuthUser.of(userService.findByEmail(AuthUtils.getCurrentUser().getEmail())));
     }

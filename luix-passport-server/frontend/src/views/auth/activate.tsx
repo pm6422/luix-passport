@@ -1,8 +1,27 @@
 import { Card } from "@/components/ui/card"
-import { ForgotForm } from "./components/forgot-form"
-import { Link } from "react-router-dom"
+import { Link, useSearchParams } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { AccountService } from "@/services/account-service"
 
-export default function ForgotPassword() {
+export default function ActivationPage() {
+  const [searchParams] = useSearchParams()
+  const code = searchParams.get("code")
+  const [success, setSuccess] = useState(false)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (code) {
+      AccountService.activate(code)
+        .then(() => {
+          setSuccess(true)
+        })
+        .catch((error) => {
+          setSuccess(false)
+          setErrorMessage(error.message || "Activation failed")
+        })
+    }
+  }, [code])
+
   return (
     <>
       <div className="container grid h-svh flex-col items-center justify-center bg-primary-foreground lg:max-w-none lg:px-0">
@@ -23,27 +42,43 @@ export default function ForgotPassword() {
             <h1 className="text-xl font-medium">Shadcn Admin</h1>
           </div>
           <Card className="p-6">
-            <div className="mb-2 flex flex-col space-y-2 text-left">
-              <h1 className="text-md font-semibold tracking-tight">
-                Forgot Password
-              </h1>
-              <p className="text-sm text-muted-foreground">
-                Enter your registered email and <br /> we will send you a link
-                to reset your password.
-              </p>
+            <div className="mb-6 flex flex-col space-y-2 text-center">
+              <h1 className="text-4xl font-bold">激活账号</h1>
+              {success ? (
+                <p className="text-muted-foreground">
+                  账号已经激活，请{" "}
+                  <Link
+                    to="/login"
+                    className="text-primary underline-offset-4 hover:underline"
+                  >
+                    登录
+                  </Link>
+                </p>
+              ) : (
+                <p className="text-muted-foreground">账号未能激活，请注册</p>
+              )}
             </div>
-            <ForgotForm />
-            <p className="mt-4 px-8 text-center text-sm text-muted-foreground">
-              Don"t have an account?{" "}
-              <Link
-                to="/sign-up"
-                className="underline underline-offset-4 hover:text-primary"
-              >
-                Sign up
-              </Link>
-              .
-            </p>
+
+            {!success && errorMessage && (
+              <div className="mb-4 rounded bg-destructive/15 p-3 text-center text-sm text-destructive">
+                <strong>{errorMessage}</strong>
+              </div>
+            )}
+
+            {!success && (
+              <div className="mt-4 text-center">
+                <Link
+                  to="/login"
+                  className="text-sm text-primary underline-offset-4 hover:underline"
+                >
+                  返回登录页面
+                </Link>
+              </div>
+            )}
           </Card>
+          <p className="text-center text-sm text-muted-foreground">
+            <small>🅛🅞🅤🅘🅢 &copy; 2017</small>
+          </p>
         </div>
       </div>
     </>

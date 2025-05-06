@@ -45,6 +45,10 @@ export class AccountService {
     return http.post("api/accounts/profile-pic/upload", formData)
   }
 
+  public static activate(code: string): Promise<void> {
+    return http.get("open-api/accounts/activate/" + code)
+  }
+
   public static async signOut(): Promise<void> {
     await http.post("api/accounts/sign-out")
     window.location.reload()
