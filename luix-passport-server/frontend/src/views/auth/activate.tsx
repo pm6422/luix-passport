@@ -37,7 +37,7 @@ export default function ActivationPage() {
             />
           </div>
           <Card className='p-6'>
-            <div className='mb-5 flex flex-col space-y-5 text-center'>
+            <div className='flex flex-col space-y-5 text-center'>
               <h1 className='text-3xl font-bold'>Activate Account</h1>
             </div>
 
