@@ -25,6 +25,12 @@ const router = createHashRouter([
       Component: (await import("./views/auth/forgot-password")).default
     }),
   },
+  {
+    path: "/activate",
+    lazy: async () => ({
+      Component: (await import("./views/auth/activate")).default
+    }),
+  },
 
   // Main routes
   {
