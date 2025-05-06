@@ -41,10 +41,10 @@ export default function ActivationPage() {
               <h1 className='text-3xl font-bold'>Activate Account</h1>
             </div>
 
-            <div className='mb-6 flex flex-col space-y-5 text-center'>
+            <div className='mt-4 mb-6 flex flex-col space-y-5 text-center'>
               {success && (
                 <p className='text-muted-foreground'>
-                  Account activation successful, please
+                  Activation successful, please
                   <a href='/login' className='text-primary underline-offset-4 hover:underline'> login</a>
                 </p>
               )}

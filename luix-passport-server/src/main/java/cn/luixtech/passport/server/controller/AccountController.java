@@ -5,7 +5,6 @@ import cn.luixtech.passport.server.domain.UserProfilePic;
 import cn.luixtech.passport.server.event.LogoutEvent;
 import cn.luixtech.passport.server.pojo.AuthUser;
 import cn.luixtech.passport.server.pojo.ChangePassword;
-import cn.luixtech.passport.server.pojo.ManagedUser;
 import cn.luixtech.passport.server.pojo.PasswordRecovery;
 import cn.luixtech.passport.server.repository.UserProfilePicRepository;
 import cn.luixtech.passport.server.repository.UserRepository;
@@ -33,10 +32,7 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.util.StreamUtils;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -53,7 +49,7 @@ import static com.luixtech.springbootframework.utils.NetworkUtils.getRequestUrl;
 /**
  * REST controller for managing the user's account.
  */
-@Controller
+@RestController
 @AllArgsConstructor
 @Slf4j
 public class AccountController {
@@ -106,31 +102,6 @@ public class AccountController {
         // Logout asynchronously
         applicationEventPublisher.publishEvent(new LogoutEvent(this, AuthUtils.getCurrentUsername()));
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1002", messageCreator.getMessage("password"))).build();
-    }
-
-    @Operation(summary = "register a new user and send an account activation email")
-    @PostMapping("/open-api/accounts/register")
-    public String register(HttpServletRequest request,
-                           @Parameter(description = "user", required = true) @Valid @ModelAttribute ManagedUser managedUser,
-                           BindingResult bindingResult,
-                           Model model) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("errors", bindingResult.getAllErrors());
-            return "sign-up";
-        }
-
-        if (userRepository.findOneByEmail(managedUser.getEmail()).isPresent()) {
-            model.addAttribute("emailError", "This email is already registered. Please use a different one!");
-            return "sign-up";
-        }
-        if (userRepository.findOneByUsername(managedUser.getUsername().toLowerCase()).isPresent()) {
-            model.addAttribute("usernameError", "This username is already registered. Please use a different one!");
-            return "sign-up";
-        }
-
-        User newUser = userService.insert(managedUser.toUser(), managedUser.getRoles(), managedUser.getPassword(), false);
-        mailService.sendAccountActivationEmail(newUser, getRequestUrl(request));
-        return "redirect:/login";
     }
 
     @Operation(summary = "activate the account by activation code")
