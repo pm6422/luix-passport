@@ -15,6 +15,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { AccountService } from "@/services/account-service"
 
 const formSchema = z.object({
   email: z
@@ -25,19 +26,27 @@ const formSchema = z.object({
 
 export default function ForgotPassword() {
   const [isLoading, setIsLoading] = useState(false)
+  const [success, setSuccess] = useState(false)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: { email: "" },
   })
 
-  function onSubmit(data: z.infer<typeof formSchema>) {
+  function requestReset(data: z.infer<typeof formSchema>) {
     setIsLoading(true)
-    console.log(data)
 
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 3000)
+    AccountService.requestPasswordRecovery(data.email)
+      .then(() => {
+        setSuccess(true)
+        setIsLoading(false)
+      })
+      .catch((error) => {
+        setSuccess(false)
+        setIsLoading(false)
+        setErrorMessage(error.response.data.message || 'Request password recovery failed')
+      })
   }
 
   return (
@@ -62,10 +71,18 @@ export default function ForgotPassword() {
               </p>
             </div>
 
+            {!success && errorMessage && (
+              <div>
+                <div className='text-center text-xs text-destructive'>
+                  <strong>{errorMessage}</strong>
+                </div>
+              </div>
+            )}
+
             {/* Former ForgotForm content now directly integrated */}
             <div className={cn("grid gap-6")}>
               <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)}>
+                <form onSubmit={form.handleSubmit(requestReset)}>
                   <div className="grid gap-2">
                     <FormField
                       control={form.control}
