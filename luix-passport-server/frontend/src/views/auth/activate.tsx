@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { AccountService } from '@/services/account-service'
 import { Button } from '@/components/custom/button.tsx'
 
-export default function ActivationPage() {
+export default function Activate() {
   const [searchParams] = useSearchParams()
   const code = searchParams.get('code')
   const [success, setSuccess] = useState(false)
