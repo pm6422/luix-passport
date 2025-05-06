@@ -2,6 +2,7 @@ import { Card } from "@/components/ui/card"
 import { useSearchParams } from "react-router-dom"
 import { useEffect, useState } from "react"
 import { AccountService } from "@/services/account-service"
+import { Button } from '@/components/custom/button.tsx'
 
 export default function ActivationPage() {
   const [searchParams] = useSearchParams()
@@ -59,9 +60,9 @@ export default function ActivationPage() {
 
             {!success && (
               <div className='mt-4 text-center'>
-                <p className="mt-3 text-sm leading-relaxed text-gray-900">
-                  <a href="/sign-up" className="font-bold hover:underline text-blue-700">Back to Sign Up</a>
-                </p>
+                <Button className="mt-2 w-full" >
+                  <a href="/sign-up">Sign Up</a>
+                </Button>
               </div>
             )}
           </Card>
