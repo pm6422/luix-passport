@@ -56,12 +56,6 @@ export const sidelinks: SideLink[] = [
         href: "/oauth2-clients",
         icon: <IconPoint size={25} />,
       },
-      {
-        title: "Forgot Password",
-        label: "",
-        href: "/forgot-password",
-        icon: <IconPoint size={25} />,
-      },
     ],
   }
 ]
