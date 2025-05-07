@@ -16,11 +16,18 @@ import {
 import { Input } from "@/components/ui/input"
 import { AccountService } from "@/services/account-service"
 import { useSearchParams } from "react-router-dom"
+import { PasswordInput } from '@/components/custom/password-input.tsx'
 
-const formSchema = z.object({
-  email: z.string().min(1, { message: "Please enter your email" }).email({ message: "Invalid email address" }),
-  resetCode: z.string().min(1, { message: "Please enter your reset code" }),
-})
+const formSchema = z
+  .object({
+    newRawPassword: z.string().min(5, { message: "Please enter your new password with at least 5 characters", }).max(10, { message: "Password must be at least 10 characters long", }),
+    confirmPassword: z.string(),
+    resetCode: z.string().min(1, { message: "Please enter your reset code" }),
+  })
+  .refine((data) => data.newRawPassword === data.confirmPassword, {
+    message: "Passwords don't match.",
+    path: ["confirmPassword"],
+  })
 
 export default function ForgotPassword() {
   const [isLoading, setIsLoading] = useState(false)
@@ -31,7 +38,8 @@ export default function ForgotPassword() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
+      newRawPassword: "",
+      confirmPassword: "",
       resetCode:  searchParams.get('resetCode') || ""
     }
   })
@@ -39,7 +47,7 @@ export default function ForgotPassword() {
   function completeReset(data: z.infer<typeof formSchema>) {
     setIsLoading(true)
 
-    AccountService.requestPasswordRecovery(data.email)
+    AccountService.completePasswordRecovery(data)
       .then(() => {
         setSuccess(true)
         setIsLoading(false)
@@ -98,15 +106,27 @@ export default function ForgotPassword() {
                         </FormItem>
                       )}
                     />
-
                     <FormField
                       control={form.control}
-                      name="email"
+                      name="newRawPassword"
                       render={({ field }) => (
                         <FormItem className="space-y-1">
-                          <FormLabel>Email</FormLabel>
+                          <FormLabel>New Password</FormLabel>
                           <FormControl>
-                            <Input placeholder="name@example.com" {...field} />
+                            <PasswordInput {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="confirmPassword"
+                      render={({ field }) => (
+                        <FormItem className="space-y-1">
+                          <FormLabel>Confirm New Password</FormLabel>
+                          <FormControl>
+                            <PasswordInput {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
