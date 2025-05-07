@@ -14,7 +14,6 @@ import cn.luixtech.passport.server.service.UserService;
 import cn.luixtech.passport.server.utils.AuthUtils;
 import com.luixtech.springbootframework.component.HttpHeaderCreator;
 import com.luixtech.springbootframework.component.MessageCreator;
-import com.luixtech.utilities.encryption.JasyptEncryptUtils;
 import com.luixtech.utilities.exception.DataNotFoundException;
 import com.luixtech.utilities.lang.DateUtils;
 import io.swagger.v3.oas.annotations.Operation;
@@ -143,13 +142,7 @@ public class AccountController {
     @Operation(summary = "complete password recovery")
     @PostMapping("/open-api/accounts/complete-password-recovery")
     public ResponseEntity<Void> completeRecoverPassword(@Parameter(description = "reset code and new password", required = true) @Valid @RequestBody PasswordRecovery dto) {
-        String resetCode;
-        try {
-            resetCode = JasyptEncryptUtils.decrypt(dto.getResetCode());
-        } catch (Exception ex) {
-            throw new IllegalArgumentException(messageCreator.getMessage("IA2001"));
-        }
-        userService.resetPassword(resetCode, dto.getNewRawPassword());
+        userService.resetPassword(dto.getResetCode(), dto.getNewRawPassword());
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("NM1003")).build();
     }
 

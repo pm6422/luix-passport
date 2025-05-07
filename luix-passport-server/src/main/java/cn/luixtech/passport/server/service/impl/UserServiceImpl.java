@@ -286,7 +286,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public User requestPasswordRecovery(String email) {
         User user = userRepository.findOneByEmailAndActivated(email, true).orElseThrow(() -> new DataNotFoundException(email));
 
-        user.setResetCode(JasyptEncryptUtils.encrypt(generateRandomCode()));
+        user.setResetCode(generateRandomCode());
         user.setResetAt(LocalDateTime.now());
 
         userRepository.save(user);
