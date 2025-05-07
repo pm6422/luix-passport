@@ -14,14 +14,18 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
+import { toast } from "sonner"
 import { Input } from "@/components/ui/input"
 import { AccountService } from "@/services/account-service"
 import { useSearchParams } from "react-router-dom"
 import { PasswordInput } from '@/components/custom/password-input.tsx'
+import { getErrorMessage } from '@/libs/handle-error.ts'
 
 const formSchema = z
   .object({
-    newRawPassword: z.string().min(5, { message: "Please enter your new password with at least 5 characters", }).max(10, { message: "Password must be at least 10 characters long", }),
+    newRawPassword: z.string()
+      .min(5, { message: "Please enter your new password with at least 5 characters", })
+      .max(10, { message: "Password must be at least 10 characters long", }),
     confirmPassword: z.string(),
     resetCode: z.string().min(1, { message: "Please enter your reset code" }),
   })
@@ -33,8 +37,6 @@ const formSchema = z
 export default function ForgotPassword() {
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
-  const [success, setSuccess] = useState(false)
-  const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [searchParams] = useSearchParams()
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -49,18 +51,21 @@ export default function ForgotPassword() {
   function completeReset(data: z.infer<typeof formSchema>) {
     setIsLoading(true)
 
-    AccountService.completePasswordRecovery(data)
-      .then(() => {
-        setSuccess(true)
+    toast.promise(AccountService.completePasswordRecovery(data), {
+      loading: "Resetting password...",
+      success: () => {
         setIsLoading(false)
-        // navigate to login
-        navigate("/")
-      })
-      .catch((error) => {
-        setSuccess(false)
+        setTimeout(() => {
+          // navigate to login
+          navigate("/")
+        }, 1000)
+        return "Reset password successfully"
+      },
+      error: (error) => {
         setIsLoading(false)
-        setErrorMessage(error.response.data.message || 'Reset password failed')
-      })
+        return getErrorMessage(error)
+      }
+    })
   }
 
   return (
@@ -83,14 +88,6 @@ export default function ForgotPassword() {
                 Enter your new password to reset.
               </p>
             </div>
-
-            {!success && errorMessage && (
-              <div>
-                <div className='text-center text-xs text-destructive'>
-                  <strong>{errorMessage}</strong>
-                </div>
-              </div>
-            )}
 
             {/* Former ForgotForm content now directly integrated */}
             <div className={cn("grid gap-6")}>
