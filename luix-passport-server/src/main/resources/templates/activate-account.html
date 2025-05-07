@@ -47,7 +47,7 @@
   function showToast(message, type = 'error') {
     Toastify({
       text: message,
-      duration: type === 'loading' ? -1 : 3000,
+      duration: type === 'loading' ? 500 : -1,
       gravity: 'top',
       position: 'center',
       backgroundColor: type === 'success' ? '#16a34a' : type === 'error' ? '#dc2626' : '#6b7280',
