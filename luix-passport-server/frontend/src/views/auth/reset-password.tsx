@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Button } from "@/components/custom/button"
+import { useNavigate } from "react-router-dom"
 import {
   Form,
   FormControl,
@@ -30,6 +31,7 @@ const formSchema = z
   })
 
 export default function ForgotPassword() {
+  const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
@@ -51,6 +53,8 @@ export default function ForgotPassword() {
       .then(() => {
         setSuccess(true)
         setIsLoading(false)
+        // navigate to login
+        navigate("/")
       })
       .catch((error) => {
         setSuccess(false)
