@@ -8,6 +8,12 @@ import MaintenanceError from "./views/errors/maintenance-error"
 const router = createHashRouter([
   // Auth routes
   {
+    path: "/activate",
+    lazy: async () => ({
+      Component: (await import("./views/auth/activate")).default
+    }),
+  },
+  {
     path: "/forgot-password",
     lazy: async () => ({
       Component: (await import("./views/auth/forgot-password")).default
@@ -17,12 +23,6 @@ const router = createHashRouter([
     path: "/reset-password",
     lazy: async () => ({
       Component: (await import("./views/auth/reset-password")).default
-    }),
-  },
-  {
-    path: "/activate",
-    lazy: async () => ({
-      Component: (await import("./views/auth/activate")).default
     }),
   },
 
