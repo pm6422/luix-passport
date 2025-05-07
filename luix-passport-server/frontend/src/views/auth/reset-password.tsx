@@ -1,5 +1,5 @@
 import { Card } from "@/components/ui/card"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { cn } from "@/libs/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -33,6 +33,12 @@ export default function ForgotPassword() {
     resolver: zodResolver(formSchema),
     defaultValues: { email: "", resetCode: "" },
   })
+
+  useEffect(() => {
+    if (resetCode) {
+      form.setValue('resetCode', resetCode)
+    }
+  }, [resetCode, form])
 
   function completeReset(data: z.infer<typeof formSchema>) {
     setIsLoading(true)
@@ -90,7 +96,7 @@ export default function ForgotPassword() {
                         <FormItem className="space-y-1">
                           <FormLabel>Reset Code</FormLabel>
                           <FormControl>
-                            <Input value={resetCode} {...field} />
+                            <Input disabled {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
