@@ -128,10 +128,8 @@
 			return false;
 		}
 
-		const actionUrl = '/open-api/accounts/register';
-
 		$.ajax({
-			url: actionUrl,
+			url: '/open-api/accounts/register',
 			type: 'POST',
 			contentType: 'application/json',
 			data: JSON.stringify(formData),
