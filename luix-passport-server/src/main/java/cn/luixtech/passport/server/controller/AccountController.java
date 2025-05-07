@@ -5,6 +5,7 @@ import cn.luixtech.passport.server.domain.UserProfilePic;
 import cn.luixtech.passport.server.event.LogoutEvent;
 import cn.luixtech.passport.server.pojo.AuthUser;
 import cn.luixtech.passport.server.pojo.ChangePassword;
+import cn.luixtech.passport.server.pojo.ManagedUser;
 import cn.luixtech.passport.server.pojo.PasswordRecovery;
 import cn.luixtech.passport.server.repository.UserProfilePicRepository;
 import cn.luixtech.passport.server.repository.UserRepository;
@@ -67,6 +68,23 @@ public class AccountController {
         return AuthUtils.getCurrentUser() == null || AuthUtils.getCurrentUser().getEmail() == null ?
                 ResponseEntity.ok(null) :
                 ResponseEntity.ok(AuthUser.of(userService.findByEmail(AuthUtils.getCurrentUser().getEmail())));
+    }
+
+    @Operation(summary = "register a new user and send an account activation email")
+    @PostMapping("/open-api/accounts/register")
+    public ResponseEntity<Void> register(HttpServletRequest request,
+                                         @Parameter(description = "user", required = true) @Valid @RequestBody ManagedUser managedUser) {
+
+        if (userRepository.findOneByEmail(managedUser.getEmail()).isPresent()) {
+            throw new RuntimeException("This email is already registered. Please use a different one!");
+        }
+        if (userRepository.findOneByUsername(managedUser.getUsername().toLowerCase()).isPresent()) {
+            throw new RuntimeException("This username is already registered. Please use a different one!");
+        }
+
+        User newUser = userService.insert(managedUser.toUser(), managedUser.getRoles(), managedUser.getPassword(), false);
+        mailService.sendAccountActivationEmail(newUser, getRequestUrl(request));
+        return ResponseEntity.ok().build();
     }
 
     @Operation(summary = "update current user")
