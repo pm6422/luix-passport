@@ -101,7 +101,7 @@ export default function ForgotPassword() {
                       )}
                     />
                     <Button className="mt-2" loading={isLoading}>
-                      Continue
+                      Send Reset Link
                     </Button>
                   </div>
                 </form>

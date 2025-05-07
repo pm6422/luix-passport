@@ -53,6 +53,10 @@ export class AccountService {
     return http.post("open-api/accounts/request-password-recovery?email=" + email)
   }
 
+  public static completePasswordRecovery(model: any): Promise<void> {
+    return http.post("open-api/accounts/complete-password-recovery", model)
+  }
+
   public static async signOut(): Promise<void> {
     await http.post("api/accounts/sign-out")
     window.location.reload()

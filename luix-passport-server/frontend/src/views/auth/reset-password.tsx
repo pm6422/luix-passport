@@ -1,5 +1,4 @@
 import { Card } from "@/components/ui/card"
-import { Link } from "react-router-dom"
 import { useState } from "react"
 import { cn } from "@/libs/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -98,23 +97,12 @@ export default function ForgotPassword() {
                       )}
                     />
                     <Button className="mt-2" loading={isLoading}>
-                      Continue
+                      Reset
                     </Button>
                   </div>
                 </form>
               </Form>
             </div>
-
-            <p className="mt-4 px-8 text-center text-sm text-muted-foreground">
-              Don't have an account?{" "}
-              <Link
-                to="/sign-up"
-                className="underline underline-offset-4 hover:text-primary"
-              >
-                Sign up
-              </Link>
-              .
-            </p>
           </Card>
         </div>
       </div>
