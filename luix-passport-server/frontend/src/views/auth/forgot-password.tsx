@@ -1,10 +1,8 @@
 import { Card } from "@/components/ui/card"
-import { Link } from "react-router-dom"
 import { useState } from "react"
 import { cn } from "@/libs/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { useNavigate } from "react-router-dom"
 import { z } from "zod"
 import { Button } from "@/components/custom/button"
 import {
@@ -26,7 +24,6 @@ const formSchema = z.object({
 })
 
 export default function ForgotPassword() {
-  const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
@@ -43,7 +40,6 @@ export default function ForgotPassword() {
       .then(() => {
         setSuccess(true)
         setIsLoading(false)
-        navigate("/reset-password")
       })
       .catch((error) => {
         setSuccess(false)
@@ -110,12 +106,12 @@ export default function ForgotPassword() {
 
             <p className="mt-4 px-8 text-center text-sm text-muted-foreground">
               Don't have an account?{" "}
-              <Link
-                to="/sign-up"
+              <a
+                href="/sign-up"
                 className="underline underline-offset-4 hover:text-primary"
               >
                 Sign up
-              </Link>
+              </a>
               .
             </p>
           </Card>
