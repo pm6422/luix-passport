@@ -26,7 +26,7 @@
 	<div class="flex flex-col w-full h-full lg:px-48 px-5 text-center bg-white rounded-3xl">
 		<img alt="Logo" th:src="@{/assets/images/logos/logo-round.svg}" class="h-16 my-5" />
 		<h3 class="mb-6 text-2xl font-extrabold text-dark-gray-900">Create Account</h3>
-		<form id="signupForm" method="post" onsubmit="return handleSubmit(event)">
+		<form onsubmit="return handleSubmit(event)">
 			<!-- Email field -->
 			<label for="email" class="mb-2 text-sm flex justify-start text-gray-900">Email</label>
 			<input
@@ -142,13 +142,8 @@
 			},
 			error: function(xhr) {
 				// Handle server-side errors
-				try {
-					const errors = JSON.parse(xhr.responseText);
-					showToast(errors.message || 'An error occurred. Please try again.');
-				} catch (e) {
-					// Generic error if response is not JSON
-					showToast('An error occurred. Please try again.');
-				}
+				const errors = JSON.parse(xhr.responseText);
+				showToast(errors.message || 'An error occurred. Please try again.');
 			}
 		});
 
