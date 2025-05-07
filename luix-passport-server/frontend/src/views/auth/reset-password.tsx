@@ -15,25 +15,26 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { AccountService } from "@/services/account-service"
+import { useSearchParams } from "react-router-dom"
 
 const formSchema = z.object({
-  email: z
-    .string()
-    .min(1, { message: "Please enter your email" })
-    .email({ message: "Invalid email address" }),
+  email: z.string().min(1, { message: "Please enter your email" }).email({ message: "Invalid email address" }),
+  resetCode: z.string().min(1, { message: "Please enter your reset code" }),
 })
 
 export default function ForgotPassword() {
   const [isLoading, setIsLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [searchParams] = useSearchParams()
+  const resetCode = searchParams.get('resetCode')
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: { email: "" },
+    defaultValues: { email: "", resetCode: "" },
   })
 
-  function requestReset(data: z.infer<typeof formSchema>) {
+  function completeReset(data: z.infer<typeof formSchema>) {
     setIsLoading(true)
 
     AccountService.requestPasswordRecovery(data.email)
@@ -65,8 +66,7 @@ export default function ForgotPassword() {
                 Reset Password
               </h1>
               <p className="text-sm text-muted-foreground">
-                Enter your registered email and <br /> we will send you a link
-                to reset your password.
+                Enter your new password to reset.
               </p>
             </div>
 
@@ -81,8 +81,22 @@ export default function ForgotPassword() {
             {/* Former ForgotForm content now directly integrated */}
             <div className={cn("grid gap-6")}>
               <Form {...form}>
-                <form onSubmit={form.handleSubmit(requestReset)}>
+                <form onSubmit={form.handleSubmit(completeReset)}>
                   <div className="grid gap-2">
+                    <FormField
+                      control={form.control}
+                      name="resetCode"
+                      render={({ field }) => (
+                        <FormItem className="space-y-1">
+                          <FormLabel>Reset Code</FormLabel>
+                          <FormControl>
+                            <Input value={resetCode} {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
                     <FormField
                       control={form.control}
                       name="email"
