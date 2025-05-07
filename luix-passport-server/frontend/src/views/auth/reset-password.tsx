@@ -64,7 +64,7 @@ export default function ForgotPassword() {
         setTimeout(() => {
           // navigate to login
           navigate("/")
-        }, 1000)
+        }, 2000)
         return "Reset password successfully"
       },
       error: (error) => {
