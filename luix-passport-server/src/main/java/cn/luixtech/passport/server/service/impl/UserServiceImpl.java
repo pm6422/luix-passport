@@ -257,7 +257,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 throw new IllegalArgumentException(messageCreator.getMessage("UE5008"));
             }
         }
-        user.setPasswordHash(BCRYPT_PASSWORD_ENCODER.encode(newRawPassword));
+        user.setPasswordHash(DEFAULT_PASSWORD_ENCODER_PREFIX + BCRYPT_PASSWORD_ENCODER.encode(newRawPassword));
         userRepository.save(user);
         log.info("Changed password for user: {}", user);
         return user;
@@ -301,7 +301,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         Validate.isTrue(LocalDateTime.now().isBefore(user.getResetAt().plusDays(1)), messageCreator.getMessage("UE1023"));
 
-        user.setPasswordHash(BCRYPT_PASSWORD_ENCODER.encode(newRawPassword));
+        user.setPasswordHash(DEFAULT_PASSWORD_ENCODER_PREFIX + BCRYPT_PASSWORD_ENCODER.encode(newRawPassword));
         user.setResetCode(null);
         user.setResetAt(null);
 
