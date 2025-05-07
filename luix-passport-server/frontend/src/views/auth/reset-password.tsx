@@ -25,8 +25,8 @@ const formSchema = z
   .object({
     newRawPassword: z
       .string()
-      .min(5, { message: "Please enter your new password with at least 5 characters", })
-      .max(10, { message: "Password must be at least 10 characters long", }),
+      .min(5, { message: "Password must be at least 5 characters", })
+      .max(10, { message: "Password must be at most 10 characters", }),
     confirmPassword: z.string(),
     resetCode: z.string().min(1, { message: "Please enter your reset code" }),
   })
