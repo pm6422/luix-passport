@@ -30,7 +30,7 @@ public class WebConfigurer implements WebMvcConfigurer {
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/login").setViewName("login");
         registry.addViewController("/sign-up").setViewName("sign-up");
-        registry.addViewController("/activate").setViewName("activate");
+        registry.addViewController("/activate-account").setViewName("activate-account");
         registry.addViewController("/forgot-password").setViewName("forgot-password");
         registry.addViewController("/reset-password").setViewName("reset-password");
     }

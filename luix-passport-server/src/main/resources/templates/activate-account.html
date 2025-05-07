@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Passport | Activate Account</title>
+  <link rel="shortcut icon" th:href="@{/favicon.ico}"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js@1.12.0/src/toastify.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js@1.12.0/src/toastify.min.css"/>
+</head>
+<body class="bg-gray-100 py-10">
+<div class="container grid h-svh flex-col items-center justify-center lg:max-w-none lg:px-0">
+  <div class="mx-auto flex w-full flex-col justify-center space-y-2 sm:w-[480px] lg:p-8">
+    <div class="mb-4 flex items-center justify-center">
+      <img
+        alt="Logo"
+        th:src="@{/assets/images/logos/logo-with-text.svg}"
+        class="h-10"
+      />
+    </div>
+    <div class="p-6 bg-white rounded-lg shadow-md">
+      <div class="flex flex-col space-y-5 text-center">
+        <h1 class="text-3xl font-bold">Activate Account</h1>
+      </div>
+      <div id="successMessage" class="mt-4 mb-6 flex flex-col space-y-5 text-center hidden">
+        <p class="text-gray-600">
+          Activation successful, please
+          <a href="/login" class="text-blue-700 underline-offset-4 hover:underline">login</a>
+        </p>
+      </div>
+      <div id="failureMessage" class="mt-4 text-center hidden">
+        <a
+          href="/sign-up"
+          class="w-full inline-block focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-2xl text-sm px-5 py-4 mt-2"
+        >
+          Sign Up
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Reusable toast function
+  function showToast(message, type = 'error') {
+    Toastify({
+      text: message,
+      duration: type === 'loading' ? -1 : 3000,
+      gravity: 'top',
+      position: 'center',
+      backgroundColor: type === 'success' ? '#16a34a' : type === 'error' ? '#dc2626' : '#6b7280',
+      stopOnFocus: true
+    }).showToast();
+  }
+
+  // Get query parameter
+  function getQueryParam(name) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name);
+  }
+
+  // Handle activation
+  function activateAccount() {
+    const code = getQueryParam('code');
+
+    if (!code) {
+      showToast('Invalid empty activation code', 'error');
+      document.getElementById('failureMessage').classList.remove('hidden');
+      return;
+    }
+
+    showToast('Activating account...', 'loading');
+
+    $.ajax({
+      url: '/open-api/accounts/activate/' + code,
+      type: 'GET',
+      contentType: 'application/json',
+      success: function(response) {
+        showToast('Activated account successfully', 'success');
+        document.getElementById('successMessage').classList.remove('hidden');
+        document.getElementById('failureMessage').classList.add('hidden');
+      },
+      error: function(xhr) {
+        try {
+          const errors = JSON.parse(xhr.responseText);
+          showToast(errors.message || 'An error occurred. Please try again.', 'error');
+        } catch (e) {
+          showToast('An error occurred. Please try again.', 'error');
+        }
+        document.getElementById('failureMessage').classList.remove('hidden');
+        document.getElementById('successMessage').classList.add('hidden');
+      }
+    });
+  }
+
+  // Run activation on page load
+  document.addEventListener('DOMContentLoaded', activateAccount);
+</script>
+</body>
+</html>
