@@ -3,6 +3,8 @@ import { useSearchParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { AccountService } from '@/services/account-service'
 import { Button } from '@/components/custom/button.tsx'
+import { toast } from 'sonner'
+import { getErrorMessage } from '@/libs/handle-error.ts'
 
 export default function Activate() {
   const [searchParams] = useSearchParams()
@@ -12,14 +14,17 @@ export default function Activate() {
 
   useEffect(() => {
     if (code) {
-      AccountService.activate(code)
-        .then(() => {
+      toast.promise(AccountService.activate(code), {
+        loading: "Activating account...",
+        success: () => {
           setSuccess(true)
-        })
-        .catch((error) => {
+          return "Activated account successfully"
+        },
+        error: (error) => {
           setSuccess(false)
-          setErrorMessage(error.response.data.message || 'Activation failed')
-        })
+          return getErrorMessage(error)
+        }
+      })
     } else {
       setErrorMessage('Empty activation code')
     }

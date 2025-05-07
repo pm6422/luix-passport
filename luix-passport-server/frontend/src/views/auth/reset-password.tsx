@@ -3,7 +3,7 @@ import { useState } from "react"
 import { cn } from "@/libs/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { z } from "zod"
+import { z } from 'zod'
 import { Button } from "@/components/custom/button"
 import { useNavigate } from "react-router-dom"
 import {
@@ -39,13 +39,18 @@ export default function ForgotPassword() {
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
   const [searchParams] = useSearchParams()
+  const resetCode = searchParams.get('resetCode')
+
+  if (!resetCode) {
+    toast.error("Invalid empty reset code")
+  }
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       newRawPassword: "",
       confirmPassword: "",
-      resetCode:  searchParams.get('resetCode') || ""
+      resetCode: resetCode || ""
     }
   })
 
