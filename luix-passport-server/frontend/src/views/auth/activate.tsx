@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card"
 import { useSearchParams } from "react-router-dom"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { AccountService } from "@/services/account-service"
 import { Button } from "@/components/custom/button.tsx"
 import { toast } from "sonner"
@@ -11,21 +11,23 @@ export default function Activate() {
   const code = searchParams.get("code")
   const [success, setSuccess] = useState(false)
 
-  if (!code) {
-    toast.error("Invalid empty activation code")
-  } else {
-    toast.promise(AccountService.activate(code), {
-      loading: "Activating account...",
-      success: () => {
-        setSuccess(true)
-        return "Activated account successfully"
-      },
-      error: (error) => {
-        setSuccess(false)
-        return getErrorMessage(error)
-      }
-    })
-  }
+  useEffect(() => {
+    if (!code) {
+      toast.error("Invalid empty activation code")
+    } else {
+      toast.promise(AccountService.activate(code), {
+        loading: "Activating account...",
+        success: () => {
+          setSuccess(true)
+          return "Activated account successfully"
+        },
+        error: (error) => {
+          setSuccess(false)
+          return getErrorMessage(error)
+        }
+      })
+    }
+  }, [code])
 
   return (
     <>
