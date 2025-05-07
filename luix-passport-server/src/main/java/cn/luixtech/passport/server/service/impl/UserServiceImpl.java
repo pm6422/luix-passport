@@ -297,7 +297,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void resetPassword(String resetCode, String newRawPassword) {
-        User user = userRepository.findOneByResetCode(resetCode).orElseThrow(() -> new DataNotFoundException(resetCode));
+        User user = userRepository.findOneByResetCode(resetCode).orElseThrow(() -> new RuntimeException("Invalid reset code"));
 
         Validate.isTrue(LocalDateTime.now().isBefore(user.getResetAt().plusDays(1)), messageCreator.getMessage("UE1023"));
 
