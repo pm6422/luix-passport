@@ -30,8 +30,8 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 @Configuration(proxyBeanMethods = false)
 public class WebServerSecurityConfiguration {
 
-	private final UserRepository userRepository;
-	private final UserService    userService;
+    private final UserRepository userRepository;
+    private final UserService    userService;
 
 //    /**
 //     * Refer to <a href="https://docs.spring.io/spring-security/reference/servlet/authorization/method-security.html">Using a Custom Authorization Manager</a>
@@ -64,7 +64,8 @@ public class WebServerSecurityConfiguration {
 			.oauth2ResourceServer(server-> server.jwt(Customizer.withDefaults()))
 			.authorizeHttpRequests(authorize ->
 				authorize
-					.requestMatchers("favicon.ico", "/assets/**", "/webjars/**", "/login", "/sign-up").permitAll()
+					.requestMatchers("favicon.ico", "/assets/**", "/webjars/**").permitAll()
+					.requestMatchers( "/login", "/sign-up").permitAll()
 					.requestMatchers("/management/health/**", "/management/info/**").permitAll()
 					.requestMatchers("/open-api/**").permitAll()
 					.requestMatchers("/api/externals/authorities").hasAuthority("SCOPE_external:read")
