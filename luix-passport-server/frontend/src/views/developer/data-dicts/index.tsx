@@ -13,8 +13,10 @@ export default function DataDict() {
   const [tableData, setTableData] = useState([] as Array<DataDict>)
   const [totalCount, setTotalCount] = useState(0)
   const [totalPages, setTotalPages] = useState(0)
+  const [currentPageNo, setCurrentPageNo] = useState(0)
 
   function loadPage(pageNo: number = 0, pageSize: number = 10, sorts: Array<string> = ["modifiedAt,desc"], criteria: DataDictCriteria = {}): void {
+    setCurrentPageNo(pageNo)
     DataDictService.find({
       page: pageNo,
       size: pageSize,
@@ -32,7 +34,7 @@ export default function DataDict() {
 
   function save(formData: DataDict): Promise<void> {
     return DataDictService.save(formData).then(() => {
-      loadPage()
+      loadPage(currentPageNo)
     })
   }
 
