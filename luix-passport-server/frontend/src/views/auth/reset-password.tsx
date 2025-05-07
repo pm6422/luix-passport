@@ -1,5 +1,5 @@
 import { Card } from "@/components/ui/card"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { cn } from "@/libs/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -27,18 +27,14 @@ export default function ForgotPassword() {
   const [success, setSuccess] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [searchParams] = useSearchParams()
-  const resetCode = searchParams.get('resetCode')
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: { email: "", resetCode: "" },
-  })
-
-  useEffect(() => {
-    if (resetCode) {
-      form.setValue('resetCode', resetCode)
+    defaultValues: {
+      email: "",
+      resetCode:  searchParams.get('resetCode') || ""
     }
-  }, [resetCode, form])
+  })
 
   function completeReset(data: z.infer<typeof formSchema>) {
     setIsLoading(true)
@@ -51,7 +47,7 @@ export default function ForgotPassword() {
       .catch((error) => {
         setSuccess(false)
         setIsLoading(false)
-        setErrorMessage(error.response.data.message || 'Request password recovery failed')
+        setErrorMessage(error.response.data.message || 'Reset password failed')
       })
   }
 
