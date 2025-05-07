@@ -23,7 +23,8 @@ import { getErrorMessage } from '@/libs/handle-error.ts'
 
 const formSchema = z
   .object({
-    newRawPassword: z.string()
+    newRawPassword: z
+      .string()
       .min(5, { message: "Please enter your new password with at least 5 characters", })
       .max(10, { message: "Password must be at least 10 characters long", }),
     confirmPassword: z.string(),

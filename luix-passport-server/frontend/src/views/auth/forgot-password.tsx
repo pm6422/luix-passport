@@ -13,8 +13,10 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
+import { toast } from "sonner"
 import { Input } from "@/components/ui/input"
 import { AccountService } from "@/services/account-service"
+import { getErrorMessage } from '@/libs/handle-error.ts'
 
 const formSchema = z.object({
   email: z
@@ -25,8 +27,6 @@ const formSchema = z.object({
 
 export default function ForgotPassword() {
   const [isLoading, setIsLoading] = useState(false)
-  const [success, setSuccess] = useState(false)
-  const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -36,16 +36,17 @@ export default function ForgotPassword() {
   function requestReset(data: z.infer<typeof formSchema>) {
     setIsLoading(true)
 
-    AccountService.requestPasswordRecovery(data.email)
-      .then(() => {
-        setSuccess(true)
+    toast.promise(AccountService.requestPasswordRecovery(data.email), {
+      loading: "Sending reset link...",
+      success: () => {
         setIsLoading(false)
-      })
-      .catch((error) => {
-        setSuccess(false)
+        return "Sent reset link successfully"
+      },
+      error: (error) => {
         setIsLoading(false)
-        setErrorMessage(error.response.data.message || 'Request password recovery failed')
-      })
+        return getErrorMessage(error)
+      }
+    })
   }
 
   return (
@@ -69,14 +70,6 @@ export default function ForgotPassword() {
                 to reset your password.
               </p>
             </div>
-
-            {!success && errorMessage && (
-              <div>
-                <div className='text-center text-xs text-destructive'>
-                  <strong>{errorMessage}</strong>
-                </div>
-              </div>
-            )}
 
             {/* Former ForgotForm content now directly integrated */}
             <div className={cn("grid gap-6")}>
