@@ -64,7 +64,7 @@ public class WebServerSecurityConfiguration {
 			.oauth2ResourceServer(server-> server.jwt(Customizer.withDefaults()))
 			.authorizeHttpRequests(authorize ->
 				authorize
-					.requestMatchers("favicon.ico", "/assets/**", "/webjars/**", "/login", "/sign-up","/forget-password").permitAll()
+					.requestMatchers("favicon.ico", "/assets/**", "/webjars/**", "/login", "/sign-up").permitAll()
 					.requestMatchers("/management/health/**", "/management/info/**").permitAll()
 					.requestMatchers("/open-api/**").permitAll()
 					.requestMatchers("/api/externals/authorities").hasAuthority("SCOPE_external:read")
