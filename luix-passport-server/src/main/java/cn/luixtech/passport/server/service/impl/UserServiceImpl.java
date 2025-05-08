@@ -284,7 +284,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public User requestPasswordRecovery(String email) {
-        User user = userRepository.findOneByEmailAndActivated(email, true).orElseThrow(() -> new DataNotFoundException(email));
+        User user = userRepository.findOneByEmailAndActivated(email, true).orElseThrow(() -> new RuntimeException("Email does not exist"));
 
         user.setResetCode(generateRandomCode());
         user.setResetAt(LocalDateTime.now());
