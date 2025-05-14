@@ -18,7 +18,7 @@ interface SidebarNavProps extends HTMLAttributes<HTMLElement> {
   }[]
 }
 
-export default function SidebarNav({
+export default function OneLevelSidebar({
   className,
   items,
   ...props
