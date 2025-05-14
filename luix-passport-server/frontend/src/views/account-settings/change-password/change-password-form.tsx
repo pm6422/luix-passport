@@ -48,7 +48,7 @@ export function ChangePasswordForm() {
 
   function sendVerificationCode(): void {
     setSaving(true)
-    toast.promise(send(), {
+    toast.promise(AccountService.sendPasswordChangeVerificationCode(), {
       loading: "Sending verification code...",
       success: () => {
         setSaving(false)
@@ -61,13 +61,9 @@ export function ChangePasswordForm() {
     })
   }
 
-  function send(): Promise<void> {
-    return AccountService.sendPasswordChangeVerificationCode()
-  }
-
   function onSubmit(formData: FormSchema) {
     setSaving(true)
-    toast.promise(save(formData), {
+    toast.promise(AccountService.updatePassword(formData), {
       loading: "Updating password...",
       success: () => {
         setSaving(false)
@@ -78,10 +74,6 @@ export function ChangePasswordForm() {
         return getErrorMessage(error)
       }
     })
-  }
-
-  function save(formData: FormSchema): Promise<void> {
-    return AccountService.updatePassword(formData)
   }
 
   return (
