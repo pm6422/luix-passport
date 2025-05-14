@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useRef, useCallback } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -35,6 +35,8 @@ type FormSchema = z.infer<typeof formSchema>
 export function ChangePasswordForm() {
   const { authUser } = useStore(authUserStore)
   const [saving, setSaving] = useState(false)
+  const [countdown, setCountdown] = useState(0)
+  const lastSentTime = useRef<number>(0)
 
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
@@ -46,12 +48,31 @@ export function ChangePasswordForm() {
     }
   })
 
-  function sendVerificationCode(): void {
+  const sendVerificationCode = useCallback(() => {
+    const now = Date.now()
+    // 如果距离上次发送时间小于60秒，且倒计时未结束
+    if (now - lastSentTime.current < 60000 && countdown > 0) {
+      toast.error("You can only send a verification code once every one minute.")
+      return
+    }
+
     setSaving(true)
+    lastSentTime.current = now
+
     toast.promise(AccountService.sendPasswordChangeVerificationCode(), {
       loading: "Sending verification code...",
       success: () => {
         setSaving(false)
+        setCountdown(60)
+        const timer = setInterval(() => {
+          setCountdown((prev) => {
+            if (prev <= 1) {
+              clearInterval(timer)
+              return 0
+            }
+            return prev - 1
+          })
+        }, 1000)
         return "Sent verification code"
       },
       error: (error) => {
@@ -59,7 +80,7 @@ export function ChangePasswordForm() {
         return getErrorMessage(error)
       }
     })
-  }
+  }, [countdown])
 
   function onSubmit(formData: FormSchema) {
     setSaving(true)
@@ -115,7 +136,7 @@ export function ChangePasswordForm() {
           icon={
             <Button 
               type="button"
-              variant="outline" 
+              variant="outline"
               onClick={() => sendVerificationCode()}>
                 <IconSend className="size-4 mr-1" />
                 {saving ? "Sending..." : "Send"}
