@@ -10,19 +10,19 @@ const router = createHashRouter([
   {
     path: "/activate",
     lazy: async () => ({
-      Component: (await import("./views/auth/activate")).default
+      Component: (await import("./views/bak/auth/activate")).default
     }),
   },
   {
     path: "/forgot-password",
     lazy: async () => ({
-      Component: (await import("./views/auth/forgot-password")).default
+      Component: (await import("./views/bak/auth/forgot-password")).default
     }),
   },
   {
     path: "/reset-password",
     lazy: async () => ({
-      Component: (await import("./views/auth/reset-password")).default
+      Component: (await import("./views/bak/auth/reset-password")).default
     }),
   },
 
@@ -94,13 +94,13 @@ const router = createHashRouter([
       {
         path: "api-docs",
         lazy: async () => ({
-          Component: (await import("@/views/developer/api-docs")).default
+          Component: (await import("@/views/api-docs")).default
         }),
       },
       {
         path: "data-dicts",
         lazy: async () => ({
-          Component: (await import("@/views/developer/data-dicts")).default
+          Component: (await import("@/views/data-dicts")).default
         }),
       },
       {
