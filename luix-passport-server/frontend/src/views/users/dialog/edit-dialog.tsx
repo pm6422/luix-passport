@@ -149,6 +149,7 @@ export function EditDialog({
           required
           options={enabledRoles}
           requiredOptionValues={["ROLE_ANONYMOUS", "ROLE_USER"]}
+          description="Select multiple roles for this user"
         />
 
         <SwitchFormField
