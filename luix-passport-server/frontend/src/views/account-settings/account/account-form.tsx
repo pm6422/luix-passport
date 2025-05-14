@@ -80,7 +80,7 @@ export function AccountForm() {
             </p>
           </div>
           <Link to="/account-settings/change-email">
-            <Button type="button" variant={"link"}>
+            <Button type="button" variant={"link"} className="underline decoration-dashed underline-offset-4 hover:decoration-solid">
               <IconMailForward className="mr-2 size-4"/>
               Change Email
             </Button>
