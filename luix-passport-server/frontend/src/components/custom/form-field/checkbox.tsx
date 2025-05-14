@@ -20,7 +20,7 @@ interface Props<TFieldValues extends FieldValues> {
   disabled?: boolean
   formItemClassName?: string
   hide?: boolean
-  requiredValues?: string[] // Add this if you want to enforce certain values
+  requiredOptionValues?: string[] // Add this if you want to enforce certain values
 }
 
 const CheckboxFormField = <TFieldValues extends FieldValues>({
@@ -34,7 +34,7 @@ const CheckboxFormField = <TFieldValues extends FieldValues>({
                                                                disabled,
                                                                formItemClassName,
                                                                hide = false,
-                                                               requiredValues = []
+                                                               requiredOptionValues = []
                                                              }: Props<TFieldValues>) => {
   return !hide && (
     <FormField
@@ -58,7 +58,7 @@ const CheckboxFormField = <TFieldValues extends FieldValues>({
               <FormControl>
                 <Checkbox
                   checked={field.value?.includes(item.value)}
-                  disabled={disabled || requiredValues.includes(item.value)}
+                  disabled={disabled || requiredOptionValues.includes(item.value)}
                   onCheckedChange={(checked) => {
                     return checked
                       ? field.onChange([...field.value, item.value])
@@ -72,7 +72,7 @@ const CheckboxFormField = <TFieldValues extends FieldValues>({
               </FormControl>
               <FormLabel className="font-normal">
                 {item.label}
-                {requiredValues.includes(item.value) && (
+                {requiredOptionValues.includes(item.value) && (
                   <span className="text-muted-foreground ml-1">(required)</span>
                 )}
               </FormLabel>
