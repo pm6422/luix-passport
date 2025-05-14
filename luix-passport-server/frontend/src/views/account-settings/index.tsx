@@ -5,7 +5,6 @@ import {
   IconPalette,
   IconTool,
   IconUser,
-  IconForms,
   IconKey
 } from "@tabler/icons-react"
 import { Separator } from "@/components/ui/separator"
@@ -43,11 +42,6 @@ export default function AccountSettings() {
       title: "Display",
       icon: <IconBrowserCheck size={18} />,
       href: "/account-settings/display",
-    },
-    {
-      title: "Form",
-      icon: <IconForms size={18} />,
-      href: "/account-settings/form",
     }
   ]
 
