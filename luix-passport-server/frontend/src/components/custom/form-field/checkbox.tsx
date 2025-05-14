@@ -4,7 +4,7 @@ import { RequiredFormLabel } from "../required-form-label"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Key } from "react"
 
-export type Option = {
+export type CheckboxOption = {
   label: string
   value: string
 }
@@ -14,7 +14,7 @@ interface Props<TFieldValues extends FieldValues> {
   name: Path<TFieldValues>
   key?: Key
   label?: string
-  options: Array<Option>
+  options: Array<CheckboxOption>
   description?: string
   required?: boolean
   disabled?: boolean

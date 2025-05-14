@@ -5,7 +5,7 @@ import { Dialog, DialogTrigger } from "@/components/ui/dialog"
 import SaveDialogContent from "@/components/custom/dialog/save-dialog-content"
 import InputFormField from "@/components/custom/form-field/input"
 import CheckboxFormField from "@/components/custom/form-field/checkbox"
-import { type Option } from "@/components/custom/form-field/checkbox"
+import { type CheckboxOption } from "@/components/custom/form-field/checkbox"
 import SwitchFormField from "@/components/custom/form-field/switch"
 import SelectFormField from "@/components/custom/form-field/select"
 import PhoneInputFormField from "@/components/custom/form-field/phone-input"
@@ -36,7 +36,7 @@ export function EditDialog({
   afterSave
 }: EditDialogProps) {
   const [open, setOpen] = useState(false)
-  const [enabledRoles, setEnabledRoles] = useState(Array<Option>)
+  const [enabledRoles, setEnabledRoles] = useState(Array<CheckboxOption>)
   const form = useForm<User>({
     resolver: zodResolver(userSchema),
     defaultValues: initialUserState
