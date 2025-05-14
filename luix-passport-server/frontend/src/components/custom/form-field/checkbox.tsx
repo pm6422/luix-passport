@@ -73,7 +73,7 @@ const CheckboxFormField = <TFieldValues extends FieldValues>({
               <FormLabel className="font-normal">
                 {item.label}
                 {requiredOptionValues.includes(item.value) && (
-                  <span className="ml-1 text-destructive">*</span>
+                  <span className="ml-1 text-destructive align-middle font-bold">*</span>
                 )}
               </FormLabel>
             </FormItem>
