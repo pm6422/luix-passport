@@ -1,5 +1,5 @@
 import { Separator } from "@/components/ui/separator"
-import UploadAvatarForm from "./profile-form"
+import ProfileForm from "./profile-form"
 
 export default function SettingsProfile() {
   return (
@@ -11,7 +11,7 @@ export default function SettingsProfile() {
         </p>
       </div>
       <Separator />
-      <UploadAvatarForm />
+      <ProfileForm />
     </div>
   )
 }
