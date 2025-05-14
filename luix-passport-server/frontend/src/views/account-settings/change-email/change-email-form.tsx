@@ -56,7 +56,7 @@ export function ChangeEmailForm() {
 
  function sendVerificationCode(email: string): void {
     setSaving(true)
-    toast.promise(send(email), {
+    toast.promise(AccountService.sendEmailChangeVerificationCode(email), {
       loading: "Sending verification code...",
       success: () => {
         setSaving(false)
@@ -70,13 +70,9 @@ export function ChangeEmailForm() {
     })
   }
 
-  function send(email: string): Promise<void> {
-    return AccountService.sendEmailChangeVerificationCode(email)
-  }
-  
   function onSubmit(formData: FormSchema) {
     setSaving(true)
-    toast.promise(save(formData), {
+    toast.promise(AccountService.changeEmail(formData.verificationCode), {
       loading: "Updating account...",
       success: () => {
         setSaving(false)
@@ -88,10 +84,6 @@ export function ChangeEmailForm() {
         return getErrorMessage(error)
       }
     })
-  }
-
-  function save(formData: FormSchema): Promise<void> {
-    return AccountService.changeEmail(formData.verificationCode)
   }
 
   return (
