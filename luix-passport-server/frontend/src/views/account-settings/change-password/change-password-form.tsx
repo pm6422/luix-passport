@@ -50,7 +50,7 @@ export function ChangePasswordForm() {
 
   const sendVerificationCode = useCallback(() => {
     const now = Date.now()
-    // 如果距离上次发送时间小于60秒，且倒计时未结束
+    // If the time since the last send is less than 60 seconds, and the countdown has not ended.
     if (now - lastSentTime.current < 60000 && countdown > 0) {
       toast.error("You can only send a verification code once every one minute.")
       return

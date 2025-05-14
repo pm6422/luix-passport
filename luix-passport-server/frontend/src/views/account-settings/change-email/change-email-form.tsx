@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -37,6 +37,8 @@ export function ChangeEmailForm() {
   const { authUser } = useStore(authUserStore)
   const [verificationCodeInputDisabled, setVerificationCodeInputDisabled] = useState(true)
   const [saving, setSaving] = useState(false)
+  const [countdown, setCountdown] = useState(0)
+  const lastSentTime = useRef<number>(0)
 
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
@@ -55,11 +57,30 @@ export function ChangeEmailForm() {
   }, [])
 
  function sendVerificationCode(email: string): void {
+   const now = Date.now()
+   // If the time since the last send is less than 60 seconds, and the countdown has not ended.
+   if (now - lastSentTime.current < 60000 && countdown > 0) {
+     toast.error("You can only send a verification code once every one minute.")
+     return
+   }
+
     setSaving(true)
+   lastSentTime.current = now
+
     toast.promise(AccountService.sendEmailChangeVerificationCode(email), {
       loading: "Sending verification code...",
       success: () => {
         setSaving(false)
+        setCountdown(60)
+        const timer = setInterval(() => {
+          setCountdown((prev) => {
+            if (prev <= 1) {
+              clearInterval(timer)
+              return 0
+            }
+            return prev - 1
+          })
+        }, 1000)
         setVerificationCodeInputDisabled(false)
         return "Sent verification code"
       },
