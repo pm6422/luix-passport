@@ -37,11 +37,6 @@ export default function AccountSettings() {
       title: "Notifications",
       icon: <IconNotification size={18} />,
       href: "/account-settings/notifications",
-    },
-    {
-      title: "Display",
-      icon: <IconBrowserCheck size={18} />,
-      href: "/account-settings/display",
     }
   ]
 

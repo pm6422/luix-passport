@@ -82,12 +82,6 @@ const router = createHashRouter([
             lazy: async () => ({
               Component: (await import("./views/account-settings/notifications")).default
             }),
-          },
-          {
-            path: "display",
-            lazy: async () => ({
-              Component: (await import("./views/account-settings/display")).default
-            }),
           }
         ],
       },
