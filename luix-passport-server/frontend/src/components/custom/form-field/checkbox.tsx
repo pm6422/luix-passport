@@ -44,7 +44,7 @@ const CheckboxFormField = <TFieldValues extends FieldValues>({
       render={({ field }) => (
         <FormItem className={formItemClassName}>
           {label && (
-            <div className="mb-4">
+            <div>
               <RequiredFormLabel required={required}>{label}</RequiredFormLabel>
               {description && <FormDescription>{description}</FormDescription>}
             </div>
