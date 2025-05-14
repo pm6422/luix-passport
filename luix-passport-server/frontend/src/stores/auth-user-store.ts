@@ -6,6 +6,7 @@ export type AuthUser = {
     id: string
     username: string
     email: string
+    mobileNo: string
     firstName: string
     lastName: string
     locale: string
