@@ -18,7 +18,7 @@ import { timeZones } from "@/data/time-zones"
 import { dateTimeFormats } from "@/data/date-time-formats"
 import { DataDictService } from "@/services/data-dict-service"
 import { UserService } from "@/services/user-service"
-import { merge } from "@/libs/utils"
+import { merge } from "@/lib/utils"
 
 interface EditDialogProps {
   children: ReactNode,

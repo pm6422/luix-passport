@@ -14,7 +14,7 @@ import { toast } from "sonner"
 import { useStore } from "exome/react"
 import { authUserStore } from "@/stores/auth-user-store.ts"
 import { AccountService } from "@/services/account-service"
-import { getErrorMessage } from "@/libs/handle-error"
+import { getErrorMessage } from "@/lib/handle-error"
 import { isValidPhoneNumber } from "react-phone-number-input"
 import { Link } from "react-router-dom"
 

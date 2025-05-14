@@ -13,7 +13,7 @@ import { RequiredFormLabel } from "@/components/custom/required-form-label"
 import SwitchFormField from "@/components/custom/form-field/switch"
 import { type Auth2Client, auth2ClientSchema, initialAuth2ClientState } from "@/domains/auth2-client.ts"
 import { Oauth2ClientService } from "@/services/oauth2-client-service"
-import { merge } from "@/libs/utils"
+import { merge } from "@/lib/utils"
 
 interface EditDialogProps {
   children: ReactNode,

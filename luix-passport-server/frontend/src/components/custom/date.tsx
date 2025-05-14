@@ -1,6 +1,6 @@
 import { useStore } from "exome/react"
 import { authUserStore } from "@/stores/auth-user-store.ts"
-import { formatDate } from "@/libs/utils"
+import { formatDate } from "@/lib/utils"
 
 type Props = {
   value: string | Date

@@ -14,8 +14,8 @@ import { Button } from "@/components/custom/button"
 import { Separator } from "@/components/ui/separator"
 import { IconReload } from "@tabler/icons-react"
 import { toast } from "sonner"
-import { getErrorMessage } from "@/libs/handle-error"
-import { cn } from "@/libs/utils"
+import { getErrorMessage } from "@/lib/handle-error"
+import { cn } from "@/lib/utils"
 
 interface Props {
   children: ReactNode;

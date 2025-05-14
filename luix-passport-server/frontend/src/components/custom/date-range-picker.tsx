@@ -6,7 +6,7 @@ import { type PopoverContentProps } from "@radix-ui/react-popover"
 import { addDays, format } from "date-fns"
 import type { DateRange } from "react-day-picker"
 
-import { cn } from "@/libs/utils"
+import { cn } from "@/lib/utils"
 import { Button, type ButtonProps } from "@/components/custom/button"
 import { Calendar } from "@/components/ui/calendar"
 import {

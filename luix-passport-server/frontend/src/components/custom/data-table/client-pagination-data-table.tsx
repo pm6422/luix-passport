@@ -19,7 +19,7 @@ import { DataTableViewOptions } from "@/components/custom/data-table/data-table-
 import { Button } from "@/components/custom/button"
 import { IconTrash } from "@tabler/icons-react"
 import { toast } from "sonner"
-import { getErrorMessage } from "@/libs/handle-error"
+import { getErrorMessage } from "@/lib/handle-error"
 
 import {
   Table,

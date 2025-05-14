@@ -4,7 +4,7 @@ import { Layout, LayoutHeader } from "../layouts/layout-definitions"
 import { Button } from "./custom/button"
 import { sidelinks } from "@/data/sidelinks"
 import SidebarMenu from "./sidebar-menu"
-import { cn } from "@/libs/utils"
+import { cn } from "@/lib/utils"
 import { useStore } from "exome/react"
 import { appInfoStore } from "@/stores/app-info-store.ts"
 

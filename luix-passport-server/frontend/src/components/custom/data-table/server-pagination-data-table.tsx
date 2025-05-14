@@ -17,11 +17,11 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { DataTablePagination } from "./data-table-pagination"
 import { DataTableViewOptions } from "@/components/custom/data-table/data-table-view-options"
-import { parseSorts } from "@/libs/utils"
+import { parseSorts } from "@/lib/utils"
 import { Button } from "@/components/custom/button"
 import { IconTrash } from "@tabler/icons-react"
 import { toast } from "sonner"
-import { getErrorMessage } from "@/libs/handle-error"
+import { getErrorMessage } from "@/lib/handle-error"
 
 import {
   Table,

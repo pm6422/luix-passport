@@ -29,9 +29,9 @@ import {
 } from "@/components/custom/uploader/file-uploader"
 import { DropzoneOptions } from "react-dropzone"
 import { Accept } from "react-dropzone"
-import { getErrorMessage } from "@/libs/handle-error"
+import { getErrorMessage } from "@/lib/handle-error"
 import { z } from "zod"
-import { cn } from "@/libs/utils"
+import { cn } from "@/lib/utils"
 
 export const formSchema = z.object({
   files: z.array(z.instanceof(File)).min(1, { message: "Upload file(s) are required" })

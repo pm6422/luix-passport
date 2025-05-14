@@ -3,7 +3,7 @@ import { IconSelector, IconCheck, IconChevronUp, IconChevronDown } from '@tabler
 
 import * as SelectPrimitive from "@radix-ui/react-select"
 
-import { cn } from "@/libs/utils"
+import { cn } from "@/lib/utils"
 
 const Select = SelectPrimitive.Root
 

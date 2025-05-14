@@ -14,7 +14,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/custom/button"
 import { PasswordInput } from "@/components/custom/password-input"
-import { cn } from "@/libs/utils"
+import { cn } from "@/lib/utils"
 
 interface SignUpFormProps extends HTMLAttributes<HTMLDivElement> {}
 

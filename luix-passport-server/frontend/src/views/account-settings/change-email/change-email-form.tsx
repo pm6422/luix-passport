@@ -20,7 +20,7 @@ import { RequiredFormLabel } from "@/components/custom/required-form-label"
 import { useStore } from "exome/react"
 import { authUserStore } from "@/stores/auth-user-store.ts"
 import { AccountService } from "@/services/account-service"
-import { getErrorMessage } from "@/libs/handle-error"
+import { getErrorMessage } from "@/lib/handle-error"
 import { Link } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
 

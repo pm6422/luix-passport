@@ -9,7 +9,7 @@ import { type Option } from "@/components/custom/form-field/combobox"
 import SwitchFormField from "@/components/custom/form-field/switch"
 import { type DataDict, dataDictSchema, initialDataDictState } from "@/domains/data-dict"
 import { DataDictService } from "@/services/data-dict-service"
-import { merge } from "@/libs/utils"
+import { merge } from "@/lib/utils"
 
 interface EditDialogProps {
   children: ReactNode,

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { AccountService } from "@/services/account-service"
 import { Button } from "@/components/custom/button.tsx"
 import { toast } from "sonner"
-import { getErrorMessage } from "@/libs/handle-error.ts"
+import { getErrorMessage } from "@/lib/handle-error"
 
 export default function Activate() {
   const [searchParams] = useSearchParams()

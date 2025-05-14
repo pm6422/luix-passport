@@ -5,7 +5,7 @@ import { DataTable } from "@/components/custom/data-table/client-pagination-data
 import { tableColumns } from "./table/table-columns"
 import { type Auth2Client, type Auth2ClientCriteriaSchema } from "@/domains/auth2-client"
 import { Oauth2ClientService } from "@/services/oauth2-client-service"
-import { filterTable } from "@/libs/utils"
+import { filterTable } from "@/lib/utils"
 
 export default function DataDict() {
   // State to hold the fetched data

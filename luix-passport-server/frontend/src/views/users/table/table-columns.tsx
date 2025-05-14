@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { ConfirmPopover } from "@/components/custom/confirm-popover"
 import { toast } from "sonner"
-import { getErrorMessage } from "@/libs/handle-error"
+import { getErrorMessage } from "@/lib/handle-error"
 import { DateTime } from "@/components/custom/date-time"
 
 export function tableColumns(

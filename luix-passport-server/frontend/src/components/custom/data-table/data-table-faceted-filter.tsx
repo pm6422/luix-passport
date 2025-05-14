@@ -2,7 +2,7 @@ import * as React from "react"
 import { IconFilter, IconCheck } from "@tabler/icons-react"
 import { Column } from "@tanstack/react-table"
 
-import { cn } from "@/libs/utils"
+import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/custom/button"
 import {

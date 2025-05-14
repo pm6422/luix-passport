@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card"
 import { useState } from "react"
-import { cn } from "@/libs/utils"
+import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -16,7 +16,7 @@ import {
 import { toast } from "sonner"
 import { Input } from "@/components/ui/input"
 import { AccountService } from "@/services/account-service"
-import { getErrorMessage } from '@/libs/handle-error.ts'
+import { getErrorMessage } from '@/lib/handle-error'
 
 const formSchema = z.object({
   email: z

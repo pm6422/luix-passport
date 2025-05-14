@@ -4,7 +4,7 @@ import { Row } from "@tanstack/react-table"
 import { Button } from "@/components/custom/button"
 import { ConfirmPopover } from "@/components/custom/confirm-popover"
 import { toast } from "sonner"
-import { getErrorMessage } from "@/libs/handle-error"
+import { getErrorMessage } from "@/lib/handle-error"
 
 interface DataTableRowActionsProps {
   children: React.ReactNode,

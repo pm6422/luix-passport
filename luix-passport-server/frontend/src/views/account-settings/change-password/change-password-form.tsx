@@ -21,7 +21,7 @@ import { RequiredFormLabel } from "@/components/custom/required-form-label"
 import { useStore } from "exome/react"
 import { authUserStore } from "@/stores/auth-user-store.ts"
 import { AccountService } from "@/services/account-service"
-import { getErrorMessage } from "@/libs/handle-error"
+import { getErrorMessage } from "@/lib/handle-error"
 
 const formSchema = z.object({
   currentPassword: z.string().trim().min(1, { message: "Required" }),

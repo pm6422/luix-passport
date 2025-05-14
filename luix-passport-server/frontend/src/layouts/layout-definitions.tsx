@@ -1,5 +1,5 @@
 import * as React from "react"
-import { cn } from "@/libs/utils"
+import { cn } from "@/lib/utils"
 
 interface LayoutProps extends React.HTMLAttributes<HTMLDivElement> {
   fadedBelow?: boolean

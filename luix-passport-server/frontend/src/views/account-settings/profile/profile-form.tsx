@@ -14,7 +14,7 @@ import { IconReload } from "@tabler/icons-react"
 import { toast } from "sonner"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { getErrorMessage } from "@/libs/handle-error"
+import { getErrorMessage } from "@/lib/handle-error"
 import { AccountService } from "@/services/account-service"
 
 const formSchema = z.object({
