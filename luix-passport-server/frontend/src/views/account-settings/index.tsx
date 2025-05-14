@@ -1,6 +1,5 @@
 import { Outlet } from "react-router-dom"
 import {
-  IconBrowserCheck,
   IconNotification,
   IconPalette,
   IconTool,
