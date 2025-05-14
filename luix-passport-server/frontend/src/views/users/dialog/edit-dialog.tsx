@@ -4,11 +4,11 @@ import { useForm } from "react-hook-form"
 import { Dialog, DialogTrigger } from "@/components/ui/dialog"
 import SaveDialogContent from "@/components/custom/dialog/save-dialog-content"
 import InputFormField from "@/components/custom/form-field/input"
-import ComboboxFormField from "@/components/custom/form-field/combobox"
 import { type Option } from "@/components/custom/form-field/combobox"
 import SwitchFormField from "@/components/custom/form-field/switch"
 import SelectFormField from "@/components/custom/form-field/select"
 import PhoneInputFormField from "@/components/custom/form-field/phone-input"
+import { RequiredFormLabel } from "@/components/custom/required-form-label"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { type User, userSchema, initialUserState } from "@/domains/user.ts"
 import { type DataDict } from "@/domains/data-dict"
@@ -19,6 +19,8 @@ import { dateTimeFormats } from "@/data/date-time-formats"
 import { DataDictService } from "@/services/data-dict-service"
 import { UserService } from "@/services/user-service"
 import { merge } from "@/lib/utils"
+import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form.tsx'
+import { Checkbox } from '@/components/ui/checkbox.tsx'
 
 interface EditDialogProps {
   children: ReactNode,
@@ -142,14 +144,53 @@ export function EditDialog({
           label="Remark"
         />
 
-        <ComboboxFormField
-          control={form.control} 
+        <FormField
+          control={form.control}
           name="roles"
-          label="Roles"
-          required
-          options={enabledRoles}
-          multiple={true}
-          description="ROLE_ANONYMOUS, ROLE_USER are required for each user."
+          render={() => (
+            <FormItem>
+              <div className="mb-4">
+                <RequiredFormLabel required={true}>Roles</RequiredFormLabel>
+                <FormDescription>
+                  Select the user roles, ROLE_ANONYMOUS and ROLE_USER are required for each user.
+                </FormDescription>
+              </div>
+              {enabledRoles.map((item) => (
+                <FormField
+                  key={item.value}
+                  control={form.control}
+                  name="roles"
+                  render={({ field }) => {
+                    return (
+                      <FormItem
+                        key={item.value}
+                        className="flex flex-row items-start space-x-3 space-y-0"
+                      >
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value?.includes(item.value)}
+                            onCheckedChange={(checked) => {
+                              return checked
+                                ? field.onChange([...field.value, item.value])
+                                : field.onChange(
+                                  field.value?.filter(
+                                    (value) => value !== item.value
+                                  )
+                                )
+                            }}
+                          />
+                        </FormControl>
+                        <FormLabel className="font-normal">
+                          {item.label}
+                        </FormLabel>
+                      </FormItem>
+                    )
+                  }}
+                />
+              ))}
+              <FormMessage />
+            </FormItem>
+          )}
         />
 
         <SwitchFormField 
