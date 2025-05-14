@@ -49,7 +49,7 @@ export function AccountForm() {
 
   function onSubmit(formData: FormSchema) {
     setSaving(true)
-    toast.promise(save(formData), {
+    toast.promise(AccountService.update(formData), {
       loading: "Updating account...",
       success: () => {
         setSaving(false)
@@ -60,10 +60,6 @@ export function AccountForm() {
         return getErrorMessage(error)
       }
     })
-  }
-
-  function save(formData: FormSchema): Promise<void> {
-    return AccountService.update(formData)
   }
 
   return (
