@@ -32,11 +32,7 @@ export function AppearanceForm() {
   })
   
   function onSubmit(formData: FormSchema) {
-    toast(
-      <div>
-        <span>Applied appearance</span>
-      </div>, 
-    { duration: 5000 })
+    toast.info("Applied appearance")
     // set the theme
     themeProvider.setTheme(formData.theme)
   }
