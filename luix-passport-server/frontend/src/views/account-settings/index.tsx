@@ -9,7 +9,7 @@ import {
 } from "@tabler/icons-react"
 import { Separator } from "@/components/ui/separator"
 import { LayoutBody } from "@/layouts/layout-definitions"
-import SidebarNav from "./components/sidebar-nav"
+import SidebarNav from "@/components/sidebar-nav"
 
 export default function AccountSettings() {
   const sidebarNavItems = [
