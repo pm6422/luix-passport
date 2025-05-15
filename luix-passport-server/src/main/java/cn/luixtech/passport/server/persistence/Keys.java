@@ -12,6 +12,7 @@ import cn.luixtech.passport.server.persistence.tables.Org;
 import cn.luixtech.passport.server.persistence.tables.OrgUser;
 import cn.luixtech.passport.server.persistence.tables.SpringSession;
 import cn.luixtech.passport.server.persistence.tables.SpringSessionAttributes;
+import cn.luixtech.passport.server.persistence.tables.SupportedDateTimeFormat;
 import cn.luixtech.passport.server.persistence.tables.SupportedTimezone;
 import cn.luixtech.passport.server.persistence.tables.TableSeqNumber;
 import cn.luixtech.passport.server.persistence.tables.User;
@@ -28,6 +29,7 @@ import cn.luixtech.passport.server.persistence.tables.records.OrgRecord;
 import cn.luixtech.passport.server.persistence.tables.records.OrgUserRecord;
 import cn.luixtech.passport.server.persistence.tables.records.SpringSessionAttributesRecord;
 import cn.luixtech.passport.server.persistence.tables.records.SpringSessionRecord;
+import cn.luixtech.passport.server.persistence.tables.records.SupportedDateTimeFormatRecord;
 import cn.luixtech.passport.server.persistence.tables.records.SupportedTimezoneRecord;
 import cn.luixtech.passport.server.persistence.tables.records.TableSeqNumberRecord;
 import cn.luixtech.passport.server.persistence.tables.records.UserAuthEventRecord;
@@ -65,6 +67,7 @@ public class Keys {
     public static final UniqueKey<SpringSessionRecord> SPRING_SESSION_PKEY = Internal.createUniqueKey(SpringSession.SPRING_SESSION, DSL.name("spring_session_pkey"), new TableField[] { SpringSession.SPRING_SESSION.PRIMARY_ID }, true);
     public static final UniqueKey<SpringSessionRecord> SPRING_SESSION_SESSION_ID_KEY = Internal.createUniqueKey(SpringSession.SPRING_SESSION, DSL.name("spring_session_session_id_key"), new TableField[] { SpringSession.SPRING_SESSION.SESSION_ID }, true);
     public static final UniqueKey<SpringSessionAttributesRecord> SPRING_SESSION_ATTRIBUTES_PKEY = Internal.createUniqueKey(SpringSessionAttributes.SPRING_SESSION_ATTRIBUTES, DSL.name("spring_session_attributes_pkey"), new TableField[] { SpringSessionAttributes.SPRING_SESSION_ATTRIBUTES.SESSION_PRIMARY_ID, SpringSessionAttributes.SPRING_SESSION_ATTRIBUTES.ATTRIBUTE_NAME }, true);
+    public static final UniqueKey<SupportedDateTimeFormatRecord> SUPPORTED_DATE_TIME_FORMAT_PKEY = Internal.createUniqueKey(SupportedDateTimeFormat.SUPPORTED_DATE_TIME_FORMAT, DSL.name("supported_date_time_format_pkey"), new TableField[] { SupportedDateTimeFormat.SUPPORTED_DATE_TIME_FORMAT.ID }, true);
     public static final UniqueKey<SupportedTimezoneRecord> SUPPORTED_TIMEZONE_PKEY = Internal.createUniqueKey(SupportedTimezone.SUPPORTED_TIMEZONE, DSL.name("supported_timezone_pkey"), new TableField[] { SupportedTimezone.SUPPORTED_TIMEZONE.ID }, true);
     public static final UniqueKey<TableSeqNumberRecord> TABLE_SEQ_NUMBER_PKEY = Internal.createUniqueKey(TableSeqNumber.TABLE_SEQ_NUMBER, DSL.name("table_seq_number_pkey"), new TableField[] { TableSeqNumber.TABLE_SEQ_NUMBER.ID }, true);
     public static final UniqueKey<UserRecord> USER_EMAIL_KEY = Internal.createUniqueKey(User.USER, DSL.name("user_email_key"), new TableField[] { User.USER.EMAIL }, true);
@@ -82,6 +85,7 @@ public class Keys {
     // -------------------------------------------------------------------------
 
     public static final ForeignKey<OrgUserRecord, UserRecord> ORG_USER__FK_ORG_USER_USER_ID = Internal.createForeignKey(OrgUser.ORG_USER, DSL.name("fk_org_user_user_id"), new TableField[] { OrgUser.ORG_USER.USER_ID }, Keys.USER_PKEY, new TableField[] { User.USER.ID }, true);
+    public static final ForeignKey<UserRecord, SupportedDateTimeFormatRecord> USER__FK_USER_DATE_TIME_FORMAT_SUPPORTED_DATE_TIME_FORMAT_ID = Internal.createForeignKey(User.USER, DSL.name("fk_user_date_time_format_supported_date_time_format_id"), new TableField[] { User.USER.DATE_TIME_FORMAT }, Keys.SUPPORTED_DATE_TIME_FORMAT_PKEY, new TableField[] { SupportedDateTimeFormat.SUPPORTED_DATE_TIME_FORMAT.ID }, true);
     public static final ForeignKey<UserRecord, SupportedTimezoneRecord> USER__FK_USER_TIMEZONE_SUPPORTED_TIMEZONE_ID = Internal.createForeignKey(User.USER, DSL.name("fk_user_timezone_supported_timezone_id"), new TableField[] { User.USER.TIME_ZONE }, Keys.SUPPORTED_TIMEZONE_PKEY, new TableField[] { SupportedTimezone.SUPPORTED_TIMEZONE.ID }, true);
     public static final ForeignKey<UserLoginRecord, UserRecord> USER_LOGIN__FK_USER_LOGIN_USER_ID = Internal.createForeignKey(UserLogin.USER_LOGIN, DSL.name("fk_user_login_user_id"), new TableField[] { UserLogin.USER_LOGIN.USER_ID }, Keys.USER_PKEY, new TableField[] { User.USER.ID }, true);
     public static final ForeignKey<UserPermissionRecord, UserRecord> USER_PERMISSION__FK_USER_PERMISSION_USER_ID = Internal.createForeignKey(UserPermission.USER_PERMISSION, DSL.name("fk_user_permission_user_id"), new TableField[] { UserPermission.USER_PERMISSION.USER_ID }, Keys.USER_PKEY, new TableField[] { User.USER.ID }, true);

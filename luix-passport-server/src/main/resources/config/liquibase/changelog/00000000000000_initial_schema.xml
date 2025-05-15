@@ -20,6 +20,34 @@
             separator=";"
             tableName="supported_timezone">
         </loadData>
+        <createTable tableName="supported_date_time_format">
+            <column name="id" type="VARCHAR(50)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="display_name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_time_format" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_format" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="time_format" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="example" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="preset" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <loadData
+            file="config/liquibase/data/supported_date_time_format.csv"
+            separator=";"
+            tableName="supported_date_time_format">
+        </loadData>
         <createTable tableName="oauth2_authorization">
             <column name="id" type="VARCHAR(100)">
                 <constraints nullable="false" primaryKey="true"/>
@@ -358,5 +386,6 @@
         <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_login" constraintName="fk_user_login_user_id" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="user" validate="true"/>
         <addForeignKeyConstraint baseColumnNames="id" baseTableName="user_profile_pic" constraintName="fk_user_profile_pic_user_id" deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="user" validate="true"/>
         <addForeignKeyConstraint baseColumnNames="time_zone" baseTableName="user" constraintName="fk_user_timezone_supported_timezone_id" deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="supported_timezone" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="date_time_format" baseTableName="user" constraintName="fk_user_date_time_format_supported_date_time_format_id" deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="supported_date_time_format" validate="true"/>
     </changeSet>
 </databaseChangeLog>

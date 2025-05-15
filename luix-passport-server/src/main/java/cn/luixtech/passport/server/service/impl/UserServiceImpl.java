@@ -1,6 +1,7 @@
 package cn.luixtech.passport.server.service.impl;
 
 import cn.luixtech.passport.server.config.oauth.AuthUser;
+import cn.luixtech.passport.server.domain.SupportedDateTimeFormat;
 import cn.luixtech.passport.server.domain.SupportedTimezone;
 import cn.luixtech.passport.server.domain.User;
 import cn.luixtech.passport.server.domain.UserRole;
@@ -8,6 +9,7 @@ import cn.luixtech.passport.server.exception.UserNotActivatedException;
 import cn.luixtech.passport.server.persistence.Tables;
 import cn.luixtech.passport.server.pojo.ManagedUser;
 import cn.luixtech.passport.server.pojo.ProfileScopeUser;
+import cn.luixtech.passport.server.repository.SupportedDateTimeFormatRepository;
 import cn.luixtech.passport.server.repository.SupportedTimezoneRepository;
 import cn.luixtech.passport.server.repository.UserRepository;
 import cn.luixtech.passport.server.repository.UserRoleRepository;
@@ -79,6 +81,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final PasswordEncoder                    passwordEncoder;
     private final DSLContext                         dslContext;
     private final SupportedTimezoneRepository        supportedTimezoneRepository;
+    private final SupportedDateTimeFormatRepository  supportedDateTimeFormatRepository;
     private final UserRepository                     userRepository;
     private final UserRoleRepository                 userRoleRepository;
     private final UserRoleService                    userRoleService;
@@ -199,10 +202,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         domain.setEnabled(true);
         domain.setPasswordExpiresAt(LocalDateTime.now().plusMonths(6));
         domain.setLocale(env.getProperty("spring.web.locale"));
-        domain.setDateTimeFormat("2021-09-10 10:15:00");
 
-        SupportedTimezone presetTimezone = supportedTimezoneRepository.findByPresetIsTrue().orElseThrow(() -> new DataNotFoundException("preset timezone"));
+        SupportedTimezone presetTimezone = supportedTimezoneRepository.findByPresetIsTrue()
+                .orElseThrow(() -> new DataNotFoundException("preset timezone"));
         domain.setTimeZone(presetTimezone.getId());
+
+        SupportedDateTimeFormat presetDateTimeFormat = supportedDateTimeFormatRepository.findByPresetIsTrue()
+                .orElseThrow(() -> new DataNotFoundException("preset date time format"));
+        domain.setDateTimeFormat(presetDateTimeFormat.getId());
 
         if (!permanentAccount) {
             domain.setAccountExpiresAt(LocalDateTime.now().plusDays(30));

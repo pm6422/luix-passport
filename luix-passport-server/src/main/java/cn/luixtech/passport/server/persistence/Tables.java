@@ -12,6 +12,7 @@ import cn.luixtech.passport.server.persistence.tables.Org;
 import cn.luixtech.passport.server.persistence.tables.OrgUser;
 import cn.luixtech.passport.server.persistence.tables.SpringSession;
 import cn.luixtech.passport.server.persistence.tables.SpringSessionAttributes;
+import cn.luixtech.passport.server.persistence.tables.SupportedDateTimeFormat;
 import cn.luixtech.passport.server.persistence.tables.SupportedTimezone;
 import cn.luixtech.passport.server.persistence.tables.TableSeqNumber;
 import cn.luixtech.passport.server.persistence.tables.User;
@@ -67,6 +68,11 @@ public class Tables {
      * The table <code>public.spring_session_attributes</code>.
      */
     public static final SpringSessionAttributes SPRING_SESSION_ATTRIBUTES = SpringSessionAttributes.SPRING_SESSION_ATTRIBUTES;
+
+    /**
+     * The table <code>public.supported_date_time_format</code>.
+     */
+    public static final SupportedDateTimeFormat SUPPORTED_DATE_TIME_FORMAT = SupportedDateTimeFormat.SUPPORTED_DATE_TIME_FORMAT;
 
     /**
      * The table <code>public.supported_timezone</code>.
