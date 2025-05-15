@@ -205,10 +205,10 @@
             <column name="locale" type="varchar(10)">
                 <constraints nullable="false"/>
             </column>
-            <column name="date_time_format" type="varchar(20)">
+            <column name="time_zone" type="varchar(30)">
                 <constraints nullable="false"/>
             </column>
-            <column name="time_zone" type="varchar(30)">
+            <column name="date_time_format" type="varchar(20)">
                 <constraints nullable="false"/>
             </column>
             <column name="created_by" type="VARCHAR(50)">
