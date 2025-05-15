@@ -131,7 +131,7 @@ export function EditDialog({
         <div className="flex items-center gap-2">
           <SelectFormField 
             control={form.control} 
-            name="timeZone" 
+            name="timeZoneId"
             label="Time Zone"
             options={supportedTimezones}
             formItemClassName="w-full"
@@ -140,7 +140,7 @@ export function EditDialog({
 
           <SelectFormField 
             control={form.control} 
-            name="dateTimeFormat" 
+            name="dateTimeFormatId"
             label="Date Time Format"
             options={supportedDateTimeFormats}
             formItemClassName="w-full"
