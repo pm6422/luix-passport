@@ -18,6 +18,7 @@ import { useStore } from 'exome/react'
 import { authUserStore } from '@/stores/auth-user-store.ts'
 import { useNavigate } from 'react-router-dom'
 import { RoleAdmin } from "@/components/custom/role/role-admin"
+import { isEmpty } from "lodash"
 // import { SpringSessionService } from "@/services/spring-session-service"
 // import { type SpringSession } from "@/domains/spring-session"
 
@@ -30,6 +31,9 @@ export default function Dashboard() {
   // const [springSessions, setSpringSessions] = useState([] as Array<SpringSession>)
 
   useEffect(() => {
+    if (isEmpty(authUser)) {
+      return;
+    }
     if (authUser.isOnlyUser) {
       navigate("user-overview")
     } else {
@@ -46,7 +50,7 @@ export default function Dashboard() {
     // SpringSessionService.findAll().then(r => {
     //   setSpringSessions(r.data)
     // })
-  }, [])
+  }, [authUser])
 
   return (
     <RoleAdmin>
