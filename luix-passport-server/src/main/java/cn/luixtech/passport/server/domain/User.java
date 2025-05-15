@@ -53,6 +53,6 @@ public class User extends AbstractAuditableDomain implements Serializable {
     private LocalDateTime passwordExpiresAt;
     private LocalDateTime lastSignInAt;
     private String        locale;
-    private String        dateTimeFormat;
-    private String        timeZone;
+    private String        dateTimeFormatId;
+    private String        timeZoneId;
 }

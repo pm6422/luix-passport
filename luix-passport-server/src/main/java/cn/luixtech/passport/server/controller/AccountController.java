@@ -1,5 +1,6 @@
 package cn.luixtech.passport.server.controller;
 
+import cn.luixtech.passport.server.domain.SupportedDateTimeFormat;
 import cn.luixtech.passport.server.domain.User;
 import cn.luixtech.passport.server.domain.UserProfilePic;
 import cn.luixtech.passport.server.event.LogoutEvent;
@@ -7,6 +8,7 @@ import cn.luixtech.passport.server.pojo.AuthUser;
 import cn.luixtech.passport.server.pojo.ChangePassword;
 import cn.luixtech.passport.server.pojo.ManagedUser;
 import cn.luixtech.passport.server.pojo.PasswordRecovery;
+import cn.luixtech.passport.server.repository.SupportedDateTimeFormatRepository;
 import cn.luixtech.passport.server.repository.UserProfilePicRepository;
 import cn.luixtech.passport.server.repository.UserRepository;
 import cn.luixtech.passport.server.service.MailService;
@@ -53,21 +55,36 @@ import static com.luixtech.springbootframework.utils.NetworkUtils.getRequestUrl;
 @AllArgsConstructor
 @Slf4j
 public class AccountController {
-    private final HttpHeaderCreator         httpHeaderCreator;
-    private final MessageCreator            messageCreator;
-    private final MailService               mailService;
-    private final UserRepository            userRepository;
-    private final UserProfilePicRepository  userProfilePicRepository;
-    private final UserService               userService;
-    private final UserProfilePicService     userProfilePicService;
-    private final ApplicationEventPublisher applicationEventPublisher;
+    private final HttpHeaderCreator                 httpHeaderCreator;
+    private final MessageCreator                    messageCreator;
+    private final MailService                       mailService;
+    private final UserRepository                    userRepository;
+    private final UserProfilePicRepository          userProfilePicRepository;
+    private final SupportedDateTimeFormatRepository supportedDateTimeFormatRepository;
+    private final UserService                       userService;
+    private final UserProfilePicService             userProfilePicService;
+    private final ApplicationEventPublisher         applicationEventPublisher;
 
     @Operation(summary = "get current user who are signed in")
     @GetMapping("/open-api/accounts/user")
     public ResponseEntity<AuthUser> getCurrentUser() {
-        return AuthUtils.getCurrentUser() == null || AuthUtils.getCurrentUser().getEmail() == null ?
-                ResponseEntity.ok(null) :
-                ResponseEntity.ok(AuthUser.of(userService.findByEmail(AuthUtils.getCurrentUser().getEmail())));
+        if (AuthUtils.getCurrentUser() == null || AuthUtils.getCurrentUser().getEmail() == null) {
+            return ResponseEntity.ok(null);
+        }
+        AuthUser authUser = AuthUser.of(userService.findByEmail(AuthUtils.getCurrentUser().getEmail()));
+        SupportedDateTimeFormat supportedDateTimeFormat =
+                supportedDateTimeFormatRepository.findById(authUser.getDateTimeFormatId())
+                        .orElseThrow(() -> new DataNotFoundException(authUser.getDateTimeFormatId()));
+        authUser.setDateTimeFormat(supportedDateTimeFormat.getDateTimeFormat());
+        authUser.setDateFormat(supportedDateTimeFormat.getDateFormat());
+        authUser.setTimeFormat(supportedDateTimeFormat.getTimeFormat());
+        return ResponseEntity.ok(authUser);
+    }
+
+    @Operation(summary = "find user by date time format id")
+    @GetMapping("/open-api/accounts/date-time-format/{id}")
+    public ResponseEntity<SupportedDateTimeFormat> getDateTimeFormat(@Parameter(description = "ID", required = true) @PathVariable String id) {
+        return ResponseEntity.ok(supportedDateTimeFormatRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id)));
     }
 
     @Operation(summary = "register a new user and send an account activation email")
@@ -95,8 +112,8 @@ public class AccountController {
         existingOne.setFirstName(domain.getFirstName());
         existingOne.setLastName(domain.getLastName());
         existingOne.setLocale(domain.getLocale());
-        existingOne.setTimeZone(domain.getTimeZone());
-        existingOne.setDateTimeFormat(domain.getDateTimeFormat());
+        existingOne.setTimeZoneId(domain.getTimeZoneId());
+        existingOne.setDateTimeFormatId(domain.getDateTimeFormatId());
         userService.update(existingOne);
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1002", domain.getUsername())).build();
     }

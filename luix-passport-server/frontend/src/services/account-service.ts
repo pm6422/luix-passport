@@ -1,6 +1,5 @@
 import axios from "axios"
 import http from "@/axios"
-import { dateTimeFormats } from "@/data/date-time-formats"
 import type { AuthUser } from "@/stores/auth-user-store.ts"
 
 export class AccountService {
@@ -10,10 +9,6 @@ export class AccountService {
   public static async getCurrentAccount(): Promise<AuthUser> {
     try {
       const res = await axios.get<AuthUser>("open-api/accounts/user")
-      const dateTimeFormatInstance = dateTimeFormats.find(d => d.value === res.data.dateTimeFormat)
-      if(dateTimeFormatInstance) {
-        res.data.dateTimeFormatInstance = dateTimeFormatInstance
-      }
       return res.data
     } catch (error) {
       console.error(error)

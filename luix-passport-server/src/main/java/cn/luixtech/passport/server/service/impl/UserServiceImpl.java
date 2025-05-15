@@ -136,7 +136,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         BeanUtils.copyProperties(user, managedUser);
         managedUser.setRoles(findRoles(id));
         managedUser.setLocale(user.getLocale());
-        managedUser.setTimezone(user.getTimeZone());
+        managedUser.setTimezone(user.getTimeZoneId());
         managedUser.setPasswordHash("*");
         return managedUser;
     }
@@ -148,7 +148,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         BeanUtils.copyProperties(user, managedUser);
         managedUser.setRoles(findRoles(user.getId()));
         managedUser.setLocale(user.getLocale());
-        managedUser.setTimezone(user.getTimeZone());
+        managedUser.setTimezone(user.getTimeZoneId());
         managedUser.setPasswordHash("*");
         return managedUser;
     }
@@ -205,11 +205,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         SupportedTimezone presetTimezone = supportedTimezoneRepository.findByPresetIsTrue()
                 .orElseThrow(() -> new DataNotFoundException("preset timezone"));
-        domain.setTimeZone(presetTimezone.getId());
+        domain.setTimeZoneId(presetTimezone.getId());
 
         SupportedDateTimeFormat presetDateTimeFormat = supportedDateTimeFormatRepository.findByPresetIsTrue()
                 .orElseThrow(() -> new DataNotFoundException("preset date time format"));
-        domain.setDateTimeFormat(presetDateTimeFormat.getId());
+        domain.setDateTimeFormatId(presetDateTimeFormat.getId());
 
         if (!permanentAccount) {
             domain.setAccountExpiresAt(LocalDateTime.now().plusDays(30));

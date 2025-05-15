@@ -8,7 +8,6 @@ import InputFormField from "@/components/custom/form-field/input"
 import SelectFormField from "@/components/custom/form-field/select"
 import { IconReload, IconMailForward } from "@tabler/icons-react"
 import { locales } from "@/data/locales"
-import { dateTimeFormats } from "@/data/date-time-formats"
 import { toast } from "sonner"
 import { useStore } from "exome/react"
 import { authUserStore } from "@/stores/auth-user-store.ts"
@@ -18,6 +17,7 @@ import { getErrorMessage } from "@/lib/handle-error"
 import { isValidPhoneNumber } from "react-phone-number-input"
 import { type Option } from "@/components/custom/form-field/combo-box"
 import { type SupportedTimezone } from "@/domains/supported-timezone"
+import { type SupportedDateTimeFormat } from "@/domains/supported-date-time-format"
 import { Link } from "react-router-dom"
 
 const formSchema = z.object({
@@ -28,8 +28,8 @@ const formSchema = z.object({
   firstName: z.string().optional(),
   lastName: z.string().optional(),
   locale: z.string().trim().min(1, { message: "Required" }),
-  timeZone: z.string().trim().min(1, { message: "Required" }),
-  dateTimeFormat: z.string().trim().min(1, { message: "Required" }),
+  timeZoneId: z.string().trim().min(1, { message: "Required" }),
+  dateTimeFormatId: z.string().trim().min(1, { message: "Required" }),
 })
 
 type FormSchema = z.infer<typeof formSchema>
@@ -38,6 +38,7 @@ export function AccountForm() {
   const { authUser } = useStore(authUserStore)
   const [saving, setSaving] = useState(false)
   const [supportedTimezones, setSupportedTimezones] = useState(Array<Option>)
+  const [supportedDateTimeFormats, setSupportedDateTimeFormats] = useState(Array<Option>)
 
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
@@ -52,6 +53,11 @@ export function AccountForm() {
     UserService.findSupportedTimezones().then(r => {
       setSupportedTimezones(r.data.map((item: SupportedTimezone) =>
         ({label: item.displayName + " (UTC" + item.utcOffset + ")", value: item.id})))
+    })
+
+    UserService.findSupportedDateTimeFormats().then(r => {
+      setSupportedDateTimeFormats(r.data.map((item: SupportedDateTimeFormat) =>
+        ({label: item.displayName + " (" + item.example + ")", value: item.id})))
     })
   }, [])
 
@@ -113,16 +119,16 @@ export function AccountForm() {
         />
         <SelectFormField 
           control={form.control} 
-          name="timeZone" 
+          name="timeZoneId"
           label="Time Zone"
           options={supportedTimezones}
           required
         />
         <SelectFormField
           control={form.control} 
-          name="dateTimeFormat" 
+          name="dateTimeFormatId"
           label="Date Time Format"
-          options={dateTimeFormats}
+          options={supportedDateTimeFormats}
           required
         />
 

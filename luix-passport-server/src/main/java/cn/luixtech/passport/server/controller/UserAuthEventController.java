@@ -94,13 +94,13 @@ public class UserAuthEventController {
         ManagedUser user = userService.findById(AuthUtils.getCurrentUserId());
         List<UserLoginCount> userLoginCounts = new ArrayList<>();
         Instant now = Instant.now();
-        ZonedDateTime zonedDateTime = now.atZone(ZoneId.of(user.getTimeZone()));
+        ZonedDateTime zonedDateTime = now.atZone(ZoneId.of(user.getTimeZoneId()));
         ZonedDateTime startOfDay = zonedDateTime.toLocalDate().atStartOfDay(zonedDateTime.getZone());
         for (int i = 6; i >= 0; i--) {
             Instant yesterday = startOfDay.toInstant().minus(i, ChronoUnit.DAYS);
             Long loginCount = userAuthEventRepository.countByEventAndCreatedAtBetween(AUTH_SUCCESS, yesterday, yesterday.plus(1, ChronoUnit.DAYS));
             UserLoginCount userLoginCount = new UserLoginCount();
-            userLoginCount.setCalculatedAt(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(yesterday.atZone(ZoneId.of(user.getTimeZone()))));
+            userLoginCount.setCalculatedAt(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(yesterday.atZone(ZoneId.of(user.getTimeZoneId()))));
             userLoginCount.setLoginCount(loginCount);
             userLoginCounts.add(userLoginCount);
         }

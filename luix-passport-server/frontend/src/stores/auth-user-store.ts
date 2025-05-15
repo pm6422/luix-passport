@@ -1,5 +1,4 @@
 import { Exome } from "exome"
-import { DateTimeFormat } from "@/data/date-time-formats.tsx"
 import { isEmpty } from "lodash"
 
 export type AuthUser = {
@@ -10,9 +9,11 @@ export type AuthUser = {
     firstName: string
     lastName: string
     locale: string
-    timeZone: string
+    timeZoneId: string
+    dateTimeFormatId: string
     dateTimeFormat: string
-    dateTimeFormatInstance: DateTimeFormat
+    dateFormat: string
+    timeFormat: string
     activated: boolean
     enabled: boolean
     roles: Array<string>

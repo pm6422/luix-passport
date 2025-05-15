@@ -148,14 +148,14 @@ public class User extends TableImpl<UserRecord> {
     public final TableField<UserRecord, String> LOCALE = createField(DSL.name("locale"), SQLDataType.VARCHAR(10).nullable(false), this, "");
 
     /**
-     * The column <code>public.user.time_zone</code>.
+     * The column <code>public.user.time_zone_id</code>.
      */
-    public final TableField<UserRecord, String> TIME_ZONE = createField(DSL.name("time_zone"), SQLDataType.VARCHAR(30).nullable(false), this, "");
+    public final TableField<UserRecord, String> TIME_ZONE_ID = createField(DSL.name("time_zone_id"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
     /**
-     * The column <code>public.user.date_time_format</code>.
+     * The column <code>public.user.date_time_format_id</code>.
      */
-    public final TableField<UserRecord, String> DATE_TIME_FORMAT = createField(DSL.name("date_time_format"), SQLDataType.VARCHAR(20).nullable(false), this, "");
+    public final TableField<UserRecord, String> DATE_TIME_FORMAT_ID = createField(DSL.name("date_time_format_id"), SQLDataType.VARCHAR(20).nullable(false), this, "");
 
     /**
      * The column <code>public.user.created_by</code>.

@@ -301,30 +301,30 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> {
     }
 
     /**
-     * Setter for <code>public.user.time_zone</code>.
+     * Setter for <code>public.user.time_zone_id</code>.
      */
-    public void setTimeZone(String value) {
+    public void setTimeZoneId(String value) {
         set(20, value);
     }
 
     /**
-     * Getter for <code>public.user.time_zone</code>.
+     * Getter for <code>public.user.time_zone_id</code>.
      */
-    public String getTimeZone() {
+    public String getTimeZoneId() {
         return (String) get(20);
     }
 
     /**
-     * Setter for <code>public.user.date_time_format</code>.
+     * Setter for <code>public.user.date_time_format_id</code>.
      */
-    public void setDateTimeFormat(String value) {
+    public void setDateTimeFormatId(String value) {
         set(21, value);
     }
 
     /**
-     * Getter for <code>public.user.date_time_format</code>.
+     * Getter for <code>public.user.date_time_format_id</code>.
      */
-    public String getDateTimeFormat() {
+    public String getDateTimeFormatId() {
         return (String) get(21);
     }
 
@@ -407,7 +407,7 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> {
     /**
      * Create a detached, initialised UserRecord
      */
-    public UserRecord(String id, String username, String email, String mobileNo, String firstName, String lastName, String passwordHash, String activationCode, String verificationCode, Instant verificationCodeSentAt, String newEmail, String resetCode, Instant resetAt, String remark, Boolean activated, Boolean enabled, Instant accountExpiresAt, Instant passwordExpiresAt, Instant lastSignInAt, String locale, String timeZone, String dateTimeFormat, String createdBy, Instant createdAt, String modifiedBy, Instant modifiedAt) {
+    public UserRecord(String id, String username, String email, String mobileNo, String firstName, String lastName, String passwordHash, String activationCode, String verificationCode, Instant verificationCodeSentAt, String newEmail, String resetCode, Instant resetAt, String remark, Boolean activated, Boolean enabled, Instant accountExpiresAt, Instant passwordExpiresAt, Instant lastSignInAt, String locale, String timeZoneId, String dateTimeFormatId, String createdBy, Instant createdAt, String modifiedBy, Instant modifiedAt) {
         super(User.USER);
 
         setId(id);
@@ -430,8 +430,8 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> {
         setPasswordExpiresAt(passwordExpiresAt);
         setLastSignInAt(lastSignInAt);
         setLocale(locale);
-        setTimeZone(timeZone);
-        setDateTimeFormat(dateTimeFormat);
+        setTimeZoneId(timeZoneId);
+        setDateTimeFormatId(dateTimeFormatId);
         setCreatedBy(createdBy);
         setCreatedAt(createdAt);
         setModifiedBy(modifiedBy);
