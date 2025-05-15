@@ -97,38 +97,41 @@ export function EditDialog({
           required
         />
 
-        <PhoneInputFormField 
-          control={form.control} 
-          name="mobileNo" 
-          label="Mobile No" 
-          required
-          placeholder="Enter a phone number"
-        />
-        
         <div className="flex items-center gap-2">
-          <InputFormField 
-            control={form.control} 
-            name="firstName" 
-            label="First Name" 
+          <InputFormField
+            control={form.control}
+            name="firstName"
+            label="First Name"
             formItemClassName="w-full"
           />
-          
-          <InputFormField 
-            control={form.control} 
-            name="lastName" 
-            label="Last Name" 
+
+          <InputFormField
+            control={form.control}
+            name="lastName"
+            label="Last Name"
             formItemClassName="w-full"
           />
         </div>
 
-        <SelectFormField
-          control={form.control}
-          name="locale"
-          label="Preferred Language"
-          options={locales}
-          formItemClassName="w-full"
-          required
-        />
+        <div className="flex items-center gap-2">
+          <PhoneInputFormField
+            control={form.control}
+            name="mobileNo"
+            label="Mobile No"
+            formItemClassName="w-full"
+            required
+            placeholder="Enter a phone number"
+          />
+
+          <SelectFormField
+            control={form.control}
+            name="locale"
+            label="Preferred Language"
+            options={locales}
+            formItemClassName="w-full"
+            required
+          />
+        </div>
 
         <div className="flex items-center gap-2">
           <SelectFormField 
@@ -150,9 +153,9 @@ export function EditDialog({
           />
         </div>
 
-        <InputFormField 
-          control={form.control} 
-          name="remark" 
+        <InputFormField
+          control={form.control}
+          name="remark"
           label="Remark"
         />
 
