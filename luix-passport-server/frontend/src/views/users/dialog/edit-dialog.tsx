@@ -10,7 +10,7 @@ import SwitchFormField from "@/components/custom/form-field/switch"
 import SelectFormField from "@/components/custom/form-field/select"
 import PhoneInputFormField from "@/components/custom/form-field/phone-input"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { type User, userSchema, initialUserState } from "@/domains/user.ts"
+import { type User, userSchema, initialUserState } from "@/domains/user"
 import { type DataDict } from "@/domains/data-dict"
 import { Separator } from "@/components/ui/separator"
 import { locales } from "@/data/locales"
@@ -18,9 +18,9 @@ import { DataDictService } from "@/services/data-dict-service"
 import { AccountService } from "@/services/account-service"
 import { UserService } from "@/services/user-service"
 import { merge } from "@/lib/utils"
-import type { Option } from '@/components/custom/form-field/combo-box.tsx'
-import type { SupportedTimezone } from '@/domains/supported-timezone.ts'
-import type { SupportedDateTimeFormat } from '@/domains/supported-date-time-format.ts'
+import type { Option } from "@/components/custom/form-field/combo-box"
+import type { SupportedTimezone } from "@/domains/supported-timezone"
+import type { SupportedDateTimeFormat } from "@/domains/supported-date-time-format"
 
 interface EditDialogProps {
   children: ReactNode,
