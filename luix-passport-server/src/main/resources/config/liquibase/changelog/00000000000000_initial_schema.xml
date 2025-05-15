@@ -11,6 +11,9 @@
             <column name="utc_offset" type="VARCHAR(10)">
                 <constraints nullable="false"/>
             </column>
+            <column name="preset" type="boolean">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
         <loadData
             file="config/liquibase/data/supported_timezone.csv"

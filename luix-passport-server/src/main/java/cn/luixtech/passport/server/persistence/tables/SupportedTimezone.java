@@ -12,11 +12,11 @@ import java.util.function.Function;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function3;
+import org.jooq.Function4;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row3;
+import org.jooq.Row4;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -63,6 +63,11 @@ public class SupportedTimezone extends TableImpl<SupportedTimezoneRecord> {
      * The column <code>public.supported_timezone.utc_offset</code>.
      */
     public final TableField<SupportedTimezoneRecord, String> UTC_OFFSET = createField(DSL.name("utc_offset"), SQLDataType.VARCHAR(10).nullable(false), this, "");
+
+    /**
+     * The column <code>public.supported_timezone.preset</code>.
+     */
+    public final TableField<SupportedTimezoneRecord, Boolean> PRESET = createField(DSL.name("preset"), SQLDataType.BOOLEAN.nullable(false), this, "");
 
     private SupportedTimezone(Name alias, Table<SupportedTimezoneRecord> aliased) {
         this(alias, aliased, null);
@@ -147,18 +152,18 @@ public class SupportedTimezone extends TableImpl<SupportedTimezoneRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row3 type methods
+    // Row4 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row3<String, String, String> fieldsRow() {
-        return (Row3) super.fieldsRow();
+    public Row4<String, String, String, Boolean> fieldsRow() {
+        return (Row4) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function3<? super String, ? super String, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function4<? super String, ? super String, ? super String, ? super Boolean, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -166,7 +171,7 @@ public class SupportedTimezone extends TableImpl<SupportedTimezoneRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function3<? super String, ? super String, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function4<? super String, ? super String, ? super String, ? super Boolean, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }
