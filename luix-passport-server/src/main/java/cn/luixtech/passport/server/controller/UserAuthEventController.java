@@ -16,6 +16,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -99,7 +101,7 @@ public class UserAuthEventController {
             Instant yesterday = startOfDay.toInstant().minus(i, ChronoUnit.DAYS);
             Long loginCount = userAuthEventRepository.countByEventAndCreatedAtBetween(AUTH_SUCCESS, yesterday, yesterday.plus(1, ChronoUnit.DAYS));
             UserLoginCount userLoginCount = new UserLoginCount();
-            userLoginCount.setCalculatedAt(yesterday);
+            userLoginCount.setCalculatedAt(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").format(yesterday.atZone(ZoneId.of(user.getTimeZone()))));
             userLoginCount.setLoginCount(loginCount);
             userLoginCounts.add(userLoginCount);
         }
