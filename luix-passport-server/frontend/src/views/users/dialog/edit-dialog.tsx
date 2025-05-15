@@ -14,11 +14,12 @@ import { type User, userSchema, initialUserState } from "@/domains/user.ts"
 import { type DataDict } from "@/domains/data-dict"
 import { Separator } from "@/components/ui/separator"
 import { locales } from "@/data/locales"
-import { timeZones } from "@/data/time-zones"
 import { dateTimeFormats } from "@/data/date-time-formats"
 import { DataDictService } from "@/services/data-dict-service"
 import { UserService } from "@/services/user-service"
 import { merge } from "@/lib/utils"
+import type { Option } from '@/components/custom/form-field/combo-box.tsx'
+import type { SupportedTimezone } from '@/domains/supported-timezone.ts'
 
 interface EditDialogProps {
   children: ReactNode,
@@ -37,6 +38,7 @@ export function EditDialog({
 }: EditDialogProps) {
   const [open, setOpen] = useState(false)
   const [enabledRoles, setEnabledRoles] = useState(Array<CheckboxOption>)
+  const [supportedTimezones, setSupportedTimezones] = useState(Array<Option>)
   const form = useForm<User>({
     resolver: zodResolver(userSchema),
     defaultValues: initialUserState
@@ -48,6 +50,9 @@ export function EditDialog({
     }
     DataDictService.lookup("role", true).then(r => {
       setEnabledRoles(r.data.map((item: DataDict) => ({label: item.dictCode, value: item.dictCode})))
+    })
+    UserService.findSupportedTimezones().then(r => {
+      setSupportedTimezones(r.data.map((item: SupportedTimezone) => ({label: item.displayName + " (UTC" + item.utcOffset + ")", value: item.id})))
     })
     id && UserService.findById(id).then(r => {
       form.reset(merge(r.data, initialUserState))
@@ -121,7 +126,7 @@ export function EditDialog({
             control={form.control} 
             name="timeZone" 
             label="Time Zone"
-            options={timeZones}
+            options={supportedTimezones}
             formItemClassName="w-full"
             required
           />

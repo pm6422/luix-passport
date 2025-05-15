@@ -1,10 +1,12 @@
 package cn.luixtech.passport.server.controller;
 
 import cn.luixtech.passport.server.config.ApplicationProperties;
+import cn.luixtech.passport.server.domain.SupportedTimezone;
 import cn.luixtech.passport.server.domain.User;
 import cn.luixtech.passport.server.domain.UserRole;
 import cn.luixtech.passport.server.event.LogoutEvent;
 import cn.luixtech.passport.server.pojo.ManagedUser;
+import cn.luixtech.passport.server.repository.SupportedTimezoneRepository;
 import cn.luixtech.passport.server.repository.UserRepository;
 import cn.luixtech.passport.server.repository.UserRoleRepository;
 import cn.luixtech.passport.server.service.MailService;
@@ -47,13 +49,14 @@ import static com.luixtech.springbootframework.utils.NetworkUtils.getRequestUrl;
 @PreAuthorize("hasAuthority(\"" + ROLE_ADMIN + "\")")
 @Slf4j
 public class UserController {
-    private final ApplicationProperties     applicationProperties;
-    private final ApplicationEventPublisher applicationEventPublisher;
-    private final UserService               userService;
-    private final UserRepository            userRepository;
-    private final UserRoleRepository        userRoleRepository;
-    private final MailService               mailService;
-    private final HttpHeaderCreator         httpHeaderCreator;
+    private final ApplicationProperties       applicationProperties;
+    private final ApplicationEventPublisher   applicationEventPublisher;
+    private final UserService                 userService;
+    private final UserRepository              userRepository;
+    private final SupportedTimezoneRepository supportedTimezoneRepository;
+    private final UserRoleRepository          userRoleRepository;
+    private final MailService                 mailService;
+    private final HttpHeaderCreator           httpHeaderCreator;
 
     @Operation(summary = "create new user and send a user creation email")
     @PostMapping("/api/users")
@@ -131,5 +134,11 @@ public class UserController {
     @GetMapping("/api/users/count")
     public ResponseEntity<Long> count() {
         return ResponseEntity.ok(userRepository.count());
+    }
+
+    @Operation(summary = "get supported time zones")
+    @GetMapping("/api/users/supported-time-zones")
+    public ResponseEntity<List<SupportedTimezone>> getSupportedTimeZones() {
+        return ResponseEntity.ok(supportedTimezoneRepository.findAll());
     }
 }
