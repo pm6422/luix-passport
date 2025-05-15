@@ -50,7 +50,8 @@ export function AccountForm() {
     })
 
     UserService.findSupportedTimezones().then(r => {
-      setSupportedTimezones(r.data.map((item: SupportedTimezone) => ({label: item.displayName + " (UTC" + item.utcOffset + ")", value: item.id})))
+      setSupportedTimezones(r.data.map((item: SupportedTimezone) =>
+        ({label: item.displayName + " (UTC" + item.utcOffset + ")", value: item.id})))
     })
   }, [])
 

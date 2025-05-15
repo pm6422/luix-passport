@@ -52,7 +52,8 @@ export function EditDialog({
       setEnabledRoles(r.data.map((item: DataDict) => ({label: item.dictCode, value: item.dictCode})))
     })
     UserService.findSupportedTimezones().then(r => {
-      setSupportedTimezones(r.data.map((item: SupportedTimezone) => ({label: item.displayName + " (UTC" + item.utcOffset + ")", value: item.id})))
+      setSupportedTimezones(r.data.map((item: SupportedTimezone) =>
+        ({label: item.displayName + " (UTC" + item.utcOffset + ")", value: item.id})))
     })
     id && UserService.findById(id).then(r => {
       form.reset(merge(r.data, initialUserState))
