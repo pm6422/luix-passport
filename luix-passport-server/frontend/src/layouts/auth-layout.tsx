@@ -26,7 +26,7 @@ export default function AuthLayout() {
       isActive: true,
     },
     {
-      title: "Settings",
+      title: "Account",
       href: "account-settings",
       isActive: false,
     },
