@@ -1,9 +1,9 @@
 id;display_name;utc_offset
 UTC;Coordinated Universal Time;+00:00
-America/New_York;Eastern Time (US & Canada);-05:00
-America/Chicago;Central Time (US & Canada);-06:00
-America/Denver;Mountain Time (US & Canada);-07:00
 America/Los_Angeles;Pacific Time (US & Canada);-08:00
+America/Denver;Mountain Time (US & Canada);-07:00
+America/Chicago;Central Time (US & Canada);-06:00
+America/New_York;Eastern Time (US & Canada);-05:00
 Europe/London;London;+00:00
 Europe/Paris;Paris;+01:00
 Europe/Amsterdam;Amsterdam (Netherlands);+01:00
