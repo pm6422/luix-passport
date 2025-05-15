@@ -1,4 +1,4 @@
-import { useState, useEffect, ReactNode } from "react"
+import { useState, useEffect, ReactNode } from 'react'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { Dialog, DialogTrigger } from "@/components/ui/dialog"
@@ -50,19 +50,21 @@ export function EditDialog({
     if (!open) {
       return
     }
-    DataDictService.lookup("role", true).then(r => {
-      setEnabledRoles(r.data.map((item: DataDict) => ({label: item.dictCode, value: item.dictCode})))
-    })
-    AccountService.findSupportedTimezones().then(r => {
-      setSupportedTimezones(r.data.map((item: SupportedTimezone) =>
-        ({label: item.displayName + " (UTC" + item.utcOffset + ")", value: item.id})))
-    })
-    AccountService.findSupportedDateTimeFormats().then(r => {
-      setSupportedDateTimeFormats(r.data.map((item: SupportedDateTimeFormat) =>
-        ({label: item.displayName + " (" + item.example + ")", value: item.id})))
-    })
-    id && UserService.findById(id).then(r => {
-      form.reset(merge(r.data, initialUserState))
+    Promise.all([
+      DataDictService.lookup("role", true),
+      AccountService.findSupportedTimezones(),
+      AccountService.findSupportedDateTimeFormats()
+    ]).then(results => {
+      // load options
+      setEnabledRoles(results[0].data.map((item: DataDict) => ({label: item.dictCode, value: item.dictCode})));
+      setSupportedTimezones(results[1].data.map((item: SupportedTimezone) =>
+        ({label: item.displayName + " (UTC" + item.utcOffset + ")", value: item.id})));
+      setSupportedDateTimeFormats(results[2].data.map((item: SupportedDateTimeFormat) =>
+        ({label: item.displayName + " (" + item.example + ")", value: item.id})));
+
+      id && UserService.findById(id).then(r => {
+        form.reset(merge(r.data, initialUserState))
+      })
     })
   }, [open])
 
