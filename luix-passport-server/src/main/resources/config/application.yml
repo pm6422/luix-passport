@@ -162,7 +162,7 @@ luix:
     enabled: true
     slow-execution-threshold: 300 # unit: ms
   ribbon:
-    # comma separated list of profiles to show a ribbon on the GUI
+    # comma separated list of profiles to show ribbon on the GUI
     display-on-active-profiles: dev,test,demo
 # ===================================================================
 # Application specific properties
