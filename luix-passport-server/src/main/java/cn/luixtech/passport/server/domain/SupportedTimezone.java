@@ -20,7 +20,8 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = true)
 public class SupportedTimezone extends AbstractBaseDomain implements Serializable {
     @Serial
-    private static final long serialVersionUID = 1L;
+    private static final long   serialVersionUID = 1L;
+    public static final  String DEFAULT_TIMEZONE = "Asia/Shanghai";
 
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     @NotEmpty(message = "displayName:{Validation.NotEmpty}")

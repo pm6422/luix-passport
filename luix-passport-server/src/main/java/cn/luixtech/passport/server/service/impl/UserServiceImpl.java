@@ -3,7 +3,6 @@ package cn.luixtech.passport.server.service.impl;
 import cn.luixtech.passport.server.config.oauth.AuthUser;
 import cn.luixtech.passport.server.domain.User;
 import cn.luixtech.passport.server.domain.UserRole;
-import cn.luixtech.passport.server.statemachine.UserEvent;
 import cn.luixtech.passport.server.exception.UserNotActivatedException;
 import cn.luixtech.passport.server.persistence.Tables;
 import cn.luixtech.passport.server.pojo.ManagedUser;
@@ -12,6 +11,7 @@ import cn.luixtech.passport.server.repository.UserRepository;
 import cn.luixtech.passport.server.repository.UserRoleRepository;
 import cn.luixtech.passport.server.service.UserRoleService;
 import cn.luixtech.passport.server.service.UserService;
+import cn.luixtech.passport.server.statemachine.UserEvent;
 import cn.luixtech.passport.server.statemachine.UserState;
 import cn.luixtech.passport.server.utils.AuthUtils;
 import com.luixtech.springbootframework.component.MessageCreator;
@@ -60,6 +60,7 @@ import static cn.luixtech.passport.server.config.AuthorizationServerConfiguratio
 import static cn.luixtech.passport.server.config.AuthorizationServerConfiguration.DEFAULT_PASSWORD_ENCODER_PREFIX;
 import static cn.luixtech.passport.server.controller.UserProfilePicController.USER_PHOTO_TOKEN_KEY;
 import static cn.luixtech.passport.server.controller.UserProfilePicController.USER_PHOTO_URL;
+import static cn.luixtech.passport.server.domain.SupportedTimezone.DEFAULT_TIMEZONE;
 import static com.luixtech.springbootframework.utils.NetworkUtils.getRequestUrl;
 import static com.luixtech.utilities.encryption.JasyptEncryptUtils.DEFAULT_ALGORITHM;
 import static org.apache.commons.lang3.time.DateFormatUtils.ISO_8601_EXTENDED_DATETIME_TIME_ZONE_FORMAT;
@@ -197,7 +198,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         domain.setPasswordExpiresAt(LocalDateTime.now().plusMonths(6));
         domain.setLocale(env.getProperty("spring.web.locale"));
         domain.setDateTimeFormat("2021-09-10 10:15:00");
-        domain.setTimeZone("Asia/Shanghai (GMT +08:00)");
+        domain.setTimeZone(DEFAULT_TIMEZONE);
 
         if (!permanentAccount) {
             domain.setAccountExpiresAt(LocalDateTime.now().plusDays(30));
