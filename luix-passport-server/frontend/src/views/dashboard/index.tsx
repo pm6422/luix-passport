@@ -14,28 +14,34 @@ import { IconUsers, IconShieldCheckered, IconCircles, IconUserShield } from "@ta
 import { UserService } from "@/services/user-service"
 import { Oauth2ClientService } from "@/services/oauth2-client-service"
 import { OrgService } from "@/services/org-service"
+import { useStore } from 'exome/react'
+import { authUserStore } from '@/stores/auth-user-store.ts'
+import { useNavigate } from 'react-router-dom'
 // import { SpringSessionService } from "@/services/spring-session-service"
 // import { type SpringSession } from "@/domains/spring-session"
 
 export default function Dashboard() {
+  const navigate = useNavigate()
+  const { authUser } = useStore(authUserStore)
   const [userCount, setUserCount] = useState(0)
   const [oauth2ClientCount, setOauth2ClientCount] = useState(0)
   const [orgCount, setOrgCount] = useState(0)
   // const [springSessions, setSpringSessions] = useState([] as Array<SpringSession>)
 
   useEffect(() => {
-    UserService.count().then(r => {
-      setUserCount(r.data)
-    })
-
-    Oauth2ClientService.count().then(r => {
-      setOauth2ClientCount(r.data)
-    })
-
-    OrgService.count().then(r => {
-      setOrgCount(r.data)
-    })
-
+    if (authUser.isOnlyUser) {
+      navigate("user-overview")
+    } else {
+      UserService.count().then(r => {
+        setUserCount(r.data)
+      })
+      Oauth2ClientService.count().then(r => {
+        setOauth2ClientCount(r.data)
+      })
+      OrgService.count().then(r => {
+        setOrgCount(r.data)
+      })
+    }
     // SpringSessionService.findAll().then(r => {
     //   setSpringSessions(r.data)
     // })
