@@ -15,6 +15,7 @@ import { type DataDict } from "@/domains/data-dict"
 import { Separator } from "@/components/ui/separator"
 import { locales } from "@/data/locales"
 import { DataDictService } from "@/services/data-dict-service"
+import { AccountService } from "@/services/account-service"
 import { UserService } from "@/services/user-service"
 import { merge } from "@/lib/utils"
 import type { Option } from '@/components/custom/form-field/combo-box.tsx'
@@ -52,11 +53,11 @@ export function EditDialog({
     DataDictService.lookup("role", true).then(r => {
       setEnabledRoles(r.data.map((item: DataDict) => ({label: item.dictCode, value: item.dictCode})))
     })
-    UserService.findSupportedTimezones().then(r => {
+    AccountService.findSupportedTimezones().then(r => {
       setSupportedTimezones(r.data.map((item: SupportedTimezone) =>
         ({label: item.displayName + " (UTC" + item.utcOffset + ")", value: item.id})))
     })
-    UserService.findSupportedDateTimeFormats().then(r => {
+    AccountService.findSupportedDateTimeFormats().then(r => {
       setSupportedDateTimeFormats(r.data.map((item: SupportedDateTimeFormat) =>
         ({label: item.displayName + " (" + item.example + ")", value: item.id})))
     })

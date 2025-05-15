@@ -1,6 +1,7 @@
 package cn.luixtech.passport.server.controller;
 
 import cn.luixtech.passport.server.domain.SupportedDateTimeFormat;
+import cn.luixtech.passport.server.domain.SupportedTimezone;
 import cn.luixtech.passport.server.domain.User;
 import cn.luixtech.passport.server.domain.UserProfilePic;
 import cn.luixtech.passport.server.event.LogoutEvent;
@@ -9,6 +10,7 @@ import cn.luixtech.passport.server.pojo.ChangePassword;
 import cn.luixtech.passport.server.pojo.ManagedUser;
 import cn.luixtech.passport.server.pojo.PasswordRecovery;
 import cn.luixtech.passport.server.repository.SupportedDateTimeFormatRepository;
+import cn.luixtech.passport.server.repository.SupportedTimezoneRepository;
 import cn.luixtech.passport.server.repository.UserProfilePicRepository;
 import cn.luixtech.passport.server.repository.UserRepository;
 import cn.luixtech.passport.server.service.MailService;
@@ -60,6 +62,7 @@ public class AccountController {
     private final MailService                       mailService;
     private final UserRepository                    userRepository;
     private final UserProfilePicRepository          userProfilePicRepository;
+    private final SupportedTimezoneRepository       supportedTimezoneRepository;
     private final SupportedDateTimeFormatRepository supportedDateTimeFormatRepository;
     private final UserService                       userService;
     private final UserProfilePicService             userProfilePicService;
@@ -233,6 +236,18 @@ public class AccountController {
     @GetMapping("/api/accounts/all-authorities")
     public ResponseEntity<List<String>> getAuthorityNames() {
         return ResponseEntity.ok(Arrays.asList(ROLE_ANONYMOUS, ROLE_USER, ROLE_ADMIN, ROLE_DEVELOPER));
+    }
+
+    @Operation(summary = "get all supported time zones")
+    @GetMapping("/api/accounts/all-supported-time-zones")
+    public ResponseEntity<List<SupportedTimezone>> getSupportedTimeZones() {
+        return ResponseEntity.ok(supportedTimezoneRepository.findAll());
+    }
+
+    @Operation(summary = "get all supported date time formats")
+    @GetMapping("/api/accounts/all-supported-date-time-formats")
+    public ResponseEntity<List<SupportedDateTimeFormat>> getSupportedDateTimeFormats() {
+        return ResponseEntity.ok(supportedDateTimeFormatRepository.findAll());
     }
 
     @Operation(summary = "delete current user")

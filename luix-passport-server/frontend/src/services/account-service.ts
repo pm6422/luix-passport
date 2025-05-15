@@ -1,6 +1,8 @@
-import axios from "axios"
+import axios, { AxiosResponse } from 'axios'
 import http from "@/axios"
-import type { AuthUser } from "@/stores/auth-user-store.ts"
+import type { AuthUser } from "@/stores/auth-user-store"
+import { type SupportedTimezone } from "@/domains/supported-timezone"
+import { type SupportedDateTimeFormat } from "@/domains/supported-date-time-format"
 
 export class AccountService {
   constructor() {
@@ -55,5 +57,13 @@ export class AccountService {
   public static async signOut(): Promise<void> {
     await http.post("api/accounts/sign-out")
     window.location.reload()
+  }
+
+  public static findSupportedTimezones(): Promise<AxiosResponse<Array<SupportedTimezone>>> {
+    return http.get("api/accounts/all-supported-time-zones")
+  }
+
+  public static findSupportedDateTimeFormats(): Promise<AxiosResponse<Array<SupportedDateTimeFormat>>> {
+    return http.get("api/accounts/all-supported-date-time-formats")
   }
 }

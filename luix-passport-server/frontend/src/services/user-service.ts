@@ -1,7 +1,5 @@
 import http from "@/axios"
 import { type User } from "@/domains/user"
-import { type SupportedTimezone } from "@/domains/supported-timezone"
-import { type SupportedDateTimeFormat } from "@/domains/supported-date-time-format"
 import { AxiosResponse } from "axios"
 
 export class UserService {
@@ -34,13 +32,5 @@ export class UserService {
 
   public static count(): Promise<AxiosResponse<number>> {
     return http.get("api/users/count")
-  }
-
-  public static findSupportedTimezones(): Promise<AxiosResponse<Array<SupportedTimezone>>> {
-    return http.get("api/users/supported-time-zones")
-  }
-
-  public static findSupportedDateTimeFormats(): Promise<AxiosResponse<Array<SupportedDateTimeFormat>>> {
-    return http.get("api/users/supported-date-time-formats")
   }
 }

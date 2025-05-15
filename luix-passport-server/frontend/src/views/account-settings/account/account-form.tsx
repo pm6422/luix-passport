@@ -12,7 +12,6 @@ import { toast } from "sonner"
 import { useStore } from "exome/react"
 import { authUserStore } from "@/stores/auth-user-store.ts"
 import { AccountService } from "@/services/account-service"
-import { UserService } from "@/services/user-service"
 import { getErrorMessage } from "@/lib/handle-error"
 import { isValidPhoneNumber } from "react-phone-number-input"
 import { type Option } from "@/components/custom/form-field/combo-box"
@@ -50,12 +49,12 @@ export function AccountForm() {
       form.reset(user)
     })
 
-    UserService.findSupportedTimezones().then(r => {
+    AccountService.findSupportedTimezones().then(r => {
       setSupportedTimezones(r.data.map((item: SupportedTimezone) =>
         ({label: item.displayName + " (UTC" + item.utcOffset + ")", value: item.id})))
     })
 
-    UserService.findSupportedDateTimeFormats().then(r => {
+    AccountService.findSupportedDateTimeFormats().then(r => {
       setSupportedDateTimeFormats(r.data.map((item: SupportedDateTimeFormat) =>
         ({label: item.displayName + " (" + item.example + ")", value: item.id})))
     })
