@@ -120,7 +120,13 @@ const router = createHashRouter([
         lazy: async () => ({
           Component: (await import("@/views/auth2-clients")).default
         }),
-      }
+      },
+      {
+        path: "user-overview",
+        lazy: async () => ({
+          Component: (await import("@/components/custom/coming-soon")).default
+        }),
+      },
     ],
   },
 

@@ -22,22 +22,12 @@ export default function AuthLayout() {
   const topNav = [
     {
       title: "Overview",
-      href: "dashboard/overview",
+      href: "user-overview",
       isActive: true,
     },
     {
-      title: "Customers",
-      href: "dashboard/customers",
-      isActive: false,
-    },
-    {
-      title: "Products",
-      href: "dashboard/products",
-      isActive: false,
-    },
-    {
       title: "Settings",
-      href: "dashboard/settings",
+      href: "account-settings",
       isActive: false,
     },
   ]
