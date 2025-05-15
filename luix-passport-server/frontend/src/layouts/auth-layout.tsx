@@ -13,9 +13,10 @@ import { AccountNav } from "@/components/account-nav.tsx"
 import { Layout, LayoutHeader } from "@/layouts/layout-definitions"
 // import { Search } from "@/components/custom/search"
 import { isEmpty } from "lodash"
+import { AccountService } from '@/services/account-service.ts'
 
 export default function AuthLayout() {
-  const { authUser } = useStore(authUserStore)
+  const { authUser, setAuthUser } = useStore(authUserStore)
   const [isCollapsed, setIsCollapsed] = useIsCollapsed()
   const location = useLocation()
   const topNav = [
@@ -42,10 +43,14 @@ export default function AuthLayout() {
   ]
 
   useEffect(() => {
-    if(isEmpty(authUser)) {
-      console.log("Redirecting to login for null auth user")
-      window.location.href = "/login"
-    }
+    AccountService.getCurrentAccount().then(u => {
+      if(isEmpty(u)) {
+        console.log("Redirecting to login for empty user")
+        window.location.href = "/login"
+      } else {
+        setAuthUser(u)
+      }
+    })
   }, [location]);
 
   return (
