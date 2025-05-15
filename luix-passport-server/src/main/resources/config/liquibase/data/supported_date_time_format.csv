@@ -1,5 +1,5 @@
 id;display_name;date_time_format;date_format;time_format;example;preset
 1;ISO Standard;YYYY-MM-DD HH:mm:ss;YYYY-MM-DD;HH:mm:ss;2023-05-15 14:30:00;1
-2;American Standard;MM/DD/YYYY hh:mm a;MM/DD/YYYY;hh:mm a;05/15/2023 02:30 PM;0
+2;American Standard;MM/DD/YYYY hh:mm A;MM/DD/YYYY;hh:mm A;05/15/2023 02:30 PM;0
 3;European Standard;DD/MM/YYYY HH:mm;DD/MM/YYYY;HH:mm;15/05/2023 14:30;0
 
