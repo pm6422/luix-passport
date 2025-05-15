@@ -12,6 +12,7 @@ import cn.luixtech.passport.server.persistence.tables.Org;
 import cn.luixtech.passport.server.persistence.tables.OrgUser;
 import cn.luixtech.passport.server.persistence.tables.SpringSession;
 import cn.luixtech.passport.server.persistence.tables.SpringSessionAttributes;
+import cn.luixtech.passport.server.persistence.tables.SupportedTimezone;
 import cn.luixtech.passport.server.persistence.tables.TableSeqNumber;
 import cn.luixtech.passport.server.persistence.tables.User;
 import cn.luixtech.passport.server.persistence.tables.UserAuthEvent;
@@ -82,6 +83,11 @@ public class Public extends SchemaImpl {
     public final SpringSessionAttributes SPRING_SESSION_ATTRIBUTES = SpringSessionAttributes.SPRING_SESSION_ATTRIBUTES;
 
     /**
+     * The table <code>public.supported_timezone</code>.
+     */
+    public final SupportedTimezone SUPPORTED_TIMEZONE = SupportedTimezone.SUPPORTED_TIMEZONE;
+
+    /**
      * The table <code>public.table_seq_number</code>.
      */
     public final TableSeqNumber TABLE_SEQ_NUMBER = TableSeqNumber.TABLE_SEQ_NUMBER;
@@ -140,6 +146,7 @@ public class Public extends SchemaImpl {
             OrgUser.ORG_USER,
             SpringSession.SPRING_SESSION,
             SpringSessionAttributes.SPRING_SESSION_ATTRIBUTES,
+            SupportedTimezone.SUPPORTED_TIMEZONE,
             TableSeqNumber.TABLE_SEQ_NUMBER,
             User.USER,
             UserAuthEvent.USER_AUTH_EVENT,

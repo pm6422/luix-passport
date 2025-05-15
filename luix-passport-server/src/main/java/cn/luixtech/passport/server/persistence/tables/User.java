@@ -65,7 +65,7 @@ public class User extends TableImpl<UserRecord> {
     /**
      * The column <code>public.user.mobile_no</code>.
      */
-    public final TableField<UserRecord, String> MOBILE_NO = createField(DSL.name("mobile_no"), SQLDataType.VARCHAR(18).nullable(false), this, "");
+    public final TableField<UserRecord, String> MOBILE_NO = createField(DSL.name("mobile_no"), SQLDataType.VARCHAR(18), this, "");
 
     /**
      * The column <code>public.user.first_name</code>.
@@ -223,6 +223,24 @@ public class User extends TableImpl<UserRecord> {
     @Override
     public List<UniqueKey<UserRecord>> getUniqueKeys() {
         return Arrays.asList(Keys.USER_USERNAME_KEY, Keys.USER_EMAIL_KEY, Keys.USER_MOBILE_NO_KEY);
+    }
+
+    @Override
+    public List<ForeignKey<UserRecord, ?>> getReferences() {
+        return Arrays.asList(Keys.USER__FK_USER_TIMEZONE_SUPPORTED_TIMEZONE_ID);
+    }
+
+    private transient SupportedTimezone _supportedTimezone;
+
+    /**
+     * Get the implicit join path to the <code>public.supported_timezone</code>
+     * table.
+     */
+    public SupportedTimezone supportedTimezone() {
+        if (_supportedTimezone == null)
+            _supportedTimezone = new SupportedTimezone(this, Keys.USER__FK_USER_TIMEZONE_SUPPORTED_TIMEZONE_ID);
+
+        return _supportedTimezone;
     }
 
     @Override

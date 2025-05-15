@@ -1,6 +1,22 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
     <changeSet author="louislau (generated)" id="00000000000001">
+        <createTable tableName="supported_timezone">
+            <column name="id" type="VARCHAR(50)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="display_name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="utc_offset" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <loadData
+            file="config/liquibase/data/supported_timezone.csv"
+            separator=";"
+            tableName="supported_timezone">
+        </loadData>
         <createTable tableName="oauth2_authorization">
             <column name="id" type="VARCHAR(100)">
                 <constraints nullable="false" primaryKey="true"/>
@@ -338,5 +354,6 @@
         <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_permission" constraintName="fk_user_permission_user_id" deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="user" validate="true"/>
         <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_login" constraintName="fk_user_login_user_id" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="user" validate="true"/>
         <addForeignKeyConstraint baseColumnNames="id" baseTableName="user_profile_pic" constraintName="fk_user_profile_pic_user_id" deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="user" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="time_zone" baseTableName="user" constraintName="fk_user_timezone_supported_timezone_id" deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="supported_timezone" validate="true"/>
     </changeSet>
 </databaseChangeLog>
