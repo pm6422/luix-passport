@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form"
 import { Button } from "@/components/custom/button"
 import {
   Form,
-  FormControl,
   FormDescription,
   FormField,
   FormItem,
@@ -65,9 +64,7 @@ export default function ProfileForm() {
           name="file"
           render={({ field }) => (
             <FormItem>
-              <FormControl>
-                <ProfilePicUploader defaultValue={field.value} onValueChange={field.onChange}/>
-              </FormControl>
+              <ProfilePicUploader defaultValue={field.value} onValueChange={field.onChange}/>
               <FormDescription>The size of profile picture should be smaller than 15MB.</FormDescription>
               <FormMessage/>
             </FormItem>
