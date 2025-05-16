@@ -11,11 +11,11 @@ export function LoginUserItem(loginUser : LoginUser) {
             </Avatar>
             <div className='ml-4 space-y-1'>
                 <p className='text-sm font-medium leading-none'>{loginUser.firstName} {loginUser.lastName}</p>
-                <p className='text-sm text-muted-foreground'>
+                <p className='text-xs text-muted-foreground'>
                     {loginUser.email}
                 </p>
             </div>
-            <div className='ml-auto text-sm'><DateTime value={loginUser.signInAt}/></div>
+            <div className='ml-auto text-sm'><DateTime value={loginUser.signInAt} className="text-xs"/></div>
         </div>
     )
 }
