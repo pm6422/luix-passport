@@ -162,13 +162,21 @@ export function ChangeEmailForm() {
           )}
         />
 
-        <div className='flex items-center gap-2'>
-          <Link to="/account-settings/account">
-            <Button type="button" variant="outline">
+        <div className="flex flex-col sm:flex-row sm:justify-end gap-2 w-full">
+          <Link to="/account-settings/account" className="w-full sm:w-auto">
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full sm:w-auto"
+            >
               Back
             </Button>
           </Link>
-          <Button type="submit" disabled={Object.values(form.formState.errors).length > 0 || saving}>
+          <Button
+            type="submit"
+            disabled={Object.values(form.formState.errors).length > 0 || saving}
+            className="w-full sm:w-auto"
+          >
             {saving ? "Waiting..." : "Save"}
             {saving && (<IconReload className="ml-1 size-4 animate-spin"/>)}
           </Button>
