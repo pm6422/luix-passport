@@ -121,7 +121,7 @@ export default function Dashboard() {
                 </CardContent>
               </Card>
             </div>
-            <div className="grid grid-cols-1 gap-4 lg:grid-cols-7">
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-8">
               <Card className="col-span-1 lg:col-span-4">
                 <CardHeader>
                   <CardTitle>User Login Count in Last Seven Days</CardTitle>
@@ -130,7 +130,7 @@ export default function Dashboard() {
                   <SevenDaysUserLoginCount />
                 </CardContent>
               </Card>
-              <Card className="col-span-1 lg:col-span-3">
+              <Card className="col-span-1 lg:col-span-4">
                 <CardHeader>
                   <CardTitle>Recent Login</CardTitle>
                   <CardDescription>
