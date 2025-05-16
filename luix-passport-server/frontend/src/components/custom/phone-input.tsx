@@ -15,7 +15,7 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { Input, InputProps } from "@/components/ui/input";
+import { Input } from "@/components/ui/input";
 import {
   Popover,
   PopoverContent,
@@ -25,6 +25,9 @@ import {
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { E164Number } from "libphonenumber-js/core";
+
+export interface InputProps
+  extends React.InputHTMLAttributes<HTMLInputElement> {}
 
 type PhoneInputProps = Omit<
   React.InputHTMLAttributes<HTMLInputElement>,

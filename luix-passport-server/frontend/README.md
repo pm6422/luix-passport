@@ -33,7 +33,7 @@ Luix passport frontend UI crafted with Shadcn and Vite.
 ```
 
 ## Installing Shadcn UI component
-npx shadcn-ui@latest add label
+npx shadcn@latest add label
 
 ## Run Locally
 
