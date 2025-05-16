@@ -27,7 +27,7 @@ export default function ProfileForm() {
   const [saving, setSaving] = useState(false)
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
-    defaultValues: { 
+    defaultValues: {
       file: "api/accounts/profile-pic",
       description: "user avatar"
     },
@@ -70,10 +70,12 @@ export default function ProfileForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={saving || !(form.getValues().file instanceof File)}>
-          {saving ? "Saving picture..." : "Save picture"}
-          {saving && (<IconReload className="ml-1 size-4 animate-spin"/>)}
-        </Button>
+        <div className="flex justify-end">
+          <Button type="submit" className="w-full sm:w-auto" disabled={saving || !(form.getValues().file instanceof File)}>
+            {saving ? "Saving picture..." : "Save picture"}
+            {saving && (<IconReload className="ml-1 size-4 animate-spin"/>)}
+          </Button>
+        </div>
       </form>
     </Form>
   )
