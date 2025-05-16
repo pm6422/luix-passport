@@ -189,7 +189,10 @@ export function NotificationsForm() {
             </FormItem>
           )}
         />
-        <Button type="submit">Update notifications</Button>
+
+        <div className="flex justify-end">
+          <Button type="submit" className="w-full sm:w-auto">Update notifications</Button>
+        </div>
       </form>
     </Form>
   )

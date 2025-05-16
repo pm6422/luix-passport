@@ -168,10 +168,12 @@ export function ChangePasswordForm() {
           )}
         />
 
-        <Button type="submit" disabled={saving}>
-          {saving ? "Waiting..." : "Update password"}
-          {saving && (<IconReload className="ml-1 size-4 animate-spin"/>)}
-        </Button>
+        <div className="flex justify-end">
+          <Button type="submit" className="w-full sm:w-auto" disabled={saving}>
+            {saving ? "Waiting..." : "Update password"}
+            {saving && (<IconReload className="ml-1 size-4 animate-spin"/>)}
+          </Button>
+        </div>
       </form>
     </Form>
   )

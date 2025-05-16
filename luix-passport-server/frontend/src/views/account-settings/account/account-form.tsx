@@ -116,7 +116,7 @@ export function AccountForm() {
           options={locales}
           required
         />
-        <SelectFormField 
+        <SelectFormField
           control={form.control} 
           name="timeZoneId"
           label="Time Zone"
@@ -131,10 +131,12 @@ export function AccountForm() {
           required
         />
 
-        <Button type="submit" disabled={saving}>
-          {saving ? "Updating account..." : "Update account"}
-          {saving && (<IconReload className="ml-1 size-4 animate-spin"/>)}
-        </Button>
+        <div className="flex justify-end">
+          <Button type="submit" className="w-full sm:w-auto" disabled={saving}>
+            {saving ? "Updating account..." : "Update account"}
+            {saving && (<IconReload className="ml-1 size-4 animate-spin"/>)}
+          </Button>
+        </div>
       </form>
     </Form>
   )
