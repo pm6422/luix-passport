@@ -50,20 +50,18 @@ const SelectFormField = <TFieldValues extends FieldValues>({
     render={({ field }) => (
       <FormItem className={formItemClassName}>
         {label && <RequiredFormLabel required={required}>{label}</RequiredFormLabel>}
-        <FormControl>
-          <Select onValueChange={field.onChange} value={field.value} >
-            <FormControl>
-              <SelectTrigger>
-                <SelectValue placeholder={placeholder}/>
-              </SelectTrigger>
-            </FormControl>
-            <SelectContent className={selectContentClassName}>
-              {options.map(option => (
-                <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </FormControl>
+        <Select onValueChange={field.onChange} value={field.value}>
+          <FormControl>
+            <SelectTrigger>
+              <SelectValue placeholder={placeholder}/>
+            </SelectTrigger>
+          </FormControl>
+          <SelectContent className={selectContentClassName}>
+            {options.map(option => (
+              <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
         {description && <FormDescription>{description}</FormDescription>}
         <FormMessage />
       </FormItem>
