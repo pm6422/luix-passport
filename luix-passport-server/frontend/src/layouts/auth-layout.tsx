@@ -8,7 +8,7 @@ import { RoleAdmin } from "@/components/custom/role/role-admin"
 import { RoleOnlyUser } from "@/components/custom/role/role-only-user"
 import { useLocation } from "react-router-dom"
 import { CentralTopNav } from "@/components/central-top-nav"
-import { NotificationNav } from "@/components/notification-nav.tsx"
+// import { NotificationNav } from "@/components/notification-nav.tsx"
 import { AccountNav } from "@/components/account-nav.tsx"
 import { Layout, LayoutHeader } from "@/layouts/layout-definitions"
 // import { Search } from "@/components/custom/search"
@@ -59,7 +59,7 @@ export default function AuthLayout() {
             </RoleOnlyUser>
             <div className="ml-auto flex items-center space-x-4">
               {/* <Search /> */}
-              <NotificationNav/>
+              {/*<NotificationNav/>*/}
               <AccountNav />
             </div>
           </LayoutHeader>
