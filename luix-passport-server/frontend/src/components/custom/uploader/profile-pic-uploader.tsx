@@ -14,6 +14,7 @@ type Props = {
 export function ProfilePicUploader({
                                      defaultValue,
                                      onValueChange,
+                                     avatarClassName
                                    }: Props) {
   const [imageSrc, setImageSrc] = useState<string | undefined>(defaultValue)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -30,7 +31,7 @@ export function ProfilePicUploader({
 
   return (
     <div className="relative size-40">
-      <Avatar className="w-full h-full">
+      <Avatar className={`w-full h-full ${avatarClassName}`}>
         <AvatarImage src={imageSrc} className="object-cover"/>
         <AvatarFallback className="bg-secondary">
           <IconUserScan className="size-16"/>
