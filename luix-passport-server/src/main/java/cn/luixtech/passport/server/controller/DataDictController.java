@@ -34,12 +34,12 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import static cn.luixtech.passport.server.domain.UserRole.ROLE_DEVELOPER;
+import static cn.luixtech.passport.server.domain.UserRole.ROLE_ADMIN;
 import static com.luixtech.springbootframework.utils.HttpHeaderUtils.generatePageHeaders;
 
 @RestController
 @AllArgsConstructor
-@PreAuthorize("hasAuthority(\"" + ROLE_DEVELOPER + "\")")
+@PreAuthorize("hasAuthority(\"" + ROLE_ADMIN + "\")")
 @Slf4j
 public class DataDictController {
     private final DataDictRepository dataDictRepository;
