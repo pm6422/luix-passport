@@ -23,6 +23,15 @@ Luix passport frontend UI crafted with Shadcn and Vite.
 
 **Icons:** [Tabler Icons](https://tabler.io/icons)
 
+## Installing Shadcn UI
+```bash
+  npm install @shadcn/ui@latest
+```
+
+```bash
+  npx shadcn@latest init
+```
+
 ## Installing Shadcn UI component
 npx shadcn-ui@latest add label
 
