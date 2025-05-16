@@ -46,19 +46,19 @@ export function merge(source: any, target: any): any {
 }
 
 export function toBase64(file: File) {
-	return new Promise((resolve, reject) => {
-		const fileReader = new FileReader()
-		
-		fileReader.readAsDataURL(file)
-		
-		fileReader.onload = () => {
-			resolve(fileReader.result)
-		}
-		
-		fileReader.onerror = (error) => {
-			reject(error)
-		}
-	})
+  return new Promise((resolve, reject) => {
+    const fileReader = new FileReader()
+
+    fileReader.readAsDataURL(file)
+
+    fileReader.onload = () => {
+      resolve(fileReader.result)
+    }
+
+    fileReader.onerror = (error) => {
+      reject(error)
+    }
+  })
 }
 
 export function fromBase64(base64String: string, fileName: string) {
@@ -111,7 +111,7 @@ function searchRow(row: any, keyword: string): boolean {
           return true
         }
       }
-    } 
+    }
   }
   return false
 }
