@@ -74,30 +74,30 @@ export function EditDialog({
         {children}
       </DialogTrigger>
       <SaveDialogContent entityName={entityName} id={id} form={form} save={save} afterSave={afterSave} setOpen={setOpen}>
-        <div className="flex items-center justify-between gap-5">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-5">
           <Avatar className="size-20">
             <AvatarImage src={"api/user-profile-pics/" + id} alt="profile" />
             <AvatarFallback>Avatar</AvatarFallback>
           </Avatar>
-          <Separator orientation="vertical" />
-          <InputFormField 
-            control={form.control} 
-            name="username" 
+          <Separator orientation="vertical" className="hidden md:block" />
+          <InputFormField
+            control={form.control}
+            name="username"
             label="Username"
             formItemClassName="w-full"
-            required 
+            required
             disabled={!!id}
           />
         </div>
 
-        <InputFormField 
-          control={form.control} 
-          name="email" 
-          label="Email" 
+        <InputFormField
+          control={form.control}
+          name="email"
+          label="Email"
           required
         />
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-col md:flex-row items-center gap-2">
           <InputFormField
             control={form.control}
             name="firstName"
@@ -113,7 +113,7 @@ export function EditDialog({
           />
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-col md:flex-row items-center gap-2">
           <PhoneInputFormField
             control={form.control}
             name="mobileNo"
@@ -133,9 +133,9 @@ export function EditDialog({
           />
         </div>
 
-        <div className="flex items-center gap-2">
-          <SelectFormField 
-            control={form.control} 
+        <div className="flex flex-col md:flex-row items-center gap-2">
+          <SelectFormField
+            control={form.control}
             name="timeZoneId"
             label="Time Zone"
             options={supportedTimezones}
@@ -143,8 +143,8 @@ export function EditDialog({
             required
           />
 
-          <SelectFormField 
-            control={form.control} 
+          <SelectFormField
+            control={form.control}
             name="dateTimeFormatId"
             label="Date Time Format"
             options={supportedDateTimeFormats}
@@ -170,8 +170,8 @@ export function EditDialog({
         />
 
         <SwitchFormField
-          control={form.control} 
-          name="enabled" 
+          control={form.control}
+          name="enabled"
           label="Enabled"
           description="After disabling, existing data can still reference the object, but new data cannot."
         />
