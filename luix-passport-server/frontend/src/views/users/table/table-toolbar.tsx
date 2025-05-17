@@ -52,34 +52,34 @@ export function DataTableToolbar ({
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="flex flex-col gap-4"
               >
-                <div className="flex items-center gap-2">
+                <div className="flex flex-col sm:flex-row gap-2 w-full">
                   <InputFormField 
                     control={form.control} 
                     name="username" 
                     label="Username" 
-                    formItemClassName="w-full"
+                    formItemClassName="w-full sm:w-auto"
                   />
 
                   <InputFormField 
                     control={form.control} 
                     name="email" 
                     label="Email" 
-                    formItemClassName="w-full"
+                    formItemClassName="w-full sm:w-auto"
                   />
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex flex-col sm:flex-row gap-2 w-full">
                   <InputFormField 
                     control={form.control} 
                     name="mobileNo" 
                     label="Mobile No" 
-                    formItemClassName="w-full"
+                    formItemClassName="w-full sm:w-auto"
                   />
                   <SelectFormField
                     control={form.control}
                     name="enabled"
                     label="Enabled"
                     options={yesNoOptions}
-                    formItemClassName="w-full"
+                    formItemClassName="w-full sm:w-auto"
                   />
                 </div>
                 <div className="flex justify-end gap-2">
