@@ -13,7 +13,6 @@ import { RequiredFormLabel } from "@/components/custom/required-form-label"
 import SwitchFormField from "@/components/custom/form-field/switch"
 import { type Auth2Client, auth2ClientSchema, initialAuth2ClientState } from "@/domains/auth2-client.ts"
 import { Oauth2ClientService } from "@/services/oauth2-client-service"
-import { merge } from "@/lib/utils"
 
 interface EditDialogProps {
   children: ReactNode,
@@ -76,7 +75,7 @@ export function EditDialog({
       setScopeOptions(options)
     })
     id && Oauth2ClientService.findById(id).then(r => {
-      form.reset(merge(r.data, initialAuth2ClientState))
+      form.reset(r.data)
     })
   }, [open])
 
@@ -85,7 +84,7 @@ export function EditDialog({
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <SaveDialogContent entityName={entityName} id={id} form={form} save={save} afterSave={afterSave} setOpen={setOpen}>
+      <SaveDialogContent entityName={entityName} id={id} form={form} save={save} afterSave={afterSave} setOpen={setOpen} debug={true}>
         <InputFormField 
           control={form.control} 
           name="clientId" 

@@ -9,7 +9,6 @@ import { type Option } from "@/components/custom/form-field/combo-box"
 import SwitchFormField from "@/components/custom/form-field/switch"
 import { type DataDict, dataDictSchema, initialDataDictState } from "@/domains/data-dict"
 import { DataDictService } from "@/services/data-dict-service"
-import { merge } from "@/lib/utils"
 
 interface EditDialogProps {
   children: ReactNode,
@@ -42,7 +41,7 @@ export function EditDialog({
       setCategoryCodeOptions(options)
     })
     id && DataDictService.findById(id).then(r => {
-      form.reset(merge(r.data, initialDataDictState))
+      form.reset(r.data)
     })
   }, [open])
 
@@ -51,7 +50,7 @@ export function EditDialog({
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <SaveDialogContent entityName={entityName} id={id} form={form} save={save} afterSave={afterSave} setOpen={setOpen}>
+      <SaveDialogContent entityName={entityName} id={id} form={form} save={save} afterSave={afterSave} setOpen={setOpen} debug={true}>
         <ComboboxFormField
           control={form.control} 
           name="categoryCode"

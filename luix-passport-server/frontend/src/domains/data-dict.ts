@@ -1,14 +1,14 @@
 import { z } from "zod"
 
 export const dataDictSchema = z.object({
-  id: z.string().optional(),
-  num: z.string().optional(),
+  id: z.string().optional().nullable(),
+  num: z.string().optional().nullable(),
   categoryCode: z.string().trim().min(1, { message: "Required" }),
   dictCode: z.string().trim().min(1, { message: "Required" }),
-  dictName: z.string().optional(),
-  remark: z.string().optional(),
-  enabled: z.boolean().optional(),
-  modifiedAt: z.string().optional()
+  dictName: z.string().optional().nullable(),
+  remark: z.string().optional().nullable(),
+  enabled: z.boolean().optional().nullable(),
+  modifiedAt: z.string().optional().nullable()
 })
 
 export type DataDict = z.infer<typeof dataDictSchema>

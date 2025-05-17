@@ -17,7 +17,6 @@ import { locales } from "@/data/locales"
 import { DataDictService } from "@/services/data-dict-service"
 import { AccountService } from "@/services/account-service"
 import { UserService } from "@/services/user-service"
-import { merge } from "@/lib/utils"
 import type { Option } from "@/components/custom/form-field/combo-box"
 import type { SupportedTimezone } from "@/domains/supported-timezone"
 import type { SupportedDateTimeFormat } from "@/domains/supported-date-time-format"
@@ -63,7 +62,7 @@ export function EditDialog({
         ({label: item.displayName + " (" + item.example + ")", value: item.id})));
 
       id && UserService.findById(id).then(r => {
-        form.reset(merge(r.data, initialUserState))
+        form.reset(r.data)
       })
     })
   }, [open])

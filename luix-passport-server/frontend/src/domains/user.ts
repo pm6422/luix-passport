@@ -2,27 +2,27 @@ import { z } from "zod"
 import { isValidPhoneNumber } from "react-phone-number-input"
 
 export const userSchema = z.object({
-  id: z.string().optional(),
+  id: z.string().optional().nullable(),
   username: z.string().trim().min(1, { message: "Required" }),
   email: z.string().trim().min(1, { message: "Required" }).email("Invalid email format"),
   mobileNo: z.string().trim().min(1, { message: "Required" }).refine(isValidPhoneNumber, { message: "Invalid phone number" }),
-  firstName: z.string().optional(),
-  lastName: z.string().optional(),
-  activationCode: z.string().optional(),
+  firstName: z.string().optional().nullable(),
+  lastName: z.string().optional().nullable(),
+  activationCode: z.string().optional().nullable(),
   resetAt: z.string().optional(),
   remark: z.string().optional(),
   locale: z.string().trim().min(1, { message: "Required" }),
   timeZoneId: z.string().trim().min(1, { message: "Required" }),
   dateTimeFormatId: z.string().trim().min(1, { message: "Required" }),
-  profilePhotoEnabled: z.boolean().optional(),
-  activated: z.boolean().optional(),
-  enabled: z.boolean().optional(),
-  accountExpiresAt: z.string().optional(),
-  passwordExpiresAt: z.string().optional(),
-  lastSignInAt: z.string().optional(),
+  profilePhotoEnabled: z.boolean().optional().nullable(),
+  activated: z.boolean().optional().nullable(),
+  enabled: z.boolean().optional().nullable(),
+  accountExpiresAt: z.string().optional().nullable(),
+  passwordExpiresAt: z.string().optional().nullable(),
+  lastSignInAt: z.string().optional().nullable(),
   roles: z.array(z.string()).min(1, { message: "Required" }),
-  createdAt: z.string().optional(),
-  modifiedAt: z.string().optional()
+  createdAt: z.string().optional().nullable(),
+  modifiedAt: z.string().optional().nullable()
 })
 
 export type User = z.infer<typeof userSchema>
