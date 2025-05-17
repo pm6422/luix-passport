@@ -35,17 +35,19 @@ import java.util.Date;
 import java.util.List;
 
 import static cn.luixtech.passport.server.domain.UserRole.ROLE_ADMIN;
+import static cn.luixtech.passport.server.domain.UserRole.ROLE_DEVELOPER;
 import static com.luixtech.springbootframework.utils.HttpHeaderUtils.generatePageHeaders;
 
 @RestController
 @AllArgsConstructor
-@PreAuthorize("hasAuthority(\"" + ROLE_ADMIN + "\")")
 @Slf4j
 public class DataDictController {
     private final DataDictRepository dataDictRepository;
     private final DataDictService    dataDictService;
 
+
     @Operation(summary = "create new data dict")
+    @PreAuthorize("hasAuthority(\"" + ROLE_DEVELOPER + "\")")
     @PostMapping("/api/data-dicts")
     public ResponseEntity<Void> create(@Parameter(description = "domain", required = true) @Valid @RequestBody DataDict domain) {
         dataDictRepository.save(domain);
@@ -53,6 +55,7 @@ public class DataDictController {
     }
 
     @Operation(summary = "find data dict list")
+    @PreAuthorize("hasAuthority('" + ROLE_ADMIN + "') or hasAuthority('" + ROLE_DEVELOPER + "')")
     @GetMapping("/api/data-dicts")
     public ResponseEntity<List<DataDict>> find(@ParameterObject Pageable pageable,
                                                @RequestParam(value = "num", required = false) String num,
@@ -63,6 +66,7 @@ public class DataDictController {
     }
 
     @Operation(summary = "find data dict by id")
+    @PreAuthorize("hasAuthority(\"" + ROLE_DEVELOPER + "\")")
     @GetMapping("/api/data-dicts/{id}")
     public ResponseEntity<DataDict> findById(@Parameter(description = "ID", required = true) @PathVariable String id) {
         DataDict domain = dataDictRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
@@ -70,6 +74,7 @@ public class DataDictController {
     }
 
     @Operation(summary = "update data dict")
+    @PreAuthorize("hasAuthority(\"" + ROLE_DEVELOPER + "\")")
     @PutMapping("/api/data-dicts")
     public ResponseEntity<Void> update(@Parameter(description = "domain", required = true) @Valid @RequestBody DataDict domain) {
         dataDictRepository.save(domain);
@@ -77,6 +82,7 @@ public class DataDictController {
     }
 
     @Operation(summary = "batch update data dict")
+    @PreAuthorize("hasAuthority(\"" + ROLE_DEVELOPER + "\")")
     @PutMapping("/api/data-dicts/batch-update")
     public ResponseEntity<Void> batchUpdate(@Parameter(description = "target", required = true) @Valid @RequestBody BatchUpdateDataDict target) {
         dataDictService.batchUpdateCategoryCode(target.getIds(), target.getTargetCategoryCode());
@@ -84,6 +90,7 @@ public class DataDictController {
     }
 
     @Operation(summary = "delete data dict by id")
+    @PreAuthorize("hasAuthority(\"" + ROLE_DEVELOPER + "\")")
     @DeleteMapping("/api/data-dicts/{id}")
     public ResponseEntity<Void> delete(@Parameter(description = "ID", required = true) @PathVariable String id) {
         dataDictRepository.deleteById(id);
@@ -91,6 +98,7 @@ public class DataDictController {
     }
 
     @Operation(summary = "import data dicts", description = "file format should be JSON")
+    @PreAuthorize("hasAuthority(\"" + ROLE_DEVELOPER + "\")")
     @PostMapping(value = "/api/data-dicts/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public void importData(@Parameter(description = "file", required = true) @RequestPart MultipartFile file) throws IOException {
         String jsonStr = StreamUtils.copyToString(file.getInputStream(), StandardCharsets.UTF_8);
