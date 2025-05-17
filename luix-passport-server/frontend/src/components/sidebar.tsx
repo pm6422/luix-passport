@@ -1,4 +1,5 @@
 import { useEffect, useState, HTMLAttributes, Dispatch, SetStateAction } from "react"
+import { useNavigate } from "react-router-dom"
 import { IconChevronsLeft, IconMenu2, IconX } from "@tabler/icons-react"
 import { Layout, LayoutHeader } from "../layouts/layout-definitions"
 import { Button } from "./custom/button"
@@ -18,6 +19,7 @@ export default function Sidebar2({
   isCollapsed,
   setIsCollapsed,
 }: SidebarProps) {
+  const navigate = useNavigate();
   const [navOpened, setNavOpened] = useState(false)
   const { appInfo } = useStore(appInfoStore)
 
@@ -53,6 +55,7 @@ export default function Sidebar2({
               className="relative m-auto -intro-y"
               width={45}
               height={45}
+              onClick={() => navigate("/")}
             />
             <div
                 className={`flex flex-col ms-1 justify-end truncate ${isCollapsed ? "invisible w-0" : "visible w-auto"}`}
@@ -64,6 +67,7 @@ export default function Sidebar2({
                   className="intro-y"
                   width={150}
                   height={50}
+                  onClick={() => navigate("/")}
               />
             </div>
           </div>
