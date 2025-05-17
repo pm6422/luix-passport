@@ -79,11 +79,11 @@ export function DataTableToolbar ({
                     formItemClassName="w-full"
                   />
                 </div>
-                <div className="flex justify-end gap-2">
-                  <Button type="button" variant="outline" className="max-w-20" onClick={() => form.reset()}>
+                <div className="flex flex-col sm:flex-row justify-end gap-2">
+                  <Button type="button" variant="outline" className="w-full sm:w-[80px]" onClick={() => form.reset()}>
                     Reset
                   </Button>
-                  <Button className="max-w-20">
+                  <Button className="w-full sm:w-[80px]">
                     Apply
                   </Button>
                 </div>
