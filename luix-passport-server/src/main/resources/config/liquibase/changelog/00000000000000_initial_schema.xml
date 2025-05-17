@@ -5,9 +5,6 @@
             <column name="id" type="VARCHAR(50)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="display_name" type="VARCHAR(100)">
-                <constraints nullable="false"/>
-            </column>
             <column name="utc_offset" type="VARCHAR(10)">
                 <constraints nullable="false"/>
             </column>

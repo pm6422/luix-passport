@@ -23,11 +23,6 @@ public class SupportedTimezone extends AbstractBaseDomain implements Serializabl
     private static final long serialVersionUID = 1L;
 
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotEmpty(message = "displayName:{Validation.NotEmpty}")
-    @Column(nullable = false)
-    private String displayName;
-
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     @NotEmpty(message = "utcOffset:{Validation.NotEmpty}")
     @Column(nullable = false)
     private String utcOffset;
