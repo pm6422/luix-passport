@@ -57,7 +57,7 @@ export function EditDialog({
       // load options
       setEnabledRoles(results[0].data.map((item: DataDict) => ({label: item.dictCode, value: item.dictCode})));
       setSupportedTimezones(results[1].data.map((item: SupportedTimezone) =>
-        ({label: item.displayName + " (UTC" + item.utcOffset + ")", value: item.id})));
+        ({label: "(UTC" + item.utcOffset + ") " + item.displayName , value: item.id})));
       setSupportedDateTimeFormats(results[2].data.map((item: SupportedDateTimeFormat) =>
         ({label: item.displayName + " (" + item.example + ")", value: item.id})));
 
