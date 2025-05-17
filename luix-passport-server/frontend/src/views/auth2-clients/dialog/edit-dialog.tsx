@@ -17,7 +17,7 @@ import { Oauth2ClientService } from "@/services/oauth2-client-service"
 interface EditDialogProps {
   children: ReactNode,
   entityName: string,
-  id?: string,
+  id?: string | null,
   save: (formData: Auth2Client) => Promise<any>,
   afterSave?: (success: boolean) => void
 }

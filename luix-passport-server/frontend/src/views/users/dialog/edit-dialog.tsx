@@ -24,7 +24,7 @@ import type { SupportedDateTimeFormat } from "@/domains/supported-date-time-form
 interface EditDialogProps {
   children: ReactNode,
   entityName: string,
-  id?: string,
+  id?: string | null,
   save: (formData: User) => Promise<void>,
   afterSave?: (success: boolean) => void
 }
