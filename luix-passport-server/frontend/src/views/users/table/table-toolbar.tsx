@@ -5,27 +5,15 @@ import InputFormField from "@/components/custom/form-field/input"
 import { Button } from "@/components/custom/button"
 import { IconPlus, IconFilterSearch } from "@tabler/icons-react"
 import { EditDialog } from "../dialog/edit-dialog"
+import { yesNo } from "@/data/yes-no"
 import { type User, type UserCriteriaSchema, userCriteriaSchema, initialUserCriteriaState } from "@/domains/user"
-import {
-  Form,
-  FormControl,
-  FormLabel,
-  FormField,
-  FormItem,
-  FormMessage
-} from "@/components/ui/form"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from "@/components/ui/select"
+import { Form } from "@/components/ui/form"
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import SelectFormField from '@/components/custom/form-field/select.tsx'
 
 interface DataTableToolbarProps{
   entityName: string,
@@ -86,26 +74,12 @@ export function DataTableToolbar ({
                     label="Mobile No" 
                     formItemClassName="w-full"
                   />
-                  <FormField
+                  <SelectFormField
                     control={form.control}
                     name="enabled"
-                    render={({ field }) => (
-                      <FormItem className="w-full">
-                        <FormLabel>Enabled</FormLabel>
-                        <Select onValueChange={field.onChange} value={field.value}>
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue/>
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <SelectItem value="true">Yes</SelectItem>
-                            <SelectItem value="false">No</SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage/>
-                      </FormItem>
-                    )}
+                    label="Enabled"
+                    options={yesNo}
+                    formItemClassName="w-full"
                   />
                 </div>
                 <div className="flex justify-end gap-2">

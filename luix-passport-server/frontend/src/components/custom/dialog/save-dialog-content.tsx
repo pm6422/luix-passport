@@ -20,7 +20,7 @@ import { cn } from "@/lib/utils"
 interface Props {
   children: ReactNode;
   entityName: string;
-  id?: string;
+  id?: string | null;
   form: UseFormReturn<any, any, any>;
   size?: "sm" | "md" | "lg";
   save: (formData: any) => Promise<any>;
@@ -44,7 +44,6 @@ const SaveDialogContent = ({
 }: Props) => {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<Object>({})
-
 
   function onSubmit(formData: any): void {
     setSaving(true)

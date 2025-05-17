@@ -13,7 +13,7 @@ import { DataDictService } from "@/services/data-dict-service"
 interface EditDialogProps {
   children: ReactNode,
   entityName: string,
-  id?: string,
+  id?: string | null,
   save: (formData: DataDict) => Promise<void>,
   afterSave?: (success: boolean) => void
 }
