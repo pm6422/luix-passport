@@ -4,8 +4,8 @@ import { DateTime } from "@/components/custom/date-time"
 
 export function LoginUserItem(loginUser : LoginUser) {
     return (
-        <div className="flex items-center">
-            <div className="flex items-center">
+        <div className="flex flex-col sm:flex-row gap-2 w-full">
+            <div className="flex items-center w-full sm:w-auto">
               <Avatar className="size-9">
                 <AvatarImage src={"api/user-profile-pics/" + loginUser.id} alt="profile" />
                 <AvatarFallback>AVATAR</AvatarFallback>
@@ -17,7 +17,7 @@ export function LoginUserItem(loginUser : LoginUser) {
                 </p>
               </div>
             </div>
-            <div className="ml-auto text-sm"><DateTime value={loginUser.signInAt} className="text-xs"/></div>
+            <div className="ml-auto w-full sm:w-auto"><DateTime value={loginUser.signInAt} className="text-sm text-muted-foreground"/></div>
         </div>
     )
 }
