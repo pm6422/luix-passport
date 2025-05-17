@@ -149,7 +149,7 @@ export function ChangePasswordForm() {
           name="verificationCode"
           render={({ field }) => (
             <FormItem>
-              <RequiredFormLabel required={true}>Verification code</RequiredFormLabel>
+              <RequiredFormLabel required={true}>Verification Code</RequiredFormLabel>
               <FormControl>
                 <PinInput
                   className="flex h-10 space-x-4"
