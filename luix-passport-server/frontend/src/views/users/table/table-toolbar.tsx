@@ -6,6 +6,7 @@ import { Button } from "@/components/custom/button"
 import { IconPlus, IconFilterSearch } from "@tabler/icons-react"
 import { EditDialog } from "../dialog/edit-dialog"
 import { yesNoOptions } from "@/data/yes-no-options"
+import SelectFormField from '@/components/custom/form-field/select'
 import { type User, type UserCriteriaSchema, userCriteriaSchema, initialUserCriteriaState } from "@/domains/user"
 import { Form } from "@/components/ui/form"
 import {
@@ -13,7 +14,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import SelectFormField from '@/components/custom/form-field/select.tsx'
 
 interface DataTableToolbarProps{
   entityName: string,
@@ -52,34 +52,34 @@ export function DataTableToolbar ({
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="flex flex-col gap-4"
               >
-                <div className="flex flex-col sm:flex-row gap-2 w-full">
+                <div className="flex flex-col sm:flex-row gap-2">
                   <InputFormField 
                     control={form.control} 
                     name="username" 
                     label="Username" 
-                    formItemClassName="w-full sm:w-auto"
+                    formItemClassName="w-full"
                   />
 
                   <InputFormField 
                     control={form.control} 
                     name="email" 
                     label="Email" 
-                    formItemClassName="w-full sm:w-auto"
+                    formItemClassName="w-full"
                   />
                 </div>
-                <div className="flex flex-col sm:flex-row gap-2 w-full">
+                <div className="flex flex-col sm:flex-row gap-2">
                   <InputFormField 
                     control={form.control} 
                     name="mobileNo" 
                     label="Mobile No" 
-                    formItemClassName="w-full sm:w-auto"
+                    formItemClassName="w-full"
                   />
                   <SelectFormField
                     control={form.control}
                     name="enabled"
                     label="Enabled"
                     options={yesNoOptions}
-                    formItemClassName="w-full sm:w-auto"
+                    formItemClassName="w-full"
                   />
                 </div>
                 <div className="flex justify-end gap-2">

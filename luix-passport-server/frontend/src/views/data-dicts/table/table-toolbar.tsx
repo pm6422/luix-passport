@@ -14,8 +14,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { yesNoOptions } from '@/data/yes-no-options.tsx'
-import SelectFormField from '@/components/custom/form-field/select.tsx'
+import { yesNoOptions } from '@/data/yes-no-options'
+import SelectFormField from '@/components/custom/form-field/select'
 
 interface DataTableToolbarProps{
   entityName: string,
@@ -56,7 +56,7 @@ export function DataTableToolbar ({
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="flex flex-col gap-4"
               >
-                <div className="flex items-center gap-2">
+                <div className="flex flex-col sm:flex-row gap-2">
                   <InputFormField 
                     control={form.control} 
                     name="num" 
