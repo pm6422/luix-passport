@@ -9,11 +9,6 @@ export const yesNoOptions = [
     value: "false",
     label: "No",
     icon: undefined
-  },
-  {
-    value: null,
-    label: "All",
-    icon: undefined
   }
 ]
 
