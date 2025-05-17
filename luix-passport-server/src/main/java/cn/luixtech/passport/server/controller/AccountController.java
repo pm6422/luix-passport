@@ -10,10 +10,10 @@ import cn.luixtech.passport.server.pojo.ChangePassword;
 import cn.luixtech.passport.server.pojo.ManagedUser;
 import cn.luixtech.passport.server.pojo.PasswordRecovery;
 import cn.luixtech.passport.server.repository.SupportedDateTimeFormatRepository;
-import cn.luixtech.passport.server.repository.SupportedTimezoneRepository;
 import cn.luixtech.passport.server.repository.UserProfilePicRepository;
 import cn.luixtech.passport.server.repository.UserRepository;
 import cn.luixtech.passport.server.service.MailService;
+import cn.luixtech.passport.server.service.SupportedTimezoneService;
 import cn.luixtech.passport.server.service.UserProfilePicService;
 import cn.luixtech.passport.server.service.UserService;
 import cn.luixtech.passport.server.utils.AuthUtils;
@@ -62,7 +62,7 @@ public class AccountController {
     private final MailService                       mailService;
     private final UserRepository                    userRepository;
     private final UserProfilePicRepository          userProfilePicRepository;
-    private final SupportedTimezoneRepository       supportedTimezoneRepository;
+    private final SupportedTimezoneService          supportedTimezoneService;
     private final SupportedDateTimeFormatRepository supportedDateTimeFormatRepository;
     private final UserService                       userService;
     private final UserProfilePicService             userProfilePicService;
@@ -241,7 +241,7 @@ public class AccountController {
     @Operation(summary = "get all supported time zones")
     @GetMapping("/api/accounts/all-supported-time-zones")
     public ResponseEntity<List<SupportedTimezone>> getSupportedTimeZones() {
-        return ResponseEntity.ok(supportedTimezoneRepository.findAll());
+        return ResponseEntity.ok(supportedTimezoneService.findAll());
     }
 
     @Operation(summary = "get all supported date time formats")
