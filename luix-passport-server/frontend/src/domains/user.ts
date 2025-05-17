@@ -48,17 +48,17 @@ export const initialUserState: User = {
   modifiedAt: ""
 }
 export const userCriteriaSchema = z.object({
-  username: z.string().optional(),
-  email: z.string().optional(),
-  mobileNo: z.string().optional(),
-  enabled: z.string().optional()
+  username: z.string().optional().nullable(),
+  email: z.string().optional().nullable(),
+  mobileNo: z.string().optional().nullable(),
+  enabled: z.string().optional().nullable()
 })
 
 export type UserCriteriaSchema = z.infer<typeof userCriteriaSchema>
 
 export const initialUserCriteriaState: UserCriteriaSchema = {
-  username: "",
-  email: "",
-  mobileNo: "",
-  enabled: ""
+  username: null,
+  email: null,
+  mobileNo: null,
+  enabled: null
 }

@@ -25,15 +25,15 @@ export const initialDataDictState: DataDict = {
 }
 
 export const dataDictCriteriaSchema = z.object({
-  num: z.string().optional(),
-  categoryCode: z.string().optional(),
-  enabled: z.string().optional()
+  num: z.string().optional().nullable(),
+  categoryCode: z.string().optional().nullable(),
+  enabled: z.string().optional().nullable()
 })
 
 export type DataDictCriteria = z.infer<typeof dataDictCriteriaSchema>
 
 export const initialDataDictCriteriaState: DataDictCriteria = {
-  num: "",
-  categoryCode: "",
-  enabled: ""
+  num: null,
+  categoryCode: null,
+  enabled: null
 }

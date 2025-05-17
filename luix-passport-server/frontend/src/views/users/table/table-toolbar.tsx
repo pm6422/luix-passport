@@ -5,7 +5,7 @@ import InputFormField from "@/components/custom/form-field/input"
 import { Button } from "@/components/custom/button"
 import { IconPlus, IconFilterSearch } from "@tabler/icons-react"
 import { EditDialog } from "../dialog/edit-dialog"
-import { yesNo } from "@/data/yes-no"
+import { yesNoOptions } from "@/data/yes-no-options"
 import { type User, type UserCriteriaSchema, userCriteriaSchema, initialUserCriteriaState } from "@/domains/user"
 import { Form } from "@/components/ui/form"
 import {
@@ -78,7 +78,7 @@ export function DataTableToolbar ({
                     control={form.control}
                     name="enabled"
                     label="Enabled"
-                    options={yesNo}
+                    options={yesNoOptions}
                     formItemClassName="w-full"
                   />
                 </div>

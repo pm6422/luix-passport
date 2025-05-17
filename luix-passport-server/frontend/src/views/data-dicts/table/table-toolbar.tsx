@@ -8,26 +8,14 @@ import { EditDialog } from "../dialog/edit-dialog"
 import { type DataDict, type DataDictCriteria, dataDictCriteriaSchema, initialDataDictCriteriaState } from "@/domains/data-dict"
 import { type UploadFormSchema } from "@/components/custom/uploader/upload-dialog"
 import { UploadDialog } from "@/components/custom/uploader/upload-dialog"
-import {
-  Form,
-  FormControl,
-  FormLabel,
-  FormField,
-  FormItem,
-  FormMessage
-} from "@/components/ui/form"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from "@/components/ui/select"
+import { Form } from "@/components/ui/form"
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import { yesNoOptions } from '@/data/yes-no-options.tsx'
+import SelectFormField from '@/components/custom/form-field/select.tsx'
 
 interface DataTableToolbarProps{
   entityName: string,
@@ -82,27 +70,13 @@ export function DataTableToolbar ({
                     label="Category Code" 
                     formItemClassName="w-full"
                   />
-                  
-                  <FormField
+
+                  <SelectFormField
                     control={form.control}
                     name="enabled"
-                    render={({ field }) => (
-                      <FormItem className="w-full">
-                        <FormLabel>Enabled</FormLabel>
-                        <Select onValueChange={field.onChange} value={field.value}>
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue/>
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <SelectItem value="true">Yes</SelectItem>
-                            <SelectItem value="false">No</SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage/>
-                      </FormItem>
-                    )}
+                    label="Enabled"
+                    options={yesNoOptions}
+                    formItemClassName="w-full"
                   />
                 </div>
                 <div className="flex justify-end gap-2">
