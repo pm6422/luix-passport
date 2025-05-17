@@ -4,7 +4,7 @@ import { DateTime } from "@/components/custom/date-time"
 
 export function LoginUserItem(loginUser : LoginUser) {
     return (
-        <div className="flex flex-col sm:flex-row gap-2 w-full">
+        <div className="flex flex-col sm:flex-row gap-2">
             <div className="flex items-center w-full sm:w-auto">
               <Avatar className="size-9">
                 <AvatarImage src={"api/user-profile-pics/" + loginUser.id} alt="profile" />
