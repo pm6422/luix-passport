@@ -155,7 +155,7 @@ const MultiSelect: React.ForwardRefRenderFunction<HTMLButtonElement, MultiSelect
                       {IconComponent && <IconComponent className="size-4 mr-1" />}
                       {creatable ? (option ? option.label : value) : option?.label}
                       <IconCircleX
-                        className="ml-1 size-4 cursor-pointer"
+                        className="ml-1 size-4"
                         onClick={(event) => {
                           event.stopPropagation()
                           handleRemoveValue(value)
@@ -168,7 +168,7 @@ const MultiSelect: React.ForwardRefRenderFunction<HTMLButtonElement, MultiSelect
               <div className="flex items-center justify-between">
                 {showClearButton ? (
                   <IconX
-                    className="size-4 mr-3 cursor-pointer text-muted-foreground"
+                    className="size-4 mr-3 text-muted-foreground"
                     onClick={(event) => {
                       event.stopPropagation()
                       handleClearAll()
@@ -177,7 +177,7 @@ const MultiSelect: React.ForwardRefRenderFunction<HTMLButtonElement, MultiSelect
                   />
                 ) : (
                   <IconSelector
-                    className="size-4 mr-3 cursor-pointer text-muted-foreground"
+                    className="size-4 mr-3 text-muted-foreground"
                     onMouseEnter={() => setShowClearButton(true)}
                   />
                 )}
@@ -186,7 +186,7 @@ const MultiSelect: React.ForwardRefRenderFunction<HTMLButtonElement, MultiSelect
           ) : (
             <div className="flex items-center justify-between w-full mx-auto">
               <span className="text-sm text-muted-foreground px-2">{placeholder}</span>
-              <IconSelector className="size-4 mr-3 cursor-pointer text-muted-foreground" />
+              <IconSelector className="size-4 mr-3 text-muted-foreground" />
             </div>
           )}
         </Button>
@@ -212,9 +212,9 @@ const MultiSelect: React.ForwardRefRenderFunction<HTMLButtonElement, MultiSelect
             {creatable && query && (
               <CommandEmpty
                 onClick={handleCreate}
-                className="flex cursor-pointer items-center justify-center gap-1 my-1"
+                className="flex items-center justify-center gap-1 my-1"
               >
-                <Button variant="ghost" className="flex-1 justify-center cursor-pointer gap-2">
+                <Button variant="ghost" className="flex-1 justify-center gap-2">
                   <IconCirclePlus className="size-5" />
                   {query}
                 </Button>
@@ -255,7 +255,7 @@ const MultiSelect: React.ForwardRefRenderFunction<HTMLButtonElement, MultiSelect
                   <>
                     <CommandItem
                       onSelect={handleClearAll}
-                      className="flex-1 justify-center cursor-pointer"
+                      className="flex-1 justify-center"
                     >
                       Clear
                     </CommandItem>
@@ -264,7 +264,7 @@ const MultiSelect: React.ForwardRefRenderFunction<HTMLButtonElement, MultiSelect
                 )}
                 <CommandItem
                   onSelect={() => setIsPopoverOpen(false)}
-                  className="flex-1 justify-center cursor-pointer"
+                  className="flex-1 justify-center"
                 >
                   Close
                 </CommandItem>
