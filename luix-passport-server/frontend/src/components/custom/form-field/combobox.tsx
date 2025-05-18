@@ -74,7 +74,7 @@ const ComboboxFormField = <TFieldValues extends FieldValues>({
                 >
                   {field.value
                     ? options.find((option) => option.value === field.value)?.label
-                    : "Select ..."}
+                    : placeholder || "Select..."}
                   <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
                 </Button>
               </PopoverTrigger>
@@ -89,8 +89,8 @@ const ComboboxFormField = <TFieldValues extends FieldValues>({
                       <CommandItem
                         key={option.value}
                         value={option.value}
-                        onSelect={(currentValue) => {
-                          field.onChange(currentValue === field.value ? "" : currentValue)
+                        onSelect={() => {
+                          field.onChange(option.value)
                           setOpen(false)
                         }}
                       >
