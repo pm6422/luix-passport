@@ -8,6 +8,7 @@ import CheckboxFormField from "@/components/custom/form-field/checkbox"
 import { type CheckboxOption } from "@/components/custom/form-field/checkbox"
 import SwitchFormField from "@/components/custom/form-field/switch"
 import SelectFormField from "@/components/custom/form-field/select"
+import ComboboxFormField from "@/components/custom/form-field/combobox"
 import PhoneInputFormField from "@/components/custom/form-field/phone-input"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { type User, userSchema, initialUserState } from "@/domains/user"
@@ -133,7 +134,7 @@ export function EditDialog({
         </div>
 
         <div className="flex flex-col md:flex-row items-center gap-2">
-          <SelectFormField
+          <ComboboxFormField
             control={form.control}
             name="timeZoneId"
             label="Time Zone"

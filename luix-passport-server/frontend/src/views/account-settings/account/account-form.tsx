@@ -20,7 +20,7 @@ import { type SupportedTimezone } from "@/domains/supported-timezone"
 import { type SupportedDateTimeFormat } from "@/domains/supported-date-time-format"
 import { Link } from "react-router-dom"
 import { type Option }  from "@/components/custom/form-field/multi-select"
-import { DataDictService } from '@/services/data-dict-service.ts'
+import { DataDictService } from '@/services/data-dict-service'
 
 const formSchema = z.object({
   id: z.string().trim().min(1, { message: "Required" }),
