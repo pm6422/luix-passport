@@ -79,7 +79,10 @@ const ComboboxFormField = <TFieldValues extends FieldValues>({
                 </Button>
               </PopoverTrigger>
             </FormControl>
-            <PopoverContent className="w-full p-0">
+            <PopoverContent
+              className="w-full p-0"
+              align="start"
+            >
               <Command>
                 <CommandInput placeholder={placeholder} className="h-9" />
                 <CommandList>
