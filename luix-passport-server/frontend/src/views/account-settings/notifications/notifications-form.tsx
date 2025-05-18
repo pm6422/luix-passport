@@ -12,10 +12,32 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form"
 import { Switch } from "@/components/ui/switch"
 import { toast } from "sonner"
 import { Link } from "react-router-dom"
+import MultipleSelector, { Option } from '@/components/custom/multiple-selector';
+
+const OPTIONS: Option[] = [
+  { label: 'nextjs', value: 'Nextjs' },
+  { label: 'React', value: 'react' },
+  { label: 'Remix', value: 'remix' },
+  { label: 'Vite', value: 'vite' },
+  { label: 'Nuxt', value: 'nuxt' },
+  { label: 'Vue', value: 'vue' },
+  { label: 'Svelte', value: 'svelte' },
+  { label: 'Angular', value: 'angular' },
+  { label: 'Ember', value: 'ember', disable: true },
+  { label: 'Gatsby', value: 'gatsby', disable: true },
+  { label: 'Astro', value: 'astro' },
+];
+
+const optionSchema = z.object({
+  label: z.string(),
+  value: z.string(),
+  disable: z.boolean().optional(),
+});
 
 const notificationsFormSchema = z.object({
   type: z.enum(["all", "mentions", "none"], {
@@ -26,6 +48,7 @@ const notificationsFormSchema = z.object({
   social_emails: z.boolean().default(false).optional(),
   marketing_emails: z.boolean().default(false).optional(),
   security_emails: z.boolean(),
+  frameworks: z.array(optionSchema).min(1),
 })
 
 type NotificationsFormValues = z.infer<typeof notificationsFormSchema>
@@ -58,6 +81,31 @@ export function NotificationsForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <pre className="mt-2 rounded-md bg-slate-950 p-4">
+          <code className="text-red-500">{JSON.stringify(form.getValues(), null, 2)}</code>
+        </pre>
+        <FormField
+          control={form.control}
+          name="frameworks"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Frameworks</FormLabel>
+              <FormControl>
+                <MultipleSelector
+                  {...field}
+                  defaultOptions={OPTIONS}
+                  placeholder="Select frameworks you like..."
+                  emptyIndicator={
+                    <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
+                      no results found.
+                    </p>
+                  }
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <RadioGroupFormField
           control={form.control}
           name="type"
