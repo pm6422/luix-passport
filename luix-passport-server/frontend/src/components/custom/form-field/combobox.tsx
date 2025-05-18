@@ -41,20 +41,19 @@ interface Props<TFieldValues extends FieldValues> {
 }
 
 const ComboboxFormField = <TFieldValues extends FieldValues>({
-  control,
-  name,
-  key,
-  label,
-  options,
-  description,
-  placeholder,
-  required,
-  disabled,
-  formItemClassName,
-  hide = false
-}: Props<TFieldValues>) => {
+                                                               control,
+                                                               name,
+                                                               key,
+                                                               label,
+                                                               options,
+                                                               description,
+                                                               placeholder,
+                                                               required,
+                                                               disabled,
+                                                               formItemClassName,
+                                                               hide = false
+                                                             }: Props<TFieldValues>) => {
   const [open, setOpen] = React.useState(false)
-  const [value, setValue] = React.useState("")
 
   return ( !hide &&
     <FormField
@@ -64,7 +63,8 @@ const ComboboxFormField = <TFieldValues extends FieldValues>({
       render={({ field }) => (
         <FormItem className={formItemClassName}>
           {label && <RequiredFormLabel required={required}>{label}</RequiredFormLabel>}
-            <Popover open={open} onOpenChange={setOpen}>
+          <Popover open={open} onOpenChange={setOpen}>
+            <FormControl>
               <PopoverTrigger asChild>
                 <Button
                   variant="outline"
@@ -72,43 +72,42 @@ const ComboboxFormField = <TFieldValues extends FieldValues>({
                   aria-expanded={open}
                   className="w-full justify-between"
                 >
-                  {value
+                  {field.value
                     ? options.find((option) => option.value === field.value)?.label
                     : "Select ..."}
-                  <ChevronsUpDown className="opacity-50" />
+                  <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="p-0">
-                <FormControl>
-                  <Command>
-                    <CommandInput placeholder={placeholder} className="h-9" />
-                    <CommandList>
-                      <CommandEmpty>No data found.</CommandEmpty>
-                      <CommandGroup>
-                        {options.map((option) => (
-                          <CommandItem
-                            key={option.value}
-                            value={option.value}
-                            onSelect={(currentValue) => {
-                              setValue(currentValue === value ? "" : currentValue)
-                              setOpen(false)
-                            }}
-                          >
-                            {option.label}
-                            <Check
-                              className={cn(
-                                "ml-auto",
-                                value === option.value ? "opacity-100" : "opacity-0"
-                              )}
-                            />
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
-                    </CommandList>
-                  </Command>
-                </FormControl>
-              </PopoverContent>
-            </Popover>
+            </FormControl>
+            <PopoverContent className="w-full p-0">
+              <Command>
+                <CommandInput placeholder={placeholder} className="h-9" />
+                <CommandList>
+                  <CommandEmpty>No option found.</CommandEmpty>
+                  <CommandGroup>
+                    {options.map((option) => (
+                      <CommandItem
+                        key={option.value}
+                        value={option.value}
+                        onSelect={(currentValue) => {
+                          field.onChange(currentValue === field.value ? "" : currentValue)
+                          setOpen(false)
+                        }}
+                      >
+                        {option.label}
+                        <Check
+                          className={cn(
+                            "ml-auto size-4",
+                            field.value === option.value ? "opacity-100" : "opacity-0"
+                          )}
+                        />
+                      </CommandItem>
+                    ))}
+                  </CommandGroup>
+                </CommandList>
+              </Command>
+            </PopoverContent>
+          </Popover>
           {description && <FormDescription>{description}</FormDescription>}
           <FormMessage />
         </FormItem>

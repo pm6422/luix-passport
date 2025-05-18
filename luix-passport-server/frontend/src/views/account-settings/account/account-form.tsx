@@ -7,6 +7,7 @@ import { LoadingButton } from "@/components/custom/loading-button"
 import { Form } from "@/components/ui/form"
 import InputFormField from "@/components/custom/form-field/input"
 import SelectFormField from "@/components/custom/form-field/select"
+import ComboboxFormField from "@/components/custom/form-field/combobox"
 import { IconMailForward } from "@tabler/icons-react"
 import { locales } from "@/data/locales"
 import { toast } from "sonner"
@@ -129,7 +130,7 @@ export function AccountForm() {
           options={locales}
           required
         />
-        <SelectFormField
+        <ComboboxFormField
           control={form.control}
           name='timeZoneId'
           label='Time Zone'
