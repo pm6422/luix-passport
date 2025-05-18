@@ -3,6 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Button } from "@/components/custom/button"
+import { LoadingButton } from "@/components/custom/loading-button"
 import InputFormField from "@/components/custom/form-field/input"
 import { PasswordInput } from "@/components/custom/password-input"
 import { IconReload, IconSend } from "@tabler/icons-react"
@@ -169,10 +170,9 @@ export function ChangePasswordForm() {
         />
 
         <div className="flex justify-end">
-          <Button type="submit" className="w-full sm:w-auto" disabled={saving}>
+          <LoadingButton type='submit' loading={saving} className="w-full sm:w-auto">
             {saving ? "Waiting..." : "Update password"}
-            {saving && (<IconReload className="ml-1 size-4 animate-spin"/>)}
-          </Button>
+          </LoadingButton>
         </div>
       </form>
     </Form>
