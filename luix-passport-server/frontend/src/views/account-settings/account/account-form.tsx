@@ -20,6 +20,7 @@ import { type SupportedTimezone } from "@/domains/supported-timezone"
 import { type SupportedDateTimeFormat } from "@/domains/supported-date-time-format"
 import { Link } from "react-router-dom"
 import { type Option }  from "@/components/custom/form-field/multi-select"
+import { DataDictService } from '@/services/data-dict-service.ts'
 
 const formSchema = z.object({
   id: z.string().trim().min(1, { message: "Required" }),
@@ -47,18 +48,20 @@ export function AccountForm() {
   })
 
   useEffect(() => {
-    AccountService.getCurrentAccount().then(user => {
-      form.reset(user)
-    })
+    Promise.all([
+      DataDictService.lookup("role", true),
+      AccountService.findSupportedTimezones(),
+      AccountService.findSupportedDateTimeFormats()
+    ]).then(results => {
+      // load options
+      setSupportedTimezones(results[1].data.map((item: SupportedTimezone) =>
+        ({label: "(UTC" + item.utcOffset + ") " + item.id , value: item.id})));
+      setSupportedDateTimeFormats(results[2].data.map((item: SupportedDateTimeFormat) =>
+        ({label: item.displayName + " (" + item.example + ")", value: item.id})));
 
-    AccountService.findSupportedTimezones().then(r => {
-      setSupportedTimezones(r.data.map((item: SupportedTimezone) =>
-        ({label: "(UTC" + item.utcOffset + ") " + item.id , value: item.id})))
-    })
-
-    AccountService.findSupportedDateTimeFormats().then(r => {
-      setSupportedDateTimeFormats(r.data.map((item: SupportedDateTimeFormat) =>
-        ({label: item.displayName + " (" + item.example + ")", value: item.id})))
+      AccountService.getCurrentAccount().then(user => {
+        form.reset(user)
+      })
     })
   }, [])
 
