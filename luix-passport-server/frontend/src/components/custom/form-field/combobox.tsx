@@ -70,7 +70,7 @@ const ComboboxFormField = <TFieldValues extends FieldValues>({
                   variant="outline"
                   role="combobox"
                   aria-expanded={open}
-                  className="w-full justify-between"
+                  className="w-full justify-between font-normal"
                 >
                   {field.value
                     ? options.find((option) => option.value === field.value)?.label
