@@ -11,8 +11,8 @@ import { Form } from "@/components/ui/form"
 import { UseFormReturn } from "react-hook-form"
 import FormErrors from "@/components/custom/form-errors"
 import { Button } from "@/components/custom/button"
+import { LoadingButton } from "@/components/custom/loading-button"
 import { Separator } from "@/components/ui/separator"
-import { IconReload } from "@tabler/icons-react"
 import { toast } from "sonner"
 import { getErrorMessage } from "@/lib/handle-error"
 import { cn } from "@/lib/utils"
@@ -98,10 +98,9 @@ const SaveDialogContent = ({
               </Button>
             </DialogClose>
             { !readonly &&
-              <Button type="submit" disabled={saving}>
+              <LoadingButton type='submit' loading={saving}>
                 {saving ? "Saving..." : "Save"}
-                {saving && (<IconReload className="ml-1 size-4 animate-spin"/>)}
-              </Button>
+              </LoadingButton>
             }
           </DialogFooter>
         </form>

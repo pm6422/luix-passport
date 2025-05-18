@@ -3,7 +3,8 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { Button, buttonVariants } from "@/components/custom/button"
-import { IconReload, IconPaperclip } from "@tabler/icons-react"
+import { LoadingButton } from "@/components/custom/loading-button"
+import { IconPaperclip } from "@tabler/icons-react"
 import { Separator } from "@/components/ui/separator"
 import {
   Dialog,
@@ -188,10 +189,9 @@ export function UploadDialog({
                   </Button>
                 </DialogClose>
               }
-              <Button disabled={uploading}>
+              <LoadingButton loading={uploading}>
                 {uploading ? "Uploading..." : "Upload"}
-                {uploading && (<IconReload className="ml-1 h-4 w-4 animate-spin"/>)}
-              </Button>
+              </LoadingButton>
             </DialogFooter>
           </form>
         </Form>
