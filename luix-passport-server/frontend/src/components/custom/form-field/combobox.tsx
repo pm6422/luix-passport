@@ -75,7 +75,7 @@ const ComboboxFormField = <TFieldValues extends FieldValues>({
                   {field.value
                     ? options.find((option) => option.value === field.value)?.label
                     : placeholder || "Select..."}
-                  <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
+                  <ChevronsUpDown className="size-4 opacity-50" />
                 </Button>
               </PopoverTrigger>
             </FormControl>
