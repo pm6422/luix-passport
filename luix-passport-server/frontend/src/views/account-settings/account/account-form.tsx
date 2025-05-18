@@ -3,10 +3,11 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Button } from "@/components/custom/button"
+import { LoadingButton } from "@/components/custom/loading-button"
 import { Form } from "@/components/ui/form"
 import InputFormField from "@/components/custom/form-field/input"
 import SelectFormField from "@/components/custom/form-field/select"
-import { IconReload, IconMailForward } from "@tabler/icons-react"
+import { IconMailForward } from "@tabler/icons-react"
 import { locales } from "@/data/locales"
 import { toast } from "sonner"
 import { useStore } from "exome/react"
@@ -77,65 +78,76 @@ export function AccountForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
         <div>
-          <h3 className="text-sm font-medium">Username</h3>
-          <p className="text-sm text-muted-foreground mt-2">
-            {form.getValues("username")}
+          <h3 className='text-sm font-medium'>Username</h3>
+          <p className='mt-2 text-sm text-muted-foreground'>
+            {form.getValues('username')}
           </p>
         </div>
 
-        <div className="flex items-center justify-between">
+        <div className='flex items-center justify-between'>
           <div>
-            <h3 className="text-sm font-medium">Email</h3>
-            <p className="text-sm text-muted-foreground mt-2">
-              {form.getValues("email")}
+            <h3 className='text-sm font-medium'>Email</h3>
+            <p className='mt-2 text-sm text-muted-foreground'>
+              {form.getValues('email')}
             </p>
           </div>
-          <Link to="/account-settings/change-email">
-            <Button type="button" variant={"link"} className="underline decoration-dashed underline-offset-4 hover:decoration-solid">
-              <IconMailForward className="mr-2 size-4"/>
+          <Link to='/account-settings/change-email'>
+            <Button
+              type='button'
+              variant={'link'}
+              className='underline decoration-dashed underline-offset-4 hover:decoration-solid'
+            >
+              <IconMailForward className='mr-2 size-4' />
               Change Email
             </Button>
           </Link>
         </div>
 
         <div>
-          <h3 className="text-sm font-medium">Mobile No.</h3>
-          <p className="text-sm text-muted-foreground mt-2">
-            {form.getValues("mobileNo")}
+          <h3 className='text-sm font-medium'>Mobile No.</h3>
+          <p className='mt-2 text-sm text-muted-foreground'>
+            {form.getValues('mobileNo')}
           </p>
         </div>
 
-        <InputFormField control={form.control} name="firstName" label="First Name"/>
-        <InputFormField control={form.control} name="lastName" label="Last Name"/>
-        <SelectFormField 
-          control={form.control} 
-          name="locale" 
-          label="Preferred Language"
+        <InputFormField
+          control={form.control}
+          name='firstName'
+          label='First Name'
+        />
+        <InputFormField
+          control={form.control}
+          name='lastName'
+          label='Last Name'
+        />
+        <SelectFormField
+          control={form.control}
+          name='locale'
+          label='Preferred Language'
           options={locales}
           required
         />
         <SelectFormField
-          control={form.control} 
-          name="timeZoneId"
-          label="Time Zone"
+          control={form.control}
+          name='timeZoneId'
+          label='Time Zone'
           options={supportedTimezones}
           required
         />
         <SelectFormField
-          control={form.control} 
-          name="dateTimeFormatId"
-          label="Date Time Format"
+          control={form.control}
+          name='dateTimeFormatId'
+          label='Date Time Format'
           options={supportedDateTimeFormats}
           required
         />
 
-        <div className="flex justify-end">
-          <Button type="submit" className="w-full sm:w-auto" disabled={saving}>
-            {saving ? "Updating account..." : "Update account"}
-            {saving && (<IconReload className="ml-1 size-4 animate-spin"/>)}
-          </Button>
+        <div className='flex justify-end'>
+          <LoadingButton type='submit' loading={saving} className="w-full sm:w-auto">
+            {saving ? 'Updating account...' : 'Update account'}
+          </LoadingButton>
         </div>
       </form>
     </Form>
