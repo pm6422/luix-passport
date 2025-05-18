@@ -92,22 +92,22 @@ const MultiSelect: React.ForwardRefRenderFunction<HTMLButtonElement, MultiSelect
   }
 
   const toggleOption = (value: string) => {
-    if (selectedValuesSet.current.has(value)) {
-      selectedValuesSet.current.delete(value)
-      setSelectedValues(selectedValues.filter(v => v !== value))
+    const newSelectedValues = selectedValuesSet.current.has(value)
+      ? selectedValues.filter(v => v !== value)
+      : multiple
+        ? [...selectedValues, value]
+        : [value];
+
+    selectedValuesSet.current = new Set(newSelectedValues);
+    setSelectedValues(newSelectedValues);
+
+    if (multiple) {
+      onValueChange(newSelectedValues);
     } else {
-      if (multiple || selectedValues.length === 0) {
-        selectedValuesSet.current.add(value)
-        setSelectedValues([...selectedValues, value])
-      }
+      onValueChange(newSelectedValues[0] || "");
+      setIsPopoverOpen(false);
     }
-    if(multiple) {
-      onValueChange([...selectedValuesSet.current])
-    } else {
-      onValueChange(value)
-      setIsPopoverOpen(false)
-    }
-  }
+  };
 
   const handleClearAll = () => {
     setSelectedValues([])
