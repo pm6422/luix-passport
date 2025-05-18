@@ -6,8 +6,8 @@ export class Oauth2ClientService {
   constructor() {
   }
 
-  public static findAll(enabled: boolean | null = null): Promise<AxiosResponse<Array<Auth2Client>>> {
-    return http.get("api/oauth2-clients", { params: { page: 0, size: 2000, enabled: enabled } })
+  public static find(reqParams: object): Promise<AxiosResponse<Array<Auth2Client>>> {
+    return http.get("api/oauth2-clients", { params: reqParams })
   }
 
   public static findById(id: string): Promise<AxiosResponse<Auth2Client>> {
