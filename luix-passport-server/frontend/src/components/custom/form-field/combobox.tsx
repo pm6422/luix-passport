@@ -70,7 +70,7 @@ const ComboboxFormField = <TFieldValues extends FieldValues>({
                   variant="outline"
                   role="combobox"
                   aria-expanded={open}
-                  className="w-[200px] justify-between"
+                  className="w-full justify-between"
                 >
                   {value
                     ? options.find((option) => option.value === field.value)?.label
@@ -78,7 +78,7 @@ const ComboboxFormField = <TFieldValues extends FieldValues>({
                   <ChevronsUpDown className="opacity-50" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-[200px] p-0">
+              <PopoverContent className="p-0">
                 <FormControl>
                   <Command>
                     <CommandInput placeholder={placeholder} className="h-9" />
