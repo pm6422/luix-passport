@@ -145,15 +145,13 @@ const MultiSelect: React.ForwardRefRenderFunction<HTMLButtonElement, MultiSelect
                         className="ml-1 size-4 cursor-pointer"
                         onClick={event => {
                           event.stopPropagation()
-                          if (option) {
-                            toggleOption(value)
+                          const newValues = selectedValues.filter(v => v !== value)
+                          setSelectedValues(newValues)
+                          selectedValuesSet.current = new Set(newValues)
+                          if(multiple) {
+                            onValueChange(newValues)
                           } else {
-                            setSelectedValues(selectedValues.filter(v => v !== value))
-                            if(multiple) {
-                              onValueChange(selectedValues.filter(v => v !== value))
-                            } else {
-                              onValueChange("")
-                            }
+                            onValueChange("")
                           }
                         }}
                       />
