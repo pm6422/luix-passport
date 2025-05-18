@@ -15,10 +15,10 @@ import { authUserStore } from "@/stores/auth-user-store.ts"
 import { AccountService } from "@/services/account-service"
 import { getErrorMessage } from "@/lib/handle-error"
 import { isValidPhoneNumber } from "react-phone-number-input"
-import { type Option } from "@/components/custom/form-field/combo-box"
 import { type SupportedTimezone } from "@/domains/supported-timezone"
 import { type SupportedDateTimeFormat } from "@/domains/supported-date-time-format"
 import { Link } from "react-router-dom"
+import { type Option }  from "@/components/custom/form-field/multi-select"
 
 const formSchema = z.object({
   id: z.string().trim().min(1, { message: "Required" }),

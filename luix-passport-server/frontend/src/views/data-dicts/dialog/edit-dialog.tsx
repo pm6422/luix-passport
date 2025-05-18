@@ -4,8 +4,7 @@ import { useForm } from "react-hook-form"
 import { Dialog, DialogTrigger } from "@/components/ui/dialog"
 import SaveDialogContent from "@/components/custom/dialog/save-dialog-content"
 import InputFormField from "@/components/custom/form-field/input"
-import ComboboxFormField from "@/components/custom/form-field/combo-box"
-import { type Option } from "@/components/custom/form-field/combo-box"
+import MultiSelectFormField, { type Option }  from "@/components/custom/form-field/multi-select"
 import SwitchFormField from "@/components/custom/form-field/switch"
 import { type DataDict, dataDictSchema, initialDataDictState } from "@/domains/data-dict"
 import { DataDictService } from "@/services/data-dict-service"
@@ -51,7 +50,7 @@ export function EditDialog({
         {children}
       </DialogTrigger>
       <SaveDialogContent entityName={entityName} id={id} form={form} save={save} afterSave={afterSave} setOpen={setOpen} debug={true}>
-        <ComboboxFormField
+        <MultiSelectFormField
           control={form.control} 
           name="categoryCode"
           label="Category Code"

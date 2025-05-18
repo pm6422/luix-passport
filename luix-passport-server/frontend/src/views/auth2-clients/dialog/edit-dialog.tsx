@@ -4,14 +4,13 @@ import { useForm, useFieldArray } from "react-hook-form"
 import { Dialog, DialogTrigger } from "@/components/ui/dialog"
 import SaveDialogContent from "@/components/custom/dialog/save-dialog-content"
 import InputFormField from "@/components/custom/form-field/input"
-import ComboboxFormField from "@/components/custom/form-field/combo-box"
-import { type Option } from "@/components/custom/form-field/combo-box"
+import MultiSelectFormField, { type Option }  from "@/components/custom/form-field/multi-select"
 import { Button } from "@/components/custom/button"
 import { IconX, IconCirclePlus } from "@tabler/icons-react"
 import { FormLabel, FormDescription } from "@/components/ui/form"
 import { RequiredFormLabel } from "@/components/custom/required-form-label"
 import SwitchFormField from "@/components/custom/form-field/switch"
-import { type Auth2Client, auth2ClientSchema, initialAuth2ClientState } from "@/domains/auth2-client.ts"
+import { type Auth2Client, auth2ClientSchema, initialAuth2ClientState } from "@/domains/auth2-client"
 import { Oauth2ClientService } from "@/services/oauth2-client-service"
 
 interface EditDialogProps {
@@ -109,7 +108,7 @@ export function EditDialog({
           hide={!!id}
         />
 
-        <ComboboxFormField
+        <MultiSelectFormField
           control={form.control} 
           name="clientAuthenticationMethods"
           label="Authentication Methods"
@@ -118,7 +117,7 @@ export function EditDialog({
           multiple={true}
         />
 
-        <ComboboxFormField
+        <MultiSelectFormField
           control={form.control} 
           name="authorizationGrantTypes"
           label="Authentication Grant Types"
@@ -193,7 +192,7 @@ export function EditDialog({
           </div>
         </div>
 
-        <ComboboxFormField
+        <MultiSelectFormField
           control={form.control} 
           name="scopes"
           label="Scopes"
