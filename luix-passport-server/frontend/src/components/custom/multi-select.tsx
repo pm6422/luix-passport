@@ -168,7 +168,7 @@ const MultiSelect: React.ForwardRefRenderFunction<HTMLButtonElement, MultiSelect
               <div className="flex items-center justify-between">
                 {showClearButton ? (
                   <IconX
-                    className="h-4 mr-1 cursor-pointer text-muted-foreground"
+                    className="size-4 mr-3 cursor-pointer text-muted-foreground"
                     onClick={(event) => {
                       event.stopPropagation()
                       handleClearAll()
@@ -177,7 +177,7 @@ const MultiSelect: React.ForwardRefRenderFunction<HTMLButtonElement, MultiSelect
                   />
                 ) : (
                   <IconSelector
-                    className="h-4 mr-1 cursor-pointer text-muted-foreground"
+                    className="size-4 mr-3 cursor-pointer text-muted-foreground"
                     onMouseEnter={() => setShowClearButton(true)}
                   />
                 )}
@@ -186,7 +186,7 @@ const MultiSelect: React.ForwardRefRenderFunction<HTMLButtonElement, MultiSelect
           ) : (
             <div className="flex items-center justify-between w-full mx-auto">
               <span className="text-sm text-muted-foreground px-2">{placeholder}</span>
-              <IconSelector className="h-4 mr-1 cursor-pointer text-muted-foreground" />
+              <IconSelector className="size-4 mr-3 cursor-pointer text-muted-foreground" />
             </div>
           )}
         </Button>

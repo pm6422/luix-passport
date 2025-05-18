@@ -2,7 +2,7 @@ import type { Control, FieldValues, Path } from "react-hook-form"
 import { FormControl, FormDescription, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { RequiredFormLabel } from "../required-form-label"
 import * as React from "react"
-import { Check, ChevronsUpDown } from "lucide-react"
+import { IconCheck, IconSelector } from "@tabler/icons-react"
 import { Key } from "react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -75,7 +75,7 @@ const ComboboxFormField = <TFieldValues extends FieldValues>({
                   {field.value
                     ? options.find((option) => option.value === field.value)?.label
                     : placeholder || "Select..."}
-                  <ChevronsUpDown className="size-4 opacity-50" />
+                  <IconSelector className="size-4 opacity-50" />
                 </Button>
               </PopoverTrigger>
             </FormControl>
@@ -95,7 +95,7 @@ const ComboboxFormField = <TFieldValues extends FieldValues>({
                         }}
                       >
                         {option.label}
-                        <Check
+                        <IconCheck
                           className={cn(
                             "ml-auto size-4",
                             field.value === option.value ? "opacity-100" : "opacity-0"
