@@ -18,7 +18,7 @@ import { locales } from "@/data/locales"
 import { DataDictService } from "@/services/data-dict-service"
 import { AccountService } from "@/services/account-service"
 import { UserService } from "@/services/user-service"
-import { type Option }  from "@/components/custom/form-field/multi-select"
+import { Option } from "@/components/custom/multi-select"
 import type { SupportedTimezone } from "@/domains/supported-timezone"
 import type { SupportedDateTimeFormat } from "@/domains/supported-date-time-format"
 

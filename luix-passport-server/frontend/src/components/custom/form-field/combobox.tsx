@@ -6,6 +6,7 @@ import { IconCheck, IconSelector } from "@tabler/icons-react"
 import { Key } from "react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
+import { Option } from "@/components/custom/multi-select"
 import {
   Command,
   CommandEmpty,
@@ -19,12 +20,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-
-export type Option = {
-  label: string
-  value: string
-  icon?: React.ComponentType<{ className?: string }>
-}
 
 interface Props<TFieldValues extends FieldValues> {
   control: Control<TFieldValues>

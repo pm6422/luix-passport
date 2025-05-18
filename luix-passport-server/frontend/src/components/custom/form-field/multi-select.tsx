@@ -2,13 +2,9 @@ import type { Control, FieldValues, Path } from "react-hook-form"
 import { FormControl, FormDescription, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { RequiredFormLabel } from "../required-form-label"
 import MultiSelect from "@/components/custom/multi-select"
+import { Option } from "@/components/custom/multi-select"
 import { Key } from "react"
 
-export type Option = {
-  label: string
-  value: string
-  icon?: React.ComponentType<{ className?: string }>
-}
 
 interface Props<TFieldValues extends FieldValues> {
   control: Control<TFieldValues>

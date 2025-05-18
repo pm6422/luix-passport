@@ -37,6 +37,12 @@ const multiSelectVariants = cva(
   }
 )
 
+export type Option = {
+  label: string
+  value: string
+  icon?: React.ComponentType<{ className?: string }>
+}
+
 interface MultiSelectProps extends React.ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof multiSelectVariants> {
   options: { label: string; value: string; icon?: React.ComponentType<{ className?: string }> }[];
   defaultValue?: string | string[]
