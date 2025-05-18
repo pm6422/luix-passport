@@ -64,7 +64,6 @@ const ComboboxFormField = <TFieldValues extends FieldValues>({
       render={({ field }) => (
         <FormItem className={formItemClassName}>
           {label && <RequiredFormLabel required={required}>{label}</RequiredFormLabel>}
-          <FormControl>
             <Popover open={open} onOpenChange={setOpen}>
               <PopoverTrigger asChild>
                 <Button
@@ -80,35 +79,36 @@ const ComboboxFormField = <TFieldValues extends FieldValues>({
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-[200px] p-0">
-                <Command>
-                  <CommandInput placeholder={placeholder} className="h-9" />
-                  <CommandList>
-                    <CommandEmpty>No framework found.</CommandEmpty>
-                    <CommandGroup>
-                      {options.map((option) => (
-                        <CommandItem
-                          key={option.value}
-                          value={option.value}
-                          onSelect={(currentValue) => {
-                            setValue(currentValue === value ? "" : currentValue)
-                            setOpen(false)
-                          }}
-                        >
-                          {option.label}
-                          <Check
-                            className={cn(
-                              "ml-auto",
-                              value === option.value ? "opacity-100" : "opacity-0"
-                            )}
-                          />
-                        </CommandItem>
-                      ))}
-                    </CommandGroup>
-                  </CommandList>
-                </Command>
+                <FormControl>
+                  <Command>
+                    <CommandInput placeholder={placeholder} className="h-9" />
+                    <CommandList>
+                      <CommandEmpty>No data found.</CommandEmpty>
+                      <CommandGroup>
+                        {options.map((option) => (
+                          <CommandItem
+                            key={option.value}
+                            value={option.value}
+                            onSelect={(currentValue) => {
+                              setValue(currentValue === value ? "" : currentValue)
+                              setOpen(false)
+                            }}
+                          >
+                            {option.label}
+                            <Check
+                              className={cn(
+                                "ml-auto",
+                                value === option.value ? "opacity-100" : "opacity-0"
+                              )}
+                            />
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </FormControl>
               </PopoverContent>
             </Popover>
-          </FormControl>
           {description && <FormDescription>{description}</FormDescription>}
           <FormMessage />
         </FormItem>
