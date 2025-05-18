@@ -40,7 +40,7 @@ interface Props<TFieldValues extends FieldValues> {
   hide?: boolean
 }
 
-const MultiSelectFormField = <TFieldValues extends FieldValues>({
+const ComboboxFormField = <TFieldValues extends FieldValues>({
   control,
   name,
   key,
@@ -117,4 +117,4 @@ const MultiSelectFormField = <TFieldValues extends FieldValues>({
   )
 }
 
-export default MultiSelectFormField
+export default ComboboxFormField
