@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, forwardRef } from "react"
+import { useState, useEffect, useRef, forwardRef, useCallback } from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 import { IconCheck, IconX, IconCircleX, IconSelector, IconCirclePlus } from "@tabler/icons-react"
 import { cn } from "@/lib/utils"
@@ -38,7 +38,6 @@ const multiSelectVariants = cva(
 )
 
 interface MultiSelectProps extends React.ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof multiSelectVariants> {
-  asChild?: boolean
   options: { label: string; value: string; icon?: React.ComponentType<{ className?: string }> }[];
   defaultValue?: string | string[]
   disabled?: boolean
@@ -52,72 +51,85 @@ const MultiSelect: React.ForwardRefRenderFunction<HTMLButtonElement, MultiSelect
   {
     className,
     variant,
-    asChild = false,
     options,
     defaultValue,
     onValueChange,
     disabled,
-    placeholder,
+    placeholder = "Select...",
     creatable,
     multiple,
     ...props
   },
   ref
 ) => {
-  const [selectedValues, setSelectedValues] = useState<string[]>(Array.isArray(defaultValue) ? defaultValue : defaultValue ? [defaultValue] : [])
-  const selectedValuesSet = useRef(new Set(selectedValues))
+  const initialValues = Array.isArray(defaultValue) ? defaultValue : defaultValue ? [defaultValue] : []
+  const [selectedValues, setSelectedValues] = useState<string[]>(initialValues)
+  const selectedValuesSet = useRef(new Set(initialValues))
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
-  const [query, setQuery] = useState<string>("")
-  const [showSelectButton, setShowSelectButton] = useState(true)
+  const [query, setQuery] = useState("")
   const [showClearButton, setShowClearButton] = useState(false)
 
   useEffect(() => {
-    setSelectedValues(Array.isArray(defaultValue) ? defaultValue : defaultValue ? [defaultValue] : [])
-    selectedValuesSet.current = new Set(Array.isArray(defaultValue) ? defaultValue : defaultValue ? [defaultValue] : [])
+    const newValues = Array.isArray(defaultValue) ? defaultValue : defaultValue ? [defaultValue] : []
+    setSelectedValues(newValues)
+    selectedValuesSet.current = new Set(newValues)
   }, [defaultValue])
 
   const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       setIsPopoverOpen(true)
-    } else if (event.key === "Backspace" && !event.currentTarget.value) {
+    } else if (event.key === "Backspace" && !query) {
       const lastValue = selectedValues[selectedValues.length - 1]
-      setSelectedValues(prev => prev.slice(0, -1))
-      selectedValuesSet.current.delete(lastValue)
-      if(multiple) {
-        onValueChange(selectedValues.filter(v => v !== lastValue))
-      } else {
-        onValueChange("")
+      if (lastValue) {
+        const newValues = selectedValues.slice(0, -1)
+        setSelectedValues(newValues)
+        selectedValuesSet.current = new Set(newValues)
+        onValueChange(multiple ? newValues : "")
       }
     }
   }
 
-  const toggleOption = (value: string) => {
+  const toggleOption = useCallback((value: string) => {
     const newSelectedValues = selectedValuesSet.current.has(value)
       ? selectedValues.filter(v => v !== value)
       : multiple
         ? [...selectedValues, value]
-        : [value];
+        : [value]
 
-    selectedValuesSet.current = new Set(newSelectedValues);
-    setSelectedValues(newSelectedValues);
+    selectedValuesSet.current = new Set(newSelectedValues)
+    setSelectedValues(newSelectedValues)
 
     if (multiple) {
-      onValueChange(newSelectedValues);
+      onValueChange(newSelectedValues)
     } else {
-      onValueChange(newSelectedValues[0] || "");
-      setIsPopoverOpen(false);
+      onValueChange(newSelectedValues[0] || "")
+      setIsPopoverOpen(false)
     }
-  };
+  }, [multiple, onValueChange, selectedValues])
 
-  const handleClearAll = () => {
+  const handleClearAll = useCallback(() => {
     setSelectedValues([])
-    selectedValuesSet.current.clear()
-    if(multiple) {
-      onValueChange([])
-    } else {
-      onValueChange("")
-    }
-  }
+    selectedValuesSet.current = new Set()
+    onValueChange(multiple ? [] : "")
+  }, [multiple, onValueChange])
+
+  const handleRemoveValue = useCallback((value: string) => {
+    const newValues = selectedValues.filter(v => v !== value)
+    setSelectedValues(newValues)
+    selectedValuesSet.current = new Set(newValues)
+    onValueChange(multiple ? newValues : "")
+  }, [multiple, onValueChange, selectedValues])
+
+  const handleCreate = useCallback(() => {
+    if (!query) return
+
+    const newValues = multiple ? [...selectedValues, query] : [query]
+    setSelectedValues(newValues)
+    selectedValuesSet.current = new Set(newValues)
+    onValueChange(multiple ? newValues : query)
+    setQuery("")
+    if (!multiple) setIsPopoverOpen(false)
+  }, [query, multiple, onValueChange, selectedValues])
 
   return (
     <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
@@ -138,22 +150,15 @@ const MultiSelect: React.ForwardRefRenderFunction<HTMLButtonElement, MultiSelect
                   return (
                     <Badge
                       key={value}
-                      className={cn("", multiSelectVariants({ variant, className }))}
+                      className={cn(multiSelectVariants({ variant, className }))}
                     >
                       {IconComponent && <IconComponent className="size-4 mr-1" />}
                       {creatable ? (option ? option.label : value) : option?.label}
                       <IconCircleX
                         className="ml-1 size-4 cursor-pointer"
-                        onClick={event => {
+                        onClick={(event) => {
                           event.stopPropagation()
-                          const newValues = selectedValues.filter(v => v !== value)
-                          setSelectedValues(newValues)
-                          selectedValuesSet.current = new Set(newValues)
-                          if(multiple) {
-                            onValueChange(newValues)
-                          } else {
-                            onValueChange("")
-                          }
+                          handleRemoveValue(value)
                         }}
                       />
                     </Badge>
@@ -161,26 +166,19 @@ const MultiSelect: React.ForwardRefRenderFunction<HTMLButtonElement, MultiSelect
                 })}
               </div>
               <div className="flex items-center justify-between">
-                { showClearButton && (
+                {showClearButton ? (
                   <IconX
                     className="h-4 mr-1 cursor-pointer text-muted-foreground"
-                    onClick={event => {
-                      handleClearAll()
+                    onClick={(event) => {
                       event.stopPropagation()
+                      handleClearAll()
                     }}
-                    onMouseLeave={() => {
-                      setShowClearButton(false)
-                      setShowSelectButton(true)
-                    }}
+                    onMouseLeave={() => setShowClearButton(false)}
                   />
-                )}
-                { showSelectButton && (
-                  <IconSelector 
+                ) : (
+                  <IconSelector
                     className="h-4 mr-1 cursor-pointer text-muted-foreground"
-                    onMouseEnter={() => {
-                      setShowSelectButton(false)
-                      setShowClearButton(true)
-                    }}
+                    onMouseEnter={() => setShowClearButton(true)}
                   />
                 )}
               </div>
@@ -188,9 +186,7 @@ const MultiSelect: React.ForwardRefRenderFunction<HTMLButtonElement, MultiSelect
           ) : (
             <div className="flex items-center justify-between w-full mx-auto">
               <span className="text-sm text-muted-foreground px-2">{placeholder}</span>
-              <IconSelector 
-                className="h-4 mr-1 cursor-pointer text-muted-foreground"
-              />
+              <IconSelector className="h-4 mr-1 cursor-pointer text-muted-foreground" />
             </div>
           )}
         </Button>
@@ -199,7 +195,7 @@ const MultiSelect: React.ForwardRefRenderFunction<HTMLButtonElement, MultiSelect
         className="min-w-fit p-0 drop-shadow-sm"
         align="start"
         onEscapeKeyDown={() => setIsPopoverOpen(false)}
-        onInteractOutside={event => {
+        onInteractOutside={(event) => {
           if (!event.defaultPrevented) {
             setIsPopoverOpen(false)
           }
@@ -210,20 +206,12 @@ const MultiSelect: React.ForwardRefRenderFunction<HTMLButtonElement, MultiSelect
             placeholder="Search..."
             onKeyDown={handleInputKeyDown}
             value={query}
-            onValueChange={(value: string) => setQuery(value)}
+            onValueChange={setQuery}
           />
           <CommandList>
-            {creatable ? (
+            {creatable && query && (
               <CommandEmpty
-                onClick={() => {
-                  setSelectedValues([...selectedValues, query])
-                  if(multiple) {
-                    onValueChange([...selectedValues, query])
-                  } else {
-                    onValueChange(query)
-                  }
-                  setQuery("")
-                }}
+                onClick={handleCreate}
                 className="flex cursor-pointer items-center justify-center gap-1 my-1"
               >
                 <Button variant="ghost" className="flex-1 justify-center cursor-pointer gap-2">
@@ -231,21 +219,17 @@ const MultiSelect: React.ForwardRefRenderFunction<HTMLButtonElement, MultiSelect
                   {query}
                 </Button>
               </CommandEmpty>
-            ) : (
-              <CommandEmpty>No results found.</CommandEmpty>
             )}
 
+            {!creatable && <CommandEmpty>No results found.</CommandEmpty>}
+
             <CommandGroup>
-              {options.map(option => {
+              {options.map((option) => {
                 const isSelected = selectedValuesSet.current.has(option.value)
                 return (
                   <CommandItem
                     key={option.value}
                     onSelect={() => toggleOption(option.value)}
-                    style={{
-                      pointerEvents: "auto",
-                      opacity: 1,
-                    }}
                     className="cursor-pointer"
                   >
                     <div
@@ -262,17 +246,15 @@ const MultiSelect: React.ForwardRefRenderFunction<HTMLButtonElement, MultiSelect
                 )
               })}
             </CommandGroup>
+
             <CommandSeparator />
+
             <CommandGroup>
               <div className="flex items-center justify-between gap-2">
                 {selectedValues.length > 0 && (
                   <>
                     <CommandItem
                       onSelect={handleClearAll}
-                      style={{
-                        pointerEvents: "auto",
-                        opacity: 1,
-                      }}
                       className="flex-1 justify-center cursor-pointer"
                     >
                       Clear
@@ -280,13 +262,8 @@ const MultiSelect: React.ForwardRefRenderFunction<HTMLButtonElement, MultiSelect
                     <Separator orientation="vertical" className="flex min-h-6 h-full" />
                   </>
                 )}
-                <CommandSeparator />
                 <CommandItem
                   onSelect={() => setIsPopoverOpen(false)}
-                  style={{
-                    pointerEvents: "auto",
-                    opacity: 1,
-                  }}
                   className="flex-1 justify-center cursor-pointer"
                 >
                   Close
@@ -297,7 +274,6 @@ const MultiSelect: React.ForwardRefRenderFunction<HTMLButtonElement, MultiSelect
         </Command>
       </PopoverContent>
     </Popover>
-    
   )
 }
 
