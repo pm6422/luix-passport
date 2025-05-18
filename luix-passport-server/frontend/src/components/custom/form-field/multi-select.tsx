@@ -1,7 +1,7 @@
 import type { Control, FieldValues, Path } from "react-hook-form"
 import { FormControl, FormDescription, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { RequiredFormLabel } from "../required-form-label"
-import Combobox from "@/components/custom/combobox"
+import MultiSelect from "@/components/custom/multi-select.tsx"
 import { Key } from "react"
 
 export type Option = {
@@ -22,12 +22,12 @@ interface Props<TFieldValues extends FieldValues> {
   placeholder?: string
   required?: boolean
   disabled?: boolean
-  comboboxClassName?: string
+  multiSelectClassName?: string
   formItemClassName?: string
   hide?: boolean
 }
 
-const ComboboxFormField = <TFieldValues extends FieldValues>({
+const MultiSelectFormField = <TFieldValues extends FieldValues>({
   control,
   name,
   key,
@@ -39,7 +39,7 @@ const ComboboxFormField = <TFieldValues extends FieldValues>({
   placeholder,
   required,
   disabled,
-  comboboxClassName,
+  multiSelectClassName,
   formItemClassName,
   hide = false
 }: Props<TFieldValues>) => ( !hide &&
@@ -51,14 +51,14 @@ const ComboboxFormField = <TFieldValues extends FieldValues>({
       <FormItem className={formItemClassName}>
         {label && <RequiredFormLabel required={required}>{label}</RequiredFormLabel>}
         <FormControl>
-          <Combobox
+          <MultiSelect
             options={options}
             defaultValue={field.value}
             onValueChange={field.onChange}
             creatable={creatable}
             multiple={multiple}
             placeholder={placeholder}
-            className={comboboxClassName}
+            className={multiSelectClassName}
           />
         </FormControl>
         {description && <FormDescription>{description}</FormDescription>}
@@ -68,4 +68,4 @@ const ComboboxFormField = <TFieldValues extends FieldValues>({
   />
 )
 
-export default ComboboxFormField
+export default MultiSelectFormField

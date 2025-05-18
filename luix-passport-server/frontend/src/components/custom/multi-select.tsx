@@ -20,7 +20,7 @@ import {
   CommandSeparator,
 } from "@/components/ui/command"
 
-const comboboxVariants = cva(
+const multiSelectVariants = cva(
   "m-1 transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 shadow-sm",
   {
     variants: {
@@ -37,7 +37,7 @@ const comboboxVariants = cva(
   }
 )
 
-interface ComboboxProps extends React.ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof comboboxVariants> {
+interface MultiSelectProps extends React.ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof multiSelectVariants> {
   asChild?: boolean
   options: { label: string; value: string; icon?: React.ComponentType<{ className?: string }> }[];
   defaultValue?: string | string[]
@@ -48,7 +48,7 @@ interface ComboboxProps extends React.ButtonHTMLAttributes<HTMLButtonElement>, V
   multiple?: boolean
 }
 
-const Combobox: React.ForwardRefRenderFunction<HTMLButtonElement, ComboboxProps> = (
+const MultiSelect: React.ForwardRefRenderFunction<HTMLButtonElement, MultiSelectProps> = (
   {
     className,
     variant,
@@ -137,7 +137,7 @@ const Combobox: React.ForwardRefRenderFunction<HTMLButtonElement, ComboboxProps>
                   return (
                     <Badge
                       key={value}
-                      className={cn("", comboboxVariants({ variant, className }))}
+                      className={cn("", multiSelectVariants({ variant, className }))}
                     >
                       {IconComponent && <IconComponent className="size-4 mr-1" />}
                       {creatable ? (option ? option.label : value) : option?.label}
@@ -302,6 +302,6 @@ const Combobox: React.ForwardRefRenderFunction<HTMLButtonElement, ComboboxProps>
   )
 }
 
-Combobox.displayName = "Combobox"
+MultiSelect.displayName = "MultiSelect"
 
-export default forwardRef<HTMLButtonElement, ComboboxProps>(Combobox)
+export default forwardRef<HTMLButtonElement, MultiSelectProps>(MultiSelect)
