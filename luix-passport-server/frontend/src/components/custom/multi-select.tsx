@@ -105,6 +105,7 @@ const MultiSelect: React.ForwardRefRenderFunction<HTMLButtonElement, MultiSelect
       onValueChange([...selectedValuesSet.current])
     } else {
       onValueChange(value)
+      setIsPopoverOpen(false)
     }
   }
 
