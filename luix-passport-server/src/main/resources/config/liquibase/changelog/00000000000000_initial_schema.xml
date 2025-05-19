@@ -439,10 +439,12 @@
                 unique="false">
             <column name="sender_id"/>
         </createIndex>
+
         <addUniqueConstraint
                 tableName="data_dict"
                 columnNames="category_code,dict_code"
                 constraintName="uk_data_dict_cate_code_dict_code"/>
+
         <addForeignKeyConstraint
                 baseTableName="org_user"
                 baseColumnNames="user_id"
