@@ -5,6 +5,7 @@ package cn.luixtech.passport.server.persistence;
 
 
 import cn.luixtech.passport.server.persistence.tables.DataDict;
+import cn.luixtech.passport.server.persistence.tables.Notification;
 import cn.luixtech.passport.server.persistence.tables.Oauth2Authorization;
 import cn.luixtech.passport.server.persistence.tables.Oauth2AuthorizationConsent;
 import cn.luixtech.passport.server.persistence.tables.Oauth2RegisteredClient;
@@ -18,6 +19,7 @@ import cn.luixtech.passport.server.persistence.tables.TableSeqNumber;
 import cn.luixtech.passport.server.persistence.tables.User;
 import cn.luixtech.passport.server.persistence.tables.UserAuthEvent;
 import cn.luixtech.passport.server.persistence.tables.UserLogin;
+import cn.luixtech.passport.server.persistence.tables.UserNotification;
 import cn.luixtech.passport.server.persistence.tables.UserPermission;
 import cn.luixtech.passport.server.persistence.tables.UserProfilePic;
 import cn.luixtech.passport.server.persistence.tables.UserRole;
@@ -33,6 +35,11 @@ public class Tables {
      * The table <code>public.data_dict</code>.
      */
     public static final DataDict DATA_DICT = DataDict.DATA_DICT;
+
+    /**
+     * The table <code>public.notification</code>.
+     */
+    public static final Notification NOTIFICATION = Notification.NOTIFICATION;
 
     /**
      * The table <code>public.oauth2_authorization</code>.
@@ -98,6 +105,11 @@ public class Tables {
      * The table <code>public.user_login</code>.
      */
     public static final UserLogin USER_LOGIN = UserLogin.USER_LOGIN;
+
+    /**
+     * The table <code>public.user_notification</code>.
+     */
+    public static final UserNotification USER_NOTIFICATION = UserNotification.USER_NOTIFICATION;
 
     /**
      * The table <code>public.user_permission</code>.

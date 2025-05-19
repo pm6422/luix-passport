@@ -5,6 +5,7 @@ package cn.luixtech.passport.server.persistence;
 
 
 import cn.luixtech.passport.server.persistence.tables.DataDict;
+import cn.luixtech.passport.server.persistence.tables.Notification;
 import cn.luixtech.passport.server.persistence.tables.Oauth2Authorization;
 import cn.luixtech.passport.server.persistence.tables.Oauth2AuthorizationConsent;
 import cn.luixtech.passport.server.persistence.tables.Oauth2RegisteredClient;
@@ -18,10 +19,12 @@ import cn.luixtech.passport.server.persistence.tables.TableSeqNumber;
 import cn.luixtech.passport.server.persistence.tables.User;
 import cn.luixtech.passport.server.persistence.tables.UserAuthEvent;
 import cn.luixtech.passport.server.persistence.tables.UserLogin;
+import cn.luixtech.passport.server.persistence.tables.UserNotification;
 import cn.luixtech.passport.server.persistence.tables.UserPermission;
 import cn.luixtech.passport.server.persistence.tables.UserProfilePic;
 import cn.luixtech.passport.server.persistence.tables.UserRole;
 import cn.luixtech.passport.server.persistence.tables.records.DataDictRecord;
+import cn.luixtech.passport.server.persistence.tables.records.NotificationRecord;
 import cn.luixtech.passport.server.persistence.tables.records.Oauth2AuthorizationConsentRecord;
 import cn.luixtech.passport.server.persistence.tables.records.Oauth2AuthorizationRecord;
 import cn.luixtech.passport.server.persistence.tables.records.Oauth2RegisteredClientRecord;
@@ -34,6 +37,7 @@ import cn.luixtech.passport.server.persistence.tables.records.SupportedTimezoneR
 import cn.luixtech.passport.server.persistence.tables.records.TableSeqNumberRecord;
 import cn.luixtech.passport.server.persistence.tables.records.UserAuthEventRecord;
 import cn.luixtech.passport.server.persistence.tables.records.UserLoginRecord;
+import cn.luixtech.passport.server.persistence.tables.records.UserNotificationRecord;
 import cn.luixtech.passport.server.persistence.tables.records.UserPermissionRecord;
 import cn.luixtech.passport.server.persistence.tables.records.UserProfilePicRecord;
 import cn.luixtech.passport.server.persistence.tables.records.UserRecord;
@@ -59,6 +63,7 @@ public class Keys {
 
     public static final UniqueKey<DataDictRecord> DATA_DICT_PKEY = Internal.createUniqueKey(DataDict.DATA_DICT, DSL.name("data_dict_pkey"), new TableField[] { DataDict.DATA_DICT.ID }, true);
     public static final UniqueKey<DataDictRecord> UK_DATA_DICT_CATE_CODE_DICT_CODE = Internal.createUniqueKey(DataDict.DATA_DICT, DSL.name("uk_data_dict_cate_code_dict_code"), new TableField[] { DataDict.DATA_DICT.CATEGORY_CODE, DataDict.DATA_DICT.DICT_CODE }, true);
+    public static final UniqueKey<NotificationRecord> NOTIFICATION_PKEY = Internal.createUniqueKey(Notification.NOTIFICATION, DSL.name("notification_pkey"), new TableField[] { Notification.NOTIFICATION.ID }, true);
     public static final UniqueKey<Oauth2AuthorizationRecord> OAUTH2_AUTHORIZATION_PKEY = Internal.createUniqueKey(Oauth2Authorization.OAUTH2_AUTHORIZATION, DSL.name("oauth2_authorization_pkey"), new TableField[] { Oauth2Authorization.OAUTH2_AUTHORIZATION.ID }, true);
     public static final UniqueKey<Oauth2AuthorizationConsentRecord> OAUTH2_AUTHORIZATION_CONSENT_PKEY = Internal.createUniqueKey(Oauth2AuthorizationConsent.OAUTH2_AUTHORIZATION_CONSENT, DSL.name("oauth2_authorization_consent_pkey"), new TableField[] { Oauth2AuthorizationConsent.OAUTH2_AUTHORIZATION_CONSENT.REGISTERED_CLIENT_ID, Oauth2AuthorizationConsent.OAUTH2_AUTHORIZATION_CONSENT.PRINCIPAL_NAME }, true);
     public static final UniqueKey<Oauth2RegisteredClientRecord> OAUTH2_REGISTERED_CLIENT_PKEY = Internal.createUniqueKey(Oauth2RegisteredClient.OAUTH2_REGISTERED_CLIENT, DSL.name("oauth2_registered_client_pkey"), new TableField[] { Oauth2RegisteredClient.OAUTH2_REGISTERED_CLIENT.ID }, true);
@@ -76,6 +81,7 @@ public class Keys {
     public static final UniqueKey<UserRecord> USER_USERNAME_KEY = Internal.createUniqueKey(User.USER, DSL.name("user_username_key"), new TableField[] { User.USER.USERNAME }, true);
     public static final UniqueKey<UserAuthEventRecord> USER_AUTH_EVENT_PKEY = Internal.createUniqueKey(UserAuthEvent.USER_AUTH_EVENT, DSL.name("user_auth_event_pkey"), new TableField[] { UserAuthEvent.USER_AUTH_EVENT.ID }, true);
     public static final UniqueKey<UserLoginRecord> USER_LOGIN_PKEY = Internal.createUniqueKey(UserLogin.USER_LOGIN, DSL.name("user_login_pkey"), new TableField[] { UserLogin.USER_LOGIN.ID }, true);
+    public static final UniqueKey<UserNotificationRecord> USER_NOTIFICATION_PKEY = Internal.createUniqueKey(UserNotification.USER_NOTIFICATION, DSL.name("user_notification_pkey"), new TableField[] { UserNotification.USER_NOTIFICATION.ID }, true);
     public static final UniqueKey<UserPermissionRecord> USER_PERMISSION_PKEY = Internal.createUniqueKey(UserPermission.USER_PERMISSION, DSL.name("user_permission_pkey"), new TableField[] { UserPermission.USER_PERMISSION.ID }, true);
     public static final UniqueKey<UserProfilePicRecord> USER_PROFILE_PIC_PKEY = Internal.createUniqueKey(UserProfilePic.USER_PROFILE_PIC, DSL.name("user_profile_pic_pkey"), new TableField[] { UserProfilePic.USER_PROFILE_PIC.ID }, true);
     public static final UniqueKey<UserRoleRecord> USER_ROLE_PKEY = Internal.createUniqueKey(UserRole.USER_ROLE, DSL.name("user_role_pkey"), new TableField[] { UserRole.USER_ROLE.ID }, true);
@@ -84,6 +90,7 @@ public class Keys {
     // FOREIGN KEY definitions
     // -------------------------------------------------------------------------
 
+    public static final ForeignKey<NotificationRecord, UserRecord> NOTIFICATION__FK_NOTIFICATION_USER_ID = Internal.createForeignKey(Notification.NOTIFICATION, DSL.name("fk_notification_user_id"), new TableField[] { Notification.NOTIFICATION.SENDER_ID }, Keys.USER_PKEY, new TableField[] { User.USER.ID }, true);
     public static final ForeignKey<OrgUserRecord, UserRecord> ORG_USER__FK_ORG_USER_USER_ID = Internal.createForeignKey(OrgUser.ORG_USER, DSL.name("fk_org_user_user_id"), new TableField[] { OrgUser.ORG_USER.USER_ID }, Keys.USER_PKEY, new TableField[] { User.USER.ID }, true);
     public static final ForeignKey<UserRecord, SupportedDateTimeFormatRecord> USER__FK_USER_DATE_TIME_FORMAT_SUPPORTED_DATE_TIME_FORMAT_ID = Internal.createForeignKey(User.USER, DSL.name("fk_user_date_time_format_supported_date_time_format_id"), new TableField[] { User.USER.DATE_TIME_FORMAT_ID }, Keys.SUPPORTED_DATE_TIME_FORMAT_PKEY, new TableField[] { SupportedDateTimeFormat.SUPPORTED_DATE_TIME_FORMAT.ID }, true);
     public static final ForeignKey<UserRecord, SupportedTimezoneRecord> USER__FK_USER_TIMEZONE_SUPPORTED_TIMEZONE_ID = Internal.createForeignKey(User.USER, DSL.name("fk_user_timezone_supported_timezone_id"), new TableField[] { User.USER.TIME_ZONE_ID }, Keys.SUPPORTED_TIMEZONE_PKEY, new TableField[] { SupportedTimezone.SUPPORTED_TIMEZONE.ID }, true);
