@@ -86,6 +86,12 @@ const router = createHashRouter([
         ],
       },
       {
+        path: "notifications",
+        lazy: async () => ({
+          Component: (await import("@/views/notifications")).default
+        }),
+      },
+      {
         path: "api-docs",
         lazy: async () => ({
           Component: (await import("@/views/api-docs")).default

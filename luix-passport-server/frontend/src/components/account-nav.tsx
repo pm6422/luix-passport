@@ -10,7 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { IconUser, IconCodeCircle2, IconApi, IconVocabulary, IconLogout } from "@tabler/icons-react"
+import { IconUser, IconCodeCircle2, IconApi, IconVocabulary, IconLogout, IconBellRinging } from "@tabler/icons-react"
 import { RoleDeveloper } from "@/components/custom/role/role-developer"
 import { AccountService } from "@/services/account-service.ts"
 import { useStore } from "exome/react"
@@ -46,6 +46,11 @@ export function AccountNav() {
             <DropdownMenuItem className="cursor-pointer">
               <IconUser className="size-4 mr-2"/>Account Settings
               {/*<DropdownMenuShortcut>⌘S</DropdownMenuShortcut>*/}
+            </DropdownMenuItem>
+          </Link>
+          <Link to="/notifications">
+            <DropdownMenuItem className="cursor-pointer">
+              <IconBellRinging className="size-4 mr-2"/>Notifications
             </DropdownMenuItem>
           </Link>
         </DropdownMenuGroup>
