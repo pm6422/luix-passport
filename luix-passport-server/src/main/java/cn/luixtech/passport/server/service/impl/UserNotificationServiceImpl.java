@@ -91,6 +91,6 @@ public class UserNotificationServiceImpl implements UserNotificationService {
     public Page<UserNotification> getUserNotifications(Pageable pageable, String userId, String keyword) {
         return StringUtils.isEmpty(keyword)
                 ? userNotificationRepository.findByUserId(pageable, userId)
-                : userNotificationRepository.findByUserAndKeyword(userId, keyword, pageable);
+                : userNotificationRepository.findByUserAndKeyword(pageable, userId, keyword);
     }
 }

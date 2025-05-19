@@ -29,5 +29,5 @@ public interface UserNotificationRepository extends JpaRepository<UserNotificati
                     "AND un.active = true " +
                     "AND (n.title LIKE %:keyword% OR n.content LIKE %:keyword%)",
             nativeQuery = true)
-    Page<UserNotification> findByUserAndKeyword(@Param("userId") String userId, @Param("keyword") String keyword, Pageable pageable);
+    Page<UserNotification> findByUserAndKeyword(Pageable pageable,@Param("userId") String userId, @Param("keyword") String keyword);
 }
