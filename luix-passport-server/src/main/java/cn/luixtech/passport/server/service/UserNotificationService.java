@@ -15,6 +15,6 @@ public interface UserNotificationService {
 
     void markAsRead(String userNotificationId);
 
-    Page<UserNotification> getUserNotifications(Pageable pageable, String userId, String keyword);
+    Page<UserNotification> getUserNotifications(Pageable pageable, String receiverId, String keyword);
 
 }

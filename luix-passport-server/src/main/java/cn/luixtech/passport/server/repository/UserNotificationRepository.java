@@ -19,13 +19,13 @@ public interface UserNotificationRepository extends JpaRepository<UserNotificati
 
     @Query("SELECT un FROM UserNotification un " +
             "JOIN FETCH un.notification n " +  // 使用FETCH避免N+1问题
-            "WHERE un.receiverId = :userId " +
+            "WHERE un.receiverId = :receiverId " +
             "AND un.active = true " +
             "AND (:keyword IS NULL OR :keyword = '' OR " +
             "     (n.title LIKE %:keyword% OR n.content LIKE %:keyword%)) " +
             "ORDER BY n.createdAt DESC")
-    Page<UserNotification> findByUserAndKeyword(
+    Page<UserNotification> findByReceiverAndKeyword(
             Pageable pageable,
-            @Param("userId") String userId,
+            @Param("receiverId") String receiverId,
             @Param("keyword") String keyword);
 }

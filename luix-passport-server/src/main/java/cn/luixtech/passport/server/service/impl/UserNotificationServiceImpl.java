@@ -93,9 +93,9 @@ public class UserNotificationServiceImpl implements UserNotificationService {
     }
 
     @Override
-    public Page<UserNotification> getUserNotifications(Pageable pageable, String userId, String keyword) {
+    public Page<UserNotification> getUserNotifications(Pageable pageable, String receiverId, String keyword) {
         return StringUtils.isEmpty(keyword)
-                ? userNotificationRepository.findByReceiverId(pageable, userId)
-                : userNotificationRepository.findByUserAndKeyword(pageable, userId, keyword);
+                ? userNotificationRepository.findByReceiverId(pageable, receiverId)
+                : userNotificationRepository.findByReceiverAndKeyword(pageable, receiverId, keyword);
     }
 }
