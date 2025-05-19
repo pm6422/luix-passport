@@ -73,7 +73,7 @@ public class UserNotificationServiceImpl implements UserNotificationService {
 
     @Override
     public long getUnreadCount(String userId) {
-        return 0;
+        return userNotificationRepository.countByUserIdAndStatus(userId, UserNotification.STATUS_UNREAD);
     }
 
     @Override

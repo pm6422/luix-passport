@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface UserNotificationRepository extends JpaRepository<UserNotification, String> {
+    long countByUserIdAndStatus(String userId, String status);
 }
