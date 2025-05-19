@@ -1,6 +1,8 @@
 package cn.luixtech.passport.server.controller;
 
 import cn.luixtech.passport.server.domain.UserNotification;
+import cn.luixtech.passport.server.pojo.UserNotificationResp;
+import cn.luixtech.passport.server.repository.NotificationRepository;
 import cn.luixtech.passport.server.service.UserNotificationService;
 import cn.luixtech.passport.server.utils.AuthUtils;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static cn.luixtech.passport.server.domain.UserRole.ROLE_USER;
@@ -25,13 +28,21 @@ import static cn.luixtech.passport.server.domain.UserRole.ROLE_USER;
 @PreAuthorize("hasAuthority(\"" + ROLE_USER + "\")")
 @Slf4j
 public class UserNotificationController {
+    private final NotificationRepository  notificationRepository;
     private final UserNotificationService userNotificationService;
 
     @Operation(summary = "find notifications for current user")
     @GetMapping("/api/user-notifications")
-    public ResponseEntity<List<UserNotification>> getMyNotifications() {
+    public ResponseEntity<List<UserNotificationResp>> getMyNotifications() {
+        List<UserNotificationResp> userNotificationResp = new ArrayList<>();
         List<UserNotification> userNotifications = userNotificationService.getUserNotifications(AuthUtils.getCurrentUserId());
-        return ResponseEntity.ok(userNotifications);
+
+        for (UserNotification userNotification : userNotifications) {
+            notificationRepository.findById(userNotification.getNotificationId()).ifPresent(notification -> {
+                userNotificationResp.add(UserNotificationResp.of(userNotification, notification));
+            });
+        }
+        return ResponseEntity.ok(userNotificationResp);
     }
 
     @Operation(summary = "mark user notification as read")
