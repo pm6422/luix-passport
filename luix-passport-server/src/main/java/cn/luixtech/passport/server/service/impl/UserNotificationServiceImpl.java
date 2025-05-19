@@ -77,12 +77,15 @@ public class UserNotificationServiceImpl implements UserNotificationService {
     }
 
     @Override
-    public void markAsRead(Long userNotificationId) {
-
+    public void markAsRead(String userNotificationId) {
+        userNotificationRepository.findById(userNotificationId).ifPresent(un -> {
+            un.setStatus(UserNotification.STATUS_READ);
+            userNotificationRepository.save(un);
+        });
     }
 
     @Override
     public List<UserNotification> getUserNotifications(String userId) {
-        return List.of();
+        return userNotificationRepository.findByUserIdAndActiveIsTrueOrderByCreatedAtDesc(userId);
     }
 }

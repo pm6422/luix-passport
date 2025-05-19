@@ -11,7 +11,7 @@ public interface UserNotificationService {
 
     long getUnreadCount(String userId);
 
-    void markAsRead(Long userNotificationId);
+    void markAsRead(String userNotificationId);
 
     List<UserNotification> getUserNotifications(String userId);
 
