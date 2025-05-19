@@ -2,7 +2,6 @@ package cn.luixtech.passport.server.controller;
 
 import cn.luixtech.passport.server.domain.UserNotification;
 import cn.luixtech.passport.server.pojo.MyNotification;
-import cn.luixtech.passport.server.repository.NotificationRepository;
 import cn.luixtech.passport.server.service.UserNotificationService;
 import cn.luixtech.passport.server.utils.AuthUtils;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,7 +27,6 @@ import static cn.luixtech.passport.server.domain.UserRole.ROLE_USER;
 @PreAuthorize("hasAuthority(\"" + ROLE_USER + "\")")
 @Slf4j
 public class UserNotificationController {
-    private final NotificationRepository  notificationRepository;
     private final UserNotificationService userNotificationService;
 
     @Operation(summary = "find notifications for current user")
@@ -37,7 +35,6 @@ public class UserNotificationController {
                                                                    @RequestParam(value = "keyword", required = false) String keyword) {
         List<MyNotification> myNotifications = new ArrayList<>();
         Page<UserNotification> userNotifications = userNotificationService.getUserNotifications(pageable, AuthUtils.getCurrentUserId(), keyword);
-
         for (UserNotification userNotification : userNotifications) {
             myNotifications.add(MyNotification.of(userNotification));
         }
