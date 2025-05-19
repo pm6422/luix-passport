@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -35,7 +35,7 @@ public class UserNotificationController {
     }
 
     @Operation(summary = "mark user notification as read")
-    @PostMapping("/api/user-notifications/mark-as-read/{id}")
+    @PutMapping("/api/user-notifications/mark-as-read/{id}")
     public ResponseEntity<Void> markAsRead(@PathVariable String id) {
         userNotificationService.markAsRead(id);
         return ResponseEntity.ok().build();
