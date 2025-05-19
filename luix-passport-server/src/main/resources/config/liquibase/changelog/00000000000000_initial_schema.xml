@@ -439,11 +439,28 @@
                 unique="false">
             <column name="sender_id"/>
         </createIndex>
+        <createIndex
+                tableName="user_notification"
+                indexName="idx_user_notification_notification"
+                unique="false">
+            <column name="notification_id"/>
+        </createIndex>
+        <createIndex
+                tableName="user_notification"
+                indexName="idx_user_notification_user_status"
+                unique="false">
+            <column name="user_id"/>
+            <column name="status"/>
+        </createIndex>
 
         <addUniqueConstraint
                 tableName="data_dict"
                 columnNames="category_code,dict_code"
-                constraintName="uk_data_dict_cate_code_dict_code"/>
+                constraintName="uk_data_dict_category_code_dict_code"/>
+        <addUniqueConstraint
+                tableName="user_notification"
+                columnNames="user_id, notification_id"
+                constraintName="uk_user_notification"/>
 
         <addForeignKeyConstraint
                 baseTableName="org_user"
@@ -519,6 +536,22 @@
                 referencedTableName="user"
                 referencedColumnNames="id"
                 onDelete="SET NULL"
+                onUpdate="CASCADE"/>
+        <addForeignKeyConstraint
+                baseTableName="user_notification"
+                baseColumnNames="user_id"
+                constraintName="fk_user_notification_user"
+                referencedTableName="user"
+                referencedColumnNames="id"
+                onDelete="CASCADE"
+                onUpdate="CASCADE"/>
+        <addForeignKeyConstraint
+                baseTableName="user_notification"
+                baseColumnNames="notification_id"
+                constraintName="fk_user_notification_notification"
+                referencedTableName="notification"
+                referencedColumnNames="id"
+                onDelete="CASCADE"
                 onUpdate="CASCADE"/>
     </changeSet>
 </databaseChangeLog>
