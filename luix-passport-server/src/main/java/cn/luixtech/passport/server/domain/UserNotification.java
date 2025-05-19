@@ -23,7 +23,7 @@ public class UserNotification implements Serializable {
     @Schema(description = "ID")
     @Id
     protected String       id;
-    private   String       userId;
+    private   String       receiverId;
     @ManyToOne
     private   Notification notification;
     private   String       status;

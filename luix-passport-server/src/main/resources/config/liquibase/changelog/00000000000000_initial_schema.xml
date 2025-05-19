@@ -412,7 +412,7 @@
             <column name="id" type="VARCHAR(20)">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="user_id" type="VARCHAR(20)">
+            <column name="receiver_id" type="VARCHAR(20)">
                 <constraints nullable="false"/>
             </column>
             <column name="notification_id" type="VARCHAR(20)">
@@ -460,7 +460,7 @@
             <column name="notification_id"/>
         </createIndex>
         <createIndex tableName="user_notification" indexName="idx_user_notification_user_status" unique="false">
-            <column name="user_id"/>
+            <column name="receiver_id"/>
             <column name="status"/>
         </createIndex>
 
@@ -470,7 +470,7 @@
                 constraintName="uk_data_dict_category_code_dict_code"/>
         <addUniqueConstraint
                 tableName="user_notification"
-                columnNames="user_id, notification_id"
+                columnNames="receiver_id, notification_id"
                 constraintName="uk_user_notification"/>
 
         <addForeignKeyConstraint
@@ -550,7 +550,7 @@
                 onUpdate="CASCADE"/>
         <addForeignKeyConstraint
                 baseTableName="user_notification"
-                baseColumnNames="user_id"
+                baseColumnNames="receiver_id"
                 constraintName="fk_user_notification_user"
                 referencedTableName="user"
                 referencedColumnNames="id"

@@ -38,16 +38,16 @@ public class UserNotificationRecord extends UpdatableRecordImpl<UserNotification
     }
 
     /**
-     * Setter for <code>public.user_notification.user_id</code>.
+     * Setter for <code>public.user_notification.receiver_id</code>.
      */
-    public void setUserId(String value) {
+    public void setReceiverId(String value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>public.user_notification.user_id</code>.
+     * Getter for <code>public.user_notification.receiver_id</code>.
      */
-    public String getUserId() {
+    public String getReceiverId() {
         return (String) get(1);
     }
 
@@ -151,7 +151,7 @@ public class UserNotificationRecord extends UpdatableRecordImpl<UserNotification
 
     @Override
     public Field<String> field2() {
-        return UserNotification.USER_NOTIFICATION.USER_ID;
+        return UserNotification.USER_NOTIFICATION.RECEIVER_ID;
     }
 
     @Override
@@ -186,7 +186,7 @@ public class UserNotificationRecord extends UpdatableRecordImpl<UserNotification
 
     @Override
     public String component2() {
-        return getUserId();
+        return getReceiverId();
     }
 
     @Override
@@ -221,7 +221,7 @@ public class UserNotificationRecord extends UpdatableRecordImpl<UserNotification
 
     @Override
     public String value2() {
-        return getUserId();
+        return getReceiverId();
     }
 
     @Override
@@ -257,7 +257,7 @@ public class UserNotificationRecord extends UpdatableRecordImpl<UserNotification
 
     @Override
     public UserNotificationRecord value2(String value) {
-        setUserId(value);
+        setReceiverId(value);
         return this;
     }
 
@@ -317,11 +317,11 @@ public class UserNotificationRecord extends UpdatableRecordImpl<UserNotification
     /**
      * Create a detached, initialised UserNotificationRecord
      */
-    public UserNotificationRecord(String id, String userId, String notificationId, String status, Boolean active, Instant createdAt, Instant modifiedAt) {
+    public UserNotificationRecord(String id, String receiverId, String notificationId, String status, Boolean active, Instant createdAt, Instant modifiedAt) {
         super(UserNotification.USER_NOTIFICATION);
 
         setId(id);
-        setUserId(userId);
+        setReceiverId(receiverId);
         setNotificationId(notificationId);
         setStatus(status);
         setActive(active);

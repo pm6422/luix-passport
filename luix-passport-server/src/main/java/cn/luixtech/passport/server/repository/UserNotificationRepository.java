@@ -13,13 +13,13 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface UserNotificationRepository extends JpaRepository<UserNotification, String> {
-    long countByUserIdAndStatus(String userId, String status);
+    long countByReceiverIdAndStatus(String userId, String status);
 
-    Page<UserNotification> findByUserId(Pageable pageable, String userId);
+    Page<UserNotification> findByReceiverId(Pageable pageable, String userId);
 
     @Query("SELECT un FROM UserNotification un " +
             "JOIN FETCH un.notification n " +  // 使用FETCH避免N+1问题
-            "WHERE un.userId = :userId " +
+            "WHERE un.receiverId = :userId " +
             "AND un.active = true " +
             "AND (:keyword IS NULL OR :keyword = '' OR " +
             "     (n.title LIKE %:keyword% OR n.content LIKE %:keyword%)) " +
