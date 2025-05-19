@@ -401,15 +401,48 @@
             <column name="sender_id" type="VARCHAR(20)">
                 <constraints nullable="true"/>
             </column>
-            <column name="created_at" type="timestamp">
+            <column name="created_at" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
-            <column name="updated_at" type="timestamp">
+            <column name="updated_at" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
         </createTable>
 
-        <addUniqueConstraint tableName="data_dict" columnNames="category_code,dict_code" constraintName="uk_data_dict_cate_code_dict_code"/>
+        <createTable tableName="user_notification">
+            <column name="id" type="VARCHAR(20)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="user_id" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="notification_id" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(7)" defaultValue="UNREAD">
+                <constraints nullable="false"/>
+            </column>
+            <column name="active" type="boolean" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createIndex
+                tableName="notification"
+                indexName="idx_notification_sender"
+                unique="false">
+            <column name="sender_id"/>
+        </createIndex>
+        <addUniqueConstraint
+                tableName="data_dict"
+                columnNames="category_code,dict_code"
+                constraintName="uk_data_dict_cate_code_dict_code"/>
         <addForeignKeyConstraint
                 baseTableName="org_user"
                 baseColumnNames="user_id"
@@ -485,12 +518,5 @@
                 referencedColumnNames="id"
                 onDelete="SET NULL"
                 onUpdate="CASCADE"/>
-
-        <createIndex
-                tableName="notification"
-                indexName="idx_notification_sender"
-                unique="false">
-            <column name="sender_id"/>
-        </createIndex>
     </changeSet>
 </databaseChangeLog>
