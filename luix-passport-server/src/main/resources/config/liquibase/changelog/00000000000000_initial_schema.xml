@@ -432,22 +432,34 @@
             </column>
         </createTable>
 
-        <createIndex
-                tableName="notification"
-                indexName="idx_notification_sender"
-                unique="false">
+        <createIndex tableName="user" indexName="idx_user_time_zone_id" unique="false">
+            <column name="time_zone_id"/>
+        </createIndex>
+        <createIndex tableName="user" indexName="idx_user_date_time_format_id" unique="false">
+            <column name="date_time_format_id"/>
+        </createIndex>
+        <createIndex tableName="org_user" indexName="idx_org_user_user_id" unique="false">
+            <column name="user_id"/>
+        </createIndex>
+        <createIndex tableName="user_role" indexName="idx_user_role_user_id" unique="false">
+            <column name="user_id"/>
+        </createIndex>
+        <createIndex tableName="user_permission" indexName="idx_user_permission_user_id" unique="false">
+            <column name="user_id"/>
+        </createIndex>
+        <createIndex tableName="user_login" indexName="idx_user_login_user_id" unique="false">
+            <column name="user_id"/>
+        </createIndex>
+        <createIndex tableName="user_profile_pic" indexName="idx_user_profile_pic_id" unique="false">
+            <column name="id"/>
+        </createIndex>
+        <createIndex tableName="notification" indexName="idx_notification_sender" unique="false">
             <column name="sender_id"/>
         </createIndex>
-        <createIndex
-                tableName="user_notification"
-                indexName="idx_user_notification_notification"
-                unique="false">
+        <createIndex tableName="user_notification" indexName="idx_user_notification_notification" unique="false">
             <column name="notification_id"/>
         </createIndex>
-        <createIndex
-                tableName="user_notification"
-                indexName="idx_user_notification_user_status"
-                unique="false">
+        <createIndex tableName="user_notification" indexName="idx_user_notification_user_status" unique="false">
             <column name="user_id"/>
             <column name="status"/>
         </createIndex>
