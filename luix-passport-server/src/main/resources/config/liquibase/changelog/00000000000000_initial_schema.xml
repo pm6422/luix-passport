@@ -401,10 +401,10 @@
             <column name="sender_id" type="VARCHAR(20)">
                 <constraints nullable="true"/>
             </column>
-            <column name="created_at" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
+            <column name="created_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
-            <column name="modified_at" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
+            <column name="modified_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -424,10 +424,10 @@
             <column name="active" type="boolean" defaultValueBoolean="true">
                 <constraints nullable="false"/>
             </column>
-            <column name="created_at" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
+            <column name="created_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
-            <column name="modified_at" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
+            <column name="modified_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
         </createTable>

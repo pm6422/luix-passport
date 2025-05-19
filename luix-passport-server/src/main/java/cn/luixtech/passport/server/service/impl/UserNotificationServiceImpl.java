@@ -67,7 +67,7 @@ public class UserNotificationServiceImpl implements UserNotificationService {
         userNotification.setStatus(UserNotification.STATUS_UNREAD);
         userNotification.setActive(true);
         userNotification.setCreatedAt(Instant.now());
-//        userNotification.setModifiedAt(userNotification.getCreatedAt());
+        userNotification.setModifiedAt(userNotification.getCreatedAt());
 
         userNotificationRepository.save(userNotification);
 
