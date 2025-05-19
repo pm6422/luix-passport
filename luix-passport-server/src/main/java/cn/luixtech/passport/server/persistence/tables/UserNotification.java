@@ -82,12 +82,12 @@ public class UserNotification extends TableImpl<UserNotificationRecord> {
     /**
      * The column <code>public.user_notification.created_at</code>.
      */
-    public final TableField<UserNotificationRecord, Instant> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.INSTANT.nullable(false).defaultValue(DSL.field(DSL.raw("now()"), SQLDataType.INSTANT)), this, "");
+    public final TableField<UserNotificationRecord, Instant> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.INSTANT.nullable(false), this, "");
 
     /**
      * The column <code>public.user_notification.modified_at</code>.
      */
-    public final TableField<UserNotificationRecord, Instant> MODIFIED_AT = createField(DSL.name("modified_at"), SQLDataType.INSTANT.nullable(false).defaultValue(DSL.field(DSL.raw("now()"), SQLDataType.INSTANT)), this, "");
+    public final TableField<UserNotificationRecord, Instant> MODIFIED_AT = createField(DSL.name("modified_at"), SQLDataType.INSTANT.nullable(false), this, "");
 
     private UserNotification(Name alias, Table<UserNotificationRecord> aliased) {
         this(alias, aliased, null);

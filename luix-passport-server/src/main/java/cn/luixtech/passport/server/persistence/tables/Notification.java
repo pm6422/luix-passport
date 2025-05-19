@@ -82,12 +82,12 @@ public class Notification extends TableImpl<NotificationRecord> {
     /**
      * The column <code>public.notification.created_at</code>.
      */
-    public final TableField<NotificationRecord, Instant> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.INSTANT.nullable(false).defaultValue(DSL.field(DSL.raw("now()"), SQLDataType.INSTANT)), this, "");
+    public final TableField<NotificationRecord, Instant> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.INSTANT.nullable(false), this, "");
 
     /**
      * The column <code>public.notification.modified_at</code>.
      */
-    public final TableField<NotificationRecord, Instant> MODIFIED_AT = createField(DSL.name("modified_at"), SQLDataType.INSTANT.nullable(false).defaultValue(DSL.field(DSL.raw("now()"), SQLDataType.INSTANT)), this, "");
+    public final TableField<NotificationRecord, Instant> MODIFIED_AT = createField(DSL.name("modified_at"), SQLDataType.INSTANT.nullable(false), this, "");
 
     private Notification(Name alias, Table<NotificationRecord> aliased) {
         this(alias, aliased, null);
