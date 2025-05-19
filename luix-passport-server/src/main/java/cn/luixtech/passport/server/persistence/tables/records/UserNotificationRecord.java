@@ -108,16 +108,16 @@ public class UserNotificationRecord extends UpdatableRecordImpl<UserNotification
     }
 
     /**
-     * Setter for <code>public.user_notification.updated_at</code>.
+     * Setter for <code>public.user_notification.modified_at</code>.
      */
-    public void setUpdatedAt(Instant value) {
+    public void setModifiedAt(Instant value) {
         set(6, value);
     }
 
     /**
-     * Getter for <code>public.user_notification.updated_at</code>.
+     * Getter for <code>public.user_notification.modified_at</code>.
      */
-    public Instant getUpdatedAt() {
+    public Instant getModifiedAt() {
         return (Instant) get(6);
     }
 
@@ -176,7 +176,7 @@ public class UserNotificationRecord extends UpdatableRecordImpl<UserNotification
 
     @Override
     public Field<Instant> field7() {
-        return UserNotification.USER_NOTIFICATION.UPDATED_AT;
+        return UserNotification.USER_NOTIFICATION.MODIFIED_AT;
     }
 
     @Override
@@ -211,7 +211,7 @@ public class UserNotificationRecord extends UpdatableRecordImpl<UserNotification
 
     @Override
     public Instant component7() {
-        return getUpdatedAt();
+        return getModifiedAt();
     }
 
     @Override
@@ -246,7 +246,7 @@ public class UserNotificationRecord extends UpdatableRecordImpl<UserNotification
 
     @Override
     public Instant value7() {
-        return getUpdatedAt();
+        return getModifiedAt();
     }
 
     @Override
@@ -287,7 +287,7 @@ public class UserNotificationRecord extends UpdatableRecordImpl<UserNotification
 
     @Override
     public UserNotificationRecord value7(Instant value) {
-        setUpdatedAt(value);
+        setModifiedAt(value);
         return this;
     }
 
@@ -317,7 +317,7 @@ public class UserNotificationRecord extends UpdatableRecordImpl<UserNotification
     /**
      * Create a detached, initialised UserNotificationRecord
      */
-    public UserNotificationRecord(String id, String userId, String notificationId, String status, Boolean active, Instant createdAt, Instant updatedAt) {
+    public UserNotificationRecord(String id, String userId, String notificationId, String status, Boolean active, Instant createdAt, Instant modifiedAt) {
         super(UserNotification.USER_NOTIFICATION);
 
         setId(id);
@@ -326,7 +326,7 @@ public class UserNotificationRecord extends UpdatableRecordImpl<UserNotification
         setStatus(status);
         setActive(active);
         setCreatedAt(createdAt);
-        setUpdatedAt(updatedAt);
+        setModifiedAt(modifiedAt);
         resetChangedOnNotNull();
     }
 }

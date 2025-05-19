@@ -1,31 +1,36 @@
 package cn.luixtech.passport.server.domain;
 
-import cn.luixtech.passport.server.domain.base.AbstractAuditableDomain;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.ManyToOne;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.Instant;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class UserNotification extends AbstractAuditableDomain implements Serializable {
+public class UserNotification implements Serializable {
     @Serial
     private static final long   serialVersionUID = 1L;
     public static final  String STATUS_READ      = "READ";
     public static final  String STATUS_UNREAD    = "UNREAD";
 
-    private String       userId;
+    @Schema(description = "ID")
+    @Id
+    protected String       id;
+    private   String       userId;
     @ManyToOne(fetch = FetchType.LAZY)
-    private Notification notification;
-    private String       status;
-    private Boolean      active;
+    private   Notification notification;
+    private   String       status;
+    private   Boolean      active;
+    @Schema(description = "created time")
+    @Column(updatable = false)
+    protected Instant      createdAt;
+    @Schema(description = "last modified time")
+    protected Instant      modifiedAt;
 }

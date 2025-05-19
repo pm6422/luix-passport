@@ -108,16 +108,16 @@ public class NotificationRecord extends UpdatableRecordImpl<NotificationRecord> 
     }
 
     /**
-     * Setter for <code>public.notification.updated_at</code>.
+     * Setter for <code>public.notification.modified_at</code>.
      */
-    public void setUpdatedAt(Instant value) {
+    public void setModifiedAt(Instant value) {
         set(6, value);
     }
 
     /**
-     * Getter for <code>public.notification.updated_at</code>.
+     * Getter for <code>public.notification.modified_at</code>.
      */
-    public Instant getUpdatedAt() {
+    public Instant getModifiedAt() {
         return (Instant) get(6);
     }
 
@@ -176,7 +176,7 @@ public class NotificationRecord extends UpdatableRecordImpl<NotificationRecord> 
 
     @Override
     public Field<Instant> field7() {
-        return Notification.NOTIFICATION.UPDATED_AT;
+        return Notification.NOTIFICATION.MODIFIED_AT;
     }
 
     @Override
@@ -211,7 +211,7 @@ public class NotificationRecord extends UpdatableRecordImpl<NotificationRecord> 
 
     @Override
     public Instant component7() {
-        return getUpdatedAt();
+        return getModifiedAt();
     }
 
     @Override
@@ -246,7 +246,7 @@ public class NotificationRecord extends UpdatableRecordImpl<NotificationRecord> 
 
     @Override
     public Instant value7() {
-        return getUpdatedAt();
+        return getModifiedAt();
     }
 
     @Override
@@ -287,7 +287,7 @@ public class NotificationRecord extends UpdatableRecordImpl<NotificationRecord> 
 
     @Override
     public NotificationRecord value7(Instant value) {
-        setUpdatedAt(value);
+        setModifiedAt(value);
         return this;
     }
 
@@ -317,7 +317,7 @@ public class NotificationRecord extends UpdatableRecordImpl<NotificationRecord> 
     /**
      * Create a detached, initialised NotificationRecord
      */
-    public NotificationRecord(String id, String title, String content, String type, String senderId, Instant createdAt, Instant updatedAt) {
+    public NotificationRecord(String id, String title, String content, String type, String senderId, Instant createdAt, Instant modifiedAt) {
         super(Notification.NOTIFICATION);
 
         setId(id);
@@ -326,7 +326,7 @@ public class NotificationRecord extends UpdatableRecordImpl<NotificationRecord> 
         setType(type);
         setSenderId(senderId);
         setCreatedAt(createdAt);
-        setUpdatedAt(updatedAt);
+        setModifiedAt(modifiedAt);
         resetChangedOnNotNull();
     }
 }

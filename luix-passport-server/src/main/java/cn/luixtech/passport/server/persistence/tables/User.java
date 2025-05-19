@@ -4,6 +4,7 @@
 package cn.luixtech.passport.server.persistence.tables;
 
 
+import cn.luixtech.passport.server.persistence.Indexes;
 import cn.luixtech.passport.server.persistence.Keys;
 import cn.luixtech.passport.server.persistence.Public;
 import cn.luixtech.passport.server.persistence.tables.records.UserRecord;
@@ -14,6 +15,7 @@ import java.util.List;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
+import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Schema;
@@ -213,6 +215,11 @@ public class User extends TableImpl<UserRecord> {
     @Override
     public Schema getSchema() {
         return aliased() ? null : Public.PUBLIC;
+    }
+
+    @Override
+    public List<Index> getIndexes() {
+        return Arrays.asList(Indexes.IDX_USER_DATE_TIME_FORMAT_ID, Indexes.IDX_USER_TIME_ZONE_ID);
     }
 
     @Override

@@ -51,19 +51,24 @@ public class UserNotificationServiceImpl implements UserNotificationService {
         notification.setId(IdGenerator.generateId());
         notification.setTitle(title);
         notification.setContent(content);
-        notification.setCreatedAt(Instant.now());
         notification.setType(type);
         notification.setSenderId(senderId);
+        notification.setCreatedAt(Instant.now());
+        notification.setModifiedAt(notification.getCreatedAt());
         notification = notificationRepository.save(notification);
         return notification;
     }
 
     private void sendNotification(User user, Notification notification) {
         UserNotification userNotification = new UserNotification();
+        userNotification.setId(IdGenerator.generateId());
         userNotification.setUserId(user.getId());
         userNotification.setNotification(notification);
         userNotification.setStatus(UserNotification.STATUS_UNREAD);
         userNotification.setActive(true);
+        userNotification.setCreatedAt(Instant.now());
+//        userNotification.setModifiedAt(userNotification.getCreatedAt());
+
         userNotificationRepository.save(userNotification);
 
         // 实时推送

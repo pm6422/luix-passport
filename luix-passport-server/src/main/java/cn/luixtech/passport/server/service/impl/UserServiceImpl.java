@@ -13,6 +13,7 @@ import cn.luixtech.passport.server.repository.SupportedDateTimeFormatRepository;
 import cn.luixtech.passport.server.repository.SupportedTimezoneRepository;
 import cn.luixtech.passport.server.repository.UserRepository;
 import cn.luixtech.passport.server.repository.UserRoleRepository;
+import cn.luixtech.passport.server.service.UserNotificationService;
 import cn.luixtech.passport.server.service.UserRoleService;
 import cn.luixtech.passport.server.service.UserService;
 import cn.luixtech.passport.server.statemachine.UserEvent;
@@ -54,10 +55,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.TemporalUnit;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static cn.luixtech.passport.server.config.AuthorizationServerConfiguration.BCRYPT_PASSWORD_ENCODER;
@@ -85,6 +83,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepository                     userRepository;
     private final UserRoleRepository                 userRoleRepository;
     private final UserRoleService                    userRoleService;
+    private final UserNotificationService            userNotificationService;
     private final MessageCreator                     messageCreator;
     private final HttpServletRequest                 httpServletRequest;
     private final Environment                        env;
@@ -290,6 +289,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setVerificationCode(generateRandomVerificationCode());
         user.setVerificationCodeSentAt(LocalDateTime.now());
         userRepository.save(user);
+        userNotificationService.sendPersonalNotification(user.getId(), Collections.singletonList(user.getId()),
+                "Change password", "You have requested to change your password.");
         return user;
     }
 

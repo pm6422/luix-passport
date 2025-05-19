@@ -4,16 +4,20 @@
 package cn.luixtech.passport.server.persistence.tables;
 
 
+import cn.luixtech.passport.server.persistence.Indexes;
 import cn.luixtech.passport.server.persistence.Keys;
 import cn.luixtech.passport.server.persistence.Public;
 import cn.luixtech.passport.server.persistence.tables.records.UserNotificationRecord;
 
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Function;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Function7;
+import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
@@ -81,9 +85,9 @@ public class UserNotification extends TableImpl<UserNotificationRecord> {
     public final TableField<UserNotificationRecord, Instant> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.INSTANT.nullable(false).defaultValue(DSL.field(DSL.raw("now()"), SQLDataType.INSTANT)), this, "");
 
     /**
-     * The column <code>public.user_notification.updated_at</code>.
+     * The column <code>public.user_notification.modified_at</code>.
      */
-    public final TableField<UserNotificationRecord, Instant> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.INSTANT.nullable(false).defaultValue(DSL.field(DSL.raw("now()"), SQLDataType.INSTANT)), this, "");
+    public final TableField<UserNotificationRecord, Instant> MODIFIED_AT = createField(DSL.name("modified_at"), SQLDataType.INSTANT.nullable(false).defaultValue(DSL.field(DSL.raw("now()"), SQLDataType.INSTANT)), this, "");
 
     private UserNotification(Name alias, Table<UserNotificationRecord> aliased) {
         this(alias, aliased, null);
@@ -124,8 +128,46 @@ public class UserNotification extends TableImpl<UserNotificationRecord> {
     }
 
     @Override
+    public List<Index> getIndexes() {
+        return Arrays.asList(Indexes.IDX_USER_NOTIFICATION_NOTIFICATION, Indexes.IDX_USER_NOTIFICATION_USER_STATUS);
+    }
+
+    @Override
     public UniqueKey<UserNotificationRecord> getPrimaryKey() {
         return Keys.USER_NOTIFICATION_PKEY;
+    }
+
+    @Override
+    public List<UniqueKey<UserNotificationRecord>> getUniqueKeys() {
+        return Arrays.asList(Keys.UK_USER_NOTIFICATION);
+    }
+
+    @Override
+    public List<ForeignKey<UserNotificationRecord, ?>> getReferences() {
+        return Arrays.asList(Keys.USER_NOTIFICATION__FK_USER_NOTIFICATION_USER, Keys.USER_NOTIFICATION__FK_USER_NOTIFICATION_NOTIFICATION);
+    }
+
+    private transient User _user;
+    private transient Notification _notification;
+
+    /**
+     * Get the implicit join path to the <code>public.user</code> table.
+     */
+    public User user() {
+        if (_user == null)
+            _user = new User(this, Keys.USER_NOTIFICATION__FK_USER_NOTIFICATION_USER);
+
+        return _user;
+    }
+
+    /**
+     * Get the implicit join path to the <code>public.notification</code> table.
+     */
+    public Notification notification() {
+        if (_notification == null)
+            _notification = new Notification(this, Keys.USER_NOTIFICATION__FK_USER_NOTIFICATION_NOTIFICATION);
+
+        return _notification;
     }
 
     @Override

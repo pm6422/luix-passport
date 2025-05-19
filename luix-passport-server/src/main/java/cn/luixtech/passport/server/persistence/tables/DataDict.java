@@ -152,7 +152,7 @@ public class DataDict extends TableImpl<DataDictRecord> {
 
     @Override
     public List<UniqueKey<DataDictRecord>> getUniqueKeys() {
-        return Arrays.asList(Keys.UK_DATA_DICT_CATE_CODE_DICT_CODE);
+        return Arrays.asList(Keys.UK_DATA_DICT_CATEGORY_CODE_DICT_CODE);
     }
 
     @Override
