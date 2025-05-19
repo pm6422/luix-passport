@@ -17,17 +17,15 @@ public interface UserNotificationRepository extends JpaRepository<UserNotificati
 
     Page<UserNotification> findByUserId(Pageable pageable, String userId);
 
-    @Query(value = "SELECT un.* FROM user_notification un " +
-            "JOIN notification n ON n.id = un.notification_id " +
-            "WHERE un.user_id = :userId " +
+    @Query("SELECT un FROM UserNotification un " +
+            "JOIN FETCH un.notification n " +  // 使用FETCH避免N+1问题
+            "WHERE un.userId = :userId " +
             "AND un.active = true " +
-            "AND (n.title LIKE %:keyword% OR n.content LIKE %:keyword%) " +
-            "ORDER BY n.created_at DESC",
-            countQuery = "SELECT count(un.id) FROM user_notification un " +
-                    "JOIN notification n ON n.id = un.notification_id " +
-                    "WHERE un.user_id = :userId " +
-                    "AND un.active = true " +
-                    "AND (n.title LIKE %:keyword% OR n.content LIKE %:keyword%)",
-            nativeQuery = true)
-    Page<UserNotification> findByUserAndKeyword(Pageable pageable,@Param("userId") String userId, @Param("keyword") String keyword);
+            "AND (:keyword IS NULL OR :keyword = '' OR " +
+            "     (n.title LIKE %:keyword% OR n.content LIKE %:keyword%)) " +
+            "ORDER BY n.createdAt DESC")
+    Page<UserNotification> findByUserAndKeyword(
+            Pageable pageable,
+            @Param("userId") String userId,
+            @Param("keyword") String keyword);
 }

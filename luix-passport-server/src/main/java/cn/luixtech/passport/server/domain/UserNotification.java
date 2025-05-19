@@ -2,6 +2,8 @@ package cn.luixtech.passport.server.domain;
 
 import cn.luixtech.passport.server.domain.base.AbstractAuditableDomain;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,8 +23,9 @@ public class UserNotification extends AbstractAuditableDomain implements Seriali
     public static final  String STATUS_READ      = "READ";
     public static final  String STATUS_UNREAD    = "UNREAD";
 
-    private String  userId;
-    private String  notificationId;
-    private String  status;
-    private Boolean active;
+    private String       userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Notification notification;
+    private String       status;
+    private Boolean      active;
 }

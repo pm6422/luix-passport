@@ -39,9 +39,7 @@ public class UserNotificationController {
         Page<UserNotification> userNotifications = userNotificationService.getUserNotifications(pageable, AuthUtils.getCurrentUserId(), keyword);
 
         for (UserNotification userNotification : userNotifications) {
-            notificationRepository.findById(userNotification.getNotificationId()).ifPresent(notification -> {
-                myNotifications.add(MyNotification.of(userNotification, notification));
-            });
+            myNotifications.add(MyNotification.of(userNotification));
         }
         return ResponseEntity.ok(myNotifications);
     }

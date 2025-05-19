@@ -61,7 +61,7 @@ public class UserNotificationServiceImpl implements UserNotificationService {
     private void sendNotification(User user, Notification notification) {
         UserNotification userNotification = new UserNotification();
         userNotification.setUserId(user.getId());
-        userNotification.setNotificationId(notification.getId());
+        userNotification.setNotification(notification);
         userNotification.setStatus(UserNotification.STATUS_UNREAD);
         userNotification.setActive(true);
         userNotificationRepository.save(userNotification);
