@@ -408,7 +408,6 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-
         <createTable tableName="user_notification">
             <column name="id" type="VARCHAR(20)">
                 <constraints nullable="false" primaryKey="true"/>
