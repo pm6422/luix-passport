@@ -8,7 +8,7 @@ import org.springframework.beans.BeanUtils;
 
 @Data
 @NoArgsConstructor
-public class UserNotificationResp {
+public class MyNotification {
     private String  id;
     private String  notificationId;
     private String  title;
@@ -19,8 +19,8 @@ public class UserNotificationResp {
     private String  status;
     private Boolean active;
 
-    public static UserNotificationResp of(UserNotification userNotification, Notification notification) {
-        UserNotificationResp resp = new UserNotificationResp();
+    public static MyNotification of(UserNotification userNotification, Notification notification) {
+        MyNotification resp = new MyNotification();
         BeanUtils.copyProperties(notification, resp);
         BeanUtils.copyProperties(userNotification, resp);
         resp.setNotificationId(notification.getId());

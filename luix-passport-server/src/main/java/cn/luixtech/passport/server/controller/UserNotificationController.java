@@ -1,7 +1,7 @@
 package cn.luixtech.passport.server.controller;
 
 import cn.luixtech.passport.server.domain.UserNotification;
-import cn.luixtech.passport.server.pojo.UserNotificationResp;
+import cn.luixtech.passport.server.pojo.MyNotification;
 import cn.luixtech.passport.server.repository.NotificationRepository;
 import cn.luixtech.passport.server.service.UserNotificationService;
 import cn.luixtech.passport.server.utils.AuthUtils;
@@ -33,16 +33,16 @@ public class UserNotificationController {
 
     @Operation(summary = "find notifications for current user")
     @GetMapping("/api/user-notifications")
-    public ResponseEntity<List<UserNotificationResp>> getMyNotifications() {
-        List<UserNotificationResp> userNotificationResp = new ArrayList<>();
+    public ResponseEntity<List<MyNotification>> getMyNotifications() {
+        List<MyNotification> myNotifications = new ArrayList<>();
         List<UserNotification> userNotifications = userNotificationService.getUserNotifications(AuthUtils.getCurrentUserId());
 
         for (UserNotification userNotification : userNotifications) {
             notificationRepository.findById(userNotification.getNotificationId()).ifPresent(notification -> {
-                userNotificationResp.add(UserNotificationResp.of(userNotification, notification));
+                myNotifications.add(MyNotification.of(userNotification, notification));
             });
         }
-        return ResponseEntity.ok(userNotificationResp);
+        return ResponseEntity.ok(myNotifications);
     }
 
     @Operation(summary = "mark user notification as read")
