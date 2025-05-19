@@ -17,7 +17,9 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = true)
 public class Notification extends AbstractAuditableDomain implements Serializable {
     @Serial
-    private static final long serialVersionUID = 1L;
+    private static final long   serialVersionUID = 1L;
+    public static final  String TYPE_SYSTEM      = "SYSTEM";
+    public static final  String TYPE_PERSONAL    = "PERSONAL";
 
     private String title;
     private String content;

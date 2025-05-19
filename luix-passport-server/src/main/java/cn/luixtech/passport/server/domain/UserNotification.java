@@ -17,10 +17,12 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = true)
 public class UserNotification extends AbstractAuditableDomain implements Serializable {
     @Serial
-    private static final long serialVersionUID = 1L;
+    private static final long   serialVersionUID = 1L;
+    public static final  String STATUS_READ      = "READ";
+    public static final  String STATUS_UNREAD    = "UNREAD";
 
     private String  userId;
-    private String  notification_id;
+    private String  notificationId;
     private String  status;
     private Boolean active;
 }

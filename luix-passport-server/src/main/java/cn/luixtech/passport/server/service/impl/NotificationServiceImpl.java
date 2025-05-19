@@ -1,8 +1,87 @@
 package cn.luixtech.passport.server.service.impl;
 
+import cn.luixtech.passport.server.domain.Notification;
+import cn.luixtech.passport.server.domain.User;
+import cn.luixtech.passport.server.domain.UserNotification;
+import cn.luixtech.passport.server.repository.NotificationRepository;
+import cn.luixtech.passport.server.repository.UserNotificationRepository;
+import cn.luixtech.passport.server.repository.UserRepository;
 import cn.luixtech.passport.server.service.NotificationService;
+import com.luixtech.uidgenerator.core.id.IdGenerator;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.util.List;
+
 @Service
+@AllArgsConstructor
 public class NotificationServiceImpl implements NotificationService {
+    private final NotificationRepository     notificationRepository;
+    private final UserNotificationRepository userNotificationRepository;
+    private final UserRepository             userRepository;
+
+    @Override
+    public void sendBroadcastNotification(String title, String content) {
+        Notification notification = new Notification();
+        notification.setId(IdGenerator.generateId());
+        notification.setTitle(title);
+        notification.setContent(content);
+        notification.setCreatedAt(Instant.now());
+        notification.setType(Notification.TYPE_SYSTEM);
+        notification = notificationRepository.save(notification);
+
+        // Create user notifications for each user
+        List<User> users = userRepository.findAll();
+        for (User user : users) {
+            UserNotification userNotification = new UserNotification();
+            userNotification.setUserId(user.getId());
+            userNotification.setNotificationId(notification.getId());
+            userNotification.setStatus(UserNotification.STATUS_UNREAD);
+            userNotification.setActive(true);
+            userNotificationRepository.save(userNotification);
+
+            // 实时推送
+//            messagingTemplate.convertAndSendToUser(
+//                    user.getUsername(),
+//                    "/queue/notifications",
+//                    new NotificationDTO(notification.getId(), notification.getTitle())
+//            );
+        }
+    }
+
+    @Override
+    public void sendPersonalNotification(String senderId, List<String> receiverIds, String title, String content) {
+        Notification notification = new Notification();
+        notification.setId(IdGenerator.generateId());
+        notification.setTitle(title);
+        notification.setContent(content);
+        notification.setCreatedAt(Instant.now());
+        notification.setType(Notification.TYPE_PERSONAL);
+        notification.setSenderId(senderId);
+        notification = notificationRepository.save(notification);
+
+        // Create user notifications for each receiver
+        List<User> receivers = userRepository.findAllById(receiverIds);
+        for (User receiver : receivers) {
+            UserNotification userNotification = new UserNotification();
+            userNotification.setUserId(receiver.getId());
+            userNotification.setNotificationId(notification.getId());
+            userNotification.setStatus(UserNotification.STATUS_UNREAD);
+            userNotification.setActive(true);
+            userNotificationRepository.save(userNotification);
+
+            // 实时推送
+//            messagingTemplate.convertAndSendToUser(
+//                    receiver.getUsername(),
+//                    "/queue/notifications",
+//                    new NotificationDTO(notification.getId(), notification.getTitle())
+//            );
+        }
+    }
+
+    @Override
+    public long getUnreadCount(String userId) {
+        return 0;
+    }
 }
