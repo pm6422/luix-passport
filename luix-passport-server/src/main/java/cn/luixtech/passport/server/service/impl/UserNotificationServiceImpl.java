@@ -9,6 +9,8 @@ import cn.luixtech.passport.server.repository.UserRepository;
 import cn.luixtech.passport.server.service.UserNotificationService;
 import com.luixtech.uidgenerator.core.id.IdGenerator;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -85,7 +87,7 @@ public class UserNotificationServiceImpl implements UserNotificationService {
     }
 
     @Override
-    public List<UserNotification> getUserNotifications(String userId) {
-        return userNotificationRepository.findByUserIdAndActiveIsTrueOrderByCreatedAtDesc(userId);
+    public Page<UserNotification> getUserNotifications(Pageable pageable, String userId, String keyword) {
+        return userNotificationRepository.findByUserAndKeyword(userId, keyword, pageable);
     }
 }
