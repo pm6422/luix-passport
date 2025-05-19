@@ -24,7 +24,7 @@ public class UserNotification implements Serializable {
     @Id
     protected String       id;
     private   String       userId;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private   Notification notification;
     private   String       status;
     private   Boolean      active;

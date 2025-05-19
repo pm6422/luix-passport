@@ -1,5 +1,6 @@
 package cn.luixtech.passport.server.pojo;
 
+import cn.luixtech.passport.server.domain.Notification;
 import cn.luixtech.passport.server.domain.UserNotification;
 import lombok.Data;
 import lombok.NoArgsConstructor;
