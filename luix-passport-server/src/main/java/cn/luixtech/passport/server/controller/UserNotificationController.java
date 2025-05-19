@@ -27,7 +27,7 @@ import static cn.luixtech.passport.server.domain.UserRole.ROLE_USER;
 public class UserNotificationController {
     private final UserNotificationService userNotificationService;
 
-    @Operation(summary = "find user notifications")
+    @Operation(summary = "find notifications for current user")
     @GetMapping("/api/user-notifications")
     public ResponseEntity<List<UserNotification>> getMyNotifications() {
         List<UserNotification> userNotifications = userNotificationService.getUserNotifications(AuthUtils.getCurrentUserId());
@@ -41,7 +41,8 @@ public class UserNotificationController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/unread-count")
+    @Operation(summary = "count unread notifications for current user")
+    @GetMapping("/api/user-notifications/unread-count")
     public ResponseEntity<Long> getMyUnreadCount() {
         long count = userNotificationService.getUnreadCount(AuthUtils.getCurrentUserId());
         return ResponseEntity.ok(count);
