@@ -15,6 +15,8 @@ import org.springframework.stereotype.Repository;
 public interface UserNotificationRepository extends JpaRepository<UserNotification, String> {
     long countByUserIdAndStatus(String userId, String status);
 
+    Page<UserNotification> findByUserId(String userId, Pageable pageable);
+
     @Query(value = "SELECT un.* FROM user_notification un " +
             "JOIN notification n ON n.id = un.notification_id " +
             "WHERE un.user_id = :userId " +
