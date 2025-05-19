@@ -26,21 +26,9 @@ public class NotificationServiceImpl implements NotificationService {
         Notification notification = saveNotification(null, title, content, Notification.TYPE_SYSTEM);
 
         // Create user notifications for each user
-        List<User> users = userRepository.findAll();
-        for (User user : users) {
-            UserNotification userNotification = new UserNotification();
-            userNotification.setUserId(user.getId());
-            userNotification.setNotificationId(notification.getId());
-            userNotification.setStatus(UserNotification.STATUS_UNREAD);
-            userNotification.setActive(true);
-            userNotificationRepository.save(userNotification);
-
-            // 实时推送
-//            messagingTemplate.convertAndSendToUser(
-//                    user.getUsername(),
-//                    "/queue/notifications",
-//                    new NotificationDTO(notification.getId(), notification.getTitle())
-//            );
+        List<User> allUsers = userRepository.findAll();
+        for (User user : allUsers) {
+            sendNotification(user, notification);
         }
     }
 
@@ -51,19 +39,7 @@ public class NotificationServiceImpl implements NotificationService {
         // Create user notifications for each receiver
         List<User> receivers = userRepository.findAllById(receiverIds);
         for (User receiver : receivers) {
-            UserNotification userNotification = new UserNotification();
-            userNotification.setUserId(receiver.getId());
-            userNotification.setNotificationId(notification.getId());
-            userNotification.setStatus(UserNotification.STATUS_UNREAD);
-            userNotification.setActive(true);
-            userNotificationRepository.save(userNotification);
-
-            // 实时推送
-//            messagingTemplate.convertAndSendToUser(
-//                    receiver.getUsername(),
-//                    "/queue/notifications",
-//                    new NotificationDTO(notification.getId(), notification.getTitle())
-//            );
+            sendNotification(receiver, notification);
         }
     }
 
@@ -77,6 +53,22 @@ public class NotificationServiceImpl implements NotificationService {
         notification.setSenderId(senderId);
         notification = notificationRepository.save(notification);
         return notification;
+    }
+
+    private void sendNotification(User user, Notification notification) {
+        UserNotification userNotification = new UserNotification();
+        userNotification.setUserId(user.getId());
+        userNotification.setNotificationId(notification.getId());
+        userNotification.setStatus(UserNotification.STATUS_UNREAD);
+        userNotification.setActive(true);
+        userNotificationRepository.save(userNotification);
+
+        // 实时推送
+//            messagingTemplate.convertAndSendToUser(
+//                    user.getUsername(),
+//                    "/queue/notifications",
+//                    new NotificationDTO(notification.getId(), notification.getTitle())
+//            );
     }
 
     @Override
