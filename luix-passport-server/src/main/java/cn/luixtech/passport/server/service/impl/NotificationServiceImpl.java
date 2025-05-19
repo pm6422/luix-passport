@@ -23,13 +23,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public void sendBroadcastNotification(String title, String content) {
-        Notification notification = new Notification();
-        notification.setId(IdGenerator.generateId());
-        notification.setTitle(title);
-        notification.setContent(content);
-        notification.setCreatedAt(Instant.now());
-        notification.setType(Notification.TYPE_SYSTEM);
-        notification = notificationRepository.save(notification);
+        Notification notification = saveNotification(null, title, content, Notification.TYPE_SYSTEM);
 
         // Create user notifications for each user
         List<User> users = userRepository.findAll();
@@ -52,14 +46,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public void sendPersonalNotification(String senderId, List<String> receiverIds, String title, String content) {
-        Notification notification = new Notification();
-        notification.setId(IdGenerator.generateId());
-        notification.setTitle(title);
-        notification.setContent(content);
-        notification.setCreatedAt(Instant.now());
-        notification.setType(Notification.TYPE_PERSONAL);
-        notification.setSenderId(senderId);
-        notification = notificationRepository.save(notification);
+        Notification notification = saveNotification(senderId, title, content, Notification.TYPE_PERSONAL);
 
         // Create user notifications for each receiver
         List<User> receivers = userRepository.findAllById(receiverIds);
@@ -78,6 +65,18 @@ public class NotificationServiceImpl implements NotificationService {
 //                    new NotificationDTO(notification.getId(), notification.getTitle())
 //            );
         }
+    }
+
+    private Notification saveNotification(String senderId, String title, String content, String type) {
+        Notification notification = new Notification();
+        notification.setId(IdGenerator.generateId());
+        notification.setTitle(title);
+        notification.setContent(content);
+        notification.setCreatedAt(Instant.now());
+        notification.setType(type);
+        notification.setSenderId(senderId);
+        notification = notificationRepository.save(notification);
+        return notification;
     }
 
     @Override
