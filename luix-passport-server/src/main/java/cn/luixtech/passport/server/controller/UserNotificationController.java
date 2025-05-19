@@ -35,9 +35,9 @@ public class UserNotificationController {
     }
 
     @Operation(summary = "mark user notification as read")
-    @PostMapping("/api/user-notifications/mark-as-read/{userNotificationId}")
-    public ResponseEntity<Void> markAsRead(@PathVariable String userNotificationId) {
-        userNotificationService.markAsRead(userNotificationId);
+    @PostMapping("/api/user-notifications/mark-as-read/{id}")
+    public ResponseEntity<Void> markAsRead(@PathVariable String id) {
+        userNotificationService.markAsRead(id);
         return ResponseEntity.ok().build();
     }
 
