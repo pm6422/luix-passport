@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.BeanUtils;
 
+import java.time.Instant;
+
 @Data
 @NoArgsConstructor
 public class MyNotification {
@@ -17,6 +19,8 @@ public class MyNotification {
     private String  receiverId;
     private String  status;
     private Boolean active;
+    private Instant createdAt;
+    private Instant modifiedAt;
 
     public static MyNotification of(UserNotification userNotification) {
         MyNotification resp = new MyNotification();

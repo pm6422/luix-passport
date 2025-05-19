@@ -1,7 +1,10 @@
 package cn.luixtech.passport.server.domain;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,7 +33,7 @@ public class UserNotification implements Serializable {
     private   Boolean      active;
     @Schema(description = "created time")
     @Column(updatable = false)
-    protected Instant      createdAt;
+    private   Instant      createdAt;
     @Schema(description = "last modified time")
-    protected Instant      modifiedAt;
+    private   Instant      modifiedAt;
 }

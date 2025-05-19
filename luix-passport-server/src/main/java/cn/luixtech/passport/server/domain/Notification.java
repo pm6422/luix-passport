@@ -31,9 +31,9 @@ public class Notification implements Serializable {
     private   String  senderId;
     @Schema(description = "created time")
     @Column(updatable = false)
-    protected Instant createdAt;
+    private   Instant createdAt;
     @Schema(description = "last modified time")
-    protected Instant modifiedAt;
+    private   Instant modifiedAt;
 
 
 }
