@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
 import { LayoutBody } from "@/layouts/layout-definitions"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination"
@@ -174,15 +173,6 @@ export default function Notifications() {
                 </div>
                 <div className="prose max-w-none">
                   <p>{selectedNotification.content}</p>
-                </div>
-                <div className="mt-6 flex justify-end">
-                  <Button
-                    variant="outline"
-                    onClick={() => markAsRead(selectedNotification.id)}
-                    disabled={selectedNotification.status === "READ"}
-                  >
-                    {selectedNotification.status === "READ" ? "READ" : "Mark as Read"}
-                  </Button>
                 </div>
               </div>
             ) : (
