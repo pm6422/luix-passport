@@ -20,12 +20,12 @@ export default function Notifications() {
     loadNotifications(currentPage)
   }, [currentPage])
 
-  // 模拟数据获取
-  function loadNotifications(pageNo: number = 0): void {
+  function loadNotifications(pageNo: number = 0, sorts: Array<string> = ["createdAt,desc"]): void {
     setIsLoading(true)
     UserNotificationService.find({
       page: pageNo,
       size: 10,
+      sort: sorts,
     }).then(r => {
       setNotifications(r.data)
       const total = parseInt(r.headers["x-total-count"])
@@ -37,18 +37,15 @@ export default function Notifications() {
     })
   }
 
-  const markAsRead = async (id: string) => {
-    try {
-      await fetch(`/api/user-notifications/${id}/read`, { method: "POST" })
+  function markAsRead(id: string): void {
+    UserNotificationService.markAsRead(id).then(() => {
       setNotifications(notifications.map(n =>
-        n.id === id ? { ...n, isRead: true } : n
+        n.id === id ? { ...n, status: "READ" } : n
       ))
       if (selectedNotification?.id === id) {
         setSelectedNotification({ ...selectedNotification, status: "READ" })
       }
-    } catch (error) {
-      console.error("Failed to mark as read", error)
-    }
+    })
   }
 
   return (
