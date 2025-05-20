@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { Link, Outlet } from "react-router-dom"
+import { Outlet } from "react-router-dom"
 import Sidebar from "@/components/sidebar"
 import useIsCollapsed from "@/hooks/use-is-collapsed"
 import { useStore } from "exome/react"
@@ -55,7 +55,15 @@ export default function AuthLayout() {
               toast(
                 <div className="flex flex-col">
                   <span className="font-bold mb-2">{event.data}</span>
-                  <span>Please go to notification center to check.
+                  <span>
+                    Please go to{' '}
+                        <a
+                          href="/#/notifications"
+                          className="text-blue-500 hover:text-blue-700 underline underline-offset-4 decoration-blue-300 hover:decoration-blue-500 transition-all font-bold"
+                        >
+                      notification center
+                    </a>{' '}
+                                    to check.
                   </span>
                 </div>,
               { duration: 5000 })
