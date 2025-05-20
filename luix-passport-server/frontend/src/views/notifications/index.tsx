@@ -74,9 +74,7 @@ export default function Notifications() {
                       Notifications
                     </div>
                   </div>
-                  { totalCount > 0 &&
-                    <Badge variant="outline" className="h-4">{totalCount}</Badge>
-                  }
+                  <Badge variant="outline" className="h-4">{totalCount}</Badge>
                 </div>
             </CardTitle>
           </CardHeader>
