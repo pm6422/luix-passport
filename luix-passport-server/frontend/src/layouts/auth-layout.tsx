@@ -54,7 +54,7 @@ export default function AuthLayout() {
             setTimeout(() => {
               toast(
                 <div className="flex flex-col">
-                  <span className="font-bold mb-2">{event.data}</span>
+                  <span className="font-bold mb-2">Notification: {event.data}</span>
                   <span>
                     Please go to{' '}
                         <a
