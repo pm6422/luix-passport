@@ -24,7 +24,7 @@ export default function Notifications() {
   function loadNotifications(pageNo: number = 0, sorts: Array<string> = ["createdAt,desc"]): void {
     setIsLoading(true)
     UserNotificationService.find({
-      page: pageNo,
+      page: pageNo - 1,
       size: 10,
       sort: sorts,
     }).then(r => {
