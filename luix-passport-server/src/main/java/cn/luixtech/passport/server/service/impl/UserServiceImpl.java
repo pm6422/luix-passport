@@ -281,6 +281,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setVerificationCodeSentAt(LocalDateTime.now());
         user.setNewEmail(email);
         userRepository.save(user);
+        userNotificationService.sendPersonalNotification(user.getId(), Collections.singletonList(user.getId()),
+                "Change email", "You have requested to change your email.");
         return user;
     }
 
