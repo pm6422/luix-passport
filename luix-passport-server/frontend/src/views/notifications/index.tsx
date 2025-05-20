@@ -179,7 +179,7 @@ export default function Notifications() {
               </div>
             ) : (
               <div className="text-center py-8 text-gray-500">
-                No notification
+                No notification.
               </div>
             )}
           </CardContent>
