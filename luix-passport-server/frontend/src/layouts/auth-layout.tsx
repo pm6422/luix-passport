@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { Outlet } from "react-router-dom"
+import { Link, Outlet } from "react-router-dom"
 import Sidebar from "@/components/sidebar"
 import useIsCollapsed from "@/hooks/use-is-collapsed"
 import { useStore } from "exome/react"
@@ -9,11 +9,12 @@ import { RoleOnlyUser } from "@/components/custom/role/role-only-user"
 import { useLocation } from "react-router-dom"
 import { CentralTopNav } from "@/components/central-top-nav"
 // import { NotificationNav } from "@/components/notification-nav.tsx"
-import { AccountNav } from "@/components/account-nav.tsx"
+import { AccountNav } from "@/components/account-nav"
 import { Layout, LayoutHeader } from "@/layouts/layout-definitions"
 // import { Search } from "@/components/custom/search"
 import { isEmpty } from "lodash"
-import { AccountService } from '@/services/account-service.ts'
+import { AccountService } from "@/services/account-service"
+import { toast } from "sonner"
 
 export default function AuthLayout() {
   const { authUser, setAuthUser } = useStore(authUserStore)
@@ -39,6 +40,29 @@ export default function AuthLayout() {
         window.location.href = "/login"
       } else {
         setAuthUser(u)
+
+        if (!window.EventSource) {
+          toast.error("Your browser does NOT support Server-Sent Event!");
+        } else {
+          const source = new EventSource("api/sse/connect");
+          source.onopen = function () {
+            console.log("Opened SSE connection to the server");
+          }
+          source.onmessage = function (event) {
+            // const data = JSON.parse(event.data);
+            // console.log("Received message from the server:", data);
+            setTimeout(() => {
+              toast(
+                <div className="flex flex-col">
+                  <span className="font-bold mb-2">{event.data}</span>
+                  <span>Please go to notification center to check.
+                  </span>
+                </div>,
+              { duration: 5000 })
+            }, 2000)
+          }
+          //todo: call sse/disconnect after logout
+        }
       }
     })
   }, [location]);

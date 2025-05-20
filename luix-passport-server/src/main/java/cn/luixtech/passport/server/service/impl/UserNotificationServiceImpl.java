@@ -74,7 +74,7 @@ public class UserNotificationServiceImpl implements UserNotificationService {
         userNotificationRepository.save(userNotification);
 
         // todo: broadcast
-        SseEmitterUtils.pushUserMessage(user.getId(), "You have a new notification");
+        SseEmitterUtils.pushUserMessage(user.getId(), "You have a new notification.");
     }
 
     @Override
