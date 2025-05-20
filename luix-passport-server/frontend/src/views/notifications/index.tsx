@@ -119,7 +119,7 @@ export default function Notifications() {
                     <div className="flex items-center justify-between">
                       <div>
                       <h3 className="text-sm line-clamp-1">{notification.title}</h3>
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="text-xs text-muted-foreground mt-1">
                         <DateTime value={notification.createdAt}/>
                       </p>
                       </div>
@@ -195,14 +195,14 @@ export default function Notifications() {
               <div>
                 <div className="flex justify-between items-center mb-4 mt-5">
                   <h2 className="text-xl font-bold">{selectedNotification.title}</h2>
-                  <DateTime value={selectedNotification.createdAt} className="text-sm text-gray-500"/>
+                  <DateTime value={selectedNotification.createdAt} className="text-sm text-muted-foreground"/>
                 </div>
                 <div className="prose max-w-none">
                   <p>{selectedNotification.content}</p>
                 </div>
               </div>
             ) : (
-              <div className="text-center py-8 text-gray-500">
+              <div className="text-center py-8 text-muted-foreground">
                 No notification.
               </div>
             )}
