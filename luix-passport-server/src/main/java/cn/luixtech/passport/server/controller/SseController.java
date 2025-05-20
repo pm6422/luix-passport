@@ -28,6 +28,7 @@ public class SseController {
     @GetMapping("/api/sse/disconnect")
     public void disconnect(HttpServletRequest request) {
         request.startAsync();
+        // todo: broadcast remove in distributed system
         SseEmitterUtils.removeUser(AuthUtils.getCurrentUserId());
     }
 }
