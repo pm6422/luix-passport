@@ -23,8 +23,8 @@ export default function AuthLayout() {
   const location = useLocation()
   const topNav = [
     {
-      title: "Overview",
-      href: "user-overview",
+      title: "Notifications",
+      href: "notifications",
       isActive: true,
     },
     {
