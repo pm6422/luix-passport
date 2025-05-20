@@ -35,7 +35,7 @@ export default function Dashboard() {
       return;
     }
     if (authUser.isOnlyUser) {
-      navigate("user-overview")
+      navigate("notifications")
     } else {
       UserService.count().then(r => {
         setUserCount(r.data)
