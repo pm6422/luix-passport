@@ -8,6 +8,7 @@ import { UserNotificationService } from "@/services/user-notification-service"
 import { DateTime } from "@/components/custom/date-time"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
+import { IconBellRinging } from "@tabler/icons-react"
 
 export default function Notifications() {
   const [selectedNotification, setSelectedNotification] = useState<UserNotification | null>(null)
@@ -58,7 +59,12 @@ export default function Notifications() {
           <CardHeader>
             <CardTitle>
                 <div className="flex items-center justify-between">
-                  <div>Notifications</div>
+                  <div>
+                    <div className="flex">
+                      <IconBellRinging className="size-4 mr-1"/>
+                      Notifications
+                    </div>
+                  </div>
                   { totalCount > 0 &&
                     <Badge variant="outline" className="h-4">{totalCount}</Badge>
                   }
@@ -161,7 +167,7 @@ export default function Notifications() {
         {/* Notification Details */}
         <Card className="flex-1">
           <CardHeader>
-            <CardTitle>Details</CardTitle>
+            <CardTitle>Content</CardTitle>
           </CardHeader>
           <Separator/>
           <CardContent>
