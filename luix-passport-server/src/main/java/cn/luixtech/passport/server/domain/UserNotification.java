@@ -27,6 +27,10 @@ public class UserNotification implements Serializable {
     @Id
     protected String       id;
     private   String       receiverId;
+    /**
+     * 一条Notification可以发送给多个用户 (体现在多个UserNotification记录中)
+     * 一个用户通知 (UserNotification) 只能关联一条具体的通知
+     */
     @ManyToOne
     private   Notification notification;
     private   String       status;
