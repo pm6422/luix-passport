@@ -15,6 +15,7 @@ export default function Notifications() {
   const [notifications, setNotifications] = useState<UserNotification[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [totalPages, setTotalPages] = useState(1)
+  const [totalCount, setTotalCount] = useState(0)
 
   useEffect(() => {
     loadNotifications(currentPage)
@@ -29,6 +30,7 @@ export default function Notifications() {
     }).then(r => {
       setNotifications(r.data)
       const total = parseInt(r.headers["x-total-count"])
+      setTotalCount(total)
       setTotalPages(Math.ceil(total / 10))
       if (r.data.length > 0 && !selectedNotification) {
         setSelectedNotification(r.data[0])
@@ -54,7 +56,7 @@ export default function Notifications() {
         {/* Notifications List */}
         <Card className="w-1/3">
           <CardHeader>
-            <CardTitle>Notifications</CardTitle>
+            <CardTitle>{totalCount > 0 ? "Notifications (" + totalCount + ")" : "Notifications"}</CardTitle>
           </CardHeader>
           <Separator/>
           <CardContent className="p-0">
@@ -108,7 +110,7 @@ export default function Notifications() {
                           setCurrentPage(currentPage - 1)
                         }
                       }}
-                      className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+                      className={currentPage === 0 ? "pointer-events-none opacity-50" : ""}
                     />
                   </PaginationItem>
 
