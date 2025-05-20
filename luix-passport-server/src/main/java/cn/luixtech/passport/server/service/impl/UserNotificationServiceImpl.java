@@ -75,7 +75,7 @@ public class UserNotificationServiceImpl implements UserNotificationService {
 //            messagingTemplate.convertAndSendToUser(
 //                    user.getUsername(),
 //                    "/queue/notifications",
-//                    new NotificationDTO(notification.getId(), notification.getTitle())
+//                    new MyNotification(notification.getId(), notification.getTitle())
 //            );
     }
 
