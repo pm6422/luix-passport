@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react'
-import { Button } from '@/components/ui/button'
+import { useState, useEffect } from "react"
+import { Button } from "@/components/ui/button"
 import { LayoutBody } from "@/layouts/layout-definitions"
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination"
-import { Skeleton } from '@/components/ui/skeleton'
+import { Skeleton } from "@/components/ui/skeleton"
 import { type UserNotification } from "@/domains/user-notification"
-import { UserNotificationService } from '@/services/user-notification-service'
+import { UserNotificationService } from "@/services/user-notification-service"
 
 export default function Notifications() {
   const [selectedNotification, setSelectedNotification] = useState<UserNotification | null>(null)
@@ -37,7 +37,7 @@ export default function Notifications() {
 
   const markAsRead = async (id: string) => {
     try {
-      await fetch(`/api/user-notifications/${id}/read`, { method: 'POST' })
+      await fetch(`/api/user-notifications/${id}/read`, { method: "POST" })
       setNotifications(notifications.map(n =>
         n.id === id ? { ...n, isRead: true } : n
       ))
@@ -45,7 +45,7 @@ export default function Notifications() {
         setSelectedNotification({ ...selectedNotification, status: "READ" })
       }
     } catch (error) {
-      console.error('Failed to mark as read', error)
+      console.error("Failed to mark as read", error)
     }
   }
 
@@ -70,13 +70,13 @@ export default function Notifications() {
                   <div
                     key={notification.id}
                     className={`p-4 cursor-pointer hover:bg-gray-50 transition-colors ${
-                      notification.id === selectedNotification?.id ? 'bg-blue-50' : ''
+                      notification.id === selectedNotification?.id ? "bg-blue-50" : ""
                     } ${
-                      notification.status === 'UNREAD' ? 'font-semibold' : ''
+                      notification.status === "UNREAD" ? "font-semibold" : ""
                     }`}
                     onClick={() => {
                       setSelectedNotification(notification)
-                      if (notification.status === 'UNREAD') {
+                      if (notification.status === "UNREAD") {
                         markAsRead(notification.id)
                       }
                     }}
@@ -85,7 +85,7 @@ export default function Notifications() {
                     <p className="text-xs text-gray-500 mt-1">
                       {new Date(notification.createdAt).toLocaleString()}
                     </p>
-                    {notification.status === 'UNREAD' && (
+                    {notification.status === "UNREAD" && (
                       <span className="inline-block w-2 h-2 bg-blue-500 rounded-full ml-2"></span>
                     )}
                   </div>
@@ -165,9 +165,9 @@ export default function Notifications() {
                   <Button
                     variant="outline"
                     onClick={() => markAsRead(selectedNotification.id)}
-                    disabled={selectedNotification.status === 'READ'}
+                    disabled={selectedNotification.status === "READ"}
                   >
-                    {selectedNotification.status === 'READ' ? '已读' : '标记为已读'}
+                    {selectedNotification.status === "READ" ? "已读" : "标记为已读"}
                   </Button>
                 </div>
               </div>
