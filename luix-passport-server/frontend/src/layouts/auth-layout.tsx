@@ -50,11 +50,16 @@ export default function AuthLayout() {
     if (!window.EventSource) {
       toast.error("Your browser does NOT support Server-Sent Event!");
     } else {
-      const source = new EventSource("api/sse/connect");
-      source.onopen = function () {
+      const eventSource = new EventSource("api/sse/connect");
+      eventSource.onopen = function () {
         console.log("Opened SSE connection to the server");
       }
-      source.onmessage = function (event) {
+      eventSource.onerror = () => {
+        eventSource.close();
+        // reconnect after 5 seconds
+        setTimeout(setupSse, 5000);
+      };
+      eventSource.onmessage = function (event) {
         // const data = JSON.parse(event.data);
         // console.log("Received message from the server:", data);
         setTimeout(() => {
@@ -70,10 +75,10 @@ export default function AuthLayout() {
                   href="/#/notifications"
                   className="text-blue-500 hover:text-blue-700 underline underline-offset-4 decoration-blue-300 hover:decoration-blue-500 transition-all font-bold"
                 >
-                      notification center
-                    </a>{' '}
+                  notification center
+                </a>{' '}
                 to check.
-                  </span>
+              </span>
             </div>,
             { duration: 5000 })
         }, 2000)
