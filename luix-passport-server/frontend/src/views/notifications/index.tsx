@@ -19,10 +19,10 @@ export default function Notifications() {
   }, [currentPage])
 
   // 模拟数据获取
-  const fetchNotifications = async (page: number) => {
+  function fetchNotifications(pageNo: number = 0): void {
     setIsLoading(true)
     UserNotificationService.find({
-      page: page,
+      page: pageNo,
       size: 10,
     }).then(r => {
       setNotifications(r.data)
