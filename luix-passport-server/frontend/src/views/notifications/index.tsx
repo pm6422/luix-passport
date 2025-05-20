@@ -61,7 +61,7 @@ export default function Notifications() {
                 <div className="flex items-center justify-between">
                   <div>
                     <div className="flex">
-                      <IconBellRinging className="size-4 mr-1"/>
+                      <IconBellRinging className="size-4 mr-2"/>
                       Notifications
                     </div>
                   </div>
