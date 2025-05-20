@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import { LayoutBody } from "@/layouts/layout-definitions"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination"
@@ -8,7 +8,8 @@ import { UserNotificationService } from "@/services/user-notification-service"
 import { DateTime } from "@/components/custom/date-time"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
-import { IconBellRinging } from "@tabler/icons-react"
+import { IconBellRinging, IconSearch } from "@tabler/icons-react"
+import { Input } from "@/components/ui/input"
 
 export default function Notifications() {
   const [selectedNotification, setSelectedNotification] = useState<UserNotification | null>(null)
@@ -17,6 +18,7 @@ export default function Notifications() {
   const [isLoading, setIsLoading] = useState(true)
   const [totalPages, setTotalPages] = useState(1)
   const [totalCount, setTotalCount] = useState(0)
+  const [keyword, setKeyword] = useState("")
 
   useEffect(() => {
     loadNotifications(currentPage)
@@ -28,6 +30,7 @@ export default function Notifications() {
       page: pageNo - 1,
       size: 10,
       sort: sorts,
+      keyword: keyword
     }).then(r => {
       setNotifications(r.data)
       const total = parseInt(r.headers["x-total-count"])
@@ -49,6 +52,12 @@ export default function Notifications() {
         setSelectedNotification({ ...selectedNotification, status: "READ" })
       }
     })
+  }
+
+  function search(e: React.KeyboardEvent<HTMLInputElement>) : void {
+    if (e.key === 'Enter') {
+      loadNotifications(currentPage);
+    }
   }
 
   return (
@@ -73,6 +82,18 @@ export default function Notifications() {
           </CardHeader>
           <Separator/>
           <CardContent className="p-0">
+            <div className="p-4">
+              <div className="relative">
+                <IconSearch className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground"/>
+                <Input
+                  placeholder="Search" className="pl-8"
+                  value={keyword}
+                  onChange={(e) => setKeyword(e.target.value)}
+                  onKeyDown={search}
+                />
+              </div>
+            </div>
+
             {isLoading ? (
               <div className="space-y-2 p-4">
                 {Array(5).fill(0).map((_, i) => (
