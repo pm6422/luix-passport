@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static cn.luixtech.passport.server.domain.UserRole.ROLE_USER;
+import static com.luixtech.springbootframework.utils.HttpHeaderUtils.generatePageHeaders;
 
 /**
  * REST controller for managing user notifications.
@@ -38,7 +39,7 @@ public class UserNotificationController {
         for (UserNotification userNotification : userNotifications) {
             myNotifications.add(MyNotification.of(userNotification));
         }
-        return ResponseEntity.ok(myNotifications);
+        return ResponseEntity.ok().headers(generatePageHeaders(userNotifications)).body(myNotifications);
     }
 
     @Operation(summary = "mark user notification as read")
