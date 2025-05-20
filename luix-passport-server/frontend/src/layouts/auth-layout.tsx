@@ -15,6 +15,7 @@ import { Layout, LayoutHeader } from "@/layouts/layout-definitions"
 import { isEmpty } from "lodash"
 import { AccountService } from "@/services/account-service"
 import { toast } from "sonner"
+import { IconInfoCircle } from "@tabler/icons-react"
 
 export default function AuthLayout() {
   const { authUser, setAuthUser } = useStore(authUserStore)
@@ -39,40 +40,46 @@ export default function AuthLayout() {
         console.log("Redirecting to login for empty user")
         window.location.href = "/login"
       } else {
-        setAuthUser(u)
-
-        if (!window.EventSource) {
-          toast.error("Your browser does NOT support Server-Sent Event!");
-        } else {
-          const source = new EventSource("api/sse/connect");
-          source.onopen = function () {
-            console.log("Opened SSE connection to the server");
-          }
-          source.onmessage = function (event) {
-            // const data = JSON.parse(event.data);
-            // console.log("Received message from the server:", data);
-            setTimeout(() => {
-              toast(
-                <div className="flex flex-col">
-                  <span className="font-bold mb-2">Notification: {event.data}</span>
-                  <span>
-                    Please go to{' '}
-                        <a
-                          href="/#/notifications"
-                          className="text-blue-500 hover:text-blue-700 underline underline-offset-4 decoration-blue-300 hover:decoration-blue-500 transition-all font-bold"
-                        >
-                      notification center
-                    </a>{' '}
-                                    to check.
-                  </span>
-                </div>,
-              { duration: 5000 })
-            }, 2000)
-          }
-        }
+        setAuthUser(u);
+        setupSse();
       }
     })
   }, [location]);
+
+  function setupSse(): void {
+    if (!window.EventSource) {
+      toast.error("Your browser does NOT support Server-Sent Event!");
+    } else {
+      const source = new EventSource("api/sse/connect");
+      source.onopen = function () {
+        console.log("Opened SSE connection to the server");
+      }
+      source.onmessage = function (event) {
+        // const data = JSON.parse(event.data);
+        // console.log("Received message from the server:", data);
+        setTimeout(() => {
+          toast(
+            <div className="flex flex-col">
+              <div className="flex">
+                <IconInfoCircle className="size-4 mr-2"/>
+                <span className="font-bold mb-2">{event.data}</span>
+              </div>
+              <span>
+                    Please go to{' '}
+                <a
+                  href="/#/notifications"
+                  className="text-blue-500 hover:text-blue-700 underline underline-offset-4 decoration-blue-300 hover:decoration-blue-500 transition-all font-bold"
+                >
+                      notification center
+                    </a>{' '}
+                to check.
+                  </span>
+            </div>,
+            { duration: 5000 })
+        }, 2000)
+      }
+    }
+  }
 
   return (
     <div className="relative h-full overflow-hidden bg-background">
