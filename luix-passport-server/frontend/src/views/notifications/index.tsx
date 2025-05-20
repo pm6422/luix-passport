@@ -176,7 +176,7 @@ export default function Notifications() {
               </div>
             ) : (
               <div className="text-center py-8 text-gray-500">
-                请从左侧选择一条通知查看详情
+                ...
               </div>
             )}
           </CardContent>
