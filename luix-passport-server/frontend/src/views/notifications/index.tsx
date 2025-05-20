@@ -7,7 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { type UserNotification } from "@/domains/user-notification"
 import { UserNotificationService } from "@/services/user-notification-service"
 import { DateTime } from "@/components/custom/date-time"
-import { Separator } from '@/components/ui/separator.tsx'
+import { Separator } from "@/components/ui/separator"
 
 export default function Notifications() {
   const [selectedNotification, setSelectedNotification] = useState<UserNotification | null>(null)
