@@ -41,14 +41,30 @@ export default function AuthLayout() {
         window.location.href = "/login"
       } else {
         setAuthUser(u);
-        setupSse();
       }
     })
   }, [location]);
 
-  function setupSse(): void {
+  useEffect(() => {
+    if(isEmpty(authUser)) {
+      return;
+    }
+
+    const eventSource = setupSse();
+
+    return () => {
+      // Close connection on component unmount
+      if (eventSource) {
+        eventSource.close();
+        console.log('SSE connection closed');
+      }
+    };
+  }, [authUser]);
+
+  function setupSse(): EventSource | undefined {
     if (!window.EventSource) {
       toast.error("Your browser does NOT support Server-Sent Event!");
+      return undefined;
     } else {
       const eventSource = new EventSource("api/sse/connect");
       eventSource.onopen = function () {
@@ -82,6 +98,8 @@ export default function AuthLayout() {
             </div>,
             { duration: 5000 })
         }, 2000)
+
+        return eventSource;
       }
     }
   }
