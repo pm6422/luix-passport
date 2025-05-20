@@ -7,6 +7,7 @@ import cn.luixtech.passport.server.repository.NotificationRepository;
 import cn.luixtech.passport.server.repository.UserNotificationRepository;
 import cn.luixtech.passport.server.repository.UserRepository;
 import cn.luixtech.passport.server.service.UserNotificationService;
+import com.luixtech.springbootframework.utils.SseEmitterUtils;
 import com.luixtech.uidgenerator.core.id.IdGenerator;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -56,6 +57,7 @@ public class UserNotificationServiceImpl implements UserNotificationService {
         notification.setCreatedAt(Instant.now());
         notification.setModifiedAt(notification.getCreatedAt());
         notification = notificationRepository.save(notification);
+
         return notification;
     }
 
@@ -71,12 +73,8 @@ public class UserNotificationServiceImpl implements UserNotificationService {
 
         userNotificationRepository.save(userNotification);
 
-        // 实时推送
-//            messagingTemplate.convertAndSendToUser(
-//                    user.getUsername(),
-//                    "/queue/notifications",
-//                    new MyNotification(notification.getId(), notification.getTitle())
-//            );
+        // todo: broadcast
+        SseEmitterUtils.pushUserMessage(user.getId(), "You have a new notification");
     }
 
     @Override
