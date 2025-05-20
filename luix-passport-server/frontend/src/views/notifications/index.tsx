@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react"
+import { cn } from "@/lib/utils"
 import { LayoutBody } from "@/layouts/layout-definitions"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination"
@@ -103,11 +104,11 @@ export default function Notifications() {
                 {notifications.map(notification => (
                   <div
                     key={notification.id}
-                    className={`p-4 cursor-pointer hover:bg-gray-50 transition-colors ${
-                      notification.id === selectedNotification?.id ? "bg-blue-50" : ""
-                    } ${
-                      notification.status === "UNREAD" ? "font-semibold" : ""
-                    }`}
+                    className={cn(
+                      "p-4 cursor-pointer hover:bg-muted transition-colors",
+                      notification.id === selectedNotification?.id && "bg-accent border-l-4 border-primary",
+                      notification.status === "UNREAD" && "font-medium"
+                    )}
                     onClick={() => {
                       setSelectedNotification(notification)
                       if (notification.status === "UNREAD") {
