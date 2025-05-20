@@ -7,6 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { type UserNotification } from "@/domains/user-notification"
 import { UserNotificationService } from "@/services/user-notification-service"
 import { DateTime } from "@/components/custom/date-time"
+import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 
 export default function Notifications() {
@@ -56,7 +57,14 @@ export default function Notifications() {
         {/* Notifications List */}
         <Card className="w-1/3">
           <CardHeader>
-            <CardTitle>{totalCount > 0 ? "Notifications (" + totalCount + ")" : "Notifications"}</CardTitle>
+            <CardTitle>
+                <div className="flex items-center justify-between">
+                  <div>Notifications</div>
+                  { totalCount > 0 &&
+                    <Badge variant="outline" className="h-4">{totalCount}</Badge>
+                  }
+                </div>
+            </CardTitle>
           </CardHeader>
           <Separator/>
           <CardContent className="p-0">
