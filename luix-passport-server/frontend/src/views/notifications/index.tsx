@@ -110,7 +110,7 @@ export default function Notifications() {
                           setCurrentPage(currentPage - 1)
                         }
                       }}
-                      className={currentPage === 0 ? "pointer-events-none opacity-50" : ""}
+                      className={currentPage <= 1 ? "pointer-events-none opacity-50" : ""}
                     />
                   </PaginationItem>
 
@@ -141,7 +141,8 @@ export default function Notifications() {
                           setCurrentPage(currentPage + 1)
                         }
                       }}
-                      className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+                      className={currentPage >= totalPages || totalPages <= 1 ? "pointer-events-none opacity-50" : ""}
+                      aria-disabled={currentPage >= totalPages || totalPages <= 1}
                     />
                   </PaginationItem>
                 </PaginationContent>
