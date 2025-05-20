@@ -55,6 +55,7 @@ export class AccountService {
   }
 
   public static async signOut(): Promise<void> {
+    await http.get("api/sse/disconnect")
     await http.post("api/accounts/sign-out")
     window.location.reload()
   }

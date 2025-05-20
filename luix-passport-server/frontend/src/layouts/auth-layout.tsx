@@ -69,7 +69,6 @@ export default function AuthLayout() {
               { duration: 5000 })
             }, 2000)
           }
-          //todo: call sse/disconnect after logout
         }
       }
     })
