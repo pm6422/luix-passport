@@ -6,6 +6,7 @@ import { Pagination, PaginationContent, PaginationItem, PaginationLink, Paginati
 import { Skeleton } from "@/components/ui/skeleton"
 import { type UserNotification } from "@/domains/user-notification"
 import { UserNotificationService } from "@/services/user-notification-service"
+import { DateTime } from "@/components/custom/date-time"
 
 export default function Notifications() {
   const [selectedNotification, setSelectedNotification] = useState<UserNotification | null>(null)
@@ -15,11 +16,11 @@ export default function Notifications() {
   const [totalPages, setTotalPages] = useState(1)
 
   useEffect(() => {
-    fetchNotifications(currentPage)
+    loadNotifications(currentPage)
   }, [currentPage])
 
   // 模拟数据获取
-  function fetchNotifications(pageNo: number = 0): void {
+  function loadNotifications(pageNo: number = 0): void {
     setIsLoading(true)
     UserNotificationService.find({
       page: pageNo,
@@ -52,10 +53,10 @@ export default function Notifications() {
   return (
     <LayoutBody className="space-y-4">
       <div className="flex h-full gap-4">
-        {/* 左侧通知列表 */}
+        {/* Notifications List */}
         <Card className="w-1/3">
           <CardHeader>
-            <CardTitle>我的通知</CardTitle>
+            <CardTitle>Notifications</CardTitle>
           </CardHeader>
           <CardContent className="p-0">
             {isLoading ? (
@@ -83,7 +84,7 @@ export default function Notifications() {
                   >
                     <h3 className="text-sm line-clamp-1">{notification.title}</h3>
                     <p className="text-xs text-gray-500 mt-1">
-                      {new Date(notification.createdAt).toLocaleString()}
+                      <DateTime value={notification.createdAt}/>
                     </p>
                     {notification.status === "UNREAD" && (
                       <span className="inline-block w-2 h-2 bg-blue-500 rounded-full ml-2"></span>
@@ -144,19 +145,17 @@ export default function Notifications() {
           </CardContent>
         </Card>
 
-        {/* 右侧通知详情 */}
+        {/* Notification Details */}
         <Card className="flex-1">
           <CardHeader>
-            <CardTitle>通知详情</CardTitle>
+            <CardTitle>Details</CardTitle>
           </CardHeader>
           <CardContent>
             {selectedNotification ? (
               <div>
                 <div className="flex justify-between items-center mb-4">
                   <h2 className="text-xl font-bold">{selectedNotification.title}</h2>
-                  <span className="text-sm text-gray-500">
-                    {new Date(selectedNotification.createdAt).toLocaleString()}
-                  </span>
+                  <DateTime value={selectedNotification.createdAt} className="text-sm text-gray-500"/>
                 </div>
                 <div className="prose max-w-none">
                   <p>{selectedNotification.content}</p>
@@ -167,7 +166,7 @@ export default function Notifications() {
                     onClick={() => markAsRead(selectedNotification.id)}
                     disabled={selectedNotification.status === "READ"}
                   >
-                    {selectedNotification.status === "READ" ? "已读" : "标记为已读"}
+                    {selectedNotification.status === "READ" ? "READ" : "Mark as Read"}
                   </Button>
                 </div>
               </div>
