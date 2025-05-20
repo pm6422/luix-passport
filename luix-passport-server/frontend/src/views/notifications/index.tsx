@@ -64,7 +64,7 @@ export default function Notifications() {
     <LayoutBody className="space-y-4">
       <div className="flex h-full gap-4">
         {/* Notifications List */}
-        <Card className="w-1/3">
+        <Card className="w-full lg:w-1/3">
           <CardHeader>
             <CardTitle>
                 <div className="flex items-center justify-between">
@@ -184,7 +184,7 @@ export default function Notifications() {
         </Card>
 
         {/* Notification Details */}
-        <Card className="flex-1">
+        <Card className="flex-1 hidden lg:block">
           <CardHeader>
             <CardTitle>Content</CardTitle>
           </CardHeader>
