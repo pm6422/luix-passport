@@ -12,10 +12,7 @@ import cn.luixtech.passport.server.pojo.PasswordRecovery;
 import cn.luixtech.passport.server.repository.SupportedDateTimeFormatRepository;
 import cn.luixtech.passport.server.repository.UserProfilePicRepository;
 import cn.luixtech.passport.server.repository.UserRepository;
-import cn.luixtech.passport.server.service.MailService;
-import cn.luixtech.passport.server.service.SupportedTimezoneService;
-import cn.luixtech.passport.server.service.UserProfilePicService;
-import cn.luixtech.passport.server.service.UserService;
+import cn.luixtech.passport.server.service.*;
 import cn.luixtech.passport.server.utils.AuthUtils;
 import com.luixtech.springbootframework.component.HttpHeaderCreator;
 import com.luixtech.springbootframework.component.MessageCreator;
@@ -42,10 +39,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static cn.luixtech.passport.server.domain.UserRole.*;
 import static com.luixtech.springbootframework.utils.NetworkUtils.getRequestUrl;
@@ -66,6 +60,7 @@ public class AccountController {
     private final SupportedDateTimeFormatRepository supportedDateTimeFormatRepository;
     private final UserService                       userService;
     private final UserProfilePicService             userProfilePicService;
+    private final UserNotificationService           userNotificationService;
     private final ApplicationEventPublisher         applicationEventPublisher;
 
     @Operation(summary = "get current user who are signed in")
@@ -104,6 +99,10 @@ public class AccountController {
 
         User newUser = userService.insert(managedUser.toUser(), managedUser.getRoles(), managedUser.getPassword(), false);
         mailService.sendAccountActivationEmail(newUser, getRequestUrl(request));
+
+        userNotificationService.sendPersonalNotification(newUser.getId(), Collections.singletonList(newUser.getId()),
+                "Register account successfully",
+                "You have successfully registered an account, please activate the account and contact the administrator to grant appropriate permissions.");
         return ResponseEntity.ok().build();
     }
 
