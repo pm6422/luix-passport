@@ -176,14 +176,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public Set<String> findPermissions(String userId) {
-        return dslContext.selectDistinct(PERMISSION.ID)
-                .from(PERMISSION)
-                .join(ROLE_PERMISSION).on(PERMISSION.ID.eq(ROLE_PERMISSION.PERMISSION_ID))
+        return dslContext.selectDistinct(ROLE_PERMISSION.PERMISSION_ID)
+                .from(ROLE_PERMISSION)
                 .join(ROLE).on(ROLE_PERMISSION.ROLE_ID.eq(ROLE.ID))
                 .join(USER_ROLE).on(ROLE.ID.eq(USER_ROLE.ROLE_ID))
                 .join(USER).on(USER_ROLE.USER_ID.eq(USER.ID))
                 .where(USER.ID.eq(userId))
-                .fetchSet(PERMISSION.ID);
+                .fetchSet(ROLE_PERMISSION.PERMISSION_ID);
     }
 
     @Override
