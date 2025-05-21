@@ -18,17 +18,17 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class UserPermission extends AbstractBaseDomain implements Serializable {
+public class RolePermission extends AbstractBaseDomain implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotEmpty(message = "userId:{Validation.NotEmpty}")
+    @NotEmpty(message = "roleId:{Validation.NotEmpty}")
     @Column(nullable = false)
-    private String userId;
+    private String roleId;
 
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotEmpty(message = "permission:{Validation.NotEmpty}")
+    @NotEmpty(message = "permissionId:{Validation.NotEmpty}")
     @Column(nullable = false)
-    private String permission;
+    private String permissionId;
 }

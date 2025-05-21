@@ -315,21 +315,21 @@
                 separator=";"
                 tableName="permission">
         </loadData>
-        <createTable tableName="user_permission">
+        <createTable tableName="role_permission">
             <column name="id" type="VARCHAR(20)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="user_id" type="VARCHAR(20)">
+            <column name="role_id" type="VARCHAR(20)">
                 <constraints nullable="false"/>
             </column>
-            <column name="permission" type="VARCHAR(36)">
+            <column name="permission_id" type="VARCHAR(25)">
                 <constraints nullable="false"/>
             </column>
         </createTable>
         <loadData
-                file="config/liquibase/data/user_permission.csv"
+                file="config/liquibase/data/role_permission.csv"
                 separator=";"
-                tableName="user_permission">
+                tableName="role_permission">
         </loadData>
         <createTable tableName="user_auth_event">
             <column name="id" type="VARCHAR(20)">
@@ -483,8 +483,11 @@
         <createIndex tableName="user_role" indexName="idx_user_role_role_id" unique="false">
             <column name="role_id"/>
         </createIndex>
-        <createIndex tableName="user_permission" indexName="idx_user_permission_user_id" unique="false">
-            <column name="user_id"/>
+        <createIndex tableName="role_permission" indexName="idx_role_permission_role_id" unique="false">
+            <column name="role_id"/>
+        </createIndex>
+        <createIndex tableName="role_permission" indexName="idx_role_permission_permission_id" unique="false">
+            <column name="permission_id"/>
         </createIndex>
         <createIndex tableName="user_login" indexName="idx_user_login_user_id" unique="false">
             <column name="user_id"/>
@@ -507,6 +510,11 @@
                 tableName="user_role"
                 columnNames="user_id, role_id"
                 constraintName="uk_user_role"
+        />
+        <addUniqueConstraint
+                tableName="role_permission"
+                columnNames="role_id, permission_id"
+                constraintName="uk_role_permission"
         />
         <addUniqueConstraint
                 tableName="data_dict"
@@ -551,14 +559,25 @@
                 referencedColumnNames="id"
                 validate="true"/>
         <addForeignKeyConstraint
-                baseTableName="user_permission"
-                baseColumnNames="user_id"
-                constraintName="fk_user_permission_user_id"
+                baseTableName="role_permission"
+                baseColumnNames="role_id"
+                constraintName="fk_role_permission_role_id"
                 deferrable="false"
                 initiallyDeferred="false"
                 onDelete="CASCADE"
                 onUpdate="RESTRICT"
-                referencedTableName="user"
+                referencedTableName="role"
+                referencedColumnNames="id"
+                validate="true"/>
+        <addForeignKeyConstraint
+                baseTableName="role_permission"
+                baseColumnNames="permission_id"
+                constraintName="fk_role_permission_permission_id"
+                deferrable="false"
+                initiallyDeferred="false"
+                onDelete="CASCADE"
+                onUpdate="RESTRICT"
+                referencedTableName="permission"
                 referencedColumnNames="id"
                 validate="true"/>
         <addForeignKeyConstraint

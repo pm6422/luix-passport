@@ -1,4 +1,0 @@
-id;user_id;permission
-1;11;user:insert
-2;11;user:update
-3;11;user:view
