@@ -5,6 +5,7 @@ import cn.luixtech.passport.server.repository.SupportedTimezoneRepository;
 import cn.luixtech.passport.server.service.SupportedTimezoneService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
@@ -18,6 +19,10 @@ import java.util.List;
 public class SupportedTimezoneServiceImpl implements SupportedTimezoneService {
     private final SupportedTimezoneRepository supportedTimezoneRepository;
 
+    /**
+     * Execute every day at 2:00 AM
+     */
+    @Scheduled(cron = "0 0 2 * * *")
     @Override
     public void updateUtcOffset() {
         supportedTimezoneRepository.findAll().forEach(timezone -> {
