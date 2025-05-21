@@ -1,0 +1,5 @@
+id;description;created_at;modified_at
+ROLE_ANONYMOUS;;now;now
+ROLE_USER;;now;now
+ROLE_ADMIN;;now;now
+ROLE_DEVELOPER;;now;now

@@ -11,6 +11,7 @@ import cn.luixtech.passport.server.persistence.tables.Oauth2AuthorizationConsent
 import cn.luixtech.passport.server.persistence.tables.Oauth2RegisteredClient;
 import cn.luixtech.passport.server.persistence.tables.Org;
 import cn.luixtech.passport.server.persistence.tables.OrgUser;
+import cn.luixtech.passport.server.persistence.tables.Role;
 import cn.luixtech.passport.server.persistence.tables.SpringSession;
 import cn.luixtech.passport.server.persistence.tables.SpringSessionAttributes;
 import cn.luixtech.passport.server.persistence.tables.SupportedDateTimeFormat;
@@ -30,6 +31,7 @@ import cn.luixtech.passport.server.persistence.tables.records.Oauth2Authorizatio
 import cn.luixtech.passport.server.persistence.tables.records.Oauth2RegisteredClientRecord;
 import cn.luixtech.passport.server.persistence.tables.records.OrgRecord;
 import cn.luixtech.passport.server.persistence.tables.records.OrgUserRecord;
+import cn.luixtech.passport.server.persistence.tables.records.RoleRecord;
 import cn.luixtech.passport.server.persistence.tables.records.SpringSessionAttributesRecord;
 import cn.luixtech.passport.server.persistence.tables.records.SpringSessionRecord;
 import cn.luixtech.passport.server.persistence.tables.records.SupportedDateTimeFormatRecord;
@@ -69,6 +71,7 @@ public class Keys {
     public static final UniqueKey<Oauth2RegisteredClientRecord> OAUTH2_REGISTERED_CLIENT_PKEY = Internal.createUniqueKey(Oauth2RegisteredClient.OAUTH2_REGISTERED_CLIENT, DSL.name("oauth2_registered_client_pkey"), new TableField[] { Oauth2RegisteredClient.OAUTH2_REGISTERED_CLIENT.ID }, true);
     public static final UniqueKey<OrgRecord> ORG_PKEY = Internal.createUniqueKey(Org.ORG, DSL.name("org_pkey"), new TableField[] { Org.ORG.ID }, true);
     public static final UniqueKey<OrgUserRecord> ORG_USER_PKEY = Internal.createUniqueKey(OrgUser.ORG_USER, DSL.name("org_user_pkey"), new TableField[] { OrgUser.ORG_USER.ID }, true);
+    public static final UniqueKey<RoleRecord> ROLE_PKEY = Internal.createUniqueKey(Role.ROLE, DSL.name("role_pkey"), new TableField[] { Role.ROLE.ID }, true);
     public static final UniqueKey<SpringSessionRecord> SPRING_SESSION_PKEY = Internal.createUniqueKey(SpringSession.SPRING_SESSION, DSL.name("spring_session_pkey"), new TableField[] { SpringSession.SPRING_SESSION.PRIMARY_ID }, true);
     public static final UniqueKey<SpringSessionRecord> SPRING_SESSION_SESSION_ID_KEY = Internal.createUniqueKey(SpringSession.SPRING_SESSION, DSL.name("spring_session_session_id_key"), new TableField[] { SpringSession.SPRING_SESSION.SESSION_ID }, true);
     public static final UniqueKey<SpringSessionAttributesRecord> SPRING_SESSION_ATTRIBUTES_PKEY = Internal.createUniqueKey(SpringSessionAttributes.SPRING_SESSION_ATTRIBUTES, DSL.name("spring_session_attributes_pkey"), new TableField[] { SpringSessionAttributes.SPRING_SESSION_ATTRIBUTES.SESSION_PRIMARY_ID, SpringSessionAttributes.SPRING_SESSION_ATTRIBUTES.ATTRIBUTE_NAME }, true);
@@ -85,6 +88,7 @@ public class Keys {
     public static final UniqueKey<UserNotificationRecord> USER_NOTIFICATION_PKEY = Internal.createUniqueKey(UserNotification.USER_NOTIFICATION, DSL.name("user_notification_pkey"), new TableField[] { UserNotification.USER_NOTIFICATION.ID }, true);
     public static final UniqueKey<UserPermissionRecord> USER_PERMISSION_PKEY = Internal.createUniqueKey(UserPermission.USER_PERMISSION, DSL.name("user_permission_pkey"), new TableField[] { UserPermission.USER_PERMISSION.ID }, true);
     public static final UniqueKey<UserProfilePicRecord> USER_PROFILE_PIC_PKEY = Internal.createUniqueKey(UserProfilePic.USER_PROFILE_PIC, DSL.name("user_profile_pic_pkey"), new TableField[] { UserProfilePic.USER_PROFILE_PIC.ID }, true);
+    public static final UniqueKey<UserRoleRecord> UK_USER_ROLE = Internal.createUniqueKey(UserRole.USER_ROLE, DSL.name("uk_user_role"), new TableField[] { UserRole.USER_ROLE.USER_ID, UserRole.USER_ROLE.ROLE_ID }, true);
     public static final UniqueKey<UserRoleRecord> USER_ROLE_PKEY = Internal.createUniqueKey(UserRole.USER_ROLE, DSL.name("user_role_pkey"), new TableField[] { UserRole.USER_ROLE.ID }, true);
 
     // -------------------------------------------------------------------------
@@ -100,5 +104,6 @@ public class Keys {
     public static final ForeignKey<UserNotificationRecord, UserRecord> USER_NOTIFICATION__FK_USER_NOTIFICATION_USER = Internal.createForeignKey(UserNotification.USER_NOTIFICATION, DSL.name("fk_user_notification_user"), new TableField[] { UserNotification.USER_NOTIFICATION.RECEIVER_ID }, Keys.USER_PKEY, new TableField[] { User.USER.ID }, true);
     public static final ForeignKey<UserPermissionRecord, UserRecord> USER_PERMISSION__FK_USER_PERMISSION_USER_ID = Internal.createForeignKey(UserPermission.USER_PERMISSION, DSL.name("fk_user_permission_user_id"), new TableField[] { UserPermission.USER_PERMISSION.USER_ID }, Keys.USER_PKEY, new TableField[] { User.USER.ID }, true);
     public static final ForeignKey<UserProfilePicRecord, UserRecord> USER_PROFILE_PIC__FK_USER_PROFILE_PIC_USER_ID = Internal.createForeignKey(UserProfilePic.USER_PROFILE_PIC, DSL.name("fk_user_profile_pic_user_id"), new TableField[] { UserProfilePic.USER_PROFILE_PIC.ID }, Keys.USER_PKEY, new TableField[] { User.USER.ID }, true);
+    public static final ForeignKey<UserRoleRecord, RoleRecord> USER_ROLE__FK_USER_ROLE_ROLE_ID = Internal.createForeignKey(UserRole.USER_ROLE, DSL.name("fk_user_role_role_id"), new TableField[] { UserRole.USER_ROLE.ROLE_ID }, Keys.ROLE_PKEY, new TableField[] { Role.ROLE.ID }, true);
     public static final ForeignKey<UserRoleRecord, UserRecord> USER_ROLE__FK_USER_ROLE_USER_ID = Internal.createForeignKey(UserRole.USER_ROLE, DSL.name("fk_user_role_user_id"), new TableField[] { UserRole.USER_ROLE.USER_ID }, Keys.USER_PKEY, new TableField[] { User.USER.ID }, true);
 }

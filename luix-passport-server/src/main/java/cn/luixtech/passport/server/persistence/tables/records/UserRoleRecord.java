@@ -50,16 +50,16 @@ public class UserRoleRecord extends UpdatableRecordImpl<UserRoleRecord> implemen
     }
 
     /**
-     * Setter for <code>public.user_role.role</code>.
+     * Setter for <code>public.user_role.role_id</code>.
      */
-    public void setRole(String value) {
+    public void setRoleId(String value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>public.user_role.role</code>.
+     * Getter for <code>public.user_role.role_id</code>.
      */
-    public String getRole() {
+    public String getRoleId() {
         return (String) get(2);
     }
 
@@ -98,7 +98,7 @@ public class UserRoleRecord extends UpdatableRecordImpl<UserRoleRecord> implemen
 
     @Override
     public Field<String> field3() {
-        return UserRole.USER_ROLE.ROLE;
+        return UserRole.USER_ROLE.ROLE_ID;
     }
 
     @Override
@@ -113,7 +113,7 @@ public class UserRoleRecord extends UpdatableRecordImpl<UserRoleRecord> implemen
 
     @Override
     public String component3() {
-        return getRole();
+        return getRoleId();
     }
 
     @Override
@@ -128,7 +128,7 @@ public class UserRoleRecord extends UpdatableRecordImpl<UserRoleRecord> implemen
 
     @Override
     public String value3() {
-        return getRole();
+        return getRoleId();
     }
 
     @Override
@@ -145,7 +145,7 @@ public class UserRoleRecord extends UpdatableRecordImpl<UserRoleRecord> implemen
 
     @Override
     public UserRoleRecord value3(String value) {
-        setRole(value);
+        setRoleId(value);
         return this;
     }
 
@@ -171,12 +171,12 @@ public class UserRoleRecord extends UpdatableRecordImpl<UserRoleRecord> implemen
     /**
      * Create a detached, initialised UserRoleRecord
      */
-    public UserRoleRecord(String id, String userId, String role) {
+    public UserRoleRecord(String id, String userId, String roleId) {
         super(UserRole.USER_ROLE);
 
         setId(id);
         setUserId(userId);
-        setRole(role);
+        setRoleId(roleId);
         resetChangedOnNotNull();
     }
 }

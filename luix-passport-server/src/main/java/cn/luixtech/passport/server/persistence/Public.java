@@ -11,6 +11,7 @@ import cn.luixtech.passport.server.persistence.tables.Oauth2AuthorizationConsent
 import cn.luixtech.passport.server.persistence.tables.Oauth2RegisteredClient;
 import cn.luixtech.passport.server.persistence.tables.Org;
 import cn.luixtech.passport.server.persistence.tables.OrgUser;
+import cn.luixtech.passport.server.persistence.tables.Role;
 import cn.luixtech.passport.server.persistence.tables.SpringSession;
 import cn.luixtech.passport.server.persistence.tables.SpringSessionAttributes;
 import cn.luixtech.passport.server.persistence.tables.SupportedDateTimeFormat;
@@ -79,6 +80,11 @@ public class Public extends SchemaImpl {
      * The table <code>public.org_user</code>.
      */
     public final OrgUser ORG_USER = OrgUser.ORG_USER;
+
+    /**
+     * The table <code>public.role</code>.
+     */
+    public final Role ROLE = Role.ROLE;
 
     /**
      * The table <code>public.spring_session</code>.
@@ -163,6 +169,7 @@ public class Public extends SchemaImpl {
             Oauth2RegisteredClient.OAUTH2_REGISTERED_CLIENT,
             Org.ORG,
             OrgUser.ORG_USER,
+            Role.ROLE,
             SpringSession.SPRING_SESSION,
             SpringSessionAttributes.SPRING_SESSION_ATTRIBUTES,
             SupportedDateTimeFormat.SUPPORTED_DATE_TIME_FORMAT,

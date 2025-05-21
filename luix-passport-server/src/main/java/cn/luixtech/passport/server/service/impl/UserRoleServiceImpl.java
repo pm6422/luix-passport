@@ -48,7 +48,7 @@ public class UserRoleServiceImpl implements UserRoleService {
     private UserRole build(String userId, String authority) {
         UserRole userAuthority = new UserRole();
         userAuthority.setUserId(userId);
-        userAuthority.setRole(authority);
+        userAuthority.setRoleId(authority);
         return userAuthority;
     }
 

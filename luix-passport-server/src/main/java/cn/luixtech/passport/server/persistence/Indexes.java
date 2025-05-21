@@ -37,6 +37,7 @@ public class Indexes {
     public static final Index IDX_USER_NOTIFICATION_USER_STATUS = Internal.createIndex(DSL.name("idx_user_notification_user_status"), UserNotification.USER_NOTIFICATION, new OrderField[] { UserNotification.USER_NOTIFICATION.RECEIVER_ID, UserNotification.USER_NOTIFICATION.STATUS }, false);
     public static final Index IDX_USER_PERMISSION_USER_ID = Internal.createIndex(DSL.name("idx_user_permission_user_id"), UserPermission.USER_PERMISSION, new OrderField[] { UserPermission.USER_PERMISSION.USER_ID }, false);
     public static final Index IDX_USER_PROFILE_PIC_ID = Internal.createIndex(DSL.name("idx_user_profile_pic_id"), UserProfilePic.USER_PROFILE_PIC, new OrderField[] { UserProfilePic.USER_PROFILE_PIC.ID }, false);
+    public static final Index IDX_USER_ROLE_ROLE_ID = Internal.createIndex(DSL.name("idx_user_role_role_id"), UserRole.USER_ROLE, new OrderField[] { UserRole.USER_ROLE.ROLE_ID }, false);
     public static final Index IDX_USER_ROLE_USER_ID = Internal.createIndex(DSL.name("idx_user_role_user_id"), UserRole.USER_ROLE, new OrderField[] { UserRole.USER_ROLE.USER_ID }, false);
     public static final Index IDX_USER_TIME_ZONE_ID = Internal.createIndex(DSL.name("idx_user_time_zone_id"), User.USER, new OrderField[] { User.USER.TIME_ZONE_ID }, false);
 }

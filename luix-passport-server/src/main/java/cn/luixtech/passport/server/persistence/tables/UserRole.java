@@ -64,9 +64,9 @@ public class UserRole extends TableImpl<UserRoleRecord> {
     public final TableField<UserRoleRecord, String> USER_ID = createField(DSL.name("user_id"), SQLDataType.VARCHAR(20).nullable(false), this, "");
 
     /**
-     * The column <code>public.user_role.role</code>.
+     * The column <code>public.user_role.role_id</code>.
      */
-    public final TableField<UserRoleRecord, String> ROLE = createField(DSL.name("role"), SQLDataType.VARCHAR(36).nullable(false), this, "");
+    public final TableField<UserRoleRecord, String> ROLE_ID = createField(DSL.name("role_id"), SQLDataType.VARCHAR(20).nullable(false), this, "");
 
     private UserRole(Name alias, Table<UserRoleRecord> aliased) {
         this(alias, aliased, null);
@@ -108,7 +108,7 @@ public class UserRole extends TableImpl<UserRoleRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.IDX_USER_ROLE_USER_ID);
+        return Arrays.asList(Indexes.IDX_USER_ROLE_ROLE_ID, Indexes.IDX_USER_ROLE_USER_ID);
     }
 
     @Override
@@ -117,11 +117,17 @@ public class UserRole extends TableImpl<UserRoleRecord> {
     }
 
     @Override
+    public List<UniqueKey<UserRoleRecord>> getUniqueKeys() {
+        return Arrays.asList(Keys.UK_USER_ROLE);
+    }
+
+    @Override
     public List<ForeignKey<UserRoleRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.USER_ROLE__FK_USER_ROLE_USER_ID);
+        return Arrays.asList(Keys.USER_ROLE__FK_USER_ROLE_USER_ID, Keys.USER_ROLE__FK_USER_ROLE_ROLE_ID);
     }
 
     private transient User _user;
+    private transient Role _role;
 
     /**
      * Get the implicit join path to the <code>public.user</code> table.
@@ -131,6 +137,16 @@ public class UserRole extends TableImpl<UserRoleRecord> {
             _user = new User(this, Keys.USER_ROLE__FK_USER_ROLE_USER_ID);
 
         return _user;
+    }
+
+    /**
+     * Get the implicit join path to the <code>public.role</code> table.
+     */
+    public Role role() {
+        if (_role == null)
+            _role = new Role(this, Keys.USER_ROLE__FK_USER_ROLE_ROLE_ID);
+
+        return _role;
     }
 
     @Override

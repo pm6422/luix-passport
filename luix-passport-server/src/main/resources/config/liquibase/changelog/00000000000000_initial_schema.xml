@@ -263,6 +263,21 @@
                 separator=";"
                 tableName="user">
         </loadData>
+        <createTable tableName="role">
+            <column name="id" type="VARCHAR(20)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_at" type="timestamp"/>
+        </createTable>
+        <loadData
+                file="config/liquibase/data/role.csv"
+                separator=";"
+                tableName="role">
+        </loadData>
         <createTable tableName="user_role">
             <column name="id" type="VARCHAR(20)">
                 <constraints nullable="false" primaryKey="true"/>
@@ -270,7 +285,7 @@
             <column name="user_id" type="VARCHAR(20)">
                 <constraints nullable="false"/>
             </column>
-            <column name="role" type="VARCHAR(36)">
+            <column name="role_id" type="VARCHAR(20)">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -444,6 +459,9 @@
         <createIndex tableName="user_role" indexName="idx_user_role_user_id" unique="false">
             <column name="user_id"/>
         </createIndex>
+        <createIndex tableName="user_role" indexName="idx_user_role_role_id" unique="false">
+            <column name="role_id"/>
+        </createIndex>
         <createIndex tableName="user_permission" indexName="idx_user_permission_user_id" unique="false">
             <column name="user_id"/>
         </createIndex>
@@ -464,6 +482,11 @@
             <column name="status"/>
         </createIndex>
 
+        <addUniqueConstraint
+                tableName="user_role"
+                columnNames="user_id, role_id"
+                constraintName="uk_user_role"
+        />
         <addUniqueConstraint
                 tableName="data_dict"
                 columnNames="category_code,dict_code"
@@ -493,6 +516,17 @@
                 onDelete="CASCADE"
                 onUpdate="RESTRICT"
                 referencedTableName="user"
+                referencedColumnNames="id"
+                validate="true"/>
+        <addForeignKeyConstraint
+                baseTableName="user_role"
+                baseColumnNames="role_id"
+                constraintName="fk_user_role_role_id"
+                deferrable="false"
+                initiallyDeferred="false"
+                onDelete="CASCADE"
+                onUpdate="RESTRICT"
+                referencedTableName="role"
                 referencedColumnNames="id"
                 validate="true"/>
         <addForeignKeyConstraint

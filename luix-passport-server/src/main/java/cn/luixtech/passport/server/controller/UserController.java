@@ -78,7 +78,7 @@ public class UserController {
         domains.stream().forEach(domain -> {
             ManagedUser user = new ManagedUser();
             BeanUtils.copyProperties(domain, user);
-            Set<String> roles = userRoleRepository.findByUserId(domain.getId()).stream().map(UserRole::getRole).collect(Collectors.toSet());
+            Set<String> roles = userRoleRepository.findByUserId(domain.getId()).stream().map(UserRole::getRoleId).collect(Collectors.toSet());
             user.setRoles(roles);
             users.add(user);
         });

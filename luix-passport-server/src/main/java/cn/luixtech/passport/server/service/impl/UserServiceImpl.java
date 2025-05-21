@@ -160,7 +160,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public Set<String> findRoles(String userId) {
-        return dslContext.select(Tables.USER_ROLE.ROLE).from(Tables.USER_ROLE).where(Tables.USER_ROLE.USER_ID.eq(userId)).fetchSet(Tables.USER_ROLE.ROLE);
+        return dslContext.select(Tables.USER_ROLE.ROLE_ID).from(Tables.USER_ROLE).where(Tables.USER_ROLE.USER_ID.eq(userId)).fetchSet(Tables.USER_ROLE.ROLE_ID);
     }
 
     @Override

@@ -1,4 +1,4 @@
-id;user_id;role
+id;user_id;role_id
 1;11;ROLE_ANONYMOUS
 2;11;ROLE_USER
 3;12;ROLE_ANONYMOUS
