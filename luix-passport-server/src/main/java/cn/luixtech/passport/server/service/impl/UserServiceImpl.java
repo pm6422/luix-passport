@@ -62,6 +62,7 @@ import static cn.luixtech.passport.server.config.AuthorizationServerConfiguratio
 import static cn.luixtech.passport.server.config.AuthorizationServerConfiguration.DEFAULT_PASSWORD_ENCODER_PREFIX;
 import static cn.luixtech.passport.server.controller.UserProfilePicController.USER_PHOTO_TOKEN_KEY;
 import static cn.luixtech.passport.server.controller.UserProfilePicController.USER_PHOTO_URL;
+import static cn.luixtech.passport.server.persistence.Tables.*;
 import static com.luixtech.springbootframework.utils.NetworkUtils.getRequestUrl;
 import static com.luixtech.utilities.encryption.JasyptEncryptUtils.DEFAULT_ALGORITHM;
 import static org.apache.commons.lang3.time.DateFormatUtils.ISO_8601_EXTENDED_DATETIME_TIME_ZONE_FORMAT;
@@ -170,7 +171,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public Set<String> findPermissions(String userId) {
-        return dslContext.select(Tables.USER_PERMISSION.PERMISSION).from(Tables.USER_PERMISSION).where(Tables.USER_PERMISSION.USER_ID.eq(userId)).fetchSet(Tables.USER_PERMISSION.PERMISSION);
+        return dslContext.selectDistinct(PERMISSION.ID)
+                .from(PERMISSION)
+                .join(ROLE_PERMISSION).on(PERMISSION.ID.eq(ROLE_PERMISSION.PERMISSION_ID))
+                .join(ROLE).on(ROLE_PERMISSION.ROLE_ID.eq(ROLE.ID))
+                .join(USER_ROLE).on(ROLE.ID.eq(USER_ROLE.ROLE_ID))
+                .join(USER).on(USER_ROLE.USER_ID.eq(USER.ID))
+                .where(USER.ID.eq(userId))
+                .fetchSet(PERMISSION.ID);
     }
 
     @Override
