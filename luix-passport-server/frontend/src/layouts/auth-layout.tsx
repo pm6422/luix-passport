@@ -3,12 +3,13 @@ import { Outlet } from "react-router-dom"
 import Sidebar from "@/components/sidebar"
 import useIsCollapsed from "@/hooks/use-is-collapsed"
 import { useStore } from "exome/react"
-import { authUserStore } from "@/stores/auth-user-store.ts"
+import { appInfoStore } from "@/stores/app-info-store"
+import { authUserStore } from "@/stores/auth-user-store"
 import { RoleAdmin } from "@/components/custom/role/role-admin"
 import { RoleOnlyUser } from "@/components/custom/role/role-only-user"
 import { useLocation } from "react-router-dom"
 import { CentralTopNav } from "@/components/central-top-nav"
-// import { NotificationNav } from "@/components/notification-nav.tsx"
+// import { NotificationNav } from "@/components/notification-nav"
 import { AccountNav } from "@/components/account-nav"
 import { Layout, LayoutHeader } from "@/layouts/layout-definitions"
 // import { Search } from "@/components/custom/search"
@@ -18,6 +19,7 @@ import { toast } from "sonner"
 import { IconInfoCircle } from "@tabler/icons-react"
 
 export default function AuthLayout() {
+  const { appInfo } = useStore(appInfoStore)
   const { authUser, setAuthUser } = useStore(authUserStore)
   const [isCollapsed, setIsCollapsed] = useIsCollapsed()
   const location = useLocation()
@@ -50,6 +52,9 @@ export default function AuthLayout() {
       return;
     }
 
+    if(appInfo.ribbonProfile === "dev") {
+      return;
+    }
     const eventSource = setupSse();
 
     return () => {
