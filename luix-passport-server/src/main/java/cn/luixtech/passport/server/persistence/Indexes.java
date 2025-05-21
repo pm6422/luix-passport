@@ -6,10 +6,10 @@ package cn.luixtech.passport.server.persistence;
 
 import cn.luixtech.passport.server.persistence.tables.Notification;
 import cn.luixtech.passport.server.persistence.tables.OrgUser;
+import cn.luixtech.passport.server.persistence.tables.RolePermission;
 import cn.luixtech.passport.server.persistence.tables.User;
 import cn.luixtech.passport.server.persistence.tables.UserLogin;
 import cn.luixtech.passport.server.persistence.tables.UserNotification;
-import cn.luixtech.passport.server.persistence.tables.UserPermission;
 import cn.luixtech.passport.server.persistence.tables.UserProfilePic;
 import cn.luixtech.passport.server.persistence.tables.UserRole;
 
@@ -31,11 +31,12 @@ public class Indexes {
 
     public static final Index IDX_NOTIFICATION_SENDER = Internal.createIndex(DSL.name("idx_notification_sender"), Notification.NOTIFICATION, new OrderField[] { Notification.NOTIFICATION.SENDER_ID }, false);
     public static final Index IDX_ORG_USER_USER_ID = Internal.createIndex(DSL.name("idx_org_user_user_id"), OrgUser.ORG_USER, new OrderField[] { OrgUser.ORG_USER.USER_ID }, false);
+    public static final Index IDX_ROLE_PERMISSION_PERMISSION_ID = Internal.createIndex(DSL.name("idx_role_permission_permission_id"), RolePermission.ROLE_PERMISSION, new OrderField[] { RolePermission.ROLE_PERMISSION.PERMISSION_ID }, false);
+    public static final Index IDX_ROLE_PERMISSION_ROLE_ID = Internal.createIndex(DSL.name("idx_role_permission_role_id"), RolePermission.ROLE_PERMISSION, new OrderField[] { RolePermission.ROLE_PERMISSION.ROLE_ID }, false);
     public static final Index IDX_USER_DATE_TIME_FORMAT_ID = Internal.createIndex(DSL.name("idx_user_date_time_format_id"), User.USER, new OrderField[] { User.USER.DATE_TIME_FORMAT_ID }, false);
     public static final Index IDX_USER_LOGIN_USER_ID = Internal.createIndex(DSL.name("idx_user_login_user_id"), UserLogin.USER_LOGIN, new OrderField[] { UserLogin.USER_LOGIN.USER_ID }, false);
     public static final Index IDX_USER_NOTIFICATION_NOTIFICATION = Internal.createIndex(DSL.name("idx_user_notification_notification"), UserNotification.USER_NOTIFICATION, new OrderField[] { UserNotification.USER_NOTIFICATION.NOTIFICATION_ID }, false);
     public static final Index IDX_USER_NOTIFICATION_USER_STATUS = Internal.createIndex(DSL.name("idx_user_notification_user_status"), UserNotification.USER_NOTIFICATION, new OrderField[] { UserNotification.USER_NOTIFICATION.RECEIVER_ID, UserNotification.USER_NOTIFICATION.STATUS }, false);
-    public static final Index IDX_USER_PERMISSION_USER_ID = Internal.createIndex(DSL.name("idx_user_permission_user_id"), UserPermission.USER_PERMISSION, new OrderField[] { UserPermission.USER_PERMISSION.USER_ID }, false);
     public static final Index IDX_USER_PROFILE_PIC_ID = Internal.createIndex(DSL.name("idx_user_profile_pic_id"), UserProfilePic.USER_PROFILE_PIC, new OrderField[] { UserProfilePic.USER_PROFILE_PIC.ID }, false);
     public static final Index IDX_USER_ROLE_ROLE_ID = Internal.createIndex(DSL.name("idx_user_role_role_id"), UserRole.USER_ROLE, new OrderField[] { UserRole.USER_ROLE.ROLE_ID }, false);
     public static final Index IDX_USER_ROLE_USER_ID = Internal.createIndex(DSL.name("idx_user_role_user_id"), UserRole.USER_ROLE, new OrderField[] { UserRole.USER_ROLE.USER_ID }, false);

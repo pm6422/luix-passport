@@ -11,7 +11,9 @@ import cn.luixtech.passport.server.persistence.tables.Oauth2AuthorizationConsent
 import cn.luixtech.passport.server.persistence.tables.Oauth2RegisteredClient;
 import cn.luixtech.passport.server.persistence.tables.Org;
 import cn.luixtech.passport.server.persistence.tables.OrgUser;
+import cn.luixtech.passport.server.persistence.tables.Permission;
 import cn.luixtech.passport.server.persistence.tables.Role;
+import cn.luixtech.passport.server.persistence.tables.RolePermission;
 import cn.luixtech.passport.server.persistence.tables.SpringSession;
 import cn.luixtech.passport.server.persistence.tables.SpringSessionAttributes;
 import cn.luixtech.passport.server.persistence.tables.SupportedDateTimeFormat;
@@ -21,7 +23,6 @@ import cn.luixtech.passport.server.persistence.tables.User;
 import cn.luixtech.passport.server.persistence.tables.UserAuthEvent;
 import cn.luixtech.passport.server.persistence.tables.UserLogin;
 import cn.luixtech.passport.server.persistence.tables.UserNotification;
-import cn.luixtech.passport.server.persistence.tables.UserPermission;
 import cn.luixtech.passport.server.persistence.tables.UserProfilePic;
 import cn.luixtech.passport.server.persistence.tables.UserRole;
 
@@ -68,9 +69,19 @@ public class Tables {
     public static final OrgUser ORG_USER = OrgUser.ORG_USER;
 
     /**
+     * The table <code>public.permission</code>.
+     */
+    public static final Permission PERMISSION = Permission.PERMISSION;
+
+    /**
      * The table <code>public.role</code>.
      */
     public static final Role ROLE = Role.ROLE;
+
+    /**
+     * The table <code>public.role_permission</code>.
+     */
+    public static final RolePermission ROLE_PERMISSION = RolePermission.ROLE_PERMISSION;
 
     /**
      * The table <code>public.spring_session</code>.
@@ -116,11 +127,6 @@ public class Tables {
      * The table <code>public.user_notification</code>.
      */
     public static final UserNotification USER_NOTIFICATION = UserNotification.USER_NOTIFICATION;
-
-    /**
-     * The table <code>public.user_permission</code>.
-     */
-    public static final UserPermission USER_PERMISSION = UserPermission.USER_PERMISSION;
 
     /**
      * The table <code>public.user_profile_pic</code>.

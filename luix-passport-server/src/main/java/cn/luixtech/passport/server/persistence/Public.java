@@ -11,7 +11,9 @@ import cn.luixtech.passport.server.persistence.tables.Oauth2AuthorizationConsent
 import cn.luixtech.passport.server.persistence.tables.Oauth2RegisteredClient;
 import cn.luixtech.passport.server.persistence.tables.Org;
 import cn.luixtech.passport.server.persistence.tables.OrgUser;
+import cn.luixtech.passport.server.persistence.tables.Permission;
 import cn.luixtech.passport.server.persistence.tables.Role;
+import cn.luixtech.passport.server.persistence.tables.RolePermission;
 import cn.luixtech.passport.server.persistence.tables.SpringSession;
 import cn.luixtech.passport.server.persistence.tables.SpringSessionAttributes;
 import cn.luixtech.passport.server.persistence.tables.SupportedDateTimeFormat;
@@ -21,7 +23,6 @@ import cn.luixtech.passport.server.persistence.tables.User;
 import cn.luixtech.passport.server.persistence.tables.UserAuthEvent;
 import cn.luixtech.passport.server.persistence.tables.UserLogin;
 import cn.luixtech.passport.server.persistence.tables.UserNotification;
-import cn.luixtech.passport.server.persistence.tables.UserPermission;
 import cn.luixtech.passport.server.persistence.tables.UserProfilePic;
 import cn.luixtech.passport.server.persistence.tables.UserRole;
 
@@ -82,9 +83,19 @@ public class Public extends SchemaImpl {
     public final OrgUser ORG_USER = OrgUser.ORG_USER;
 
     /**
+     * The table <code>public.permission</code>.
+     */
+    public final Permission PERMISSION = Permission.PERMISSION;
+
+    /**
      * The table <code>public.role</code>.
      */
     public final Role ROLE = Role.ROLE;
+
+    /**
+     * The table <code>public.role_permission</code>.
+     */
+    public final RolePermission ROLE_PERMISSION = RolePermission.ROLE_PERMISSION;
 
     /**
      * The table <code>public.spring_session</code>.
@@ -132,11 +143,6 @@ public class Public extends SchemaImpl {
     public final UserNotification USER_NOTIFICATION = UserNotification.USER_NOTIFICATION;
 
     /**
-     * The table <code>public.user_permission</code>.
-     */
-    public final UserPermission USER_PERMISSION = UserPermission.USER_PERMISSION;
-
-    /**
      * The table <code>public.user_profile_pic</code>.
      */
     public final UserProfilePic USER_PROFILE_PIC = UserProfilePic.USER_PROFILE_PIC;
@@ -169,7 +175,9 @@ public class Public extends SchemaImpl {
             Oauth2RegisteredClient.OAUTH2_REGISTERED_CLIENT,
             Org.ORG,
             OrgUser.ORG_USER,
+            Permission.PERMISSION,
             Role.ROLE,
+            RolePermission.ROLE_PERMISSION,
             SpringSession.SPRING_SESSION,
             SpringSessionAttributes.SPRING_SESSION_ATTRIBUTES,
             SupportedDateTimeFormat.SUPPORTED_DATE_TIME_FORMAT,
@@ -179,7 +187,6 @@ public class Public extends SchemaImpl {
             UserAuthEvent.USER_AUTH_EVENT,
             UserLogin.USER_LOGIN,
             UserNotification.USER_NOTIFICATION,
-            UserPermission.USER_PERMISSION,
             UserProfilePic.USER_PROFILE_PIC,
             UserRole.USER_ROLE
         );
