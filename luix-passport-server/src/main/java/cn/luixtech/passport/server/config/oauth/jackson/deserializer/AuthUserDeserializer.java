@@ -55,9 +55,10 @@ public class AuthUserDeserializer extends JsonDeserializer<AuthUser> {
         boolean accountNonLocked = readJsonNode(jsonNode, "accountNonLocked").asBoolean();
         Set<? extends GrantedAuthority> authorities = mapper.convertValue(jsonNode.get("authorities"), SIMPLE_GRANTED_AUTHORITY_SET);
         Set<String> roles = mapper.convertValue(jsonNode.get("roles"), STRING_SET);
+        Set<String> permissions = mapper.convertValue(jsonNode.get("permissions"), STRING_SET);
         Set<String> teamIds = mapper.convertValue(jsonNode.get("teamIds"), STRING_SET);
         AuthUser result = new AuthUser(id, username, email, mobileNo, firstName, lastName, password, enabled,
-                accountNonExpired, credentialsNonExpired, accountNonLocked, photoUrl, locale, modifiedTime, authorities, roles, teamIds);
+                accountNonExpired, credentialsNonExpired, accountNonLocked, photoUrl, locale, modifiedTime, authorities, roles, permissions, teamIds);
         if (passwordNode.asText(null) == null) {
             result.eraseCredentials();
         }

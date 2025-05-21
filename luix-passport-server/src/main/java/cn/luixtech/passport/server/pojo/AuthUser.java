@@ -24,7 +24,17 @@ public class AuthUser {
     private Boolean     activated;
     private Boolean     enabled;
     private Set<String> roles;
+    private Set<String> permissions;
 
+    /* <<<<<<<<<<<<<<  ✨ Windsurf Command ⭐ >>>>>>>>>>>>>>>> */
+
+    /**
+     * Copies properties from the given ManagedUser to this AuthUser.
+     *
+     * @param managedUser the source object
+     * @return the target object
+     */
+    /* <<<<<<<<<<  ce56b8f8-f0a9-4335-bf9e-87b1b2520cc9  >>>>>>>>>>> */
     public static AuthUser of(ManagedUser managedUser) {
         AuthUser authUser = new AuthUser();
         BeanUtils.copyProperties(managedUser, authUser);

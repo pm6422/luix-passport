@@ -31,6 +31,8 @@ public class ManagedUser extends User {
 
     private Set<String> roles;
 
+    private Set<String> permissions;
+
     private String locale;
 
     private String timezone;

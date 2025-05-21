@@ -34,6 +34,8 @@ public class AuthUser extends User {
     @Getter
     private              Set<String> roles;
     @Getter
+    private              Set<String> permissions;
+    @Getter
     private              Set<String> teamIds;
 
 
@@ -51,7 +53,7 @@ public class AuthUser extends User {
                     boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked,
                     String photoUrl, String locale, String modifiedTime,
                     Collection<? extends GrantedAuthority> authorities,
-                    Set<String> roles, Set<String> teamIds) {
+                    Set<String> roles, Set<String> permissions, Set<String> teamIds) {
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
         this.id = id;
         this.email = email;
@@ -62,6 +64,7 @@ public class AuthUser extends User {
         this.locale = locale;
         this.modifiedTime = modifiedTime;
         this.roles = roles;
+        this.permissions = permissions;
         this.teamIds = teamIds;
     }
 }

@@ -106,6 +106,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         boolean passwordNonExpired = user.getPasswordExpiresAt() == null || LocalDateTime.now().isBefore(user.getPasswordExpiresAt());
 
         Set<String> roles = findRoles(user.getId());
+        Set<String> permissions = findPermissions(user.getId());
         List<GrantedAuthority> authorities = roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
         Set<String> teamIds = findOrgIds(user.getId());
 
@@ -115,7 +116,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (httpServletRequest != null) {
             photoUrl = getRequestUrl(httpServletRequest) + USER_PHOTO_URL + JasyptEncryptUtils.encrypt(user.getId(), DEFAULT_ALGORITHM, USER_PHOTO_TOKEN_KEY);
         }
-        return new AuthUser(user.getId(), user.getUsername(), user.getEmail(), user.getMobileNo(), user.getFirstName(), user.getLastName(), user.getPasswordHash(), user.getEnabled(), accountNonExpired, passwordNonExpired, true, photoUrl, user.getLocale(), modifiedTime, authorities, roles, teamIds);
+        return new AuthUser(user.getId(), user.getUsername(), user.getEmail(), user.getMobileNo(), user.getFirstName(),
+                user.getLastName(), user.getPasswordHash(), user.getEnabled(), accountNonExpired, passwordNonExpired,
+                true, photoUrl, user.getLocale(), modifiedTime, authorities, roles, permissions, teamIds);
     }
 
     @Override
@@ -135,6 +138,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         ManagedUser managedUser = new ManagedUser();
         BeanUtils.copyProperties(user, managedUser);
         managedUser.setRoles(findRoles(id));
+        managedUser.setPermissions(findPermissions(user.getId()));
         managedUser.setLocale(user.getLocale());
         managedUser.setTimezone(user.getTimeZoneId());
         managedUser.setPasswordHash("*");
@@ -147,6 +151,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         ManagedUser managedUser = new ManagedUser();
         BeanUtils.copyProperties(user, managedUser);
         managedUser.setRoles(findRoles(user.getId()));
+        managedUser.setPermissions(findPermissions(user.getId()));
         managedUser.setLocale(user.getLocale());
         managedUser.setTimezone(user.getTimeZoneId());
         managedUser.setPasswordHash("*");
