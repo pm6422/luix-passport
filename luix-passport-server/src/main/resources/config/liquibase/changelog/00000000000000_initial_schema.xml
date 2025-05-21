@@ -57,7 +57,7 @@
         </loadData>
         <createTable tableName="oauth2_authorization">
             <column name="id" type="VARCHAR(100)">
-                <constraints nullable="false" primaryKey="true"/>
+                <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="registered_client_id" type="VARCHAR(100)">
                 <constraints nullable="false"/>
@@ -100,10 +100,10 @@
         </createTable>
         <createTable tableName="oauth2_authorization_consent">
             <column name="registered_client_id" type="VARCHAR(100)">
-                <constraints nullable="false" primaryKey="true"/>
+                <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="principal_name" type="VARCHAR(200)">
-                <constraints nullable="false" primaryKey="true"/>
+                <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="authorities" type="VARCHAR(1000)">
                 <constraints nullable="false"/>
@@ -111,7 +111,7 @@
         </createTable>
         <createTable tableName="oauth2_registered_client">
             <column name="id" type="VARCHAR(100)">
-                <constraints nullable="false" primaryKey="true"/>
+                <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="client_id" type="VARCHAR(100)">
                 <constraints nullable="false"/>
@@ -155,7 +155,7 @@
         </loadData>
         <createTable tableName="spring_session">
             <column name="PRIMARY_ID" type="CHAR(36)">
-                <constraints nullable="false" primaryKey="true"/>
+                <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="SESSION_ID" type="CHAR(36)">
                 <constraints nullable="false" unique="true"/>
@@ -176,10 +176,10 @@
         </createTable>
         <createTable tableName="spring_session_attributes">
             <column name="SESSION_PRIMARY_ID" type="CHAR(36)">
-                <constraints nullable="false" primaryKey="true"/>
+                <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="ATTRIBUTE_NAME" type="VARCHAR(200)">
-                <constraints nullable="false" primaryKey="true"/>
+                <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="ATTRIBUTE_BYTES" type="BYTEA">
                 <constraints nullable="false"/>
@@ -187,7 +187,7 @@
         </createTable>
         <createTable tableName="org">
             <column name="id" type="VARCHAR(20)">
-                <constraints nullable="false" primaryKey="true"/>
+                <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="remark" type="VARCHAR(36)"/>
             <column name="enabled" type="boolean">
@@ -197,7 +197,7 @@
         </createTable>
         <createTable tableName="org_user">
             <column name="id" type="VARCHAR(20)">
-                <constraints nullable="false" primaryKey="true"/>
+                <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="org_id" type="VARCHAR(20)">
                 <constraints nullable="false"/>
@@ -208,7 +208,7 @@
         </createTable>
         <createTable tableName="user">
             <column name="id" type="VARCHAR(20)">
-                <constraints nullable="false" primaryKey="true"/>
+                <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="username" type="VARCHAR(20)">
                 <constraints nullable="false" unique="true"/>
@@ -265,7 +265,7 @@
         </loadData>
         <createTable tableName="role">
             <column name="id" type="VARCHAR(20)">
-                <constraints nullable="false" primaryKey="true"/>
+                <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="description" type="VARCHAR(255)"/>
             <column name="created_at" type="timestamp">
@@ -280,7 +280,7 @@
         </loadData>
         <createTable tableName="user_role">
             <column name="id" type="VARCHAR(20)">
-                <constraints nullable="false" primaryKey="true"/>
+                <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="user_id" type="VARCHAR(20)">
                 <constraints nullable="false"/>
@@ -294,9 +294,30 @@
                 separator=";"
                 tableName="user_role">
         </loadData>
+        <createTable tableName="permission">
+            <column name="id" type="VARCHAR(25)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="resource_type" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="action" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_at" type="timestamp"/>
+        </createTable>
+        <loadData
+                file="config/liquibase/data/permission.csv"
+                separator=";"
+                tableName="permission">
+        </loadData>
         <createTable tableName="user_permission">
             <column name="id" type="VARCHAR(20)">
-                <constraints nullable="false" primaryKey="true"/>
+                <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="user_id" type="VARCHAR(20)">
                 <constraints nullable="false"/>
@@ -312,7 +333,7 @@
         </loadData>
         <createTable tableName="user_auth_event">
             <column name="id" type="VARCHAR(20)">
-                <constraints nullable="false" primaryKey="true"/>
+                <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="user_id" type="VARCHAR(20)">
                 <constraints nullable="false"/>
@@ -328,7 +349,7 @@
         </createTable>
         <createTable tableName="user_login">
             <column name="id" type="VARCHAR(20)">
-                <constraints nullable="false" primaryKey="true"/>
+                <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="user_id" type="VARCHAR(20)">
                 <constraints nullable="false"/>
@@ -391,7 +412,7 @@
         </loadData>
         <createTable tableName="table_seq_number">
             <column name="id" type="VARCHAR(20)">
-                <constraints nullable="false" primaryKey="true"/>
+                <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="table_name" type="VARCHAR(36)">
                 <constraints nullable="false"/>
@@ -402,7 +423,7 @@
         </createTable>
         <createTable tableName="notification">
             <column name="id" type="VARCHAR(20)">
-                <constraints nullable="false" primaryKey="true"/>
+                <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="title" type="VARCHAR(20)">
                 <constraints nullable="false"/>
@@ -425,7 +446,7 @@
         </createTable>
         <createTable tableName="user_notification">
             <column name="id" type="VARCHAR(20)">
-                <constraints nullable="false" primaryKey="true"/>
+                <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="receiver_id" type="VARCHAR(20)">
                 <constraints nullable="false"/>

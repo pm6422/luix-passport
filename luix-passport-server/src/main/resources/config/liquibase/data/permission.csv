@@ -1,0 +1,42 @@
+id;description;resource_type;action;created_at;modified_at
+user:create;Can create a new user;user;create;now;now
+user:read;Can view user information;user;read;now;now
+user:update;Can modify user information;user;update;now;now
+user:delete;Can delete users;user;delete;now;now
+user:password;Can reset user passwords;user;update;now;now
+user:status;Can enable/disable users;user;update;now;now
+role:create;Can create new roles;role;create;now;now
+role:read;Can view role information;role;read;now;now
+role:update;Can modify role information;role;update;now;now
+role:delete;Can delete roles;role;delete;now;now
+role:assign;Can assign roles to users;role;assign;now;now
+permission:read;Can view permission lists;permission;read;now;now
+permission:assign;Can assign permissions to roles;permission;assign;now;now
+system:config;Can modify system configurations;system;update;now;now
+system:monitor;Can view system monitoring data;system;read;now;now
+system:backup;Can perform system backups;system;execute;now;now
+system:restore;Can restore system data;system;execute;now;now
+content:create;Can create new content;content;create;now;now
+content:read;Can view content;content;read;now;now
+content:update;Can modify content;content;update;now;now
+content:delete;Can delete content;content;delete;now;now
+content:publish;Can publish content;content;publish;now;now
+content:approve;Can approve content;content;approve;now;now
+file:upload;Can upload files;file;upload;now;now
+file:download;Can download files;file;download;now;now
+file:delete;Can delete files;file;delete;now;now
+file:share;Can share files;file;share;now;now
+order:create;Can create new orders;order;create;now;now
+order:read;Can view orders;order;read;now;now
+order:update;Can modify orders;order;update;now;now
+order:cancel;Can cancel orders;order;cancel;now;now
+order:process;Can process orders;order;process;now;now
+finance:invoice;Can manage invoices;finance;manage;now;now
+finance:payment;Can process payments;finance;process;now;now
+finance:report;Can view financial reports;finance;read;now;now
+report:generate;Can generate reports;report;generate;now;now
+report:export;Can export reports;report;export;now;now
+report:custom;Can create custom reports;report;create;now;now
+api:access;Can access APIs;api;access;now;now
+api:manage;Can manage APIs;api;manage;now;now
+api:key;Can manage API keys;api;manage;now;now
