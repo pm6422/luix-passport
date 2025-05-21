@@ -333,6 +333,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setActivationCode(null);
         userRepository.save(user);
         stateMachine.sendEvent(Mono.just(MessageBuilder.withPayload(UserEvent.ACTIVATE).build()));
+
+        userNotificationService.sendPersonalNotification(user.getId(), Collections.singletonList(user.getId()),
+                "Activated account",
+                "You have successfully activated the account, please contact the administrator to grant appropriate permissions.");
         log.info("Activated user by activation code {}", activationCode);
     }
 
