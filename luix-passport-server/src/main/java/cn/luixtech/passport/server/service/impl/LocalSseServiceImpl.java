@@ -17,7 +17,7 @@ import java.util.function.Consumer;
 @Service
 @Slf4j
 public class LocalSseServiceImpl implements SseService {
-    private static final Map<String, SseEmitter>  USER_EMITTER_CACHE         = new ConcurrentHashMap<>();
+    private static final Map<String, SseEmitter>  LOCAL_USER_EMITTERS        = new ConcurrentHashMap<>();
     private static final ScheduledExecutorService SCHEDULED_EXECUTOR_SERVICE = Executors.newScheduledThreadPool(1);
 
     public LocalSseServiceImpl() {
@@ -27,8 +27,8 @@ public class LocalSseServiceImpl implements SseService {
 
     @Override
     public SseEmitter add(String userId) {
-        if (USER_EMITTER_CACHE.containsKey(userId)) {
-            return USER_EMITTER_CACHE.get(userId);
+        if (LOCAL_USER_EMITTERS.containsKey(userId)) {
+            return LOCAL_USER_EMITTERS.get(userId);
         }
         try {
             // Set the timeout period to 30 minutes
@@ -36,7 +36,7 @@ public class LocalSseServiceImpl implements SseService {
             sseEmitter.onCompletion(completionCallback(userId));
             sseEmitter.onError(errorCallback(userId));
             sseEmitter.onTimeout(timeoutCallback(userId));
-            USER_EMITTER_CACHE.put(userId, sseEmitter);
+            LOCAL_USER_EMITTERS.put(userId, sseEmitter);
             return sseEmitter;
         } catch (Exception e) {
             log.error("Failed to create SseEmitter connection for user ID: " + userId, e);
@@ -46,21 +46,21 @@ public class LocalSseServiceImpl implements SseService {
 
     @Override
     public void remove(String userId) {
-        USER_EMITTER_CACHE.remove(userId);
+        LOCAL_USER_EMITTERS.remove(userId);
     }
 
     @Override
     public void removeAll() {
-        USER_EMITTER_CACHE.clear();
+        LOCAL_USER_EMITTERS.clear();
     }
 
     @Override
     public void pushMessage(String userId, String message) {
-        if (!USER_EMITTER_CACHE.containsKey(userId)) {
+        if (!LOCAL_USER_EMITTERS.containsKey(userId)) {
             return;
         }
         try {
-            USER_EMITTER_CACHE.get(userId).send(message);
+            LOCAL_USER_EMITTERS.get(userId).send(message);
         } catch (IOException e) {
             log.error("Failed to push message to user: " + userId, e);
             remove(userId);
@@ -69,7 +69,7 @@ public class LocalSseServiceImpl implements SseService {
 
     @Override
     public void cleanUp() {
-        USER_EMITTER_CACHE.entrySet().removeIf(entry -> {
+        LOCAL_USER_EMITTERS.entrySet().removeIf(entry -> {
             SseEmitter emitter = entry.getValue();
             return emitter == null || isEmitterDead(emitter);
         });
@@ -77,7 +77,7 @@ public class LocalSseServiceImpl implements SseService {
 
     @Override
     public Set<String> getOnlineUserIds() {
-        return USER_EMITTER_CACHE.keySet();
+        return LOCAL_USER_EMITTERS.keySet();
     }
 
     /**
