@@ -5,9 +5,7 @@ import InputFormField from "@/components/custom/form-field/input"
 import { Button } from "@/components/custom/button"
 import { IconPlus, IconFilterSearch } from "@tabler/icons-react"
 import { EditDialog } from "../dialog/edit-dialog"
-import { yesNoOptions } from "@/data/yes-no-options"
-import SelectFormField from '@/components/custom/form-field/select'
-import { type User, type UserCriteriaSchema, userCriteriaSchema, initialUserCriteriaState } from "@/domains/user"
+import { type Permission, type PermissionCriteriaSchema, permissionCriteriaSchema, initialPermissionCriteriaState } from "@/domains/permission"
 import { Form } from "@/components/ui/form"
 import {
   Popover,
@@ -17,8 +15,8 @@ import {
 
 interface DataTableToolbarProps{
   entityName: string,
-  loadPage: (pageNo: number | undefined, pageSize: number | undefined, sorts: Array<string> | undefined, criteria: UserCriteriaSchema) => void,
-  save: (formData: User) => Promise<void>
+  loadPage: (pageNo: number | undefined, pageSize: number | undefined, sorts: Array<string> | undefined, criteria: PermissionCriteriaSchema) => void,
+  save: (formData: Permission) => Promise<void>
 }
 
 export function DataTableToolbar ({
@@ -27,12 +25,12 @@ export function DataTableToolbar ({
   save
 }: DataTableToolbarProps) {
   const [isFilterPopoverOpen, setIsFilterPopoverOpen] = useState(false)
-  const form = useForm<UserCriteriaSchema>({
-    resolver: zodResolver(userCriteriaSchema),
-    defaultValues: initialUserCriteriaState
+  const form = useForm<PermissionCriteriaSchema>({
+    resolver: zodResolver(permissionCriteriaSchema),
+    defaultValues: initialPermissionCriteriaState
   })
 
-  function onSubmit(formData: UserCriteriaSchema): void {
+  function onSubmit(formData: PermissionCriteriaSchema): void {
     loadPage(undefined, undefined, undefined, formData)
     setIsFilterPopoverOpen(false)
   }
@@ -53,32 +51,17 @@ export function DataTableToolbar ({
                 className="flex flex-col gap-4"
               >
                 <div className="flex flex-col sm:flex-row gap-2">
-                  <InputFormField 
-                    control={form.control} 
-                    name="username" 
-                    label="Username" 
+                  <InputFormField
+                    control={form.control}
+                    name="resourceType"
+                    label="Resource Type"
                     formItemClassName="w-full"
                   />
 
-                  <InputFormField 
-                    control={form.control} 
-                    name="email" 
-                    label="Email" 
-                    formItemClassName="w-full"
-                  />
-                </div>
-                <div className="flex flex-col sm:flex-row gap-2">
-                  <InputFormField 
-                    control={form.control} 
-                    name="mobileNo" 
-                    label="Mobile No" 
-                    formItemClassName="w-full"
-                  />
-                  <SelectFormField
+                  <InputFormField
                     control={form.control}
-                    name="enabled"
-                    label="Enabled"
-                    options={yesNoOptions}
+                    name="action"
+                    label="Action"
                     formItemClassName="w-full"
                   />
                 </div>

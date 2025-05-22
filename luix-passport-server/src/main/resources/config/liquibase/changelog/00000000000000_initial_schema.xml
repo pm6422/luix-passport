@@ -385,7 +385,7 @@
             <column name="num" type="varchar(20)">
                 <constraints nullable="false"/>
             </column>
-            <column name="category_code" type="varchar(20)">
+            <column name="category_code" type="varchar(25)">
                 <constraints nullable="false"/>
             </column>
             <column name="dict_code" type="varchar(30)">

@@ -3,27 +3,25 @@ import { LayoutBody } from "@/layouts/layout-definitions"
 import { DataTableToolbar } from "./table/table-toolbar"
 import { DataTable } from "@/components/custom/data-table/server-pagination-data-table"
 import { tableColumns } from "./table/table-columns"
-import { type User, type UserCriteriaSchema } from "@/domains/user"
-import { UserService } from "@/services/user-service"
+import { type Permission, type PermissionCriteriaSchema } from "@/domains/permission"
+import { PermissionService } from "@/services/permission-service"
 
 export default function DataDict() {
   // State to hold the fetched data
-  const entityName = "user"
-  const [tableData, setTableData] = useState([] as Array<User>)
+  const entityName = "permission"
+  const [tableData, setTableData] = useState([] as Array<Permission>)
   const [totalCount, setTotalCount] = useState(0)
   const [totalPages, setTotalPages] = useState(0)
   const [currentPageNo, setCurrentPageNo] = useState(0)
 
-  function loadPage(pageNo: number = 0, pageSize: number = 10, sorts: Array<string> = ["modifiedAt,desc"], criteria: UserCriteriaSchema = {}): void {
+  function loadPage(pageNo: number = 0, pageSize: number = 10, sorts: Array<string> = ["modifiedAt,desc"], criteria: PermissionCriteriaSchema = {}): void {
     setCurrentPageNo(pageNo)
-    UserService.find({
+    PermissionService.find({
       page: pageNo,
       size: pageSize,
       sort: sorts,
-      username: criteria.username || null,
-      email: criteria.email || null,
-      mobileNo: criteria.mobileNo || null,
-      enabled: criteria.enabled || null
+      resourceType: criteria.resourceType || null,
+      action: criteria.action || null
     }).then(r => {
       setTableData(r.data)
       const total = parseInt(r.headers["x-total-count"])
@@ -32,37 +30,30 @@ export default function DataDict() {
     })
   }
 
-  function save(formData: User): Promise<void> {
-    return UserService.save(formData).then(() => {
+  function save(formData: Permission): Promise<void> {
+    return PermissionService.save(formData).then(() => {
       loadPage(currentPageNo)
     })
   }
 
-  function deleteRow(row: User): Promise<void> {
+  function deleteRow(row: Permission): Promise<void> {
     if(!row.id) {
       return Promise.reject("Invalid empty id")
     }
-    return UserService.deleteById(row.id).then(() => {
+    return PermissionService.deleteById(row.id).then(() => {
       loadPage()
     })
   }
 
-  function deleteRows(rows: Array<User>): Promise<Array<void>> {
+  function deleteRows(rows: Array<Permission>): Promise<Array<void>> {
     return Promise.all(rows.map(deleteRow))
-  }
-
-  function resetPassword(row: User): Promise<void> {
-    if(!row.id) {
-      return Promise.reject("Invalid empty id")
-    }
-    return UserService.resetPassword(row.id)
   }
 
   return (
     <LayoutBody className="flex flex-col" fixedHeight>
       <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-x-12 lg:space-y-0">
         <DataTable 
-          columns={tableColumns(entityName, save, deleteRow, resetPassword)} 
+          columns={tableColumns(entityName, save, deleteRow)}
           data={tableData} 
           totalCount={totalCount} 
           totalPages={totalPages} 

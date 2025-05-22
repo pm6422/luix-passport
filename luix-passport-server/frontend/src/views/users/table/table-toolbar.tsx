@@ -6,7 +6,7 @@ import { Button } from "@/components/custom/button"
 import { IconPlus, IconFilterSearch } from "@tabler/icons-react"
 import { EditDialog } from "../dialog/edit-dialog"
 import { yesNoOptions } from "@/data/yes-no-options"
-import SelectFormField from '@/components/custom/form-field/select'
+import SelectFormField from "@/components/custom/form-field/select"
 import { type User, type UserCriteriaSchema, userCriteriaSchema, initialUserCriteriaState } from "@/domains/user"
 import { Form } from "@/components/ui/form"
 import {

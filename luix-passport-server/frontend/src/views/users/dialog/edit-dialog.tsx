@@ -56,7 +56,7 @@ export function EditDialog({
       AccountService.findSupportedDateTimeFormats()
     ]).then(results => {
       // load options
-      setEnabledRoles(results[0].data.map((item: Role) => ({label: item.id || "", value: item.id || ""})));
+      setEnabledRoles(results[0].data.map((item: Role) => ({label: item.id, value: item.id})));
       setSupportedTimezones(results[1].data.map((item: SupportedTimezone) =>
         ({label: "(UTC" + item.utcOffset + ") " + item.id , value: item.id})));
       setSupportedDateTimeFormats(results[2].data.map((item: SupportedDateTimeFormat) =>
