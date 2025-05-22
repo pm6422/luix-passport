@@ -79,7 +79,7 @@ public class AuthenticationEventListener {
             if (principal instanceof AuthUser authUser) {
                 if (authUser.getUsername().equals(event.getUsername())) {
                     List<SessionInformation> sessionsInfo = sessionRegistry.getAllSessions(principal, false);
-                    if (null != sessionsInfo && !sessionsInfo.isEmpty()) {
+                    if (sessionsInfo != null && !sessionsInfo.isEmpty()) {
                         for (SessionInformation sessionInformation : sessionsInfo) {
                             log.info("Expire now :" + sessionInformation.getSessionId());
                             //Expire or logout the user
