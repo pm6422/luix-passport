@@ -71,7 +71,7 @@ export function NotificationsForm() {
     toast(
       <div>
         <span>You submitted the following values:</span>
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+        <pre className="mt-2 w-[320px] rounded-md bg-slate-950 p-4">
           <code className="text-white">{JSON.stringify(data, null, 2)}</code>
         </pre>
       </div>, 
@@ -81,9 +81,6 @@ export function NotificationsForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <pre className="mt-2 rounded-md bg-slate-950 p-4">
-          <code className="text-red-500">{JSON.stringify(form.getValues(), null, 2)}</code>
-        </pre>
         <FormField
           control={form.control}
           name="frameworks"
