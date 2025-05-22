@@ -84,6 +84,12 @@ export function EditDialog({
           required
         />
 
+        <InputFormField
+          control={form.control}
+          name="remark"
+          label="Remark"
+        />
+
       </SaveDialogContent>
     </Dialog>
   )

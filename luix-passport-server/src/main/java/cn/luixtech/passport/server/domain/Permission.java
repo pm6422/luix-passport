@@ -22,8 +22,6 @@ public class Permission extends AbstractAuditableDomain implements Serializable 
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private String description;
-
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     @NotEmpty(message = "resourceType:{Validation.NotEmpty}")
     @Column(nullable = false)
@@ -33,4 +31,6 @@ public class Permission extends AbstractAuditableDomain implements Serializable 
     @NotEmpty(message = "action:{Validation.NotEmpty}")
     @Column(nullable = false)
     private String action;
+
+    private String remark;
 }

@@ -2,7 +2,7 @@ import { z } from "zod"
 
 export const roleSchema = z.object({
   id: z.string().trim().min(1, { message: "Required" }),
-  description: z.string().optional().nullable(),
+  remark: z.string().optional().nullable(),
   createdAt: z.string().optional().nullable(),
   modifiedAt: z.string().optional().nullable()
 })

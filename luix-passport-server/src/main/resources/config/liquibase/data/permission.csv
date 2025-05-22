@@ -1,4 +1,4 @@
-id;description;resource_type;action;created_by;created_at;modified_by;modified_at
+id;remark;resource_type;action;created_by;created_at;modified_by;modified_at
 user:create;Can create a new user;user;create;system;now;system;now
 user:read;Can view user information;user;read;system;now;system;now
 user:update;Can modify user information;user;update;system;now;system;now

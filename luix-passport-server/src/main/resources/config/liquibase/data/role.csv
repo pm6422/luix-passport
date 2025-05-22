@@ -1,4 +1,4 @@
-id;description;created_by;created_at;modified_by;modified_at
+id;remark;created_by;created_at;modified_by;modified_at
 ROLE_ANONYMOUS;;system;now;system;now
 ROLE_USER;;system;now;system;now
 ROLE_ADMIN;;system;now;system;now
