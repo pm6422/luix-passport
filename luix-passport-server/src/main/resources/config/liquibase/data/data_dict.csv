@@ -8,7 +8,7 @@ id;num;category_code;dict_code;enabled;created_by;created_at;modified_at
 17;DCT1007;PermissionResourceType;report;true;SYSTEM;now;now
 18;DCT1008;PermissionResourceType;user;true;SYSTEM;now;now
 19;DCT1009;PermissionResourceType;role;true;SYSTEM;now;now
-
+20;DCT1010;PermissionResourceType;system;true;SYSTEM;now;now
 
 21;DCT1011;PermissionAction;create;true;SYSTEM;now;now
 22;DCT1012;PermissionAction;delete;true;SYSTEM;now;now

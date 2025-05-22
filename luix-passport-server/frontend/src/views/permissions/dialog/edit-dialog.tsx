@@ -4,17 +4,12 @@ import { useForm } from "react-hook-form"
 import { Dialog, DialogTrigger } from "@/components/ui/dialog"
 import SaveDialogContent from "@/components/custom/dialog/save-dialog-content"
 import InputFormField from "@/components/custom/form-field/input"
-import { type CheckboxOption } from "@/components/custom/form-field/checkbox"
 import SelectFormField from "@/components/custom/form-field/select"
 import { type Permission, permissionSchema, initialPermissionState } from "@/domains/permission"
-import { locales } from "@/data/locales"
-import { AccountService } from "@/services/account-service"
 import { PermissionService } from "@/services/permission-service"
-import { RoleService } from "@/services/role-service"
+import { DataDictService } from "@/services/data-dict-service"
 import { Option } from "@/components/custom/multi-select"
-import type { SupportedTimezone } from "@/domains/supported-timezone"
-import type { SupportedDateTimeFormat } from "@/domains/supported-date-time-format"
-import { type Role } from "@/domains/role"
+import type { DataDict } from "@/domains/data-dict"
 
 interface EditDialogProps {
   children: ReactNode,
@@ -32,9 +27,8 @@ export function EditDialog({
   afterSave
 }: EditDialogProps) {
   const [open, setOpen] = useState(false)
-  const [enabledRoles, setEnabledRoles] = useState(Array<CheckboxOption>)
-  const [supportedTimezones, setSupportedTimezones] = useState(Array<Option>)
-  const [supportedDateTimeFormats, setSupportedDateTimeFormats] = useState(Array<Option>)
+  const [resourceTypes, setResourceTypes] = useState(Array<Option>)
+  const [actions, setActions] = useState(Array<Option>)
   const form = useForm<Permission>({
     resolver: zodResolver(permissionSchema),
     defaultValues: initialPermissionState
@@ -45,16 +39,12 @@ export function EditDialog({
       return
     }
     Promise.all([
-      RoleService.findAll(),
-      AccountService.findSupportedTimezones(),
-      AccountService.findSupportedDateTimeFormats()
+      DataDictService.lookup("PermissionResourceType", true),
+      DataDictService.lookup("PermissionAction", true),
     ]).then(results => {
       // load options
-      setEnabledRoles(results[0].data.map((item: Role) => ({label: item.id || "", value: item.id || ""})));
-      setSupportedTimezones(results[1].data.map((item: SupportedTimezone) =>
-        ({label: "(UTC" + item.utcOffset + ") " + item.id , value: item.id})));
-      setSupportedDateTimeFormats(results[2].data.map((item: SupportedDateTimeFormat) =>
-        ({label: item.displayName + " (" + item.example + ")", value: item.id})));
+      setResourceTypes(results[0].data.map((item: DataDict) => ({label: item.dictCode , value: item.dictCode})));
+      setActions(results[1].data.map((item: DataDict) => ({label: item.dictCode , value: item.dictCode})));
 
       id && PermissionService.findById(id).then(r => {
         form.reset(r.data)
@@ -80,11 +70,19 @@ export function EditDialog({
           control={form.control}
           name="resourceType"
           label="Resource Type"
-          options={locales}
+          options={resourceTypes}
           formItemClassName="w-full"
           required
         />
 
+        <SelectFormField
+          control={form.control}
+          name="action"
+          label="Action"
+          options={actions}
+          formItemClassName="w-full"
+          required
+        />
 
       </SaveDialogContent>
     </Dialog>
