@@ -2,8 +2,8 @@ import { useEffect } from "react"
 import { Outlet } from "react-router-dom"
 import Sidebar from "@/components/sidebar"
 import useIsCollapsed from "@/hooks/use-is-collapsed"
-import { useStore } from "exome/react"
 import { appInfoStore } from "@/stores/app-info-store"
+import { useStore } from "exome/react"
 import { authUserStore } from "@/stores/auth-user-store"
 import { RoleAdmin } from "@/components/custom/role/role-admin"
 import { RoleOnlyUser } from "@/components/custom/role/role-only-user"
@@ -35,6 +35,9 @@ export default function AuthLayout() {
       isActive: false,
     },
   ]
+  let reconnectAttempts = 0;
+  const maxReconnectAttempts = 5;
+  const initialReconnectDelay = 1000;
 
   useEffect(() => {
     AccountService.getCurrentAccount().then(u => {
@@ -55,6 +58,7 @@ export default function AuthLayout() {
     if(appInfo.ribbonProfile === "dev") {
       return;
     }
+
     const eventSource = setupSse();
 
     return () => {
@@ -73,13 +77,10 @@ export default function AuthLayout() {
     } else {
       const eventSource = new EventSource("api/sse/connect");
       eventSource.onopen = function () {
+        // reset reconnect attempts
+        reconnectAttempts = 0;
         console.log("Opened SSE connection to the server");
       }
-      eventSource.onerror = () => {
-        eventSource.close();
-        // reconnect after 5 seconds
-        setTimeout(setupSse, 5000);
-      };
       eventSource.onmessage = function (event) {
         // const data = JSON.parse(event.data);
         // console.log("Received message from the server:", data);
@@ -105,6 +106,20 @@ export default function AuthLayout() {
         }, 2000)
 
         return eventSource;
+      }
+      eventSource.onerror = () => {
+        eventSource.close();
+
+        if (reconnectAttempts < maxReconnectAttempts) {
+          const delay = initialReconnectDelay * Math.pow(2, reconnectAttempts);
+          reconnectAttempts++;
+
+          console.log(`Disconnected from the server, will try to reconnect in ${delay/1000} seconds with ${reconnectAttempts} attempts...`);
+
+          setTimeout(setupSse, delay);
+        } else {
+          console.log('Exceeded max reconnect attempts, stop trying to reconnect.');
+        }
       }
     }
   }
