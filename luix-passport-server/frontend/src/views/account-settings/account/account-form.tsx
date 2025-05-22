@@ -20,7 +20,6 @@ import { type SupportedTimezone } from "@/domains/supported-timezone"
 import { type SupportedDateTimeFormat } from "@/domains/supported-date-time-format"
 import { Link } from "react-router-dom"
 import { Option } from "@/components/custom/multi-select"
-import { DataDictService } from '@/services/data-dict-service'
 
 const formSchema = z.object({
   id: z.string().trim().min(1, { message: "Required" }),
@@ -49,14 +48,13 @@ export function AccountForm() {
 
   useEffect(() => {
     Promise.all([
-      DataDictService.lookup("role", true),
       AccountService.findSupportedTimezones(),
       AccountService.findSupportedDateTimeFormats()
     ]).then(results => {
       // load options
-      setSupportedTimezones(results[1].data.map((item: SupportedTimezone) =>
+      setSupportedTimezones(results[0].data.map((item: SupportedTimezone) =>
         ({label: "(UTC" + item.utcOffset + ") " + item.id , value: item.id})));
-      setSupportedDateTimeFormats(results[2].data.map((item: SupportedDateTimeFormat) =>
+      setSupportedDateTimeFormats(results[1].data.map((item: SupportedDateTimeFormat) =>
         ({label: item.displayName + " (" + item.example + ")", value: item.id})));
 
       AccountService.getCurrentAccount().then(user => {
