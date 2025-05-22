@@ -7,4 +7,4 @@ export const roleSchema = z.object({
   modifiedAt: z.string().optional().nullable()
 })
 
-export type SupportedTimezone = z.infer<typeof roleSchema>
+export type Role = z.infer<typeof roleSchema>

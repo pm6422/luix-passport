@@ -12,15 +12,15 @@ import ComboboxFormField from "@/components/custom/form-field/combobox"
 import PhoneInputFormField from "@/components/custom/form-field/phone-input"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { type User, userSchema, initialUserState } from "@/domains/user"
-import { type DataDict } from "@/domains/data-dict"
 import { Separator } from "@/components/ui/separator"
 import { locales } from "@/data/locales"
-import { DataDictService } from "@/services/data-dict-service"
 import { AccountService } from "@/services/account-service"
 import { UserService } from "@/services/user-service"
+import { RoleService } from "@/services/role-service"
 import { Option } from "@/components/custom/multi-select"
 import type { SupportedTimezone } from "@/domains/supported-timezone"
 import type { SupportedDateTimeFormat } from "@/domains/supported-date-time-format"
+import { type Role } from "@/domains/role"
 
 interface EditDialogProps {
   children: ReactNode,
@@ -51,12 +51,12 @@ export function EditDialog({
       return
     }
     Promise.all([
-      DataDictService.lookup("role", true),
+      RoleService.findAll(),
       AccountService.findSupportedTimezones(),
       AccountService.findSupportedDateTimeFormats()
     ]).then(results => {
       // load options
-      setEnabledRoles(results[0].data.map((item: DataDict) => ({label: item.dictCode, value: item.dictCode})));
+      setEnabledRoles(results[0].data.map((item: Role) => ({label: item.id || "", value: item.id || ""})));
       setSupportedTimezones(results[1].data.map((item: SupportedTimezone) =>
         ({label: "(UTC" + item.utcOffset + ") " + item.id , value: item.id})));
       setSupportedDateTimeFormats(results[2].data.map((item: SupportedDateTimeFormat) =>
