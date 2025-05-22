@@ -1,5 +1,5 @@
 id;description;created_at;modified_by;modified_at
-ROLE_ANONYMOUS;;system;now;system;now
-ROLE_USER;;system;now;system;now
-ROLE_ADMIN;;system;now;system;now
-ROLE_DEVELOPER;;system;now;system;now
+ROLE_ANONYMOUS;system;now;system;now
+ROLE_USER;system;now;system;now
+ROLE_ADMIN;system;now;system;now
+ROLE_DEVELOPER;system;now;system;now
