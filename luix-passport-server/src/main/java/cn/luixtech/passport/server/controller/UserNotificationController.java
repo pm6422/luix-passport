@@ -35,7 +35,7 @@ public class UserNotificationController {
     public ResponseEntity<List<MyNotification>> getMyNotifications(@ParameterObject Pageable pageable,
                                                                    @RequestParam(value = "keyword", required = false) String keyword) {
         List<MyNotification> myNotifications = new ArrayList<>();
-        Page<UserNotification> userNotifications = userNotificationService.getUserNotifications(pageable, AuthUtils.getCurrentUserId(), keyword);
+        Page<UserNotification> userNotifications = userNotificationService.findserNotifications(pageable, AuthUtils.getCurrentUserId(), keyword);
         for (UserNotification userNotification : userNotifications) {
             myNotifications.add(MyNotification.of(userNotification));
         }

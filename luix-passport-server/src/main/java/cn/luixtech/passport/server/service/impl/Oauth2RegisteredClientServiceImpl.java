@@ -53,7 +53,7 @@ public class Oauth2RegisteredClientServiceImpl implements Oauth2RegisteredClient
 
     @Override
     public Page<Oauth2Client> find(Pageable pageable, String clientId) {
-        // Ignore query parameter if it has a null value
+        // Ignore a query parameter if it has a null value
         ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreNullValues();
         Oauth2RegisteredClient criteria = new Oauth2RegisteredClient();
         criteria.setClientId(clientId);
