@@ -19,8 +19,6 @@ import { authUserStore } from '@/stores/auth-user-store.ts'
 import { useNavigate } from 'react-router-dom'
 import { RoleAdmin } from "@/components/custom/role/role-admin"
 import { isEmpty } from "lodash"
-// import { SpringSessionService } from "@/services/spring-session-service"
-// import { type SpringSession } from "@/domains/spring-session"
 
 export default function Dashboard() {
   const navigate = useNavigate()
@@ -47,9 +45,6 @@ export default function Dashboard() {
         setOrgCount(r.data)
       })
     }
-    // SpringSessionService.findAll().then(r => {
-    //   setSpringSessions(r.data)
-    // })
   }, [authUser])
 
   return (
