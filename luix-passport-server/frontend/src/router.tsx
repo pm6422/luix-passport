@@ -118,7 +118,7 @@ const router = createHashRouter([
       {
         path: "permissions",
         lazy: async () => ({
-          Component: (await import("@/components/custom/coming-soon")).default
+          Component: (await import("@/views/permissions")).default
         }),
       },
       {
