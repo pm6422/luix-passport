@@ -32,11 +32,11 @@ import static cn.luixtech.passport.server.domain.UserRole.ROLE_ADMIN;
 public class RoleController {
     private final RoleRepository roleRepository;
 
-    @Operation(summary = "create new role")
+    @Operation(summary = "save role")
     @PostMapping("/api/roles")
-    public ResponseEntity<Void> create(@Parameter(description = "domain", required = true) @Valid @RequestBody Role domain) {
+    public ResponseEntity<Void> save(@Parameter(description = "domain", required = true) @Valid @RequestBody Role domain) {
         roleRepository.save(domain);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @Operation(summary = "find role list")
@@ -50,13 +50,6 @@ public class RoleController {
     public ResponseEntity<Role> findById(@Parameter(description = "ID", required = true) @PathVariable String id) {
         Role domain = roleRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
         return ResponseEntity.ok(domain);
-    }
-
-    @Operation(summary = "update role")
-    @PutMapping("/api/roles")
-    public ResponseEntity<Void> update(@Parameter(description = "domain", required = true) @Valid @RequestBody Role domain) {
-        roleRepository.save(domain);
-        return ResponseEntity.ok().build();
     }
 
     @Operation(summary = "delete role by id")

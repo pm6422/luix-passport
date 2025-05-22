@@ -19,7 +19,7 @@ export class RoleService {
   }
 
   public static save(model: Role): Promise<void> {
-    return model.id ? http.put("api/roles", model) : http.post("api/roles", model)
+    return http.post("api/roles", model)
   }
 
   public static deleteById(id: string): Promise<void> {

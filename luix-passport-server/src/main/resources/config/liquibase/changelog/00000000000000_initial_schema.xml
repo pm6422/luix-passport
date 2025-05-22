@@ -268,9 +268,13 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="description" type="VARCHAR(255)"/>
+            <column name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
             <column name="created_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
+            <column name="modified_by" type="VARCHAR(50)"/>
             <column name="modified_at" type="timestamp"/>
         </createTable>
         <loadData
@@ -305,9 +309,13 @@
             <column name="action" type="VARCHAR(20)">
                 <constraints nullable="false"/>
             </column>
+            <column name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
             <column name="created_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
+            <column name="modified_by" type="VARCHAR(50)"/>
             <column name="modified_at" type="timestamp"/>
         </createTable>
         <loadData

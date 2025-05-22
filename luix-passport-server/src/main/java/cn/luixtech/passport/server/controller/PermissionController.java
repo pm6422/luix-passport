@@ -38,11 +38,11 @@ public class PermissionController {
     private final PermissionRepository permissionRepository;
     private final PermissionService    permissionService;
 
-    @Operation(summary = "create new permission")
+    @Operation(summary = "save permission")
     @PostMapping("/api/permissions")
-    public ResponseEntity<Void> create(@Parameter(description = "domain", required = true) @Valid @RequestBody Permission domain) {
+    public ResponseEntity<Void> save(@Parameter(description = "domain", required = true) @Valid @RequestBody Permission domain) {
         permissionRepository.save(domain);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @Operation(summary = "find permission list")
@@ -59,13 +59,6 @@ public class PermissionController {
     public ResponseEntity<Permission> findById(@Parameter(description = "ID", required = true) @PathVariable String id) {
         Permission domain = permissionRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
         return ResponseEntity.ok(domain);
-    }
-
-    @Operation(summary = "update permission")
-    @PutMapping("/api/permissions")
-    public ResponseEntity<Void> update(@Parameter(description = "domain", required = true) @Valid @RequestBody Permission domain) {
-        permissionRepository.save(domain);
-        return ResponseEntity.ok().build();
     }
 
     @Operation(summary = "delete permission by id")

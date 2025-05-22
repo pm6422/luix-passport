@@ -15,7 +15,7 @@ export class PermissionService {
   }
 
   public static save(model: Permission): Promise<void> {
-    return model.id ? http.put("api/permissions", model) : http.post("api/permissions", model)
+    return http.post("api/permissions", model)
   }
 
   public static deleteById(id: string): Promise<void> {

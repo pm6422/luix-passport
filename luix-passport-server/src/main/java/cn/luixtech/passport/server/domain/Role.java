@@ -1,32 +1,23 @@
 package cn.luixtech.passport.server.domain;
 
-import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Column;
+import cn.luixtech.passport.server.domain.base.AbstractAuditableDomain;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.Instant;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Role implements Serializable {
+@EqualsAndHashCode(callSuper = true)
+public class Role extends AbstractAuditableDomain implements Serializable {
     @Serial
-    private static final long   serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-    @Schema(description = "ID")
-    @Id
-    protected String       id;
-    private   String       description;
-    @Schema(description = "created time")
-    @Column(updatable = false)
-    private   Instant      createdAt;
-    @Schema(description = "last modified time")
-    private   Instant      modifiedAt;
+    private String description;
 }
