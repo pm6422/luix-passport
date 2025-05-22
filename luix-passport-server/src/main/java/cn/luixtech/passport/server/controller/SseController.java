@@ -1,9 +1,8 @@
 package cn.luixtech.passport.server.controller;
 
+import cn.luixtech.passport.server.service.SseService;
 import cn.luixtech.passport.server.utils.AuthUtils;
-import com.luixtech.springbootframework.utils.SseEmitterUtils;
 import io.swagger.v3.oas.annotations.Operation;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,19 +15,13 @@ import java.util.Optional;
 @AllArgsConstructor
 public class SseController {
 
+    private final SseService sseService;
+
     @Operation(summary = "return a SseEmitter HTTP long connection for current user")
     @GetMapping(path = "/api/sse/connect", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter connect() {
         // Return a SseEmitter HTTP long connection
-        return Optional.ofNullable(SseEmitterUtils.connect(AuthUtils.getCurrentUserId()))
-                .orElseThrow(() -> new IllegalStateException("Can NOT create SSE connection"));
-    }
-
-    @Operation(summary = "disconnect SseEmitter HTTP long connection for current user")
-    @GetMapping("/api/sse/disconnect")
-    public void disconnect(HttpServletRequest request) {
-        request.startAsync();
-        // todo: broadcast remove in distributed system
-        SseEmitterUtils.removeUser(AuthUtils.getCurrentUserId());
+        return Optional.ofNullable(sseService.add(AuthUtils.getCurrentUserId()))
+                .orElseThrow(() -> new IllegalStateException("Failed to create SSE connection"));
     }
 }

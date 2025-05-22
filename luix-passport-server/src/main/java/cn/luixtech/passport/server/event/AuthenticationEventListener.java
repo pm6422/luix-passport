@@ -5,6 +5,7 @@ import cn.luixtech.passport.server.domain.User;
 import cn.luixtech.passport.server.domain.UserAuthEvent;
 import cn.luixtech.passport.server.repository.UserAuthEventRepository;
 import cn.luixtech.passport.server.repository.UserRepository;
+import cn.luixtech.passport.server.service.SseService;
 import cn.luixtech.passport.server.service.UserService;
 import com.luixtech.uidgenerator.core.id.IdGenerator;
 import com.luixtech.utilities.exception.DataNotFoundException;
@@ -35,10 +36,11 @@ import static cn.luixtech.passport.server.utils.AuthUtils.getCurrentUsername;
 @Component
 @AllArgsConstructor
 public class AuthenticationEventListener {
-    private       UserAuthEventRepository userAuthEventRepository;
+    private final UserAuthEventRepository userAuthEventRepository;
     private final UserRepository          userRepository;
-    private       UserService             userService;
-    private       SessionRegistry         sessionRegistry;
+    private final UserService             userService;
+    private final SessionRegistry         sessionRegistry;
+    private final SseService              sseService;
 
     @EventListener
     public void authenticationSuccessEvent(AuthenticationSuccessEvent event) {
@@ -78,6 +80,9 @@ public class AuthenticationEventListener {
         for (Object principal : allPrincipals) {
             if (principal instanceof AuthUser authUser) {
                 if (authUser.getUsername().equals(event.getUsername())) {
+                    // remove user from sse
+                    sseService.remove(authUser.getId());
+
                     List<SessionInformation> sessionsInfo = sessionRegistry.getAllSessions(principal, false);
                     if (sessionsInfo != null && !sessionsInfo.isEmpty()) {
                         for (SessionInformation sessionInformation : sessionsInfo) {
