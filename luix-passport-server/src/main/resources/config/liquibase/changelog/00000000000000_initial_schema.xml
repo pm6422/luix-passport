@@ -565,91 +565,74 @@
                 baseTableName="org_user"
                 baseColumnNames="user_id"
                 constraintName="fk_org_user_user_id"
-                deferrable="false"
-                initiallyDeferred="false"
-                onDelete="CASCADE"
-                onUpdate="RESTRICT"
                 referencedTableName="user"
                 referencedColumnNames="id"
-                validate="true"/>
+                onDelete="CASCADE"
+                onUpdate="CASCADE"/>
         <addForeignKeyConstraint
                 baseTableName="user_role"
                 baseColumnNames="user_id"
                 constraintName="fk_user_role_user_id"
-                deferrable="false"
-                initiallyDeferred="false"
-                onDelete="CASCADE"
-                onUpdate="RESTRICT"
                 referencedTableName="user"
                 referencedColumnNames="id"
-                validate="true"/>
+                onDelete="CASCADE"
+                onUpdate="CASCADE"/>
         <addForeignKeyConstraint
                 baseTableName="user_role"
                 baseColumnNames="role_id"
                 constraintName="fk_user_role_role_id"
-                deferrable="false"
-                initiallyDeferred="false"
-                onDelete="CASCADE"
-                onUpdate="RESTRICT"
                 referencedTableName="role"
                 referencedColumnNames="id"
-                validate="true"/>
+                onDelete="CASCADE"
+                onUpdate="CASCADE"/>
         <addForeignKeyConstraint
                 baseTableName="role_permission"
                 baseColumnNames="role_id"
                 constraintName="fk_role_permission_role_id"
-                deferrable="false"
-                initiallyDeferred="false"
-                onDelete="CASCADE"
-                onUpdate="RESTRICT"
                 referencedTableName="role"
                 referencedColumnNames="id"
-                validate="true"/>
+                onDelete="CASCADE"
+                onUpdate="CASCADE"/>
         <addForeignKeyConstraint
                 baseTableName="role_permission"
                 baseColumnNames="permission_id"
                 constraintName="fk_role_permission_permission_id"
-                deferrable="false"
-                initiallyDeferred="false"
-                onDelete="CASCADE"
-                onUpdate="RESTRICT"
                 referencedTableName="permission"
                 referencedColumnNames="id"
-                validate="true"/>
+                onDelete="CASCADE"
+                onUpdate="CASCADE"/>
         <addForeignKeyConstraint
                 baseTableName="user_login"
                 baseColumnNames="user_id"
                 constraintName="fk_user_login_user_id"
-                deferrable="false"
-                initiallyDeferred="false"
-                onDelete="RESTRICT"
-                onUpdate="RESTRICT"
                 referencedTableName="user"
                 referencedColumnNames="id"
-                validate="true"/>
+                onDelete="CASCADE"
+                onUpdate="CASCADE"/>
         <addForeignKeyConstraint
                 baseTableName="user_profile_pic"
                 baseColumnNames="id"
                 constraintName="fk_user_profile_pic_user_id"
-                deferrable="false"
-                initiallyDeferred="false"
-                onDelete="CASCADE"
-                onUpdate="RESTRICT"
                 referencedTableName="user"
                 referencedColumnNames="id"
-                validate="true"/>
+                onDelete="CASCADE"
+                onUpdate="CASCADE"/>
         <addForeignKeyConstraint
                 baseTableName="user"
                 baseColumnNames="time_zone_id"
                 constraintName="fk_user_timezone_supported_timezone_id"
-                deferrable="false"
-                initiallyDeferred="false"
-                onDelete="CASCADE"
-                onUpdate="RESTRICT"
                 referencedTableName="supported_timezone"
                 referencedColumnNames="id"
-                validate="true"/>
-        <addForeignKeyConstraint baseColumnNames="date_time_format_id" baseTableName="user" constraintName="fk_user_date_time_format_supported_date_time_format_id" deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="supported_date_time_format" validate="true"/>
+                onDelete="CASCADE"
+                onUpdate="CASCADE"/>
+        <addForeignKeyConstraint
+                baseTableName="user"
+                baseColumnNames="date_time_format_id"
+                constraintName="fk_user_date_time_format_supported_date_time_format_id"
+                referencedTableName="supported_date_time_format"
+                referencedColumnNames="id"
+                onDelete="CASCADE"
+                onUpdate="CASCADE"/>
         <addForeignKeyConstraint
                 baseTableName="notification"
                 baseColumnNames="sender_id"
