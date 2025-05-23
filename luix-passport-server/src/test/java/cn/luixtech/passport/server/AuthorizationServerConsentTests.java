@@ -52,6 +52,7 @@ public class AuthorizationServerConsentTests {
     public void setUp() {
         this.webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
         this.webClient.getOptions().setRedirectEnabled(true);
+        this.webClient.getOptions().setThrowExceptionOnScriptError(false);
         this.webClient.getCookieManager().clearCookies();
         when(this.authorizationConsentService.findById(any(), any())).thenReturn(null);
     }
@@ -59,7 +60,7 @@ public class AuthorizationServerConsentTests {
     @Test
     @WithMockUser("user1")
     public void whenUserConsentsToAllScopesThenReturnAuthorizationCode() throws IOException {
-        final HtmlPage consentPage = this.webClient.getPage(this.AUTHORIZATION_REQUEST_URI);
+        final HtmlPage consentPage = this.webClient.getPage(AUTHORIZATION_REQUEST_URI);
         assertThat(consentPage.getTitleText()).isEqualTo("Passport | Authorization");
 
         List<HtmlCheckBoxInput> scopes = new ArrayList<>();
@@ -82,23 +83,24 @@ public class AuthorizationServerConsentTests {
         WebResponse approveConsentResponse = submitConsentButton.click().getWebResponse();
         assertThat(approveConsentResponse.getStatusCode()).isEqualTo(HttpStatus.MOVED_PERMANENTLY.value());
         String location = approveConsentResponse.getResponseHeaderValue("location");
-        assertThat(location).startsWith(this.REDIRECT_URI);
+        assertThat(location).startsWith(REDIRECT_URI);
         assertThat(location).contains("code=");
     }
 
     @Test
     @WithMockUser("user1")
     public void whenUserCancelsConsentThenReturnAccessDeniedError() throws IOException {
-        final HtmlPage consentPage = this.webClient.getPage(this.AUTHORIZATION_REQUEST_URI);
+        final HtmlPage consentPage = this.webClient.getPage(AUTHORIZATION_REQUEST_URI);
         assertThat(consentPage.getTitleText()).isEqualTo("Passport | Authorization");
 
         DomElement cancelConsentButton = consentPage.querySelector("button[id='cancel-consent']");
         this.webClient.getOptions().setRedirectEnabled(false);
 
         WebResponse cancelConsentResponse = cancelConsentButton.click().getWebResponse();
+        // 禁用导致
         assertThat(cancelConsentResponse.getStatusCode()).isEqualTo(HttpStatus.MOVED_PERMANENTLY.value());
         String location = cancelConsentResponse.getResponseHeaderValue("location");
-        assertThat(location).startsWith(this.REDIRECT_URI);
+        assertThat(location).startsWith(REDIRECT_URI);
         assertThat(location).contains("error=access_denied");
     }
 }
