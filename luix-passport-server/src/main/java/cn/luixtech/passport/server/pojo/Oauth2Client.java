@@ -14,8 +14,10 @@ import org.springframework.security.oauth2.server.authorization.settings.ClientS
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
-import java.time.ZoneId;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -137,7 +139,7 @@ public class Oauth2Client implements Serializable {
         oauth2Client.setClientId(registeredClient.getClientId());
         oauth2Client.setClientName(registeredClient.getClientName());
         oauth2Client.setRawClientSecret(StringUtils.EMPTY);
-        oauth2Client.setClientIdIssuedAt(registeredClient.getClientIdIssuedAt().atZone(ZoneId.systemDefault()).toInstant());
+        oauth2Client.setClientIdIssuedAt(registeredClient.getClientIdIssuedAt());
         oauth2Client.setClientAuthenticationMethods(Arrays.stream(registeredClient.getClientAuthenticationMethods().split(",")).collect(Collectors.toSet()));
         oauth2Client.setAuthorizationGrantTypes(Arrays.stream(registeredClient.getAuthorizationGrantTypes().split(",")).collect(Collectors.toSet()));
         if(StringUtils.isNotEmpty(registeredClient.getRedirectUris())) {
@@ -148,7 +150,7 @@ public class Oauth2Client implements Serializable {
         }
         oauth2Client.setScopes(Arrays.stream(registeredClient.getScopes().split(",")).collect(Collectors.toSet()));
         if (registeredClient.getClientSecretExpiresAt() != null) {
-            oauth2Client.setClientSecretExpiresAt(registeredClient.getClientSecretExpiresAt().atZone(ZoneId.systemDefault()).toInstant());
+            oauth2Client.setClientSecretExpiresAt(registeredClient.getClientSecretExpiresAt());
         }
         oauth2Client.setEnabled(registeredClient.getEnabled());
         return oauth2Client;

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Entity(name = "oauth2_registered_client")
 @EntityListeners(AuditableEntityListener.class)
@@ -23,18 +23,18 @@ public class Oauth2RegisteredClient extends AbstractAuditableDomain implements S
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private String        clientId;
-    private LocalDateTime clientIdIssuedAt;
-    private String        clientSecret;
-    private LocalDateTime clientSecretExpiresAt;
-    private String        clientName;
-    private String        clientAuthenticationMethods;
-    private String        authorizationGrantTypes;
-    private String        redirectUris;
-    private String        postLogoutRedirectUris;
-    private String        scopes;
-    private String        clientSettings;
-    private String        tokenSettings;
-    private byte[]        photo;
-    private Boolean       enabled;
+    private String  clientId;
+    private Instant clientIdIssuedAt;
+    private String  clientSecret;
+    private Instant clientSecretExpiresAt;
+    private String  clientName;
+    private String  clientAuthenticationMethods;
+    private String  authorizationGrantTypes;
+    private String  redirectUris;
+    private String  postLogoutRedirectUris;
+    private String  scopes;
+    private String  clientSettings;
+    private String  tokenSettings;
+    private byte[]  photo;
+    private Boolean enabled;
 }
