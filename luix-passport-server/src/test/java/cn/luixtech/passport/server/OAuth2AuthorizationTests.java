@@ -85,15 +85,15 @@ public class OAuth2AuthorizationTests {
         // Get different level access token based on different scope
         params.add(OAuth2ParameterNames.SCOPE, "external:read");
         // Request access token
-        Map<String, Object> resultMap = requestToken(AUTH_CODE_CLIENT_ID, AUTH_CODE_CLIENT_SECRET, params);
+        Map<String, Object> resultMap = requestToken(params);
         assertThat(resultMap.get(OAuth2ParameterNames.SCOPE)).isEqualTo("external:read");
         // Request resource by access token
         assertRequestResource(resultMap.get("access_token").toString());
     }
 
-    private Map<String, Object> requestToken(String clientId, String rawClientSecret, MultiValueMap<String, String> params) throws Exception {
+    private Map<String, Object> requestToken(MultiValueMap<String, String> params) throws Exception {
         ResultActions result = mockMvc.perform(post(TOKEN_URI)
-                        .header(HttpHeaders.AUTHORIZATION, getBasicHeader(clientId, rawClientSecret))
+                        .header(HttpHeaders.AUTHORIZATION, getBasicHeader(AUTH_CODE_CLIENT_ID, AUTH_CODE_CLIENT_SECRET))
                         .params(params)
                         .accept(APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk());
@@ -137,7 +137,7 @@ public class OAuth2AuthorizationTests {
         params.add(OAuth2ParameterNames.CODE, authCode);
         params.add(OAuth2ParameterNames.STATE, "some-state");
         params.add(OAuth2ParameterNames.REDIRECT_URI, REDIRECT_URI);
-        Map<String, Object> resultMap = requestToken(AUTH_CODE_CLIENT_ID, AUTH_CODE_CLIENT_SECRET, params);
+        Map<String, Object> resultMap = requestToken(params);
         assertThat(resultMap.get(OAuth2ParameterNames.SCOPE)).isEqualTo("openid external:read external:write");
         // Request resource by access token
         assertRequestResource(resultMap.get("access_token").toString());
@@ -151,7 +151,7 @@ public class OAuth2AuthorizationTests {
         // Get different level access token with different scope
         params.add(OAuth2ParameterNames.SCOPE, "external:read");
         // Request access token
-        Map<String, Object> resultMap = requestToken(AUTH_CODE_CLIENT_ID, AUTH_CODE_CLIENT_SECRET, params);
+        Map<String, Object> resultMap = requestToken(params);
         String accessToken = resultMap.get("access_token").toString();
 
         ResultActions result = mockMvc.perform(post(INTROSPECT_TOKEN_URI)
@@ -190,7 +190,7 @@ public class OAuth2AuthorizationTests {
         params.add(OAuth2ParameterNames.CODE, authCode);
         params.add(OAuth2ParameterNames.STATE, "some-state");
         params.add(OAuth2ParameterNames.REDIRECT_URI, REDIRECT_URI);
-        Map<String, Object> resultMap = requestToken(AUTH_CODE_CLIENT_ID, AUTH_CODE_CLIENT_SECRET, params);
+        Map<String, Object> resultMap = requestToken(params);
 
         String refreshToken1 = resultMap.get("refresh_token").toString();
         String accessToken1 = resultMap.get("access_token").toString();
@@ -201,7 +201,7 @@ public class OAuth2AuthorizationTests {
         MultiValueMap<String, String> params2 = new LinkedMultiValueMap<>();
         params2.add(OAuth2ParameterNames.GRANT_TYPE, AuthorizationGrantType.REFRESH_TOKEN.getValue());
         params2.add(OAuth2ParameterNames.REFRESH_TOKEN, refreshToken1);
-        Map<String, Object> resultMap2 = requestToken(AUTH_CODE_CLIENT_ID, AUTH_CODE_CLIENT_SECRET, params2);
+        Map<String, Object> resultMap2 = requestToken(params2);
 
         String refreshToken2 = resultMap2.get("refresh_token").toString();
         String accessToken2 = resultMap2.get("access_token").toString();
@@ -228,7 +228,7 @@ public class OAuth2AuthorizationTests {
         // Get different level access token with different scope
         params.add(OAuth2ParameterNames.SCOPE, "external:read");
         // Request access token
-        Map<String, Object> resultMap = requestToken(AUTH_CODE_CLIENT_ID, AUTH_CODE_CLIENT_SECRET, params);
+        Map<String, Object> resultMap = requestToken(params);
 
         String accessToken = resultMap.get("access_token").toString();
 
@@ -275,7 +275,7 @@ public class OAuth2AuthorizationTests {
     }
 
     private String getAuthCode() throws IOException, URISyntaxException {
-        final HtmlPage consentPage = this.webClient.getPage(this.AUTHORIZATION_REQUEST_URI);
+        final HtmlPage consentPage = this.webClient.getPage(AUTHORIZATION_REQUEST_URI);
         List<HtmlCheckBoxInput> scopes = new ArrayList<>();
         consentPage.querySelectorAll("input[name='scope']").forEach(scope ->
                 scopes.add((HtmlCheckBoxInput) scope));
