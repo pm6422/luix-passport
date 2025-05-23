@@ -1,6 +1,6 @@
 package cn.luixtech.passport.server.domain;
 
-import cn.luixtech.passport.server.domain.base.AbstractBaseDomain;
+import cn.luixtech.passport.server.domain.base.AbstractAuditableDomain;
 import cn.luixtech.passport.server.domain.base.listener.AuditableEntityListener;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
@@ -21,7 +21,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class UserRole extends AbstractBaseDomain implements Serializable {
+public class UserRole extends AbstractAuditableDomain implements Serializable {
 
     public static final String ROLE_ANONYMOUS = "ROLE_ANONYMOUS";
     public static final String ROLE_USER      = "ROLE_USER";

@@ -299,6 +299,15 @@
             <column name="role_id" type="VARCHAR(20)">
                 <constraints nullable="false"/>
             </column>
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(50)">
+            </column>
+            <column name="modified_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(50)"/>
         </createTable>
         <loadData
                 file="config/liquibase/data/user_role.csv"
@@ -341,6 +350,15 @@
             <column name="permission_id" type="VARCHAR(25)">
                 <constraints nullable="false"/>
             </column>
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(50)">
+            </column>
+            <column name="modified_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(50)"/>
         </createTable>
         <loadData
                 file="config/liquibase/data/role_permission.csv"

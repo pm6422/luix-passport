@@ -1,6 +1,6 @@
 package cn.luixtech.passport.server.domain;
 
-import cn.luixtech.passport.server.domain.base.AbstractBaseDomain;
+import cn.luixtech.passport.server.domain.base.AbstractAuditableDomain;
 import cn.luixtech.passport.server.domain.base.listener.AuditableEntityListener;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
@@ -21,7 +21,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class RolePermission extends AbstractBaseDomain implements Serializable {
+public class RolePermission extends AbstractAuditableDomain implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 

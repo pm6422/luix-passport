@@ -1,42 +1,42 @@
-id;remark;resource_type;action;created_by;created_at;modified_by;modified_at
-user:create;Can create a new user;user;create;system;now;system;now
-user:read;Can view user information;user;read;system;now;system;now
-user:update;Can modify user information;user;update;system;now;system;now
-user:delete;Can delete users;user;delete;system;now;system;now
-user:password;Can reset user passwords;user;update;system;now;system;now
-user:status;Can enable/disable users;user;update;system;now;system;now
-role:create;Can create new roles;role;create;system;now;system;now
-role:read;Can view role information;role;read;system;now;system;now
-role:update;Can modify role information;role;update;system;now;system;now
-role:delete;Can delete roles;role;delete;system;now;system;now
-role:assign;Can assign roles to users;role;assign;system;now;system;now
-permission:read;Can view permission lists;permission;read;system;now;system;now
-permission:assign;Can assign permissions to roles;permission;assign;system;now;system;now
-system:config;Can modify system configurations;system;update;system;now;system;now
-system:monitor;Can view system monitoring data;system;read;system;now;system;now
-system:backup;Can perform system backups;system;execute;system;now;system;now
-system:restore;Can restore system data;system;execute;system;now;system;now
-content:create;Can create new content;content;create;system;now;system;now
-content:read;Can view content;content;read;system;now;system;now
-content:update;Can modify content;content;update;system;now;system;now
-content:delete;Can delete content;content;delete;system;now;system;now
-content:publish;Can publish content;content;publish;system;now;system;now
-content:approve;Can approve content;content;approve;system;now;system;now
-file:upload;Can upload files;file;upload;system;now;system;now
-file:download;Can download files;file;download;system;now;system;now
-file:delete;Can delete files;file;delete;system;now;system;now
-file:share;Can share files;file;share;system;now;system;now
-order:create;Can create new orders;order;create;system;now;system;now
-order:read;Can view orders;order;read;system;now;system;now
-order:update;Can modify orders;order;update;system;now;system;now
-order:cancel;Can cancel orders;order;cancel;system;now;system;now
-order:process;Can process orders;order;process;system;now;system;now
-finance:invoice;Can manage invoices;finance;manage;system;now;system;now
-finance:payment;Can process payments;finance;process;system;now;system;now
-finance:report;Can view financial reports;finance;read;system;now;system;now
-report:generate;Can generate reports;report;generate;system;now;system;now
-report:export;Can export reports;report;export;system;now;system;now
-report:custom;Can create custom reports;report;create;system;now;system;now
-api:access;Can access APIs;api;access;system;now;system;now
-api:manage;Can manage APIs;api;manage;system;now;system;now
-api:key;Can manage API keys;api;manage;system;now;system;now
+id;remark;resource_type;action;created_at;created_by;modified_at;modified_by
+user:create;Can create a new user;user;create;now;SYSTEM;now;SYSTEM
+user:read;Can view user information;user;read;now;SYSTEM;now;SYSTEM
+user:update;Can modify user information;user;update;now;SYSTEM;now;SYSTEM
+user:delete;Can delete users;user;delete;now;SYSTEM;now;SYSTEM
+user:password;Can reset user passwords;user;update;now;SYSTEM;now;SYSTEM
+user:status;Can enable/disable users;user;update;now;SYSTEM;now;SYSTEM
+role:create;Can create new roles;role;create;now;SYSTEM;now;SYSTEM
+role:read;Can view role information;role;read;now;SYSTEM;now;SYSTEM
+role:update;Can modify role information;role;update;now;SYSTEM;now;SYSTEM
+role:delete;Can delete roles;role;delete;now;SYSTEM;now;SYSTEM
+role:assign;Can assign roles to users;role;assign;now;SYSTEM;now;SYSTEM
+permission:read;Can view permission lists;permission;read;now;SYSTEM;now;SYSTEM
+permission:assign;Can assign permissions to roles;permission;assign;now;SYSTEM;now;SYSTEM
+system:config;Can modify system configurations;system;update;now;SYSTEM;now;SYSTEM
+system:monitor;Can view system monitoring data;system;read;now;SYSTEM;now;SYSTEM
+system:backup;Can perform system backups;system;execute;now;SYSTEM;now;SYSTEM
+system:restore;Can restore system data;system;execute;now;SYSTEM;now;SYSTEM
+content:create;Can create new content;content;create;now;SYSTEM;now;SYSTEM
+content:read;Can view content;content;read;now;SYSTEM;now;SYSTEM
+content:update;Can modify content;content;update;now;SYSTEM;now;SYSTEM
+content:delete;Can delete content;content;delete;now;SYSTEM;now;SYSTEM
+content:publish;Can publish content;content;publish;now;SYSTEM;now;SYSTEM
+content:approve;Can approve content;content;approve;now;SYSTEM;now;SYSTEM
+file:upload;Can upload files;file;upload;now;SYSTEM;now;SYSTEM
+file:download;Can download files;file;download;now;SYSTEM;now;SYSTEM
+file:delete;Can delete files;file;delete;now;SYSTEM;now;SYSTEM
+file:share;Can share files;file;share;now;SYSTEM;now;SYSTEM
+order:create;Can create new orders;order;create;now;SYSTEM;now;SYSTEM
+order:read;Can view orders;order;read;now;SYSTEM;now;SYSTEM
+order:update;Can modify orders;order;update;now;SYSTEM;now;SYSTEM
+order:cancel;Can cancel orders;order;cancel;now;SYSTEM;now;SYSTEM
+order:process;Can process orders;order;process;now;SYSTEM;now;SYSTEM
+finance:invoice;Can manage invoices;finance;manage;now;SYSTEM;now;SYSTEM
+finance:payment;Can process payments;finance;process;now;SYSTEM;now;SYSTEM
+finance:report;Can view financial reports;finance;read;now;SYSTEM;now;SYSTEM
+report:generate;Can generate reports;report;generate;now;SYSTEM;now;SYSTEM
+report:export;Can export reports;report;export;now;SYSTEM;now;SYSTEM
+report:custom;Can create custom reports;report;create;now;SYSTEM;now;SYSTEM
+api:access;Can access APIs;api;access;now;SYSTEM;now;SYSTEM
+api:manage;Can manage APIs;api;manage;now;SYSTEM;now;SYSTEM
+api:key;Can manage API keys;api;manage;now;SYSTEM;now;SYSTEM
