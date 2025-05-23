@@ -72,6 +72,11 @@ public class OAuth2AuthorizationTests {
     public void setUp() {
         this.webClient.getOptions().setThrowExceptionOnFailingStatusCode(true);
         this.webClient.getOptions().setRedirectEnabled(true);
+        // Disable JavaScript in the test environment.
+        // The exception occurs when loading the JavaScript file from https://cdn.tailwindcss.com.
+        // Due to HtmlUnit's JavaScript engine not supporting certain modern JavaScript syntax,
+        // loading the Tailwind CSS CDN script causes an error.
+        this.webClient.getOptions().setJavaScriptEnabled(false);
         // Log out
         this.webClient.getCookieManager().clearCookies();
         when(this.authorizationConsentService.findById(any(), any())).thenReturn(null);
