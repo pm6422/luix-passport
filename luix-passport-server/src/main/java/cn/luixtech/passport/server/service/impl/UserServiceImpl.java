@@ -351,7 +351,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public Page<User> find(Pageable pageable, String username, String email, String mobileNo, Boolean enabled, Boolean activated) {
-        // Ignore query parameter if it has a null value
+        // Ignore a query parameter if it has a null value
         ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreNullValues();
         User criteria = new User();
         criteria.setUsername(username);
