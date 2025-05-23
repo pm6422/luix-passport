@@ -143,10 +143,15 @@
             </column>
             <column name="photo" type="BYTEA"/>
             <column name="enabled" type="boolean"/>
-            <column name="created_by" type="VARCHAR(50)"/>
-            <column name="created_at" type="timestamp"/>
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(50)">
+            </column>
+            <column name="modified_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
             <column name="modified_by" type="VARCHAR(50)"/>
-            <column name="modified_at" type="timestamp"/>
         </createTable>
         <loadData
                 file="config/liquibase/data/oauth2_registered_client.csv"
@@ -249,14 +254,15 @@
             <column name="date_time_format_id" type="varchar(20)">
                 <constraints nullable="false"/>
             </column>
-            <column name="created_by" type="VARCHAR(50)">
-                <constraints nullable="false"/>
-            </column>
             <column name="created_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
+            <column name="created_by" type="VARCHAR(50)">
+            </column>
+            <column name="modified_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
             <column name="modified_by" type="VARCHAR(50)"/>
-            <column name="modified_at" type="timestamp"/>
         </createTable>
         <loadData
                 file="config/liquibase/data/user.csv"
@@ -268,14 +274,15 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="remark" type="VARCHAR(255)"/>
-            <column name="created_by" type="VARCHAR(50)">
-                <constraints nullable="false"/>
-            </column>
             <column name="created_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
+            <column name="created_by" type="VARCHAR(50)">
+            </column>
+            <column name="modified_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
             <column name="modified_by" type="VARCHAR(50)"/>
-            <column name="modified_at" type="timestamp"/>
         </createTable>
         <loadData
                 file="config/liquibase/data/role.csv"
@@ -309,14 +316,15 @@
             <column name="action" type="VARCHAR(20)">
                 <constraints nullable="false"/>
             </column>
-            <column name="created_by" type="VARCHAR(50)">
-                <constraints nullable="false"/>
-            </column>
             <column name="created_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
+            <column name="created_by" type="VARCHAR(50)">
+            </column>
+            <column name="modified_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
             <column name="modified_by" type="VARCHAR(50)"/>
-            <column name="modified_at" type="timestamp"/>
         </createTable>
         <loadData
                 file="config/liquibase/data/permission.csv"
@@ -353,7 +361,8 @@
             <column name="created_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
-            <column name="created_by" type="VARCHAR(64)"/>
+            <column name="created_by" type="VARCHAR(50)">
+            </column>
         </createTable>
         <createTable tableName="user_login">
             <column name="id" type="VARCHAR(20)">
@@ -404,14 +413,15 @@
             <column name="enabled" type="boolean">
                 <constraints nullable="false"/>
             </column>
-            <column name="created_by" type="VARCHAR(50)">
-                <constraints nullable="false"/>
-            </column>
             <column name="created_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
+            <column name="created_by" type="VARCHAR(50)">
+            </column>
+            <column name="modified_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
             <column name="modified_by" type="VARCHAR(50)"/>
-            <column name="modified_at" type="timestamp"/>
         </createTable>
         <loadData
                 file="config/liquibase/data/data_dict.csv"
