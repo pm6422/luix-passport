@@ -1,7 +1,7 @@
 package cn.luixtech.passport.server.domain;
 
 import cn.luixtech.passport.server.domain.base.AbstractCreationDomain;
-import cn.luixtech.passport.server.listener.AuditableEntityListener;
+import cn.luixtech.passport.server.domain.base.listener.AuditableEntityListener;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import lombok.AllArgsConstructor;
@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 @Entity
 @EntityListeners(AuditableEntityListener.class)

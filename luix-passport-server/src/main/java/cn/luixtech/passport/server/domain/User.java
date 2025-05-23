@@ -1,7 +1,7 @@
 package cn.luixtech.passport.server.domain;
 
 import cn.luixtech.passport.server.domain.base.AbstractAuditableDomain;
-import cn.luixtech.passport.server.listener.AuditableEntityListener;
+import cn.luixtech.passport.server.domain.base.listener.AuditableEntityListener;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

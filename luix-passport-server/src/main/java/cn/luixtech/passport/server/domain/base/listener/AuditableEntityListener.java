@@ -1,4 +1,4 @@
-package cn.luixtech.passport.server.listener;
+package cn.luixtech.passport.server.domain.base.listener;
 
 import cn.luixtech.passport.server.domain.base.AbstractAuditableDomain;
 import cn.luixtech.passport.server.domain.base.AbstractBaseDomain;
