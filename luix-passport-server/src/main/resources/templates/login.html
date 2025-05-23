@@ -44,7 +44,7 @@
 				<hr class="h-0 border-b border-b-muted grow">
 			</div>
 			<form method="post" th:action="@{/login}">
-				<div th:if="${param.error}" class="py-5">
+				<div id="error" th:if="${param.error}" class="py-5">
 					<div class="flex justify-center">
 						<div class="text-red-600">Invalid username or password.</div>
 					</div>

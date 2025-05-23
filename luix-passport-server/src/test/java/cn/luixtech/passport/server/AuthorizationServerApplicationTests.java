@@ -68,7 +68,7 @@ public class AuthorizationServerApplicationTests {
 
         HtmlPage loginErrorPage = signIn(page, "user", "wrong-password");
 
-        HtmlElement alert = loginErrorPage.querySelector("div[role=\"alert\"]");
+        HtmlElement alert = loginErrorPage.querySelector("div[id=\"error\"]");
         assertThat(alert).isNotNull();
         assertThat(alert.asNormalizedText()).isEqualTo("Invalid username or password.");
     }
