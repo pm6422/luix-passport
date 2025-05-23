@@ -274,7 +274,6 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="remark" type="VARCHAR(255)"/>
-            <column name="custom1" type="VARCHAR(255)"/>
             <column name="created_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>

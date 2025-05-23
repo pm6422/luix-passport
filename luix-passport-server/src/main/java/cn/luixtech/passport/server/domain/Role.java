@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 @Entity
 @EntityListeners(AuditableEntityListener.class)
@@ -24,6 +23,4 @@ public class Role extends AbstractAuditableDomain implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String remark;
-
-    private LocalDateTime custom1;
 }
