@@ -65,7 +65,7 @@ public class DataDict extends TableImpl<DataDictRecord> {
     /**
      * The column <code>public.data_dict.category_code</code>.
      */
-    public final TableField<DataDictRecord, String> CATEGORY_CODE = createField(DSL.name("category_code"), SQLDataType.VARCHAR(20).nullable(false), this, "");
+    public final TableField<DataDictRecord, String> CATEGORY_CODE = createField(DSL.name("category_code"), SQLDataType.VARCHAR(25).nullable(false), this, "");
 
     /**
      * The column <code>public.data_dict.dict_code</code>.
@@ -88,24 +88,24 @@ public class DataDict extends TableImpl<DataDictRecord> {
     public final TableField<DataDictRecord, Boolean> ENABLED = createField(DSL.name("enabled"), SQLDataType.BOOLEAN.nullable(false), this, "");
 
     /**
-     * The column <code>public.data_dict.created_by</code>.
-     */
-    public final TableField<DataDictRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(50).nullable(false), this, "");
-
-    /**
      * The column <code>public.data_dict.created_at</code>.
      */
     public final TableField<DataDictRecord, Instant> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.INSTANT.nullable(false), this, "");
 
     /**
-     * The column <code>public.data_dict.modified_by</code>.
+     * The column <code>public.data_dict.created_by</code>.
      */
-    public final TableField<DataDictRecord, String> MODIFIED_BY = createField(DSL.name("modified_by"), SQLDataType.VARCHAR(50), this, "");
+    public final TableField<DataDictRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(50), this, "");
 
     /**
      * The column <code>public.data_dict.modified_at</code>.
      */
-    public final TableField<DataDictRecord, Instant> MODIFIED_AT = createField(DSL.name("modified_at"), SQLDataType.INSTANT, this, "");
+    public final TableField<DataDictRecord, Instant> MODIFIED_AT = createField(DSL.name("modified_at"), SQLDataType.INSTANT.nullable(false), this, "");
+
+    /**
+     * The column <code>public.data_dict.modified_by</code>.
+     */
+    public final TableField<DataDictRecord, String> MODIFIED_BY = createField(DSL.name("modified_by"), SQLDataType.VARCHAR(50), this, "");
 
     private DataDict(Name alias, Table<DataDictRecord> aliased) {
         this(alias, aliased, null);
@@ -199,14 +199,14 @@ public class DataDict extends TableImpl<DataDictRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row11<String, String, String, String, String, String, Boolean, String, Instant, String, Instant> fieldsRow() {
+    public Row11<String, String, String, String, String, String, Boolean, Instant, String, Instant, String> fieldsRow() {
         return (Row11) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function11<? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super Boolean, ? super String, ? super Instant, ? super String, ? super Instant, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function11<? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super Boolean, ? super Instant, ? super String, ? super Instant, ? super String, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -214,7 +214,7 @@ public class DataDict extends TableImpl<DataDictRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function11<? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super Boolean, ? super String, ? super Instant, ? super String, ? super Instant, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function11<? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super Boolean, ? super Instant, ? super String, ? super Instant, ? super String, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

@@ -13,11 +13,11 @@ import java.util.function.Function;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function4;
+import org.jooq.Function6;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row4;
+import org.jooq.Row6;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -56,9 +56,9 @@ public class Role extends TableImpl<RoleRecord> {
     public final TableField<RoleRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(20).nullable(false), this, "");
 
     /**
-     * The column <code>public.role.description</code>.
+     * The column <code>public.role.remark</code>.
      */
-    public final TableField<RoleRecord, String> DESCRIPTION = createField(DSL.name("description"), SQLDataType.VARCHAR(255), this, "");
+    public final TableField<RoleRecord, String> REMARK = createField(DSL.name("remark"), SQLDataType.VARCHAR(255), this, "");
 
     /**
      * The column <code>public.role.created_at</code>.
@@ -66,9 +66,19 @@ public class Role extends TableImpl<RoleRecord> {
     public final TableField<RoleRecord, Instant> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.INSTANT.nullable(false), this, "");
 
     /**
+     * The column <code>public.role.created_by</code>.
+     */
+    public final TableField<RoleRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(50), this, "");
+
+    /**
      * The column <code>public.role.modified_at</code>.
      */
-    public final TableField<RoleRecord, Instant> MODIFIED_AT = createField(DSL.name("modified_at"), SQLDataType.INSTANT, this, "");
+    public final TableField<RoleRecord, Instant> MODIFIED_AT = createField(DSL.name("modified_at"), SQLDataType.INSTANT.nullable(false), this, "");
+
+    /**
+     * The column <code>public.role.modified_by</code>.
+     */
+    public final TableField<RoleRecord, String> MODIFIED_BY = createField(DSL.name("modified_by"), SQLDataType.VARCHAR(50), this, "");
 
     private Role(Name alias, Table<RoleRecord> aliased) {
         this(alias, aliased, null);
@@ -153,18 +163,18 @@ public class Role extends TableImpl<RoleRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row4 type methods
+    // Row6 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row4<String, String, Instant, Instant> fieldsRow() {
-        return (Row4) super.fieldsRow();
+    public Row6<String, String, Instant, String, Instant, String> fieldsRow() {
+        return (Row6) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function4<? super String, ? super String, ? super Instant, ? super Instant, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function6<? super String, ? super String, ? super Instant, ? super String, ? super Instant, ? super String, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -172,7 +182,7 @@ public class Role extends TableImpl<RoleRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function4<? super String, ? super String, ? super Instant, ? super Instant, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function6<? super String, ? super String, ? super Instant, ? super String, ? super Instant, ? super String, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

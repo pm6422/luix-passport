@@ -329,59 +329,59 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> {
     }
 
     /**
-     * Setter for <code>public.user.created_by</code>.
-     */
-    public void setCreatedBy(String value) {
-        set(22, value);
-    }
-
-    /**
-     * Getter for <code>public.user.created_by</code>.
-     */
-    public String getCreatedBy() {
-        return (String) get(22);
-    }
-
-    /**
      * Setter for <code>public.user.created_at</code>.
      */
     public void setCreatedAt(Instant value) {
-        set(23, value);
+        set(22, value);
     }
 
     /**
      * Getter for <code>public.user.created_at</code>.
      */
     public Instant getCreatedAt() {
-        return (Instant) get(23);
+        return (Instant) get(22);
     }
 
     /**
-     * Setter for <code>public.user.modified_by</code>.
+     * Setter for <code>public.user.created_by</code>.
      */
-    public void setModifiedBy(String value) {
-        set(24, value);
+    public void setCreatedBy(String value) {
+        set(23, value);
     }
 
     /**
-     * Getter for <code>public.user.modified_by</code>.
+     * Getter for <code>public.user.created_by</code>.
      */
-    public String getModifiedBy() {
-        return (String) get(24);
+    public String getCreatedBy() {
+        return (String) get(23);
     }
 
     /**
      * Setter for <code>public.user.modified_at</code>.
      */
     public void setModifiedAt(Instant value) {
-        set(25, value);
+        set(24, value);
     }
 
     /**
      * Getter for <code>public.user.modified_at</code>.
      */
     public Instant getModifiedAt() {
-        return (Instant) get(25);
+        return (Instant) get(24);
+    }
+
+    /**
+     * Setter for <code>public.user.modified_by</code>.
+     */
+    public void setModifiedBy(String value) {
+        set(25, value);
+    }
+
+    /**
+     * Getter for <code>public.user.modified_by</code>.
+     */
+    public String getModifiedBy() {
+        return (String) get(25);
     }
 
     // -------------------------------------------------------------------------
@@ -407,7 +407,7 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> {
     /**
      * Create a detached, initialised UserRecord
      */
-    public UserRecord(String id, String username, String email, String mobileNo, String firstName, String lastName, String passwordHash, String activationCode, String verificationCode, Instant verificationCodeSentAt, String newEmail, String resetCode, Instant resetAt, String remark, Boolean activated, Boolean enabled, Instant accountExpiresAt, Instant passwordExpiresAt, Instant lastSignInAt, String locale, String timeZoneId, String dateTimeFormatId, String createdBy, Instant createdAt, String modifiedBy, Instant modifiedAt) {
+    public UserRecord(String id, String username, String email, String mobileNo, String firstName, String lastName, String passwordHash, String activationCode, String verificationCode, Instant verificationCodeSentAt, String newEmail, String resetCode, Instant resetAt, String remark, Boolean activated, Boolean enabled, Instant accountExpiresAt, Instant passwordExpiresAt, Instant lastSignInAt, String locale, String timeZoneId, String dateTimeFormatId, Instant createdAt, String createdBy, Instant modifiedAt, String modifiedBy) {
         super(User.USER);
 
         setId(id);
@@ -432,10 +432,10 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> {
         setLocale(locale);
         setTimeZoneId(timeZoneId);
         setDateTimeFormatId(dateTimeFormatId);
-        setCreatedBy(createdBy);
         setCreatedAt(createdAt);
-        setModifiedBy(modifiedBy);
+        setCreatedBy(createdBy);
         setModifiedAt(modifiedAt);
+        setModifiedBy(modifiedBy);
         resetChangedOnNotNull();
     }
 }

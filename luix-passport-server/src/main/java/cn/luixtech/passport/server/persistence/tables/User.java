@@ -160,24 +160,24 @@ public class User extends TableImpl<UserRecord> {
     public final TableField<UserRecord, String> DATE_TIME_FORMAT_ID = createField(DSL.name("date_time_format_id"), SQLDataType.VARCHAR(20).nullable(false), this, "");
 
     /**
-     * The column <code>public.user.created_by</code>.
-     */
-    public final TableField<UserRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(50).nullable(false), this, "");
-
-    /**
      * The column <code>public.user.created_at</code>.
      */
     public final TableField<UserRecord, Instant> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.INSTANT.nullable(false), this, "");
 
     /**
-     * The column <code>public.user.modified_by</code>.
+     * The column <code>public.user.created_by</code>.
      */
-    public final TableField<UserRecord, String> MODIFIED_BY = createField(DSL.name("modified_by"), SQLDataType.VARCHAR(50), this, "");
+    public final TableField<UserRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(50), this, "");
 
     /**
      * The column <code>public.user.modified_at</code>.
      */
-    public final TableField<UserRecord, Instant> MODIFIED_AT = createField(DSL.name("modified_at"), SQLDataType.INSTANT, this, "");
+    public final TableField<UserRecord, Instant> MODIFIED_AT = createField(DSL.name("modified_at"), SQLDataType.INSTANT.nullable(false), this, "");
+
+    /**
+     * The column <code>public.user.modified_by</code>.
+     */
+    public final TableField<UserRecord, String> MODIFIED_BY = createField(DSL.name("modified_by"), SQLDataType.VARCHAR(50), this, "");
 
     private User(Name alias, Table<UserRecord> aliased) {
         this(alias, aliased, null);

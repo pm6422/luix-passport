@@ -9,18 +9,19 @@ import cn.luixtech.passport.server.persistence.Keys;
 import cn.luixtech.passport.server.persistence.Public;
 import cn.luixtech.passport.server.persistence.tables.records.RolePermissionRecord;
 
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function3;
+import org.jooq.Function7;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row3;
+import org.jooq.Row7;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -67,6 +68,26 @@ public class RolePermission extends TableImpl<RolePermissionRecord> {
      * The column <code>public.role_permission.permission_id</code>.
      */
     public final TableField<RolePermissionRecord, String> PERMISSION_ID = createField(DSL.name("permission_id"), SQLDataType.VARCHAR(25).nullable(false), this, "");
+
+    /**
+     * The column <code>public.role_permission.created_at</code>.
+     */
+    public final TableField<RolePermissionRecord, Instant> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.INSTANT.nullable(false), this, "");
+
+    /**
+     * The column <code>public.role_permission.created_by</code>.
+     */
+    public final TableField<RolePermissionRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(50), this, "");
+
+    /**
+     * The column <code>public.role_permission.modified_at</code>.
+     */
+    public final TableField<RolePermissionRecord, Instant> MODIFIED_AT = createField(DSL.name("modified_at"), SQLDataType.INSTANT.nullable(false), this, "");
+
+    /**
+     * The column <code>public.role_permission.modified_by</code>.
+     */
+    public final TableField<RolePermissionRecord, String> MODIFIED_BY = createField(DSL.name("modified_by"), SQLDataType.VARCHAR(50), this, "");
 
     private RolePermission(Name alias, Table<RolePermissionRecord> aliased) {
         this(alias, aliased, null);
@@ -189,18 +210,18 @@ public class RolePermission extends TableImpl<RolePermissionRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row3 type methods
+    // Row7 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row3<String, String, String> fieldsRow() {
-        return (Row3) super.fieldsRow();
+    public Row7<String, String, String, Instant, String, Instant, String> fieldsRow() {
+        return (Row7) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function3<? super String, ? super String, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function7<? super String, ? super String, ? super String, ? super Instant, ? super String, ? super Instant, ? super String, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -208,7 +229,7 @@ public class RolePermission extends TableImpl<RolePermissionRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function3<? super String, ? super String, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function7<? super String, ? super String, ? super String, ? super Instant, ? super String, ? super Instant, ? super String, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

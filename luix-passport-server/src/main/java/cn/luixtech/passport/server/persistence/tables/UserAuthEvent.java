@@ -78,7 +78,7 @@ public class UserAuthEvent extends TableImpl<UserAuthEventRecord> {
     /**
      * The column <code>public.user_auth_event.created_by</code>.
      */
-    public final TableField<UserAuthEventRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(64), this, "");
+    public final TableField<UserAuthEventRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(50), this, "");
 
     private UserAuthEvent(Name alias, Table<UserAuthEventRecord> aliased) {
         this(alias, aliased, null);

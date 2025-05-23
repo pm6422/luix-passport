@@ -13,11 +13,11 @@ import java.util.function.Function;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function6;
+import org.jooq.Function8;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row6;
+import org.jooq.Row8;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -56,9 +56,9 @@ public class Permission extends TableImpl<PermissionRecord> {
     public final TableField<PermissionRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(25).nullable(false), this, "");
 
     /**
-     * The column <code>public.permission.description</code>.
+     * The column <code>public.permission.remark</code>.
      */
-    public final TableField<PermissionRecord, String> DESCRIPTION = createField(DSL.name("description"), SQLDataType.VARCHAR(255), this, "");
+    public final TableField<PermissionRecord, String> REMARK = createField(DSL.name("remark"), SQLDataType.VARCHAR(255), this, "");
 
     /**
      * The column <code>public.permission.resource_type</code>.
@@ -76,9 +76,19 @@ public class Permission extends TableImpl<PermissionRecord> {
     public final TableField<PermissionRecord, Instant> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.INSTANT.nullable(false), this, "");
 
     /**
+     * The column <code>public.permission.created_by</code>.
+     */
+    public final TableField<PermissionRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(50), this, "");
+
+    /**
      * The column <code>public.permission.modified_at</code>.
      */
-    public final TableField<PermissionRecord, Instant> MODIFIED_AT = createField(DSL.name("modified_at"), SQLDataType.INSTANT, this, "");
+    public final TableField<PermissionRecord, Instant> MODIFIED_AT = createField(DSL.name("modified_at"), SQLDataType.INSTANT.nullable(false), this, "");
+
+    /**
+     * The column <code>public.permission.modified_by</code>.
+     */
+    public final TableField<PermissionRecord, String> MODIFIED_BY = createField(DSL.name("modified_by"), SQLDataType.VARCHAR(50), this, "");
 
     private Permission(Name alias, Table<PermissionRecord> aliased) {
         this(alias, aliased, null);
@@ -163,18 +173,18 @@ public class Permission extends TableImpl<PermissionRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row6 type methods
+    // Row8 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row6<String, String, String, String, Instant, Instant> fieldsRow() {
-        return (Row6) super.fieldsRow();
+    public Row8<String, String, String, String, Instant, String, Instant, String> fieldsRow() {
+        return (Row8) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function6<? super String, ? super String, ? super String, ? super String, ? super Instant, ? super Instant, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function8<? super String, ? super String, ? super String, ? super String, ? super Instant, ? super String, ? super Instant, ? super String, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -182,7 +192,7 @@ public class Permission extends TableImpl<PermissionRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function6<? super String, ? super String, ? super String, ? super String, ? super Instant, ? super Instant, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function8<? super String, ? super String, ? super String, ? super String, ? super Instant, ? super String, ? super Instant, ? super String, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

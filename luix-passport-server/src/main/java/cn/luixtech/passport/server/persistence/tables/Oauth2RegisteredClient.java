@@ -131,24 +131,24 @@ public class Oauth2RegisteredClient extends TableImpl<Oauth2RegisteredClientReco
     public final TableField<Oauth2RegisteredClientRecord, Boolean> ENABLED = createField(DSL.name("enabled"), SQLDataType.BOOLEAN, this, "");
 
     /**
+     * The column <code>public.oauth2_registered_client.created_at</code>.
+     */
+    public final TableField<Oauth2RegisteredClientRecord, Instant> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.INSTANT.nullable(false), this, "");
+
+    /**
      * The column <code>public.oauth2_registered_client.created_by</code>.
      */
     public final TableField<Oauth2RegisteredClientRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(50), this, "");
 
     /**
-     * The column <code>public.oauth2_registered_client.created_at</code>.
+     * The column <code>public.oauth2_registered_client.modified_at</code>.
      */
-    public final TableField<Oauth2RegisteredClientRecord, Instant> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.INSTANT, this, "");
+    public final TableField<Oauth2RegisteredClientRecord, Instant> MODIFIED_AT = createField(DSL.name("modified_at"), SQLDataType.INSTANT.nullable(false), this, "");
 
     /**
      * The column <code>public.oauth2_registered_client.modified_by</code>.
      */
     public final TableField<Oauth2RegisteredClientRecord, String> MODIFIED_BY = createField(DSL.name("modified_by"), SQLDataType.VARCHAR(50), this, "");
-
-    /**
-     * The column <code>public.oauth2_registered_client.modified_at</code>.
-     */
-    public final TableField<Oauth2RegisteredClientRecord, Instant> MODIFIED_AT = createField(DSL.name("modified_at"), SQLDataType.INSTANT, this, "");
 
     private Oauth2RegisteredClient(Name alias, Table<Oauth2RegisteredClientRecord> aliased) {
         this(alias, aliased, null);
@@ -239,14 +239,14 @@ public class Oauth2RegisteredClient extends TableImpl<Oauth2RegisteredClientReco
     // -------------------------------------------------------------------------
 
     @Override
-    public Row19<String, String, Instant, String, Instant, String, String, String, String, String, String, String, String, byte[], Boolean, String, Instant, String, Instant> fieldsRow() {
+    public Row19<String, String, Instant, String, Instant, String, String, String, String, String, String, String, String, byte[], Boolean, Instant, String, Instant, String> fieldsRow() {
         return (Row19) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function19<? super String, ? super String, ? super Instant, ? super String, ? super Instant, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super byte[], ? super Boolean, ? super String, ? super Instant, ? super String, ? super Instant, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function19<? super String, ? super String, ? super Instant, ? super String, ? super Instant, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super byte[], ? super Boolean, ? super Instant, ? super String, ? super Instant, ? super String, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -254,7 +254,7 @@ public class Oauth2RegisteredClient extends TableImpl<Oauth2RegisteredClientReco
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function19<? super String, ? super String, ? super Instant, ? super String, ? super Instant, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super byte[], ? super Boolean, ? super String, ? super Instant, ? super String, ? super Instant, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function19<? super String, ? super String, ? super Instant, ? super String, ? super Instant, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super byte[], ? super Boolean, ? super Instant, ? super String, ? super Instant, ? super String, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }
