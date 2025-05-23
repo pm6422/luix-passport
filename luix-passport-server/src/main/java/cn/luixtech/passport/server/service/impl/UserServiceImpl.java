@@ -255,9 +255,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new DuplicationException(Map.of("mobileNo", domain.getMobileNo()));
         }
 
-        domain.setModifiedBy(AuthUtils.getCurrentUsername());
-        domain.setModifiedAt(Instant.now());
-
         userRepository.save(domain);
         log.debug("Updated user: {}", domain);
         return domain;
@@ -402,8 +399,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         currentUser.setNewEmail(StringUtils.EMPTY);
         currentUser.setVerificationCode(StringUtils.EMPTY);
         currentUser.setVerificationCodeSentAt(null);
-        currentUser.setModifiedBy(AuthUtils.getCurrentUsername());
-        currentUser.setModifiedAt(Instant.now());
 
         userRepository.save(currentUser);
     }

@@ -55,8 +55,6 @@ public class UserNotificationServiceImpl implements UserNotificationService {
         notification.setContent(content);
         notification.setType(type);
         notification.setSenderId(senderId);
-        notification.setCreatedAt(Instant.now());
-        notification.setModifiedAt(notification.getCreatedAt());
         notification = notificationRepository.save(notification);
 
         return notification;
@@ -69,8 +67,6 @@ public class UserNotificationServiceImpl implements UserNotificationService {
         userNotification.setNotification(notification);
         userNotification.setStatus(UserNotification.STATUS_UNREAD);
         userNotification.setActive(true);
-        userNotification.setCreatedAt(Instant.now());
-        userNotification.setModifiedAt(userNotification.getCreatedAt());
 
         userNotificationRepository.save(userNotification);
 
