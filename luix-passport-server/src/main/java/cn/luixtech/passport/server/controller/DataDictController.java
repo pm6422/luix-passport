@@ -29,10 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static cn.luixtech.passport.server.domain.UserRole.ROLE_ADMIN;
 import static cn.luixtech.passport.server.domain.UserRole.ROLE_DEVELOPER;
@@ -117,7 +114,7 @@ public class DataDictController {
     @GetMapping("/api/data-dicts/import-template")
     public ResponseEntity<ByteArrayResource> getImportTemplate() {
         DataDict dataDict = dataDictRepository.findFirstByOrderByIdAsc();
-        byte[] data = JSON.toJSONString(Arrays.asList(dataDict), JSONWriter.Feature.PrettyFormat).getBytes();
+        byte[] data = JSON.toJSONString(Collections.singletonList(dataDict), JSONWriter.Feature.PrettyFormat).getBytes();
         ByteArrayResource resource = new ByteArrayResource(data);
         String fileName = "data-dict-" + DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.format(new Date()) + ".json";
         return ResponseEntity.ok()
