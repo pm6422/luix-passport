@@ -3,20 +3,20 @@ package cn.luixtech.passport.server.domain.base;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.PrePersist;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
 
 import static cn.luixtech.passport.server.utils.AuthUtils.getCurrentUsername;
-import static org.apache.commons.lang3.StringUtils.defaultIfEmpty;
 
 @Data
 @EqualsAndHashCode(callSuper=false)
 @MappedSuperclass
 public abstract class AbstractCreationDomain extends AbstractBaseDomain implements Serializable {
+    @Serial
     private static final long serialVersionUID = -322694592498870599L;
 
     /**
@@ -33,11 +33,11 @@ public abstract class AbstractCreationDomain extends AbstractBaseDomain implemen
     @Column(updatable = false)
     protected Instant createdAt;
 
-    @PrePersist
-    protected void prePersist() {
+    @Override
+    public void prePersist() {
         super.prePersist();
 
-        createdBy = defaultIfEmpty(getCurrentUsername(), "SYSTEM");
+        createdBy = getCurrentUsername();
         createdAt = Instant.now();
     }
 }

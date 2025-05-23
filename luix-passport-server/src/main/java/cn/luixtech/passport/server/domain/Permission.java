@@ -1,9 +1,11 @@
 package cn.luixtech.passport.server.domain;
 
 import cn.luixtech.passport.server.domain.base.AbstractAuditableDomain;
+import cn.luixtech.passport.server.listener.AuditableEntityListener;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,6 +16,7 @@ import java.io.Serial;
 import java.io.Serializable;
 
 @Entity
+@EntityListeners(AuditableEntityListener.class)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

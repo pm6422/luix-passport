@@ -7,29 +7,30 @@ import com.luixtech.utilities.annotation.IncKey;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.PrePersist;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.ReflectionUtils;
 
+import java.io.Serial;
 import java.io.Serializable;
+import java.util.Objects;
 
 import static cn.luixtech.passport.server.PassportServerApplication.applicationContext;
 
 @Data
 @MappedSuperclass
 public abstract class AbstractBaseDomain implements Serializable {
+    @Serial
     private static final long serialVersionUID = -322694592498870599L;
 
     /**
-     * ID can NOT be Long type, because the number which exceeds 16 digits will be display as 0 in front end.
+     * ID cannot be a Long type, because the number which exceeds 16 digits will be display as 0 in the front end.
      */
     @Schema(description = "ID")
     @Id
     protected String id;
 
-    @PrePersist
-    protected void prePersist() {
+    public void prePersist() {
         if (StringUtils.isEmpty(id)) {
             id = IdGenerator.generateId();
         }
@@ -47,7 +48,7 @@ public abstract class AbstractBaseDomain implements Serializable {
                     // Convert pascal name to underscore one
                     String tableName = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, this.getClass().getSimpleName());
 
-                    if (StringUtils.isEmpty(incKeyAnnotation.prefix())) {
+                    if (StringUtils.isEmpty(Objects.requireNonNull(incKeyAnnotation).prefix())) {
                         num = StringUtils.EMPTY + applicationContext.getBean(TableSeqNumberService.class).getNextSeqNumber(tableName);
                     } else {
                         num = incKeyAnnotation.prefix() + applicationContext.getBean(TableSeqNumberService.class).getNextSeqNumber(tableName);

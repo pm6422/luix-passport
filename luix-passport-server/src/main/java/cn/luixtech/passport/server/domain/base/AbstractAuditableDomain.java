@@ -2,8 +2,6 @@ package cn.luixtech.passport.server.domain.base;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -12,7 +10,6 @@ import java.io.Serializable;
 import java.time.Instant;
 
 import static cn.luixtech.passport.server.utils.AuthUtils.getCurrentUsername;
-import static org.apache.commons.lang3.StringUtils.defaultIfEmpty;
 
 /**
  * Abstract auditable domain for log createdBy, createdTime, modifiedBy and modifiedTime automatically.
@@ -37,17 +34,15 @@ public abstract class AbstractAuditableDomain extends AbstractCreationDomain imp
     protected Instant modifiedAt;
 
     @Override
-    @PrePersist
-    protected void prePersist() {
+    public void prePersist() {
         super.prePersist();
 
         modifiedAt = createdAt;
         modifiedBy = createdBy;
     }
 
-    @PreUpdate
-    protected void preUpdate() {
+    public void preUpdate() {
         modifiedAt = Instant.now();
-        modifiedBy = defaultIfEmpty(getCurrentUsername(), "SYSTEM");
+        modifiedBy = getCurrentUsername();
     }
 }
