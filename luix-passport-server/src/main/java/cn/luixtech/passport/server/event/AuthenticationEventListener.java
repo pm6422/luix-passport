@@ -24,7 +24,7 @@ import org.springframework.security.core.session.SessionInformation;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 
 import static cn.luixtech.passport.server.domain.UserAuthEvent.AUTH_FAILURE;
@@ -53,7 +53,7 @@ public class AuthenticationEventListener {
                 userAuthEventRepository.save(domain);
 
                 User user = userRepository.findById(authUser.getId()).orElseThrow(() -> new DataNotFoundException(authUser.getId()));
-                user.setLastSignInAt(LocalDateTime.now());
+                user.setLastSignInAt(Instant.now());
                 userService.update(user);
                 log.info("Authenticated successfully for user: {}", authUser.getId());
             }

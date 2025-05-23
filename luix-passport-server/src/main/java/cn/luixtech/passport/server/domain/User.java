@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Entity
 @EntityListeners(AuditableEntityListener.class)
@@ -40,22 +40,22 @@ public class User extends AbstractAuditableDomain implements Serializable {
     @Column(nullable = false)
     private String mobileNo;
 
-    private String        firstName;
-    private String        lastName;
-    private String        passwordHash;
-    private String        activationCode;
-    private String        verificationCode;
-    private LocalDateTime verificationCodeSentAt;
-    private String        newEmail;
-    private String        resetCode;
-    private LocalDateTime resetAt;
-    private String        remark;
-    private Boolean       activated;
-    private Boolean       enabled;
-    private LocalDateTime accountExpiresAt;
-    private LocalDateTime passwordExpiresAt;
-    private LocalDateTime lastSignInAt;
-    private String        locale;
-    private String        dateTimeFormatId;
-    private String        timeZoneId;
+    private String  firstName;
+    private String  lastName;
+    private String  passwordHash;
+    private String  activationCode;
+    private String  verificationCode;
+    private Instant verificationCodeSentAt;
+    private String  newEmail;
+    private String  resetCode;
+    private Instant resetAt;
+    private String  remark;
+    private Boolean activated;
+    private Boolean enabled;
+    private Instant accountExpiresAt;
+    private Instant passwordExpiresAt;
+    private Instant lastSignInAt;
+    private String  locale;
+    private String  dateTimeFormatId;
+    private String  timeZoneId;
 }

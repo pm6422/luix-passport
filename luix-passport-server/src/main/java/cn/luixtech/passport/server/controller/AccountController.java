@@ -41,7 +41,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -163,7 +164,7 @@ public class AccountController {
         User currentUser = userRepository.findById(AuthUtils.getCurrentUserId()).orElseThrow(() -> new DataNotFoundException(AuthUtils.getCurrentUserId()));
         Validate.isTrue(StringUtils.isNotEmpty(currentUser.getVerificationCode()), "Please send verification code first!");
         Validate.isTrue(verificationCode.equalsIgnoreCase(currentUser.getVerificationCode()), "Invalid verification code!");
-        Validate.isTrue(currentUser.getVerificationCodeSentAt().plusDays(1).isAfter(LocalDateTime.now()), "Invalid verification exceeds one day before!");
+        Validate.isTrue(currentUser.getVerificationCodeSentAt().plus(1, ChronoUnit.DAYS).isAfter(Instant.now()), "Invalid verification exceeds one day before!");
         userService.changeToNewEmail(currentUser);
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1002")).build();
     }

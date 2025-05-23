@@ -54,6 +54,7 @@ import reactor.core.publisher.Mono;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -102,8 +103,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new UserNotActivatedException(loginName);
         }
 
-        boolean accountNonExpired = user.getAccountExpiresAt() == null || LocalDateTime.now().isBefore(user.getAccountExpiresAt());
-        boolean passwordNonExpired = user.getPasswordExpiresAt() == null || LocalDateTime.now().isBefore(user.getPasswordExpiresAt());
+        boolean accountNonExpired = user.getAccountExpiresAt() == null || Instant.now().isBefore(user.getAccountExpiresAt());
+        boolean passwordNonExpired = user.getPasswordExpiresAt() == null || Instant.now().isBefore(user.getPasswordExpiresAt());
 
         Set<String> roles = findRoles(user.getId());
         Set<String> permissions = findPermissions(user.getId());
@@ -211,7 +212,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         domain.setResetAt(null);
         domain.setActivated(false);
         domain.setEnabled(true);
-        domain.setPasswordExpiresAt(LocalDateTime.now().plusMonths(6));
+        domain.setPasswordExpiresAt(Instant.now().plus(6, ChronoUnit.MONTHS));
         domain.setLocale(env.getProperty("spring.web.locale"));
 
         SupportedTimezone presetTimezone = supportedTimezoneRepository.findByPresetIsTrue()
@@ -223,7 +224,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         domain.setDateTimeFormatId(presetDateTimeFormat.getId());
 
         if (!permanentAccount) {
-            domain.setAccountExpiresAt(LocalDateTime.now().plusDays(30));
+            domain.setAccountExpiresAt(Instant.now().plus(30, ChronoUnit.DAYS));
         }
 
         userRepository.save(domain);
@@ -266,7 +267,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User user = userRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
         if (StringUtils.isNotEmpty(verificationCode)) {
             Validate.isTrue(verificationCode.equalsIgnoreCase(user.getVerificationCode()), "Invalid verification code!");
-            Validate.isTrue(user.getVerificationCodeSentAt().plusDays(1).isAfter(LocalDateTime.now()), "Invalid verification exceeds one day before!");
+            Validate.isTrue(user.getVerificationCodeSentAt().plus(1, ChronoUnit.DAYS).isAfter(Instant.now()), "Invalid verification exceeds one day before!");
         }
         if (StringUtils.isNotEmpty(oldRawPassword)) {
             try {
@@ -287,7 +288,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public User requestEmailChangeVerificationCode(User user, String email) {
         user.setVerificationCode(generateRandomVerificationCode());
-        user.setVerificationCodeSentAt(LocalDateTime.now());
+        user.setVerificationCodeSentAt(Instant.now());
         user.setNewEmail(email);
         userRepository.save(user);
         userNotificationService.sendPersonalNotification(user.getId(), Collections.singletonList(user.getId()),
@@ -298,7 +299,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public User requestPasswordChangeVerificationCode(User user) {
         user.setVerificationCode(generateRandomVerificationCode());
-        user.setVerificationCodeSentAt(LocalDateTime.now());
+        user.setVerificationCodeSentAt(Instant.now());
         userRepository.save(user);
         userNotificationService.sendPersonalNotification(user.getId(), Collections.singletonList(user.getId()),
                 "Change password", "You have requested to change your password.");
@@ -311,7 +312,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User user = userRepository.findOneByEmailAndActivated(email, true).orElseThrow(() -> new RuntimeException("Email does not exist"));
 
         user.setResetCode(generateRandomCode());
-        user.setResetAt(LocalDateTime.now());
+        user.setResetAt(Instant.now());
 
         userRepository.save(user);
         log.info("Requested password reset by reset code {}", user.getResetCode());
@@ -323,7 +324,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public void resetPassword(String resetCode, String newRawPassword) {
         User user = userRepository.findOneByResetCode(resetCode).orElseThrow(() -> new RuntimeException("Invalid reset code"));
 
-        Validate.isTrue(LocalDateTime.now().isBefore(user.getResetAt().plusDays(1)), messageCreator.getMessage("UE1023"));
+        Validate.isTrue(Instant.now().isBefore(user.getResetAt().plus(30, ChronoUnit.DAYS)), messageCreator.getMessage("UE1023"));
 
         user.setPasswordHash(DEFAULT_PASSWORD_ENCODER_PREFIX + BCRYPT_PASSWORD_ENCODER.encode(newRawPassword));
         user.setResetCode(null);
@@ -383,8 +384,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public User extendAccountValidityPeriod(String id, long amountToAdd, TemporalUnit unit) {
         User user = userRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
-        if (user.getAccountExpiresAt().isBefore(LocalDateTime.now())) {
-            user.setAccountExpiresAt(LocalDateTime.now().plus(amountToAdd, unit));
+        if (user.getAccountExpiresAt().isBefore(Instant.now())) {
+            user.setAccountExpiresAt(Instant.now().plus(amountToAdd, unit));
         } else {
             user.setAccountExpiresAt(user.getAccountExpiresAt().plus(amountToAdd, unit));
         }
