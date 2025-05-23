@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +50,7 @@ public class RoleController {
     @GetMapping("/api/roles/{id}")
     public ResponseEntity<Role> findById(@Parameter(description = "ID", required = true) @PathVariable String id) {
         Role domain = roleRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
+        domain.setCustom1(LocalDateTime.now());
         return ResponseEntity.ok(domain);
     }
 
