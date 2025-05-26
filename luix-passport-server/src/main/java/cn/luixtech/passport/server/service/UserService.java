@@ -17,8 +17,6 @@ public interface UserService {
 
     ManagedUser findByEmail(String email);
 
-    Set<String> findOrgIds(String userId);
-
     User insert(User domain, Set<String> authorities, String rawPassword, boolean permanentAccount);
 
     User update(User domain, Set<String> roles);

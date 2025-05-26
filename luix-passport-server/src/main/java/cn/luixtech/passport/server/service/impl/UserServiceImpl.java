@@ -6,16 +6,12 @@ import cn.luixtech.passport.server.domain.SupportedTimezone;
 import cn.luixtech.passport.server.domain.User;
 import cn.luixtech.passport.server.domain.UserRole;
 import cn.luixtech.passport.server.exception.UserNotActivatedException;
-import cn.luixtech.passport.server.persistence.Tables;
 import cn.luixtech.passport.server.pojo.ManagedUser;
 import cn.luixtech.passport.server.repository.SupportedDateTimeFormatRepository;
 import cn.luixtech.passport.server.repository.SupportedTimezoneRepository;
 import cn.luixtech.passport.server.repository.UserRepository;
 import cn.luixtech.passport.server.repository.UserRoleRepository;
-import cn.luixtech.passport.server.service.RolePermissionService;
-import cn.luixtech.passport.server.service.UserNotificationService;
-import cn.luixtech.passport.server.service.UserRoleService;
-import cn.luixtech.passport.server.service.UserService;
+import cn.luixtech.passport.server.service.*;
 import cn.luixtech.passport.server.statemachine.UserEvent;
 import cn.luixtech.passport.server.statemachine.UserState;
 import com.luixtech.springbootframework.component.MessageCreator;
@@ -61,7 +57,7 @@ import static cn.luixtech.passport.server.config.AuthorizationServerConfiguratio
 import static cn.luixtech.passport.server.config.AuthorizationServerConfiguration.DEFAULT_PASSWORD_ENCODER_PREFIX;
 import static cn.luixtech.passport.server.controller.UserProfilePicController.USER_PHOTO_TOKEN_KEY;
 import static cn.luixtech.passport.server.controller.UserProfilePicController.USER_PHOTO_URL;
-import static cn.luixtech.passport.server.persistence.Tables.*;
+import static cn.luixtech.passport.server.persistence.Tables.USER;
 import static com.luixtech.springbootframework.utils.NetworkUtils.getRequestUrl;
 import static com.luixtech.utilities.encryption.JasyptEncryptUtils.DEFAULT_ALGORITHM;
 import static org.apache.commons.lang3.time.DateFormatUtils.ISO_8601_EXTENDED_DATETIME_TIME_ZONE_FORMAT;
@@ -85,6 +81,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRoleService                    userRoleService;
     private final UserNotificationService            userNotificationService;
     private final RolePermissionService              rolePermissionService;
+    private final OrgUserService                     orgUserService;
     private final MessageCreator                     messageCreator;
     private final HttpServletRequest                 httpServletRequest;
     private final Environment                        env;
@@ -108,7 +105,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         Set<String> roleIds = userRoleService.findRoleIds(user.getId());
         Set<String> permissions = rolePermissionService.findPermissionIds(roleIds);
         List<GrantedAuthority> authorities = roleIds.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
-        Set<String> teamIds = findOrgIds(user.getId());
+        Set<String> orgIds = orgUserService.findOrgIdsByUserId(user.getId());
 
         String modifiedTime = ISO_8601_EXTENDED_DATETIME_TIME_ZONE_FORMAT.format(user.getModifiedAt().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
 
@@ -118,12 +115,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
         return new AuthUser(user.getId(), user.getUsername(), user.getEmail(), user.getMobileNo(), user.getFirstName(),
                 user.getLastName(), user.getPasswordHash(), user.getEnabled(), accountNonExpired, passwordNonExpired,
-                true, photoUrl, user.getLocale(), modifiedTime, authorities, roleIds, permissions, teamIds);
+                true, photoUrl, user.getLocale(), modifiedTime, authorities, roleIds, permissions, orgIds);
     }
 
     @Override
     public Optional<User> findOne(String loginName) {
-//        User user = dslContext.selectFrom(Tables.USER)
+//        User user = dslContext.selectFrom(USER)
 //                .where(USER.USERNAME.eq(loginName))
 //                .or(USER.EMAIL.eq(loginName))
 //                .limit(1)
@@ -155,11 +152,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         managedUser.setTimezone(user.getTimeZoneId());
         managedUser.setPasswordHash("*");
         return managedUser;
-    }
-
-    @Override
-    public Set<String> findOrgIds(String userId) {
-        return dslContext.select(Tables.ORG_USER.ORG_ID).from(Tables.ORG_USER).where(Tables.ORG_USER.USER_ID.eq(userId)).fetchSet(Tables.ORG_USER.ORG_ID);
     }
 
     @Override
