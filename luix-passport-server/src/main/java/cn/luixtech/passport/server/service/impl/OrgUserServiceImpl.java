@@ -5,15 +5,28 @@ import cn.luixtech.passport.server.repository.OrgUserRepository;
 import cn.luixtech.passport.server.service.OrgUserService;
 import lombok.AllArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
+import org.jooq.DSLContext;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
 
+import static cn.luixtech.passport.server.persistence.Tables.ORG_USER;
+
 @Service
 @AllArgsConstructor
 public class OrgUserServiceImpl implements OrgUserService {
-    private OrgUserRepository orgUserRepository;
+
+    private       OrgUserRepository orgUserRepository;
+    private final DSLContext        dslContext;
+
+    @Override
+    public Set<String> findOrgIdsByUserId(String userId) {
+        return dslContext.select(ORG_USER.ORG_ID)
+                .from(ORG_USER)
+                .where(ORG_USER.USER_ID.eq(userId))
+                .fetchSet(ORG_USER.ORG_ID);
+    }
 
     @Override
     public void save(String orgId, Set<String> userIds) {
