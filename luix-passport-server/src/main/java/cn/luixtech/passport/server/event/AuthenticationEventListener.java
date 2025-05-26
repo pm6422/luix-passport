@@ -52,9 +52,7 @@ public class AuthenticationEventListener {
                 domain.setRemark(event.getSource().getClass().getSimpleName());
                 userAuthEventRepository.save(domain);
 
-                User user = userRepository.findById(authUser.getId()).orElseThrow(() -> new DataNotFoundException(authUser.getId()));
-                user.setLastSignInAt(Instant.now());
-                userService.update(user);
+                userService.updateLastLoginTime(authUser.getId());
                 log.info("Authenticated successfully for user: {}", authUser.getId());
             }
         }

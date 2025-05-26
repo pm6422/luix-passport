@@ -394,4 +394,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         userRepository.save(currentUser);
     }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void updateLastLoginTime(String id) {
+        dslContext
+                .update(USER)
+                .set(USER.LAST_SIGN_IN_AT, Instant.now())
+                .set(USER.MODIFIED_AT, Instant.now())
+                .where(USER.ID.eq(id))
+                .execute();
+    }
 }

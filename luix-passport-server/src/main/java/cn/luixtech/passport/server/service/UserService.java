@@ -52,4 +52,6 @@ public interface UserService {
     User extendAccountValidityPeriod(String id, long amountToAdd, TemporalUnit unit);
 
     void changeToNewEmail(User currentUser);
+
+    void updateLastLoginTime(String id);
 }
