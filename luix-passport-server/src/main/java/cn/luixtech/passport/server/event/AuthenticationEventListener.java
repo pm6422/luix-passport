@@ -1,14 +1,12 @@
 package cn.luixtech.passport.server.event;
 
 import cn.luixtech.passport.server.config.oauth.AuthUser;
-import cn.luixtech.passport.server.domain.User;
 import cn.luixtech.passport.server.domain.UserAuthEvent;
 import cn.luixtech.passport.server.repository.UserAuthEventRepository;
 import cn.luixtech.passport.server.repository.UserRepository;
 import cn.luixtech.passport.server.service.SseService;
 import cn.luixtech.passport.server.service.UserService;
 import com.luixtech.uidgenerator.core.id.IdGenerator;
-import com.luixtech.utilities.exception.DataNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -24,7 +22,6 @@ import org.springframework.security.core.session.SessionInformation;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.stereotype.Component;
 
-import java.time.Instant;
 import java.util.List;
 
 import static cn.luixtech.passport.server.domain.UserAuthEvent.AUTH_FAILURE;
