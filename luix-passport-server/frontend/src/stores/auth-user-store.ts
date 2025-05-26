@@ -17,7 +17,7 @@ export type AuthUser = {
     activated: boolean
     enabled: boolean
     roleIds: Array<string>
-    permissions: Array<string>
+    permissionIds: Array<string>
 
     isAdmin: boolean
     isDeveloper: boolean

@@ -31,7 +31,7 @@ public class ManagedUser extends User {
 
     private Set<String> roleIds;
 
-    private Set<String> permissions;
+    private Set<String> permissionIds;
 
     private String locale;
 

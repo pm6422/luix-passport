@@ -24,7 +24,7 @@ public class AuthUser {
     private Boolean     activated;
     private Boolean     enabled;
     private Set<String> roleIds;
-    private Set<String> permissions;
+    private Set<String> permissionIds;
 
     /* <<<<<<<<<<<<<<  ✨ Windsurf Command ⭐ >>>>>>>>>>>>>>>> */
 

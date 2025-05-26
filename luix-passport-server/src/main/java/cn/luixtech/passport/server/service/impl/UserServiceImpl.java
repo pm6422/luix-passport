@@ -140,7 +140,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         Set<String> roleIds = userRoleService.findRoleIds(id);
         managedUser.setRoleIds(roleIds);
         Set<String> permissionIds = rolePermissionService.findPermissionIds(roleIds);
-        managedUser.setPermissions(permissionIds);
+        managedUser.setPermissionIds(permissionIds);
         managedUser.setLocale(user.getLocale());
         managedUser.setTimezone(user.getTimeZoneId());
         managedUser.setPasswordHash("*");
@@ -155,7 +155,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         Set<String> roleIds = userRoleService.findRoleIds(user.getId());
         managedUser.setRoleIds(roleIds);
         Set<String> permissionIds = rolePermissionService.findPermissionIds(roleIds);
-        managedUser.setPermissions(permissionIds);
+        managedUser.setPermissionIds(permissionIds);
         managedUser.setLocale(user.getLocale());
         managedUser.setTimezone(user.getTimeZoneId());
         managedUser.setPasswordHash("*");
