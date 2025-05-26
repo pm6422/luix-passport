@@ -3,6 +3,7 @@ package cn.luixtech.passport.server.service.impl;
 import cn.luixtech.passport.server.domain.UserRole;
 import cn.luixtech.passport.server.repository.UserRoleRepository;
 import cn.luixtech.passport.server.service.UserRoleService;
+import com.luixtech.uidgenerator.core.id.IdGenerator;
 import lombok.AllArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.jooq.DSLContext;
@@ -57,10 +58,11 @@ public class UserRoleServiceImpl implements UserRoleService {
     }
 
     private UserRole build(String userId, String authority) {
-        UserRole userAuthority = new UserRole();
-        userAuthority.setUserId(userId);
-        userAuthority.setRoleId(authority);
-        return userAuthority;
+        UserRole userRole = new UserRole();
+        userRole.setId(IdGenerator.generateId());
+        userRole.setUserId(userId);
+        userRole.setRoleId(authority);
+        return userRole;
     }
 
     @Override
@@ -71,15 +73,33 @@ public class UserRoleServiceImpl implements UserRoleService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void update(String userId, Set<String> roles) {
-        if (CollectionUtils.isEmpty(roles)) {
+    public void update(String userId, Set<String> newRoleIds) {
+        if (CollectionUtils.isEmpty(newRoleIds)) {
             return;
         }
-        // first delete user authorities
-        deleteByUserId(userId);
 
-        // then insert user authorities
-        List<UserRole> userRoles = generate(userId, roles);
-        userRoleRepository.saveAll(userRoles);
+        // 1. query existing roles
+        List<UserRole> existingRoles = userRoleRepository.findByUserId(userId);
+        Set<String> existingRoleIds = existingRoles.stream()
+                .map(UserRole::getRoleId)
+                .collect(Collectors.toSet());
+
+        // 2. calculate difference
+        Set<String> rolesToDelete = existingRoleIds.stream()
+                .filter(roleId -> !newRoleIds.contains(roleId))
+                .collect(Collectors.toSet());
+
+        Set<String> rolesToAdd = newRoleIds.stream()
+                .filter(roleId -> !existingRoleIds.contains(roleId))
+                .collect(Collectors.toSet());
+
+        // 3. execute update
+        if (CollectionUtils.isNotEmpty(rolesToDelete)) {
+            userRoleRepository.deleteByUserIdAndRoleIdIn(userId, rolesToDelete);
+        }
+        if (CollectionUtils.isNotEmpty(rolesToAdd)) {
+            List<UserRole> newUserRoles = generate(userId, rolesToAdd);
+            userRoleRepository.saveAll(newUserRoles);
+        }
     }
 }
