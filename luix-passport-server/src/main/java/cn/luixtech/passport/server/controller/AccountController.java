@@ -208,8 +208,8 @@ public class AccountController {
     @Operation(summary = "upload profile picture of the current user")
     @PostMapping(value = "/api/accounts/profile-pic/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public void uploadProfilePicture(@Parameter(description = "user profile photo", required = true) @RequestPart MultipartFile file) throws IOException {
-        User user = Optional.ofNullable(userService.findById(AuthUtils.getCurrentUserId())).orElseThrow(() -> new DataNotFoundException(AuthUtils.getCurrentUserId()));
-        userProfilePicService.save(user, file.getBytes());
+        User user = userRepository.findById(AuthUtils.getCurrentUserId()).orElseThrow(() -> new DataNotFoundException(AuthUtils.getCurrentUserId()));
+        userProfilePicService.save(user.getId(), file.getBytes());
         log.info("Uploaded profile picture with file name {}", file.getOriginalFilename());
     }
 
