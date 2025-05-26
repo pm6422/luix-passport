@@ -15,13 +15,12 @@ import static cn.luixtech.passport.server.persistence.Tables.USER_ROLE;
 public class RolePermissionServiceImpl implements RolePermissionService {
     private final DSLContext dslContext;
 
-    // todo: delete
     @Override
-    public Set<String> findPermissionIds(String userId) {
+    public Set<String> findPermissionIds(Set<String> roleIds) {
         return dslContext.selectDistinct(ROLE_PERMISSION.PERMISSION_ID)
                 .from(ROLE_PERMISSION)
                 .join(USER_ROLE).on(ROLE_PERMISSION.ROLE_ID.eq(USER_ROLE.ROLE_ID))
-                .where(USER_ROLE.USER_ID.eq(userId))
+                .where(USER_ROLE.ROLE_ID.in(roleIds))
                 .fetchSet(ROLE_PERMISSION.PERMISSION_ID);
     }
 }

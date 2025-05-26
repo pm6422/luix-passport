@@ -105,9 +105,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         boolean accountNonExpired = user.getAccountExpiresAt() == null || Instant.now().isBefore(user.getAccountExpiresAt());
         boolean passwordNonExpired = user.getPasswordExpiresAt() == null || Instant.now().isBefore(user.getPasswordExpiresAt());
 
-        Set<String> roles = userRoleService.findRoleIds(user.getId());
-        Set<String> permissions = rolePermissionService.findPermissionIds(user.getId());
-        List<GrantedAuthority> authorities = roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+        Set<String> roleIds = userRoleService.findRoleIds(user.getId());
+        Set<String> permissions = rolePermissionService.findPermissionIds(roleIds);
+        List<GrantedAuthority> authorities = roleIds.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
         Set<String> teamIds = findOrgIds(user.getId());
 
         String modifiedTime = ISO_8601_EXTENDED_DATETIME_TIME_ZONE_FORMAT.format(user.getModifiedAt().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
@@ -118,7 +118,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
         return new AuthUser(user.getId(), user.getUsername(), user.getEmail(), user.getMobileNo(), user.getFirstName(),
                 user.getLastName(), user.getPasswordHash(), user.getEnabled(), accountNonExpired, passwordNonExpired,
-                true, photoUrl, user.getLocale(), modifiedTime, authorities, roles, permissions, teamIds);
+                true, photoUrl, user.getLocale(), modifiedTime, authorities, roleIds, permissions, teamIds);
     }
 
     @Override
@@ -137,8 +137,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User user = userRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
         ManagedUser managedUser = new ManagedUser();
         BeanUtils.copyProperties(user, managedUser);
-        managedUser.setRoleIds(userRoleService.findRoleIds(id));
-        managedUser.setPermissions(rolePermissionService.findPermissionIds(user.getId()));
+        Set<String> roleIds = userRoleService.findRoleIds(id);
+        managedUser.setRoleIds(roleIds);
+        Set<String> permissionIds = rolePermissionService.findPermissionIds(roleIds);
+        managedUser.setPermissions(permissionIds);
         managedUser.setLocale(user.getLocale());
         managedUser.setTimezone(user.getTimeZoneId());
         managedUser.setPasswordHash("*");
@@ -150,8 +152,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User user = userRepository.findOneByEmail(email).orElseThrow(() -> new DataNotFoundException(email));
         ManagedUser managedUser = new ManagedUser();
         BeanUtils.copyProperties(user, managedUser);
-        managedUser.setRoleIds(userRoleService.findRoleIds(user.getId()));
-        managedUser.setPermissions(rolePermissionService.findPermissionIds(user.getId()));
+        Set<String> roleIds = userRoleService.findRoleIds(user.getId());
+        managedUser.setRoleIds(roleIds);
+        Set<String> permissionIds = rolePermissionService.findPermissionIds(roleIds);
+        managedUser.setPermissions(permissionIds);
         managedUser.setLocale(user.getLocale());
         managedUser.setTimezone(user.getTimeZoneId());
         managedUser.setPasswordHash("*");

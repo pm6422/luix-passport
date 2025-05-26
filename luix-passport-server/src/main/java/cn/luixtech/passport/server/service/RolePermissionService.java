@@ -4,5 +4,5 @@ import java.util.Set;
 
 public interface RolePermissionService {
 
-    Set<String> findPermissionIds(String userId);
+    Set<String> findPermissionIds(Set<String> roleIds);
 }
