@@ -8,7 +8,6 @@ import cn.luixtech.passport.server.domain.UserRole;
 import cn.luixtech.passport.server.exception.UserNotActivatedException;
 import cn.luixtech.passport.server.persistence.Tables;
 import cn.luixtech.passport.server.pojo.ManagedUser;
-import cn.luixtech.passport.server.pojo.ProfileScopeUser;
 import cn.luixtech.passport.server.repository.SupportedDateTimeFormatRepository;
 import cn.luixtech.passport.server.repository.SupportedTimezoneRepository;
 import cn.luixtech.passport.server.repository.UserRepository;
@@ -18,7 +17,6 @@ import cn.luixtech.passport.server.service.UserRoleService;
 import cn.luixtech.passport.server.service.UserService;
 import cn.luixtech.passport.server.statemachine.UserEvent;
 import cn.luixtech.passport.server.statemachine.UserState;
-import cn.luixtech.passport.server.utils.AuthUtils;
 import com.luixtech.springbootframework.component.MessageCreator;
 import com.luixtech.uidgenerator.core.id.IdGenerator;
 import com.luixtech.utilities.encryption.JasyptEncryptUtils;
@@ -137,7 +135,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User user = userRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
         ManagedUser managedUser = new ManagedUser();
         BeanUtils.copyProperties(user, managedUser);
-        managedUser.setRoles(findRoles(id));
+        managedUser.setRoleIds(findRoles(id));
         managedUser.setPermissions(findPermissions(user.getId()));
         managedUser.setLocale(user.getLocale());
         managedUser.setTimezone(user.getTimeZoneId());
@@ -150,18 +148,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User user = userRepository.findOneByEmail(email).orElseThrow(() -> new DataNotFoundException(email));
         ManagedUser managedUser = new ManagedUser();
         BeanUtils.copyProperties(user, managedUser);
-        managedUser.setRoles(findRoles(user.getId()));
+        managedUser.setRoleIds(findRoles(user.getId()));
         managedUser.setPermissions(findPermissions(user.getId()));
         managedUser.setLocale(user.getLocale());
         managedUser.setTimezone(user.getTimeZoneId());
         managedUser.setPasswordHash("*");
         return managedUser;
-    }
-
-    @Override
-    public ProfileScopeUser findByUsername(String username) {
-        User user = userRepository.findOneByUsername(username).orElseThrow(() -> new DataNotFoundException(username));
-        return ProfileScopeUser.of(user.getUsername(), user.getEmail(), findRoles(user.getId()));
     }
 
     @Override

@@ -16,7 +16,7 @@ export type AuthUser = {
     timeFormat: string
     activated: boolean
     enabled: boolean
-    roles: Array<string>
+    roleIds: Array<string>
     permissions: Array<string>
 
     isAdmin: boolean
@@ -30,10 +30,10 @@ class AuthUserStore extends Exome {
     public setAuthUser(authUser: AuthUser) {
         this.authUser = authUser
         if (!isEmpty(authUser)) {
-            this.authUser.isAdmin = authUser.roles && authUser.roles.includes("ROLE_ADMIN")
-            this.authUser.isDeveloper = authUser.roles && authUser.roles.includes("ROLE_DEVELOPER")
-            this.authUser.isOnlyUser = authUser.roles && authUser.roles.length === 2
-                && authUser.roles.includes("ROLE_USER") && authUser.roles.includes("ROLE_ANONYMOUS")
+            this.authUser.isAdmin = authUser.roleIds && authUser.roleIds.includes("ROLE_ADMIN")
+            this.authUser.isDeveloper = authUser.roleIds && authUser.roleIds.includes("ROLE_DEVELOPER")
+            this.authUser.isOnlyUser = authUser.roleIds && authUser.roleIds.length === 2
+                && authUser.roleIds.includes("ROLE_USER") && authUser.roleIds.includes("ROLE_ANONYMOUS")
         }
     }
 }

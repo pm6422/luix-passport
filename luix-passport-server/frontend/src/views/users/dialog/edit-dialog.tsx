@@ -20,7 +20,6 @@ import { RoleService } from "@/services/role-service"
 import { Option } from "@/components/custom/multi-select"
 import type { SupportedTimezone } from "@/domains/supported-timezone"
 import type { SupportedDateTimeFormat } from "@/domains/supported-date-time-format"
-import { type Role } from "@/domains/role"
 
 interface EditDialogProps {
   children: ReactNode,
@@ -51,12 +50,12 @@ export function EditDialog({
       return
     }
     Promise.all([
-      RoleService.findAll(),
+      RoleService.findAllIds(),
       AccountService.findSupportedTimezones(),
       AccountService.findSupportedDateTimeFormats()
     ]).then(results => {
       // load options
-      setEnabledRoles(results[0].data.map((item: Role) => ({label: item.id, value: item.id})));
+      setEnabledRoles(results[0].data.map((item: string) => ({label: item, value: item})));
       setSupportedTimezones(results[1].data.map((item: SupportedTimezone) =>
         ({label: "(UTC" + item.utcOffset + ") " + item.id , value: item.id})));
       setSupportedDateTimeFormats(results[2].data.map((item: SupportedDateTimeFormat) =>
@@ -161,7 +160,7 @@ export function EditDialog({
 
         <CheckboxFormField
           control={form.control}
-          name="roles"
+          name="roleIds"
           label="Roles"
           required
           options={enabledRoles}

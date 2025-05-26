@@ -6,12 +6,8 @@ export class RoleService {
   constructor() {
   }
 
-  public static find(reqParams: object): Promise<AxiosResponse<Array<Role>>> {
-    return http.get("api/roles", { params: reqParams })
-  }
-
-  public static findAll(): Promise<AxiosResponse<Array<Role>>> {
-    return http.get("api/roles", { params: { page: 0, size: 2000 }})
+  public static findAllIds(): Promise<AxiosResponse<Array<string>>> {
+    return http.get("api/roles/ids")
   }
 
   public static findById(id: string): Promise<AxiosResponse<Role>> {

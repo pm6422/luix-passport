@@ -23,7 +23,7 @@ public class AuthUser {
     private String      timeFormat;
     private Boolean     activated;
     private Boolean     enabled;
-    private Set<String> roles;
+    private Set<String> roleIds;
     private Set<String> permissions;
 
     /* <<<<<<<<<<<<<<  ✨ Windsurf Command ⭐ >>>>>>>>>>>>>>>> */

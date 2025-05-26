@@ -2,6 +2,7 @@ package cn.luixtech.passport.server.controller;
 
 import cn.luixtech.passport.server.domain.Role;
 import cn.luixtech.passport.server.repository.RoleRepository;
+import cn.luixtech.passport.server.service.RoleService;
 import com.alibaba.fastjson2.JSON;
 import com.luixtech.utilities.exception.DataNotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,6 +23,8 @@ import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static cn.luixtech.passport.server.domain.UserRole.ROLE_ADMIN;
 
@@ -31,6 +34,7 @@ import static cn.luixtech.passport.server.domain.UserRole.ROLE_ADMIN;
 @Slf4j
 public class RoleController {
     private final RoleRepository roleRepository;
+    private final RoleService    roleService;
 
     @Operation(summary = "save role")
     @PostMapping("/api/roles")
@@ -39,10 +43,10 @@ public class RoleController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @Operation(summary = "find role list")
-    @GetMapping("/api/roles")
-    public ResponseEntity<List<Role>> findAll() {
-        return ResponseEntity.ok().body(roleRepository.findAll());
+    @Operation(summary = "find all role IDs")
+    @GetMapping("/api/roles/ids")
+    public ResponseEntity<Set<String>> findAllIds() {
+        return ResponseEntity.ok().body(roleService.findAllIds());
     }
 
     @Operation(summary = "find role by id")

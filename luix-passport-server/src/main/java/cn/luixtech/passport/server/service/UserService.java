@@ -3,7 +3,6 @@ package cn.luixtech.passport.server.service;
 
 import cn.luixtech.passport.server.domain.User;
 import cn.luixtech.passport.server.pojo.ManagedUser;
-import cn.luixtech.passport.server.pojo.ProfileScopeUser;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -17,8 +16,6 @@ public interface UserService {
     ManagedUser findById(String id);
 
     ManagedUser findByEmail(String email);
-
-    ProfileScopeUser findByUsername(String username);
 
     Set<String> findRoles(String userId);
 

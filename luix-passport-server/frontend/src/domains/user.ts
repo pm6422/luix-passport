@@ -20,7 +20,7 @@ export const userSchema = z.object({
   accountExpiresAt: z.string().optional().nullable(),
   passwordExpiresAt: z.string().optional().nullable(),
   lastSignInAt: z.string().optional().nullable(),
-  roles: z.array(z.string()).min(1, { message: "Required" }),
+  roleIds: z.array(z.string()).min(1, { message: "Required" }),
   createdAt: z.string().optional().nullable(),
   modifiedAt: z.string().optional().nullable()
 })
@@ -43,7 +43,7 @@ export const initialUserState: User = {
   profilePhotoEnabled: false,
   activated: false,
   enabled: true,
-  roles: ["ROLE_ANONYMOUS", "ROLE_USER"],
+  roleIds: ["ROLE_ANONYMOUS", "ROLE_USER"],
   createdAt: "",
   modifiedAt: ""
 }

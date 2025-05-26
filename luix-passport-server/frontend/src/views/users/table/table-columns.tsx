@@ -107,13 +107,13 @@ export function tableColumns(
       enableHiding: true,
     },
     {
-      accessorKey: "roles",
+      accessorKey: "roleIds",
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Roles" />
       ),
       cell: ({ row }) => (
         <div className="w-[100px] text-xs">
-          {(row.getValue("roles") as string[]).map((item, index) => (
+          {(row.getValue("roleIds") as string[]).map((item, index) => (
             <div key={index}>{item}</div>
           ))}
         </div>

@@ -79,7 +79,7 @@ public class UserController {
             ManagedUser user = new ManagedUser();
             BeanUtils.copyProperties(domain, user);
             Set<String> roles = userRoleRepository.findByUserId(domain.getId()).stream().map(UserRole::getRoleId).collect(Collectors.toSet());
-            user.setRoles(roles);
+            user.setRoleIds(roles);
             users.add(user);
         });
         return ResponseEntity.ok().headers(generatePageHeaders(domains)).body(users);
@@ -104,7 +104,7 @@ public class UserController {
         existingOne.setMobileNo(domain.getMobileNo());
         existingOne.setRemark(domain.getRemark());
         existingOne.setEnabled(domain.getEnabled());
-        userService.update(existingOne, domain.getRoles());
+        userService.update(existingOne, domain.getRoleIds());
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1002", domain.getUsername())).build();
     }
 

@@ -103,7 +103,7 @@ public class AccountController {
             throw new RuntimeException("This username is already registered. Please use a different one!");
         }
 
-        User newUser = userService.insert(managedUser.toUser(), managedUser.getRoles(), managedUser.getPassword(), false);
+        User newUser = userService.insert(managedUser.toUser(), managedUser.getRoleIds(), managedUser.getPassword(), false);
         mailService.sendAccountActivationEmail(newUser, getRequestUrl(request));
         return ResponseEntity.ok().build();
     }

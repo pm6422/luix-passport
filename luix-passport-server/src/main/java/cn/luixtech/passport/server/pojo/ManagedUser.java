@@ -29,7 +29,7 @@ public class ManagedUser extends User {
     @Size(min = RAW_PASSWORD_MIN_LENGTH, max = RAW_PASSWORD_MAX_LENGTH)
     private String password;
 
-    private Set<String> roles;
+    private Set<String> roleIds;
 
     private Set<String> permissions;
 

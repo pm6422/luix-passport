@@ -42,6 +42,8 @@ public class User extends AbstractAuditableDomain implements Serializable {
 
     private String  firstName;
     private String  lastName;
+    @Schema
+    @Column(nullable = false)
     private String  passwordHash;
     private String  activationCode;
     private String  verificationCode;
@@ -55,7 +57,13 @@ public class User extends AbstractAuditableDomain implements Serializable {
     private Instant accountExpiresAt;
     private Instant passwordExpiresAt;
     private Instant lastSignInAt;
+    @Schema
+    @Column(nullable = false)
     private String  locale;
+    @Schema
+    @Column(nullable = false)
     private String  dateTimeFormatId;
+    @Schema
+    @Column(nullable = false)
     private String  timeZoneId;
 }
