@@ -1,7 +1,6 @@
 package cn.luixtech.passport.server.service.impl;
 
 
-import cn.luixtech.passport.server.domain.User;
 import cn.luixtech.passport.server.domain.UserProfilePic;
 import cn.luixtech.passport.server.repository.UserProfilePicRepository;
 import cn.luixtech.passport.server.service.UserProfilePicService;
@@ -35,14 +34,14 @@ public class UserProfilePicServiceImpl implements UserProfilePicService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void save(User user, byte[] photoData) {
-        Optional<UserProfilePic> existingOne = userProfilePicRepository.findById(user.getId());
+    public void save(String userId, byte[] photoData) {
+        Optional<UserProfilePic> existingOne = userProfilePicRepository.findById(userId);
         if (existingOne.isPresent()) {
             // update if exists
             update(existingOne.get(), photoData);
         } else {
             // insert if not exists
-            insert(user.getId(), photoData);
+            insert(userId, photoData);
         }
     }
 }
