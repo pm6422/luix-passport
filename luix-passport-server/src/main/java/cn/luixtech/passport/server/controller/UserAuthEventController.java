@@ -91,7 +91,7 @@ public class UserAuthEventController {
     @Operation(summary = "get user login count in last seven days")
     @GetMapping("/api/user-auth-events/user-login-count")
     public ResponseEntity<List<UserLoginCount>> getUserLoginCount() {
-        ManagedUser user = userService.findById(AuthUtils.getCurrentUserId());
+        User user = userRepository.findById(AuthUtils.getCurrentUserId()).orElseThrow(()-> new DataNotFoundException(AuthUtils.getCurrentUserId()));
         List<UserLoginCount> userLoginCounts = new ArrayList<>();
         Instant now = Instant.now();
         ZonedDateTime zonedDateTime = now.atZone(ZoneId.of(user.getTimeZoneId()));

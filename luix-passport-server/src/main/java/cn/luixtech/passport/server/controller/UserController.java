@@ -8,6 +8,7 @@ import cn.luixtech.passport.server.pojo.ManagedUser;
 import cn.luixtech.passport.server.repository.UserRepository;
 import cn.luixtech.passport.server.repository.UserRoleRepository;
 import cn.luixtech.passport.server.service.MailService;
+import cn.luixtech.passport.server.service.UserRoleService;
 import cn.luixtech.passport.server.service.UserService;
 import cn.luixtech.passport.server.utils.AuthUtils;
 import com.luixtech.springbootframework.component.HttpHeaderCreator;
@@ -51,8 +52,9 @@ public class UserController {
     private final ApplicationEventPublisher applicationEventPublisher;
     private final UserService               userService;
     private final UserRepository            userRepository;
-    private final UserRoleRepository        userRoleRepository;
-    private final MailService               mailService;
+    private final UserRoleRepository userRoleRepository;
+    private final UserRoleService    userRoleService;
+    private final MailService        mailService;
     private final HttpHeaderCreator         httpHeaderCreator;
 
     @Operation(summary = "create new user and send a user creation email")
@@ -78,8 +80,8 @@ public class UserController {
         domains.stream().forEach(domain -> {
             ManagedUser user = new ManagedUser();
             BeanUtils.copyProperties(domain, user);
-            Set<String> roles = userRoleRepository.findByUserId(domain.getId()).stream().map(UserRole::getRoleId).collect(Collectors.toSet());
-            user.setRoleIds(roles);
+            Set<String> roleIds = userRoleService.findRoleIds(domain.getId());
+            user.setRoleIds(roleIds);
             users.add(user);
         });
         return ResponseEntity.ok().headers(generatePageHeaders(domains)).body(users);
