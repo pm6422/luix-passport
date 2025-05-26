@@ -19,8 +19,6 @@ public interface UserService {
 
     Set<String> findOrgIds(String userId);
 
-    Set<String> findPermissions(String userId);
-
     User insert(User domain, Set<String> authorities, String rawPassword, boolean permanentAccount);
 
     User update(User domain, Set<String> roles);

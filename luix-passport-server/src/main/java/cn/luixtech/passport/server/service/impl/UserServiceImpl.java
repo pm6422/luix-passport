@@ -12,6 +12,7 @@ import cn.luixtech.passport.server.repository.SupportedDateTimeFormatRepository;
 import cn.luixtech.passport.server.repository.SupportedTimezoneRepository;
 import cn.luixtech.passport.server.repository.UserRepository;
 import cn.luixtech.passport.server.repository.UserRoleRepository;
+import cn.luixtech.passport.server.service.RolePermissionService;
 import cn.luixtech.passport.server.service.UserNotificationService;
 import cn.luixtech.passport.server.service.UserRoleService;
 import cn.luixtech.passport.server.service.UserService;
@@ -83,6 +84,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRoleRepository                 userRoleRepository;
     private final UserRoleService                    userRoleService;
     private final UserNotificationService            userNotificationService;
+    private final RolePermissionService              rolePermissionService;
     private final MessageCreator                     messageCreator;
     private final HttpServletRequest                 httpServletRequest;
     private final Environment                        env;
@@ -104,7 +106,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         boolean passwordNonExpired = user.getPasswordExpiresAt() == null || Instant.now().isBefore(user.getPasswordExpiresAt());
 
         Set<String> roles = userRoleService.findRoleIds(user.getId());
-        Set<String> permissions = findPermissions(user.getId());
+        Set<String> permissions = rolePermissionService.findPermissionIds(user.getId());
         List<GrantedAuthority> authorities = roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
         Set<String> teamIds = findOrgIds(user.getId());
 
@@ -136,7 +138,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         ManagedUser managedUser = new ManagedUser();
         BeanUtils.copyProperties(user, managedUser);
         managedUser.setRoleIds(userRoleService.findRoleIds(id));
-        managedUser.setPermissions(findPermissions(user.getId()));
+        managedUser.setPermissions(rolePermissionService.findPermissionIds(user.getId()));
         managedUser.setLocale(user.getLocale());
         managedUser.setTimezone(user.getTimeZoneId());
         managedUser.setPasswordHash("*");
@@ -149,7 +151,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         ManagedUser managedUser = new ManagedUser();
         BeanUtils.copyProperties(user, managedUser);
         managedUser.setRoleIds(userRoleService.findRoleIds(user.getId()));
-        managedUser.setPermissions(findPermissions(user.getId()));
+        managedUser.setPermissions(rolePermissionService.findPermissionIds(user.getId()));
         managedUser.setLocale(user.getLocale());
         managedUser.setTimezone(user.getTimeZoneId());
         managedUser.setPasswordHash("*");
@@ -159,17 +161,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public Set<String> findOrgIds(String userId) {
         return dslContext.select(Tables.ORG_USER.ORG_ID).from(Tables.ORG_USER).where(Tables.ORG_USER.USER_ID.eq(userId)).fetchSet(Tables.ORG_USER.ORG_ID);
-    }
-
-    @Override
-    public Set<String> findPermissions(String userId) {
-        return dslContext.selectDistinct(ROLE_PERMISSION.PERMISSION_ID)
-                .from(ROLE_PERMISSION)
-                .join(ROLE).on(ROLE_PERMISSION.ROLE_ID.eq(ROLE.ID))
-                .join(USER_ROLE).on(ROLE.ID.eq(USER_ROLE.ROLE_ID))
-                .join(USER).on(USER_ROLE.USER_ID.eq(USER.ID))
-                .where(USER.ID.eq(userId))
-                .fetchSet(ROLE_PERMISSION.PERMISSION_ID);
     }
 
     @Override
