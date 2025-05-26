@@ -135,24 +135,19 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public ManagedUser findById(String id) {
         User user = userRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
-        ManagedUser managedUser = new ManagedUser();
-        BeanUtils.copyProperties(user, managedUser);
-        Set<String> roleIds = userRoleService.findRoleIds(id);
-        managedUser.setRoleIds(roleIds);
-        Set<String> permissionIds = rolePermissionService.findPermissionIds(roleIds);
-        managedUser.setPermissionIds(permissionIds);
-        managedUser.setLocale(user.getLocale());
-        managedUser.setTimezone(user.getTimeZoneId());
-        managedUser.setPasswordHash("*");
-        return managedUser;
+        return getManagedUser(user, id);
     }
 
     @Override
     public ManagedUser findByEmail(String email) {
         User user = userRepository.findOneByEmail(email).orElseThrow(() -> new DataNotFoundException(email));
+        return getManagedUser(user, user.getId());
+    }
+
+    private ManagedUser getManagedUser(User user, String id) {
         ManagedUser managedUser = new ManagedUser();
         BeanUtils.copyProperties(user, managedUser);
-        Set<String> roleIds = userRoleService.findRoleIds(user.getId());
+        Set<String> roleIds = userRoleService.findRoleIds(id);
         managedUser.setRoleIds(roleIds);
         Set<String> permissionIds = rolePermissionService.findPermissionIds(roleIds);
         managedUser.setPermissionIds(permissionIds);
