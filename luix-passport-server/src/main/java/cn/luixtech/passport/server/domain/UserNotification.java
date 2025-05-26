@@ -1,5 +1,6 @@
 package cn.luixtech.passport.server.domain;
 
+import cn.luixtech.passport.server.domain.base.AbstractAuditableDomain;
 import cn.luixtech.passport.server.domain.base.listener.AuditableEntityListener;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
@@ -16,15 +17,12 @@ import java.time.Instant;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserNotification implements Serializable {
+public class UserNotification extends AbstractAuditableDomain implements Serializable {
     @Serial
     private static final long   serialVersionUID = 1L;
     public static final  String STATUS_READ      = "READ";
     public static final  String STATUS_UNREAD    = "UNREAD";
 
-    @Schema(description = "ID")
-    @Id
-    protected String       id;
     private   String       receiverId;
     /**
      * 一条Notification可以发送给多个用户 (体现在多个UserNotification记录中)
@@ -34,9 +32,4 @@ public class UserNotification implements Serializable {
     private   Notification notification;
     private   String       status;
     private   Boolean      active;
-    @Schema(description = "created time")
-    @Column(updatable = false)
-    private   Instant      createdAt;
-    @Schema(description = "last modified time")
-    private   Instant      modifiedAt;
 }

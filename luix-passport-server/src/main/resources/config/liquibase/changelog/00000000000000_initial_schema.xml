@@ -476,9 +476,12 @@
             <column name="created_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
+            <column name="created_by" type="VARCHAR(50)">
+            </column>
             <column name="modified_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
+            <column name="modified_by" type="VARCHAR(50)"/>
         </createTable>
         <createTable tableName="user_notification">
             <column name="id" type="VARCHAR(20)">
@@ -499,9 +502,12 @@
             <column name="created_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
+            <column name="created_by" type="VARCHAR(50)">
+            </column>
             <column name="modified_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
+            <column name="modified_by" type="VARCHAR(50)"/>
         </createTable>
 
         <createIndex tableName="user" indexName="idx_user_time_zone_id" unique="false">
