@@ -103,7 +103,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         boolean accountNonExpired = user.getAccountExpiresAt() == null || Instant.now().isBefore(user.getAccountExpiresAt());
         boolean passwordNonExpired = user.getPasswordExpiresAt() == null || Instant.now().isBefore(user.getPasswordExpiresAt());
 
-        Set<String> roles = findRoles(user.getId());
+        Set<String> roles = userRoleService.findRoleIds(user.getId());
         Set<String> permissions = findPermissions(user.getId());
         List<GrantedAuthority> authorities = roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
         Set<String> teamIds = findOrgIds(user.getId());
@@ -135,7 +135,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User user = userRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
         ManagedUser managedUser = new ManagedUser();
         BeanUtils.copyProperties(user, managedUser);
-        managedUser.setRoleIds(findRoles(id));
+        managedUser.setRoleIds(userRoleService.findRoleIds(id));
         managedUser.setPermissions(findPermissions(user.getId()));
         managedUser.setLocale(user.getLocale());
         managedUser.setTimezone(user.getTimeZoneId());
@@ -148,17 +148,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User user = userRepository.findOneByEmail(email).orElseThrow(() -> new DataNotFoundException(email));
         ManagedUser managedUser = new ManagedUser();
         BeanUtils.copyProperties(user, managedUser);
-        managedUser.setRoleIds(findRoles(user.getId()));
+        managedUser.setRoleIds(userRoleService.findRoleIds(user.getId()));
         managedUser.setPermissions(findPermissions(user.getId()));
         managedUser.setLocale(user.getLocale());
         managedUser.setTimezone(user.getTimeZoneId());
         managedUser.setPasswordHash("*");
         return managedUser;
-    }
-
-    @Override
-    public Set<String> findRoles(String userId) {
-        return dslContext.select(Tables.USER_ROLE.ROLE_ID).from(Tables.USER_ROLE).where(Tables.USER_ROLE.USER_ID.eq(userId)).fetchSet(Tables.USER_ROLE.ROLE_ID);
     }
 
     @Override

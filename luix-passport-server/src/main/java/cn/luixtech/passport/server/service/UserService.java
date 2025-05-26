@@ -17,8 +17,6 @@ public interface UserService {
 
     ManagedUser findByEmail(String email);
 
-    Set<String> findRoles(String userId);
-
     Set<String> findOrgIds(String userId);
 
     Set<String> findPermissions(String userId);
