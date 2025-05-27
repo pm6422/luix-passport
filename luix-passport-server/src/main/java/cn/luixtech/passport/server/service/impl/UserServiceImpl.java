@@ -103,9 +103,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         boolean passwordNonExpired = user.getPasswordExpiresAt() == null || Instant.now().isBefore(user.getPasswordExpiresAt());
 
         Set<String> roleIds = userRoleService.findRoleIds(user.getId());
-        Set<String> permissions = rolePermissionService.findPermissionIds(roleIds);
-        List<GrantedAuthority> authorities = roleIds.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+        Set<String> permissionIds = rolePermissionService.findPermissionIds(roleIds);
         Set<String> orgIds = orgUserService.findOrgIdsByUserId(user.getId());
+
+        List<GrantedAuthority> authorities = roleIds.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
 
         String modifiedTime = ISO_8601_EXTENDED_DATETIME_TIME_ZONE_FORMAT.format(user.getModifiedAt().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
 
@@ -115,7 +116,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
         return new AuthUser(user.getId(), user.getUsername(), user.getEmail(), user.getMobileNo(), user.getFirstName(),
                 user.getLastName(), user.getPasswordHash(), user.getEnabled(), accountNonExpired, passwordNonExpired,
-                true, photoUrl, user.getLocale(), modifiedTime, authorities, roleIds, permissions, orgIds);
+                true, photoUrl, user.getLocale(), modifiedTime, authorities, roleIds, permissionIds, orgIds);
     }
 
     @Override
