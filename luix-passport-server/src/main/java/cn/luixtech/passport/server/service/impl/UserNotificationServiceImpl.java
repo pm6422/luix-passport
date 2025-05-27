@@ -28,7 +28,7 @@ public class UserNotificationServiceImpl implements UserNotificationService {
 
     @Override
     public void sendBroadcastNotification(String title, String content) {
-        Notification notification = saveNotification(null, title, content, Notification.TYPE_SYSTEM);
+        Notification notification = saveNotification(title, content, Notification.TYPE_SYSTEM);
 
         // Create user notifications for each user
         List<User> allUsers = userRepository.findAll();
@@ -38,8 +38,8 @@ public class UserNotificationServiceImpl implements UserNotificationService {
     }
 
     @Override
-    public void sendPersonalNotification(String senderId, List<String> receiverIds, String title, String content) {
-        Notification notification = saveNotification(senderId, title, content, Notification.TYPE_PERSONAL);
+    public void sendPersonalNotification(List<String> receiverIds, String title, String content) {
+        Notification notification = saveNotification(title, content, Notification.TYPE_PERSONAL);
 
         // Create user notifications for each receiver
         List<User> receivers = userRepository.findAllById(receiverIds);
@@ -48,12 +48,11 @@ public class UserNotificationServiceImpl implements UserNotificationService {
         }
     }
 
-    private Notification saveNotification(String senderId, String title, String content, String type) {
+    private Notification saveNotification(String title, String content, String type) {
         Notification notification = new Notification();
         notification.setTitle(title);
         notification.setContent(content);
         notification.setType(type);
-        notification.setSenderId(senderId);
         notification = notificationRepository.save(notification);
 
         return notification;

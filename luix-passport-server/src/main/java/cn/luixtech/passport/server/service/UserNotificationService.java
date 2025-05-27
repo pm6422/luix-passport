@@ -9,7 +9,7 @@ import java.util.List;
 public interface UserNotificationService {
     void sendBroadcastNotification(String title, String content);
 
-    void sendPersonalNotification(String senderId, List<String> receiverIds, String title, String content);
+    void sendPersonalNotification(List<String> receiverIds, String title, String content);
 
     long getUnreadCount(String username);
 
