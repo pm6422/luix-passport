@@ -1,7 +1,6 @@
 package cn.luixtech.passport.server.service.impl;
 
 
-import cn.luixtech.passport.server.domain.DataDict;
 import cn.luixtech.passport.server.domain.TableSeqNumber;
 import cn.luixtech.passport.server.persistence.Tables;
 import cn.luixtech.passport.server.repository.TableSeqNumberRepository;
@@ -13,7 +12,6 @@ import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.impl.DSL;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
@@ -26,6 +24,7 @@ public class TableSeqNumberServiceImpl implements TableSeqNumberService {
     private final TableSeqNumberRepository tableSeqNumberRepository;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void init() {
         upsertSeqNumber(Tables.DATA_DICT.getName());
     }
