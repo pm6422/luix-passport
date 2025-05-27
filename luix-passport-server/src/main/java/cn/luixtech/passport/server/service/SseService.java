@@ -10,15 +10,15 @@ import java.util.Set;
  */
 public interface SseService {
 
-    SseEmitter add(String userId);
+    SseEmitter add(String username);
 
-    void remove(String userId);
+    void remove(String username);
 
     void removeAll();
 
-    void pushMessage(String userId, String message);
+    void pushMessage(String username, String message);
 
     void cleanUp();
 
-    Set<String> getOnlineUserIds();
+    Set<String> getOnlineUsernames();
 }

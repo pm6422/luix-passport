@@ -3,7 +3,6 @@ package cn.luixtech.passport.server.service.impl;
 import cn.luixtech.passport.server.domain.UserRole;
 import cn.luixtech.passport.server.repository.UserRoleRepository;
 import cn.luixtech.passport.server.service.UserRoleService;
-import com.luixtech.uidgenerator.core.id.IdGenerator;
 import lombok.AllArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.jooq.DSLContext;
@@ -28,22 +27,22 @@ public class UserRoleServiceImpl implements UserRoleService {
     private final DSLContext         dslContext;
 
     @Override
-    public Set<String> findRoleIds(String userId) {
+    public Set<String> findRoleIds(String username) {
         return dslContext.select(USER_ROLE.ROLE_ID)
                 .from(USER_ROLE)
-                .where(USER_ROLE.USER_ID.eq(userId))
+                .where(USER_ROLE.USERNAME.eq(username))
                 .fetchSet(USER_ROLE.ROLE_ID);
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void update(String userId, Set<String> newRoleIds) {
+    public void update(String username, Set<String> newRoleIds) {
         if (CollectionUtils.isEmpty(newRoleIds)) {
             return;
         }
 
         // 1. query existing roles
-        List<UserRole> existingRoles = userRoleRepository.findByUserId(userId);
+        List<UserRole> existingRoles = userRoleRepository.findByUsername(username);
         Set<String> existingRoleIds = existingRoles.stream()
                 .map(UserRole::getRoleId)
                 .collect(Collectors.toSet());
@@ -59,21 +58,21 @@ public class UserRoleServiceImpl implements UserRoleService {
 
         // 3. execute update
         if (CollectionUtils.isNotEmpty(rolesToDelete)) {
-            userRoleRepository.deleteByUserIdAndRoleIdIn(userId, rolesToDelete);
+            userRoleRepository.deleteByUsernameAndRoleIdIn(username, rolesToDelete);
         }
         if (CollectionUtils.isNotEmpty(rolesToAdd)) {
-            List<UserRole> newUserRoles = assignRolesToUser(userId, rolesToAdd);
+            List<UserRole> newUserRoles = assignRolesToUser(username, rolesToAdd);
             userRoleRepository.saveAll(newUserRoles);
         }
     }
 
     @Override
-    public List<UserRole> assignWithDefaults(String userId, Set<String> roleIds) {
-        List<UserRole> userRoles = assignRolesToUser(userId, roleIds);
+    public List<UserRole> assignWithDefaults(String username, Set<String> roleIds) {
+        List<UserRole> userRoles = assignRolesToUser(username, roleIds);
 
         // set default user roles
-        UserRole anoRole = buildUserRole(userId, ROLE_ANONYMOUS);
-        UserRole userRole = buildUserRole(userId, ROLE_USER);
+        UserRole anoRole = buildUserRole(username, ROLE_ANONYMOUS);
+        UserRole userRole = buildUserRole(username, ROLE_USER);
 
         if (!userRoles.contains(anoRole)) {
             userRoles.add(anoRole);
@@ -86,22 +85,22 @@ public class UserRoleServiceImpl implements UserRoleService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void deleteByUserId(String id) {
-        userRoleRepository.deleteByUserId(id);
+    public void deleteByUsername(String username) {
+        userRoleRepository.deleteByUsername(username);
     }
 
-    private List<UserRole> assignRolesToUser(String userId, Set<String> roleIds) {
+    private List<UserRole> assignRolesToUser(String username, Set<String> roleIds) {
         if (CollectionUtils.isEmpty(roleIds)) {
             return Collections.emptyList();
         }
         return roleIds.stream()
-                .map(auth -> buildUserRole(userId, auth))
+                .map(auth -> buildUserRole(username, auth))
                 .collect(Collectors.toList());
     }
 
-    private UserRole buildUserRole(String userId, String authority) {
+    private UserRole buildUserRole(String username, String authority) {
         UserRole userRole = new UserRole();
-        userRole.setUserId(userId);
+        userRole.setUsername(username);
         userRole.setRoleId(authority);
         return userRole;
     }

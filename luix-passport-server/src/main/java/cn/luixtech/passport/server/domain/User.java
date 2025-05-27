@@ -1,11 +1,12 @@
 package cn.luixtech.passport.server.domain;
 
-import cn.luixtech.passport.server.domain.base.AbstractUpdatableDomain;
+import cn.luixtech.passport.server.domain.base.AbstractUpdateDomain;
 import cn.luixtech.passport.server.domain.base.listener.AuditableEntityListener;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,13 +23,14 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class User extends AbstractUpdatableDomain implements Serializable {
+public class User extends AbstractUpdateDomain implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     @NotEmpty(message = "username:{Validation.NotEmpty}")
     @Column(nullable = false)
+    @Id
     private String username;
 
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)

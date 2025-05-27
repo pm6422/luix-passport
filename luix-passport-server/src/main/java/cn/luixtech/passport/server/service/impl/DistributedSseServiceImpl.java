@@ -28,27 +28,27 @@
 //    }
 //
 //    @Override
-//    public SseEmitter add(String userId) {
-//        if (LOCAL_USER_EMITTERS.containsKey(userId)) {
-//            return LOCAL_USER_EMITTERS.get(userId);
+//    public SseEmitter add(String username) {
+//        if (LOCAL_USER_EMITTERS.containsKey(username)) {
+//            return LOCAL_USER_EMITTERS.get(username);
 //        }
 //        try {
 //            // Set the timeout period to 30 minutes
 //            SseEmitter sseEmitter = new SseEmitter(TimeUnit.MINUTES.toMillis(30));
-//            sseEmitter.onCompletion(completionCallback(userId));
-//            sseEmitter.onError(errorCallback(userId));
-//            sseEmitter.onTimeout(timeoutCallback(userId));
-//            LOCAL_USER_EMITTERS.put(userId, sseEmitter);
+//            sseEmitter.onCompletion(completionCallback(username));
+//            sseEmitter.onError(errorCallback(username));
+//            sseEmitter.onTimeout(timeoutCallback(username));
+//            LOCAL_USER_EMITTERS.put(username, sseEmitter);
 //            return sseEmitter;
 //        } catch (Exception e) {
-//            log.error("Failed to create SseEmitter connection for user ID: " + userId, e);
+//            log.error("Failed to create SseEmitter connection for user ID: " + username, e);
 //            return null;
 //        }
 //    }
 //
 //    @Override
-//    public void remove(String userId) {
-//        LOCAL_USER_EMITTERS.remove(userId);
+//    public void remove(String username) {
+//        LOCAL_USER_EMITTERS.remove(username);
 //    }
 //
 //    @Override
@@ -58,23 +58,23 @@
 //
 //    @RabbitListener(queues = "sse.${spring.application.instance-id}")
 //    public void handleRemoteSseMessage(SseMessage message) {
-//        if (LOCAL_USER_EMITTERS.containsKey(message.getUserId())) {
-//            pushMessage(message.getUserId(), message.getMessage());
+//        if (LOCAL_USER_EMITTERS.containsKey(message.getUsername())) {
+//            pushMessage(message.getUsername(), message.getMessage());
 //        }
 //    }
 //
 //    @Override
-//    public void pushMessage(String userId, String message) {
-//        if (LOCAL_USER_EMITTERS.containsKey(userId)) {
-//            SseEmitter emitter = LOCAL_USER_EMITTERS.get(userId);
+//    public void pushMessage(String username, String message) {
+//        if (LOCAL_USER_EMITTERS.containsKey(username)) {
+//            SseEmitter emitter = LOCAL_USER_EMITTERS.get(username);
 //            try {
 //                emitter.send(message);
 //            } catch (IOException e) {
-//                remove(userId);
+//                remove(username);
 //            }
 //        } else {
 //            // Broadcast to all users
-//            rabbitTemplate.convertAndSend("sse.exchange", "user." + userId, SseMessage.of(userId, message));
+//            rabbitTemplate.convertAndSend("sse.exchange", "user." + username, SseMessage.of(username, message));
 //        }
 //    }
 //
@@ -94,39 +94,39 @@
 //    /**
 //     * Process completion callback
 //     *
-//     * @param userId user ID
+//     * @param username user ID
 //     * @return an Runnable
 //     */
-//    private Runnable completionCallback(String userId) {
+//    private Runnable completionCallback(String username) {
 //        return () -> {
-//            log.info("Completed SEE with user ID: {}", userId);
-//            remove(userId);
+//            log.info("Completed SEE with user ID: {}", username);
+//            remove(username);
 //        };
 //    }
 //
 //    /**
 //     * Process timeout callback
 //     *
-//     * @param userId user ID
+//     * @param username user ID
 //     * @return an Runnable
 //     */
-//    private Runnable timeoutCallback(String userId) {
+//    private Runnable timeoutCallback(String username) {
 //        return () -> {
-//            log.info("SEE timeout with user ID: {}", userId);
-//            remove(userId);
+//            log.info("SEE timeout with user ID: {}", username);
+//            remove(username);
 //        };
 //    }
 //
 //    /**
 //     * Process error callback
 //     *
-//     * @param userId user ID
+//     * @param username user ID
 //     * @return an Runnable
 //     */
-//    private Consumer<Throwable> errorCallback(String userId) {
+//    private Consumer<Throwable> errorCallback(String username) {
 //        return throwable -> {
-//            log.info(" SEE error with user ID: " + userId, throwable);
-//            remove(userId);
+//            log.info(" SEE error with user ID: " + username, throwable);
+//            remove(username);
 //        };
 //    }
 //

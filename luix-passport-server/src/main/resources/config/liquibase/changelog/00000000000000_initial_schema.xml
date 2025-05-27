@@ -207,16 +207,13 @@
             <column name="org_id" type="VARCHAR(20)">
                 <constraints nullable="false"/>
             </column>
-            <column name="user_id" type="VARCHAR(20)">
+            <column name="username" type="VARCHAR(20)">
                 <constraints nullable="false"/>
             </column>
         </createTable>
         <createTable tableName="user">
-            <column name="id" type="VARCHAR(20)">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
             <column name="username" type="VARCHAR(20)">
-                <constraints nullable="false" unique="true"/>
+                <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="email" type="VARCHAR(30)">
                 <constraints nullable="false" unique="true"/>
@@ -293,7 +290,7 @@
             <column name="id" type="VARCHAR(20)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="user_id" type="VARCHAR(20)">
+            <column name="username" type="VARCHAR(20)">
                 <constraints nullable="false"/>
             </column>
             <column name="role_id" type="VARCHAR(20)">
@@ -369,7 +366,7 @@
             <column name="id" type="VARCHAR(20)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="user_id" type="VARCHAR(20)">
+            <column name="username" type="VARCHAR(20)">
                 <constraints nullable="false"/>
             </column>
             <column name="event" type="VARCHAR(36)">
@@ -386,7 +383,7 @@
             <column name="id" type="VARCHAR(20)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="user_id" type="VARCHAR(20)">
+            <column name="username" type="VARCHAR(20)">
                 <constraints nullable="false"/>
             </column>
             <column name="logged_at" type="timestamp">
@@ -516,11 +513,11 @@
         <createIndex tableName="user" indexName="idx_user_date_time_format_id" unique="false">
             <column name="date_time_format_id"/>
         </createIndex>
-        <createIndex tableName="org_user" indexName="idx_org_user_user_id" unique="false">
-            <column name="user_id"/>
+        <createIndex tableName="org_user" indexName="idx_org_user_username" unique="false">
+            <column name="username"/>
         </createIndex>
-        <createIndex tableName="user_role" indexName="idx_user_role_user_id" unique="false">
-            <column name="user_id"/>
+        <createIndex tableName="user_role" indexName="idx_user_role_username" unique="false">
+            <column name="username"/>
         </createIndex>
         <createIndex tableName="user_role" indexName="idx_user_role_role_id" unique="false">
             <column name="role_id"/>
@@ -531,8 +528,8 @@
         <createIndex tableName="role_permission" indexName="idx_role_permission_permission_id" unique="false">
             <column name="permission_id"/>
         </createIndex>
-        <createIndex tableName="user_login" indexName="idx_user_login_user_id" unique="false">
-            <column name="user_id"/>
+        <createIndex tableName="user_login" indexName="idx_user_login_username" unique="false">
+            <column name="username"/>
         </createIndex>
         <createIndex tableName="user_profile_pic" indexName="idx_user_profile_pic_id" unique="false">
             <column name="id"/>
@@ -550,7 +547,7 @@
 
         <addUniqueConstraint
                 tableName="user_role"
-                columnNames="user_id, role_id"
+                columnNames="username, role_id"
                 constraintName="uk_user_role"
         />
         <addUniqueConstraint
@@ -569,18 +566,18 @@
 
         <addForeignKeyConstraint
                 baseTableName="org_user"
-                baseColumnNames="user_id"
-                constraintName="fk_org_user_user_id"
+                baseColumnNames="username"
+                constraintName="fk_org_user_username"
                 referencedTableName="user"
-                referencedColumnNames="id"
+                referencedColumnNames="username"
                 onDelete="CASCADE"
                 onUpdate="CASCADE"/>
         <addForeignKeyConstraint
                 baseTableName="user_role"
-                baseColumnNames="user_id"
-                constraintName="fk_user_role_user_id"
+                baseColumnNames="username"
+                constraintName="fk_user_role_username"
                 referencedTableName="user"
-                referencedColumnNames="id"
+                referencedColumnNames="username"
                 onDelete="CASCADE"
                 onUpdate="CASCADE"/>
         <addForeignKeyConstraint
@@ -609,18 +606,18 @@
                 onUpdate="CASCADE"/>
         <addForeignKeyConstraint
                 baseTableName="user_login"
-                baseColumnNames="user_id"
-                constraintName="fk_user_login_user_id"
+                baseColumnNames="username"
+                constraintName="fk_user_login_username"
                 referencedTableName="user"
-                referencedColumnNames="id"
+                referencedColumnNames="username"
                 onDelete="CASCADE"
                 onUpdate="CASCADE"/>
         <addForeignKeyConstraint
                 baseTableName="user_profile_pic"
                 baseColumnNames="id"
-                constraintName="fk_user_profile_pic_user_id"
+                constraintName="fk_user_profile_pic_username"
                 referencedTableName="user"
-                referencedColumnNames="id"
+                referencedColumnNames="username"
                 onDelete="CASCADE"
                 onUpdate="CASCADE"/>
         <addForeignKeyConstraint
@@ -642,9 +639,9 @@
         <addForeignKeyConstraint
                 baseTableName="notification"
                 baseColumnNames="sender_id"
-                constraintName="fk_notification_user_id"
+                constraintName="fk_notification_username"
                 referencedTableName="user"
-                referencedColumnNames="id"
+                referencedColumnNames="username"
                 onDelete="SET NULL"
                 onUpdate="CASCADE"/>
         <addForeignKeyConstraint
@@ -652,7 +649,7 @@
                 baseColumnNames="receiver_id"
                 constraintName="fk_user_notification_user"
                 referencedTableName="user"
-                referencedColumnNames="id"
+                referencedColumnNames="username"
                 onDelete="CASCADE"
                 onUpdate="CASCADE"/>
         <addForeignKeyConstraint

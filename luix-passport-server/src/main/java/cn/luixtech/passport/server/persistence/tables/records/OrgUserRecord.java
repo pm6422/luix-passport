@@ -50,16 +50,16 @@ public class OrgUserRecord extends UpdatableRecordImpl<OrgUserRecord> implements
     }
 
     /**
-     * Setter for <code>public.org_user.user_id</code>.
+     * Setter for <code>public.org_user.username</code>.
      */
-    public void setUserId(String value) {
+    public void setUsername(String value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>public.org_user.user_id</code>.
+     * Getter for <code>public.org_user.username</code>.
      */
-    public String getUserId() {
+    public String getUsername() {
         return (String) get(2);
     }
 
@@ -98,7 +98,7 @@ public class OrgUserRecord extends UpdatableRecordImpl<OrgUserRecord> implements
 
     @Override
     public Field<String> field3() {
-        return OrgUser.ORG_USER.USER_ID;
+        return OrgUser.ORG_USER.USERNAME;
     }
 
     @Override
@@ -113,7 +113,7 @@ public class OrgUserRecord extends UpdatableRecordImpl<OrgUserRecord> implements
 
     @Override
     public String component3() {
-        return getUserId();
+        return getUsername();
     }
 
     @Override
@@ -128,7 +128,7 @@ public class OrgUserRecord extends UpdatableRecordImpl<OrgUserRecord> implements
 
     @Override
     public String value3() {
-        return getUserId();
+        return getUsername();
     }
 
     @Override
@@ -145,7 +145,7 @@ public class OrgUserRecord extends UpdatableRecordImpl<OrgUserRecord> implements
 
     @Override
     public OrgUserRecord value3(String value) {
-        setUserId(value);
+        setUsername(value);
         return this;
     }
 
@@ -171,12 +171,12 @@ public class OrgUserRecord extends UpdatableRecordImpl<OrgUserRecord> implements
     /**
      * Create a detached, initialised OrgUserRecord
      */
-    public OrgUserRecord(String id, String orgId, String userId) {
+    public OrgUserRecord(String id, String orgId, String username) {
         super(OrgUser.ORG_USER);
 
         setId(id);
         setOrgId(orgId);
-        setUserId(userId);
+        setUsername(username);
         resetChangedOnNotNull();
     }
 }

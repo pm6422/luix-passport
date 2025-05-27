@@ -111,7 +111,7 @@ public class AccountController {
     @Operation(summary = "update current user")
     @PutMapping("/api/accounts/user")
     public ResponseEntity<Void> update(@Parameter(description = "new user info", required = true) @Valid @RequestBody ManagedUser domain) {
-        Validate.isTrue(AuthUtils.getCurrentUserId().equals(domain.getId()), "Invalid user ID!");
+        Validate.isTrue(AuthUtils.getCurrentUsername().equals(domain.getUsername()), "Invalid user ID!");
         domain.setEmail(null);
         domain.setMobileNo(null);
         domain.setRemark(null);
@@ -124,7 +124,7 @@ public class AccountController {
     @Operation(summary = "send password change verification code email")
     @PostMapping("/api/accounts/request-password-change-verification-code")
     public ResponseEntity<Void> requestPasswordChangeVerificationCode(HttpServletRequest request) {
-        User currentUser = userRepository.findById(AuthUtils.getCurrentUserId()).orElseThrow(() -> new DataNotFoundException(AuthUtils.getCurrentUserId()));
+        User currentUser = userRepository.findById(AuthUtils.getCurrentUsername()).orElseThrow(() -> new DataNotFoundException(AuthUtils.getCurrentUsername()));
         User user = userService.requestPasswordChangeVerificationCode(currentUser);
         mailService.sendVerificationCodeMail(user, user.getEmail(), getRequestUrl(request));
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("NM1002")).build();
@@ -134,7 +134,7 @@ public class AccountController {
     @PutMapping("/api/accounts/password")
     public ResponseEntity<Void> changePassword(HttpServletRequest request,
                                                @Parameter(description = "new password", required = true) @Valid @RequestBody ChangePassword dto) {
-        User user = userService.changePassword(AuthUtils.getCurrentUserId(), dto.getOldRawPassword(), dto.getNewRawPassword(), dto.getVerificationCode());
+        User user = userService.changePassword(AuthUtils.getCurrentUsername(), dto.getOldRawPassword(), dto.getNewRawPassword(), dto.getVerificationCode());
         mailService.sendPasswordChangedMail(user, getRequestUrl(request));
         // Logout asynchronously
         applicationEventPublisher.publishEvent(new LogoutEvent(this, AuthUtils.getCurrentUsername()));
@@ -151,7 +151,7 @@ public class AccountController {
     @PostMapping("/api/accounts/request-email-change-verification-code")
     public ResponseEntity<Void> requestEmailChangeVerificationCode(HttpServletRequest request,
                                                                    @Parameter(description = "email", required = true) @RequestParam String email) {
-        User currentUser = userRepository.findById(AuthUtils.getCurrentUserId()).orElseThrow(() -> new DataNotFoundException(AuthUtils.getCurrentUserId()));
+        User currentUser = userRepository.findById(AuthUtils.getCurrentUsername()).orElseThrow(() -> new DataNotFoundException(AuthUtils.getCurrentUsername()));
         User user = userService.requestEmailChangeVerificationCode(currentUser, email);
         mailService.sendVerificationCodeMail(user, email, getRequestUrl(request));
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("NM1002")).build();
@@ -160,7 +160,7 @@ public class AccountController {
     @Operation(summary = "change email with verification code")
     @PostMapping("/api/accounts/change-email")
     public ResponseEntity<Void> changeEmail(@Parameter(description = "verificationCode", required = true) @RequestParam String verificationCode) {
-        User currentUser = userRepository.findById(AuthUtils.getCurrentUserId()).orElseThrow(() -> new DataNotFoundException(AuthUtils.getCurrentUserId()));
+        User currentUser = userRepository.findById(AuthUtils.getCurrentUsername()).orElseThrow(() -> new DataNotFoundException(AuthUtils.getCurrentUsername()));
         Validate.isTrue(StringUtils.isNotEmpty(currentUser.getVerificationCode()), "Please send verification code first!");
         Validate.isTrue(verificationCode.equalsIgnoreCase(currentUser.getVerificationCode()), "Invalid verification code!");
         Validate.isTrue(currentUser.getVerificationCodeSentAt().plus(1, ChronoUnit.DAYS).isAfter(Instant.now()), "Invalid verification exceeds one day before!");
@@ -191,7 +191,7 @@ public class AccountController {
         if (currentUser != null) {
             Optional<User> user = userRepository.findOneByEmail(currentUser.getEmail());
             if (user.isPresent()) {
-                Optional<UserProfilePic> userPhoto = userProfilePicRepository.findById(user.get().getId());
+                Optional<UserProfilePic> userPhoto = userProfilePicRepository.findById(user.get().getUsername());
                 if (userPhoto.isPresent()) {
                     return ResponseEntity.ok(userPhoto.get().getProfilePic());
                 }
@@ -207,15 +207,15 @@ public class AccountController {
     @Operation(summary = "upload profile picture of the current user")
     @PostMapping(value = "/api/accounts/profile-pic/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public void uploadProfilePicture(@Parameter(description = "user profile photo", required = true) @RequestPart MultipartFile file) throws IOException {
-        User user = userRepository.findById(AuthUtils.getCurrentUserId()).orElseThrow(() -> new DataNotFoundException(AuthUtils.getCurrentUserId()));
-        userProfilePicService.save(user.getId(), file.getBytes());
+        User user = userRepository.findById(AuthUtils.getCurrentUsername()).orElseThrow(() -> new DataNotFoundException(AuthUtils.getCurrentUsername()));
+        userProfilePicService.save(user.getUsername(), file.getBytes());
         log.info("Uploaded profile picture with file name {}", file.getOriginalFilename());
     }
 
     @Operation(summary = "download profile picture of the current user")
     @GetMapping("/api/accounts/profile-pic/download")
     public ResponseEntity<Resource> downloadProfilePicture() {
-        Optional<UserProfilePic> existingOne = userProfilePicRepository.findById(AuthUtils.getCurrentUserId());
+        Optional<UserProfilePic> existingOne = userProfilePicRepository.findById(AuthUtils.getCurrentUsername());
         if (existingOne.isEmpty()) {
             return ResponseEntity.ok().body(null);
         }
@@ -253,7 +253,7 @@ public class AccountController {
     @Operation(summary = "delete current user")
     @DeleteMapping("/api/accounts")
     public void delete() {
-        userService.deleteById(AuthUtils.getCurrentUserId());
+        userService.deleteByUsername(AuthUtils.getCurrentUsername());
     }
 
     @Operation(summary = "sign out current user")

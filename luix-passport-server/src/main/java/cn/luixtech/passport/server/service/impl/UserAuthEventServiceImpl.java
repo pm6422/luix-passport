@@ -16,11 +16,11 @@ public class UserAuthEventServiceImpl implements UserAuthEventService {
     private final UserAuthEventRepository userAuthEventRepository;
 
     @Override
-    public Page<UserAuthEvent> find(Pageable pageable, String userId, String event) {
-        // Ignore query parameter if it has a null value
+    public Page<UserAuthEvent> find(Pageable pageable, String username, String event) {
+        // Ignore a query parameter if it has a null value
         ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreNullValues();
         UserAuthEvent criteria = new UserAuthEvent();
-        criteria.setUserId(userId);
+        criteria.setUsername(username);
         criteria.setEvent(event);
         Example<UserAuthEvent> queryExample = Example.of(criteria, matcher);
         return userAuthEventRepository.findAll(queryExample, pageable);

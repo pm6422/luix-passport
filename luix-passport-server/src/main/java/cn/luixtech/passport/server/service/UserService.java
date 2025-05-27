@@ -13,7 +13,7 @@ import java.util.Set;
 public interface UserService {
     Optional<User> findOne(String loginName);
 
-    ManagedUser findById(String id);
+    ManagedUser findByUsername(String username);
 
     ManagedUser findByEmail(String email);
 
@@ -25,7 +25,7 @@ public interface UserService {
 
     void activate(String activationCode);
 
-    User changePassword(String id, String oldRawPassword, String newRawPassword, String verificationCode);
+    User changePassword(String username, String oldRawPassword, String newRawPassword, String verificationCode);
 
     User requestEmailChangeVerificationCode(User user, String email);
 
@@ -37,13 +37,13 @@ public interface UserService {
 
     void changeToNewEmail(User currentUser);
 
-    void deleteById(String id);
+    void deleteByUsername(String username);
 
     String generateRandomCode();
 
     String generateRandomVerificationCode();
 
-    void extendValidityPeriod(String id, long amountToAdd, TemporalUnit unit);
+    void extendValidityPeriod(String username, long amountToAdd, TemporalUnit unit);
 
-    void updateLastLoginTime(String id);
+    void updateLastLoginTime(String username);
 }

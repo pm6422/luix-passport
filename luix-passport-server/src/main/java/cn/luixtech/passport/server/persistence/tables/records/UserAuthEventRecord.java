@@ -38,16 +38,16 @@ public class UserAuthEventRecord extends UpdatableRecordImpl<UserAuthEventRecord
     }
 
     /**
-     * Setter for <code>public.user_auth_event.user_id</code>.
+     * Setter for <code>public.user_auth_event.username</code>.
      */
-    public void setUserId(String value) {
+    public void setUsername(String value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>public.user_auth_event.user_id</code>.
+     * Getter for <code>public.user_auth_event.username</code>.
      */
-    public String getUserId() {
+    public String getUsername() {
         return (String) get(1);
     }
 
@@ -137,7 +137,7 @@ public class UserAuthEventRecord extends UpdatableRecordImpl<UserAuthEventRecord
 
     @Override
     public Field<String> field2() {
-        return UserAuthEvent.USER_AUTH_EVENT.USER_ID;
+        return UserAuthEvent.USER_AUTH_EVENT.USERNAME;
     }
 
     @Override
@@ -167,7 +167,7 @@ public class UserAuthEventRecord extends UpdatableRecordImpl<UserAuthEventRecord
 
     @Override
     public String component2() {
-        return getUserId();
+        return getUsername();
     }
 
     @Override
@@ -197,7 +197,7 @@ public class UserAuthEventRecord extends UpdatableRecordImpl<UserAuthEventRecord
 
     @Override
     public String value2() {
-        return getUserId();
+        return getUsername();
     }
 
     @Override
@@ -228,7 +228,7 @@ public class UserAuthEventRecord extends UpdatableRecordImpl<UserAuthEventRecord
 
     @Override
     public UserAuthEventRecord value2(String value) {
-        setUserId(value);
+        setUsername(value);
         return this;
     }
 
@@ -281,11 +281,11 @@ public class UserAuthEventRecord extends UpdatableRecordImpl<UserAuthEventRecord
     /**
      * Create a detached, initialised UserAuthEventRecord
      */
-    public UserAuthEventRecord(String id, String userId, String event, String remark, Instant createdAt, String createdBy) {
+    public UserAuthEventRecord(String id, String username, String event, String remark, Instant createdAt, String createdBy) {
         super(UserAuthEvent.USER_AUTH_EVENT);
 
         setId(id);
-        setUserId(userId);
+        setUsername(username);
         setEvent(event);
         setRemark(remark);
         setCreatedAt(createdAt);

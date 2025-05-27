@@ -60,9 +60,9 @@ public class UserRole extends TableImpl<UserRoleRecord> {
     public final TableField<UserRoleRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(20).nullable(false), this, "");
 
     /**
-     * The column <code>public.user_role.user_id</code>.
+     * The column <code>public.user_role.username</code>.
      */
-    public final TableField<UserRoleRecord, String> USER_ID = createField(DSL.name("user_id"), SQLDataType.VARCHAR(20).nullable(false), this, "");
+    public final TableField<UserRoleRecord, String> USERNAME = createField(DSL.name("username"), SQLDataType.VARCHAR(20).nullable(false), this, "");
 
     /**
      * The column <code>public.user_role.role_id</code>.
@@ -129,7 +129,7 @@ public class UserRole extends TableImpl<UserRoleRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.IDX_USER_ROLE_ROLE_ID, Indexes.IDX_USER_ROLE_USER_ID);
+        return Arrays.asList(Indexes.IDX_USER_ROLE_ROLE_ID, Indexes.IDX_USER_ROLE_USERNAME);
     }
 
     @Override
@@ -144,7 +144,7 @@ public class UserRole extends TableImpl<UserRoleRecord> {
 
     @Override
     public List<ForeignKey<UserRoleRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.USER_ROLE__FK_USER_ROLE_USER_ID, Keys.USER_ROLE__FK_USER_ROLE_ROLE_ID);
+        return Arrays.asList(Keys.USER_ROLE__FK_USER_ROLE_USERNAME, Keys.USER_ROLE__FK_USER_ROLE_ROLE_ID);
     }
 
     private transient User _user;
@@ -155,7 +155,7 @@ public class UserRole extends TableImpl<UserRoleRecord> {
      */
     public User user() {
         if (_user == null)
-            _user = new User(this, Keys.USER_ROLE__FK_USER_ROLE_USER_ID);
+            _user = new User(this, Keys.USER_ROLE__FK_USER_ROLE_USERNAME);
 
         return _user;
     }

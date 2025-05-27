@@ -22,7 +22,6 @@ import { Link } from "react-router-dom"
 import { Option } from "@/components/custom/multi-select"
 
 const formSchema = z.object({
-  id: z.string().trim().min(1, { message: "Required" }),
   username: z.string().trim().min(1, { message: "Required" }),
   email: z.string().trim().min(1, { message: "Required" }).email("Invalid email format"),
   mobileNo: z.string().trim().min(1, { message: "Required" }).refine(isValidPhoneNumber, { message: "Invalid phone number" }),

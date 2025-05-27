@@ -55,9 +55,9 @@ public class UserAuthEventController {
     @Operation(summary = "find user auth event list")
     @GetMapping("/api/user-auth-events")
     public ResponseEntity<List<UserAuthEvent>> find(@ParameterObject Pageable pageable,
-                                                    @Parameter(description = "userId") @RequestParam(value = "userId", required = false) String userId,
+                                                    @Parameter(description = "username") @RequestParam(value = "username", required = false) String username,
                                                     @Parameter(description = "event") @RequestParam(value = "event", required = false) String event) {
-        Page<UserAuthEvent> domains = userAuthEventService.find(pageable, userId, event);
+        Page<UserAuthEvent> domains = userAuthEventService.find(pageable, username, event);
         return ResponseEntity.ok().headers(generatePageHeaders(domains)).body(domains.getContent());
     }
 
@@ -77,7 +77,7 @@ public class UserAuthEventController {
             return ResponseEntity.ok(loginUsers);
         }
         for (UserAuthEvent domain : domains.getContent()) {
-            Optional<User> user = userRepository.findById(domain.getUserId());
+            Optional<User> user = userRepository.findById(domain.getUsername());
             if (user.isPresent()) {
                 LoginUser loginUser = new LoginUser();
                 BeanUtils.copyProperties(user.get(), loginUser);
@@ -91,7 +91,7 @@ public class UserAuthEventController {
     @Operation(summary = "get user login count in last seven days")
     @GetMapping("/api/user-auth-events/user-login-count")
     public ResponseEntity<List<UserLoginCount>> getUserLoginCount() {
-        User user = userRepository.findById(AuthUtils.getCurrentUserId()).orElseThrow(()-> new DataNotFoundException(AuthUtils.getCurrentUserId()));
+        User user = userRepository.findById(AuthUtils.getCurrentUsername()).orElseThrow(()-> new DataNotFoundException(AuthUtils.getCurrentUsername()));
         List<UserLoginCount> userLoginCounts = new ArrayList<>();
         Instant now = Instant.now();
         ZonedDateTime zonedDateTime = now.atZone(ZoneId.of(user.getTimeZoneId()));

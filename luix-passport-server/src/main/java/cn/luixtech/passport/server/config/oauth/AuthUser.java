@@ -6,16 +6,16 @@ import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
+import java.io.Serial;
 import java.util.Collection;
 import java.util.Set;
 
 @JsonDeserialize(using = AuthUserDeserializer.class)
 public class AuthUser extends User {
-    private static final long        serialVersionUID = -8021915441738843058L;
+    @Serial
+    private static final long   serialVersionUID = -8021915441738843058L;
     @Getter
-    private              String      id;
-    @Getter
-    private              String      email;
+    private              String email;
     @Getter
     private              String      mobileNo;
     @Getter
@@ -48,14 +48,13 @@ public class AuthUser extends User {
         this.email = email;
     }
 
-    public AuthUser(String id, String username, String email, String mobileNo,
+    public AuthUser(String username, String email, String mobileNo,
                     String firstName, String lastName, String password, boolean enabled,
                     boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked,
                     String photoUrl, String locale, String modifiedTime,
                     Collection<? extends GrantedAuthority> authorities,
                     Set<String> roles, Set<String> permissions, Set<String> teamIds) {
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
-        this.id = id;
         this.email = email;
         this.mobileNo = mobileNo;
         this.firstName = firstName;

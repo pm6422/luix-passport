@@ -61,19 +61,19 @@ public class UserNotificationServiceImpl implements UserNotificationService {
 
     private void sendNotification(User user, Notification notification) {
         UserNotification userNotification = new UserNotification();
-        userNotification.setReceiverId(user.getId());
+        userNotification.setReceiverId(user.getUsername());
         userNotification.setNotification(notification);
         userNotification.setStatus(UserNotification.STATUS_UNREAD);
         userNotification.setActive(true);
 
         userNotificationRepository.save(userNotification);
 
-        sseService.pushMessage(user.getId(), notification.getTitle());
+        sseService.pushMessage(user.getUsername(), notification.getTitle());
     }
 
     @Override
-    public long getUnreadCount(String userId) {
-        return userNotificationRepository.countByReceiverIdAndStatus(userId, UserNotification.STATUS_UNREAD);
+    public long getUnreadCount(String username) {
+        return userNotificationRepository.countByReceiverIdAndStatus(username, UserNotification.STATUS_UNREAD);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class UserNotificationServiceImpl implements UserNotificationService {
     }
 
     @Override
-    public Page<UserNotification> findserNotifications(Pageable pageable, String receiverId, String keyword) {
+    public Page<UserNotification> findUserNotifications(Pageable pageable, String receiverId, String keyword) {
         return StringUtils.isEmpty(keyword)
                 ? userNotificationRepository.findByReceiverId(pageable, receiverId)
                 : userNotificationRepository.findByReceiverAndKeyword(pageable, receiverId, keyword);

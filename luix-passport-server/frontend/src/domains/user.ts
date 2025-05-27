@@ -2,7 +2,6 @@ import { z } from "zod"
 import { isValidPhoneNumber } from "react-phone-number-input"
 
 export const userSchema = z.object({
-  id: z.string().optional().nullable(),
   username: z.string().trim().min(1, { message: "Required" }),
   email: z.string().trim().min(1, { message: "Required" }).email("Invalid email format"),
   mobileNo: z.string().trim().min(1, { message: "Required" }).refine(isValidPhoneNumber, { message: "Invalid phone number" }),
@@ -28,7 +27,6 @@ export const userSchema = z.object({
 export type User = z.infer<typeof userSchema>
 
 export const initialUserState: User = {
-  id: "",
   username: "",
   email: "",
   mobileNo: "",

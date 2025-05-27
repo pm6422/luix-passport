@@ -24,7 +24,7 @@ public class UserAuthEvent extends AbstractCreatableDomain implements Serializab
     public static final  String AUTH_SUCCESS     = "AuthenticationSuccess";
     public static final  String AUTH_FAILURE     = "AuthenticationFailure";
 
-    private String userId;
+    private String username;
     private String event;
     private String remark;
 }

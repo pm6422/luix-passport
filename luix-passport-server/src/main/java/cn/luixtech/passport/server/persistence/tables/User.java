@@ -50,11 +50,6 @@ public class User extends TableImpl<UserRecord> {
     }
 
     /**
-     * The column <code>public.user.id</code>.
-     */
-    public final TableField<UserRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(20).nullable(false), this, "");
-
-    /**
      * The column <code>public.user.username</code>.
      */
     public final TableField<UserRecord, String> USERNAME = createField(DSL.name("username"), SQLDataType.VARCHAR(20).nullable(false), this, "");
@@ -229,7 +224,7 @@ public class User extends TableImpl<UserRecord> {
 
     @Override
     public List<UniqueKey<UserRecord>> getUniqueKeys() {
-        return Arrays.asList(Keys.USER_USERNAME_KEY, Keys.USER_EMAIL_KEY, Keys.USER_MOBILE_NO_KEY);
+        return Arrays.asList(Keys.USER_EMAIL_KEY, Keys.USER_MOBILE_NO_KEY);
     }
 
     @Override

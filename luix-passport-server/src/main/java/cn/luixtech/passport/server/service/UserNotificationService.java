@@ -11,10 +11,10 @@ public interface UserNotificationService {
 
     void sendPersonalNotification(String senderId, List<String> receiverIds, String title, String content);
 
-    long getUnreadCount(String userId);
+    long getUnreadCount(String username);
 
     void markAsRead(String userNotificationId);
 
-    Page<UserNotification> findserNotifications(Pageable pageable, String receiverId, String keyword);
+    Page<UserNotification> findUserNotifications(Pageable pageable, String receiverId, String keyword);
 
 }

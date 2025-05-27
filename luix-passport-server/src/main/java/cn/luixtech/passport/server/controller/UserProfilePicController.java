@@ -37,10 +37,10 @@ public class UserProfilePicController {
     private final       UserProfilePicRepository userProfilePicRepository;
 
     @Operation(summary = "find user profile picture by user id")
-    @GetMapping("/api/user-profile-pics/{userId}")
+    @GetMapping("/api/user-profile-pics/{username}")
     public ResponseEntity<byte[]> findById(HttpServletRequest request,
-                                           @Parameter(description = "userId", required = true) @PathVariable String userId) throws IOException {
-        Optional<UserProfilePic> userPhoto = userProfilePicRepository.findById(userId);
+                                           @Parameter(description = "username", required = true) @PathVariable String username) throws IOException {
+        Optional<UserProfilePic> userPhoto = userProfilePicRepository.findById(username);
         if (userPhoto.isPresent()) {
             return ResponseEntity.ok(userPhoto.get().getProfilePic());
         }
@@ -54,7 +54,7 @@ public class UserProfilePicController {
     @GetMapping(USER_PHOTO_URL + "{userToken}")
     public ResponseEntity<byte[]> findByUserToken(HttpServletRequest request,
                                                   @Parameter(description = "userToken", required = true) @PathVariable String userToken) throws IOException {
-        String userId = JasyptEncryptUtils.decrypt(userToken, DEFAULT_ALGORITHM, USER_PHOTO_TOKEN_KEY);
-        return findById(request, userId);
+        String username = JasyptEncryptUtils.decrypt(userToken, DEFAULT_ALGORITHM, USER_PHOTO_TOKEN_KEY);
+        return findById(request, username);
     }
 }

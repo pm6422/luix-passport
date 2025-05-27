@@ -4,9 +4,9 @@ import java.util.Set;
 
 public interface OrgUserService {
 
-    Set<String> findOrgIdsByUserId(String userId);
+    Set<String> findOrgIdsByUsername(String username);
 
-    void save(String orgId, Set<String> userIds);
+    void save(String orgId, Set<String> usernames);
 
-    void save(String orgId, String userId);
+    void save(String orgId, String username);
 }

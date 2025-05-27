@@ -64,9 +64,9 @@ public class OrgUser extends TableImpl<OrgUserRecord> {
     public final TableField<OrgUserRecord, String> ORG_ID = createField(DSL.name("org_id"), SQLDataType.VARCHAR(20).nullable(false), this, "");
 
     /**
-     * The column <code>public.org_user.user_id</code>.
+     * The column <code>public.org_user.username</code>.
      */
-    public final TableField<OrgUserRecord, String> USER_ID = createField(DSL.name("user_id"), SQLDataType.VARCHAR(20).nullable(false), this, "");
+    public final TableField<OrgUserRecord, String> USERNAME = createField(DSL.name("username"), SQLDataType.VARCHAR(20).nullable(false), this, "");
 
     private OrgUser(Name alias, Table<OrgUserRecord> aliased) {
         this(alias, aliased, null);
@@ -108,7 +108,7 @@ public class OrgUser extends TableImpl<OrgUserRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.IDX_ORG_USER_USER_ID);
+        return Arrays.asList(Indexes.IDX_ORG_USER_USERNAME);
     }
 
     @Override
@@ -118,7 +118,7 @@ public class OrgUser extends TableImpl<OrgUserRecord> {
 
     @Override
     public List<ForeignKey<OrgUserRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.ORG_USER__FK_ORG_USER_USER_ID);
+        return Arrays.asList(Keys.ORG_USER__FK_ORG_USER_USERNAME);
     }
 
     private transient User _user;
@@ -128,7 +128,7 @@ public class OrgUser extends TableImpl<OrgUserRecord> {
      */
     public User user() {
         if (_user == null)
-            _user = new User(this, Keys.ORG_USER__FK_ORG_USER_USER_ID);
+            _user = new User(this, Keys.ORG_USER__FK_ORG_USER_USERNAME);
 
         return _user;
     }

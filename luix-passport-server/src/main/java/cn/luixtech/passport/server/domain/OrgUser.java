@@ -31,7 +31,7 @@ public class OrgUser extends AbstractBaseDomain implements Serializable {
     private String orgId;
 
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotEmpty(message = "userId:{Validation.NotEmpty}")
+    @NotEmpty(message = "username:{Validation.NotEmpty}")
     @Column(nullable = false)
-    private String userId;
+    private String username;
 }

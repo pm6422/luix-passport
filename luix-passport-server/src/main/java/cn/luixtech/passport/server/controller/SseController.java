@@ -21,7 +21,7 @@ public class SseController {
     @GetMapping(path = "/api/sse/connect", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter connect() {
         // Return a SseEmitter HTTP long connection
-        return Optional.ofNullable(sseService.add(AuthUtils.getCurrentUserId()))
+        return Optional.ofNullable(sseService.add(AuthUtils.getCurrentUsername()))
                 .orElseThrow(() -> new IllegalStateException("Failed to create SSE connection"));
     }
 }

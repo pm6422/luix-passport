@@ -39,10 +39,10 @@ export default function DataDict() {
   }
 
   function deleteRow(row: User): Promise<void> {
-    if(!row.id) {
+    if(!row.username) {
       return Promise.reject("Invalid empty id")
     }
-    return UserService.deleteById(row.id).then(() => {
+    return UserService.deleteById(row.username).then(() => {
       loadPage()
     })
   }
@@ -52,10 +52,10 @@ export default function DataDict() {
   }
 
   function resetPassword(row: User): Promise<void> {
-    if(!row.id) {
+    if(!row.username) {
       return Promise.reject("Invalid empty id")
     }
-    return UserService.resetPassword(row.id)
+    return UserService.resetPassword(row.username)
   }
 
   return (

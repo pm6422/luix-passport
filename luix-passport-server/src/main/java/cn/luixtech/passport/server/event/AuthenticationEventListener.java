@@ -3,10 +3,8 @@ package cn.luixtech.passport.server.event;
 import cn.luixtech.passport.server.config.oauth.AuthUser;
 import cn.luixtech.passport.server.domain.UserAuthEvent;
 import cn.luixtech.passport.server.repository.UserAuthEventRepository;
-import cn.luixtech.passport.server.repository.UserRepository;
 import cn.luixtech.passport.server.service.SseService;
 import cn.luixtech.passport.server.service.UserService;
-import com.luixtech.uidgenerator.core.id.IdGenerator;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -26,7 +24,6 @@ import java.util.List;
 
 import static cn.luixtech.passport.server.domain.UserAuthEvent.AUTH_FAILURE;
 import static cn.luixtech.passport.server.domain.UserAuthEvent.AUTH_SUCCESS;
-import static cn.luixtech.passport.server.utils.AuthUtils.getCurrentUserId;
 import static cn.luixtech.passport.server.utils.AuthUtils.getCurrentUsername;
 
 @Slf4j
@@ -34,7 +31,6 @@ import static cn.luixtech.passport.server.utils.AuthUtils.getCurrentUsername;
 @AllArgsConstructor
 public class AuthenticationEventListener {
     private final UserAuthEventRepository userAuthEventRepository;
-    private final UserRepository          userRepository;
     private final UserService             userService;
     private final SessionRegistry         sessionRegistry;
     private final SseService              sseService;
@@ -44,28 +40,28 @@ public class AuthenticationEventListener {
         if (event.getSource() instanceof UsernamePasswordAuthenticationToken token) {
             if (token.getPrincipal() instanceof AuthUser authUser) {
                 UserAuthEvent domain = new UserAuthEvent();
-                domain.setUserId(authUser.getId());
+                domain.setUsername(authUser.getUsername());
                 domain.setEvent(AUTH_SUCCESS);
                 domain.setRemark(event.getSource().getClass().getSimpleName());
                 userAuthEventRepository.save(domain);
 
-                userService.updateLastLoginTime(authUser.getId());
-                log.info("Authenticated successfully for user: {}", authUser.getId());
+                userService.updateLastLoginTime(authUser.getUsername());
+                log.info("Authenticated successfully for user: {}", authUser.getUsername());
             }
         }
     }
 
     @EventListener
     public void authenticationFailureEvent(AbstractAuthenticationFailureEvent event) {
-        String userId = getCurrentUserId();
-        if (StringUtils.isNotEmpty(userId)) {
+        String username = getCurrentUsername();
+        if (StringUtils.isNotEmpty(username)) {
             // insert
             UserAuthEvent domain = new UserAuthEvent();
-            domain.setUserId(userId);
+            domain.setUsername(username);
             domain.setEvent(AUTH_FAILURE);
             domain.setRemark(StringUtils.abbreviate(event.getException().getMessage(), 64));
             userAuthEventRepository.save(domain);
-            log.warn("Authenticate failure for user: {} with exception: {}", userId, event.getException().getMessage());
+            log.warn("Authenticate failure for user: {} with exception: {}", username, event.getException().getMessage());
         }
     }
 
@@ -76,7 +72,7 @@ public class AuthenticationEventListener {
             if (principal instanceof AuthUser authUser) {
                 if (authUser.getUsername().equals(event.getUsername())) {
                     // remove user from sse
-                    sseService.remove(authUser.getId());
+                    sseService.remove(authUser.getUsername());
 
                     List<SessionInformation> sessionsInfo = sessionRegistry.getAllSessions(principal, false);
                     if (sessionsInfo != null && !sessionsInfo.isEmpty()) {
@@ -94,15 +90,15 @@ public class AuthenticationEventListener {
 
     @EventListener
     public void logoutSuccessEvent(LogoutSuccessEvent event) {
-        String userId = getCurrentUserId();
-        if (StringUtils.isNotEmpty(userId)) {
+        String username = getCurrentUsername();
+        if (StringUtils.isNotEmpty(username)) {
             // insert
             UserAuthEvent domain = new UserAuthEvent();
-            domain.setUserId(userId);
+            domain.setUsername(username);
             domain.setEvent("LogoutSuccess");
             domain.setRemark(event.getSource().getClass().getSimpleName());
             userAuthEventRepository.save(domain);
-            log.info("Logged out for user: [{}] and initiated by {}", userId, event.getSource().getClass().getSimpleName());
+            log.info("Logged out for user: [{}] and initiated by {}", username, event.getSource().getClass().getSimpleName());
         }
     }
 

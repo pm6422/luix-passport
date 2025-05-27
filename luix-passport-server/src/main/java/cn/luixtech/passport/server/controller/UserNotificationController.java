@@ -35,7 +35,7 @@ public class UserNotificationController {
     public ResponseEntity<List<MyNotification>> getMyNotifications(@ParameterObject Pageable pageable,
                                                                    @RequestParam(value = "keyword", required = false) String keyword) {
         List<MyNotification> myNotifications = new ArrayList<>();
-        Page<UserNotification> userNotifications = userNotificationService.findserNotifications(pageable, AuthUtils.getCurrentUserId(), keyword);
+        Page<UserNotification> userNotifications = userNotificationService.findUserNotifications(pageable, AuthUtils.getCurrentUsername(), keyword);
         for (UserNotification userNotification : userNotifications) {
             myNotifications.add(MyNotification.of(userNotification));
         }
@@ -52,7 +52,7 @@ public class UserNotificationController {
     @Operation(summary = "count unread notifications for current user")
     @GetMapping("/api/user-notifications/unread-count")
     public ResponseEntity<Long> getMyUnreadCount() {
-        long count = userNotificationService.getUnreadCount(AuthUtils.getCurrentUserId());
+        long count = userNotificationService.getUnreadCount(AuthUtils.getCurrentUsername());
         return ResponseEntity.ok(count);
     }
 }

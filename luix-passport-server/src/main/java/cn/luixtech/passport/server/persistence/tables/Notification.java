@@ -149,7 +149,7 @@ public class Notification extends TableImpl<NotificationRecord> {
 
     @Override
     public List<ForeignKey<NotificationRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.NOTIFICATION__FK_NOTIFICATION_USER_ID);
+        return Arrays.asList(Keys.NOTIFICATION__FK_NOTIFICATION_USERNAME);
     }
 
     private transient User _user;
@@ -159,7 +159,7 @@ public class Notification extends TableImpl<NotificationRecord> {
      */
     public User user() {
         if (_user == null)
-            _user = new User(this, Keys.NOTIFICATION__FK_NOTIFICATION_USER_ID);
+            _user = new User(this, Keys.NOTIFICATION__FK_NOTIFICATION_USERNAME);
 
         return _user;
     }

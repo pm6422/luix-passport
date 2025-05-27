@@ -60,9 +60,9 @@ public class UserLogin extends TableImpl<UserLoginRecord> {
     public final TableField<UserLoginRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(20).nullable(false), this, "");
 
     /**
-     * The column <code>public.user_login.user_id</code>.
+     * The column <code>public.user_login.username</code>.
      */
-    public final TableField<UserLoginRecord, String> USER_ID = createField(DSL.name("user_id"), SQLDataType.VARCHAR(20).nullable(false), this, "");
+    public final TableField<UserLoginRecord, String> USERNAME = createField(DSL.name("username"), SQLDataType.VARCHAR(20).nullable(false), this, "");
 
     /**
      * The column <code>public.user_login.logged_at</code>.
@@ -129,7 +129,7 @@ public class UserLogin extends TableImpl<UserLoginRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.IDX_USER_LOGIN_USER_ID);
+        return Arrays.asList(Indexes.IDX_USER_LOGIN_USERNAME);
     }
 
     @Override
@@ -139,7 +139,7 @@ public class UserLogin extends TableImpl<UserLoginRecord> {
 
     @Override
     public List<ForeignKey<UserLoginRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.USER_LOGIN__FK_USER_LOGIN_USER_ID);
+        return Arrays.asList(Keys.USER_LOGIN__FK_USER_LOGIN_USERNAME);
     }
 
     private transient User _user;
@@ -149,7 +149,7 @@ public class UserLogin extends TableImpl<UserLoginRecord> {
      */
     public User user() {
         if (_user == null)
-            _user = new User(this, Keys.USER_LOGIN__FK_USER_LOGIN_USER_ID);
+            _user = new User(this, Keys.USER_LOGIN__FK_USER_LOGIN_USERNAME);
 
         return _user;
     }

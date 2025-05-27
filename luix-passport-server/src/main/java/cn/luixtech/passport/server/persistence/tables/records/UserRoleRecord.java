@@ -38,16 +38,16 @@ public class UserRoleRecord extends UpdatableRecordImpl<UserRoleRecord> implemen
     }
 
     /**
-     * Setter for <code>public.user_role.user_id</code>.
+     * Setter for <code>public.user_role.username</code>.
      */
-    public void setUserId(String value) {
+    public void setUsername(String value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>public.user_role.user_id</code>.
+     * Getter for <code>public.user_role.username</code>.
      */
-    public String getUserId() {
+    public String getUsername() {
         return (String) get(1);
     }
 
@@ -151,7 +151,7 @@ public class UserRoleRecord extends UpdatableRecordImpl<UserRoleRecord> implemen
 
     @Override
     public Field<String> field2() {
-        return UserRole.USER_ROLE.USER_ID;
+        return UserRole.USER_ROLE.USERNAME;
     }
 
     @Override
@@ -186,7 +186,7 @@ public class UserRoleRecord extends UpdatableRecordImpl<UserRoleRecord> implemen
 
     @Override
     public String component2() {
-        return getUserId();
+        return getUsername();
     }
 
     @Override
@@ -221,7 +221,7 @@ public class UserRoleRecord extends UpdatableRecordImpl<UserRoleRecord> implemen
 
     @Override
     public String value2() {
-        return getUserId();
+        return getUsername();
     }
 
     @Override
@@ -257,7 +257,7 @@ public class UserRoleRecord extends UpdatableRecordImpl<UserRoleRecord> implemen
 
     @Override
     public UserRoleRecord value2(String value) {
-        setUserId(value);
+        setUsername(value);
         return this;
     }
 
@@ -317,11 +317,11 @@ public class UserRoleRecord extends UpdatableRecordImpl<UserRoleRecord> implemen
     /**
      * Create a detached, initialised UserRoleRecord
      */
-    public UserRoleRecord(String id, String userId, String roleId, Instant createdAt, String createdBy, Instant modifiedAt, String modifiedBy) {
+    public UserRoleRecord(String id, String username, String roleId, Instant createdAt, String createdBy, Instant modifiedAt, String modifiedBy) {
         super(UserRole.USER_ROLE);
 
         setId(id);
-        setUserId(userId);
+        setUsername(username);
         setRoleId(roleId);
         setCreatedAt(createdAt);
         setCreatedBy(createdBy);

@@ -15,7 +15,6 @@ import cn.luixtech.passport.server.service.*;
 import cn.luixtech.passport.server.statemachine.UserEvent;
 import cn.luixtech.passport.server.statemachine.UserState;
 import com.luixtech.springbootframework.component.MessageCreator;
-import com.luixtech.uidgenerator.core.id.IdGenerator;
 import com.luixtech.utilities.encryption.JasyptEncryptUtils;
 import com.luixtech.utilities.exception.DataNotFoundException;
 import com.luixtech.utilities.exception.DuplicationException;
@@ -102,9 +101,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         boolean accountNonExpired = user.getAccountExpiresAt() == null || Instant.now().isBefore(user.getAccountExpiresAt());
         boolean passwordNonExpired = user.getPasswordExpiresAt() == null || Instant.now().isBefore(user.getPasswordExpiresAt());
 
-        Set<String> roleIds = userRoleService.findRoleIds(user.getId());
+        Set<String> roleIds = userRoleService.findRoleIds(user.getUsername());
         Set<String> permissionIds = rolePermissionService.findPermissionIds(roleIds);
-        Set<String> orgIds = orgUserService.findOrgIdsByUserId(user.getId());
+        Set<String> orgIds = orgUserService.findOrgIdsByUsername(user.getUsername());
 
         List<GrantedAuthority> authorities = roleIds.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
 
@@ -112,9 +111,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         String photoUrl = null;
         if (httpServletRequest != null) {
-            photoUrl = getRequestUrl(httpServletRequest) + USER_PHOTO_URL + JasyptEncryptUtils.encrypt(user.getId(), DEFAULT_ALGORITHM, USER_PHOTO_TOKEN_KEY);
+            photoUrl = getRequestUrl(httpServletRequest) + USER_PHOTO_URL + JasyptEncryptUtils.encrypt(user.getUsername(), DEFAULT_ALGORITHM, USER_PHOTO_TOKEN_KEY);
         }
-        return new AuthUser(user.getId(), user.getUsername(), user.getEmail(), user.getMobileNo(), user.getFirstName(),
+        return new AuthUser(user.getUsername(), user.getEmail(), user.getMobileNo(), user.getFirstName(),
                 user.getLastName(), user.getPasswordHash(), user.getEnabled(), accountNonExpired, passwordNonExpired,
                 true, photoUrl, user.getLocale(), modifiedTime, authorities, roleIds, permissionIds, orgIds);
     }
@@ -131,15 +130,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public ManagedUser findById(String id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
-        return buildManagedUser(user, id);
+    public ManagedUser findByUsername(String username) {
+        User user = userRepository.findById(username).orElseThrow(() -> new DataNotFoundException(username));
+        return buildManagedUser(user, username);
     }
 
     @Override
     public ManagedUser findByEmail(String email) {
         User user = userRepository.findOneByEmail(email).orElseThrow(() -> new DataNotFoundException(email));
-        return buildManagedUser(user, user.getId());
+        return buildManagedUser(user, user.getUsername());
     }
 
     @Override
@@ -172,8 +171,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new DuplicationException(Map.of("mobileNo", domain.getMobileNo()));
         }
 
-        String id = IdGenerator.generateId();
-        domain.setId(id);
         domain.setUsername(domain.getUsername().toLowerCase());
         domain.setEmail(domain.getEmail().toLowerCase());
         domain.setPasswordHash(DEFAULT_PASSWORD_ENCODER_PREFIX + BCRYPT_PASSWORD_ENCODER.encode(rawPassword));
@@ -201,7 +198,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         stateMachine.startReactively().block();
         log.info("Created user: {}", domain);
 
-        List<UserRole> userRoles = userRoleService.assignWithDefaults(id, roleIds);
+        List<UserRole> userRoles = userRoleService.assignWithDefaults(domain.getUsername(), roleIds);
         userRoleRepository.saveAll(userRoles);
         return domain;
     }
@@ -209,16 +206,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public User update(ManagedUser managedUser) {
-        int existingEmailCount = userRepository.countByEmailAndIdNot(managedUser.getEmail(), managedUser.getId());
+        int existingEmailCount = userRepository.countByEmailAndUsernameNot(managedUser.getEmail(), managedUser.getUsername());
         if (existingEmailCount > 0) {
             throw new DuplicationException(Map.of("email", managedUser.getEmail()));
         }
-        int existingMobileNoCount = userRepository.countByMobileNoAndIdNot(managedUser.getMobileNo(), managedUser.getId());
+        int existingMobileNoCount = userRepository.countByMobileNoAndUsernameNot(managedUser.getMobileNo(), managedUser.getUsername());
         if (existingMobileNoCount > 0) {
             throw new DuplicationException(Map.of("mobileNo", managedUser.getMobileNo()));
         }
 
-        User existingOne = userRepository.findById(managedUser.getId()).orElseThrow(() -> new DataNotFoundException(managedUser.getId()));
+        User existingOne = userRepository.findById(managedUser.getUsername()).orElseThrow(() -> new DataNotFoundException(managedUser.getUsername()));
         existingOne.setFirstName(managedUser.getFirstName());
         existingOne.setLastName(managedUser.getLastName());
         existingOne.setLocale(managedUser.getLocale());
@@ -238,7 +235,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             existingOne.setEnabled(managedUser.getEnabled());
         }
         if (managedUser.getRoleIds() != null) {
-            userRoleService.update(managedUser.getId(), managedUser.getRoleIds());
+            userRoleService.update(managedUser.getUsername(), managedUser.getRoleIds());
         }
 
         userRepository.save(existingOne);
@@ -248,8 +245,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public User changePassword(String id, String oldRawPassword, String newRawPassword, String verificationCode) {
-        User user = userRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
+    public User changePassword(String username, String oldRawPassword, String newRawPassword, String verificationCode) {
+        User user = userRepository.findById(username).orElseThrow(() -> new DataNotFoundException(username));
         if (StringUtils.isNotEmpty(verificationCode)) {
             Validate.isTrue(verificationCode.equalsIgnoreCase(user.getVerificationCode()), "Invalid verification code!");
             Validate.isTrue(user.getVerificationCodeSentAt().plus(1, ChronoUnit.DAYS).isAfter(Instant.now()), "Invalid verification exceeds one day before!");
@@ -270,7 +267,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setVerificationCodeSentAt(Instant.now());
         user.setNewEmail(email);
         userRepository.save(user);
-        userNotificationService.sendPersonalNotification(user.getId(), Collections.singletonList(user.getId()),
+        userNotificationService.sendPersonalNotification(user.getUsername(), Collections.singletonList(user.getUsername()),
                 "Change email", "You have requested to change your email.");
         return user;
     }
@@ -281,7 +278,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setVerificationCode(generateRandomVerificationCode());
         user.setVerificationCodeSentAt(Instant.now());
         userRepository.save(user);
-        userNotificationService.sendPersonalNotification(user.getId(), Collections.singletonList(user.getId()),
+        userNotificationService.sendPersonalNotification(user.getUsername(), Collections.singletonList(user.getUsername()),
                 "Change password", "You have requested to change your password.");
         return user;
     }
@@ -335,7 +332,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userRepository.save(user);
         stateMachine.sendEvent(Mono.just(MessageBuilder.withPayload(UserEvent.ACTIVATE).build()));
 
-        userNotificationService.sendPersonalNotification(user.getId(), Collections.singletonList(user.getId()),
+        userNotificationService.sendPersonalNotification(user.getUsername(), Collections.singletonList(user.getUsername()),
                 "Activated account",
                 "You have successfully activated the account, please contact the administrator to grant appropriate permissions.");
         log.info("Activated user by activation code {}", activationCode);
@@ -343,8 +340,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void deleteById(String userId) {
-        userRepository.deleteById(userId);
+    public void deleteByUsername(String username) {
+        userRepository.deleteById(username);
     }
 
     @Override
@@ -368,8 +365,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void extendValidityPeriod(String id, long amountToAdd, TemporalUnit unit) {
-        User user = userRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
+    public void extendValidityPeriod(String username, long amountToAdd, TemporalUnit unit) {
+        User user = userRepository.findById(username).orElseThrow(() -> new DataNotFoundException(username));
         Instant expiresAt = null;
         if (user.getAccountExpiresAt().isBefore(Instant.now())) {
             expiresAt = Instant.now().plus(amountToAdd, unit);
@@ -380,25 +377,25 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .update(USER)
                 .set(USER.ACCOUNT_EXPIRES_AT, expiresAt)
                 .set(USER.MODIFIED_AT, Instant.now())
-                .where(USER.ID.eq(id))
+                .where(USER.USERNAME.eq(username))
                 .execute();
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void updateLastLoginTime(String id) {
+    public void updateLastLoginTime(String username) {
         dslContext
                 .update(USER)
                 .set(USER.LAST_SIGN_IN_AT, Instant.now())
                 .set(USER.MODIFIED_AT, Instant.now())
-                .where(USER.ID.eq(id))
+                .where(USER.USERNAME.eq(username))
                 .execute();
     }
 
-    private ManagedUser buildManagedUser(User user, String id) {
+    private ManagedUser buildManagedUser(User user, String username) {
         ManagedUser managedUser = new ManagedUser();
         BeanUtils.copyProperties(user, managedUser);
-        Set<String> roleIds = userRoleService.findRoleIds(id);
+        Set<String> roleIds = userRoleService.findRoleIds(username);
         managedUser.setRoleIds(roleIds);
         Set<String> permissionIds = rolePermissionService.findPermissionIds(roleIds);
         managedUser.setPermissionIds(permissionIds);

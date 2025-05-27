@@ -8,11 +8,11 @@ import java.util.Set;
 
 public interface UserRoleService {
 
-    Set<String> findRoleIds(String userId);
+    Set<String> findRoleIds(String username);
 
-    void update(String userId, Set<String> roleIds);
+    void update(String username, Set<String> roleIds);
 
-    List<UserRole> assignWithDefaults(String userId, Set<String> roleIds);
+    List<UserRole> assignWithDefaults(String username, Set<String> roleIds);
 
-    void deleteByUserId(String id);
+    void deleteByUsername(String username);
 }

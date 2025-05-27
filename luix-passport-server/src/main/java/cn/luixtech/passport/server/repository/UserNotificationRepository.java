@@ -13,9 +13,9 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface UserNotificationRepository extends JpaRepository<UserNotification, String> {
-    long countByReceiverIdAndStatus(String userId, String status);
+    long countByReceiverIdAndStatus(String username, String status);
 
-    Page<UserNotification> findByReceiverId(Pageable pageable, String userId);
+    Page<UserNotification> findByReceiverId(Pageable pageable, String username);
 
     @Query("SELECT un FROM UserNotification un " +
             "JOIN FETCH un.notification n " +  // 使用FETCH避免N+1问题

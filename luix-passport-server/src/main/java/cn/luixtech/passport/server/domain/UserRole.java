@@ -32,9 +32,9 @@ public class UserRole extends AbstractUpdatableDomain implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotEmpty(message = "userId:{Validation.NotEmpty}")
+    @NotEmpty(message = "username:{Validation.NotEmpty}")
     @Column(nullable = false)
-    private String userId;
+    private String username;
 
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     @NotEmpty(message = "roleId:{Validation.NotEmpty}")

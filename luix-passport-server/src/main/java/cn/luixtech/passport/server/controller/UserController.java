@@ -16,7 +16,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.Validate;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationEventPublisher;
@@ -76,7 +75,7 @@ public class UserController {
         domains.stream().forEach(domain -> {
             ManagedUser user = new ManagedUser();
             BeanUtils.copyProperties(domain, user);
-            Set<String> roleIds = userRoleService.findRoleIds(domain.getId());
+            Set<String> roleIds = userRoleService.findRoleIds(domain.getUsername());
             user.setRoleIds(roleIds);
             users.add(user);
         });
@@ -86,7 +85,7 @@ public class UserController {
     @Operation(summary = "find user by id")
     @GetMapping("/api/users/{id}")
     public ResponseEntity<ManagedUser> findById(@Parameter(description = "ID", required = true) @PathVariable String id) {
-        return ResponseEntity.ok(userService.findById(id));
+        return ResponseEntity.ok(userService.findByUsername(id));
     }
 
     @Operation(summary = "update user")
@@ -99,7 +98,7 @@ public class UserController {
     @Operation(summary = "delete user by id", description = "the data may be referenced by other data, and some problems may occur after deletion")
     @DeleteMapping("/api/users/{id}")
     public ResponseEntity<Void> delete(@Parameter(description = "ID", required = true) @PathVariable String id) {
-        userService.deleteById(id);
+        userService.deleteByUsername(id);
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1003", id)).build();
     }
 
@@ -107,7 +106,7 @@ public class UserController {
     @PutMapping("/api/users/reset-password/{id}")
     public ResponseEntity<Void> resetPassword(@Parameter(description = "id", required = true) @PathVariable String id) {
         userService.changePassword(id, null, applicationProperties.getAccount().getDefaultPassword(), null);
-        if (id.equals(AuthUtils.getCurrentUserId())) {
+        if (id.equals(AuthUtils.getCurrentUsername())) {
             // Logout if the current user were changed
             applicationEventPublisher.publishEvent(new LogoutEvent(this, AuthUtils.getCurrentUsername()));
         }

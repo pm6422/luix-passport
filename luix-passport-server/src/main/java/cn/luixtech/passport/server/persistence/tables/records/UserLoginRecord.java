@@ -38,16 +38,16 @@ public class UserLoginRecord extends UpdatableRecordImpl<UserLoginRecord> implem
     }
 
     /**
-     * Setter for <code>public.user_login.user_id</code>.
+     * Setter for <code>public.user_login.username</code>.
      */
-    public void setUserId(String value) {
+    public void setUsername(String value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>public.user_login.user_id</code>.
+     * Getter for <code>public.user_login.username</code>.
      */
-    public String getUserId() {
+    public String getUsername() {
         return (String) get(1);
     }
 
@@ -151,7 +151,7 @@ public class UserLoginRecord extends UpdatableRecordImpl<UserLoginRecord> implem
 
     @Override
     public Field<String> field2() {
-        return UserLogin.USER_LOGIN.USER_ID;
+        return UserLogin.USER_LOGIN.USERNAME;
     }
 
     @Override
@@ -186,7 +186,7 @@ public class UserLoginRecord extends UpdatableRecordImpl<UserLoginRecord> implem
 
     @Override
     public String component2() {
-        return getUserId();
+        return getUsername();
     }
 
     @Override
@@ -221,7 +221,7 @@ public class UserLoginRecord extends UpdatableRecordImpl<UserLoginRecord> implem
 
     @Override
     public String value2() {
-        return getUserId();
+        return getUsername();
     }
 
     @Override
@@ -257,7 +257,7 @@ public class UserLoginRecord extends UpdatableRecordImpl<UserLoginRecord> implem
 
     @Override
     public UserLoginRecord value2(String value) {
-        setUserId(value);
+        setUsername(value);
         return this;
     }
 
@@ -317,11 +317,11 @@ public class UserLoginRecord extends UpdatableRecordImpl<UserLoginRecord> implem
     /**
      * Create a detached, initialised UserLoginRecord
      */
-    public UserLoginRecord(String id, String userId, Instant loggedAt, String location, String ip, String os, String browser) {
+    public UserLoginRecord(String id, String username, Instant loggedAt, String location, String ip, String os, String browser) {
         super(UserLogin.USER_LOGIN);
 
         setId(id);
-        setUserId(userId);
+        setUsername(username);
         setLoggedAt(loggedAt);
         setLocation(location);
         setIp(ip);

@@ -21,35 +21,35 @@ public class OrgUserServiceImpl implements OrgUserService {
     private final DSLContext        dslContext;
 
     @Override
-    public Set<String> findOrgIdsByUserId(String userId) {
+    public Set<String> findOrgIdsByUsername(String username) {
         return dslContext.select(ORG_USER.ORG_ID)
                 .from(ORG_USER)
-                .where(ORG_USER.USER_ID.eq(userId))
+                .where(ORG_USER.USERNAME.eq(username))
                 .fetchSet(ORG_USER.ORG_ID);
     }
 
     @Override
-    public void save(String orgId, Set<String> userIds) {
+    public void save(String orgId, Set<String> usernames) {
         List<OrgUser> orgUsers = orgUserRepository.findByOrgId(orgId);
         if (CollectionUtils.isEmpty(orgUsers)) {
             // insert
-            userIds.forEach(userId -> {
-                OrgUser orgUser = new OrgUser(orgId, userId);
+            usernames.forEach(username -> {
+                OrgUser orgUser = new OrgUser(orgId, username);
                 orgUserRepository.save(orgUser);
             });
         } else {
             // delete
             orgUserRepository.deleteByOrgId(orgId);
             // insert
-            userIds.forEach(userId -> {
-                OrgUser orgUser = new OrgUser(orgId, userId);
+            usernames.forEach(username -> {
+                OrgUser orgUser = new OrgUser(orgId, username);
                 orgUserRepository.save(orgUser);
             });
         }
     }
 
     @Override
-    public void save(String orgId, String userId) {
-        save(orgId, Set.of(userId));
+    public void save(String orgId, String username) {
+        save(orgId, Set.of(username));
     }
 }

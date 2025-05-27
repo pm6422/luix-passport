@@ -2,7 +2,6 @@ import { Exome } from "exome"
 import { isEmpty } from "lodash"
 
 export type AuthUser = {
-    id: string
     username: string
     email: string
     mobileNo: string

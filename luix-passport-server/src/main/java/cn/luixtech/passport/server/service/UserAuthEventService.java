@@ -6,5 +6,5 @@ import org.springframework.data.domain.Pageable;
 
 public interface UserAuthEventService {
 
-    Page<UserAuthEvent> find(Pageable pageable, String userId, String event);
+    Page<UserAuthEvent> find(Pageable pageable, String username, String event);
 }
