@@ -159,9 +159,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public User insert(User domain, Set<String> roleIds, String rawPassword, boolean permanentAccount) {
-        // From pojo to record
-//        UserRecord userRecord = dslContext.newRecord(USER, domain);
-
         if (userRepository.findById(domain.getUsername().toLowerCase()).isPresent()) {
             throw new DuplicationException(Map.of("username", domain.getUsername()));
         }
