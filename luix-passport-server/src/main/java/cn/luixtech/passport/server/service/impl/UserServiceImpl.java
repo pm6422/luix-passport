@@ -276,6 +276,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public User requestPasswordChangeVerificationCode(User user) {
         user.setVerificationCode(generateRandomVerificationCode());
         user.setVerificationCodeSentAt(Instant.now());
