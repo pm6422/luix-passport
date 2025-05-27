@@ -96,11 +96,11 @@ public class AccountController {
     public ResponseEntity<Void> register(HttpServletRequest request,
                                          @Parameter(description = "user", required = true) @Valid @RequestBody ManagedUser managedUser) {
 
+        if (userRepository.findById(managedUser.getUsername().toLowerCase()).isPresent()) {
+            throw new RuntimeException("This username is already registered. Please use a different one!");
+        }
         if (userRepository.findOneByEmail(managedUser.getEmail()).isPresent()) {
             throw new RuntimeException("This email is already registered. Please use a different one!");
-        }
-        if (userRepository.findOneByUsername(managedUser.getUsername().toLowerCase()).isPresent()) {
-            throw new RuntimeException("This username is already registered. Please use a different one!");
         }
 
         User newUser = userService.insert(managedUser.toUser(), managedUser.getRoleIds(), managedUser.getPassword(), false);

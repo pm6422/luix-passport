@@ -162,7 +162,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         // From pojo to record
 //        UserRecord userRecord = dslContext.newRecord(USER, domain);
 
-        if (userRepository.findOneByUsername(domain.getUsername().toLowerCase()).isPresent()) {
+        if (userRepository.findById(domain.getUsername().toLowerCase()).isPresent()) {
             throw new DuplicationException(Map.of("username", domain.getUsername()));
         }
         if (userRepository.findOneByEmail(domain.getEmail()).isPresent()) {

@@ -39,7 +39,7 @@ public class LoginController {
         RegisteredClient registeredClient = this.registeredClientRepository.findByClientId(clientId);
         OAuth2AuthorizationConsent currentAuthorizationConsent =
                 this.authorizationConsentService.findById(Objects.requireNonNull(registeredClient).getId(), principal.getName());
-        Optional<User> user = userRepository.findOneByUsername(principal.getName());
+        Optional<User> user = userRepository.findById(principal.getName());
         Set<String> authorizedScopes;
         if (currentAuthorizationConsent != null) {
             authorizedScopes = currentAuthorizationConsent.getScopes();
