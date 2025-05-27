@@ -13,4 +13,6 @@ public interface UserRoleService {
     void update(String userId, Set<String> roleIds);
 
     List<UserRole> assignWithDefaults(String userId, Set<String> roleIds);
+
+    void deleteByUserId(String id);
 }

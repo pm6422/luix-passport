@@ -10,13 +10,13 @@ import cn.luixtech.passport.server.service.UserRoleService;
 import cn.luixtech.passport.server.service.UserService;
 import cn.luixtech.passport.server.utils.AuthUtils;
 import com.luixtech.springbootframework.component.HttpHeaderCreator;
-import com.luixtech.utilities.exception.DataNotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.Validate;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationEventPublisher;
@@ -92,17 +92,7 @@ public class UserController {
     @Operation(summary = "update user")
     @PutMapping("/api/users")
     public ResponseEntity<Void> update(@Parameter(description = "new user", required = true) @Valid @RequestBody ManagedUser domain) {
-        User existingOne = userRepository.findById(domain.getId()).orElseThrow(() -> new DataNotFoundException(AuthUtils.getCurrentUserId()));
-        existingOne.setFirstName(domain.getFirstName());
-        existingOne.setLastName(domain.getLastName());
-        existingOne.setLocale(domain.getLocale());
-        existingOne.setTimeZoneId(domain.getTimeZoneId());
-        existingOne.setDateTimeFormatId(domain.getDateTimeFormatId());
-        existingOne.setEmail(domain.getEmail().toLowerCase());
-        existingOne.setMobileNo(domain.getMobileNo());
-        existingOne.setRemark(domain.getRemark());
-        existingOne.setEnabled(domain.getEnabled());
-        userService.update(existingOne, domain.getRoleIds());
+        userService.update(domain);
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1002", domain.getUsername())).build();
     }
 

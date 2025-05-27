@@ -110,15 +110,14 @@ public class AccountController {
 
     @Operation(summary = "update current user")
     @PutMapping("/api/accounts/user")
-    public ResponseEntity<Void> update(@Parameter(description = "new user info", required = true) @Valid @RequestBody User domain) {
-        User existingOne = userRepository.findById(AuthUtils.getCurrentUserId()).orElseThrow(() -> new DataNotFoundException(AuthUtils.getCurrentUserId()));
-        Validate.isTrue(StringUtils.isNotEmpty(domain.getId()) && existingOne.getId().equals(domain.getId()), "Invalid user ID!");
-        existingOne.setFirstName(domain.getFirstName());
-        existingOne.setLastName(domain.getLastName());
-        existingOne.setLocale(domain.getLocale());
-        existingOne.setTimeZoneId(domain.getTimeZoneId());
-        existingOne.setDateTimeFormatId(domain.getDateTimeFormatId());
-        userService.update(existingOne);
+    public ResponseEntity<Void> update(@Parameter(description = "new user info", required = true) @Valid @RequestBody ManagedUser domain) {
+        Validate.isTrue(AuthUtils.getCurrentUserId().equals(domain.getId()), "Invalid user ID!");
+        domain.setEmail(null);
+        domain.setMobileNo(null);
+        domain.setRemark(null);
+        domain.setRoleIds(null);
+        domain.setEnabled(null);
+        userService.update(domain);
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1002", domain.getUsername())).build();
     }
 

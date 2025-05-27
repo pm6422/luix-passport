@@ -156,7 +156,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public User insert(User domain, Set<String> authorities, String rawPassword, boolean permanentAccount) {
+    public User insert(User domain, Set<String> roleIds, String rawPassword, boolean permanentAccount) {
         // From pojo to record
 //        UserRecord userRecord = dslContext.newRecord(USER, domain);
 
@@ -199,34 +199,55 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         stateMachine.startReactively().block();
         log.info("Created user: {}", domain);
 
-        List<UserRole> userAuthorities = userRoleService.assignWithDefaults(id, authorities);
+        List<UserRole> userAuthorities = userRoleService.assignWithDefaults(id, roleIds);
         userRoleRepository.saveAll(userAuthorities);
         return domain;
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public User update(User domain, Set<String> roles) {
-        User updated = update(domain);
-        userRoleService.update(domain.getId(), roles);
-        return updated;
+    public User update(ManagedUser managedUser) {
+        return update(managedUser, managedUser.getRoleIds());
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public User update(User domain) {
-        int existingEmailCount = userRepository.countByEmailAndIdNot(domain.getEmail(), domain.getId());
+    public User update(ManagedUser managedUser, Set<String> roleIds) {
+        int existingEmailCount = userRepository.countByEmailAndIdNot(managedUser.getEmail(), managedUser.getId());
         if (existingEmailCount > 0) {
-            throw new DuplicationException(Map.of("email", domain.getEmail()));
+            throw new DuplicationException(Map.of("email", managedUser.getEmail()));
         }
-        int existingMobileNoCount = userRepository.countByMobileNoAndIdNot(domain.getMobileNo(), domain.getId());
+        int existingMobileNoCount = userRepository.countByMobileNoAndIdNot(managedUser.getMobileNo(), managedUser.getId());
         if (existingMobileNoCount > 0) {
-            throw new DuplicationException(Map.of("mobileNo", domain.getMobileNo()));
+            throw new DuplicationException(Map.of("mobileNo", managedUser.getMobileNo()));
         }
 
-        userRepository.save(domain);
-        log.debug("Updated user: {}", domain);
-        return domain;
+        User existingOne = userRepository.findById(managedUser.getId()).orElseThrow(() -> new DataNotFoundException(managedUser.getId()));
+        existingOne.setFirstName(managedUser.getFirstName());
+        existingOne.setLastName(managedUser.getLastName());
+        existingOne.setLocale(managedUser.getLocale());
+        existingOne.setTimeZoneId(managedUser.getTimeZoneId());
+        existingOne.setDateTimeFormatId(managedUser.getDateTimeFormatId());
+
+        if (managedUser.getEmail() != null) {
+            existingOne.setEmail(managedUser.getEmail().toLowerCase());
+        }
+        if (managedUser.getMobileNo() != null) {
+            existingOne.setMobileNo(managedUser.getMobileNo());
+        }
+        if (managedUser.getRemark() != null) {
+            existingOne.setRemark(managedUser.getRemark());
+        }
+        if (managedUser.getEnabled() != null) {
+            existingOne.setEnabled(managedUser.getEnabled());
+        }
+        if (roleIds != null) {
+            userRoleService.update(managedUser.getId(), roleIds);
+        }
+
+        userRepository.save(existingOne);
+        log.debug("Updated user: {}", existingOne);
+        return existingOne;
     }
 
     @Override
@@ -350,19 +371,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public User extendAccountValidityPeriod(String id, long amountToAdd, TemporalUnit unit) {
-        User user = userRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
-        if (user.getAccountExpiresAt().isBefore(Instant.now())) {
-            user.setAccountExpiresAt(Instant.now().plus(amountToAdd, unit));
-        } else {
-            user.setAccountExpiresAt(user.getAccountExpiresAt().plus(amountToAdd, unit));
-        }
-        userRepository.save(user);
-        return user;
-    }
-
-    @Override
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void changeToNewEmail(User currentUser) {
         currentUser.setEmail(currentUser.getNewEmail());
         currentUser.setNewEmail(StringUtils.EMPTY);
@@ -370,6 +378,24 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         currentUser.setVerificationCodeSentAt(null);
 
         userRepository.save(currentUser);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void extendValidityPeriod(String id, long amountToAdd, TemporalUnit unit) {
+        User user = userRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
+        Instant expiresAt = null;
+        if (user.getAccountExpiresAt().isBefore(Instant.now())) {
+            expiresAt = Instant.now().plus(amountToAdd, unit);
+        } else {
+            expiresAt = user.getAccountExpiresAt().plus(amountToAdd, unit);
+        }
+        dslContext
+                .update(USER)
+                .set(USER.ACCOUNT_EXPIRES_AT, expiresAt)
+                .set(USER.MODIFIED_AT, Instant.now())
+                .where(USER.ID.eq(id))
+                .execute();
     }
 
     @Override

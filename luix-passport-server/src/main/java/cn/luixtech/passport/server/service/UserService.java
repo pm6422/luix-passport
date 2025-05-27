@@ -17,11 +17,11 @@ public interface UserService {
 
     ManagedUser findByEmail(String email);
 
-    User insert(User domain, Set<String> authorities, String rawPassword, boolean permanentAccount);
+    User insert(User domain, Set<String> roleIds, String rawPassword, boolean permanentAccount);
 
-    User update(User domain, Set<String> roles);
+    User update(ManagedUser managedUser);
 
-    User update(User domain);
+    User update(ManagedUser managedUser, Set<String> roleIds);
 
     void activate(String activationCode);
 
@@ -43,9 +43,9 @@ public interface UserService {
 
     String generateRandomVerificationCode();
 
-    User extendAccountValidityPeriod(String id, long amountToAdd, TemporalUnit unit);
-
     void changeToNewEmail(User currentUser);
+
+    void extendValidityPeriod(String id, long amountToAdd, TemporalUnit unit);
 
     void updateLastLoginTime(String id);
 }

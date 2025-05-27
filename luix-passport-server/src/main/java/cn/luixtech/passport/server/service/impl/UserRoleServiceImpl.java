@@ -84,7 +84,13 @@ public class UserRoleServiceImpl implements UserRoleService {
         return userRoles;
     }
 
-    private List<UserRole> assignRolesToUser(String userId, Set<String> roleIds){
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void deleteByUserId(String id) {
+        userRoleRepository.deleteByUserId(id);
+    }
+
+    private List<UserRole> assignRolesToUser(String userId, Set<String> roleIds) {
         if (CollectionUtils.isEmpty(roleIds)) {
             return Collections.emptyList();
         }
