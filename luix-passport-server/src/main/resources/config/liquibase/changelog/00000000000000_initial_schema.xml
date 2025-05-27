@@ -461,7 +461,7 @@
             <column name="title" type="VARCHAR(20)">
                 <constraints nullable="false"/>
             </column>
-            <column name="content" type="TEXT">
+            <column name="content" type="VARCHAR(1000)">
                 <constraints nullable="false"/>
             </column>
             <column name="type" type="VARCHAR(8)">
@@ -480,6 +480,11 @@
             </column>
             <column name="modified_by" type="VARCHAR(50)"/>
         </createTable>
+        <loadData
+                file="config/liquibase/data/notification.csv"
+                separator=";"
+                tableName="notification">
+        </loadData>
         <createTable tableName="user_notification">
             <column name="id" type="VARCHAR(20)">
                 <constraints primaryKey="true" nullable="false"/>
@@ -506,6 +511,11 @@
             </column>
             <column name="modified_by" type="VARCHAR(50)"/>
         </createTable>
+        <loadData
+                file="config/liquibase/data/user_notification.csv"
+                separator=";"
+                tableName="user_notification">
+        </loadData>
 
         <createIndex tableName="user" indexName="idx_user_time_zone_id" unique="false">
             <column name="time_zone_id"/>

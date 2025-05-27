@@ -67,7 +67,7 @@ public class Notification extends TableImpl<NotificationRecord> {
     /**
      * The column <code>public.notification.content</code>.
      */
-    public final TableField<NotificationRecord, String> CONTENT = createField(DSL.name("content"), SQLDataType.CLOB.nullable(false), this, "");
+    public final TableField<NotificationRecord, String> CONTENT = createField(DSL.name("content"), SQLDataType.VARCHAR(1000).nullable(false), this, "");
 
     /**
      * The column <code>public.notification.type</code>.
