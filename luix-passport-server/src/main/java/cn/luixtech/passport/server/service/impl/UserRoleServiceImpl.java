@@ -101,7 +101,6 @@ public class UserRoleServiceImpl implements UserRoleService {
 
     private UserRole buildUserRole(String userId, String authority) {
         UserRole userRole = new UserRole();
-        userRole.setId(IdGenerator.generateId());
         userRole.setUserId(userId);
         userRole.setRoleId(authority);
         return userRole;

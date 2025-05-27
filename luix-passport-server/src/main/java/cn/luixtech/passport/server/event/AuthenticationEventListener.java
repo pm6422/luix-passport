@@ -98,7 +98,6 @@ public class AuthenticationEventListener {
         if (StringUtils.isNotEmpty(userId)) {
             // insert
             UserAuthEvent domain = new UserAuthEvent();
-            domain.setId(IdGenerator.generateId());
             domain.setUserId(userId);
             domain.setEvent("LogoutSuccess");
             domain.setRemark(event.getSource().getClass().getSimpleName());

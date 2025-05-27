@@ -50,7 +50,6 @@ public class UserNotificationServiceImpl implements UserNotificationService {
 
     private Notification saveNotification(String senderId, String title, String content, String type) {
         Notification notification = new Notification();
-        notification.setId(IdGenerator.generateId());
         notification.setTitle(title);
         notification.setContent(content);
         notification.setType(type);
@@ -62,7 +61,6 @@ public class UserNotificationServiceImpl implements UserNotificationService {
 
     private void sendNotification(User user, Notification notification) {
         UserNotification userNotification = new UserNotification();
-        userNotification.setId(IdGenerator.generateId());
         userNotification.setReceiverId(user.getId());
         userNotification.setNotification(notification);
         userNotification.setStatus(UserNotification.STATUS_UNREAD);
