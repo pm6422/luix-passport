@@ -4,7 +4,6 @@
 package cn.luixtech.passport.server.persistence;
 
 
-import cn.luixtech.passport.server.persistence.tables.Notification;
 import cn.luixtech.passport.server.persistence.tables.OrgUser;
 import cn.luixtech.passport.server.persistence.tables.RolePermission;
 import cn.luixtech.passport.server.persistence.tables.User;
@@ -29,7 +28,6 @@ public class Indexes {
     // INDEX definitions
     // -------------------------------------------------------------------------
 
-    public static final Index IDX_NOTIFICATION_SENDER = Internal.createIndex(DSL.name("idx_notification_sender"), Notification.NOTIFICATION, new OrderField[] { Notification.NOTIFICATION.SENDER_ID }, false);
     public static final Index IDX_ORG_USER_USERNAME = Internal.createIndex(DSL.name("idx_org_user_username"), OrgUser.ORG_USER, new OrderField[] { OrgUser.ORG_USER.USERNAME }, false);
     public static final Index IDX_ROLE_PERMISSION_PERMISSION_ID = Internal.createIndex(DSL.name("idx_role_permission_permission_id"), RolePermission.ROLE_PERMISSION, new OrderField[] { RolePermission.ROLE_PERMISSION.PERMISSION_ID }, false);
     public static final Index IDX_ROLE_PERMISSION_ROLE_ID = Internal.createIndex(DSL.name("idx_role_permission_role_id"), RolePermission.ROLE_PERMISSION, new OrderField[] { RolePermission.ROLE_PERMISSION.ROLE_ID }, false);

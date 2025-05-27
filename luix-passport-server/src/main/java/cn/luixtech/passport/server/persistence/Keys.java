@@ -98,7 +98,6 @@ public class Keys {
     // FOREIGN KEY definitions
     // -------------------------------------------------------------------------
 
-    public static final ForeignKey<NotificationRecord, UserRecord> NOTIFICATION__FK_NOTIFICATION_USERNAME = Internal.createForeignKey(Notification.NOTIFICATION, DSL.name("fk_notification_username"), new TableField[] { Notification.NOTIFICATION.SENDER_ID }, Keys.USER_PKEY, new TableField[] { User.USER.USERNAME }, true);
     public static final ForeignKey<OrgUserRecord, UserRecord> ORG_USER__FK_ORG_USER_USERNAME = Internal.createForeignKey(OrgUser.ORG_USER, DSL.name("fk_org_user_username"), new TableField[] { OrgUser.ORG_USER.USERNAME }, Keys.USER_PKEY, new TableField[] { User.USER.USERNAME }, true);
     public static final ForeignKey<RolePermissionRecord, PermissionRecord> ROLE_PERMISSION__FK_ROLE_PERMISSION_PERMISSION_ID = Internal.createForeignKey(RolePermission.ROLE_PERMISSION, DSL.name("fk_role_permission_permission_id"), new TableField[] { RolePermission.ROLE_PERMISSION.PERMISSION_ID }, Keys.PERMISSION_PKEY, new TableField[] { Permission.PERMISSION.ID }, true);
     public static final ForeignKey<RolePermissionRecord, RoleRecord> ROLE_PERMISSION__FK_ROLE_PERMISSION_ROLE_ID = Internal.createForeignKey(RolePermission.ROLE_PERMISSION, DSL.name("fk_role_permission_role_id"), new TableField[] { RolePermission.ROLE_PERMISSION.ROLE_ID }, Keys.ROLE_PKEY, new TableField[] { Role.ROLE.ID }, true);

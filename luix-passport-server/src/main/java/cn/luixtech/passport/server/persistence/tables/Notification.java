@@ -4,24 +4,20 @@
 package cn.luixtech.passport.server.persistence.tables;
 
 
-import cn.luixtech.passport.server.persistence.Indexes;
 import cn.luixtech.passport.server.persistence.Keys;
 import cn.luixtech.passport.server.persistence.Public;
 import cn.luixtech.passport.server.persistence.tables.records.NotificationRecord;
 
 import java.time.Instant;
-import java.util.Arrays;
-import java.util.List;
 import java.util.function.Function;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function9;
-import org.jooq.Index;
+import org.jooq.Function8;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row9;
+import org.jooq.Row8;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -73,11 +69,6 @@ public class Notification extends TableImpl<NotificationRecord> {
      * The column <code>public.notification.type</code>.
      */
     public final TableField<NotificationRecord, String> TYPE = createField(DSL.name("type"), SQLDataType.VARCHAR(8).nullable(false), this, "");
-
-    /**
-     * The column <code>public.notification.sender_id</code>.
-     */
-    public final TableField<NotificationRecord, String> SENDER_ID = createField(DSL.name("sender_id"), SQLDataType.VARCHAR(20), this, "");
 
     /**
      * The column <code>public.notification.created_at</code>.
@@ -138,30 +129,8 @@ public class Notification extends TableImpl<NotificationRecord> {
     }
 
     @Override
-    public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.IDX_NOTIFICATION_SENDER);
-    }
-
-    @Override
     public UniqueKey<NotificationRecord> getPrimaryKey() {
         return Keys.NOTIFICATION_PKEY;
-    }
-
-    @Override
-    public List<ForeignKey<NotificationRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.NOTIFICATION__FK_NOTIFICATION_USERNAME);
-    }
-
-    private transient User _user;
-
-    /**
-     * Get the implicit join path to the <code>public.user</code> table.
-     */
-    public User user() {
-        if (_user == null)
-            _user = new User(this, Keys.NOTIFICATION__FK_NOTIFICATION_USERNAME);
-
-        return _user;
     }
 
     @Override
@@ -204,18 +173,18 @@ public class Notification extends TableImpl<NotificationRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row9 type methods
+    // Row8 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row9<String, String, String, String, String, Instant, String, Instant, String> fieldsRow() {
-        return (Row9) super.fieldsRow();
+    public Row8<String, String, String, String, Instant, String, Instant, String> fieldsRow() {
+        return (Row8) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function9<? super String, ? super String, ? super String, ? super String, ? super String, ? super Instant, ? super String, ? super Instant, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function8<? super String, ? super String, ? super String, ? super String, ? super Instant, ? super String, ? super Instant, ? super String, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -223,7 +192,7 @@ public class Notification extends TableImpl<NotificationRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function9<? super String, ? super String, ? super String, ? super String, ? super String, ? super Instant, ? super String, ? super Instant, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function8<? super String, ? super String, ? super String, ? super String, ? super Instant, ? super String, ? super Instant, ? super String, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }
