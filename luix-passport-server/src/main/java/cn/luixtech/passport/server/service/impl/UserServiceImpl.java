@@ -331,7 +331,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         userNotificationService.sendPersonalNotification(user.getUsername(), Collections.singletonList(user.getUsername()),
                 "Activated account",
-                "You have successfully activated the account, please contact the administrator to grant appropriate permissions.");
+                "You have successfully activated the account, please contact the administrator to grant appropriate roles.");
         log.info("Activated user by activation code {}", activationCode);
     }
 
