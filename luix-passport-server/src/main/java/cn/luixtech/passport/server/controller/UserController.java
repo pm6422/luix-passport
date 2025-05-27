@@ -122,7 +122,7 @@ public class UserController {
         return ResponseEntity.ok(userRepository.count());
     }
 
-    @Operation(summary = "cascade update username from")
+    @Operation(summary = "cascade update username from the old to new one")
     @PutMapping("/api/users/username")
     @PreAuthorize("hasAuthority(\"" + ROLE_DEVELOPER + "\")")
     public ResponseEntity<Void> updateUsername(@Parameter(description = "oldUsername", required = true) @RequestParam(value = "oldUsername") String oldUsername,
