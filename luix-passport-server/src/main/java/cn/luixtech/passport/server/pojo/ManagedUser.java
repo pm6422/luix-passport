@@ -27,15 +27,9 @@ public class ManagedUser extends User {
 
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     @Size(min = RAW_PASSWORD_MIN_LENGTH, max = RAW_PASSWORD_MAX_LENGTH)
-    private String password;
-
+    private String      password;
     private Set<String> roleIds;
-
     private Set<String> permissionIds;
-
-    private String locale;
-
-    private String timeZoneId;
 
     public User toUser() {
         User user = new User();
