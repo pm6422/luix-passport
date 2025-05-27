@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.luixtech.springbootframework.component.MessageCreator;
 import com.luixtech.utilities.exception.*;
 import com.luixtech.utilities.response.Result;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -143,6 +144,14 @@ public class ExceptionTranslatorAdvice {
         // Http status: 403
         String message = messageCreator.getMessage("UE1010");
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Result.dataNotFound(message));
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    @ResponseBody
+    public ResponseEntity<Result<Void>> handleEntityNotFoundException(EntityNotFoundException ex) {
+        log.warn("Entity not found: ", ex);
+        // Http status: 404
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Result.dataNotFound( ex.getMessage()));
     }
 
     @ExceptionHandler(DataNotFoundException.class)
