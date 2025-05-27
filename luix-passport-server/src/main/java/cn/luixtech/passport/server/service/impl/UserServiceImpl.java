@@ -133,26 +133,27 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public ManagedUser findById(String id) {
         User user = userRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
-        return getManagedUser(user, id);
+        return buildManagedUser(user, id);
     }
 
     @Override
     public ManagedUser findByEmail(String email) {
         User user = userRepository.findOneByEmail(email).orElseThrow(() -> new DataNotFoundException(email));
-        return getManagedUser(user, user.getId());
+        return buildManagedUser(user, user.getId());
     }
 
-    private ManagedUser getManagedUser(User user, String id) {
-        ManagedUser managedUser = new ManagedUser();
-        BeanUtils.copyProperties(user, managedUser);
-        Set<String> roleIds = userRoleService.findRoleIds(id);
-        managedUser.setRoleIds(roleIds);
-        Set<String> permissionIds = rolePermissionService.findPermissionIds(roleIds);
-        managedUser.setPermissionIds(permissionIds);
-        managedUser.setLocale(user.getLocale());
-        managedUser.setTimezone(user.getTimeZoneId());
-        managedUser.setPasswordHash("*");
-        return managedUser;
+    @Override
+    public Page<User> find(Pageable pageable, String username, String email, String mobileNo, Boolean enabled, Boolean activated) {
+        // Ignore a query parameter if it has a null value
+        ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreNullValues();
+        User criteria = new User();
+        criteria.setUsername(username);
+        criteria.setEmail(email);
+        criteria.setMobileNo(mobileNo);
+        criteria.setEnabled(enabled);
+        criteria.setActivated(activated);
+        Example<User> queryExample = Example.of(criteria, matcher);
+        return userRepository.findAll(queryExample, pageable);
     }
 
     @Override
@@ -208,12 +209,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public User update(ManagedUser managedUser) {
-        return update(managedUser, managedUser.getRoleIds());
-    }
-
-    @Override
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public User update(ManagedUser managedUser, Set<String> roleIds) {
         int existingEmailCount = userRepository.countByEmailAndIdNot(managedUser.getEmail(), managedUser.getId());
         if (existingEmailCount > 0) {
             throw new DuplicationException(Map.of("email", managedUser.getEmail()));
@@ -242,8 +237,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (managedUser.getEnabled() != null) {
             existingOne.setEnabled(managedUser.getEnabled());
         }
-        if (roleIds != null) {
-            userRoleService.update(managedUser.getId(), roleIds);
+        if (managedUser.getRoleIds() != null) {
+            userRoleService.update(managedUser.getId(), managedUser.getRoleIds());
         }
 
         userRepository.save(existingOne);
@@ -260,13 +255,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             Validate.isTrue(user.getVerificationCodeSentAt().plus(1, ChronoUnit.DAYS).isAfter(Instant.now()), "Invalid verification exceeds one day before!");
         }
         if (StringUtils.isNotEmpty(oldRawPassword)) {
-            try {
-                if (!passwordEncoder.matches(oldRawPassword, user.getPasswordHash())) {
-                    throw new IllegalArgumentException(messageCreator.getMessage("UE5008"));
-                }
-            } catch (Exception ex) {
-                throw new IllegalArgumentException(messageCreator.getMessage("UE5008"));
-            }
+            Validate.isTrue(passwordEncoder.matches(oldRawPassword, user.getPasswordHash()), messageCreator.getMessage("UE5008"));
         }
         user.setPasswordHash(DEFAULT_PASSWORD_ENCODER_PREFIX + BCRYPT_PASSWORD_ENCODER.encode(newRawPassword));
         userRepository.save(user);
@@ -326,6 +315,17 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void changeToNewEmail(User currentUser) {
+        currentUser.setEmail(currentUser.getNewEmail());
+        currentUser.setNewEmail(StringUtils.EMPTY);
+        currentUser.setVerificationCode(StringUtils.EMPTY);
+        currentUser.setVerificationCodeSentAt(null);
+
+        userRepository.save(currentUser);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void activate(String activationCode) {
         User user = userRepository.findOneByActivationCode(activationCode).orElseThrow(() -> new RuntimeException("Invalid activation code"));
 
@@ -338,20 +338,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 "Activated account",
                 "You have successfully activated the account, please contact the administrator to grant appropriate permissions.");
         log.info("Activated user by activation code {}", activationCode);
-    }
-
-    @Override
-    public Page<User> find(Pageable pageable, String username, String email, String mobileNo, Boolean enabled, Boolean activated) {
-        // Ignore a query parameter if it has a null value
-        ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreNullValues();
-        User criteria = new User();
-        criteria.setUsername(username);
-        criteria.setEmail(email);
-        criteria.setMobileNo(mobileNo);
-        criteria.setEnabled(enabled);
-        criteria.setActivated(activated);
-        Example<User> queryExample = Example.of(criteria, matcher);
-        return userRepository.findAll(queryExample, pageable);
     }
 
     @Override
@@ -381,17 +367,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void changeToNewEmail(User currentUser) {
-        currentUser.setEmail(currentUser.getNewEmail());
-        currentUser.setNewEmail(StringUtils.EMPTY);
-        currentUser.setVerificationCode(StringUtils.EMPTY);
-        currentUser.setVerificationCodeSentAt(null);
-
-        userRepository.save(currentUser);
-    }
-
-    @Override
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void extendValidityPeriod(String id, long amountToAdd, TemporalUnit unit) {
         User user = userRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
         Instant expiresAt = null;
@@ -417,5 +392,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .set(USER.MODIFIED_AT, Instant.now())
                 .where(USER.ID.eq(id))
                 .execute();
+    }
+
+    private ManagedUser buildManagedUser(User user, String id) {
+        ManagedUser managedUser = new ManagedUser();
+        BeanUtils.copyProperties(user, managedUser);
+        Set<String> roleIds = userRoleService.findRoleIds(id);
+        managedUser.setRoleIds(roleIds);
+        Set<String> permissionIds = rolePermissionService.findPermissionIds(roleIds);
+        managedUser.setPermissionIds(permissionIds);
+        managedUser.setLocale(user.getLocale());
+        managedUser.setTimezone(user.getTimeZoneId());
+        managedUser.setPasswordHash("*");
+        return managedUser;
     }
 }

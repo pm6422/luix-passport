@@ -17,11 +17,11 @@ public interface UserService {
 
     ManagedUser findByEmail(String email);
 
+    Page<User> find(Pageable pageable, String username, String email, String mobileNo, Boolean enabled, Boolean activated);
+
     User insert(User domain, Set<String> roleIds, String rawPassword, boolean permanentAccount);
 
     User update(ManagedUser managedUser);
-
-    User update(ManagedUser managedUser, Set<String> roleIds);
 
     void activate(String activationCode);
 
@@ -35,15 +35,13 @@ public interface UserService {
 
     void resetPassword(String resetCode, String newRawPassword);
 
-    Page<User> find(Pageable pageable, String username, String email, String mobileNo, Boolean enabled, Boolean activated);
+    void changeToNewEmail(User currentUser);
 
     void deleteById(String id);
 
     String generateRandomCode();
 
     String generateRandomVerificationCode();
-
-    void changeToNewEmail(User currentUser);
 
     void extendValidityPeriod(String id, long amountToAdd, TemporalUnit unit);
 
