@@ -398,7 +398,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public void cascadeUpdateUsername(String oldUsername, String newUsername) {
-        // cascade update username of the user and the foreign constraints entities
+        // cascade update username of the user and the foreign key constraints entities
         dslContext
                 .update(USER)
                 .set(USER.USERNAME, newUsername)
