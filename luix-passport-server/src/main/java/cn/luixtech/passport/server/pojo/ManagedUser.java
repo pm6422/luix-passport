@@ -35,7 +35,7 @@ public class ManagedUser extends User {
 
     private String locale;
 
-    private String timezone;
+    private String timeZoneId;
 
     public User toUser() {
         User user = new User();

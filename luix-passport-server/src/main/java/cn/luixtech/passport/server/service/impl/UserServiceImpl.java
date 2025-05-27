@@ -42,7 +42,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.statemachine.StateMachine;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
 
@@ -413,8 +412,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         managedUser.setRoleIds(roleIds);
         Set<String> permissionIds = rolePermissionService.findPermissionIds(roleIds);
         managedUser.setPermissionIds(permissionIds);
-        managedUser.setLocale(user.getLocale());
-        managedUser.setTimezone(user.getTimeZoneId());
         managedUser.setPasswordHash("*");
         return managedUser;
     }
