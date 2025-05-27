@@ -2,11 +2,9 @@ package cn.luixtech.passport.server.controller;
 
 import cn.luixtech.passport.server.config.ApplicationProperties;
 import cn.luixtech.passport.server.domain.User;
-import cn.luixtech.passport.server.domain.UserRole;
 import cn.luixtech.passport.server.event.LogoutEvent;
 import cn.luixtech.passport.server.pojo.ManagedUser;
 import cn.luixtech.passport.server.repository.UserRepository;
-import cn.luixtech.passport.server.repository.UserRoleRepository;
 import cn.luixtech.passport.server.service.MailService;
 import cn.luixtech.passport.server.service.UserRoleService;
 import cn.luixtech.passport.server.service.UserService;
@@ -34,7 +32,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static cn.luixtech.passport.server.domain.UserRole.ROLE_ADMIN;
 import static com.luixtech.springbootframework.utils.HttpHeaderUtils.generatePageHeaders;
@@ -52,9 +49,8 @@ public class UserController {
     private final ApplicationEventPublisher applicationEventPublisher;
     private final UserService               userService;
     private final UserRepository            userRepository;
-    private final UserRoleRepository userRoleRepository;
-    private final UserRoleService    userRoleService;
-    private final MailService        mailService;
+    private final UserRoleService           userRoleService;
+    private final MailService               mailService;
     private final HttpHeaderCreator         httpHeaderCreator;
 
     @Operation(summary = "create new user and send a user creation email")
@@ -122,7 +118,7 @@ public class UserController {
     public ResponseEntity<Void> resetPassword(@Parameter(description = "id", required = true) @PathVariable String id) {
         userService.changePassword(id, null, applicationProperties.getAccount().getDefaultPassword(), null);
         if (id.equals(AuthUtils.getCurrentUserId())) {
-            // Logout if current user were changed
+            // Logout if the current user were changed
             applicationEventPublisher.publishEvent(new LogoutEvent(this, AuthUtils.getCurrentUsername()));
         }
         HttpHeaders headers = httpHeaderCreator.createSuccessHeader("NM1011", applicationProperties.getAccount().getDefaultPassword());
