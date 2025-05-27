@@ -14,6 +14,7 @@ import cn.luixtech.passport.server.repository.UserRoleRepository;
 import cn.luixtech.passport.server.service.*;
 import cn.luixtech.passport.server.statemachine.UserEvent;
 import cn.luixtech.passport.server.statemachine.UserState;
+import cn.luixtech.passport.server.utils.AuthUtils;
 import com.luixtech.springbootframework.component.MessageCreator;
 import com.luixtech.utilities.encryption.JasyptEncryptUtils;
 import com.luixtech.utilities.exception.DataNotFoundException;
@@ -378,6 +379,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .update(USER)
                 .set(USER.ACCOUNT_EXPIRES_AT, expiresAt)
                 .set(USER.MODIFIED_AT, Instant.now())
+                .set(USER.MODIFIED_BY, AuthUtils.getCurrentUsername())
                 .where(USER.USERNAME.eq(username))
                 .execute();
     }
@@ -389,6 +391,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .update(USER)
                 .set(USER.LAST_SIGN_IN_AT, Instant.now())
                 .set(USER.MODIFIED_AT, Instant.now())
+                .set(USER.MODIFIED_BY, AuthUtils.getCurrentUsername())
                 .where(USER.USERNAME.eq(username))
                 .execute();
     }
@@ -400,6 +403,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .update(USER)
                 .set(USER.USERNAME, newUsername)
                 .set(USER.MODIFIED_AT, Instant.now())
+                .set(USER.MODIFIED_BY, AuthUtils.getCurrentUsername())
                 .where(USER.USERNAME.eq(oldUsername))
                 .execute();
     }
