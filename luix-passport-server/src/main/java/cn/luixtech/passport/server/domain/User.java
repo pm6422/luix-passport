@@ -1,6 +1,6 @@
 package cn.luixtech.passport.server.domain;
 
-import cn.luixtech.passport.server.domain.base.AbstractAuditableDomain;
+import cn.luixtech.passport.server.domain.base.AbstractUpdatableDomain;
 import cn.luixtech.passport.server.domain.base.listener.AuditableEntityListener;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
@@ -22,7 +22,7 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class User extends AbstractAuditableDomain implements Serializable {
+public class User extends AbstractUpdatableDomain implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 

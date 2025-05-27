@@ -1,20 +1,20 @@
 package cn.luixtech.passport.server.domain.base.listener;
 
-import cn.luixtech.passport.server.domain.base.AbstractAuditableDomain;
+import cn.luixtech.passport.server.domain.base.AbstractUpdatableDomain;
 import cn.luixtech.passport.server.domain.base.AbstractBaseDomain;
-import cn.luixtech.passport.server.domain.base.AbstractCreationDomain;
+import cn.luixtech.passport.server.domain.base.AbstractCreatableDomain;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 
 public class AuditableEntityListener {
     @PrePersist
     public void prePersist(Object entity) {
-        if (entity instanceof AbstractAuditableDomain) {
-            ((AbstractAuditableDomain) entity).prePersist();
+        if (entity instanceof AbstractUpdatableDomain) {
+            ((AbstractUpdatableDomain) entity).prePersist();
             return;
         }
-        if (entity instanceof AbstractCreationDomain) {
-            ((AbstractCreationDomain) entity).prePersist();
+        if (entity instanceof AbstractCreatableDomain) {
+            ((AbstractCreatableDomain) entity).prePersist();
             return;
         }
         if (entity instanceof AbstractBaseDomain) {
@@ -24,8 +24,8 @@ public class AuditableEntityListener {
     
     @PreUpdate
     public void preUpdate(Object entity) {
-        if (entity instanceof AbstractAuditableDomain) {
-            ((AbstractAuditableDomain) entity).preUpdate();
+        if (entity instanceof AbstractUpdatableDomain) {
+            ((AbstractUpdatableDomain) entity).preUpdate();
         }
     }
 }

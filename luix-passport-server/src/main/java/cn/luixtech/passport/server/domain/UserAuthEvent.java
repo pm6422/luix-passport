@@ -1,6 +1,6 @@
 package cn.luixtech.passport.server.domain;
 
-import cn.luixtech.passport.server.domain.base.AbstractCreationDomain;
+import cn.luixtech.passport.server.domain.base.AbstractCreatableDomain;
 import cn.luixtech.passport.server.domain.base.listener.AuditableEntityListener;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -18,7 +18,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class UserAuthEvent extends AbstractCreationDomain implements Serializable {
+public class UserAuthEvent extends AbstractCreatableDomain implements Serializable {
     @Serial
     private static final long   serialVersionUID = 1L;
     public static final  String AUTH_SUCCESS     = "AuthenticationSuccess";

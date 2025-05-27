@@ -1,8 +1,7 @@
 package cn.luixtech.passport.server.domain;
 
-import cn.luixtech.passport.server.domain.base.AbstractAuditableDomain;
+import cn.luixtech.passport.server.domain.base.AbstractUpdatableDomain;
 import cn.luixtech.passport.server.domain.base.listener.AuditableEntityListener;
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,14 +9,13 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.Instant;
 
 @Entity
 @EntityListeners(AuditableEntityListener.class)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserNotification extends AbstractAuditableDomain implements Serializable {
+public class UserNotification extends AbstractUpdatableDomain implements Serializable {
     @Serial
     private static final long   serialVersionUID = 1L;
     public static final  String STATUS_READ      = "READ";

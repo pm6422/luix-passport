@@ -1,6 +1,6 @@
 package cn.luixtech.passport.server.domain;
 
-import cn.luixtech.passport.server.domain.base.AbstractAuditableDomain;
+import cn.luixtech.passport.server.domain.base.AbstractUpdatableDomain;
 import cn.luixtech.passport.server.domain.base.listener.AuditableEntityListener;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -17,7 +17,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class Org extends AbstractAuditableDomain implements Serializable {
+public class Org extends AbstractUpdatableDomain implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 

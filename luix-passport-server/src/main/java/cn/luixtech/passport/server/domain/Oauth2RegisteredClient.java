@@ -1,6 +1,6 @@
 package cn.luixtech.passport.server.domain;
 
-import cn.luixtech.passport.server.domain.base.AbstractAuditableDomain;
+import cn.luixtech.passport.server.domain.base.AbstractUpdatableDomain;
 import cn.luixtech.passport.server.domain.base.listener.AuditableEntityListener;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -19,7 +19,7 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class Oauth2RegisteredClient extends AbstractAuditableDomain implements Serializable {
+public class Oauth2RegisteredClient extends AbstractUpdatableDomain implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 

@@ -1,6 +1,6 @@
 package cn.luixtech.passport.server.domain;
 
-import cn.luixtech.passport.server.domain.base.AbstractAuditableDomain;
+import cn.luixtech.passport.server.domain.base.AbstractUpdatableDomain;
 import cn.luixtech.passport.server.domain.base.listener.AuditableEntityListener;
 import com.luixtech.utilities.annotation.IncKey;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -22,7 +22,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class DataDict extends AbstractAuditableDomain implements Serializable {
+public class DataDict extends AbstractUpdatableDomain implements Serializable {
     @Serial
     private static final long   serialVersionUID = 1L;
 

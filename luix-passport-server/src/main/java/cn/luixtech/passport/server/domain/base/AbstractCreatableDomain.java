@@ -15,7 +15,7 @@ import static cn.luixtech.passport.server.utils.AuthUtils.getCurrentUsername;
 @Data
 @EqualsAndHashCode(callSuper=false)
 @MappedSuperclass
-public abstract class AbstractCreationDomain extends AbstractBaseDomain implements Serializable {
+public abstract class AbstractCreatableDomain extends AbstractBaseDomain implements Serializable {
     @Serial
     private static final long serialVersionUID = -322694592498870599L;
 
