@@ -17,7 +17,7 @@ public class UserProfilePicServiceImpl implements UserProfilePicService {
     private final UserProfilePicRepository userProfilePicRepository;
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public void insert(String username, byte[] photoData) {
         UserProfilePic userProfilePic = new UserProfilePic();
         userProfilePic.setId(username);
@@ -26,14 +26,14 @@ public class UserProfilePicServiceImpl implements UserProfilePicService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public void update(UserProfilePic photo, byte[] photoData) {
         photo.setProfilePic(photoData);
         userProfilePicRepository.save(photo);
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public void save(String username, byte[] photoData) {
         Optional<UserProfilePic> existingOne = userProfilePicRepository.findById(username);
         if (existingOne.isPresent()) {

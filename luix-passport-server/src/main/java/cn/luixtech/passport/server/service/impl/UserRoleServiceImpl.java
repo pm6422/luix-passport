@@ -35,7 +35,7 @@ public class UserRoleServiceImpl implements UserRoleService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public void update(String username, Set<String> newRoleIds) {
         if (CollectionUtils.isEmpty(newRoleIds)) {
             return;
@@ -84,7 +84,7 @@ public class UserRoleServiceImpl implements UserRoleService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public void deleteByUsername(String username) {
         userRoleRepository.deleteByUsername(username);
     }

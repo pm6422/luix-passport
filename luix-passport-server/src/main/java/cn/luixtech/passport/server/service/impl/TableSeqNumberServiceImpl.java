@@ -41,7 +41,7 @@ public class TableSeqNumberServiceImpl implements TableSeqNumberService {
         return tableSeqNumber.get().getMaxSeqNum();
     }
 
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     protected void upsertSeqNumber(String table) {
         String maxNumberStr = getMaxNumberStr(table);
 

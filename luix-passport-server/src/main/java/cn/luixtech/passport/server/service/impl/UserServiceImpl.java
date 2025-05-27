@@ -157,7 +157,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public User insert(User domain, Set<String> roleIds, String rawPassword, boolean permanentAccount) {
         // From pojo to record
 //        UserRecord userRecord = dslContext.newRecord(USER, domain);
@@ -205,7 +205,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public User update(ManagedUser managedUser) {
         int existingEmailCount = userRepository.countByEmailAndUsernameNot(managedUser.getEmail(), managedUser.getUsername());
         if (existingEmailCount > 0) {
@@ -245,7 +245,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public User changePassword(String username, String oldRawPassword, String newRawPassword, String verificationCode) {
         User user = userRepository.findById(username).orElseThrow(() -> new DataNotFoundException(username));
         if (StringUtils.isNotEmpty(verificationCode)) {
@@ -262,7 +262,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public User requestEmailChangeVerificationCode(User user, String email) {
         user.setVerificationCode(generateRandomVerificationCode());
         user.setVerificationCodeSentAt(Instant.now());
@@ -274,7 +274,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public User requestPasswordChangeVerificationCode(User user) {
         user.setVerificationCode(generateRandomVerificationCode());
         user.setVerificationCodeSentAt(Instant.now());
@@ -285,7 +285,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public User requestPasswordRecovery(String email) {
         User user = userRepository.findOneByEmailAndActivated(email, true).orElseThrow(() -> new RuntimeException("Email does not exist"));
 
@@ -298,7 +298,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public void resetPassword(String resetCode, String newRawPassword) {
         User user = userRepository.findOneByResetCode(resetCode).orElseThrow(() -> new RuntimeException("Invalid reset code"));
 
@@ -313,7 +313,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public void changeToNewEmail(User currentUser) {
         currentUser.setEmail(currentUser.getNewEmail());
         currentUser.setNewEmail(StringUtils.EMPTY);
@@ -324,7 +324,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public void activate(String activationCode) {
         User user = userRepository.findOneByActivationCode(activationCode).orElseThrow(() -> new RuntimeException("Invalid activation code"));
 
@@ -340,7 +340,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public void deleteByUsername(String username) {
         // cascade delete user and user related entities
         userRepository.deleteById(username);
@@ -366,7 +366,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public void extendValidityPeriod(String username, long amountToAdd, TemporalUnit unit) {
         User user = userRepository.findById(username).orElseThrow(() -> new DataNotFoundException(username));
         Instant expiresAt = null;
@@ -385,7 +385,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public void updateLastLoginTime(String username) {
         dslContext
                 .update(USER)
