@@ -199,8 +199,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         stateMachine.startReactively().block();
         log.info("Created user: {}", domain);
 
-        List<UserRole> userAuthorities = userRoleService.assignWithDefaults(id, roleIds);
-        userRoleRepository.saveAll(userAuthorities);
+        List<UserRole> userRoles = userRoleService.assignWithDefaults(id, roleIds);
+        userRoleRepository.saveAll(userRoles);
         return domain;
     }
 
@@ -361,12 +361,21 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public String generateRandomCode() {
-        return RandomStringUtils.randomAlphanumeric(4).toUpperCase() + "-" + RandomStringUtils.randomAlphanumeric(4).toUpperCase() + "-" + RandomStringUtils.randomAlphanumeric(4).toUpperCase() + "-" + RandomStringUtils.randomAlphanumeric(4).toUpperCase() + "-" + RandomStringUtils.randomAlphanumeric(4).toUpperCase();
+        return RandomStringUtils.randomAlphanumeric(4).toUpperCase() + "-" +
+                RandomStringUtils.randomAlphanumeric(4).toUpperCase() + "-" +
+                RandomStringUtils.randomAlphanumeric(4).toUpperCase() + "-" +
+                RandomStringUtils.randomAlphanumeric(4).toUpperCase() + "-" +
+                RandomStringUtils.randomAlphanumeric(4).toUpperCase();
     }
 
     @Override
     public String generateRandomVerificationCode() {
-        return RandomStringUtils.randomAlphabetic(1).toUpperCase() + RandomStringUtils.randomAlphabetic(1).toUpperCase() + RandomStringUtils.randomAlphabetic(1).toUpperCase() + RandomStringUtils.randomAlphabetic(1).toUpperCase() + RandomStringUtils.randomAlphabetic(1).toUpperCase() + RandomStringUtils.randomAlphabetic(1).toUpperCase();
+        return RandomStringUtils.randomAlphabetic(1).toUpperCase() +
+                RandomStringUtils.randomAlphabetic(1).toUpperCase() +
+                RandomStringUtils.randomAlphabetic(1).toUpperCase() +
+                RandomStringUtils.randomAlphabetic(1).toUpperCase() +
+                RandomStringUtils.randomAlphabetic(1).toUpperCase() +
+                RandomStringUtils.randomAlphabetic(1).toUpperCase();
     }
 
     @Override
