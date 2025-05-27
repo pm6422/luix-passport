@@ -199,7 +199,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         stateMachine.startReactively().block();
         log.info("Created user: {}", domain);
 
-        List<UserRole> userAuthorities = userRoleService.generate(id, authorities);
+        List<UserRole> userAuthorities = userRoleService.assignWithDefaults(id, authorities);
         userRoleRepository.saveAll(userAuthorities);
         return domain;
     }

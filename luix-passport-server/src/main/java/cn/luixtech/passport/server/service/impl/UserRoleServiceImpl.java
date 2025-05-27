@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -33,42 +34,6 @@ public class UserRoleServiceImpl implements UserRoleService {
                 .from(USER_ROLE)
                 .where(USER_ROLE.USER_ID.eq(userId))
                 .fetchSet(USER_ROLE.ROLE_ID);
-    }
-
-    @Override
-    public List<UserRole> generate(String userId, Set<String> newAuthorities) {
-        List<UserRole> userRoles = new ArrayList<>();
-        if (newAuthorities != null) {
-            userRoles = newAuthorities.stream()
-                    .map(auth -> build(userId, auth))
-                    .collect(Collectors.toList());
-        }
-
-        // set default user newAuthorities
-        UserRole anoAuth = build(userId, ROLE_ANONYMOUS);
-        UserRole userAuth = build(userId, ROLE_USER);
-
-        if (!userRoles.contains(anoAuth)) {
-            userRoles.add(anoAuth);
-        }
-        if (!userRoles.contains(userAuth)) {
-            userRoles.add(userAuth);
-        }
-        return userRoles;
-    }
-
-    private UserRole build(String userId, String authority) {
-        UserRole userRole = new UserRole();
-        userRole.setId(IdGenerator.generateId());
-        userRole.setUserId(userId);
-        userRole.setRoleId(authority);
-        return userRole;
-    }
-
-    @Override
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void deleteByUserId(String userId) {
-        userRoleRepository.deleteByUserId(userId);
     }
 
     @Override
@@ -98,8 +63,42 @@ public class UserRoleServiceImpl implements UserRoleService {
             userRoleRepository.deleteByUserIdAndRoleIdIn(userId, rolesToDelete);
         }
         if (CollectionUtils.isNotEmpty(rolesToAdd)) {
-            List<UserRole> newUserRoles = generate(userId, rolesToAdd);
+            List<UserRole> newUserRoles = assignRolesToUser(userId, rolesToAdd);
             userRoleRepository.saveAll(newUserRoles);
         }
+    }
+
+    @Override
+    public List<UserRole> assignWithDefaults(String userId, Set<String> roleIds) {
+        List<UserRole> userRoles = assignRolesToUser(userId, roleIds);
+
+        // set default user roles
+        UserRole anoRole = buildUserRole(userId, ROLE_ANONYMOUS);
+        UserRole userRole = buildUserRole(userId, ROLE_USER);
+
+        if (!userRoles.contains(anoRole)) {
+            userRoles.add(anoRole);
+        }
+        if (!userRoles.contains(userRole)) {
+            userRoles.add(userRole);
+        }
+        return userRoles;
+    }
+
+    private List<UserRole> assignRolesToUser(String userId, Set<String> roleIds){
+        if (CollectionUtils.isEmpty(roleIds)) {
+            return Collections.emptyList();
+        }
+        return roleIds.stream()
+                .map(auth -> buildUserRole(userId, auth))
+                .collect(Collectors.toList());
+    }
+
+    private UserRole buildUserRole(String userId, String authority) {
+        UserRole userRole = new UserRole();
+        userRole.setId(IdGenerator.generateId());
+        userRole.setUserId(userId);
+        userRole.setRoleId(authority);
+        return userRole;
     }
 }
