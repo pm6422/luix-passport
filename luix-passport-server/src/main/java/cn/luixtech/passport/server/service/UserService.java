@@ -46,4 +46,6 @@ public interface UserService {
     void extendValidityPeriod(String username, long amountToAdd, TemporalUnit unit);
 
     void updateLastLoginTime(String username);
+
+    void cascadeUpdateUsername(String oldUsername, String newUsername);
 }

@@ -10,6 +10,7 @@ import cn.luixtech.passport.server.service.UserRoleService;
 import cn.luixtech.passport.server.service.UserService;
 import cn.luixtech.passport.server.utils.AuthUtils;
 import com.luixtech.springbootframework.component.HttpHeaderCreator;
+import com.luixtech.utilities.exception.DataNotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,6 +34,7 @@ import java.util.List;
 import java.util.Set;
 
 import static cn.luixtech.passport.server.domain.UserRole.ROLE_ADMIN;
+import static cn.luixtech.passport.server.domain.UserRole.ROLE_DEVELOPER;
 import static com.luixtech.springbootframework.utils.HttpHeaderUtils.generatePageHeaders;
 import static com.luixtech.springbootframework.utils.NetworkUtils.getRequestUrl;
 
@@ -118,5 +120,15 @@ public class UserController {
     @GetMapping("/api/users/count")
     public ResponseEntity<Long> count() {
         return ResponseEntity.ok(userRepository.count());
+    }
+
+    @Operation(summary = "cascade update username from")
+    @PutMapping("/api/users/username")
+    @PreAuthorize("hasAuthority(\"" + ROLE_DEVELOPER + "\")")
+    public ResponseEntity<Void> updateUsername(@Parameter(description = "oldUsername", required = true) @RequestParam(value = "oldUsername") String oldUsername,
+                                               @Parameter(description = "newUsername", required = true) @RequestParam(value = "newUsername") String newUsername) {
+        userRepository.findById(oldUsername).orElseThrow(() -> new DataNotFoundException(oldUsername));
+        userService.cascadeUpdateUsername(oldUsername, newUsername);
+        return ResponseEntity.ok().build();
     }
 }

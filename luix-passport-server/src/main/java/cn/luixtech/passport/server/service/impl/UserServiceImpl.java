@@ -341,6 +341,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void deleteByUsername(String username) {
+        // cascade delete user and user related entities
         userRepository.deleteById(username);
     }
 
@@ -389,6 +390,17 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .set(USER.LAST_SIGN_IN_AT, Instant.now())
                 .set(USER.MODIFIED_AT, Instant.now())
                 .where(USER.USERNAME.eq(username))
+                .execute();
+    }
+
+    @Override
+    public void cascadeUpdateUsername(String oldUsername, String newUsername) {
+        // cascade update username of user and the related entities
+        dslContext
+                .update(USER)
+                .set(USER.USERNAME, newUsername)
+                .set(USER.MODIFIED_AT, Instant.now())
+                .where(USER.USERNAME.eq(oldUsername))
                 .execute();
     }
 
