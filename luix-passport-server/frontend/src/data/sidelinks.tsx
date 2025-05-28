@@ -42,6 +42,12 @@ export const sidelinks: SideLink[] = [
         href: "/permissions",
         icon: <IconPoint size={25} />,
       },
+      {
+        title: "Roles",
+        label: "",
+        href: "/roles",
+        icon: <IconPoint size={25} />,
+      },
     ],
   },
   {

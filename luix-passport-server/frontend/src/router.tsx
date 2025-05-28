@@ -110,15 +110,15 @@ const router = createHashRouter([
         }),
       },
       {
-        path: "roles",
-        lazy: async () => ({
-          Component: (await import("@/components/custom/coming-soon")).default
-        }),
-      },
-      {
         path: "permissions",
         lazy: async () => ({
           Component: (await import("@/views/permissions")).default
+        }),
+      },
+      {
+        path: "roles",
+        lazy: async () => ({
+          Component: (await import("@/components/custom/coming-soon")).default
         }),
       },
       {
