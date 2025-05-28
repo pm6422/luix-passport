@@ -73,6 +73,7 @@ export function EditDialog({
           name="permissionIds"
           label="Permissions"
           options={permissions}
+          multiple={true}
           required
         />
 
