@@ -6,6 +6,7 @@ import cn.luixtech.passport.server.repository.RoleRepository;
 import cn.luixtech.passport.server.service.RolePermissionService;
 import cn.luixtech.passport.server.service.RoleService;
 import com.alibaba.fastjson2.JSON;
+import com.luixtech.springbootframework.component.HttpHeaderCreator;
 import com.luixtech.utilities.exception.DataNotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -42,6 +43,7 @@ public class RoleController {
     private final RoleRepository        roleRepository;
     private final RoleService           roleService;
     private final RolePermissionService rolePermissionService;
+    private final HttpHeaderCreator     httpHeaderCreator;
 
     @Operation(summary = "create new role")
     @PostMapping("/api/roles")
@@ -71,6 +73,13 @@ public class RoleController {
         Role domain = roleRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
         Set<String> permissionIds = rolePermissionService.findPermissionIds(Set.of(domain.getId()));
         return ResponseEntity.ok(ManagedRole.of(domain, permissionIds));
+    }
+
+    @Operation(summary = "update role")
+    @PutMapping("/api/roles")
+    public ResponseEntity<Void> update(@Parameter(description = "new role", required = true) @Valid @RequestBody ManagedRole domain) {
+        roleService.update(domain);
+        return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1002", domain.getId())).build();
     }
 
     @Operation(summary = "delete role by id")
