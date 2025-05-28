@@ -18,7 +18,7 @@ interface EditDialogProps {
   children: ReactNode,
   entityName: string,
   id?: string | null,
-  save: (formData: Auth2Client) => Promise<any>,
+  save: (formData: Auth2Client) => Promise<void>,
   afterSave?: (success: boolean) => void
 }
 
