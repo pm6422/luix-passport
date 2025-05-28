@@ -20,24 +20,24 @@ public abstract class AbstractCreatableDomain extends AbstractBaseDomain impleme
     private static final long serialVersionUID = -322694592498870599L;
 
     /**
-     * Set the proper value when inserting.
-     */
-    @Schema(description = "creator")
-    @Column(updatable = false)
-    protected String createdBy;
-
-    /**
      * Set the current time when inserting.
      */
     @Schema(description = "created time")
     @Column(updatable = false)
     protected Instant createdAt;
 
+    /**
+     * Set the proper value when inserting.
+     */
+    @Schema(description = "creator")
+    @Column(updatable = false)
+    protected String createdBy;
+
     @Override
     public void prePersist() {
         super.prePersist();
 
-        createdBy = getCurrentUsername();
         createdAt = Instant.now();
+        createdBy = getCurrentUsername();
     }
 }

@@ -1,7 +1,9 @@
 package cn.luixtech.passport.server.controller;
 
 import cn.luixtech.passport.server.domain.Role;
+import cn.luixtech.passport.server.pojo.ManagedRole;
 import cn.luixtech.passport.server.repository.RoleRepository;
+import cn.luixtech.passport.server.service.RolePermissionService;
 import cn.luixtech.passport.server.service.RoleService;
 import com.alibaba.fastjson2.JSON;
 import com.luixtech.utilities.exception.DataNotFoundException;
@@ -10,6 +12,10 @@ import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,23 +30,33 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static cn.luixtech.passport.server.domain.UserRole.ROLE_ADMIN;
+import static com.luixtech.springbootframework.utils.HttpHeaderUtils.generatePageHeaders;
 
 @RestController
 @AllArgsConstructor
 @PreAuthorize("hasAuthority(\"" + ROLE_ADMIN + "\")")
 @Slf4j
 public class RoleController {
-    private final RoleRepository roleRepository;
-    private final RoleService    roleService;
+    private final RoleRepository        roleRepository;
+    private final RoleService           roleService;
+    private final RolePermissionService rolePermissionService;
 
-    @Operation(summary = "save role")
+    @Operation(summary = "create new role")
     @PostMapping("/api/roles")
-    public ResponseEntity<Void> save(@Parameter(description = "domain", required = true) @Valid @RequestBody Role domain) {
-        roleRepository.save(domain);
-        return ResponseEntity.status(HttpStatus.OK).build();
+    public ResponseEntity<Void> create(@Parameter(description = "domain", required = true) @Valid @RequestBody ManagedRole domain) {
+        roleService.insert(domain);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @Operation(summary = "find role list")
+    @GetMapping("/api/roles")
+    public ResponseEntity<List<Role>> find(@ParameterObject Pageable pageable,
+                                           @Parameter(description = "ID") @RequestParam(value = "id", required = false) String id) {
+        Page<Role> domains = roleService.find(pageable, id);
+        HttpHeaders headers = generatePageHeaders(domains);
+        return ResponseEntity.ok().headers(headers).body(domains.getContent());
     }
 
     @Operation(summary = "find all role IDs")
@@ -51,9 +67,10 @@ public class RoleController {
 
     @Operation(summary = "find role by id")
     @GetMapping("/api/roles/{id}")
-    public ResponseEntity<Role> findById(@Parameter(description = "ID", required = true) @PathVariable String id) {
+    public ResponseEntity<ManagedRole> findById(@Parameter(description = "ID", required = true) @PathVariable String id) {
         Role domain = roleRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
-        return ResponseEntity.ok(domain);
+        Set<String> permissionIds = rolePermissionService.findPermissionIds(Set.of(domain.getId()));
+        return ResponseEntity.ok(ManagedRole.of(domain, permissionIds));
     }
 
     @Operation(summary = "delete role by id")

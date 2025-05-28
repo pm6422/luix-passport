@@ -22,16 +22,16 @@ public abstract class AbstractUpdateDomain extends AbstractCreationDomain implem
     private static final long serialVersionUID = -322694592498870599L;
 
     /**
-     * Set the proper value when inserting or updating.
-     */
-    @Schema(description = "last modifier")
-    protected String modifiedBy;
-
-    /**
      * Set the current time when inserting or updating.
      */
     @Schema(description = "last modified time")
     protected Instant modifiedAt;
+
+    /**
+     * Set the proper value when inserting or updating.
+     */
+    @Schema(description = "last modifier")
+    protected String modifiedBy;
 
     @Override
     public void prePersist() {

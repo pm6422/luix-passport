@@ -18,21 +18,21 @@ public abstract class AbstractCreationDomain implements Serializable {
     private static final long serialVersionUID = -322694592498870599L;
 
     /**
-     * Set the proper value when inserting.
-     */
-    @Schema(description = "creator")
-    @Column(updatable = false)
-    protected String createdBy;
-
-    /**
      * Set the current time when inserting.
      */
     @Schema(description = "created time")
     @Column(updatable = false)
     protected Instant createdAt;
 
+    /**
+     * Set the proper value when inserting.
+     */
+    @Schema(description = "creator")
+    @Column(updatable = false)
+    protected String createdBy;
+
     public void prePersist() {
-        createdBy = getCurrentUsername();
         createdAt = Instant.now();
+        createdBy = getCurrentUsername();
     }
 }

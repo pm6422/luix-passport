@@ -42,7 +42,6 @@ public class DataDictController {
     private final DataDictRepository dataDictRepository;
     private final DataDictService    dataDictService;
 
-
     @Operation(summary = "create new data dict")
     @PreAuthorize("hasAuthority(\"" + ROLE_DEVELOPER + "\")")
     @PostMapping("/api/data-dicts")
