@@ -62,6 +62,13 @@ export function EditDialog({
           required
         />
 
+        <InputFormField
+          control={form.control}
+          name="remark"
+          label="Remark"
+          required
+        />
+
         <MultiSelectFormField
           control={form.control}
           name="permissionIds"
