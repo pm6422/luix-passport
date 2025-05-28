@@ -27,13 +27,3 @@ export const initialUserNotificationState: UserNotification = {
   createdAt: "",
   modifiedAt: ""
 }
-
-export const userNotificationCriteriaSchema = z.object({
-  keyword: z.string().optional().nullable()
-})
-
-export type UserNotificationCriteria = z.infer<typeof userNotificationCriteriaSchema>
-
-export const initialDataDictCriteriaState: UserNotificationCriteria = {
-  keyword: null
-}
