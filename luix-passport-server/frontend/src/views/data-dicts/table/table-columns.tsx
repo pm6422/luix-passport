@@ -54,7 +54,7 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Category Code" />
       ),
-      cell: ({ row }) => <div className="w-[50px]">{row.getValue("categoryCode")}</div>,
+      cell: ({ row }) => <div className="w-[175px]">{row.getValue("categoryCode")}</div>,
       enableSorting: true,
       enableHiding: true,
     },
@@ -63,7 +63,7 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Dictionary Code" />
       ),
-      cell: ({ row }) => <div className="w-[50px]">{row.getValue("dictCode")}</div>,
+      cell: ({ row }) => <div className="w-[75px]">{row.getValue("dictCode")}</div>,
       enableSorting: true,
       enableHiding: true,
     },
@@ -75,15 +75,6 @@ export function tableColumns(
       cell: ({ row }) => <div className="w-[50px]">{row.getValue("dictName")}</div>,
       enableSorting: true,
       enableHiding: true,
-    },
-    {
-      accessorKey: "remark",
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Remark" />
-      ),
-      cell: ({ row }) => <div className="w-[150px]">{row.getValue("remark")}</div>,
-      enableSorting: false,
-      enableHiding: false,
     },
     {
       accessorKey: "enabled",

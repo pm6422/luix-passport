@@ -43,7 +43,7 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Client ID" />
       ),
-      cell: ({ row }) => <div className="w-[180px]">{row.getValue("clientId")}</div>,
+      cell: ({ row }) => <div className="w-[170px]">{row.getValue("clientId")}</div>,
       enableSorting: true,
       enableHiding: false,
     },
@@ -77,7 +77,7 @@ export function tableColumns(
         <DataTableColumnHeader column={column} title="Authentication Grant Types" />
       ),
       cell: ({ row }) => (
-        <div className="w-[100px] text-xs">
+        <div className="w-[130px] text-xs">
           {(row.getValue("authorizationGrantTypes") as string[]).map((item, index) => (
             <div key={index}>{item}</div>
           ))}

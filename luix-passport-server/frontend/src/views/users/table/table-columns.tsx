@@ -75,7 +75,7 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Email" />
       ),
-      cell: ({ row }) => <div className="w-[125px]">{row.getValue("email")}</div>,
+      cell: ({ row }) => <div className="w-[130px]">{row.getValue("email")}</div>,
       enableSorting: true,
       enableHiding: true,
     },

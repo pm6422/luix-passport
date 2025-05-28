@@ -44,7 +44,7 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="ID" />
       ),
-      cell: ({ row }) => <div className="w-[30px]">{row.getValue("id")}</div>,
+      cell: ({ row }) => <div className="w-[100px]">{row.getValue("id")}</div>,
       enableSorting: true,
       enableHiding: false,
     },
@@ -53,7 +53,7 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Resource Type" />
       ),
-      cell: ({ row }) => <div className="w-[125px]">{row.getValue("resourceType")}</div>,
+      cell: ({ row }) => <div className="w-[75px]">{row.getValue("resourceType")}</div>,
       enableSorting: true,
       enableHiding: true,
     },
