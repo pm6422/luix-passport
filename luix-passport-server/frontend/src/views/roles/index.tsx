@@ -7,7 +7,7 @@ import { type Auth2Client, type Auth2ClientCriteriaSchema } from "@/domains/auth
 import { Oauth2ClientService } from "@/services/oauth2-client-service"
 import { filterTable } from "@/lib/utils"
 
-export default function DataDict() {
+export default function Role() {
   // State to hold the fetched data
   const entityName = "role"
   const [tableData, setTableData] = useState([] as Array<Auth2Client>)
