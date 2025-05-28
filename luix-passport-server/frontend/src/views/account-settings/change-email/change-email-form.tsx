@@ -54,7 +54,7 @@ export function ChangeEmailForm() {
     AccountService.getCurrentAccount().then(user => {
       form.reset({ currentEmail: user.email })
     })
-  }, [])
+  }, [form])
 
  function sendVerificationCode(email: string): void {
    const now = Date.now()

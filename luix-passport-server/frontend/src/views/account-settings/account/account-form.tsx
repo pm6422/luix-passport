@@ -60,7 +60,7 @@ export function AccountForm() {
         form.reset(user)
       })
     })
-  }, [])
+  }, [form])
 
   function onSubmit(formData: AccountFormSchema) {
     setSaving(true)
