@@ -9,7 +9,6 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 public class AuthUser {
-    private String      id;
     private String      username;
     private String      email;
     private String      mobileNo;
