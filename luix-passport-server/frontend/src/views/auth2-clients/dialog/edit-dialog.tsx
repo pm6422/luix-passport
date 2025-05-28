@@ -77,7 +77,7 @@ export function EditDialog({
     id && Oauth2ClientService.findById(id).then(r => {
       form.reset(r.data)
     })
-  }, [open])
+  }, [form, id, open])
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

@@ -50,7 +50,7 @@ export function EditDialog({
         form.reset(r.data)
       })
     })
-  }, [open])
+  }, [form, id, open])
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
