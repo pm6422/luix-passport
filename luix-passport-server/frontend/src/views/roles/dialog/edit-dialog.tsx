@@ -66,9 +66,8 @@ export function EditDialog({
           control={form.control}
           name="permissionIds"
           label="Permissions"
-          required
           options={permissions}
-          placeholder="Select permissions"
+          required
         />
 
       </SaveDialogContent>

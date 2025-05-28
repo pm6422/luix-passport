@@ -55,10 +55,10 @@ export function EditDialog({
           control={form.control} 
           name="categoryCode"
           label="Category Code"
-          required
           options={categoryCodeOptions}
           placeholder="Select or input a category code"
           creatable={true}
+          required
         />
 
         <InputFormField 
