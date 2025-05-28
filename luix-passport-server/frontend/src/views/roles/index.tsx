@@ -9,7 +9,7 @@ import { filterTable } from "@/lib/utils"
 
 export default function DataDict() {
   // State to hold the fetched data
-  const entityName = "oauth2 client"
+  const entityName = "role"
   const [tableData, setTableData] = useState([] as Array<Auth2Client>)
 
   useEffect(() => {
