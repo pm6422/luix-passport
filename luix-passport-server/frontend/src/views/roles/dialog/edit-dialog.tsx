@@ -66,7 +66,6 @@ export function EditDialog({
           control={form.control}
           name="remark"
           label="Remark"
-          required
         />
 
         <MultiSelectFormField
