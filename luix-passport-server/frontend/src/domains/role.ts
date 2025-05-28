@@ -9,3 +9,20 @@ export const roleSchema = z.object({
 })
 
 export type Role = z.infer<typeof roleSchema>
+
+export const initialRoleState: Role = {
+  id: "",
+  remark: "",
+  permissionIds: [],
+  createdAt: "",
+  modifiedAt: ""
+}
+export const roleCriteriaSchema = z.object({
+  keyword: z.string().optional(),
+})
+
+export type RoleCriteriaSchema = z.infer<typeof roleCriteriaSchema>
+
+export const initialRoleCriteriaState: RoleCriteriaSchema = {
+  keyword: ""
+}

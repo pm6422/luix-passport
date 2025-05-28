@@ -3,45 +3,45 @@ import { LayoutBody } from "@/layouts/layout-definitions"
 import { DataTableToolbar } from "./table/table-toolbar"
 import { DataTable } from "@/components/custom/data-table/client-pagination-data-table"
 import { tableColumns } from "./table/table-columns"
-import { type Auth2Client, type Auth2ClientCriteriaSchema } from "@/domains/auth2-client"
-import { Oauth2ClientService } from "@/services/oauth2-client-service"
+import { type Role, type RoleCriteriaSchema } from "@/domains/role"
+import { RoleService } from "@/services/role-service"
 import { filterTable } from "@/lib/utils"
 
 export default function Role() {
   // State to hold the fetched data
   const entityName = "role"
-  const [tableData, setTableData] = useState([] as Array<Auth2Client>)
+  const [tableData, setTableData] = useState([] as Array<Role>)
 
   useEffect(() => {
     loadPage()
   }, [])
 
-  function loadPage(criteria: Auth2ClientCriteriaSchema = {}): void {
+  function loadPage(criteria: RoleCriteriaSchema = {}): void {
     if(criteria.keyword && tableData.length) {
       setTableData(filterTable(tableData, criteria.keyword))
       return
     }
-    Oauth2ClientService.find({ page: 0, size: 2000, sort: ["modifiedAt,desc"]}).then(r => {
+    RoleService.find({ page: 0, size: 2000, sort: ["modifiedAt,desc"]}).then(r => {
       setTableData(r.data)
     })
   }
 
-  function save(formData: Auth2Client): Promise<void> {
-    return Oauth2ClientService.save(formData).then(() => {
+  function save(formData: Role): Promise<void> {
+    return RoleService.save(formData).then(() => {
       loadPage()
     })
   }
 
-  function deleteRow(row: Auth2Client): Promise<void> {
+  function deleteRow(row: Role): Promise<void> {
     if(!row.id) {
       return Promise.reject("Invalid empty id")
     }
-    return Oauth2ClientService.deleteById(row.id).then(() => {
+    return RoleService.deleteById(row.id).then(() => {
       loadPage()
     })
   }
 
-  function deleteRows(rows: Array<Auth2Client>): Promise<Array<void>> {
+  function deleteRows(rows: Array<Role>): Promise<Array<void>> {
     return Promise.all(rows.map(deleteRow))
   }
 

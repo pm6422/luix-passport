@@ -4,15 +4,15 @@ import { IconEdit } from "@tabler/icons-react"
 import { DataTableColumnHeader } from "@/components/custom/data-table/data-table-column-header"
 import { DataTableRowActions } from "@/components/custom/data-table/data-table-row-actions"
 import { Button } from "@/components/custom/button"
-import { yesNo } from "@/data/yes-no"
-import { Auth2Client } from "@/domains/auth2-client"
+import { Role } from "@/domains/role"
 import { EditDialog } from "../dialog/edit-dialog"
+import { DateTime } from '@/components/custom/date-time.tsx'
 
 export function tableColumns(
   entityName: string,
-  save: (formData: Auth2Client) => Promise<void>,
-  deleteRow: (row: Auth2Client) => Promise<void>,
-): ColumnDef<Auth2Client>[] {
+  save: (formData: Role) => Promise<void>,
+  deleteRow: (row: Role) => Promise<void>,
+): ColumnDef<Role>[] {
   return [
     {
       id: "select",
@@ -39,87 +39,40 @@ export function tableColumns(
       enableHiding: false,
     },
     {
-      accessorKey: "clientId",
+      accessorKey: "id",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Client ID" />
+        <DataTableColumnHeader column={column} title="ID" />
       ),
-      cell: ({ row }) => <div className="w-[170px]">{row.getValue("clientId")}</div>,
+      cell: ({ row }) => <div className="w-[170px]">{row.getValue("id")}</div>,
       enableSorting: true,
       enableHiding: false,
     },
     {
-      accessorKey: "clientName",
+      accessorKey: "remark",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Client Name" />
+        <DataTableColumnHeader column={column} title="Remark" />
       ),
-      cell: ({ row }) => <div className="w-[180px]">{row.getValue("clientName")}</div>,
+      cell: ({ row }) => <div className="w-[200px]">{row.getValue("remark")}</div>,
+      enableSorting: true,
+      enableHiding: false,
+    },
+    {
+      accessorKey: "createdAt",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Created At" />
+      ),
+      cell: ({ row }) => <div className="w-[150px]"><DateTime value={row.getValue("createdAt")}/></div>,
       enableSorting: true,
       enableHiding: true,
     },
     {
-      accessorKey: "clientAuthenticationMethods",
+      accessorKey: "modifiedAt",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Authentication Methods" />
+        <DataTableColumnHeader column={column} title="Modified At" />
       ),
-      cell: ({ row }) => (
-        <div className="w-[100px] text-xs">
-          {(row.getValue("clientAuthenticationMethods") as string[]).map((item, index) => (
-            <div key={index}>{item}</div>
-          ))}
-        </div>
-      ),
-      enableSorting: false,
+      cell: ({ row }) => <div className="w-[150px]"><DateTime value={row.getValue("modifiedAt")}/></div>,
+      enableSorting: true,
       enableHiding: true,
-    },
-    {
-      accessorKey: "authorizationGrantTypes",
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Authentication Grant Types" />
-      ),
-      cell: ({ row }) => (
-        <div className="w-[130px] text-xs">
-          {(row.getValue("authorizationGrantTypes") as string[]).map((item, index) => (
-            <div key={index}>{item}</div>
-          ))}
-        </div>
-      ),
-      enableSorting: false,
-      enableHiding: true,
-    },
-    {
-      accessorKey: "scopes",
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Scopes" />
-      ),
-      cell: ({ row }) => (
-        <div className="w-[75px] text-xs">
-          {(row.getValue("scopes") as string[]).map((item, index) => (
-            <div key={index}>{item}</div>
-          ))}
-        </div>
-      ),
-      enableSorting: false,
-      enableHiding: true,
-    },
-    {
-      accessorKey: "enabled",
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Enabled" />
-      ),
-      cell: ({ row }) => {
-        const element = yesNo.find(e => e.value === row.getValue("enabled"))
-
-        return (
-          <div className="flex w-[50px] items-center justify-center">
-            {element && element.icon && (
-              <element.icon className="mr-2 size-5 text-muted-foreground" />
-            )}
-          </div>
-        )
-      },
-      filterFn: (row, id, value) => {
-        return value.includes(row.getValue(id))
-      },
     },
     {
       id: "actions",

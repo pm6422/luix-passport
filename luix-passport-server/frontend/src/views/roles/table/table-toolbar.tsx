@@ -4,13 +4,13 @@ import InputFormField from "@/components/custom/form-field/input"
 import { Button } from "@/components/custom/button"
 import { IconPlus } from "@tabler/icons-react"
 import { EditDialog } from "../dialog/edit-dialog"
-import { type Auth2Client, type Auth2ClientCriteriaSchema, auth2ClientCriteriaSchema, initialAuth2ClientCriteriaState } from "@/domains/auth2-client"
+import { type Role, type RoleCriteriaSchema, roleCriteriaSchema, initialRoleCriteriaState } from "@/domains/role"
 import { Form } from "@/components/ui/form"
 
 interface DataTableToolbarProps{
   entityName: string,
-  loadPage: (criteria: Auth2ClientCriteriaSchema) => void,
-  save: (formData: Auth2Client) => Promise<void>
+  loadPage: (criteria: RoleCriteriaSchema) => void,
+  save: (formData: Role) => Promise<void>
 }
 
 export function DataTableToolbar ({
@@ -18,12 +18,12 @@ export function DataTableToolbar ({
   loadPage,
   save
 }: DataTableToolbarProps) {
-  const form = useForm<Auth2ClientCriteriaSchema>({
-    resolver: zodResolver(auth2ClientCriteriaSchema),
-    defaultValues: initialAuth2ClientCriteriaState
+  const form = useForm<RoleCriteriaSchema>({
+    resolver: zodResolver(roleCriteriaSchema),
+    defaultValues: initialRoleCriteriaState
   })
 
-  function onSubmit(formData: Auth2ClientCriteriaSchema): void {
+  function onSubmit(formData: RoleCriteriaSchema): void {
     loadPage(formData)
   }
 
