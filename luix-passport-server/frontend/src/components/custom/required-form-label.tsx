@@ -11,6 +11,6 @@ export const RequiredFormLabel = ({
 }: Props) => (
   <FormLabel>
     {children}
-    {required && <span className="ml-1 text-destructive text-xl align-middle">*</span>}
+    {required && <span className="ml-1 text-destructive font-bold align-middle">*</span>}
   </FormLabel>
 )
