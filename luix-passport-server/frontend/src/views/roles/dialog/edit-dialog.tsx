@@ -7,7 +7,9 @@ import InputFormField from "@/components/custom/form-field/input"
 import MultiSelectFormField from "@/components/custom/form-field/multi-select"
 import { Option } from "@/components/custom/multi-select"
 import { type Role, roleSchema, initialRoleState } from "@/domains/role"
+import { type Permission } from "@/domains/permission"
 import { RoleService } from "@/services/role-service"
+import { PermissionService } from "@/services/permission-service"
 
 interface EditDialogProps {
   children: ReactNode,
@@ -25,7 +27,7 @@ export function EditDialog({
   afterSave
 }: EditDialogProps) {
   const [open, setOpen] = useState(false)
-  const [grantTypeOptions, setGrantTypeOptions] = useState(Array<Option>)
+  const [permissions, setPermissions] = useState(Array<Option>)
   const form = useForm<Role>({
     resolver: zodResolver(roleSchema),
     defaultValues: initialRoleState
@@ -35,8 +37,15 @@ export function EditDialog({
     if (!open) {
       return
     }
-    id && RoleService.findById(id).then(r => {
-      form.reset(r.data)
+    Promise.all([
+      PermissionService.find({ page: 0, size: 2000, sort: ["modifiedAt,desc"]}),
+    ]).then(results => {
+      // load options
+      setPermissions(results[0].data.map((item: Permission) => ({label: item.id, value: item.id})));
+
+      id && RoleService.findById(id).then(r => {
+        form.reset(r.data)
+      })
     })
   }, [form, id, open])
 
@@ -53,14 +62,14 @@ export function EditDialog({
           required
         />
 
-        {/*<MultiSelectFormField*/}
-        {/*  control={form.control} */}
-        {/*  name="clientAuthenticationMethods"*/}
-        {/*  label="Authentication Methods"*/}
-        {/*  required*/}
-        {/*  options={authenticationMethodOptions}*/}
-        {/*  multiple={true}*/}
-        {/*/>*/}
+        <MultiSelectFormField
+          control={form.control}
+          name="permissionIds"
+          label="Permissions"
+          required
+          options={permissions}
+          placeholder="Select permissions"
+        />
 
       </SaveDialogContent>
     </Dialog>
