@@ -21,7 +21,7 @@ import { useSearchParams } from "react-router-dom"
 import { PasswordInput } from '@/components/custom/password-input.tsx'
 import { getErrorMessage } from '@/lib/handle-error'
 
-const formSchema = z
+const resetPasswordFormSchema = z
   .object({
     newRawPassword: z
       .string()
@@ -35,6 +35,8 @@ const formSchema = z
     path: ["confirmPassword"],
   })
 
+export type ResetPasswordFormSchema = z.infer<typeof resetPasswordFormSchema>
+
 export default function ForgotPassword() {
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
@@ -45,8 +47,8 @@ export default function ForgotPassword() {
     toast.error("Invalid empty reset code")
   }
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<ResetPasswordFormSchema>({
+    resolver: zodResolver(resetPasswordFormSchema),
     defaultValues: {
       newRawPassword: "",
       confirmPassword: "",
@@ -54,7 +56,7 @@ export default function ForgotPassword() {
     }
   })
 
-  function completeReset(data: z.infer<typeof formSchema>) {
+  function completeReset(data: ResetPasswordFormSchema) {
     setIsLoading(true)
 
     toast.promise(AccountService.completePasswordRecovery(data), {

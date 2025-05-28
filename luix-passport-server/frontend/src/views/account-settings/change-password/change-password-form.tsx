@@ -24,14 +24,14 @@ import { authUserStore } from "@/stores/auth-user-store.ts"
 import { AccountService } from "@/services/account-service"
 import { getErrorMessage } from "@/lib/handle-error"
 
-const formSchema = z.object({
+const changePasswordFormSchema = z.object({
   currentPassword: z.string().trim().min(1, { message: "Required" }),
   newPassword: z.string().trim().min(1, { message: "Required" }),
   email: z.string().trim(),
   verificationCode: z.string().trim().min(1, { message: "Required" })
 })
 
-type FormSchema = z.infer<typeof formSchema>
+export type ChangePasswordFormSchema = z.infer<typeof changePasswordFormSchema>
 
 export function ChangePasswordForm() {
   const { authUser } = useStore(authUserStore)
@@ -39,8 +39,8 @@ export function ChangePasswordForm() {
   const [countdown, setCountdown] = useState(0)
   const lastSentTime = useRef<number>(0)
 
-  const form = useForm<FormSchema>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<ChangePasswordFormSchema>({
+    resolver: zodResolver(changePasswordFormSchema),
     defaultValues: {
       currentPassword: "",
       newPassword: "",
@@ -83,7 +83,7 @@ export function ChangePasswordForm() {
     })
   }, [countdown])
 
-  function onSubmit(formData: FormSchema) {
+  function onSubmit(formData: ChangePasswordFormSchema) {
     setSaving(true)
     toast.promise(AccountService.updatePassword(formData), {
       loading: "Updating password...",

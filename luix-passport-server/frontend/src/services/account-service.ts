@@ -3,6 +3,9 @@ import http from "@/axios"
 import type { AuthUser } from "@/stores/auth-user-store"
 import { type SupportedTimezone } from "@/domains/supported-timezone"
 import { type SupportedDateTimeFormat } from "@/domains/supported-date-time-format"
+import { AccountFormSchema } from "@/views/account-settings/account/account-form"
+import { ChangePasswordFormSchema } from "@/views/account-settings/change-password/change-password-form"
+import { ResetPasswordFormSchema } from "@/views/bak/auth/reset-password"
 
 export class AccountService {
   constructor() {
@@ -18,7 +21,7 @@ export class AccountService {
     }
   }
 
-  public static update(model: any): Promise<void> {
+  public static update(model: AccountFormSchema): Promise<void> {
     return http.put("api/accounts/user", model)
   }
 
@@ -30,7 +33,7 @@ export class AccountService {
     return http.post("api/accounts/request-password-change-verification-code")
   }
 
-  public static updatePassword(model: any): Promise<void> {
+  public static updatePassword(model: ChangePasswordFormSchema): Promise<void> {
     return http.put("api/accounts/password", model)
   }
 
@@ -50,7 +53,7 @@ export class AccountService {
     return http.post("open-api/accounts/request-password-recovery?email=" + email)
   }
 
-  public static completePasswordRecovery(model: any): Promise<void> {
+  public static completePasswordRecovery(model: ResetPasswordFormSchema): Promise<void> {
     return http.post("open-api/accounts/complete-password-recovery", model)
   }
 
