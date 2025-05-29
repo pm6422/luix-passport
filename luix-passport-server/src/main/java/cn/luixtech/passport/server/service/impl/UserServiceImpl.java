@@ -119,6 +119,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    public User getCurrentUser() {
+        return userRepository.findById(AuthUtils.getCurrentUsername())
+                .orElseThrow(() -> new DataNotFoundException(AuthUtils.getCurrentUsername()));
+    }
+
+    @Override
     public Optional<User> findOne(String loginName) {
 //        User user = dslContext.selectFrom(USER)
 //                .where(USER.USERNAME.eq(loginName))

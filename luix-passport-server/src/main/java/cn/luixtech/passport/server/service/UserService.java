@@ -11,6 +11,9 @@ import java.util.Optional;
 import java.util.Set;
 
 public interface UserService {
+
+    User getCurrentUser();
+
     Optional<User> findOne(String loginName);
 
     ManagedUser findByUsername(String username);

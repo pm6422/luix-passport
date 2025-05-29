@@ -124,7 +124,7 @@ public class AccountController {
     @Operation(summary = "send password change verification code email")
     @PostMapping("/api/accounts/request-password-change-verification-code")
     public ResponseEntity<Void> requestPasswordChangeVerificationCode(HttpServletRequest request) {
-        User currentUser = userRepository.findById(AuthUtils.getCurrentUsername()).orElseThrow(() -> new DataNotFoundException(AuthUtils.getCurrentUsername()));
+        User currentUser = userService.getCurrentUser();
         User user = userService.requestPasswordChangeVerificationCode(currentUser);
         mailService.sendVerificationCodeMail(user, user.getEmail(), getRequestUrl(request));
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("NM1002")).build();
@@ -151,7 +151,7 @@ public class AccountController {
     @PostMapping("/api/accounts/request-email-change-verification-code")
     public ResponseEntity<Void> requestEmailChangeVerificationCode(HttpServletRequest request,
                                                                    @Parameter(description = "email", required = true) @RequestParam String email) {
-        User currentUser = userRepository.findById(AuthUtils.getCurrentUsername()).orElseThrow(() -> new DataNotFoundException(AuthUtils.getCurrentUsername()));
+        User currentUser = userService.getCurrentUser();
         User user = userService.requestEmailChangeVerificationCode(currentUser, email);
         mailService.sendVerificationCodeMail(user, email, getRequestUrl(request));
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("NM1002")).build();
@@ -160,7 +160,7 @@ public class AccountController {
     @Operation(summary = "change email with verification code")
     @PostMapping("/api/accounts/change-email")
     public ResponseEntity<Void> changeEmail(@Parameter(description = "verificationCode", required = true) @RequestParam String verificationCode) {
-        User currentUser = userRepository.findById(AuthUtils.getCurrentUsername()).orElseThrow(() -> new DataNotFoundException(AuthUtils.getCurrentUsername()));
+        User currentUser = userService.getCurrentUser();
         Validate.isTrue(StringUtils.isNotEmpty(currentUser.getVerificationCode()), "Please send verification code first!");
         Validate.isTrue(verificationCode.equalsIgnoreCase(currentUser.getVerificationCode()), "Invalid verification code!");
         Validate.isTrue(currentUser.getVerificationCodeSentAt().plus(1, ChronoUnit.DAYS).isAfter(Instant.now()), "Invalid verification exceeds one day before!");
@@ -207,8 +207,7 @@ public class AccountController {
     @Operation(summary = "upload profile picture of the current user")
     @PostMapping(value = "/api/accounts/profile-pic/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public void uploadProfilePicture(@Parameter(description = "user profile photo", required = true) @RequestPart MultipartFile file) throws IOException {
-        User user = userRepository.findById(AuthUtils.getCurrentUsername()).orElseThrow(() -> new DataNotFoundException(AuthUtils.getCurrentUsername()));
-        userProfilePicService.save(user.getUsername(), file.getBytes());
+        userProfilePicService.save(userService.getCurrentUser().getUsername(), file.getBytes());
         log.info("Uploaded profile picture with file name {}", file.getOriginalFilename());
     }
 
