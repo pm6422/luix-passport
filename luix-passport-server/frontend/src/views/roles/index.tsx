@@ -5,7 +5,7 @@ import { DataTable } from "@/components/custom/data-table/client-pagination-data
 import { tableColumns } from "./table/table-columns"
 import { type Role, type RoleCriteriaSchema } from "@/domains/role"
 import { RoleService } from "@/services/role-service"
-import { filterTable } from "@/lib/utils"
+import { filterTable } from "@/lib/table-utils"
 
 export default function Role() {
   // State to hold the fetched data
