@@ -15,24 +15,24 @@ import { UserService } from "@/services/user-service"
 import { Oauth2ClientService } from "@/services/oauth2-client-service"
 import { OrgService } from "@/services/org-service"
 import { useStore } from 'exome/react'
-import { authUserStore } from '@/stores/auth-user-store.ts'
+import { loginUserStore } from '@/stores/login-user-store'
 import { useNavigate } from 'react-router-dom'
 import { RoleAdmin } from "@/components/custom/role/role-admin"
 import { isEmpty } from "lodash"
 
 export default function Dashboard() {
   const navigate = useNavigate()
-  const { authUser } = useStore(authUserStore)
+  const { loginUser } = useStore(loginUserStore)
   const [userCount, setUserCount] = useState(0)
   const [oauth2ClientCount, setOauth2ClientCount] = useState(0)
   const [orgCount, setOrgCount] = useState(0)
   // const [springSessions, setSpringSessions] = useState([] as Array<SpringSession>)
 
   useEffect(() => {
-    if (isEmpty(authUser)) {
+    if (isEmpty(loginUser)) {
       return;
     }
-    if (authUser.isOnlyUser) {
+    if (loginUser.isOnlyUser) {
       navigate("account-settings")
     } else {
       UserService.count().then(r => {
@@ -45,7 +45,7 @@ export default function Dashboard() {
         setOrgCount(r.data)
       })
     }
-  }, [authUser])
+  }, [loginUser])
 
   return (
     <RoleAdmin>

@@ -13,14 +13,14 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { IconUser, IconCodeCircle2, IconApi, IconVocabulary, IconLogout, IconBellRinging } from "@tabler/icons-react"
 import { RoleDeveloper } from "@/components/custom/role/role-developer"
-import { AccountService } from "@/services/account-service.ts"
+import { AccountService } from "@/services/account-service"
 import { useStore } from "exome/react"
-import { appInfoStore } from "@/stores/app-info-store.ts"
-import { authUserStore } from "@/stores/auth-user-store.ts"
+import { appInfoStore } from "@/stores/app-info-store"
+import { loginUserStore } from "@/stores/login-user-store"
 
 export function AccountNav() {
   const { appInfo } = useStore(appInfoStore)
-  const { authUser } = useStore(authUserStore)
+  const { loginUser } = useStore(loginUserStore)
 
   return (
     <DropdownMenu>
@@ -35,9 +35,9 @@ export function AccountNav() {
       <DropdownMenuContent className="w-48" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-2">
-            <p className="text-sm font-medium leading-none">{authUser.firstName} {authUser.lastName}</p>
+            <p className="text-sm font-medium leading-none">{loginUser.firstName} {loginUser.lastName}</p>
             <p className="text-xs leading-none text-muted-foreground">
-              {authUser.email}
+              {loginUser.email}
             </p>
           </div>
         </DropdownMenuLabel>

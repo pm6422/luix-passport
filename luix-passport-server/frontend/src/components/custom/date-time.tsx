@@ -1,5 +1,5 @@
 import { useStore } from "exome/react"
-import { authUserStore } from "@/stores/auth-user-store.ts"
+import { loginUserStore } from "@/stores/login-user-store"
 import { formatDateTime } from "@/lib/utils"
 import { cn } from "@/lib/utils" // Assuming you have a cn utility for classNames
 
@@ -12,11 +12,11 @@ export const DateTime = ({
                            value,
                            className
                          }: Props) => {
-  const { authUser } = useStore(authUserStore)
+  const { loginUser } = useStore(loginUserStore)
 
   return (
     <span className={cn(className)}>
-      {formatDateTime(authUser.dateTimeFormat, value, authUser.timeZoneId)}
+      {formatDateTime(loginUser.dateTimeFormat, value, loginUser.timeZoneId)}
     </span>
   )
 }

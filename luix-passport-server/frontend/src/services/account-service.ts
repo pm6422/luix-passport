@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios'
 import http from "@/axios"
-import type { AuthUser } from "@/stores/auth-user-store"
+import type { LoginUser } from "@/stores/login-user-store"
 import { type SupportedTimezone } from "@/domains/supported-timezone"
 import { type SupportedDateTimeFormat } from "@/domains/supported-date-time-format"
 import { AccountFormSchema } from "@/views/account-settings/account/account-form"
@@ -11,13 +11,13 @@ export class AccountService {
   constructor() {
   }
 
-  public static async getCurrentAccount(): Promise<AuthUser> {
+  public static async getCurrentAccount(): Promise<LoginUser> {
     try {
-      const res = await axios.get<AuthUser>("open-api/accounts/user")
+      const res = await axios.get<LoginUser>("open-api/accounts/user")
       return res.data
     } catch (error) {
       console.error(error)
-      return {} as AuthUser
+      return {} as LoginUser
     }
   }
 

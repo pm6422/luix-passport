@@ -20,7 +20,7 @@ import { toast } from "sonner"
 import { PinInput, PinInputField } from "@/components/custom/pin-input"
 import { RequiredFormLabel } from "@/components/custom/required-form-label"
 import { useStore } from "exome/react"
-import { authUserStore } from "@/stores/auth-user-store.ts"
+import { loginUserStore } from "@/stores/login-user-store"
 import { AccountService } from "@/services/account-service"
 import { getErrorMessage } from "@/lib/handle-error"
 
@@ -34,7 +34,7 @@ const changePasswordFormSchema = z.object({
 export type ChangePasswordFormSchema = z.infer<typeof changePasswordFormSchema>
 
 export function ChangePasswordForm() {
-  const { authUser } = useStore(authUserStore)
+  const { loginUser } = useStore(loginUserStore)
   const [saving, setSaving] = useState(false)
   const [countdown, setCountdown] = useState(0)
   const lastSentTime = useRef<number>(0)
@@ -131,7 +131,7 @@ export function ChangePasswordForm() {
           control={form.control} 
           name="email" 
           label="Email"
-          value={authUser?.email}
+          value={loginUser?.email}
           disabled
           description="Click right button to send a verification code to your email."
           icon={
@@ -163,7 +163,7 @@ export function ChangePasswordForm() {
                   ))}
                 </PinInput>
               </FormControl>
-              <FormDescription>Enter the verification code sent to {authUser.email}</FormDescription>
+              <FormDescription>Enter the verification code sent to {loginUser.email}</FormDescription>
               <FormMessage />
             </FormItem>
           )}

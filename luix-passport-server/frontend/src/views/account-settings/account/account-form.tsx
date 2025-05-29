@@ -12,7 +12,7 @@ import { IconMailForward } from "@tabler/icons-react"
 import { locales } from "@/data/locales"
 import { toast } from "sonner"
 import { useStore } from "exome/react"
-import { authUserStore } from "@/stores/auth-user-store.ts"
+import { loginUserStore } from "@/stores/login-user-store"
 import { AccountService } from "@/services/account-service"
 import { getErrorMessage } from "@/lib/handle-error"
 import { isValidPhoneNumber } from "react-phone-number-input"
@@ -35,14 +35,14 @@ const accountFormSchema = z.object({
 export type AccountFormSchema = z.infer<typeof accountFormSchema>
 
 export function AccountForm() {
-  const { authUser } = useStore(authUserStore)
+  const { loginUser } = useStore(loginUserStore)
   const [saving, setSaving] = useState(false)
   const [supportedTimezones, setSupportedTimezones] = useState(Array<Option>)
   const [supportedDateTimeFormats, setSupportedDateTimeFormats] = useState(Array<Option>)
 
   const form = useForm<AccountFormSchema>({
     resolver: zodResolver(accountFormSchema),
-    defaultValues: authUser
+    defaultValues: loginUser
   })
 
   useEffect(() => {

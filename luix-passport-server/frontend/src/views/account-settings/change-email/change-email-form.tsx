@@ -18,7 +18,7 @@ import { toast } from "sonner"
 import { PinInput, PinInputField } from "@/components/custom/pin-input"
 import { RequiredFormLabel } from "@/components/custom/required-form-label"
 import { useStore } from "exome/react"
-import { authUserStore } from "@/stores/auth-user-store.ts"
+import { loginUserStore } from "@/stores/login-user-store"
 import { AccountService } from "@/services/account-service"
 import { getErrorMessage } from "@/lib/handle-error"
 import { Link } from "react-router-dom"
@@ -34,7 +34,7 @@ type FormSchema = z.infer<typeof formSchema>
 
 export function ChangeEmailForm() {
   const navigate = useNavigate()
-  const { authUser } = useStore(authUserStore)
+  const { loginUser } = useStore(loginUserStore)
   const [verificationCodeInputDisabled, setVerificationCodeInputDisabled] = useState(true)
   const [saving, setSaving] = useState(false)
   const [countdown, setCountdown] = useState(0)
@@ -43,7 +43,7 @@ export function ChangeEmailForm() {
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      currentEmail: authUser.email,
+      currentEmail: loginUser.email,
       newEmail: "",
       verificationCode: ""
     },

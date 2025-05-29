@@ -1,5 +1,5 @@
 import { useStore } from "exome/react"
-import { authUserStore } from "@/stores/auth-user-store.ts"
+import { loginUserStore } from "@/stores/login-user-store"
 
 type Props = {
   children: React.ReactNode
@@ -8,9 +8,9 @@ type Props = {
 export const RoleDeveloper = ({
   children
 }: Props) => {
-  const { authUser } = useStore(authUserStore)
+  const { loginUser } = useStore(loginUserStore)
 
   return (
-    authUser.isDeveloper && children
+    loginUser.isDeveloper && children
   )
 }

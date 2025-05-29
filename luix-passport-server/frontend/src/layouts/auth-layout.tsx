@@ -4,7 +4,7 @@ import Sidebar from "@/components/sidebar"
 import useIsCollapsed from "@/hooks/use-is-collapsed"
 import { appInfoStore } from "@/stores/app-info-store"
 import { useStore } from "exome/react"
-import { authUserStore } from "@/stores/auth-user-store"
+import { loginUserStore } from "@/stores/login-user-store"
 import { RoleAdmin } from "@/components/custom/role/role-admin"
 import { RoleOnlyUser } from "@/components/custom/role/role-only-user"
 import { useLocation } from "react-router-dom"
@@ -20,7 +20,7 @@ import { IconInfoCircle } from "@tabler/icons-react"
 
 export default function AuthLayout() {
   const { appInfo } = useStore(appInfoStore)
-  const { authUser, setAuthUser } = useStore(authUserStore)
+  const { loginUser, setLoginUser } = useStore(loginUserStore)
   const [isCollapsed, setIsCollapsed] = useIsCollapsed()
   const location = useLocation()
   const topNav = [
@@ -45,13 +45,13 @@ export default function AuthLayout() {
         console.log("Redirecting to login for empty user")
         window.location.href = "/login"
       } else {
-        setAuthUser(u);
+        setLoginUser(u);
       }
     })
   }, [location]);
 
   useEffect(() => {
-    if(isEmpty(authUser)) {
+    if(isEmpty(loginUser)) {
       return;
     }
 
@@ -68,7 +68,7 @@ export default function AuthLayout() {
         console.log('SSE connection closed');
       }
     };
-  }, [authUser]);
+  }, [loginUser]);
 
   function setupSse(): EventSource | undefined {
     if (!window.EventSource) {
@@ -131,7 +131,7 @@ export default function AuthLayout() {
       </RoleAdmin>
       <main
         id="content"
-        className={`overflow-x-hidden pt-16 transition-[margin] md:overflow-y-hidden md:pt-0 ${!authUser.isAdmin ? "" : isCollapsed ? "md:ml-14" : "md:ml-64"} h-full`}
+        className={`overflow-x-hidden pt-16 transition-[margin] md:overflow-y-hidden md:pt-0 ${!loginUser.isAdmin ? "" : isCollapsed ? "md:ml-14" : "md:ml-64"} h-full`}
       >
         <Layout>
           <LayoutHeader>
