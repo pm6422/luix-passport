@@ -77,7 +77,7 @@ export function EditDialog({
         <div className="flex flex-col md:flex-row items-center justify-between gap-5">
           <Avatar className="size-20">
             <AvatarImage src={"api/user-profile-pics/" + id} alt="profile" />
-            <AvatarFallback><Skeleton className="size-20 w-full" /></AvatarFallback>
+            <AvatarFallback><Skeleton className="w-full" /></AvatarFallback>
           </Avatar>
           <Separator orientation="vertical" className="hidden md:block" />
           <InputFormField
