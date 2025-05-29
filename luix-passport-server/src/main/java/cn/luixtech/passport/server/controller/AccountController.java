@@ -187,15 +187,9 @@ public class AccountController {
     @Operation(summary = "get profile picture of the current user")
     @GetMapping("/api/accounts/profile-pic")
     public ResponseEntity<byte[]> getProfilePicture(HttpServletRequest request) throws IOException {
-        cn.luixtech.passport.server.config.oauth.AuthUser currentUser = AuthUtils.getCurrentUser();
-        if (currentUser != null) {
-            Optional<User> user = userRepository.findOneByEmail(currentUser.getEmail());
-            if (user.isPresent()) {
-                Optional<UserProfilePic> userPhoto = userProfilePicRepository.findById(user.get().getUsername());
-                if (userPhoto.isPresent()) {
-                    return ResponseEntity.ok(userPhoto.get().getProfilePic());
-                }
-            }
+        Optional<UserProfilePic> userPhoto = userProfilePicRepository.findById(AuthUtils.getCurrentUsername());
+        if (userPhoto.isPresent()) {
+            return ResponseEntity.ok(userPhoto.get().getProfilePic());
         }
 
         // Set the default profile picture
