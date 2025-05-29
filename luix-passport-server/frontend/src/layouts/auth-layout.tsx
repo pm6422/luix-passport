@@ -25,14 +25,14 @@ export default function AuthLayout() {
   const location = useLocation()
   const topNav = [
     {
+      title: "Personal Account",
+      href: "account-settings",
+      isActive: false,
+    },
+    {
       title: "Notifications",
       href: "notifications",
       isActive: true,
-    },
-    {
-      title: "Account",
-      href: "account-settings",
-      isActive: false,
     },
   ]
   let reconnectAttempts = 0;

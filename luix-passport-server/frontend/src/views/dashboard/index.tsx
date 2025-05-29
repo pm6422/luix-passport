@@ -33,7 +33,7 @@ export default function Dashboard() {
       return;
     }
     if (authUser.isOnlyUser) {
-      navigate("notifications")
+      navigate("account-settings")
     } else {
       UserService.count().then(r => {
         setUserCount(r.data)
