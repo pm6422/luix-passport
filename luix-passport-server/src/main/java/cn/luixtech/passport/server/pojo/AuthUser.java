@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.BeanUtils;
 
+import java.time.Instant;
 import java.util.Set;
 
 @Data
@@ -24,6 +25,7 @@ public class AuthUser {
     private Boolean     enabled;
     private Set<String> roleIds;
     private Set<String> permissionIds;
+    private Instant     signInAt;
 
     /* <<<<<<<<<<<<<<  ✨ Windsurf Command ⭐ >>>>>>>>>>>>>>>> */
 
