@@ -48,6 +48,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import static cn.luixtech.passport.server.controller.UserProfilePicController.DEFAULT_USER_PHOTO_URL;
 import static cn.luixtech.passport.server.domain.UserRole.*;
 import static com.luixtech.springbootframework.utils.NetworkUtils.getRequestUrl;
 
@@ -200,7 +201,7 @@ public class AccountController {
 
         // Set the default profile picture
         byte[] bytes = StreamUtils.copyToByteArray(
-                new UrlResource(getRequestUrl(request) + "/assets/images/cartoon/01.png").getInputStream());
+                new UrlResource(getRequestUrl(request) + DEFAULT_USER_PHOTO_URL).getInputStream());
         return ResponseEntity.ok(bytes);
     }
 
