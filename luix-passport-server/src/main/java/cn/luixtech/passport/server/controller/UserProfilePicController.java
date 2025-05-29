@@ -24,7 +24,7 @@ import static com.luixtech.springbootframework.utils.NetworkUtils.getRequestUrl;
 import static com.luixtech.utilities.encryption.JasyptEncryptUtils.DEFAULT_ALGORITHM;
 
 /**
- * REST controller for managing users profile picture.
+ * REST controller for managing users' profile picture.
  */
 @RestController
 @AllArgsConstructor
@@ -44,7 +44,7 @@ public class UserProfilePicController {
         if (userPhoto.isPresent()) {
             return ResponseEntity.ok(userPhoto.get().getProfilePic());
         }
-        // Set default profile picture
+        // Set the default profile picture
         byte[] bytes = StreamUtils.copyToByteArray(
                 new UrlResource(getRequestUrl(request) + DEFAULT_USER_PHOTO_URL).getInputStream());
         return ResponseEntity.ok(bytes);

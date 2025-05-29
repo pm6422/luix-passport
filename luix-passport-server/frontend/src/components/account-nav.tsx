@@ -1,6 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/custom/button"
 import { Link } from "react-router-dom"
+import { Skeleton } from "@/components/ui/skeleton"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -27,7 +28,7 @@ export function AccountNav() {
         <Button variant="ghost" className="relative size-12 rounded-full">
           <Avatar className="size-12 -intro-y">
             <AvatarImage src="api/accounts/profile-pic"/>
-            <AvatarFallback>Picture</AvatarFallback>
+            <AvatarFallback><Skeleton className="size-9 w-full" /></AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
