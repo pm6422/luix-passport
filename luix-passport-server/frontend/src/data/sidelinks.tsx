@@ -25,7 +25,7 @@ export const sidelinks: SideLink[] = [
     icon: <IconDashboard size={25} />,
   },
   {
-    title: "User Roles",
+    title: "User",
     label: "",
     href: "",
     icon: <IconUsers size={25} />,
