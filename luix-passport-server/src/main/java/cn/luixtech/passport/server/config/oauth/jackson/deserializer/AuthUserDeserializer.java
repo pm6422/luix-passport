@@ -24,14 +24,14 @@ public class AuthUserDeserializer extends JsonDeserializer<AuthUser> {
 
     /**
      * This method will create {@link AuthUser} object. It will ensure successful object
-     * creation even if password key is null in serialized json, because credentials may
+     * creation even if the password key is null in serialized JSON, because credentials may
      * be removed from the {@link AuthUser} by invoking {@link User#eraseCredentials()}. In
-     * that case there won't be any password key in serialized json.
+     * that case there won't be any password key in serialized JSON.
      *
      * @param jp   the JsonParser
      * @param ctxt the DeserializationContext
      * @return the user
-     * @throws IOException if a exception during IO occurs
+     * @throws IOException if an exception during IO occurs
      */
     @Override
     public AuthUser deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
@@ -44,7 +44,7 @@ public class AuthUserDeserializer extends JsonDeserializer<AuthUser> {
         String firstName = readJsonNode(jsonNode, "firstName").asText();
         String lastName = readJsonNode(jsonNode, "lastName").asText();
         String password = passwordNode.asText("");
-        String photoUrl = readJsonNode(jsonNode, "photoUrl").asText();
+        String profilePicUrl = readJsonNode(jsonNode, "profilePicUrl").asText();
         String locale = readJsonNode(jsonNode, "locale").asText();
         String modifiedTime = readJsonNode(jsonNode, "modifiedTime").asText();
 
@@ -57,7 +57,7 @@ public class AuthUserDeserializer extends JsonDeserializer<AuthUser> {
         Set<String> permissions = mapper.convertValue(jsonNode.get("permissions"), STRING_SET);
         Set<String> teamIds = mapper.convertValue(jsonNode.get("teamIds"), STRING_SET);
         AuthUser result = new AuthUser(username, email, mobileNo, firstName, lastName, password, enabled,
-                accountNonExpired, credentialsNonExpired, accountNonLocked, photoUrl, locale, modifiedTime, authorities, roles, permissions, teamIds);
+                accountNonExpired, credentialsNonExpired, accountNonLocked, profilePicUrl, locale, modifiedTime, authorities, roles, permissions, teamIds);
         if (passwordNode.asText(null) == null) {
             result.eraseCredentials();
         }

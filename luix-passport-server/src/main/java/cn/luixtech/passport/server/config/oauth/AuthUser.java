@@ -23,7 +23,7 @@ public class AuthUser extends User {
     @Getter
     private              String      lastName;
     @Getter
-    private              String      photoUrl;
+    private              String      profilePicUrl;
     @Getter
     private              String      locale;
     /**
@@ -51,7 +51,7 @@ public class AuthUser extends User {
     public AuthUser(String username, String email, String mobileNo,
                     String firstName, String lastName, String password, boolean enabled,
                     boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked,
-                    String photoUrl, String locale, String modifiedTime,
+                    String profilePicUrl, String locale, String modifiedTime,
                     Collection<? extends GrantedAuthority> authorities,
                     Set<String> roles, Set<String> permissions, Set<String> teamIds) {
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
@@ -59,7 +59,7 @@ public class AuthUser extends User {
         this.mobileNo = mobileNo;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.photoUrl = photoUrl;
+        this.profilePicUrl = profilePicUrl;
         this.locale = locale;
         this.modifiedTime = modifiedTime;
         this.roles = roles;
