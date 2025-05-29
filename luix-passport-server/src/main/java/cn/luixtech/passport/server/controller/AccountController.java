@@ -85,6 +85,12 @@ public class AccountController {
         return ResponseEntity.ok(loginUser);
     }
 
+    @Operation(summary = "sign out current user")
+    @PostMapping("/api/accounts/sign-out")
+    public void signOut(HttpServletRequest request) {
+        request.getSession(false).invalidate();
+    }
+
     @Operation(summary = "register a new user and send an account activation email")
     @PostMapping("/open-api/accounts/register")
     public ResponseEntity<Void> register(HttpServletRequest request,
@@ -113,6 +119,12 @@ public class AccountController {
         domain.setEnabled(null);
         userService.update(domain);
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1002", domain.getUsername())).build();
+    }
+
+    @Operation(summary = "delete current user")
+    @DeleteMapping("/api/accounts")
+    public void delete() {
+        userService.deleteByUsername(AuthUtils.getCurrentUsername());
     }
 
     @Operation(summary = "send password change verification code email")
@@ -229,17 +241,5 @@ public class AccountController {
     @GetMapping("/api/accounts/all-supported-date-time-formats")
     public ResponseEntity<List<SupportedDateTimeFormat>> getSupportedDateTimeFormats() {
         return ResponseEntity.ok(supportedDateTimeFormatRepository.findAll());
-    }
-
-    @Operation(summary = "delete current user")
-    @DeleteMapping("/api/accounts")
-    public void delete() {
-        userService.deleteByUsername(AuthUtils.getCurrentUsername());
-    }
-
-    @Operation(summary = "sign out current user")
-    @PostMapping("/api/accounts/sign-out")
-    public void signOut(HttpServletRequest request) {
-        request.getSession(false).invalidate();
     }
 }
