@@ -1,0 +1,305 @@
+
+Table "supported_timezone" {
+  "id" varchar(50) [pk, not null]
+  "utc_offset" varchar(10) [not null]
+  "preset" bool [not null]
+}
+
+Table "supported_date_time_format" {
+  "id" varchar(50) [pk, not null]
+  "display_name" varchar(100) [not null]
+  "date_time_format" varchar(50) [not null]
+  "date_format" varchar(50) [not null]
+  "time_format" varchar(50) [not null]
+  "example" varchar(50) [not null]
+  "preset" bool [not null]
+}
+
+Table "oauth2_authorization" {
+  "id" varchar(100) [pk, not null]
+  "registered_client_id" varchar(100) [not null]
+  "principal_name" varchar(200) [not null]
+  "authorization_grant_type" varchar(100) [not null]
+  "authorized_scopes" varchar(1000)
+  "attributes" text
+  "state" varchar(500)
+  "authorization_code_value" text
+  "authorization_code_issued_at" timestamp
+  "authorization_code_expires_at" timestamp
+  "authorization_code_metadata" text
+  "access_token_value" text
+  "access_token_issued_at" timestamp
+  "access_token_expires_at" timestamp
+  "access_token_metadata" text
+  "access_token_type" varchar(100)
+  "access_token_scopes" varchar(1000)
+  "oidc_id_token_value" text
+  "oidc_id_token_issued_at" timestamp
+  "oidc_id_token_expires_at" timestamp
+  "oidc_id_token_metadata" text
+  "refresh_token_value" text
+  "refresh_token_issued_at" timestamp
+  "refresh_token_expires_at" timestamp
+  "refresh_token_metadata" text
+  "user_code_value" text
+  "user_code_issued_at" timestamp
+  "user_code_expires_at" timestamp
+  "user_code_metadata" text
+  "device_code_value" text
+  "device_code_issued_at" timestamp
+  "device_code_expires_at" timestamp
+  "device_code_metadata" text
+}
+
+Table "oauth2_authorization_consent" {
+  "registered_client_id" varchar(100) [not null]
+  "principal_name" varchar(200) [not null]
+  "authorities" varchar(1000) [not null]
+
+  Indexes {
+    (registered_client_id, principal_name) [type: btree, name: "oauth2_authorization_consent_pkey"]
+  }
+}
+
+Table "oauth2_registered_client" {
+  "id" varchar(100) [pk, not null]
+  "client_id" varchar(100) [not null]
+  "client_id_issued_at" timestamp [not null, default: `now()`]
+  "client_secret" varchar(200)
+  "client_secret_expires_at" timestamp
+  "client_name" varchar(200) [not null]
+  "client_authentication_methods" varchar(1000) [not null]
+  "authorization_grant_types" varchar(1000) [not null]
+  "redirect_uris" varchar(1000)
+  "post_logout_redirect_uris" varchar(1000)
+  "scopes" varchar(1000) [not null]
+  "client_settings" varchar(2000) [not null]
+  "token_settings" varchar(2000) [not null]
+  "photo" bytea
+  "enabled" bool
+  "created_at" timestamp [not null]
+  "created_by" varchar(50)
+  "modified_at" timestamp [not null]
+  "modified_by" varchar(50)
+}
+
+Table "spring_session" {
+  "primary_id" bpchar(36) [pk, not null]
+  "session_id" bpchar(36) [unique, not null]
+  "creation_time" int8 [not null]
+  "last_access_time" int8 [not null]
+  "max_inactive_interval" int4 [not null]
+  "expiry_time" int8 [not null]
+  "principal_name" varchar(100)
+}
+
+Table "spring_session_attributes" {
+  "session_primary_id" bpchar(36) [not null]
+  "attribute_name" varchar(200) [not null]
+  "attribute_bytes" bytea [not null]
+
+  Indexes {
+    (session_primary_id, attribute_name) [type: btree, name: "spring_session_attributes_pkey"]
+  }
+}
+
+Table "team" {
+  "id" varchar(20) [pk, not null]
+  "remark" varchar(36)
+  "enabled" bool [not null]
+  "photo" bytea
+}
+
+Table "team_user" {
+  "id" varchar(20) [pk, not null]
+  "team_id" varchar(20) [not null]
+  "username" varchar(20) [not null]
+}
+
+Table "user" {
+  "username" varchar(20) [pk, not null]
+  "email" varchar(30) [unique, not null]
+  "mobile_no" varchar(18) [unique]
+  "first_name" varchar(20)
+  "last_name" varchar(20)
+  "password_hash" varchar(256) [not null]
+  "activation_code" varchar(256)
+  "verification_code" varchar(32)
+  "verification_code_sent_at" timestamp
+  "new_email" varchar(30)
+  "reset_code" varchar(256)
+  "reset_at" timestamp
+  "remark" varchar(256)
+  "activated" bool [not null]
+  "enabled" bool [not null]
+  "account_expires_at" timestamp
+  "password_expires_at" timestamp
+  "last_sign_in_at" timestamp
+  "locale" varchar(10) [not null]
+  "time_zone_id" varchar(30) [not null]
+  "date_time_format_id" varchar(20) [not null]
+  "created_at" timestamp [not null]
+  "created_by" varchar(50)
+  "modified_at" timestamp [not null]
+  "modified_by" varchar(50)
+
+  Indexes {
+    date_time_format_id [type: btree, name: "idx_user_date_time_format_id"]
+    time_zone_id [type: btree, name: "idx_user_time_zone_id"]
+  }
+}
+
+Table "role" {
+  "id" varchar(20) [pk, not null]
+  "remark" varchar(255)
+  "created_at" timestamp [not null]
+  "created_by" varchar(50)
+  "modified_at" timestamp [not null]
+  "modified_by" varchar(50)
+}
+
+Table "user_role" {
+  "id" varchar(20) [pk, not null]
+  "username" varchar(20) [not null]
+  "role_id" varchar(20) [not null]
+  "created_at" timestamp [not null]
+  "created_by" varchar(50)
+  "modified_at" timestamp [not null]
+  "modified_by" varchar(50)
+
+  Indexes {
+    (username, role_id) [type: btree, name: "uk_user_role"]
+    role_id [type: btree, name: "idx_user_role_role_id"]
+    username [type: btree, name: "idx_user_role_username"]
+  }
+}
+
+Table "permission" {
+  "id" varchar(25) [pk, not null]
+  "remark" varchar(255)
+  "resource_type" varchar(50) [not null]
+  "action" varchar(20) [not null]
+  "created_at" timestamp [not null]
+  "created_by" varchar(50)
+  "modified_at" timestamp [not null]
+  "modified_by" varchar(50)
+}
+
+Table "role_permission" {
+  "id" varchar(20) [pk, not null]
+  "role_id" varchar(20) [not null]
+  "permission_id" varchar(25) [not null]
+  "created_at" timestamp [not null]
+  "created_by" varchar(50)
+  "modified_at" timestamp [not null]
+  "modified_by" varchar(50)
+
+  Indexes {
+    (role_id, permission_id) [type: btree, name: "uk_role_permission"]
+    permission_id [type: btree, name: "idx_role_permission_permission_id"]
+    role_id [type: btree, name: "idx_role_permission_role_id"]
+  }
+}
+
+Table "user_auth_event" {
+  "id" varchar(20) [pk, not null]
+  "username" varchar(20) [not null]
+  "event" varchar(36) [not null]
+  "remark" varchar(64)
+  "created_at" timestamp [not null]
+  "created_by" varchar(50)
+}
+
+Table "user_login" {
+  "id" varchar(20) [pk, not null]
+  "username" varchar(20) [not null]
+  "logged_at" timestamp [not null]
+  "location" varchar(20) [not null]
+  "ip" varchar(20) [not null]
+  "os" varchar(20) [not null]
+  "browser" varchar(20) [not null]
+
+  Indexes {
+    username [type: btree, name: "idx_user_login_username"]
+  }
+}
+
+Table "user_profile_pic" {
+  "username" varchar(20) [pk, not null]
+  "profile_pic" bytea [not null]
+}
+
+Table "data_dict" {
+  "id" varchar(20) [pk, not null]
+  "num" varchar(20) [not null]
+  "category_code" varchar(25) [not null]
+  "dict_code" varchar(30) [not null]
+  "dict_name" varchar(20)
+  "remark" varchar(256)
+  "enabled" bool [not null]
+  "created_at" timestamp [not null]
+  "created_by" varchar(50)
+  "modified_at" timestamp [not null]
+  "modified_by" varchar(50)
+
+  Indexes {
+    (category_code, dict_code) [type: btree, name: "uk_data_dict_category_code_dict_code"]
+  }
+}
+
+Table "table_seq_number" {
+  "id" varchar(20) [pk, not null]
+  "table_name" varchar(36) [not null]
+  "max_seq_num" int8 [not null]
+}
+
+Table "notification" {
+  "id" varchar(20) [pk, not null]
+  "title" varchar(20) [not null]
+  "content" varchar(1000) [not null]
+  "type" varchar(8) [not null]
+  "created_at" timestamp [not null]
+  "created_by" varchar(50)
+  "modified_at" timestamp [not null]
+  "modified_by" varchar(50)
+}
+
+Table "user_notification" {
+  "id" varchar(20) [pk, not null]
+  "receiver_id" varchar(20) [not null]
+  "notification_id" varchar(20) [not null]
+  "status" varchar(7) [not null, default: 'UNREAD']
+  "active" bool [not null, default: true]
+  "created_at" timestamp [not null]
+  "created_by" varchar(50)
+  "modified_at" timestamp [not null]
+  "modified_by" varchar(50)
+
+  Indexes {
+    (receiver_id, notification_id) [type: btree, name: "uk_user_notification"]
+    notification_id [type: btree, name: "idx_user_notification_notification"]
+    (receiver_id, status) [type: btree, name: "idx_user_notification_user_status"]
+  }
+}
+
+Ref "fk_role_permission_permission_id":"permission"."id" < "role_permission"."permission_id" [update: cascade, delete: cascade]
+
+Ref "fk_role_permission_role_id":"role"."id" < "role_permission"."role_id" [update: cascade, delete: cascade]
+
+Ref "fk_team_user_username":"user"."username" < "team_user"."username" [update: cascade, delete: cascade]
+
+Ref "fk_user_date_time_format_supported_date_time_format_id":"supported_date_time_format"."id" < "user"."date_time_format_id" [update: cascade, delete: cascade]
+
+Ref "fk_user_timezone_supported_timezone_id":"supported_timezone"."id" < "user"."time_zone_id" [update: cascade, delete: cascade]
+
+Ref "fk_user_login_username":"user"."username" < "user_login"."username" [update: cascade, delete: cascade]
+
+Ref "fk_user_notification_notification":"notification"."id" < "user_notification"."notification_id" [update: cascade, delete: cascade]
+
+Ref "fk_user_notification_user":"user"."username" < "user_notification"."receiver_id" [update: cascade, delete: set null]
+
+Ref "fk_user_profile_pic_username":"user"."username" < "user_profile_pic"."username" [update: cascade, delete: cascade]
+
+Ref "fk_user_role_role_id":"role"."id" < "user_role"."role_id" [update: cascade, delete: cascade]
+
+Ref "fk_user_role_username":"user"."username" < "user_role"."username" [update: cascade, delete: cascade]
