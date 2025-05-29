@@ -85,12 +85,6 @@ public class AccountController {
         return ResponseEntity.ok(loginUser);
     }
 
-    @Operation(summary = "find user by date time format id")
-    @GetMapping("/open-api/accounts/date-time-format/{id}")
-    public ResponseEntity<SupportedDateTimeFormat> getDateTimeFormat(@Parameter(description = "ID", required = true) @PathVariable String id) {
-        return ResponseEntity.ok(supportedDateTimeFormatRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id)));
-    }
-
     @Operation(summary = "register a new user and send an account activation email")
     @PostMapping("/open-api/accounts/register")
     public ResponseEntity<Void> register(HttpServletRequest request,
@@ -111,7 +105,7 @@ public class AccountController {
     @Operation(summary = "update current user")
     @PutMapping("/api/accounts/user")
     public ResponseEntity<Void> update(@Parameter(description = "new user info", required = true) @Valid @RequestBody ManagedUser domain) {
-        Validate.isTrue(AuthUtils.getCurrentUsername().equals(domain.getUsername()), "Invalid user ID!");
+        Validate.isTrue(AuthUtils.getCurrentUsername().equals(domain.getUsername()), "Invalid username!");
         domain.setEmail(null);
         domain.setMobileNo(null);
         domain.setRemark(null);
@@ -223,12 +217,6 @@ public class AccountController {
 //        String path = System.getProperty("user.home") + File.separator + "fileName.txt";
 //        File outFile = ResourceUtils.getFile(path);
 //        FileUtils.writeLines(outFile, strList);
-    }
-
-    @Operation(summary = "get all authority names")
-    @GetMapping("/api/accounts/all-authorities")
-    public ResponseEntity<List<String>> getAuthorityNames() {
-        return ResponseEntity.ok(Arrays.asList(ROLE_ANONYMOUS, ROLE_USER, ROLE_ADMIN, ROLE_DEVELOPER));
     }
 
     @Operation(summary = "get all supported time zones")
