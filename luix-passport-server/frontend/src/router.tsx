@@ -98,6 +98,12 @@ const router = createHashRouter([
         }),
       },
       {
+        path: "db-structure",
+        lazy: async () => ({
+          Component: (await import("@/views/db-structure")).default
+        }),
+      },
+      {
         path: "data-dicts",
         lazy: async () => ({
           Component: (await import("@/views/data-dicts")).default

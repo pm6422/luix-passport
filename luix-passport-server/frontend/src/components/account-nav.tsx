@@ -11,7 +11,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { IconUser, IconCodeCircle2, IconApi, IconVocabulary, IconLogout, IconBellRinging } from "@tabler/icons-react"
+import {
+  IconUser,
+  IconCodeCircle2,
+  IconApi,
+  IconVocabulary,
+  IconLogout,
+  IconBellRinging,
+  IconDatabase,
+} from '@tabler/icons-react'
 import { RoleDeveloper } from "@/components/custom/role/role-developer"
 import { AccountService } from "@/services/account-service"
 import { useStore } from "exome/react"
@@ -67,6 +75,11 @@ export function AccountNav() {
               </DropdownMenuItem>
             </Link>
             }
+            <Link to="/db-structure">
+              <DropdownMenuItem className="cursor-pointer">
+                <IconDatabase className="size-4 mr-2"/>DB Structure
+              </DropdownMenuItem>
+            </Link>
             <Link to="/data-dicts">
               <DropdownMenuItem className="cursor-pointer">
                 <IconVocabulary className="size-4 mr-2"/>Data Dictionaries
