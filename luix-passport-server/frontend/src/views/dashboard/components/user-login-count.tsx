@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { UserLoginCount } from "@/domains/user-login-count"
-import { UserAuthEventService } from "@/services/user-auth-event-service.ts"
+import { UserAuthEventService } from "@/services/user-auth-event-service"
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
 import {
   ChartConfig,

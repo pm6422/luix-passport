@@ -8,7 +8,6 @@ import java.time.Instant;
 @Data
 @NoArgsConstructor
 public class LoginUser {
-    private String  id;
     private String  username;
     private String  firstName;
     private String  lastName;

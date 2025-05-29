@@ -1,12 +1,12 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar.tsx"
-import type { LoginUser } from "@/domains/login-user.ts"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import type { LoginUser } from "@/domains/login-user"
 import { DateTime } from "@/components/custom/date-time"
 
 export function LoginUserItem(loginUser : LoginUser) {
     return (
         <div className="flex items-center">
             <Avatar className="size-9">
-              <AvatarImage src={"api/user-profile-pics/" + loginUser.id} alt="profile" />
+              <AvatarImage src={"api/user-profile-pics/" + loginUser.username} alt="profile" />
               <AvatarFallback>AVATAR</AvatarFallback>
             </Avatar>
             <div className="ml-2 space-y-1">

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
-import { UserAuthEventService } from "@/services/user-auth-event-service.ts"
+import { UserAuthEventService } from "@/services/user-auth-event-service"
 import { LoginUser } from "@/domains/login-user"
-import { LoginUserItem } from "./login-user-item.tsx";
+import { LoginUserItem } from "./login-user-item"
 
 export function RecentLoginUsers() {
   const [ loginUsers, setLoginUsers ] = useState([] as Array<LoginUser>)
