@@ -13,7 +13,7 @@ import { SevenDaysUserLoginCount } from "./components/user-login-count.tsx"
 import { IconUsers, IconShieldCheckered, IconCircles, IconUserShield } from "@tabler/icons-react"
 import { UserService } from "@/services/user-service"
 import { Oauth2ClientService } from "@/services/oauth2-client-service"
-import { OrgService } from "@/services/org-service"
+import { TeamService } from "@/services/team-service"
 import { useStore } from "exome/react"
 import { loginUserStore } from "@/stores/login-user-store"
 import { useNavigate } from "react-router-dom"
@@ -25,7 +25,7 @@ export default function Dashboard() {
   const { loginUser } = useStore(loginUserStore)
   const [userCount, setUserCount] = useState(0)
   const [oauth2ClientCount, setOauth2ClientCount] = useState(0)
-  const [orgCount, setOrgCount] = useState(0)
+  const [teamCount, setTeamCount] = useState(0)
   // const [springSessions, setSpringSessions] = useState([] as Array<SpringSession>)
 
   useEffect(() => {
@@ -41,8 +41,8 @@ export default function Dashboard() {
       Oauth2ClientService.count().then(r => {
         setOauth2ClientCount(r.data)
       })
-      OrgService.count().then(r => {
-        setOrgCount(r.data)
+      TeamService.count().then(r => {
+        setTeamCount(r.data)
       })
     }
   }, [loginUser])
@@ -96,12 +96,12 @@ export default function Dashboard() {
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">
-                    Total Organizations
+                    Total Teams
                   </CardTitle>
                   <IconCircles className="size-4"/>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">{orgCount}</div>
+                  <div className="text-2xl font-bold">{teamCount}</div>
                 </CardContent>
               </Card>
               <Card>

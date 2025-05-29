@@ -1,11 +1,11 @@
 import http from "@/axios"
 import { AxiosResponse } from "axios"
 
-export class OrgService {
+export class TeamService {
   constructor() {
   }
 
   public static count(): Promise<AxiosResponse<number>> {
-    return http.get("api/orgs/count")
+    return http.get("api/teams/count")
   }
 }
