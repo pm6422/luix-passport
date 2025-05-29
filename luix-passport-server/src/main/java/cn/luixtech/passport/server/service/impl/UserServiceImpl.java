@@ -128,7 +128,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 //                .limit(1)
 //                // Convert User Record to POJO User
 //                .fetchOneInto(User.class);
-        return userRepository.findOneByUsernameOrEmailOrMobileNo(loginName, loginName, loginName);
+        return userRepository.findOneByUsernameOrEmail(loginName, loginName);
     }
 
     @Override
