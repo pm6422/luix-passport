@@ -13,9 +13,9 @@ import java.util.Set;
 @JsonDeserialize(using = AuthUserDeserializer.class)
 public class AuthUser extends User {
     @Serial
-    private static final long   serialVersionUID = -8021915441738843058L;
+    private static final long        serialVersionUID = -8021915441738843058L;
     @Getter
-    private              String email;
+    private              String      email;
     @Getter
     private              String      mobileNo;
     @Getter

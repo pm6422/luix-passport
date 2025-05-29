@@ -5,7 +5,7 @@ import cn.luixtech.passport.server.domain.SupportedTimezone;
 import cn.luixtech.passport.server.domain.User;
 import cn.luixtech.passport.server.domain.UserProfilePic;
 import cn.luixtech.passport.server.event.LogoutEvent;
-import cn.luixtech.passport.server.pojo.AuthUser;
+import cn.luixtech.passport.server.pojo.LoginUser;
 import cn.luixtech.passport.server.pojo.ChangePassword;
 import cn.luixtech.passport.server.pojo.ManagedUser;
 import cn.luixtech.passport.server.pojo.PasswordRecovery;
@@ -71,18 +71,18 @@ public class AccountController {
 
     @Operation(summary = "get current user who are signed in")
     @GetMapping("/open-api/accounts/user")
-    public ResponseEntity<AuthUser> getCurrentUser() {
+    public ResponseEntity<LoginUser> getCurrentUser() {
         if (AuthUtils.getCurrentUser() == null || AuthUtils.getCurrentUser().getEmail() == null) {
             return ResponseEntity.ok(null);
         }
-        AuthUser authUser = AuthUser.of(userService.findByEmail(AuthUtils.getCurrentUser().getEmail()));
+        LoginUser loginUser = LoginUser.of(userService.findByEmail(AuthUtils.getCurrentUser().getEmail()));
         SupportedDateTimeFormat supportedDateTimeFormat =
-                supportedDateTimeFormatRepository.findById(authUser.getDateTimeFormatId())
-                        .orElseThrow(() -> new DataNotFoundException(authUser.getDateTimeFormatId()));
-        authUser.setDateTimeFormat(supportedDateTimeFormat.getDateTimeFormat());
-        authUser.setDateFormat(supportedDateTimeFormat.getDateFormat());
-        authUser.setTimeFormat(supportedDateTimeFormat.getTimeFormat());
-        return ResponseEntity.ok(authUser);
+                supportedDateTimeFormatRepository.findById(loginUser.getDateTimeFormatId())
+                        .orElseThrow(() -> new DataNotFoundException(loginUser.getDateTimeFormatId()));
+        loginUser.setDateTimeFormat(supportedDateTimeFormat.getDateTimeFormat());
+        loginUser.setDateFormat(supportedDateTimeFormat.getDateFormat());
+        loginUser.setTimeFormat(supportedDateTimeFormat.getTimeFormat());
+        return ResponseEntity.ok(loginUser);
     }
 
     @Operation(summary = "find user by date time format id")

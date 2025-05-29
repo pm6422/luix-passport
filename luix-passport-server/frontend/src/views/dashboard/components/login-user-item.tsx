@@ -8,7 +8,7 @@ export function LoginUserItem(loginUser : LoginUser) {
         <div className="flex items-center">
             <Avatar className="size-9">
               <AvatarImage src={"api/user-profile-pics/" + loginUser.username} alt="profile" />
-              <AvatarFallback><Skeleton className="size-9 w-full" /></AvatarFallback>
+              <AvatarFallback><Skeleton className="w-full" /></AvatarFallback>
             </Avatar>
             <div className="ml-2 space-y-1">
               <p className="text-sm font-medium leading-none">{loginUser.firstName} {loginUser.lastName}</p>

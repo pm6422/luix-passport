@@ -9,7 +9,7 @@ import java.util.Set;
 
 @Data
 @NoArgsConstructor
-public class AuthUser {
+public class LoginUser {
     private String      username;
     private String      email;
     private String      mobileNo;
@@ -36,9 +36,9 @@ public class AuthUser {
      * @return the target object
      */
     /* <<<<<<<<<<  ce56b8f8-f0a9-4335-bf9e-87b1b2520cc9  >>>>>>>>>>> */
-    public static AuthUser of(ManagedUser managedUser) {
-        AuthUser authUser = new AuthUser();
-        BeanUtils.copyProperties(managedUser, authUser);
-        return authUser;
+    public static LoginUser of(ManagedUser managedUser) {
+        LoginUser loginUser = new LoginUser();
+        BeanUtils.copyProperties(managedUser, loginUser);
+        return loginUser;
     }
 }

@@ -2,14 +2,12 @@ package cn.luixtech.passport.server.controller;
 
 import cn.luixtech.passport.server.domain.User;
 import cn.luixtech.passport.server.domain.UserAuthEvent;
-import cn.luixtech.passport.server.pojo.AuthUser;
-import cn.luixtech.passport.server.pojo.ManagedUser;
+import cn.luixtech.passport.server.pojo.LoginUser;
 import cn.luixtech.passport.server.pojo.UserLoginCount;
 import cn.luixtech.passport.server.repository.UserAuthEventRepository;
 import cn.luixtech.passport.server.repository.UserRepository;
 import cn.luixtech.passport.server.service.UserAuthEventService;
 import cn.luixtech.passport.server.service.UserService;
-import cn.luixtech.passport.server.utils.AuthUtils;
 import com.luixtech.springbootframework.component.HttpHeaderCreator;
 import com.luixtech.utilities.exception.DataNotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
@@ -70,8 +68,8 @@ public class UserAuthEventController {
 
     @Operation(summary = "find recent login users list")
     @GetMapping("/api/user-auth-events/recent-login-users")
-    public ResponseEntity<List<AuthUser>> findRecentLoginUsers(@ParameterObject Pageable pageable) {
-        List<AuthUser> loginUsers = new ArrayList<>();
+    public ResponseEntity<List<LoginUser>> findRecentLoginUsers(@ParameterObject Pageable pageable) {
+        List<LoginUser> loginUsers = new ArrayList<>();
         Page<UserAuthEvent> domains = userAuthEventService.find(pageable, null, AUTH_SUCCESS);
         if (domains.isEmpty()) {
             return ResponseEntity.ok(loginUsers);
@@ -79,7 +77,7 @@ public class UserAuthEventController {
         for (UserAuthEvent domain : domains.getContent()) {
             Optional<User> user = userRepository.findById(domain.getUsername());
             if (user.isPresent()) {
-                AuthUser loginUser = new AuthUser();
+                LoginUser loginUser = new LoginUser();
                 BeanUtils.copyProperties(user.get(), loginUser);
                 loginUser.setSignInAt(domain.getCreatedAt());
                 loginUsers.add(loginUser);
