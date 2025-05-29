@@ -5,8 +5,8 @@ import cn.luixtech.passport.server.domain.SupportedTimezone;
 import cn.luixtech.passport.server.domain.User;
 import cn.luixtech.passport.server.domain.UserProfilePic;
 import cn.luixtech.passport.server.event.LogoutEvent;
-import cn.luixtech.passport.server.pojo.LoginUser;
 import cn.luixtech.passport.server.pojo.ChangePassword;
+import cn.luixtech.passport.server.pojo.LoginUser;
 import cn.luixtech.passport.server.pojo.ManagedUser;
 import cn.luixtech.passport.server.pojo.PasswordRecovery;
 import cn.luixtech.passport.server.repository.SupportedDateTimeFormatRepository;
@@ -32,24 +32,19 @@ import org.apache.commons.lang3.Validate;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import static cn.luixtech.passport.server.controller.UserProfilePicController.DEFAULT_USER_PHOTO_URL;
-import static cn.luixtech.passport.server.domain.UserRole.*;
 import static com.luixtech.springbootframework.utils.NetworkUtils.getRequestUrl;
 
 /**
@@ -194,15 +189,7 @@ public class AccountController {
     @Operation(summary = "get profile picture of the current user")
     @GetMapping("/api/accounts/profile-pic")
     public ResponseEntity<byte[]> getProfilePicture(HttpServletRequest request) throws IOException {
-        Optional<UserProfilePic> userPhoto = userProfilePicRepository.findById(AuthUtils.getCurrentUsername());
-        if (userPhoto.isPresent()) {
-            return ResponseEntity.ok(userPhoto.get().getProfilePic());
-        }
-
-        // Set the default profile picture
-        byte[] bytes = StreamUtils.copyToByteArray(
-                new UrlResource(getRequestUrl(request) + DEFAULT_USER_PHOTO_URL).getInputStream());
-        return ResponseEntity.ok(bytes);
+        return ResponseEntity.ok(userProfilePicService.getProfilePic(AuthUtils.getCurrentUsername(), request));
     }
 
     @Operation(summary = "upload profile picture of the current user")
