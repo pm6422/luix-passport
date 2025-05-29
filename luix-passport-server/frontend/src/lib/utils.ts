@@ -1,33 +1,10 @@
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
-import dayjs from "dayjs"
-import { customAlphabet } from "nanoid"
 import { ColumnSort } from "@tanstack/react-table"
 import { isBoolean, isString, isArray, cloneDeep, toLower } from "lodash"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
-}
-
-export function formatDateTime(dateTimeFormat: string, value: string | Date, timeZone: string): string {
-  if (!value) {
-    return ""
-  }
-  return dayjs(value).tz(timeZone).format(dateTimeFormat)
-}
-
-export function formatDate(dateFormat: string, value: string | Date, timeZone: string): string {
-  if (!value) {
-    return ""
-  }
-  return dayjs(value).tz(timeZone).format(dateFormat)
-}
-
-export function generateId({ length = 8, prefix = "" } = {}) {
-  return `${prefix}${customAlphabet(
-    "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
-    length
-  )()}`
 }
 
 export function parseSorts(sorting: Array<ColumnSort>): Array<string> | undefined {
@@ -50,28 +27,6 @@ export function toBase64(file: File) {
       reject(error)
     }
   })
-}
-
-export function fromBase64(base64String: string, fileName: string) {
-  // Remove metadata prefix from base64 string
-  const base64WithoutMetadata = base64String.replace(/^data:\w+\/\w+;base64,/, "")
-
-  // Convert Base64 to Blob
-  const byteCharacters = atob(base64WithoutMetadata)
-  const byteArrays = []
-  for (let offset = 0; offset < byteCharacters.length; offset += 512) {
-    const slice = byteCharacters.slice(offset, offset + 512)
-    const byteNumbers = new Array(slice.length)
-    for (let i = 0; i < slice.length; i++) {
-      byteNumbers[i] = slice.charCodeAt(i)
-    }
-    const byteArray = new Uint8Array(byteNumbers)
-    byteArrays.push(byteArray)
-  }
-  const blob = new Blob(byteArrays, { type: "application/octet-stream" })
-
-  // Convert Blob to File
-  return new File([blob], fileName, { type: blob.type })
 }
 
 
