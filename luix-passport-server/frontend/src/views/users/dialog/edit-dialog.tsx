@@ -20,6 +20,7 @@ import { RoleService } from "@/services/role-service"
 import { Option } from "@/components/custom/multi-select"
 import type { SupportedTimezone } from "@/domains/supported-timezone"
 import type { SupportedDateTimeFormat } from "@/domains/supported-date-time-format"
+import { Skeleton } from '@/components/ui/skeleton.tsx'
 
 interface EditDialogProps {
   children: ReactNode,
@@ -76,7 +77,7 @@ export function EditDialog({
         <div className="flex flex-col md:flex-row items-center justify-between gap-5">
           <Avatar className="size-20">
             <AvatarImage src={"api/user-profile-pics/" + id} alt="profile" />
-            <AvatarFallback>Avatar</AvatarFallback>
+            <AvatarFallback><Skeleton className="size-20 w-full" /></AvatarFallback>
           </Avatar>
           <Separator orientation="vertical" className="hidden md:block" />
           <InputFormField
