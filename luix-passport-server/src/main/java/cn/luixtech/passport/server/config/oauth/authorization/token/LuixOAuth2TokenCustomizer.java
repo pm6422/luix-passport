@@ -101,7 +101,7 @@ public final class LuixOAuth2TokenCustomizer implements OAuth2TokenCustomizer<Jw
             claims.put(StandardClaimNames.EMAIL_VERIFIED, true);
             claims.put(StandardClaimNames.PHONE_NUMBER, user.getMobileNo());
             claims.put(StandardClaimNames.PHONE_NUMBER_VERIFIED, user.getMobileNo());
-            claims.put(StandardClaimNames.PICTURE, user.getPhotoUrl());
+            claims.put(StandardClaimNames.PICTURE, user.getProfilePicUrl());
             claims.put(StandardClaimNames.LOCALE, user.getLocale());
             claims.put(StandardClaimNames.UPDATED_AT, user.getModifiedTime());
             claims.put(LuixClaimNames.ROLES, user.getRoles());

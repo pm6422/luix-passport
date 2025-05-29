@@ -403,7 +403,7 @@
             </column>
         </createTable>
         <createTable tableName="user_profile_pic">
-            <column name="id" type="varchar(20)">
+            <column name="username" type="varchar(20)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="profile_pic" type="BYTEA">
@@ -538,9 +538,6 @@
         <createIndex tableName="user_login" indexName="idx_user_login_username" unique="false">
             <column name="username"/>
         </createIndex>
-        <createIndex tableName="user_profile_pic" indexName="idx_user_profile_pic_id" unique="false">
-            <column name="id"/>
-        </createIndex>
         <createIndex tableName="user_notification" indexName="idx_user_notification_notification" unique="false">
             <column name="notification_id"/>
         </createIndex>
@@ -618,7 +615,7 @@
                 onUpdate="CASCADE"/>
         <addForeignKeyConstraint
                 baseTableName="user_profile_pic"
-                baseColumnNames="id"
+                baseColumnNames="username"
                 constraintName="fk_user_profile_pic_username"
                 referencedTableName="user"
                 referencedColumnNames="username"

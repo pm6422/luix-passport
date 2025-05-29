@@ -53,7 +53,7 @@ public class UserProfilePicServiceImpl implements UserProfilePicService {
     @Transactional(rollbackFor = Exception.class)
     public void insert(String username, byte[] photoData) {
         UserProfilePic userProfilePic = new UserProfilePic();
-        userProfilePic.setId(username);
+        userProfilePic.setUsername(username);
         userProfilePic.setProfilePic(photoData);
         userProfilePicRepository.save(userProfilePic);
     }
