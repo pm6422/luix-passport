@@ -7,24 +7,23 @@ export function parseSorts(sorting: Array<ColumnSort>): Array<string> | undefine
     : undefined
 }
 
-export function filterTable(initialTableData: Array<any>, searchKeyword: string): Array<never> {
+export function filterTable(initialTableData: Array<Record<string, unknown>>, searchKeyword: string): Array<any> {
   const tableData = cloneDeep(initialTableData)
-  let results: Array<any> = []
+  const results: Array<Record<string, unknown>> = []
   for (let i = 0; i < tableData.length; i++) {
     if (searchRow(tableData[i], searchKeyword)) {
       results.push(tableData[i])
     }
   }
-  // @ts-ignore
   return cloneDeep(results)
 }
 
-function searchRow(row: any, keyword: string): boolean {
-  for (let colName in row) {
+function searchRow(row: Record<string, unknown>, keyword: string): boolean {
+  for (const colName in row) {
     if (!Number.isInteger(row[colName]) && !isBoolean(row[colName]) && !(typeof row[colName] === "object")) {
       if(isString(row[colName]) && toLower(row[colName]).indexOf(keyword) != -1) {
         return true
-      } else if (row[colName].indexOf(keyword) != -1) {
+      } else if (row[colName] && String(row[colName]).indexOf(keyword) != -1) {
         // field value contains keyword
         return true
       }
