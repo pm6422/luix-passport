@@ -12,8 +12,8 @@
     "docker:push": "npm run docker:build -- -Djib.goal=build",
     "docker:push:arm64": "npm run docker:push -- -Djib.arch=arm64",
     "dbdocs:install": "npm install -g dbdocs",
-    "dbdocs:dbml": "dbdocs db2dbml postgres postgresql://postgres:postgres@localhost:5432/luix-passport -o ./docs/database.dbml",
+    "dbdocs:dbml": "dbdocs db2dbml postgres postgresql://postgres:postgres@localhost:5432/luix-passport -o ./docs/db-schema.dbml",
     "dbdocs:login": "dbdocs login",
-    "dbdocs:build": "dbdocs build ./docs/database.dbml --project luix-passport"
+    "dbdocs:build": "dbdocs build ./docs/db-schema.dbml --project luix-passport"
   }
 }
