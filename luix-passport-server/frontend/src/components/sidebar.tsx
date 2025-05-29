@@ -7,7 +7,7 @@ import { sidelinks } from "@/data/sidelinks"
 import SidebarMenu from "./sidebar-menu"
 import { cn } from "@/lib/utils"
 import { useStore } from "exome/react"
-import { appInfoStore } from "@/stores/app-info-store.ts"
+import { appInfoStore } from "@/stores/app-info-store"
 
 interface SidebarProps extends HTMLAttributes<HTMLElement> {
   isCollapsed: boolean

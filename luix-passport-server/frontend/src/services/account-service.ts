@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios'
+import axios, { AxiosResponse } from "axios"
 import http from "@/axios"
 import type { LoginUser } from "@/stores/login-user-store"
 import { type SupportedTimezone } from "@/domains/supported-timezone"
