@@ -26,9 +26,8 @@ import static com.luixtech.utilities.encryption.JasyptEncryptUtils.DEFAULT_ALGOR
 @PreAuthorize("hasAuthority(\"" + ROLE_ADMIN + "\")")
 @Slf4j
 public class UserProfilePicController {
-    public static final String                USER_PHOTO_TOKEN_KEY   = "dw4rfer54g&^@dsfd#";
-    public static final String                USER_PHOTO_URL         = "/open-api/user-profile-pics/";
-    public static final String                DEFAULT_USER_PHOTO_URL = "/assets/images/cartoon/01.png";
+    public static final String                USER_PHOTO_TOKEN_KEY = "dw4rfer54g&^@dsfd#";
+    public static final String                USER_PHOTO_URL       = "/open-api/user-profile-pics/";
     private final       UserProfilePicService userProfilePicService;
 
     @Operation(summary = "find user profile picture by user id")
