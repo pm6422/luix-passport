@@ -5,6 +5,7 @@ import cn.luixtech.passport.server.domain.base.listener.AuditableEntityListener;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serial;
@@ -14,6 +15,7 @@ import java.io.Serializable;
 @EntityListeners(AuditableEntityListener.class)
 @Data
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 public class UserNotification extends AbstractUpdatableDomain implements Serializable {
     @Serial
