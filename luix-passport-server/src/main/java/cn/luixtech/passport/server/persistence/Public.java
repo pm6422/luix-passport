@@ -9,8 +9,6 @@ import cn.luixtech.passport.server.persistence.tables.Notification;
 import cn.luixtech.passport.server.persistence.tables.Oauth2Authorization;
 import cn.luixtech.passport.server.persistence.tables.Oauth2AuthorizationConsent;
 import cn.luixtech.passport.server.persistence.tables.Oauth2RegisteredClient;
-import cn.luixtech.passport.server.persistence.tables.Org;
-import cn.luixtech.passport.server.persistence.tables.OrgUser;
 import cn.luixtech.passport.server.persistence.tables.Permission;
 import cn.luixtech.passport.server.persistence.tables.Role;
 import cn.luixtech.passport.server.persistence.tables.RolePermission;
@@ -19,6 +17,8 @@ import cn.luixtech.passport.server.persistence.tables.SpringSessionAttributes;
 import cn.luixtech.passport.server.persistence.tables.SupportedDateTimeFormat;
 import cn.luixtech.passport.server.persistence.tables.SupportedTimezone;
 import cn.luixtech.passport.server.persistence.tables.TableSeqNumber;
+import cn.luixtech.passport.server.persistence.tables.Team;
+import cn.luixtech.passport.server.persistence.tables.TeamUser;
 import cn.luixtech.passport.server.persistence.tables.User;
 import cn.luixtech.passport.server.persistence.tables.UserAuthEvent;
 import cn.luixtech.passport.server.persistence.tables.UserLogin;
@@ -73,16 +73,6 @@ public class Public extends SchemaImpl {
     public final Oauth2RegisteredClient OAUTH2_REGISTERED_CLIENT = Oauth2RegisteredClient.OAUTH2_REGISTERED_CLIENT;
 
     /**
-     * The table <code>public.org</code>.
-     */
-    public final Org ORG = Org.ORG;
-
-    /**
-     * The table <code>public.org_user</code>.
-     */
-    public final OrgUser ORG_USER = OrgUser.ORG_USER;
-
-    /**
      * The table <code>public.permission</code>.
      */
     public final Permission PERMISSION = Permission.PERMISSION;
@@ -121,6 +111,16 @@ public class Public extends SchemaImpl {
      * The table <code>public.table_seq_number</code>.
      */
     public final TableSeqNumber TABLE_SEQ_NUMBER = TableSeqNumber.TABLE_SEQ_NUMBER;
+
+    /**
+     * The table <code>public.team</code>.
+     */
+    public final Team TEAM = Team.TEAM;
+
+    /**
+     * The table <code>public.team_user</code>.
+     */
+    public final TeamUser TEAM_USER = TeamUser.TEAM_USER;
 
     /**
      * The table <code>public.user</code>.
@@ -173,8 +173,6 @@ public class Public extends SchemaImpl {
             Oauth2Authorization.OAUTH2_AUTHORIZATION,
             Oauth2AuthorizationConsent.OAUTH2_AUTHORIZATION_CONSENT,
             Oauth2RegisteredClient.OAUTH2_REGISTERED_CLIENT,
-            Org.ORG,
-            OrgUser.ORG_USER,
             Permission.PERMISSION,
             Role.ROLE,
             RolePermission.ROLE_PERMISSION,
@@ -183,6 +181,8 @@ public class Public extends SchemaImpl {
             SupportedDateTimeFormat.SUPPORTED_DATE_TIME_FORMAT,
             SupportedTimezone.SUPPORTED_TIMEZONE,
             TableSeqNumber.TABLE_SEQ_NUMBER,
+            Team.TEAM,
+            TeamUser.TEAM_USER,
             User.USER,
             UserAuthEvent.USER_AUTH_EVENT,
             UserLogin.USER_LOGIN,

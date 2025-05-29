@@ -17,7 +17,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class Org extends AbstractUpdatableDomain implements Serializable {
+public class Team extends AbstractUpdatableDomain implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 

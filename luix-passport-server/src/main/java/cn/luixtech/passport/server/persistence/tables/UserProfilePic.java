@@ -4,7 +4,6 @@
 package cn.luixtech.passport.server.persistence.tables;
 
 
-import cn.luixtech.passport.server.persistence.Indexes;
 import cn.luixtech.passport.server.persistence.Keys;
 import cn.luixtech.passport.server.persistence.Public;
 import cn.luixtech.passport.server.persistence.tables.records.UserProfilePicRecord;
@@ -16,7 +15,6 @@ import java.util.function.Function;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Function2;
-import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
@@ -54,9 +52,9 @@ public class UserProfilePic extends TableImpl<UserProfilePicRecord> {
     }
 
     /**
-     * The column <code>public.user_profile_pic.id</code>.
+     * The column <code>public.user_profile_pic.username</code>.
      */
-    public final TableField<UserProfilePicRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(20).nullable(false), this, "");
+    public final TableField<UserProfilePicRecord, String> USERNAME = createField(DSL.name("username"), SQLDataType.VARCHAR(20).nullable(false), this, "");
 
     /**
      * The column <code>public.user_profile_pic.profile_pic</code>.
@@ -99,11 +97,6 @@ public class UserProfilePic extends TableImpl<UserProfilePicRecord> {
     @Override
     public Schema getSchema() {
         return aliased() ? null : Public.PUBLIC;
-    }
-
-    @Override
-    public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.IDX_USER_PROFILE_PIC_ID);
     }
 
     @Override

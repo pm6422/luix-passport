@@ -9,8 +9,6 @@ import cn.luixtech.passport.server.persistence.tables.Notification;
 import cn.luixtech.passport.server.persistence.tables.Oauth2Authorization;
 import cn.luixtech.passport.server.persistence.tables.Oauth2AuthorizationConsent;
 import cn.luixtech.passport.server.persistence.tables.Oauth2RegisteredClient;
-import cn.luixtech.passport.server.persistence.tables.Org;
-import cn.luixtech.passport.server.persistence.tables.OrgUser;
 import cn.luixtech.passport.server.persistence.tables.Permission;
 import cn.luixtech.passport.server.persistence.tables.Role;
 import cn.luixtech.passport.server.persistence.tables.RolePermission;
@@ -19,6 +17,8 @@ import cn.luixtech.passport.server.persistence.tables.SpringSessionAttributes;
 import cn.luixtech.passport.server.persistence.tables.SupportedDateTimeFormat;
 import cn.luixtech.passport.server.persistence.tables.SupportedTimezone;
 import cn.luixtech.passport.server.persistence.tables.TableSeqNumber;
+import cn.luixtech.passport.server.persistence.tables.Team;
+import cn.luixtech.passport.server.persistence.tables.TeamUser;
 import cn.luixtech.passport.server.persistence.tables.User;
 import cn.luixtech.passport.server.persistence.tables.UserAuthEvent;
 import cn.luixtech.passport.server.persistence.tables.UserLogin;
@@ -59,16 +59,6 @@ public class Tables {
     public static final Oauth2RegisteredClient OAUTH2_REGISTERED_CLIENT = Oauth2RegisteredClient.OAUTH2_REGISTERED_CLIENT;
 
     /**
-     * The table <code>public.org</code>.
-     */
-    public static final Org ORG = Org.ORG;
-
-    /**
-     * The table <code>public.org_user</code>.
-     */
-    public static final OrgUser ORG_USER = OrgUser.ORG_USER;
-
-    /**
      * The table <code>public.permission</code>.
      */
     public static final Permission PERMISSION = Permission.PERMISSION;
@@ -107,6 +97,16 @@ public class Tables {
      * The table <code>public.table_seq_number</code>.
      */
     public static final TableSeqNumber TABLE_SEQ_NUMBER = TableSeqNumber.TABLE_SEQ_NUMBER;
+
+    /**
+     * The table <code>public.team</code>.
+     */
+    public static final Team TEAM = Team.TEAM;
+
+    /**
+     * The table <code>public.team_user</code>.
+     */
+    public static final TeamUser TEAM_USER = TeamUser.TEAM_USER;
 
     /**
      * The table <code>public.user</code>.

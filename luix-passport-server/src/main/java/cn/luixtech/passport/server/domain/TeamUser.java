@@ -21,14 +21,14 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class OrgUser extends AbstractBaseDomain implements Serializable {
+public class TeamUser extends AbstractBaseDomain implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotEmpty(message = "orgId:{Validation.NotEmpty}")
+    @NotEmpty(message = "teamId:{Validation.NotEmpty}")
     @Column(nullable = false)
-    private String orgId;
+    private String teamId;
 
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     @NotEmpty(message = "username:{Validation.NotEmpty}")

@@ -190,7 +190,7 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <createTable tableName="org">
+        <createTable tableName="team">
             <column name="id" type="VARCHAR(20)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -200,11 +200,11 @@
             </column>
             <column name="photo" type="BYTEA"/>
         </createTable>
-        <createTable tableName="org_user">
+        <createTable tableName="team_user">
             <column name="id" type="VARCHAR(20)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="org_id" type="VARCHAR(20)">
+            <column name="team_id" type="VARCHAR(20)">
                 <constraints nullable="false"/>
             </column>
             <column name="username" type="VARCHAR(20)">
@@ -520,9 +520,6 @@
         <createIndex tableName="user" indexName="idx_user_date_time_format_id" unique="false">
             <column name="date_time_format_id"/>
         </createIndex>
-        <createIndex tableName="org_user" indexName="idx_org_user_username" unique="false">
-            <column name="username"/>
-        </createIndex>
         <createIndex tableName="user_role" indexName="idx_user_role_username" unique="false">
             <column name="username"/>
         </createIndex>
@@ -566,9 +563,9 @@
                 constraintName="uk_user_notification"/>
 
         <addForeignKeyConstraint
-                baseTableName="org_user"
+                baseTableName="team_user"
                 baseColumnNames="username"
-                constraintName="fk_org_user_username"
+                constraintName="fk_team_user_username"
                 referencedTableName="user"
                 referencedColumnNames="username"
                 onDelete="CASCADE"

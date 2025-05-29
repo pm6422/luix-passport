@@ -22,16 +22,16 @@ public class UserProfilePicRecord extends UpdatableRecordImpl<UserProfilePicReco
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>public.user_profile_pic.id</code>.
+     * Setter for <code>public.user_profile_pic.username</code>.
      */
-    public void setId(String value) {
+    public void setUsername(String value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>public.user_profile_pic.id</code>.
+     * Getter for <code>public.user_profile_pic.username</code>.
      */
-    public String getId() {
+    public String getUsername() {
         return (String) get(0);
     }
 
@@ -74,7 +74,7 @@ public class UserProfilePicRecord extends UpdatableRecordImpl<UserProfilePicReco
 
     @Override
     public Field<String> field1() {
-        return UserProfilePic.USER_PROFILE_PIC.ID;
+        return UserProfilePic.USER_PROFILE_PIC.USERNAME;
     }
 
     @Override
@@ -84,7 +84,7 @@ public class UserProfilePicRecord extends UpdatableRecordImpl<UserProfilePicReco
 
     @Override
     public String component1() {
-        return getId();
+        return getUsername();
     }
 
     @Override
@@ -94,7 +94,7 @@ public class UserProfilePicRecord extends UpdatableRecordImpl<UserProfilePicReco
 
     @Override
     public String value1() {
-        return getId();
+        return getUsername();
     }
 
     @Override
@@ -104,7 +104,7 @@ public class UserProfilePicRecord extends UpdatableRecordImpl<UserProfilePicReco
 
     @Override
     public UserProfilePicRecord value1(String value) {
-        setId(value);
+        setUsername(value);
         return this;
     }
 
@@ -135,10 +135,10 @@ public class UserProfilePicRecord extends UpdatableRecordImpl<UserProfilePicReco
     /**
      * Create a detached, initialised UserProfilePicRecord
      */
-    public UserProfilePicRecord(String id, byte[] profilePic) {
+    public UserProfilePicRecord(String username, byte[] profilePic) {
         super(UserProfilePic.USER_PROFILE_PIC);
 
-        setId(id);
+        setUsername(username);
         setProfilePic(profilePic);
         resetChangedOnNotNull();
     }

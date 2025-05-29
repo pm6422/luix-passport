@@ -75,9 +75,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRoleService                    userRoleService;
     private final UserNotificationService            userNotificationService;
     private final RolePermissionService              rolePermissionService;
-    private final UserProfilePicService              userProfilePicService;
-    private final OrgUserService                     orgUserService;
-    private final MessageCreator                     messageCreator;
+    private final UserProfilePicService userProfilePicService;
+    private final TeamUserService       teamUserService;
+    private final MessageCreator        messageCreator;
     private final HttpServletRequest                 httpServletRequest;
     private final Environment                        env;
     private final StateMachine<UserState, UserEvent> stateMachine;
@@ -99,7 +99,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         Set<String> roleIds = userRoleService.findRoleIds(user.getUsername());
         Set<String> permissionIds = rolePermissionService.findPermissionIds(roleIds);
-        Set<String> orgIds = orgUserService.findOrgIdsByUsername(user.getUsername());
+        Set<String> orgIds = teamUserService.findTeamIdsByUsername(user.getUsername());
 
         List<GrantedAuthority> authorities = roleIds.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
 
