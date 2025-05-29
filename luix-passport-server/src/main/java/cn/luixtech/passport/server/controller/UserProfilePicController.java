@@ -1,7 +1,6 @@
 package cn.luixtech.passport.server.controller;
 
 import cn.luixtech.passport.server.service.UserProfilePicService;
-import com.luixtech.utilities.encryption.JasyptEncryptUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 
 import static cn.luixtech.passport.server.domain.UserRole.ROLE_ADMIN;
-import static com.luixtech.utilities.encryption.JasyptEncryptUtils.DEFAULT_ALGORITHM;
+import static cn.luixtech.passport.server.service.impl.UserProfilePicServiceImpl.USER_PHOTO_URL;
 
 /**
  * REST controller for managing users' profile picture.
@@ -26,11 +25,9 @@ import static com.luixtech.utilities.encryption.JasyptEncryptUtils.DEFAULT_ALGOR
 @PreAuthorize("hasAuthority(\"" + ROLE_ADMIN + "\")")
 @Slf4j
 public class UserProfilePicController {
-    public static final String                USER_PHOTO_TOKEN_KEY = "dw4rfer54g&^@dsfd#";
-    public static final String                USER_PHOTO_URL       = "/open-api/user-profile-pics/";
-    private final       UserProfilePicService userProfilePicService;
+    private final UserProfilePicService userProfilePicService;
 
-    @Operation(summary = "find user profile picture by user id")
+    @Operation(summary = "find user profile picture by username")
     @GetMapping("/api/user-profile-pics/{username}")
     public ResponseEntity<byte[]> findById(HttpServletRequest request,
                                            @Parameter(description = "username", required = true) @PathVariable String username) throws IOException {
@@ -41,7 +38,6 @@ public class UserProfilePicController {
     @GetMapping(USER_PHOTO_URL + "{userToken}")
     public ResponseEntity<byte[]> findByUserToken(HttpServletRequest request,
                                                   @Parameter(description = "userToken", required = true) @PathVariable String userToken) throws IOException {
-        String username = JasyptEncryptUtils.decrypt(userToken, DEFAULT_ALGORITHM, USER_PHOTO_TOKEN_KEY);
-        return findById(request, username);
+        return ResponseEntity.ok(userProfilePicService.getProfilePicByUserToken(userToken, request));
     }
 }

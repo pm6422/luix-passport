@@ -4,6 +4,7 @@ package cn.luixtech.passport.server.service.impl;
 import cn.luixtech.passport.server.domain.UserProfilePic;
 import cn.luixtech.passport.server.repository.UserProfilePicRepository;
 import cn.luixtech.passport.server.service.UserProfilePicService;
+import com.luixtech.utilities.encryption.JasyptEncryptUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.core.io.UrlResource;
@@ -15,12 +16,27 @@ import java.io.IOException;
 import java.util.Optional;
 
 import static com.luixtech.springbootframework.utils.NetworkUtils.getRequestUrl;
+import static com.luixtech.utilities.encryption.JasyptEncryptUtils.DEFAULT_ALGORITHM;
 
 @Service
 @AllArgsConstructor
 public class UserProfilePicServiceImpl implements UserProfilePicService {
     private static final String                   DEFAULT_USER_PHOTO_URL = "/assets/images/cartoon/01.png";
+    public static final  String                   USER_PHOTO_URL         = "/open-api/user-profile-pics/";
+    public static final  String                   USER_PHOTO_TOKEN_KEY   = "dw4rfer54g&^@dsfd#";
     private final        UserProfilePicRepository userProfilePicRepository;
+
+    @Override
+    public String buildProfilePicUrl(String username, HttpServletRequest request) {
+        return getRequestUrl(request) + USER_PHOTO_URL +
+                JasyptEncryptUtils.encrypt(username, DEFAULT_ALGORITHM, USER_PHOTO_TOKEN_KEY);
+    }
+
+    @Override
+    public byte[] getProfilePicByUserToken(String userToken, HttpServletRequest request) throws IOException {
+        String username = JasyptEncryptUtils.decrypt(userToken, DEFAULT_ALGORITHM, USER_PHOTO_TOKEN_KEY);
+        return getProfilePic(username, request);
+    }
 
     @Override
     public byte[] getProfilePic(String username, HttpServletRequest request) throws IOException {

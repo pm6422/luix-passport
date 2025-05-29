@@ -16,7 +16,6 @@ import cn.luixtech.passport.server.statemachine.UserEvent;
 import cn.luixtech.passport.server.statemachine.UserState;
 import cn.luixtech.passport.server.utils.AuthUtils;
 import com.luixtech.springbootframework.component.MessageCreator;
-import com.luixtech.utilities.encryption.JasyptEncryptUtils;
 import com.luixtech.utilities.exception.DataNotFoundException;
 import com.luixtech.utilities.exception.DuplicationException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -54,11 +53,7 @@ import java.util.stream.Collectors;
 
 import static cn.luixtech.passport.server.config.AuthorizationServerConfiguration.BCRYPT_PASSWORD_ENCODER;
 import static cn.luixtech.passport.server.config.AuthorizationServerConfiguration.DEFAULT_PASSWORD_ENCODER_PREFIX;
-import static cn.luixtech.passport.server.controller.UserProfilePicController.USER_PHOTO_TOKEN_KEY;
-import static cn.luixtech.passport.server.controller.UserProfilePicController.USER_PHOTO_URL;
 import static cn.luixtech.passport.server.persistence.Tables.USER;
-import static com.luixtech.springbootframework.utils.NetworkUtils.getRequestUrl;
-import static com.luixtech.utilities.encryption.JasyptEncryptUtils.DEFAULT_ALGORITHM;
 import static org.apache.commons.lang3.time.DateFormatUtils.ISO_8601_EXTENDED_DATETIME_TIME_ZONE_FORMAT;
 
 /**
@@ -80,6 +75,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRoleService                    userRoleService;
     private final UserNotificationService            userNotificationService;
     private final RolePermissionService              rolePermissionService;
+    private final UserProfilePicService              userProfilePicService;
     private final OrgUserService                     orgUserService;
     private final MessageCreator                     messageCreator;
     private final HttpServletRequest                 httpServletRequest;
@@ -109,13 +105,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         String modifiedTime = ISO_8601_EXTENDED_DATETIME_TIME_ZONE_FORMAT.format(user.getModifiedAt().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
 
-        String photoUrl = null;
+        String profilePicUrl = null;
         if (httpServletRequest != null) {
-            photoUrl = getRequestUrl(httpServletRequest) + USER_PHOTO_URL + JasyptEncryptUtils.encrypt(user.getUsername(), DEFAULT_ALGORITHM, USER_PHOTO_TOKEN_KEY);
+            profilePicUrl = userProfilePicService.buildProfilePicUrl(user.getUsername(), httpServletRequest);
         }
         return new AuthUser(user.getUsername(), user.getEmail(), user.getMobileNo(), user.getFirstName(),
                 user.getLastName(), user.getPasswordHash(), user.getEnabled(), accountNonExpired, passwordNonExpired,
-                true, photoUrl, user.getLocale(), modifiedTime, authorities, roleIds, permissionIds, orgIds);
+                true, profilePicUrl, user.getLocale(), modifiedTime, authorities, roleIds, permissionIds, orgIds);
     }
 
     @Override

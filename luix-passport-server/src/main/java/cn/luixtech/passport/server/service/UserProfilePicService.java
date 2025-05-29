@@ -8,6 +8,10 @@ import java.io.IOException;
 
 public interface UserProfilePicService {
 
+    String buildProfilePicUrl(String username, HttpServletRequest request);
+
+    byte[] getProfilePicByUserToken(String userToken, HttpServletRequest request) throws IOException;
+
     byte[] getProfilePic(String username, HttpServletRequest request) throws IOException;
 
     void insert(String username, byte[] photoData);
