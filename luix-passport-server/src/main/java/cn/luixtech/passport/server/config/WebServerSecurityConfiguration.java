@@ -29,7 +29,7 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 @AllArgsConstructor
 @Configuration(proxyBeanMethods = false)
 public class WebServerSecurityConfiguration {
-    public static final String[]       NON_SPA_PATHS       = {
+    private static final String[]       PERMITTED_PAGES       = {
             "/login",
             "/sign-up",
             "/activate-account",
@@ -86,7 +86,7 @@ public class WebServerSecurityConfiguration {
 			.authorizeHttpRequests(authorize ->
 				authorize
 					.requestMatchers(STATIC_RESOURCES).permitAll()
-					.requestMatchers( NON_SPA_PATHS).permitAll()
+					.requestMatchers( PERMITTED_PAGES).permitAll()
 					.requestMatchers(MANAGEMENT_REQUESTS).permitAll()
 					.requestMatchers("/open-api/**").permitAll()
 					.requestMatchers("/api/externals/authorities").hasAuthority("SCOPE_external:read")

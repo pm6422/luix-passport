@@ -11,7 +11,8 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import static cn.luixtech.passport.server.config.WebServerSecurityConfiguration.*;
+import static cn.luixtech.passport.server.config.WebServerSecurityConfiguration.MANAGEMENT_REQUESTS;
+import static cn.luixtech.passport.server.config.WebServerSecurityConfiguration.STATIC_RESOURCES;
 
 /**
  * Web application configuration
@@ -20,8 +21,15 @@ import static cn.luixtech.passport.server.config.WebServerSecurityConfiguration.
 @AllArgsConstructor
 @Slf4j
 public class WebConfigurer implements WebMvcConfigurer {
-    private final SpaForwardInterceptor spaForwardInterceptor;
-    private final ApplicationProperties applicationProperties;
+    private static final String[]              NON_SPA_PATHS = {
+            "/login",
+            "/sign-up",
+            "/activate-account",
+            "/forgot-password",
+            "/reset-password",
+    };
+    private final        SpaForwardInterceptor spaForwardInterceptor;
+    private final        ApplicationProperties applicationProperties;
 
     private static final String[] API_REQUESTS = {
             "/api/**",
