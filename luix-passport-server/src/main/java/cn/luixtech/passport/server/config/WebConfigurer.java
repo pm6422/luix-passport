@@ -1,5 +1,6 @@
 package cn.luixtech.passport.server.config;
 
+import cn.luixtech.passport.server.interceptor.SpaForwardInterceptor;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;

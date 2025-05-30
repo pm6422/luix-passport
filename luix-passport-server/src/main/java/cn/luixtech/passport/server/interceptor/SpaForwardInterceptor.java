@@ -1,4 +1,4 @@
-package cn.luixtech.passport.server.config;
+package cn.luixtech.passport.server.interceptor;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
