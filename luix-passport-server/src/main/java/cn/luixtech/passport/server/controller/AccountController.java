@@ -91,7 +91,6 @@ public class AccountController {
     @PostMapping("/open-api/accounts/register")
     public ResponseEntity<Void> register(HttpServletRequest request,
                                          @Parameter(description = "user", required = true) @Valid @RequestBody ManagedUser managedUser) {
-
         if (userRepository.findById(managedUser.getUsername().toLowerCase()).isPresent()) {
             throw new RuntimeException("This username is already registered. Please use a different one!");
         }
