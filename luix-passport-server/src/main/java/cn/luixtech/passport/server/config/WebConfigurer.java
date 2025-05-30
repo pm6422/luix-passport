@@ -16,15 +16,25 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @AllArgsConstructor
 @Slf4j
 public class WebConfigurer implements WebMvcConfigurer {
-    private final ApplicationProperties applicationProperties;
+    private final       ApplicationProperties applicationProperties;
+    public static final String[]              EXCLUDED_PATHS = {
+            "/login",
+            "/sign-up",
+            "/activate-account",
+            "/forgot-password",
+            "/reset-password",
+    };
 
     @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/login").setViewName("login");
-        registry.addViewController("/sign-up").setViewName("sign-up");
-        registry.addViewController("/activate-account").setViewName("activate-account");
-        registry.addViewController("/forgot-password").setViewName("forgot-password");
-        registry.addViewController("/reset-password").setViewName("reset-password");
+    public void addViewControllers(@NonNull ViewControllerRegistry registry) {
+        // Map specific paths to their respective views
+        for (String path : EXCLUDED_PATHS) {
+            registry.addViewController(path).setViewName(path.substring(1));
+        }
+
+        // Map all other paths to the root
+        // only supports one lovel path
+//        registry.addViewController("/{path:[^\\.]*}").setViewName("forward:/");
     }
 
     @Override
