@@ -6,6 +6,6 @@ export class TeamService {
   }
 
   public static count(): Promise<AxiosResponse<number>> {
-    return http.get("api/teams/count")
+    return http.get("/api/teams/count")
   }
 }

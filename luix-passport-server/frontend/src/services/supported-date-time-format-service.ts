@@ -7,6 +7,6 @@ export class SupportedDateTimeFormatService {
   }
 
   public static findById(id: string): Promise<AxiosResponse<SupportedDateTimeFormat>> {
-    return http.get("api/supported-date-time-formats/" + id)
+    return http.get("/api/supported-date-time-formats/" + id)
   }
 }

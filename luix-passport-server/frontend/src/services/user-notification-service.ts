@@ -7,14 +7,14 @@ export class UserNotificationService {
   }
 
   public static find(reqParams: object): Promise<AxiosResponse<Array<UserNotification>>> {
-    return http.get("api/user-notifications", { params: reqParams })
+    return http.get("/api/user-notifications", { params: reqParams })
   }
 
   public static markAsRead(id: string): Promise<void> {
-    return http.put("api/user-notifications/mark-as-read/" + id)
+    return http.put("/api/user-notifications/mark-as-read/" + id)
   }
 
   public static countUnread(): Promise<AxiosResponse<number>> {
-    return http.get("api/user-notifications/unread-count")
+    return http.get("/api/user-notifications/unread-count")
   }
 }

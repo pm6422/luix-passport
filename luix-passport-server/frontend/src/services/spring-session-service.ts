@@ -7,6 +7,6 @@ export class SpringSessionService {
   }
 
   public static findAll(): Promise<AxiosResponse<Array<SpringSession>>> {
-    return http.get("api/spring-sessions")
+    return http.get("/api/spring-sessions")
   }
 }
