@@ -47,8 +47,8 @@ public class WebConfigurer implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(spaForwardInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns(NON_SPA_PATHS)
                 .excludePathPatterns(STATIC_RESOURCES)
+                .excludePathPatterns(NON_SPA_PATHS)
                 .excludePathPatterns("/swagger-ui/**", "/v3/api-docs/**")
                 .excludePathPatterns(API_REQUESTS)
                 .excludePathPatterns(MANAGEMENT_REQUESTS);
