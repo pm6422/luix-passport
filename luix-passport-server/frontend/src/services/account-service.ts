@@ -5,7 +5,7 @@ import { type SupportedTimezone } from "@/domains/supported-timezone"
 import { type SupportedDateTimeFormat } from "@/domains/supported-date-time-format"
 import { SettingsFormSchema } from "@/views/account/settings/settings-form"
 import { ChangePasswordFormSchema } from "@/views/account/change-password/change-password-form"
-import { ResetPasswordFormSchema } from "@/views/bak/auth/reset-password"
+import { ResetPasswordFormSchema } from "@/views/account/reset-password"
 
 export class AccountService {
   constructor() {
