@@ -33,10 +33,6 @@ public class WebConfigurer implements WebMvcConfigurer {
         for (String path : NON_SPA_PATHS) {
             registry.addViewController(path).setViewName(path.substring(1));
         }
-
-        // Map all other paths to the root
-        // only supports one lovel path
-//        registry.addViewController("/{path:[^\\.]*}").setViewName("forward:/");
     }
 
     @Override
