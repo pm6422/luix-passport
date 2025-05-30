@@ -6,8 +6,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import static cn.luixtech.passport.server.config.WebServerSecurityConfiguration.*;
 
 /**
  * Web application configuration
@@ -16,19 +19,18 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @AllArgsConstructor
 @Slf4j
 public class WebConfigurer implements WebMvcConfigurer {
-    private final       ApplicationProperties applicationProperties;
-    public static final String[]              EXCLUDED_PATHS = {
-            "/login",
-            "/sign-up",
-            "/activate-account",
-            "/forgot-password",
-            "/reset-password",
+    private final SpaForwardInterceptor spaForwardInterceptor;
+    private final ApplicationProperties applicationProperties;
+
+    private static final String[] API_REQUESTS = {
+            "/api/**",
+            "/open-api/**",
     };
 
     @Override
     public void addViewControllers(@NonNull ViewControllerRegistry registry) {
         // Map specific paths to their respective views
-        for (String path : EXCLUDED_PATHS) {
+        for (String path : NON_SPA_PATHS) {
             registry.addViewController(path).setViewName(path.substring(1));
         }
 
@@ -43,5 +45,16 @@ public class WebConfigurer implements WebMvcConfigurer {
                 .addMapping(key)
                 .allowedOrigins(value)
                 .allowedMethods(HttpMethod.GET.name(), HttpMethod.POST.name(), HttpMethod.PUT.name(), HttpMethod.DELETE.name()));
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(spaForwardInterceptor)
+                .addPathPatterns("/**")
+                .excludePathPatterns(NON_SPA_PATHS)
+                .excludePathPatterns(STATIC_RESOURCES)
+                .excludePathPatterns("/swagger-ui/**", "/v3/api-docs/**")
+                .excludePathPatterns(API_REQUESTS)
+                .excludePathPatterns(MANAGEMENT_REQUESTS);
     }
 }

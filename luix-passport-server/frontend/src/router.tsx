@@ -1,11 +1,10 @@
-import { createHashRouter } from "react-router-dom"
+import { createBrowserRouter } from "react-router-dom"
 import GeneralError from "./views/errors/general-error"
 import ForbiddenError from "./views/errors/forbidden-error"
 import NotFoundError from "./views/errors/not-found-error"
 import MaintenanceError from "./views/errors/maintenance-error"
 
-// const router = createBrowserRouter([
-const router = createHashRouter([
+const router = createBrowserRouter([
   // Auth routes
   {
     path: "/activate",
