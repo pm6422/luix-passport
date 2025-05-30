@@ -29,7 +29,7 @@ public class SpaForwardInterceptor implements HandlerInterceptor {
         if (isAjaxRequest(request)) {
             return true;
         }
-        // 其他请求转发到index.html
+        // other requests forward to index.html
         if (!path.equals("/") && !path.equals("/index.html")) {
             request.getRequestDispatcher("/index.html").forward(request, response);
             return false;
