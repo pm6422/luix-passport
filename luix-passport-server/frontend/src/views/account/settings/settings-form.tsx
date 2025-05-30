@@ -21,7 +21,7 @@ import { type SupportedDateTimeFormat } from "@/domains/supported-date-time-form
 import { Link } from "react-router-dom"
 import { Option } from "@/components/custom/multi-select"
 
-const accountFormSchema = z.object({
+const settingsFormSchema = z.object({
   username: z.string().trim().min(1, { message: "Required" }),
   email: z.string().trim().min(1, { message: "Required" }).email("Invalid email format"),
   mobileNo: z.string().trim().min(1, { message: "Required" }).refine(isValidPhoneNumber, { message: "Invalid phone number" }),
@@ -32,16 +32,16 @@ const accountFormSchema = z.object({
   dateTimeFormatId: z.string().trim().min(1, { message: "Required" }),
 })
 
-export type AccountFormSchema = z.infer<typeof accountFormSchema>
+export type SettingsFormSchema = z.infer<typeof settingsFormSchema>
 
-export function AccountForm() {
+export function SettingsForm() {
   const { loginUser } = useStore(loginUserStore)
   const [saving, setSaving] = useState(false)
   const [supportedTimezones, setSupportedTimezones] = useState(Array<Option>)
   const [supportedDateTimeFormats, setSupportedDateTimeFormats] = useState(Array<Option>)
 
-  const form = useForm<AccountFormSchema>({
-    resolver: zodResolver(accountFormSchema),
+  const form = useForm<SettingsFormSchema>({
+    resolver: zodResolver(settingsFormSchema),
     defaultValues: loginUser
   })
 
@@ -62,7 +62,7 @@ export function AccountForm() {
     })
   }, [form])
 
-  function onSubmit(formData: AccountFormSchema) {
+  function onSubmit(formData: SettingsFormSchema) {
     setSaving(true)
     toast.promise(AccountService.update(formData), {
       loading: "Updating account...",
@@ -94,7 +94,7 @@ export function AccountForm() {
               {form.getValues('email')}
             </p>
           </div>
-          <Link to='/account-settings/change-email'>
+          <Link to='/account/change-email'>
             <Button
               type='button'
               variant={'link'}

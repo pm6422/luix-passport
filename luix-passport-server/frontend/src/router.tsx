@@ -40,46 +40,46 @@ const router = createBrowserRouter([
         }),
       },
       {
-        path: "account-settings",
+        path: "account",
         lazy: async () => ({
-          Component: (await import("./views/account-settings")).default
+          Component: (await import("./views/account")).default
         }),
         errorElement: <GeneralError />,
         children: [
           {
             index: true,
             lazy: async () => ({
-              Component: (await import("./views/account-settings/profile")).default
+              Component: (await import("./views/account/profile")).default
             }),
           },
           {
-            path: "account",
+            path: "settings",
             lazy: async () => ({
-              Component: (await import("./views/account-settings/account")).default
+              Component: (await import("./views/account/settings")).default
             }),
           },
           {
             path: "change-password",
             lazy: async () => ({
-              Component: (await import("./views/account-settings/change-password")).default
+              Component: (await import("./views/account/change-password")).default
             }),
           },
           {
             path: "change-email",
             lazy: async () => ({
-              Component: (await import("./views/account-settings/change-email")).default
+              Component: (await import("./views/account/change-email")).default
             }),
           },
           {
             path: "appearance",
             lazy: async () => ({
-              Component: (await import("./views/account-settings/appearance")).default
+              Component: (await import("./views/account/appearance")).default
             }),
           },
           {
             path: "notifications",
             lazy: async () => ({
-              Component: (await import("./views/account-settings/notifications")).default
+              Component: (await import("./views/account/notifications")).default
             }),
           }
         ],

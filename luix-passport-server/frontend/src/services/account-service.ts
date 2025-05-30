@@ -3,8 +3,8 @@ import http from "@/axios"
 import type { LoginUser } from "@/stores/login-user-store"
 import { type SupportedTimezone } from "@/domains/supported-timezone"
 import { type SupportedDateTimeFormat } from "@/domains/supported-date-time-format"
-import { AccountFormSchema } from "@/views/account-settings/account/account-form"
-import { ChangePasswordFormSchema } from "@/views/account-settings/change-password/change-password-form"
+import { SettingsFormSchema } from "@/views/account/settings/settings-form"
+import { ChangePasswordFormSchema } from "@/views/account/change-password/change-password-form"
 import { ResetPasswordFormSchema } from "@/views/bak/auth/reset-password"
 
 export class AccountService {
@@ -21,7 +21,7 @@ export class AccountService {
     }
   }
 
-  public static update(model: AccountFormSchema): Promise<void> {
+  public static update(model: SettingsFormSchema): Promise<void> {
     return http.put("/api/accounts/user", model)
   }
 

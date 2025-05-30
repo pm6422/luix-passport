@@ -10,32 +10,32 @@ import { Separator } from "@/components/ui/separator"
 import { LayoutBody } from "@/layouts/layout-definitions"
 import OneLevelSidebar from "@/components/one-level-sidebar.tsx"
 
-export default function AccountSettings() {
+export default function Account() {
   const sidebarNavItems = [
     {
       title: "Profile",
       icon: <IconUser size={18} />,
-      href: "/account-settings",
+      href: "/account",
     },
     {
-      title: "Account",
+      title: "Settings",
       icon: <IconTool size={18} />,
-      href: "/account-settings/account",
+      href: "/account/settings",
     },
     {
       title: "Password",
       icon: <IconKey size={18} />,
-      href: "/account-settings/change-password",
+      href: "/account/change-password",
     },
     {
       title: "Appearance",
       icon: <IconPalette size={18} />,
-      href: "/account-settings/appearance",
+      href: "/account/appearance",
     },
     {
       title: "Notifications",
       icon: <IconNotification size={18} />,
-      href: "/account-settings/notifications",
+      href: "/account/notifications",
     }
   ]
 
@@ -43,7 +43,7 @@ export default function AccountSettings() {
     <LayoutBody className="flex flex-col" fixedHeight>
       <div className="space-y-0.5">
         <h1 className="text-2xl font-bold tracking-tight md:text-3xl">
-          Account Settings
+          Personal Account
         </h1>
         <p className="text-muted-foreground">
           Manage your profile and account settings.

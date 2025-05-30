@@ -26,7 +26,7 @@ export default function AuthLayout() {
   const topNav = [
     {
       title: "Personal Account",
-      href: "account-settings",
+      href: "account",
       isActive: false,
     },
     {

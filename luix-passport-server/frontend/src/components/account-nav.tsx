@@ -51,7 +51,7 @@ export function AccountNav() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <Link to="/account-settings">
+          <Link to="/account">
             <DropdownMenuItem className="cursor-pointer">
               <IconUser className="size-4 mr-2"/>Account Settings
               {/*<DropdownMenuShortcut>⌘S</DropdownMenuShortcut>*/}
