@@ -19,19 +19,19 @@ public class WebConfigurer implements WebMvcConfigurer {
     private final ApplicationProperties applicationProperties;
 
     @Override
-    public void addCorsMappings(@NonNull CorsRegistry registry) {
-        applicationProperties.getAllowedCors().getMappings().forEach((key, value) -> registry
-                .addMapping(key)
-                .allowedOrigins(value)
-                .allowedMethods(HttpMethod.GET.name(), HttpMethod.POST.name(), HttpMethod.PUT.name(), HttpMethod.DELETE.name()));
-    }
-
-    @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/login").setViewName("login");
         registry.addViewController("/sign-up").setViewName("sign-up");
         registry.addViewController("/activate-account").setViewName("activate-account");
         registry.addViewController("/forgot-password").setViewName("forgot-password");
         registry.addViewController("/reset-password").setViewName("reset-password");
+    }
+
+    @Override
+    public void addCorsMappings(@NonNull CorsRegistry registry) {
+        applicationProperties.getAllowedCors().getMappings().forEach((key, value) -> registry
+                .addMapping(key)
+                .allowedOrigins(value)
+                .allowedMethods(HttpMethod.GET.name(), HttpMethod.POST.name(), HttpMethod.PUT.name(), HttpMethod.DELETE.name()));
     }
 }
