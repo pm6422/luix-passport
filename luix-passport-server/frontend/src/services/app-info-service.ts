@@ -8,7 +8,7 @@ export class AppInfoService {
 
   public static async load(): Promise<AppInfo | null> {
     try {
-      const res = await axios.get<AppInfo>("management/info")
+      const res = await axios.get<AppInfo>("/management/info")
       return res.data
     } catch (error) {
       console.error(error)
