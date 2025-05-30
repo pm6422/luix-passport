@@ -7,34 +7,34 @@ export class Oauth2ClientService {
   }
 
   public static find(reqParams: object): Promise<AxiosResponse<Array<Auth2Client>>> {
-    return http.get("api/oauth2-clients", { params: reqParams })
+    return http.get("/api/oauth2-clients", { params: reqParams })
   }
 
   public static findById(id: string): Promise<AxiosResponse<Auth2Client>> {
-    return http.get("api/oauth2-clients/" + id)
+    return http.get("/api/oauth2-clients/" + id)
   }
 
   public static save(model: Auth2Client): Promise<void> {
-    return model.id ? http.put("api/oauth2-clients", model) : http.post("api/oauth2-clients", model)
+    return model.id ? http.put("/api/oauth2-clients", model) : http.post("/api/oauth2-clients", model)
   }
 
   public static deleteById(id: string): Promise<void> {
-    return http.delete("api/oauth2-clients/" + id)
+    return http.delete("/api/oauth2-clients/" + id)
   }
 
   public static findClientAuthenticationMethods(): Promise<AxiosResponse<Array<string>>> {
-    return http.get("api/oauth2-clients/client-authentication-methods")
+    return http.get("/api/oauth2-clients/client-authentication-methods")
   }
 
   public static findAuthorizationGrantTypes(): Promise<AxiosResponse<Array<string>>> {
-    return http.get("api/oauth2-clients/authorization-grant-types")
+    return http.get("/api/oauth2-clients/authorization-grant-types")
   }
 
   public static findScopes(): Promise<AxiosResponse<Array<string>>> {
-    return http.get("api/oauth2-clients/scopes")
+    return http.get("/api/oauth2-clients/scopes")
   }
 
   public static count(): Promise<AxiosResponse<number>> {
-    return http.get("api/oauth2-clients/count")
+    return http.get("/api/oauth2-clients/count")
   }
 }

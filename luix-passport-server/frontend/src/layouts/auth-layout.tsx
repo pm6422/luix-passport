@@ -75,7 +75,7 @@ export default function AuthLayout() {
       toast.error("Your browser does NOT support Server-Sent Event!");
       return undefined;
     } else {
-      const eventSource = new EventSource("api/sse/connect");
+      const eventSource = new EventSource("/api/sse/connect");
       eventSource.onopen = function () {
         // reset reconnect attempts
         reconnectAttempts = 0;

@@ -76,7 +76,7 @@ export function EditDialog({
       <SaveDialogContent entityName={entityName} id={id} form={form} save={save} afterSave={afterSave} setOpen={setOpen}>
         <div className="flex flex-col md:flex-row items-center justify-between gap-5">
           <Avatar className="size-20">
-            <AvatarImage src={"api/user-profile-pics/" + id} alt="profile" />
+            <AvatarImage src={"/api/user-profile-pics/" + id} alt="profile" />
             <AvatarFallback><Skeleton className="w-full" /></AvatarFallback>
           </Avatar>
           <Separator orientation="vertical" className="hidden md:block" />
