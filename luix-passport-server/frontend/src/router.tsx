@@ -97,9 +97,9 @@ const router = createBrowserRouter([
         }),
       },
       {
-        path: "db-structure",
+        path: "db-schema",
         lazy: async () => ({
-          Component: (await import("@/views/db-structure")).default
+          Component: (await import("@/views/db-schema")).default
         }),
       },
       {

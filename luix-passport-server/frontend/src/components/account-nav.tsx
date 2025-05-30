@@ -75,9 +75,9 @@ export function AccountNav() {
               </DropdownMenuItem>
             </Link>
             }
-            <Link to="/db-structure">
+            <Link to="/db-schema">
               <DropdownMenuItem className="cursor-pointer">
-                <IconDatabase className="size-4 mr-2"/>DB Structure
+                <IconDatabase className="size-4 mr-2"/>DB Schema
               </DropdownMenuItem>
             </Link>
             <Link to="/data-dicts">
