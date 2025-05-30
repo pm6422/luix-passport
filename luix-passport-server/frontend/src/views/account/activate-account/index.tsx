@@ -6,7 +6,7 @@ import { Button } from "@/components/custom/button.tsx"
 import { toast } from "sonner"
 import { getErrorMessage } from "@/lib/handle-error"
 
-export default function Activate() {
+export default function ActivateAccount() {
   const [searchParams] = useSearchParams()
   const code = searchParams.get("code")
   const [success, setSuccess] = useState(false)

@@ -7,21 +7,21 @@ import MaintenanceError from "./views/errors/maintenance-error"
 const router = createBrowserRouter([
   // Auth routes
   {
-    path: "/activate",
+    path: "/activate-account",
     lazy: async () => ({
-      Component: (await import("./views/bak/auth/activate")).default
+      Component: (await import("./views/account/activate-account")).default
     }),
   },
   {
     path: "/forgot-password",
     lazy: async () => ({
-      Component: (await import("./views/bak/auth/forgot-password")).default
+      Component: (await import("./views/account/forgot-password")).default
     }),
   },
   {
     path: "/reset-password",
     lazy: async () => ({
-      Component: (await import("./views/bak/auth/reset-password")).default
+      Component: (await import("./views/account/reset-password")).default
     }),
   },
 
