@@ -57,7 +57,7 @@ export default function Home() {
                 </p>
                 <div className="w-full max-w-sm space-y-6">
                   <Button asChild className="w-full px-5 py-4 h-14 text-base font-medium rounded-2xl">
-                    <Link to="/console">View Console</Link>
+                    <Link to="/console">View Dashboard</Link>
                   </Button>
                   <Button asChild variant="outline" className="w-full px-5 py-4 h-14 text-base font-medium rounded-2xl">
                     <Link to="/console/account">Edit Profile</Link>
