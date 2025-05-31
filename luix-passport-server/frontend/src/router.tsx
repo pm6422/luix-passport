@@ -5,7 +5,13 @@ import NotFoundError from "./views/errors/not-found-error"
 import MaintenanceError from "./views/errors/maintenance-error"
 
 const router = createBrowserRouter([
-  // Auth routes
+  // account-related routes
+  {
+    path: "/sign-up",
+    lazy: async () => ({
+      Component: (await import("./views/account/sign-up")).default
+    }),
+  },
   {
     path: "/activate-account",
     lazy: async () => ({
@@ -25,9 +31,26 @@ const router = createBrowserRouter([
     }),
   },
 
-  // Main routes
+  // no-auth routes
   {
     path: "/",
+    lazy: async () => ({
+      Component: (await import("./layouts/no-auth-layout")).default
+    }),
+    errorElement: <GeneralError />,
+    children: [
+      {
+        index: true,
+        lazy: async () => ({
+          Component: (await import("./views/home")).default
+        }),
+      },
+    ],
+  },
+
+  // auth routes
+  {
+    path: "/console",
     lazy: async () => ({
       Component: (await import("./layouts/auth-layout")).default
     }),
@@ -38,51 +61,6 @@ const router = createBrowserRouter([
         lazy: async () => ({
           Component: (await import("./views/dashboard")).default
         }),
-      },
-      {
-        path: "account",
-        lazy: async () => ({
-          Component: (await import("./views/account")).default
-        }),
-        errorElement: <GeneralError />,
-        children: [
-          {
-            index: true,
-            lazy: async () => ({
-              Component: (await import("./views/account/profile")).default
-            }),
-          },
-          {
-            path: "settings",
-            lazy: async () => ({
-              Component: (await import("./views/account/settings")).default
-            }),
-          },
-          {
-            path: "change-password",
-            lazy: async () => ({
-              Component: (await import("./views/account/change-password")).default
-            }),
-          },
-          {
-            path: "change-email",
-            lazy: async () => ({
-              Component: (await import("./views/account/change-email")).default
-            }),
-          },
-          {
-            path: "appearance",
-            lazy: async () => ({
-              Component: (await import("./views/account/appearance")).default
-            }),
-          },
-          {
-            path: "notifications",
-            lazy: async () => ({
-              Component: (await import("./views/account/notifications")).default
-            }),
-          }
-        ],
       },
       {
         path: "notifications",
@@ -138,6 +116,51 @@ const router = createBrowserRouter([
           Component: (await import("@/components/custom/coming-soon")).default
         }),
       },
+      {
+        path: "account",
+        lazy: async () => ({
+          Component: (await import("./views/account")).default
+        }),
+        errorElement: <GeneralError />,
+        children: [
+          {
+            index: true,
+            lazy: async () => ({
+              Component: (await import("./views/account/profile")).default
+            }),
+          },
+          {
+            path: "settings",
+            lazy: async () => ({
+              Component: (await import("./views/account/settings")).default
+            }),
+          },
+          {
+            path: "change-password",
+            lazy: async () => ({
+              Component: (await import("./views/account/change-password")).default
+            }),
+          },
+          {
+            path: "change-email",
+            lazy: async () => ({
+              Component: (await import("./views/account/change-email")).default
+            }),
+          },
+          {
+            path: "appearance",
+            lazy: async () => ({
+              Component: (await import("./views/account/appearance")).default
+            }),
+          },
+          {
+            path: "notifications",
+            lazy: async () => ({
+              Component: (await import("./views/account/notifications")).default
+            }),
+          }
+        ],
+      }
     ],
   },
 

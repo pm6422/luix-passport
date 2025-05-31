@@ -55,7 +55,7 @@ export default function Sidebar2({
               className="relative m-auto -intro-y"
               width={45}
               height={45}
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/console")}
             />
             <div
                 className={`flex flex-col ms-1 justify-end truncate ${isCollapsed ? "invisible w-0" : "visible w-auto"}`}
@@ -67,7 +67,7 @@ export default function Sidebar2({
                   className="intro-y"
                   width={150}
                   height={50}
-                  onClick={() => navigate("/")}
+                  onClick={() => navigate("/console")}
               />
             </div>
           </div>

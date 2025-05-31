@@ -30,6 +30,8 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 @Configuration(proxyBeanMethods = false)
 public class WebServerSecurityConfiguration {
     private static final String[]       PERMITTED_PAGES       = {
+			"/",
+			"/index.html",
             "/login",
             "/sign-up",
             "/activate-account",

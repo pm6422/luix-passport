@@ -51,13 +51,13 @@ export function AccountNav() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <Link to="/account">
+          <Link to="/console/account">
             <DropdownMenuItem className="cursor-pointer">
               <IconUser className="size-4 mr-2"/>Account Settings
               {/*<DropdownMenuShortcut>⌘S</DropdownMenuShortcut>*/}
             </DropdownMenuItem>
           </Link>
-          <Link to="/notifications">
+          <Link to="/console/notifications">
             <DropdownMenuItem className="cursor-pointer">
               <IconBellRinging className="size-4 mr-2"/>Notifications
             </DropdownMenuItem>
@@ -69,18 +69,18 @@ export function AccountNav() {
             <IconCodeCircle2 className="size-6"/>Developer Tools
           </DropdownMenuLabel>
           <DropdownMenuGroup>
-            { appInfo.apiDocsEnabled && <Link to="/api-docs">
+            { appInfo.apiDocsEnabled && <Link to="/console/api-docs">
               <DropdownMenuItem className="cursor-pointer">
                 <IconApi className="size-4 mr-2"/>API Documentation
               </DropdownMenuItem>
             </Link>
             }
-            <Link to="/db-schema">
+            <Link to="/console/db-schema">
               <DropdownMenuItem className="cursor-pointer">
                 <IconDatabase className="size-4 mr-2"/>DB Schema
               </DropdownMenuItem>
             </Link>
-            <Link to="/data-dicts">
+            <Link to="/console/data-dicts">
               <DropdownMenuItem className="cursor-pointer">
                 <IconVocabulary className="size-4 mr-2"/>Data Dictionaries
               </DropdownMenuItem>

@@ -25,6 +25,18 @@ export default function AuthLayout() {
   const location = useLocation()
   const topNav = [
     {
+      title: "Home",
+      href: "/",
+      isActive: true,
+    },
+    // {
+    //   title: "Notifications",
+    //   href: "notifications",
+    //   isActive: true,
+    // },
+  ]
+  const userRoleTopNav = [
+    {
       title: "Personal Account",
       href: "account",
       isActive: false,
@@ -94,7 +106,7 @@ export default function AuthLayout() {
               <span>
                     Please go to{' '}
                 <a
-                  href="/#/notifications"
+                  href="/notifications"
                   className="text-blue-500 hover:text-blue-700 underline underline-offset-4 decoration-blue-300 hover:decoration-blue-500 transition-all font-bold"
                 >
                   notification center
@@ -135,8 +147,9 @@ export default function AuthLayout() {
       >
         <Layout>
           <LayoutHeader>
+            <CentralTopNav links={topNav}/>
             <RoleOnlyUser>
-              <CentralTopNav links={topNav}/>
+              <CentralTopNav links={userRoleTopNav}/>
             </RoleOnlyUser>
             <div className="ml-auto flex items-center space-x-4">
               {/* <Search /> */}

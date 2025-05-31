@@ -24,9 +24,10 @@ public class WebConfigurer implements WebMvcConfigurer {
     private static final String[]              NON_SPA_PATHS = {
             "/login",
             "/sign-up",
-            "/activate-account",
-            "/forgot-password",
-            "/reset-password",
+            "/oauth2/consent"
+//            "/activate-account",
+//            "/forgot-password",
+//            "/reset-password",
     };
     private final        SpaForwardInterceptor spaForwardInterceptor;
     private final        ApplicationProperties applicationProperties;

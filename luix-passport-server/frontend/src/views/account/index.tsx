@@ -15,27 +15,27 @@ export default function Account() {
     {
       title: "Profile",
       icon: <IconUser size={18} />,
-      href: "/account",
+      href: "/console/account",
     },
     {
       title: "Settings",
       icon: <IconTool size={18} />,
-      href: "/account/settings",
+      href: "/console/account/settings",
     },
     {
       title: "Password",
       icon: <IconKey size={18} />,
-      href: "/account/change-password",
+      href: "/console/account/change-password",
     },
     {
       title: "Appearance",
       icon: <IconPalette size={18} />,
-      href: "/account/appearance",
+      href: "/console/account/appearance",
     },
     {
       title: "Notifications",
       icon: <IconNotification size={18} />,
-      href: "/account/notifications",
+      href: "/console/account/notifications",
     }
   ]
 
