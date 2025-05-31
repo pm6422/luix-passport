@@ -61,7 +61,7 @@ export default function ForgotPassword() {
       success: () => {
         setIsLoading(false);
         setTimeout(() => {
-          navigate("/login");
+          window.location.href = "/login";
         }, 2000);
         return "Password reset successfully!";
       },
