@@ -49,9 +49,7 @@ export default function Home() {
                 asChild
                 className="h-14 w-full rounded-2xl px-5 py-4 text-base font-medium"
               >
-                <a href="/login">
-                  Sign In
-                </a>
+                <a href="/login">Sign In</a>
               </Button>
               <Button
                 asChild
