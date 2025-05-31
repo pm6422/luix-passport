@@ -1,4 +1,3 @@
-// src/app/contact/page.tsx
 export default function ContactUs() {
   return (
     <div className="container relative grid h-screen flex-col items-center justify-center lg:max-w-none lg:grid-cols-2">
