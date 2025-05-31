@@ -78,7 +78,6 @@ export function SignUpForm() {
                   <FormLabel className="mb-2 text-sm">Password</FormLabel>
                   <FormControl>
                     <PasswordInput
-                      placeholder="••••••••"
                       className="w-full h-14 px-5 py-4 rounded-2xl"
                       {...field}
                     />
@@ -96,7 +95,6 @@ export function SignUpForm() {
                   <FormLabel className="mb-2 text-sm">Confirm Password</FormLabel>
                   <FormControl>
                     <PasswordInput
-                      placeholder="••••••••"
                       className="w-full h-14 px-5 py-4 rounded-2xl"
                       {...field}
                     />
