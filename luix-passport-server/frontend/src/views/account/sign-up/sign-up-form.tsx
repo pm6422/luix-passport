@@ -59,7 +59,7 @@ export function SignUpForm() {
               name="email"
               label="Email"
               formItemClassName="text-left"
-              inputClassName="w-full px-5 py-4 rounded-2xl"
+              inputClassName="w-full h-14 px-5 py-4 rounded-2xl"
             />
 
             <InputFormField
@@ -67,7 +67,7 @@ export function SignUpForm() {
               name="username"
               label="Username"
               formItemClassName="text-left"
-              inputClassName="w-full px-5 py-4 rounded-2xl"
+              inputClassName="w-full h-14 px-5 py-4 rounded-2xl"
             />
 
             <FormField
@@ -79,7 +79,7 @@ export function SignUpForm() {
                   <FormControl>
                     <PasswordInput
                       placeholder="••••••••"
-                      className="w-full px-5 py-4 rounded-2xl"
+                      className="w-full h-14 px-5 py-4 rounded-2xl"
                       {...field}
                     />
                   </FormControl>
@@ -97,7 +97,7 @@ export function SignUpForm() {
                   <FormControl>
                     <PasswordInput
                       placeholder="••••••••"
-                      className="w-full px-5 py-4 rounded-2xl"
+                      className="w-full h-14 px-5 py-4 rounded-2xl"
                       {...field}
                     />
                   </FormControl>
