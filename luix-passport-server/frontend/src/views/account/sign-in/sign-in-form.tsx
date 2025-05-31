@@ -47,7 +47,7 @@ export function SignInForm() {
       loading: "Signing in...",
       success: () => {
         setIsLoading(false)
-        window.location.href = "/console";
+        window.location.href = "/";
         return "Signed in successfully"
       },
       error: () => {
