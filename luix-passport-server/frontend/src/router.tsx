@@ -60,6 +60,12 @@ const router = createBrowserRouter([
       Component: (await import("./views/site/pricing")).default
     }),
   },
+  {
+    path: "/docs",
+    lazy: async () => ({
+      Component: (await import("./views/site/docs")).default
+    }),
+  },
 
   // no-auth routes
   {
