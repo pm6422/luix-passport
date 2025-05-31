@@ -33,10 +33,17 @@ public class WebServerSecurityConfiguration {
 			"/",
 			"/index.html",
             "/login",
+			"/sign-in",
             "/sign-up",
             "/activate-account",
             "/forgot-password",
             "/reset-password",
+			"/terms-of-service",
+			"/privacy-policy",
+			"/contact-us",
+			"/features",
+			"/pricing",
+			"/docs/**",
     };
     public static final String[]       STATIC_RESOURCES    = {
 //            "/static/**",
