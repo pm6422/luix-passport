@@ -1,6 +1,6 @@
-import { IconCheck } from "@tabler/icons-react"
-import { Link } from "react-router-dom"
-import { Button } from "@/components/ui/button"
+import { IconCheck } from "@tabler/icons-react";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 export default function PricingPage() {
   const plans = [
@@ -12,9 +12,9 @@ export default function PricingPage() {
         "Up to 1,000 monthly active users",
         "Basic authentication",
         "Email/password login",
-        "Community support"
+        "Community support",
       ],
-      cta: "Get Started"
+      cta: "Get Started",
     },
     {
       name: "Pro",
@@ -26,10 +26,10 @@ export default function PricingPage() {
         "Social logins (Google, GitHub)",
         "Multi-factor authentication",
         "Priority support",
-        "Basic analytics"
+        "Basic analytics",
       ],
       cta: "Start Free Trial",
-      featured: true
+      featured: true,
     },
     {
       name: "Enterprise",
@@ -41,10 +41,10 @@ export default function PricingPage() {
         "SAML/SSO integration",
         "Dedicated account manager",
         "Custom SLAs",
-        "On-premise deployment"
+        "On-premise deployment",
       ],
-      cta: "Contact Sales"
-    }
+      cta: "Contact Sales",
+    },
   ];
 
   return (
@@ -64,7 +64,11 @@ export default function PricingPage() {
             Choose the plan that fits your needs. Scale as you grow.
           </h4>
           <div className="mt-10">
-            <Button asChild variant="outline" className="px-8 py-4 h-14 text-base rounded-2xl">
+            <Button
+              asChild
+              variant="outline"
+              className="px-8 py-4 h-14 text-base rounded-2xl"
+            >
               <Link to="/features">Compare Features</Link>
             </Button>
           </div>
@@ -83,7 +87,9 @@ export default function PricingPage() {
             {plans.map((plan, index) => (
               <div
                 key={index}
-                className={`border rounded-2xl p-6 hover:shadow-md transition-shadow ${plan.featured ? "ring-2 ring-primary" : ""}`}
+                className={`border rounded-2xl p-6 hover:shadow-md transition-shadow ${
+                  plan.featured ? "ring-2 ring-primary" : ""
+                } flex flex-col`} // Added flex and flex-col
               >
                 {plan.featured && (
                   <div className="bg-primary text-primary-foreground text-xs font-medium px-3 py-1 rounded-full inline-block mb-4">
@@ -93,10 +99,12 @@ export default function PricingPage() {
                 <h3 className="text-xl font-semibold mb-1">{plan.name}</h3>
                 <div className="flex items-baseline mb-3">
                   <span className="text-3xl font-bold">{plan.price}</span>
-                  {plan.period && <span className="text-muted-foreground">{plan.period}</span>}
+                  {plan.period && (
+                    <span className="text-muted-foreground">{plan.period}</span>
+                  )}
                 </div>
                 <p className="text-muted-foreground mb-6">{plan.description}</p>
-                <ul className="space-y-3 mb-8">
+                <ul className="space-y-3 mb-8 flex-grow"> {/* Added flex-grow */}
                   {plan.features.map((feature, featureIndex) => (
                     <li key={featureIndex} className="flex items-start">
                       <IconCheck className="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
@@ -106,7 +114,9 @@ export default function PricingPage() {
                 </ul>
                 <Button
                   asChild
-                  className={`w-full py-4 h-14 text-base rounded-2xl ${plan.featured ? "" : "variant-outline"}`}
+                  className={`w-full py-4 h-14 text-base rounded-2xl ${
+                    plan.featured ? "" : "variant-outline"
+                  }`}
                 >
                   <Link to={plan.name === "Enterprise" ? "/contact" : "/sign-up"}>
                     {plan.cta}
@@ -117,24 +127,29 @@ export default function PricingPage() {
           </div>
 
           <div className="mt-16 border rounded-2xl p-6 bg-muted/50">
-            <h3 className="text-xl font-semibold mb-4">Frequently Asked Questions</h3>
+            <h3 className="text-xl font-semibold mb-4">
+              Frequently Asked Questions
+            </h3>
             <div className="space-y-6">
               <div>
                 <h4 className="font-medium">Can I change plans later?</h4>
                 <p className="text-muted-foreground mt-1">
-                  Yes, you can upgrade or downgrade at any time. We'll prorate the difference.
+                  Yes, you can upgrade or downgrade at any time. We'll prorate the
+                  difference.
                 </p>
               </div>
               <div>
                 <h4 className="font-medium">Is there a free trial?</h4>
                 <p className="text-muted-foreground mt-1">
-                  The Pro plan includes a 14-day free trial. No credit card required.
+                  The Pro plan includes a 14-day free trial. No credit card
+                  required.
                 </p>
               </div>
               <div>
                 <h4 className="font-medium">What payment methods do you accept?</h4>
                 <p className="text-muted-foreground mt-1">
-                  We accept all major credit cards. Enterprise plans can also pay via invoice.
+                  We accept all major credit cards. Enterprise plans can also pay
+                  via invoice.
                 </p>
               </div>
             </div>
@@ -147,13 +162,22 @@ export default function PricingPage() {
               © 2025 LUIX Universe. All rights reserved.
             </p>
             <div className="flex space-x-6">
-              <Link to="/terms-of-service" className="text-sm text-muted-foreground hover:text-primary">
+              <Link
+                to="/terms-of-service"
+                className="text-sm text-muted-foreground hover:text-primary"
+              >
                 Terms
               </Link>
-              <Link to="/privacy-policy" className="text-sm text-muted-foreground hover:text-primary">
+              <Link
+                to="/privacy-policy"
+                className="text-sm text-muted-foreground hover:text-primary"
+              >
                 Privacy
               </Link>
-              <Link to="/contact-us" className="text-sm text-muted-foreground hover:text-primary">
+              <Link
+                to="/contact-us"
+                className="text-sm text-muted-foreground hover:text-primary"
+              >
                 Contact
               </Link>
             </div>
