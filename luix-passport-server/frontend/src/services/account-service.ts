@@ -23,16 +23,11 @@ export class AccountService {
   }
 
   public static async login(formData: FormData): Promise<void> {
-    try {
-      const res = await axios.post("/login", formData, {
+      return axios.post("/login", formData, {
         headers: {
           "Content-Type": "multipart/form-data", // Important for form data
-        },
-      });
-      return res.data
-    } catch (error) {
-      console.error(error)
-    }
+        }
+      })
   }
 
   public static async signOut(): Promise<void> {

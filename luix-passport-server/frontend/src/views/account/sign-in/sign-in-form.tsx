@@ -16,7 +16,6 @@ import { PasswordInput } from "@/components/custom/password-input";
 import { LoadingButton } from "@/components/custom/loading-button"
 import { Link } from "react-router-dom"
 import { AccountService } from "@/services/account-service"
-import { getErrorMessage } from "@/lib/handle-error"
 import { toast } from "sonner"
 
 const formSchema = z.object({
@@ -45,15 +44,15 @@ export function SignInForm() {
     formData.append("password", data.password);
 
     toast.promise(AccountService.login(formData), {
-      loading: "Logging in...",
+      loading: "Signing in...",
       success: () => {
         setIsLoading(false)
         window.location.href = "/console";
-        return "Signed in account successfully"
+        return "Signed in successfully"
       },
-      error: (error) => {
+      error: () => {
         setIsLoading(false)
-        return getErrorMessage(error)
+        return "Invalid username or password"
       }
     })
   }
