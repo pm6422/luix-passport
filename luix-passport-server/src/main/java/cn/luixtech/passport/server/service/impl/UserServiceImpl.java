@@ -178,7 +178,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         domain.setResetAt(null);
         domain.setActivated(false);
         domain.setEnabled(true);
-        domain.setPasswordExpiresAt(Instant.now().plus(6, ChronoUnit.MONTHS));
+        domain.setPasswordExpiresAt(Instant.now().plus(90, ChronoUnit.DAYS));
         domain.setLocale(env.getProperty("spring.web.locale"));
 
         SupportedTimezone presetTimezone = supportedTimezoneRepository.findByPresetIsTrue()

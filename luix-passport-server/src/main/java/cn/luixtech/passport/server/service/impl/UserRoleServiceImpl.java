@@ -9,6 +9,7 @@ import org.jooq.DSLContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -90,7 +91,7 @@ public class UserRoleServiceImpl implements UserRoleService {
 
     private List<UserRole> assignRolesToUser(String username, Set<String> roleIds) {
         if (CollectionUtils.isEmpty(roleIds)) {
-            return Collections.emptyList();
+            return new ArrayList<>();
         }
         return roleIds.stream()
                 .map(auth -> buildUserRole(username, auth))
