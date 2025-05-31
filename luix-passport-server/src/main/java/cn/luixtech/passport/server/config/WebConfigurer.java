@@ -23,11 +23,7 @@ import static cn.luixtech.passport.server.config.WebServerSecurityConfiguration.
 public class WebConfigurer implements WebMvcConfigurer {
     private static final String[]              NON_SPA_PATHS = {
             "/login",
-//            "/sign-up",
             "/oauth2/consent"
-//            "/activate-account",
-//            "/forgot-password",
-//            "/reset-password",
     };
     private final        SpaForwardInterceptor spaForwardInterceptor;
     private final        ApplicationProperties applicationProperties;
