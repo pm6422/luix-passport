@@ -32,6 +32,8 @@ const resetPasswordFormSchema = z
     path: ["confirmPassword"],
   });
 
+export type ResetPasswordFormSchema = z.infer<typeof resetPasswordFormSchema>
+
 export default function ForgotPassword() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
@@ -42,7 +44,7 @@ export default function ForgotPassword() {
     toast.error("Invalid empty reset code");
   }
 
-  const form = useForm<z.infer<typeof resetPasswordFormSchema>>({
+  const form = useForm<ResetPasswordFormSchema>({
     resolver: zodResolver(resetPasswordFormSchema),
     defaultValues: {
       newRawPassword: "",
@@ -51,7 +53,7 @@ export default function ForgotPassword() {
     }
   });
 
-  function completeReset(data: z.infer<typeof resetPasswordFormSchema>) {
+  function completeReset(data: ResetPasswordFormSchema) {
     setIsLoading(true);
 
     toast.promise(AccountService.completePasswordRecovery(data), {
