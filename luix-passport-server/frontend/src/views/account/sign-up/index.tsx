@@ -1,4 +1,5 @@
 import { SignUpForm } from "./sign-up-form";
+import { Link } from "react-router-dom"
 
 export default function SignUp() {
   return (
@@ -37,14 +38,13 @@ export default function SignUp() {
         <SignUpForm />
         <p className="mt-5 px-8 text-center text-sm text-muted-foreground">
           By creating an account, you agree to our{" "}
-          <a href="/terms-of-service" className="underline hover:text-primary">
+          <Link to="/terms-of-service" className="underline hover:text-primary">
             Terms of Service
-          </a>{" "}
+          </Link>{" "}
           and{" "}
-          <a href="/privacy-policy" className="underline hover:text-primary">
+          <Link to="/privacy-policy" className="underline hover:text-primary">
             Privacy Policy
-          </a>
-          .
+          </Link>
         </p>
       </div>
     </div>
