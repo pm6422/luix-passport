@@ -9,32 +9,38 @@ export default function Home() {
 
   return (
     <LayoutBody className="space-y-4">
-      <div className="container relative grid h-screen flex-col items-center justify-center bg-white lg:max-w-none lg:grid-cols-2">
+      <div className="container relative grid h-screen flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 bg-white">
         {/* Left side - hidden on mobile */}
-        <div className="relative mb-36 ms-10 hidden lg:flex lg:px-28">
+        <div className="lg:flex relative hidden lg:px-28 ms-10 mb-36">
           <div className="max-md:text-center">
             <img
               src="/assets/images/logos/logo-with-text.svg"
               alt="Logo"
-              className="my-12 h-14"
+              className="h-14 my-12"
             />
-            <h2 className="text-4xl font-extrabold lg:text-5xl lg:leading-[55px]">
-              Welcome to Our Platform
+            <h2 className="lg:text-5xl text-4xl font-extrabold lg:leading-[55px]">
+              {loginUser.isAuthenticated ? `Welcome back, ${loginUser?.username}` : 'Welcome to Our Platform'}
             </h2>
             <h4 className="mt-6 text-lg">
-              Discover amazing features designed to help you succeed.
+              {loginUser.isAuthenticated
+                ? 'Continue your journey with our powerful tools'
+                : 'Discover amazing features designed to help you succeed'}
             </h4>
             <div className="mt-10 flex space-x-4">
-              <Button asChild className="h-14 rounded-2xl px-8 py-4 text-base">
-                <Link to="/sign-up">Get Started</Link>
-              </Button>
-              <Button
-                asChild
-                variant="outline"
-                className="h-14 rounded-2xl px-8 py-4 text-base"
-              >
-                <Link to="/features">Learn More</Link>
-              </Button>
+              {loginUser.isAuthenticated ? (
+                <Button asChild className="px-8 py-4 h-14 text-base rounded-2xl">
+                  <Link to="/console">Go to Dashboard</Link>
+                </Button>
+              ) : (
+                <>
+                  <Button asChild className="px-8 py-4 h-14 text-base rounded-2xl">
+                    <Link to="/sign-up">Get Started</Link>
+                  </Button>
+                  <Button asChild variant="outline" className="px-8 py-4 h-14 text-base rounded-2xl">
+                    <Link to="/features">Learn More</Link>
+                  </Button>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -66,7 +72,7 @@ export default function Home() {
                 </p>
                 <div className="w-full max-w-sm space-y-6">
                   <Button asChild className="w-full px-5 py-4 h-14 text-base font-medium rounded-2xl">
-                    <Link to="/login">Sign In</Link>
+                    <a href="/login">Sign In</a>
                   </Button>
                   <Button asChild variant="outline" className="w-full px-5 py-4 h-14 text-base font-medium rounded-2xl">
                     <Link to="/sign-up">Create Account</Link>
