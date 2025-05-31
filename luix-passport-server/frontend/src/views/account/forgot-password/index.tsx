@@ -35,7 +35,9 @@ export default function ForgotPassword() {
     toast.promise(AccountService.requestPasswordRecovery(data.email), {
       loading: "Sending reset link...",
       success: () => {
-        setIsLoading(false)
+        setTimeout(() => {
+          setIsLoading(false)
+        }, 60000)
         return "Sent reset link successfully"
       },
       error: (error) => {
@@ -80,7 +82,7 @@ export default function ForgotPassword() {
                       placeholder="name@example.com"
                     />
                     <LoadingButton type='submit' loading={isLoading} className="mt-2">
-                      {isLoading ? "Waiting..." : "Send Reset Link"}
+                      {isLoading ? "Waiting 60s..." : "Send Reset Link"}
                     </LoadingButton>
                   </div>
                 </form>
