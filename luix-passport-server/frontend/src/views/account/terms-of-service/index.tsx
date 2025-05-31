@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom"
+
 export default function TermsOfService() {
   return (
     <div className="container relative grid h-screen flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 bg-white">
@@ -17,9 +19,9 @@ export default function TermsOfService() {
           </h4>
           <p className="text-sm mt-10">
             Need help?{" "}
-            <a href="/contact-us" className="text-blue-600 font-semibold hover:underline">
+            <Link to="/contact-us" className="font-bold text-blue-600 hover:underline">
               Contact us
-            </a>
+            </Link>
           </p>
         </div>
       </div>

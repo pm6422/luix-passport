@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { AccountService } from "@/services/account-service"
 import { Button } from "@/components/custom/button.tsx"
 import { toast } from "sonner"
+import { Link } from "react-router-dom"
 import { getErrorMessage } from "@/lib/handle-error"
 
 export default function ActivateAccount() {
@@ -56,9 +57,11 @@ export default function ActivateAccount() {
 
             {!success && (
               <div className="mt-4 text-center">
-                <Button className="mt-2 w-full" >
-                  <a href="/sign-up">Sign Up</a>
-                </Button>
+                <Link to="/sign-up">
+                  <Button className="mt-2 w-full" >
+                    Sign Up
+                  </Button>
+                </Link>
               </div>
             )}
           </Card>
