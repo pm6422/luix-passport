@@ -18,9 +18,20 @@ export default function SiteHome() {
               alt="Logo"
               className="h-14 my-12"
             />
-            <h2 className="lg:text-5xl text-4xl font-extrabold lg:leading-[55px]">
-              {loginUser.isAuthenticated ? `Welcome back, ${loginUser?.username}` : 'Welcome to Our Platform'}
-            </h2>
+            {loginUser.isAuthenticated ? (
+              <div>
+                <h2 className="lg:text-5xl text-4xl font-extrabold lg:leading-[55px]">
+                  Welcome back
+                </h2>
+                <h4 className="lg:text-2xl text-2xl font-extrabold lg:leading-[55px]">
+                  {loginUser?.username}
+                </h4>
+              </div>
+            ) : (
+              <h2 className="lg:text-5xl text-4xl font-extrabold lg:leading-[55px]">
+                Welcome to Our Platform
+              </h2>
+            )}
             <h4 className="mt-6 text-lg">
               {loginUser.isAuthenticated
                 ? 'Continue your journey with our powerful tools'
