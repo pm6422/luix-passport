@@ -14,13 +14,12 @@ import { AccountNav } from "@/components/account-nav"
 import { Layout, LayoutHeader } from "@/layouts/layout-definitions"
 // import { Search } from "@/components/custom/search"
 import { isEmpty } from "lodash"
-import { AccountService } from "@/services/account-service"
 import { toast } from "sonner"
 import { IconInfoCircle } from "@tabler/icons-react"
 
 export default function AuthLayout() {
   const { appInfo } = useStore(appInfoStore)
-  const { loginUser, setLoginUser } = useStore(loginUserStore)
+  const { loginUser } = useStore(loginUserStore)
   const [isCollapsed, setIsCollapsed] = useIsCollapsed()
   const location = useLocation()
   const topNav = [
@@ -52,15 +51,11 @@ export default function AuthLayout() {
   const initialReconnectDelay = 1000;
 
   useEffect(() => {
-    AccountService.getCurrentUser().then(u => {
-      if(isEmpty(u)) {
-        console.log("Redirecting to login for empty user")
-        window.location.href = "/login"
-      } else {
-        setLoginUser(u);
-      }
-    })
-  }, [location]);
+    if(isEmpty(loginUser)) {
+      console.log("Redirecting to login for null auth user")
+      window.location.href = "/login"
+    }
+  }, [location, loginUser]);
 
   useEffect(() => {
     if(isEmpty(loginUser)) {
