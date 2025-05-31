@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom"
 import { Layout, LayoutHeader } from "@/layouts/layout-definitions"
-import { HeaderNav } from "@/components/header-nav"
+import { SiteNav } from "@/components/site-nav.tsx"
 
 export default function NoAuthLayout() {
 
@@ -14,7 +14,7 @@ export default function NoAuthLayout() {
           <LayoutHeader>
             <div className="ml-auto flex items-center space-x-4">
               {/*<NotificationNav/>*/}
-              <HeaderNav />
+              <SiteNav />
             </div>
           </LayoutHeader>
           {/* ===== View Content ===== */}

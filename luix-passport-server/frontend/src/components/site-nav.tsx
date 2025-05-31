@@ -4,7 +4,7 @@ import { AccountNav } from "@/components/account-nav"
 import { useStore } from "exome/react"
 import { loginUserStore } from "@/stores/login-user-store"
 
-export function HeaderNav() {
+export function SiteNav() {
   const { loginUser } = useStore(loginUserStore)
 
   return (
