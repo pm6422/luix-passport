@@ -7,12 +7,6 @@ import MaintenanceError from "./views/errors/maintenance-error"
 const router = createBrowserRouter([
   // account-related routes
   {
-    path: "/sign-in",
-    lazy: async () => ({
-      Component: (await import("./views/account/sign-in")).default
-    }),
-  },
-  {
     path: "/sign-up",
     lazy: async () => ({
       Component: (await import("./views/account/sign-up")).default
@@ -88,6 +82,12 @@ const router = createBrowserRouter([
     path: "/docs/api-reference",
     lazy: async () => ({
       Component: (await import("./views/site/docs/api-reference")).default
+    }),
+  },
+  {
+    path: "/sign-in",
+    lazy: async () => ({
+      Component: (await import("./views/account/sign-in")).default
     }),
   },
 
