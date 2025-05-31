@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from 'zod';
 import { Button } from "@/components/custom/button";
-import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import {
   Form,
   FormControl,
@@ -35,7 +35,6 @@ const resetPasswordFormSchema = z
 export type ResetPasswordFormSchema = z.infer<typeof resetPasswordFormSchema>
 
 export default function ForgotPassword() {
-  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [searchParams] = useSearchParams();
   const resetCode = searchParams.get('resetCode');
