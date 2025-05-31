@@ -3,7 +3,6 @@ import { Link } from "react-router-dom"
 import { AccountNav } from "@/components/account-nav"
 import { useStore } from "exome/react"
 import { loginUserStore } from "@/stores/login-user-store"
-import { isEmpty } from "lodash"
 
 export function HeaderNav() {
   const { loginUser } = useStore(loginUserStore)
@@ -20,12 +19,12 @@ export function HeaderNav() {
         <Link to="/docs" className="text-sm font-medium hover:text-primary">
           Docs
         </Link>
-        {isEmpty(loginUser) ? (
-          <Button variant="outline" className="rounded-2xl">
-            <a href="/login">Sign In</a>
-          </Button>
-        ) : (
+        {loginUser.isAuthenticated ? (
           <AccountNav />
+        ) : (
+          <Button variant="outline" className="rounded-2xl">
+          <a href="/login">Sign In</a>
+          </Button>
         )}
       </nav>
     </header>

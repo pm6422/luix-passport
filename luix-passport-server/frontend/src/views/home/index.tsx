@@ -1,8 +1,12 @@
 import { LayoutBody } from "@/layouts/layout-definitions"
 import { Link } from "react-router-dom"
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"
+import { useStore } from "exome/react"
+import { loginUserStore } from "@/stores/login-user-store"
 
 export default function Home() {
+  const { loginUser } = useStore(loginUserStore)
+
   return (
     <LayoutBody className="space-y-4">
       <div className="container relative grid h-screen flex-col items-center justify-center bg-white lg:max-w-none lg:grid-cols-2">

@@ -51,7 +51,7 @@ export default function AuthLayout() {
   const initialReconnectDelay = 1000;
 
   useEffect(() => {
-    if(isEmpty(loginUser)) {
+    if(!loginUser.isAuthenticated) {
       console.log("Redirecting to login for null auth user")
       window.location.href = "/login"
     }
