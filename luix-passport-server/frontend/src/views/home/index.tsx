@@ -64,31 +64,24 @@ export default function Home() {
               </Button>
             </div>
           </main>
-
           {/* Footer */}
-          <footer className="mt-auto border-t pt-10">
+          <footer className="mt-auto pt-2">
             <div className="flex items-center justify-between">
               <p className="text-sm text-muted-foreground">
-                © 2023 Your Company. All rights reserved.
+                © 2025 LUIX Universe. All rights reserved.
               </p>
               <div className="flex space-x-6">
                 <Link
-                  to="/terms"
+                  to="/terms-of-service"
                   className="text-sm text-muted-foreground hover:text-primary"
                 >
                   Terms
                 </Link>
                 <Link
-                  to="/privacy"
+                  to="/privacy-policy"
                   className="text-sm text-muted-foreground hover:text-primary"
                 >
                   Privacy
-                </Link>
-                <Link
-                  to="/contact"
-                  className="text-sm text-muted-foreground hover:text-primary"
-                >
-                  Contact
                 </Link>
               </div>
             </div>
