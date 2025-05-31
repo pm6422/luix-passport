@@ -1,7 +1,6 @@
-// src/app/features/page.tsx
-import { CheckIcon } from "lucide-react";
+import { IconCheck } from "@tabler/icons-react"
 import { Link } from "react-router-dom"
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"
 // import { SiteHeader } from "@/components/site-header";
 
 export default function FeaturesPage() {
@@ -90,7 +89,7 @@ export default function FeaturesPage() {
                 <ul className="space-y-2">
                   {feature.items.map((item, itemIndex) => (
                     <li key={itemIndex} className="flex items-start">
-                      <CheckIcon className="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                      <IconCheck className="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
                       <span>{item}</span>
                     </li>
                   ))}
