@@ -43,12 +43,17 @@ const router = createBrowserRouter([
     }),
   },
   {
+    path: "/features",
+    lazy: async () => ({
+      Component: (await import("./views/site/features")).default
+    }),
+  },
+  {
     path: "/contact-us",
     lazy: async () => ({
       Component: (await import("./views/account/contact-us")).default
     }),
   },
-
 
   // no-auth routes
   {
@@ -61,7 +66,7 @@ const router = createBrowserRouter([
       {
         index: true,
         lazy: async () => ({
-          Component: (await import("./views/home")).default
+          Component: (await import("./views/site/home")).default
         }),
       },
     ],

@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { useStore } from "exome/react"
 import { loginUserStore } from "@/stores/login-user-store"
 
-export default function Home() {
+export default function SiteHome() {
   const { loginUser } = useStore(loginUserStore)
 
   return (
