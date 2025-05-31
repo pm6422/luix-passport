@@ -10,6 +10,9 @@ export function SiteNav() {
   return (
     <header className="flex justify-between items-center mt-5">
       <nav className="flex items-center space-x-6">
+        <Link to="/" className="text-sm font-medium hover:text-primary">
+          Home
+        </Link>
         <Link to="/features" className="text-sm font-medium hover:text-primary">
           Features
         </Link>
