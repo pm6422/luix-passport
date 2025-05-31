@@ -48,7 +48,7 @@ export default function PricingPage() {
   ];
 
   return (
-    <div className="container relative grid h-screen flex-col items-center justify-center lg:max-w-none lg:grid-cols-3 bg-white">
+    <div className="container relative grid h-screen flex-col items-center justify-center lg:max-w-none lg:grid-cols-3">
       {/* Left side - 1/3 width */}
       <div className="lg:flex relative hidden lg:col-span-1 lg:px-12 ms-10 mb-36">
         <div className="max-md:text-center">
@@ -76,7 +76,7 @@ export default function PricingPage() {
       </div>
 
       {/* Right side - 2/3 width */}
-      <div className="flex flex-col w-full h-full lg:col-span-2 xl:px-32 lg:px-20 px-5 bg-white rounded-3xl py-10 overflow-y-auto">
+      <div className="flex flex-col w-full h-full lg:col-span-2 xl:px-32 lg:px-20 px-5 rounded-3xl py-10 overflow-y-auto">
         <div className="flex-1">
           <h1 className="text-3xl font-bold mb-2">Pricing Plans</h1>
           <p className="text-lg text-muted-foreground mb-10">
@@ -155,34 +155,6 @@ export default function PricingPage() {
             </div>
           </div>
         </div>
-
-        <footer className="mt-16 pt-10 border-t">
-          <div className="flex justify-between items-center">
-            <p className="text-sm text-muted-foreground">
-              © 2025 LUIX Universe. All rights reserved.
-            </p>
-            <div className="flex space-x-6">
-              <Link
-                to="/terms-of-service"
-                className="text-sm text-muted-foreground hover:text-primary"
-              >
-                Terms
-              </Link>
-              <Link
-                to="/privacy-policy"
-                className="text-sm text-muted-foreground hover:text-primary"
-              >
-                Privacy
-              </Link>
-              <Link
-                to="/contact-us"
-                className="text-sm text-muted-foreground hover:text-primary"
-              >
-                Contact
-              </Link>
-            </div>
-          </div>
-        </footer>
       </div>
     </div>
   );

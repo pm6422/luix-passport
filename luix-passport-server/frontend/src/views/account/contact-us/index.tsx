@@ -1,7 +1,7 @@
 // src/app/contact/page.tsx
 export default function ContactUs() {
   return (
-    <div className="container relative grid h-screen flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 bg-white">
+    <div className="container relative grid h-screen flex-col items-center justify-center lg:max-w-none lg:grid-cols-2">
       {/* Left side - hidden on mobile */}
       <div className="lg:flex relative hidden lg:px-28 ms-10 mb-36">
         <div className="max-md:text-center">
@@ -23,7 +23,7 @@ export default function ContactUs() {
       </div>
 
       {/* Right side - form */}
-      <div className="flex flex-col w-full h-full xl:px-48 lg:px-28 px-5 bg-white rounded-3xl py-10">
+      <div className="flex flex-col w-full h-full xl:px-48 lg:px-28 px-5 rounded-3xl py-10">
         <img
           src="/assets/images/logos/logo-round.svg"
           alt="Logo"

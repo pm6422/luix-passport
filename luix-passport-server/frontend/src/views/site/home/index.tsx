@@ -9,7 +9,7 @@ export default function SiteHome() {
 
   return (
     <LayoutBody className="space-y-4">
-      <div className="container relative grid h-screen flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 bg-white">
+      <div className="container relative grid h-screen flex-col items-center justify-center lg:max-w-none lg:grid-cols-2">
         {/* Left side - hidden on mobile */}
         <div className="lg:flex relative hidden lg:px-28 ms-10 mb-36">
           <div className="max-md:text-center">
@@ -57,7 +57,7 @@ export default function SiteHome() {
         </div>
 
         {/* Right side - content */}
-        <div className="flex h-full w-full flex-col rounded-3xl bg-white px-5 py-10 lg:px-28 xl:px-48">
+        <div className="flex h-full w-full flex-col rounded-3xl px-5 py-10 lg:px-28 xl:px-48">
           {/* Main content */}
           <main className="flex-1 flex flex-col items-center justify-center text-center">
             {loginUser.isAuthenticated ? (

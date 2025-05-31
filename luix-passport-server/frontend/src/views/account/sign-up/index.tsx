@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 
 export default function SignUp() {
   return (
-    <div className="container relative grid h-screen flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 bg-white">
+    <div className="container relative grid h-screen flex-col items-center justify-center lg:max-w-none lg:grid-cols-2">
       {/* Left side - hidden on mobile */}
       <div className="lg:flex relative hidden lg:px-28 ms-10 mb-36">
         <div className="max-md:text-center">
@@ -29,7 +29,7 @@ export default function SignUp() {
       </div>
 
       {/* Right side - form */}
-      <div className="flex flex-col w-full h-full xl:px-48 lg:px-28 px-5 text-center bg-white rounded-3xl">
+      <div className="flex flex-col w-full h-full xl:px-48 lg:px-28 px-5 text-center rounded-3xl">
         <img
           src="/assets/images/logos/logo-round.svg"
           alt="Logo"
