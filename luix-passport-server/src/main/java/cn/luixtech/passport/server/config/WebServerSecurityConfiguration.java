@@ -38,12 +38,12 @@ public class WebServerSecurityConfiguration {
             "/activate-account",
             "/forgot-password",
             "/reset-password",
-			"/terms-of-service",
-			"/privacy-policy",
-			"/contact-us",
 			"/features",
 			"/pricing",
 			"/docs/**",
+			"/terms-of-service",
+			"/privacy-policy",
+			"/contact-us",
     };
     public static final String[]       STATIC_RESOURCES    = {
 //            "/static/**",
