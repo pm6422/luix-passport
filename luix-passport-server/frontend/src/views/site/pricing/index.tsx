@@ -1,6 +1,6 @@
 import { IconCheck } from "@tabler/icons-react"
 import { Link } from "react-router-dom"
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"
 
 export default function PricingPage() {
   const plans = [
@@ -73,8 +73,6 @@ export default function PricingPage() {
 
       {/* Right side - 2/3 width */}
       <div className="flex flex-col w-full h-full lg:col-span-2 xl:px-32 lg:px-20 px-5 bg-white rounded-3xl py-10 overflow-y-auto">
-        {/*<SiteHeader />*/}
-
         <div className="flex-1">
           <h1 className="text-3xl font-bold mb-2">Pricing Plans</h1>
           <p className="text-lg text-muted-foreground mb-10">

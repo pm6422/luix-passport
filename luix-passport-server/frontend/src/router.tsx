@@ -49,12 +49,6 @@ const router = createBrowserRouter([
     }),
   },
   {
-    path: "/pricing",
-    lazy: async () => ({
-      Component: (await import("./views/site/pricing")).default
-    }),
-  },
-  {
     path: "/contact-us",
     lazy: async () => ({
       Component: (await import("./views/account/contact-us")).default
@@ -73,6 +67,12 @@ const router = createBrowserRouter([
         index: true,
         lazy: async () => ({
           Component: (await import("./views/site/home")).default
+        }),
+      },
+      {
+        path: "/pricing",
+        lazy: async () => ({
+          Component: (await import("./views/site/pricing")).default
         }),
       },
     ],
