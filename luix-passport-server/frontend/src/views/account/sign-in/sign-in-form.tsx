@@ -15,7 +15,9 @@ import { Button } from "@/components/ui/button";
 import { PasswordInput } from "@/components/custom/password-input";
 import { LoadingButton } from "@/components/custom/loading-button"
 import { Link } from "react-router-dom"
-import axios from "axios"
+import { AccountService } from "@/services/account-service"
+import { getErrorMessage } from "@/lib/handle-error"
+import { toast } from "sonner"
 
 const formSchema = z.object({
   username: z.string().min(1, { message: "Please enter your username" }),
@@ -24,7 +26,6 @@ const formSchema = z.object({
 
 export function SignInForm() {
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [logoutMessage, setLogoutMessage] = useState<string | null>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -37,34 +38,25 @@ export function SignInForm() {
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setIsLoading(true);
-    setError(null);
 
-    try {
-      // Using FormData to match traditional form submission
-      const formData = new FormData();
-      formData.append("username", data.username);
-      formData.append("password", data.password);
+    // Using FormData to match traditional form submission
+    const formData = new FormData();
+    formData.append("username", data.username);
+    formData.append("password", data.password);
 
-      const response = await axios.post("/login", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data", // Important for form data
-        },
-      });
-
-      // Handle successful login (redirect or other actions)
-      if (response.status === 200) {
-        window.location.href = "/dashboard"; // Or handle redirect based on response
+    toast.promise(AccountService.login(formData), {
+      loading: "Logging in...",
+      success: () => {
+        setIsLoading(false)
+        window.location.href = "/console";
+        return "Signed in account successfully"
+      },
+      error: (error) => {
+        setIsLoading(false)
+        return getErrorMessage(error)
       }
-    } catch (err) {
-      if (axios.isAxiosError(err)) {
-        setError(err.response?.data?.message || "Invalid username or password");
-      } else {
-        setError("Login failed. Please try again.");
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    })
+  }
 
   // Check URL for the logout parameter (simulating Thymeleaf"s th:if="${param.logout}")
   if (typeof window !== "undefined") {
@@ -109,12 +101,7 @@ export function SignInForm() {
           <hr className="h-0 border-b border-muted grow" />
         </div>
 
-        {/* Error messages */}
-        {error && (
-          <div className="mb-6 p-4 text-center text-destructive bg-destructive/10 rounded-lg">
-            {error}
-          </div>
-        )}
+        {/* Logout messages */}
         {logoutMessage && (
           <div className="mb-6 p-4 text-center text-muted-foreground">
             {logoutMessage}
