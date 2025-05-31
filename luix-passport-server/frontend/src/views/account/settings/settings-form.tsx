@@ -56,7 +56,7 @@ export function SettingsForm() {
       setSupportedDateTimeFormats(results[1].data.map((item: SupportedDateTimeFormat) =>
         ({label: item.displayName + " (" + item.example + ")", value: item.id})));
 
-      AccountService.getCurrentAccount().then(user => {
+      AccountService.getCurrentUser().then(user => {
         form.reset(user)
       })
     })

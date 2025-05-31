@@ -51,7 +51,7 @@ export function ChangeEmailForm() {
   })
 
   useEffect(() => {
-    AccountService.getCurrentAccount().then(user => {
+    AccountService.getCurrentUser().then(user => {
       form.reset({ currentEmail: user.email })
     })
   }, [form])

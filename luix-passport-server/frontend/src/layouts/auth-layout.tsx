@@ -52,7 +52,7 @@ export default function AuthLayout() {
   const initialReconnectDelay = 1000;
 
   useEffect(() => {
-    AccountService.getCurrentAccount().then(u => {
+    AccountService.getCurrentUser().then(u => {
       if(isEmpty(u)) {
         console.log("Redirecting to login for empty user")
         window.location.href = "/login"

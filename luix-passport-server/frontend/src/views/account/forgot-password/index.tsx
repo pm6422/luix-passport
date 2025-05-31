@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { Button } from "@/components/custom/button"
+import { LoadingButton } from "@/components/custom/loading-button"
 import {
   Form,
   FormControl,
@@ -16,7 +16,7 @@ import {
 import { toast } from "sonner"
 import { Input } from "@/components/ui/input"
 import { AccountService } from "@/services/account-service"
-import { getErrorMessage } from '@/lib/handle-error'
+import { getErrorMessage } from "@/lib/handle-error"
 
 const formSchema = z.object({
   email: z
@@ -89,9 +89,9 @@ export default function ForgotPassword() {
                         </FormItem>
                       )}
                     />
-                    <Button className="mt-2" loading={isLoading}>
-                      Send Reset Link
-                    </Button>
+                    <LoadingButton type='submit' loading={isLoading} className="mt-2">
+                      {isLoading ? "Waiting..." : "Send Reset Link"}
+                    </LoadingButton>
                   </div>
                 </form>
               </Form>

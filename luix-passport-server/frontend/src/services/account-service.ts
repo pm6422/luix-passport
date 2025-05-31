@@ -6,12 +6,13 @@ import { type SupportedDateTimeFormat } from "@/domains/supported-date-time-form
 import { SettingsFormSchema } from "@/views/account/settings/settings-form"
 import { ChangePasswordFormSchema } from "@/views/account/change-password/change-password-form"
 import { ResetPasswordFormSchema } from "@/views/account/reset-password"
+import { type UserRegistrationFormSchema } from "@/domains/user-registration"
 
 export class AccountService {
   constructor() {
   }
 
-  public static async getCurrentAccount(): Promise<LoginUser> {
+  public static async getCurrentUser(): Promise<LoginUser> {
     try {
       const res = await axios.get<LoginUser>("/open-api/accounts/user")
       return res.data
@@ -19,6 +20,15 @@ export class AccountService {
       console.error(error)
       return {} as LoginUser
     }
+  }
+
+  public static async signOut(): Promise<void> {
+    await http.post("/api/accounts/sign-out")
+    window.location.reload()
+  }
+
+  public static register(model: UserRegistrationFormSchema): Promise<void> {
+    return http.post("/open-api/accounts/register", model)
   }
 
   public static update(model: SettingsFormSchema): Promise<void> {
@@ -55,11 +65,6 @@ export class AccountService {
 
   public static completePasswordRecovery(model: ResetPasswordFormSchema): Promise<void> {
     return http.post("/open-api/accounts/complete-password-recovery", model)
-  }
-
-  public static async signOut(): Promise<void> {
-    await http.post("/api/accounts/sign-out")
-    window.location.reload()
   }
 
   public static findSupportedTimezones(): Promise<AxiosResponse<Array<SupportedTimezone>>> {

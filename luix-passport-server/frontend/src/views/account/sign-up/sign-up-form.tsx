@@ -1,8 +1,5 @@
-import { HTMLAttributes, useState } from "react"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { IconBrandFacebook, IconBrandGithub } from "@tabler/icons-react"
-import { z } from "zod"
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
   FormControl,
@@ -10,138 +7,138 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/custom/button"
-import { PasswordInput } from "@/components/custom/password-input"
-import { cn } from "@/lib/utils"
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { PasswordInput } from "@/components/custom/password-input";
+import { AccountService } from "@/services/account-service"
+import { type UserRegistrationFormSchema, userRegistrationFormSchema } from "@/domains/user-registration"
+import { toast } from "sonner";
+import { useState } from "react"
+import { getErrorMessage } from "@/lib/handle-error.ts"
+import { LoadingButton } from "@/components/custom/loading-button"
 
-interface SignUpFormProps extends HTMLAttributes<HTMLDivElement> {}
-
-const formSchema = z
-  .object({
-    email: z
-      .string()
-      .min(1, { message: "Please enter your email" })
-      .email({ message: "Invalid email address" }),
-    password: z
-      .string()
-      .min(1, {
-        message: "Please enter your password",
-      })
-      .min(7, {
-        message: "Password must be at least 7 characters long",
-      }),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match.",
-    path: ["confirmPassword"],
-  })
-
-export function SignUpForm({ className, ...props }: SignUpFormProps) {
+export function SignUpForm() {
   const [isLoading, setIsLoading] = useState(false)
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<UserRegistrationFormSchema>({
+    resolver: zodResolver(userRegistrationFormSchema),
     defaultValues: {
       email: "",
+      username: "",
       password: "",
       confirmPassword: "",
     },
-  })
+  });
 
-  function onSubmit(data: z.infer<typeof formSchema>) {
+  async function onSubmit(data: UserRegistrationFormSchema) {
     setIsLoading(true)
-    console.log(data)
 
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 3000)
+    toast.promise(AccountService.register(data), {
+      loading: "Registering account...",
+      success: () => {
+        setIsLoading(false)
+        window.location.href = "/login";
+        return "Registered account successfully"
+      },
+      error: (error) => {
+        setIsLoading(false)
+        return getErrorMessage(error)
+      }
+    })
   }
 
   return (
-    <div className={cn("grid gap-6", className)} {...props}>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="grid gap-2">
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
+        <div className="flex flex-col w-full h-full px-5 text-center">
+          <h3 className="mb-6 text-2xl font-bold">Create Account</h3>
+
+          <div className="space-y-4">
             <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
-                <FormItem className="space-y-1">
-                  <FormLabel>Email</FormLabel>
+                <FormItem className="text-left">
+                  <FormLabel className="mb-2 text-sm">Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="name@example.com" {...field} />
+                    <Input
+                      placeholder="your@email.com"
+                      className="w-full px-5 py-4 rounded-2xl"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+
+            <FormField
+              control={form.control}
+              name="username"
+              render={({ field }) => (
+                <FormItem className="text-left">
+                  <FormLabel className="mb-2 text-sm">Username</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="username"
+                      className="w-full px-5 py-4 rounded-2xl"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <FormField
               control={form.control}
               name="password"
               render={({ field }) => (
-                <FormItem className="space-y-1">
-                  <FormLabel>Password</FormLabel>
+                <FormItem className="text-left">
+                  <FormLabel className="mb-2 text-sm">Password</FormLabel>
                   <FormControl>
-                    <PasswordInput placeholder="********" {...field} />
+                    <PasswordInput
+                      placeholder="••••••••"
+                      className="w-full px-5 py-4 rounded-2xl"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
               name="confirmPassword"
               render={({ field }) => (
-                <FormItem className="space-y-1">
-                  <FormLabel>Confirm Password</FormLabel>
+                <FormItem className="text-left">
+                  <FormLabel className="mb-2 text-sm">Confirm Password</FormLabel>
                   <FormControl>
-                    <PasswordInput placeholder="********" {...field} />
+                    <PasswordInput
+                      placeholder="••••••••"
+                      className="w-full px-5 py-4 rounded-2xl"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button className="mt-2" loading={isLoading}>
-              Create Account
-            </Button>
-
-            <div className="relative my-2">
-              <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t" />
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-background px-2 text-muted-foreground">
-                  Or continue with
-                </span>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <Button
-                variant="outline"
-                className="w-full"
-                type="button"
-                loading={isLoading}
-                leftSection={<IconBrandGithub className="h-4 w-4" />}
-              >
-                GitHub
-              </Button>
-              <Button
-                variant="outline"
-                className="w-full"
-                type="button"
-                loading={isLoading}
-                leftSection={<IconBrandFacebook className="h-4 w-4" />}
-              >
-                Facebook
-              </Button>
-            </div>
           </div>
-        </form>
-      </Form>
-    </div>
-  )
+
+          <LoadingButton type="submit" loading={isLoading} className="w-full px-5 py-4 mt-4 mb-2 text-sm font-medium rounded-2xl">
+            {isLoading ? "Waiting..." : "Create Account"}
+          </LoadingButton>
+
+          <p className="mt-3 text-sm text-muted-foreground">
+            Already have an account?{" "}
+            <a href="/login" className="font-bold text-blue-600 hover:underline">
+              Sign In
+            </a>
+          </p>
+        </div>
+      </form>
+    </Form>
+  );
 }
