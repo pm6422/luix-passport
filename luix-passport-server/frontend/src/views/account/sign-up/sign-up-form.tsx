@@ -8,7 +8,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/custom/password-input";
 import { AccountService } from "@/services/account-service"
 import { type UserRegistrationFormSchema, userRegistrationFormSchema } from "@/domains/user-registration"
@@ -16,6 +15,7 @@ import { toast } from "sonner";
 import { useState } from "react"
 import { getErrorMessage } from "@/lib/handle-error.ts"
 import { LoadingButton } from "@/components/custom/loading-button"
+import InputFormField from "@/components/custom/form-field/input"
 
 export function SignUpForm() {
   const [isLoading, setIsLoading] = useState(false)
@@ -54,40 +54,20 @@ export function SignUpForm() {
           <h3 className="mb-6 text-2xl font-bold">Create Account</h3>
 
           <div className="space-y-4">
-            <FormField
+            <InputFormField
               control={form.control}
               name="email"
-              render={({ field }) => (
-                <FormItem className="text-left">
-                  <FormLabel className="mb-2 text-sm">Email</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="your@email.com"
-                      className="w-full px-5 py-4 rounded-2xl"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              label="Email"
+              formItemClassName="text-left"
+              inputClassName="w-full px-5 py-4 rounded-2xl"
             />
 
-            <FormField
+            <InputFormField
               control={form.control}
               name="username"
-              render={({ field }) => (
-                <FormItem className="text-left">
-                  <FormLabel className="mb-2 text-sm">Username</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="username"
-                      className="w-full px-5 py-4 rounded-2xl"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              label="Username"
+              formItemClassName="text-left"
+              inputClassName="w-full px-5 py-4 rounded-2xl"
             />
 
             <FormField
