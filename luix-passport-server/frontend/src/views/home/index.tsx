@@ -42,27 +42,38 @@ export default function Home() {
         {/* Right side - content */}
         <div className="flex h-full w-full flex-col rounded-3xl bg-white px-5 py-10 lg:px-28 xl:px-48">
           {/* Main content */}
-          <main className="flex flex-1 flex-col items-center justify-center text-center">
-            <h1 className="mb-6 text-4xl font-bold">Welcome Back</h1>
-            <p className="mb-10 max-w-md text-lg text-muted-foreground">
-              Ready to continue your journey? Sign in to access your dashboard.
-            </p>
-
-            <div className="w-full max-w-sm space-y-6">
-              <Button
-                asChild
-                className="h-14 w-full rounded-2xl px-5 py-4 text-base font-medium"
-              >
-                <a href="/login">Sign In</a>
-              </Button>
-              <Button
-                asChild
-                variant="outline"
-                className="h-14 w-full rounded-2xl px-5 py-4 text-base font-medium"
-              >
-                <Link to="/sign-up">Create Account</Link>
-              </Button>
-            </div>
+          <main className="flex-1 flex flex-col items-center justify-center text-center">
+            {loginUser.isAuthenticated ? (
+              <>
+                <h1 className="text-4xl font-bold mb-6">Welcome to Your Dashboard</h1>
+                <p className="text-lg text-muted-foreground mb-10 max-w-md">
+                  You have 3 new notifications and 5 pending tasks.
+                </p>
+                <div className="w-full max-w-sm space-y-6">
+                  <Button asChild className="w-full px-5 py-4 h-14 text-base font-medium rounded-2xl">
+                    <Link to="/console">View Console</Link>
+                  </Button>
+                  <Button asChild variant="outline" className="w-full px-5 py-4 h-14 text-base font-medium rounded-2xl">
+                    <Link to="/console/account">Edit Profile</Link>
+                  </Button>
+                </div>
+              </>
+            ) : (
+              <>
+                <h1 className="text-4xl font-bold mb-6">Ready to Continue Your Journey?</h1>
+                <p className="text-lg text-muted-foreground mb-10 max-w-md">
+                  Sign in to access your personalized dashboard and features.
+                </p>
+                <div className="w-full max-w-sm space-y-6">
+                  <Button asChild className="w-full px-5 py-4 h-14 text-base font-medium rounded-2xl">
+                    <Link to="/login">Sign In</Link>
+                  </Button>
+                  <Button asChild variant="outline" className="w-full px-5 py-4 h-14 text-base font-medium rounded-2xl">
+                    <Link to="/sign-up">Create Account</Link>
+                  </Button>
+                </div>
+              </>
+            )}
           </main>
           {/* Footer */}
           <footer className="mt-auto pt-2">
