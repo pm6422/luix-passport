@@ -14,7 +14,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { PasswordInput } from "@/components/custom/password-input";
 import { LoadingButton } from "@/components/custom/loading-button"
-import { Link } from 'react-router-dom'
+import { Link } from "react-router-dom"
+import axios from "axios"
 
 const formSchema = z.object({
   username: z.string().min(1, { message: "Please enter your username" }),
@@ -34,42 +35,42 @@ export function SignInForm() {
     },
   });
 
-  async function onSubmit(data: z.infer<typeof formSchema>) {
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setIsLoading(true);
     setError(null);
 
     try {
+      // Using FormData to match traditional form submission
       const formData = new FormData();
-      formData.append('username', data.username);
-      formData.append('password', data.password);
+      formData.append("username", data.username);
+      formData.append("password", data.password);
 
-      const response = await fetch('/login', {
-        method: 'POST',
-        body: formData,
+      const response = await axios.post("/login", formData, {
         headers: {
-          // This header is important for server-side frameworks to recognize form data
-          'Accept': 'application/json',
+          "Content-Type": "multipart/form-data", // Important for form data
         },
       });
 
-      if (!response.ok) {
-        throw new Error('Invalid username or password');
+      // Handle successful login (redirect or other actions)
+      if (response.status === 200) {
+        window.location.href = "/dashboard"; // Or handle redirect based on response
       }
-
-      // Handle successful login (e.g., redirect)
-      window.location.href = '/dashboard';
-    } catch (error) {
-      setError(error instanceof Error ? error.message : 'Login failed');
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.message || "Invalid username or password");
+      } else {
+        setError("Login failed. Please try again.");
+      }
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
-  // Check URL for the logout parameter (simulating Thymeleaf's th:if="${param.logout}")
-  if (typeof window !== 'undefined') {
+  // Check URL for the logout parameter (simulating Thymeleaf"s th:if="${param.logout}")
+  if (typeof window !== "undefined") {
     const params = new URLSearchParams(window.location.search);
-    if (params.get('logout')) {
-      setLogoutMessage('You have been logged out');
+    if (params.get("logout")) {
+      setLogoutMessage("You have been logged out");
     }
   }
 
