@@ -11,6 +11,7 @@ import {
 import { toast } from "sonner"
 import InputFormField from "@/components/custom/form-field/input"
 import { AccountService } from "@/services/account-service"
+import { Link } from "react-router-dom"
 import { getErrorMessage } from "@/lib/handle-error"
 
 const formSchema = z.object({
@@ -88,12 +89,9 @@ export default function ForgotPassword() {
 
             <p className="mt-4 px-8 text-center text-sm text-muted-foreground">
               Don't have an account?{" "}
-              <a
-                href="/sign-up"
-                className="underline underline-offset-4 hover:text-primary"
-              >
+              <Link to="/sign-up" className="font-bold text-blue-600 hover:underline">
                 Sign up
-              </a>
+              </Link>
               .
             </p>
           </Card>

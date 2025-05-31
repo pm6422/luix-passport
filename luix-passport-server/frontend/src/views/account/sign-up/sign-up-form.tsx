@@ -13,7 +13,7 @@ import { AccountService } from "@/services/account-service"
 import { type UserRegistrationFormSchema, userRegistrationFormSchema } from "@/domains/user-registration"
 import { toast } from "sonner";
 import { useState } from "react"
-import { getErrorMessage } from "@/lib/handle-error.ts"
+import { getErrorMessage } from "@/lib/handle-error"
 import { LoadingButton } from "@/components/custom/loading-button"
 import InputFormField from "@/components/custom/form-field/input"
 
