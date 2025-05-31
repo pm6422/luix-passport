@@ -7,14 +7,9 @@ import { z } from "zod"
 import { LoadingButton } from "@/components/custom/loading-button"
 import {
   Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
 } from "@/components/ui/form"
 import { toast } from "sonner"
-import { Input } from "@/components/ui/input"
+import InputFormField from "@/components/custom/form-field/input"
 import { AccountService } from "@/services/account-service"
 import { getErrorMessage } from "@/lib/handle-error"
 
@@ -76,18 +71,12 @@ export default function ForgotPassword() {
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(requestReset)}>
                   <div className="grid gap-2">
-                    <FormField
+                    <InputFormField
                       control={form.control}
                       name="email"
-                      render={({ field }) => (
-                        <FormItem className="space-y-1">
-                          <FormLabel>Email</FormLabel>
-                          <FormControl>
-                            <Input placeholder="name@example.com" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
+                      label="Email"
+                      formItemClassName="space-y-1"
+                      placeholder="name@example.com"
                     />
                     <LoadingButton type='submit' loading={isLoading} className="mt-2">
                       {isLoading ? "Waiting..." : "Send Reset Link"}

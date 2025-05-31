@@ -30,6 +30,25 @@ const router = createBrowserRouter([
       Component: (await import("./views/account/reset-password")).default
     }),
   },
+  {
+    path: "/terms-of-service",
+    lazy: async () => ({
+      Component: (await import("./views/account/terms-of-service")).default
+    }),
+  },
+  {
+    path: "/privacy-policy",
+    lazy: async () => ({
+      Component: (await import("./views/account/privacy-policy")).default
+    }),
+  },
+  {
+    path: "/contact-us",
+    lazy: async () => ({
+      Component: (await import("./views/account/contact-us")).default
+    }),
+  },
+
 
   // no-auth routes
   {
