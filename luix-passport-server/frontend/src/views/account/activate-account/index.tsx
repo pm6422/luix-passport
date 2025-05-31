@@ -72,7 +72,9 @@ export default function ActivateAccount() {
                   Your account has been successfully activated!
                 </p>
                 <Button className="w-full py-4 h-14 rounded-2xl">
-                  <Link to="/login">Continue to Login</Link>
+                  <a href="/login">
+                    Continue to Login
+                  </a>
                 </Button>
               </div>
             ) : (
