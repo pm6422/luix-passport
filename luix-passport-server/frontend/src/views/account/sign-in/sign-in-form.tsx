@@ -117,7 +117,7 @@ export function SignInForm() {
                   <FormLabel>Username</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="yourusername"
+                      placeholder="username or email"
                       className="px-5 py-4 h-14 rounded-2xl"
                       {...field}
                     />
