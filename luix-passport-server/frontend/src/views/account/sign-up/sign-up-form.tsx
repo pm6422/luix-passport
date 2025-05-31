@@ -105,7 +105,7 @@ export function SignUpForm() {
             />
           </div>
 
-          <LoadingButton type="submit" loading={isLoading} className="w-full px-5 py-4 mt-4 mb-2 text-sm font-medium rounded-2xl">
+          <LoadingButton type="submit" loading={isLoading} className="w-full h-14 px-5 py-4 mt-4 mb-2 text-sm font-medium rounded-2xl">
             {isLoading ? "Waiting..." : "Create Account"}
           </LoadingButton>
 
