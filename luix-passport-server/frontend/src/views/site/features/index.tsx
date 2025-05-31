@@ -47,7 +47,7 @@ export default function FeaturesPage() {
   ];
 
   return (
-    <div className="container relative grid h-screen flex-col items-center justify-center lg:max-w-none lg:grid-cols-3">
+    <div className="container relative grid flex-col items-center justify-center lg:max-w-none lg:grid-cols-3">
       {/* Left side - hidden on mobile - now takes 1/3 */}
       <div className="lg:flex relative hidden lg:col-span-1 lg:px-12 ms-10 mb-36">
         <div className="max-md:text-center">

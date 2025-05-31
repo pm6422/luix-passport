@@ -25,7 +25,7 @@ export default function DocsPage() {
   ];
 
   return (
-    <div className="container relative grid h-screen flex-col items-center justify-center lg:max-w-none lg:grid-cols-3">
+    <div className="container relative grid flex-col items-center justify-center lg:max-w-none lg:grid-cols-3">
       {/* Left side - 1/3 width */}
       <div className="lg:flex relative hidden lg:col-span-1 lg:px-12 ms-10 mb-36">
         <div className="max-md:text-center">

@@ -1,6 +1,6 @@
 export default function ContactUs() {
   return (
-    <div className="container relative grid h-screen flex-col items-center justify-center lg:max-w-none lg:grid-cols-2">
+    <div className="container relative grid flex-col items-center justify-center lg:max-w-none lg:grid-cols-2">
       {/* Left side - hidden on mobile */}
       <div className="lg:flex relative hidden lg:px-28 ms-10 mb-36">
         <div className="max-md:text-center">
