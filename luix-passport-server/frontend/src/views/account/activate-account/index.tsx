@@ -47,9 +47,9 @@ export default function ActivateAccount() {
           </h4>
           <p className="text-sm mt-10">
             Need help?{" "}
-            <a href="/contact" className="text-primary font-bold hover:underline">
+            <Link to="/contact-us" className="font-bold text-primary hover:underline">
               Contact support
-            </a>
+            </Link>
           </p>
         </div>
       </div>
