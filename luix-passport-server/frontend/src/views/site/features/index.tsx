@@ -99,11 +99,11 @@ export default function FeaturesPage() {
 
           <div className="mt-16 text-center">
             <h3 className="text-2xl font-semibold mb-4">Ready to implement Passport?</h3>
-            <div className="flex justify-center space-x-4">
-              <Button asChild className="px-8 py-4 h-14 text-base rounded-2xl">
+            <div className="flex flex-col sm:flex-row gap-2 justify-center">
+              <Button asChild className="px-8 py-4 h-14 text-base rounded-2xl w-full sm:w-auto">
                 <Link to="/sign-up">Start Free Trial</Link>
               </Button>
-              <Button asChild variant="outline" className="px-8 py-4 h-14 text-base rounded-2xl">
+              <Button asChild variant="outline" className="px-8 py-4 h-14 text-base rounded-2xl w-full sm:w-auto">
                 <Link to="/contact-us">Contact Sales</Link>
               </Button>
             </div>
