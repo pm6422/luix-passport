@@ -106,7 +106,7 @@ export default function AuthLayout() {
               <span>
                     Please go to{' '}
                 <a
-                  href="/notifications"
+                  href="/console/notifications"
                   className="text-blue-500 hover:text-blue-700 underline underline-offset-4 decoration-blue-300 hover:decoration-blue-500 transition-all font-bold"
                 >
                   notification center
