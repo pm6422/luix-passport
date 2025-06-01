@@ -5,9 +5,20 @@ import { Button } from "@/components/ui/button"
 import { useStore } from "exome/react"
 import { loginUserStore } from "@/stores/login-user-store"
 import { motion } from "framer-motion"
+import { useEffect, useState } from 'react'
+import { UserNotificationService } from "@/services/user-notification-service"
 
 export default function SiteHome() {
   const { loginUser } = useStore(loginUserStore)
+  const [unreadNotifications, setUnreadNotifications] = useState(0)
+
+  useEffect(() => {
+    if(loginUser.isAuthenticated) {
+      UserNotificationService.countUnread().then((r) => {
+        setUnreadNotifications(r.data)
+      })
+    }
+  }, [loginUser]);
 
   return (
     <LayoutBody className="space-y-4">
@@ -128,7 +139,7 @@ export default function SiteHome() {
               <>
                 <h1 className="text-4xl font-bold mb-6">Welcome to Your Dashboard</h1>
                 <p className="text-lg text-muted-foreground max-w-md">
-                  Hi {loginUser.username}<br></br> You have 3 new notifications.
+                  Hi {loginUser.username}<br></br> You have {unreadNotifications} new notifications.
                 </p>
                 <div className="w-full max-w-sm space-y-6">
                   <Button asChild variant="link" className="w-full px-5 py-4 h-14 text-base font-medium rounded-2xl">
