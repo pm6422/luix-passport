@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -32,14 +33,16 @@ public class DataDictServiceImpl implements DataDictService {
 
     @Override
     public void initAllTimezones() {
+        List<DataDict> timezones = new ArrayList<>();
         ZoneId.getAvailableZoneIds().forEach(zoneId -> {
             DataDict timezone = new DataDict();
             timezone.setCategoryCode(CATEGORY_CODE_TIMEZONE);
             timezone.setDictCode(zoneId);
             timezone.setDictName(getOffset(ZoneId.of(zoneId)));
             timezone.setEnabled(true);
-            dataDictRepository.save(timezone);
+            timezones.add(timezone);
         });
+        dataDictRepository.saveAll(timezones);
     }
 
     /**
