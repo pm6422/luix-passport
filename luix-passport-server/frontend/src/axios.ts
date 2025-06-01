@@ -32,7 +32,7 @@ instance.interceptors.response.use(
     // Handle response errors
     if (error.response.status === 403) {
       // Handle 403 forbidden error
-      window.location.href = "/#/403"
+      window.location.href = "/403"
     } else if (error.response.status === 401) {
       // Handle 401 unauthorized error
       console.log("Redirecting to login")
