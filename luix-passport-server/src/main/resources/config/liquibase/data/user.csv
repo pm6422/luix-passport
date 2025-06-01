@@ -1,4 +1,4 @@
 username;email;mobile_no;first_name;last_name;password_hash;activated;enabled;locale;time_zone_id;date_time_format_id;created_at;created_by;modified_at;modified_by
 user;user@localhost.com;+8615000899471;User;User;{bcrypt}$2a$10$4BrM5W7ySTcjRJ.w.tSFs.VK.pciRmoExb8UmEgH8fYD7Yj2Hb6Ue;true;true;en_US;Asia/Shanghai;1;now;SYSTEM;now;SYSTEM
 admin;admin@localhost.com;+8615000899472;Admin;Admin;{bcrypt}$2a$10$gUoLi.ICUNWymQRLD46VjeqPEDrk1LtO1z9EoU6SxwgoDY4j/FxDC;true;true;en_US;Asia/Shanghai;1;now;SYSTEM;now;SYSTEM
-louis;pm6422@126.com;+8615000899478;Louis;Lau;{bcrypt}$2a$10$JGNqWfMFRjrCG2givuVgc.yIcaUOqsGcn/vVSqWPXlRcTnHF3AXJe;true;true;en_US;Europe/Amsterdam;1;now;SYSTEM;now;SYSTEM
+louis;pm6422@gmail.com;+8615000899478;Louis;Lau;{bcrypt}$2a$10$JGNqWfMFRjrCG2givuVgc.yIcaUOqsGcn/vVSqWPXlRcTnHF3AXJe;true;true;en_US;Europe/Amsterdam;1;now;SYSTEM;now;SYSTEM
