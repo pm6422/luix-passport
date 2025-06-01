@@ -67,7 +67,7 @@ public class DataDictServiceImpl implements DataDictService {
         dataDictRepository.findByCategoryCode(CATEGORY_CODE_TIMEZONE).forEach(timezone -> {
             try {
                 // 更新数据库
-                timezone.setDictName(getOffset(ZoneId.of(timezone.getId())));
+                timezone.setDictName(getOffset(ZoneId.of(timezone.getDictName())));
                 dataDictRepository.save(timezone);
             } catch (Exception e) {
                 log.error("Failed to update offset for timezone: {}", timezone.getId());
