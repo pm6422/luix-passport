@@ -51,8 +51,8 @@ public class UserNotificationController {
 
     @Operation(summary = "count unread notifications for current user")
     @GetMapping("/api/user-notifications/unread-count")
-    public ResponseEntity<Long> getMyUnreadCount() {
-        long count = userNotificationService.getUnreadCount(AuthUtils.getCurrentUsername());
+    public ResponseEntity<Long> countMyUnread() {
+        long count = userNotificationService.countUnreadNotifications(AuthUtils.getCurrentUsername());
         return ResponseEntity.ok(count);
     }
 }

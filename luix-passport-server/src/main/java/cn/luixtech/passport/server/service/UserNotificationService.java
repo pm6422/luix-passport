@@ -11,7 +11,7 @@ public interface UserNotificationService {
 
     void sendPersonalNotification(List<String> receiverIds, String title, String content);
 
-    long getUnreadCount(String username);
+    long countUnreadNotifications(String username);
 
     void markAsRead(String userNotificationId);
 
