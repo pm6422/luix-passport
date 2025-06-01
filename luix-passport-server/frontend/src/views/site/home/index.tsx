@@ -4,8 +4,7 @@ import { Link } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { useStore } from "exome/react"
 import { loginUserStore } from "@/stores/login-user-store"
-import { motion } from "framer-motion";
-import { ShieldCheck, Lock } from "lucide-react";
+import { motion } from "framer-motion"
 
 export default function SiteHome() {
   const { loginUser } = useStore(loginUserStore)
@@ -75,7 +74,7 @@ export default function SiteHome() {
 
           {/* Passport stamp animation - moved to top-left */}
           <motion.div
-            className="absolute left-0 top-20"
+            className="absolute right-0 top-0"
             initial={{ scale: 0, rotate: -15 }}
             animate={{ scale: 0.8, rotate: 0 }}
             transition={{
@@ -115,29 +114,6 @@ export default function SiteHome() {
               </motion.text>
             </svg>
           </motion.div>
-
-          {/* Floating security badges - repositioned */}
-          {!loginUser.isAuthenticated && (
-            <>
-              <motion.div
-                className="absolute right-10 top-40 w-10 h-10 bg-background rounded-lg shadow-lg flex items-center justify-center"
-                initial={{ y: -20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.3, type: "spring" }}
-              >
-                <ShieldCheck className="text-green-500" size={16} />
-              </motion.div>
-
-              <motion.div
-                className="absolute right-10 bottom-10 w-8 h-8 bg-background rounded-full shadow-lg flex items-center justify-center"
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.5, type: "spring" }}
-              >
-                <Lock className="text-blue-500" size={14} />
-              </motion.div>
-            </>
-          )}
         </div>
 
         {/* Right side - content */}
