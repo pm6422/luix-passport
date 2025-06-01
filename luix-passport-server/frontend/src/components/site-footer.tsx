@@ -10,13 +10,13 @@ export function SiteFooter() {
         <div className="flex space-x-6">
           <Link
             to="/terms-of-service"
-            className="text-xs text-muted-foreground hover:text-primary"
+            className="text-xs text-muted-foreground hover:text-primary hidden sm:block"
           >
             Terms
           </Link>
           <Link
             to="/privacy-policy"
-            className="text-xs text-muted-foreground hover:text-primary"
+            className="text-xs text-muted-foreground hover:text-primary hidden sm:block"
           >
             Privacy
           </Link>
