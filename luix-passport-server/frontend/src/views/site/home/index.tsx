@@ -58,6 +58,11 @@ export default function SiteHome() {
         <div className="flex h-full w-full flex-col rounded-3xl px-5 py-10 lg:px-28 xl:px-48">
           {/* Main content */}
           <main className="flex-1 flex flex-col items-center justify-center text-center">
+            <img
+              src="/assets/images/logos/logo-round.svg"
+              alt="Logo"
+              className="size-16 mb-2 mx-auto"
+            />
             {loginUser.isAuthenticated ? (
               <>
                 <h1 className="text-4xl font-bold mb-6">Welcome to Your Dashboard</h1>
