@@ -163,7 +163,7 @@ export function ChangeEmailForm() {
         />
 
         <div className="flex flex-col sm:flex-row gap-2 sm:justify-end">
-          <Link to="/console/account/settings" className="w-full sm:w-auto">
+          <Link to="/console/account/settings">
             <Button
               type="button"
               variant="outline"
