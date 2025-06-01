@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom"
 import { Layout, LayoutHeader } from "@/layouts/layout-definitions"
-import { SiteNav } from "@/components/site-nav.tsx"
+import { SiteNav } from "@/components/site-nav"
 
 export default function NoAuthLayout() {
 
