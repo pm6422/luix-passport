@@ -26,7 +26,7 @@ export default function AuthLayout() {
     {
       title: "Home",
       href: "/",
-      isActive: true,
+      isActive: false,
     },
     // {
     //   title: "Notifications",
@@ -43,7 +43,7 @@ export default function AuthLayout() {
     {
       title: "Notifications",
       href: "notifications",
-      isActive: true,
+      isActive: false,
     },
   ]
   let reconnectAttempts = 0;
@@ -142,11 +142,11 @@ export default function AuthLayout() {
       >
         <Layout>
           <LayoutHeader>
-            <CentralTopNav links={topNav}/>
-            <RoleOnlyUser>
-              <CentralTopNav links={userRoleTopNav}/>
-            </RoleOnlyUser>
             <div className="ml-auto flex items-center space-x-4">
+              <CentralTopNav links={topNav}/>
+              <RoleOnlyUser>
+                <CentralTopNav links={userRoleTopNav}/>
+              </RoleOnlyUser>
               {/* <Search /> */}
               {/*<NotificationNav/>*/}
               <AccountNav />
