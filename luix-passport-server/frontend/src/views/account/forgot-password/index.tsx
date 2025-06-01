@@ -101,7 +101,7 @@ export default function ForgotPassword() {
                 loading={isLoading}
                 className="w-full py-4 h-14 rounded-2xl"
               >
-                {isLoading ? "Waiting..." : "Send Reset Link"}
+                {isLoading ? "Waiting 60s..." : "Send Reset Link"}
               </LoadingButton>
             </form>
           </Form>
