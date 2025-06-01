@@ -19,7 +19,7 @@ export default function TermsOfService() {
           </h4>
           <p className="text-sm mt-10">
             Need help?{" "}
-            <Link to="/contact-us" className="font-bold text-blue-600 hover:underline">
+            <Link to="/contact-us" className="font-bold text-primary hover:underline">
               Contact us
             </Link>
           </p>

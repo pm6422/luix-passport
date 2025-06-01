@@ -20,7 +20,7 @@ export default function SignIn() {
           </h4>
           <p className="text-sm mt-10">
             Don't have an account?{" "}
-            <Link to="/sign-up" className="font-bold text-blue-600 hover:underline">
+            <Link to="/sign-up" className="font-bold text-primary hover:underline">
               Register here
             </Link>
           </p>
@@ -40,7 +40,7 @@ export default function SignIn() {
 
         <p className="mt-6 text-sm text-center text-muted-foreground">
           Not registered yet?{" "}
-          <Link to="/sign-up" className="font-bold text-blue-600 hover:underline">
+          <Link to="/sign-up" className="font-bold text-primary hover:underline">
             Create an Account
           </Link>
         </p>

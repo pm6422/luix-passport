@@ -62,7 +62,7 @@ export default function ForgotPassword() {
           </h4>
           <p className="text-sm mt-10">
             Remember your password?{" "}
-            <Link to="/login" className="text-primary font-bold hover:underline">
+            <Link to="/login" className="font-bold text-primary hover:underline">
               Sign in here
             </Link>
           </p>

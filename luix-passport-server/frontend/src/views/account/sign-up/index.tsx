@@ -21,7 +21,7 @@ export default function SignUp() {
           </h4>
           <p className="text-sm mt-10">
             Already have an account?{" "}
-            <a href="/login" className="font-bold text-blue-600 hover:underline">
+            <a href="/login" className="font-bold text-primary hover:underline">
               Sign in here
             </a>
           </p>
