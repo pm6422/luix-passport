@@ -13,6 +13,11 @@ export function SiteNav() {
         <Link to="/" className="text-sm font-medium hover:text-primary">
           Home
         </Link>
+        {loginUser.isAuthenticated && (
+          <Link to="/console" className="text-sm font-medium hover:text-primary">
+            Dashboard
+          </Link>
+        )}
         <Link to="/features" className="text-sm font-medium hover:text-primary">
           Features
         </Link>
