@@ -54,7 +54,7 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Category Code" />
       ),
-      cell: ({ row }) => <div className="w-[175px]">{row.getValue("categoryCode")}</div>,
+      cell: ({ row }) => <div className="w-[125px]">{row.getValue("categoryCode")}</div>,
       enableSorting: true,
       enableHiding: true,
     },
@@ -63,7 +63,7 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Dictionary Code" />
       ),
-      cell: ({ row }) => <div className="w-[75px]">{row.getValue("dictCode")}</div>,
+      cell: ({ row }) => <div className="w-[125px]">{row.getValue("dictCode")}</div>,
       enableSorting: true,
       enableHiding: true,
     },
