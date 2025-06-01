@@ -39,22 +39,22 @@ export default function NoAuthLayout() {
     },
     {
       title: "Dashboard",
-      href: "console",
+      href: "/console",
       isActive: false,
     },
     {
       title: "Features",
-      href: "features",
+      href: "/features",
       isActive: false,
     },
     {
       title: "Pricing",
-      href: "pricing",
+      href: "/pricing",
       isActive: false,
     },
     {
       title: "Docs",
-      href: "docs",
+      href: "/docs",
       isActive: false,
     }
   ]

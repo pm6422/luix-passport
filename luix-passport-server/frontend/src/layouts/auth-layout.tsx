@@ -28,21 +28,26 @@ export default function AuthLayout() {
       href: "/",
       isActive: false,
     },
-    // {
-    //   title: "Notifications",
-    //   href: "notifications",
-    //   isActive: true,
-    // },
   ]
   const userRoleTopNav = [
     {
+      title: "Home",
+      href: "/",
+      isActive: false,
+    },
+    {
+      title: "Dashboard",
+      href: "/console",
+      isActive: true,
+    },
+    {
       title: "Personal Account",
-      href: "account",
+      href: "/console/account",
       isActive: false,
     },
     {
       title: "Notifications",
-      href: "notifications",
+      href: "/console/notifications",
       isActive: false,
     },
   ]
@@ -143,7 +148,9 @@ export default function AuthLayout() {
         <Layout>
           <LayoutHeader>
             <div className="ml-auto flex items-center space-x-4">
-              <CentralTopNav links={topNav}/>
+              <RoleAdmin>
+                <CentralTopNav links={topNav}/>
+              </RoleAdmin>
               <RoleOnlyUser>
                 <CentralTopNav links={userRoleTopNav}/>
               </RoleOnlyUser>
