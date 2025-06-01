@@ -23,9 +23,6 @@ export default function SiteHome() {
                 <h2 className="lg:text-5xl text-4xl font-extrabold lg:leading-[55px]">
                   Welcome back
                 </h2>
-                <h4 className="lg:text-2xl text-2xl font-extrabold lg:leading-[55px]">
-                  {loginUser?.username}
-                </h4>
               </div>
             ) : (
               <h2 className="lg:text-5xl text-4xl font-extrabold lg:leading-[55px]">
@@ -63,14 +60,14 @@ export default function SiteHome() {
             {loginUser.isAuthenticated ? (
               <>
                 <h1 className="text-4xl font-bold mb-6">Welcome to Your Dashboard</h1>
-                <p className="text-lg text-muted-foreground mb-10 max-w-md">
-                  You have 3 new notifications and 5 pending tasks.
+                <p className="text-lg text-muted-foreground max-w-md">
+                  Hi {loginUser.username}<br></br> You have 3 new notifications.
                 </p>
                 <div className="w-full max-w-sm space-y-6">
-                  <Button asChild className="w-full px-5 py-4 h-14 text-base font-medium rounded-2xl">
+                  <Button asChild variant="link" className="w-full px-5 py-4 h-14 text-base font-medium rounded-2xl">
                     <Link to="/console/notifications">View Notifications</Link>
                   </Button>
-                  <Button asChild variant="outline" className="w-full px-5 py-4 h-14 text-base font-medium rounded-2xl">
+                  <Button asChild className="w-full px-5 py-4 h-14 text-base font-medium rounded-2xl">
                     <Link to="/console">View Dashboard</Link>
                   </Button>
                 </div>
