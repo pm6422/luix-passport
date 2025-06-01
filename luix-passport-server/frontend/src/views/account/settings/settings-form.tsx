@@ -79,75 +79,75 @@ export function SettingsForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <div>
-          <h3 className='text-sm font-medium'>Username</h3>
-          <p className='mt-2 text-sm text-muted-foreground'>
-            {form.getValues('username')}
+          <h3 className="text-sm font-medium">Username</h3>
+          <p className="mt-2 text-sm text-muted-foreground">
+            {form.getValues("username")}
           </p>
         </div>
 
-        <div className='flex items-center justify-between'>
+        <div className="flex items-center justify-between">
           <div>
-            <h3 className='text-sm font-medium'>Email</h3>
-            <p className='mt-2 text-sm text-muted-foreground'>
-              {form.getValues('email')}
+            <h3 className="text-sm font-medium">Email</h3>
+            <p className="mt-2 text-sm text-muted-foreground">
+              {form.getValues("email")}
             </p>
           </div>
-          <Link to='/console/account/change-email'>
+          <Link to="/console/account/change-email">
             <Button
-              type='button'
-              variant={'link'}
-              className='underline decoration-dashed underline-offset-4 hover:decoration-solid'
+              type="button"
+              variant={"link"}
+              className="underline decoration-dashed underline-offset-4 hover:decoration-solid"
             >
-              <IconMailForward className='mr-2 size-4' />
+              <IconMailForward className="mr-2 size-4" />
               Change Email
             </Button>
           </Link>
         </div>
 
         <div>
-          <h3 className='text-sm font-medium'>Mobile No.</h3>
-          <p className='mt-2 text-sm text-muted-foreground'>
-            {form.getValues('mobileNo')}
+          <h3 className="text-sm font-medium">Mobile No.</h3>
+          <p className="mt-2 text-sm text-muted-foreground">
+            {form.getValues("mobileNo")}
           </p>
         </div>
 
         <InputFormField
           control={form.control}
-          name='firstName'
-          label='First Name'
+          name="firstName"
+          label="First Name"
         />
         <InputFormField
           control={form.control}
-          name='lastName'
-          label='Last Name'
+          name="lastName"
+          label="Last Name"
         />
         <SelectFormField
           control={form.control}
-          name='locale'
-          label='Preferred Language'
+          name="locale"
+          label="Preferred Language"
           options={locales}
           required
         />
         <ComboboxFormField
           control={form.control}
-          name='timeZoneId'
-          label='Time Zone'
+          name="timeZoneId"
+          label="Time Zone"
           options={supportedTimezones}
           required
         />
         <SelectFormField
           control={form.control}
-          name='dateTimeFormatId'
-          label='Date Time Format'
+          name="dateTimeFormatId"
+          label="Date Time Format"
           options={supportedDateTimeFormats}
           required
         />
 
-        <div className='flex justify-end'>
-          <LoadingButton type='submit' loading={saving} className="w-full sm:w-auto">
-            {saving ? 'Updating account...' : 'Update account'}
+        <div className="flex justify-end">
+          <LoadingButton type="submit" loading={saving} className="w-full sm:w-auto">
+            {saving ? "Updating account..." : "Update account"}
           </LoadingButton>
         </div>
       </form>
