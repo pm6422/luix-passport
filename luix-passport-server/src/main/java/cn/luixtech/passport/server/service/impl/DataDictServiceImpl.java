@@ -66,13 +66,8 @@ public class DataDictServiceImpl implements DataDictService {
     public void updateTimezoneUtcOffset() {
         dataDictRepository.findByCategoryCode(CATEGORY_CODE_TIMEZONE).forEach(timezone -> {
             try {
-                // 获取时区
-                ZoneId zoneId = ZoneId.of(timezone.getId());
-                // 计算当前时间的 UTC 偏移量
-                OffsetDateTime now = OffsetDateTime.now(zoneId);
-                String utcOffset = formatOffset(now.getOffset().getTotalSeconds());
                 // 更新数据库
-                timezone.setDictName(utcOffset);
+                timezone.setDictName(getOffset(ZoneId.of(timezone.getId())));
                 dataDictRepository.save(timezone);
             } catch (Exception e) {
                 log.error("Failed to update offset for timezone: {}", timezone.getId());
@@ -92,6 +87,12 @@ public class DataDictServiceImpl implements DataDictService {
 
         double offsetHours = hours + (minutes / 60.0);
         return sign.equals("+") ? offsetHours : -offsetHours;
+    }
+
+    private String getOffset(ZoneId zoneId) {
+        // 计算当前时间的 UTC 偏移量
+        OffsetDateTime now = OffsetDateTime.now(zoneId);
+        return formatOffset(now.getOffset().getTotalSeconds());
     }
 
     private String formatOffset(int totalSeconds) {
