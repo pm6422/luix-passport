@@ -1,12 +1,13 @@
 <div th:fragment="content">
-    <h1 class="font-bold text-gray-900 mb-10" th:text="#{verification.code.email.title}"></h1>
-    <div class="text-sm mb-1">
-        <span class="font-bold text-gray-800" th:text="#{email.greeting(${user.username})}"></span>
+    <div style="font-size: 16px; margin-bottom: 5px;">
+        <span style="font-weight: bold; color: #444444;" th:text="#{email.greeting(${user.username})}">Hey User,</span>
     </div>
-    <div class="text-sm mb-5">
-        <span class="font-semibold text-gray-800" th:text="#{verification.code.email.text}"></span>
+
+    <div style="font-size: 16px; margin-bottom: 25px;">
+        <span style="font-weight: 600; color: #444444;" th:text="#{verification.code.email.text}">Your verification code: </span>
     </div>
-    <div class="font-bold text-2xl text-lime-500">
-        <span th:text="${user.verificationCode}"></span>
-    </div>
+
+    <div style="font-weight: bold; font-size: 28px; color: #7c3aed; text-align: center; margin-bottom: 30px; letter-spacing: 3px;" th:text="${user.verificationCode}">123456</div>
+
+    <p style="margin: 0 0 20px 0; color: #666666; font-size: 16px; line-height: 1.5;" th:text="#{verification.code.email.expiry}">This code will expire in 15 minutes</p>
 </div>

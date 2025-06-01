@@ -245,7 +245,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User user = userRepository.findById(username).orElseThrow(() -> new DataNotFoundException(username));
         if (StringUtils.isNotEmpty(verificationCode)) {
             Validate.isTrue(verificationCode.equalsIgnoreCase(user.getVerificationCode()), "Invalid verification code!");
-            Validate.isTrue(user.getVerificationCodeSentAt().plus(1, ChronoUnit.DAYS).isAfter(Instant.now()), "Invalid verification exceeds one day before!");
+            Validate.isTrue(user.getVerificationCodeSentAt().plus(15, ChronoUnit.MINUTES).isAfter(Instant.now()),
+                    "The verification code has expired and is valid for 15 minutes!");
         }
         if (StringUtils.isNotEmpty(oldRawPassword)) {
             Validate.isTrue(passwordEncoder.matches(oldRawPassword, user.getPasswordHash()), messageCreator.getMessage("UE5008"));
