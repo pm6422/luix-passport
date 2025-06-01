@@ -4,7 +4,7 @@ import { CentralTopNav } from "@/components/central-top-nav"
 import { AccountNav } from "@/components/account-nav"
 import { useStore } from "exome/react"
 import { loginUserStore } from "@/stores/login-user-store"
-import { Button } from '@/components/custom/button.tsx'
+import { Button } from "@/components/custom/button"
 
 export default function NoAuthLayout() {
   const { loginUser } = useStore(loginUserStore)
