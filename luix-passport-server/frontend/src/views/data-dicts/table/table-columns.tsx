@@ -54,7 +54,7 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Category Code" />
       ),
-      cell: ({ row }) => <div className="w-[125px]">{row.getValue("categoryCode")}</div>,
+      cell: ({ row }) => <div className="w-[150px]">{row.getValue("categoryCode")}</div>,
       enableSorting: true,
       enableHiding: true,
     },
