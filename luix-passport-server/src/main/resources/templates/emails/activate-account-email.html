@@ -1,12 +1,20 @@
 <div th:fragment="content">
-    <h1 class="font-bold text-gray-900 mb-10" th:text="#{activate.account.email.title}"></h1>
-    <div class="text-sm mb-1">
-        <span class="font-bold text-gray-800" th:text="#{email.greeting(${user.username})}"></span>
+    <div style="font-size: 16px; margin-bottom: 5px;">
+        <span style="font-weight: bold; color: #444444;" th:text="#{email.greeting(${user.username})}">Hey User,</span>
     </div>
-    <div class="text-sm mb-15">
-        <span class="font-semibold text-gray-800" th:text="#{activate.account.email.text}"></span>
+
+    <div style="font-size: 16px; margin-bottom: 25px;">
+        <span style="font-weight: 600; color: #444444;"
+              th:text="#{activate.account.email.text}">
+              Please activate your account by clicking the button below:
+        </span>
     </div>
-    <div>
-        <a th:href="@{|${baseUrl}/activate-account?code=${user.activationCode}|}" class="btn btn-lg btn-primary hover-elevate-down" th:text="#{activate.account.email.button.text}"></a>
+
+    <div style="margin-bottom: 30px; text-align: center;">
+        <a th:href="@{|${baseUrl}/activate-account?code=${user.activationCode}|}"
+           style="display: inline-block; padding: 12px 24px; background-color: #7c3aed; color: white; font-size: 16px; font-weight: 600; text-decoration: none; border-radius: 6px; transition: background-color 0.3s ease;"
+           onmouseover="this.style.backgroundColor='#6b21a8'"
+           onmouseout="this.style.backgroundColor='#7c3aed'"
+           th:text="#{activate.account.email.button.text}">Activate Account</a>
     </div>
 </div>
