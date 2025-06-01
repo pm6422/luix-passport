@@ -42,6 +42,7 @@
     "dayjs": "^1.11.10",
     "embla-carousel-react": "^8.6.0",
     "exome": "^2.5.0",
+    "framer-motion": "^12.15.0",
     "input-otp": "^1.4.2",
     "libphonenumber-js": "^1.10.61",
     "lodash": "^4.17.21",
