@@ -7,7 +7,7 @@ public interface MailService {
 
     void sendEmail(String[] sendTo, String subject, String content);
 
-    void sendEmailFromTemplate(User user, String[] emailsTo, String templateName, String titleKey, String baseUrl);
+    void sendEmailFromTemplate(User user, String[] emailsTo, String templateName, String subjectKey, String titleKey, String baseUrl);
 
     void sendAccountActivationEmail(User user, String baseUrl);
 
