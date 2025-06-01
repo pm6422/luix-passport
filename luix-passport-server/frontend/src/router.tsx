@@ -225,9 +225,9 @@ const router = createBrowserRouter([
   },
 
   // Error routes
-  { path: "/500", Component: GeneralError },
   { path: "/403", Component: ForbiddenError },
   { path: "/404", Component: NotFoundError },
+  { path: "/500", Component: GeneralError },
   { path: "/503", Component: MaintenanceError },
 
   // Fallback 404 route
