@@ -404,7 +404,7 @@
             <column name="category_code" type="varchar(25)">
                 <constraints nullable="false"/>
             </column>
-            <column name="dict_code" type="varchar(30)">
+            <column name="dict_code" type="varchar(40)">
                 <constraints nullable="false"/>
             </column>
             <column name="dict_name" type="varchar(20)"/>

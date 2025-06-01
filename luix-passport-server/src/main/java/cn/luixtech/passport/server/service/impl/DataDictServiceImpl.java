@@ -31,6 +31,34 @@ public class DataDictServiceImpl implements DataDictService {
     private final DataDictRepository dataDictRepository;
 
     @Override
+    public void initAllTimezones() {
+        ZoneId.getAvailableZoneIds().forEach(zoneId -> {
+            DataDict timezone = new DataDict();
+            timezone.setCategoryCode(CATEGORY_CODE_TIMEZONE);
+            timezone.setDictCode(zoneId);
+            timezone.setDictName(getOffset(ZoneId.of(zoneId)));
+            timezone.setEnabled(true);
+            dataDictRepository.save(timezone);
+        });
+    }
+
+    /**
+     * Execute every day at 2:00 AM
+     */
+    @Scheduled(cron = "0 0 2 * * *")
+    @Override
+    public void updateTimezoneUtcOffset() {
+        dataDictRepository.findByCategoryCode(CATEGORY_CODE_TIMEZONE).forEach(timezone -> {
+            try {
+                timezone.setDictName(getOffset(ZoneId.of(timezone.getDictName())));
+                dataDictRepository.save(timezone);
+            } catch (Exception e) {
+                log.error("Failed to update offset for timezone: {}", timezone.getId());
+            }
+        });
+    }
+
+    @Override
     public Page<DataDict> find(Pageable pageable, String num, String categoryCode, Boolean enabled) {
         // Ignore a query parameter if it has a null value
         ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreNullValues();
@@ -56,23 +84,6 @@ public class DataDictServiceImpl implements DataDictService {
         return timezones.stream()
                 .sorted(Comparator.comparingDouble(timezone -> parseUtcOffsetToHours(timezone.getDictName())))
                 .toList();
-    }
-
-    /**
-     * Execute every day at 2:00 AM
-     */
-    @Scheduled(cron = "0 0 2 * * *")
-    @Override
-    public void updateTimezoneUtcOffset() {
-        dataDictRepository.findByCategoryCode(CATEGORY_CODE_TIMEZONE).forEach(timezone -> {
-            try {
-                // 更新数据库
-                timezone.setDictName(getOffset(ZoneId.of(timezone.getDictName())));
-                dataDictRepository.save(timezone);
-            } catch (Exception e) {
-                log.error("Failed to update offset for timezone: {}", timezone.getId());
-            }
-        });
     }
 
     private double parseUtcOffsetToHours(String utcOffset) {
