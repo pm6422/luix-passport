@@ -21,10 +21,16 @@ import java.util.LinkedHashMap;
 @Getter
 public class ApplicationProperties {
 
+    private final Timezone    timezone    = new Timezone();
     private final Account     account     = new Account();
     private final Company     company     = new Company();
     private final Mail        mail        = new Mail();
     private final AllowedCors allowedCors = new AllowedCors();
+
+    @Data
+    public static class Timezone {
+        private String defaultTimezone;
+    }
 
     @Data
     public static class Account {

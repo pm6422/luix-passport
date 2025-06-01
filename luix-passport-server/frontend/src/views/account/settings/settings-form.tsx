@@ -16,8 +16,8 @@ import { loginUserStore } from "@/stores/login-user-store"
 import { AccountService } from "@/services/account-service"
 import { getErrorMessage } from "@/lib/handle-error"
 import { isValidPhoneNumber } from "react-phone-number-input"
-import { type SupportedTimezone } from "@/domains/supported-timezone"
 import { type SupportedDateTimeFormat } from "@/domains/supported-date-time-format"
+import { type DataDict } from "@/domains/data-dict"
 import { Link } from "react-router-dom"
 import { Option } from "@/components/custom/multi-select"
 
@@ -51,8 +51,8 @@ export function SettingsForm() {
       AccountService.findSupportedDateTimeFormats()
     ]).then(results => {
       // load options
-      setSupportedTimezones(results[0].data.map((item: SupportedTimezone) =>
-        ({label: "(UTC" + item.utcOffset + ") " + item.id , value: item.id})));
+      setSupportedTimezones(results[0].data.map((item: DataDict) =>
+        ({label: "(UTC" + item.dictName + ") " + item.dictCode , value: item.dictCode})));
       setSupportedDateTimeFormats(results[1].data.map((item: SupportedDateTimeFormat) =>
         ({label: item.displayName + " (" + item.example + ")", value: item.id})));
 

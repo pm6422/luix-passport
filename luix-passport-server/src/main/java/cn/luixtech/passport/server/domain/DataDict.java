@@ -24,7 +24,8 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = true)
 public class DataDict extends AbstractUpdatableDomain implements Serializable {
     @Serial
-    private static final long   serialVersionUID = 1L;
+    private static final long   serialVersionUID       = 1L;
+    public static final  String CATEGORY_CODE_TIMEZONE = "Timezone";
 
     @IncKey(prefix = "DCT")
     @Column(unique = true, nullable = false)

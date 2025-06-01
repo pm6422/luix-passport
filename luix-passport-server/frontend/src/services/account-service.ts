@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios"
 import http from "@/axios"
 import type { LoginUser } from "@/stores/login-user-store"
-import { type SupportedTimezone } from "@/domains/supported-timezone"
+import { type DataDict } from "@/domains/data-dict"
 import { type SupportedDateTimeFormat } from "@/domains/supported-date-time-format"
 import { SettingsFormSchema } from "@/views/account/settings/settings-form"
 import { ChangePasswordFormSchema } from "@/views/account/change-password/change-password-form"
@@ -75,7 +75,7 @@ export class AccountService {
     return http.post("/open-api/accounts/complete-password-recovery", model)
   }
 
-  public static findSupportedTimezones(): Promise<AxiosResponse<Array<SupportedTimezone>>> {
+  public static findSupportedTimezones(): Promise<AxiosResponse<Array<DataDict>>> {
     return http.get("/api/accounts/all-supported-time-zones")
   }
 

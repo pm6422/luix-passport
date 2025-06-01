@@ -229,22 +229,10 @@ public class User extends TableImpl<UserRecord> {
 
     @Override
     public List<ForeignKey<UserRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.USER__FK_USER_TIMEZONE_SUPPORTED_TIMEZONE_ID, Keys.USER__FK_USER_DATE_TIME_FORMAT_SUPPORTED_DATE_TIME_FORMAT_ID);
+        return Arrays.asList(Keys.USER__FK_USER_DATE_TIME_FORMAT_SUPPORTED_DATE_TIME_FORMAT_ID);
     }
 
-    private transient SupportedTimezone _supportedTimezone;
     private transient SupportedDateTimeFormat _supportedDateTimeFormat;
-
-    /**
-     * Get the implicit join path to the <code>public.supported_timezone</code>
-     * table.
-     */
-    public SupportedTimezone supportedTimezone() {
-        if (_supportedTimezone == null)
-            _supportedTimezone = new SupportedTimezone(this, Keys.USER__FK_USER_TIMEZONE_SUPPORTED_TIMEZONE_ID);
-
-        return _supportedTimezone;
-    }
 
     /**
      * Get the implicit join path to the

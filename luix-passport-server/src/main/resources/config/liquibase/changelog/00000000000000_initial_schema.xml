@@ -11,22 +11,6 @@
         http://www.liquibase.org/xml/ns/pro
         http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
     <changeSet author="louislau (generated)" id="00000000000001">
-        <createTable tableName="supported_timezone">
-            <column name="id" type="VARCHAR(50)">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="utc_offset" type="VARCHAR(10)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="preset" type="boolean">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-        <loadData
-            file="config/liquibase/data/supported_timezone.csv"
-            separator=";"
-            tableName="supported_timezone">
-        </loadData>
         <createTable tableName="supported_date_time_format">
             <column name="id" type="VARCHAR(50)">
                 <constraints primaryKey="true" nullable="false"/>
@@ -616,14 +600,6 @@
                 constraintName="fk_user_profile_pic_username"
                 referencedTableName="user"
                 referencedColumnNames="username"
-                onDelete="CASCADE"
-                onUpdate="CASCADE"/>
-        <addForeignKeyConstraint
-                baseTableName="user"
-                baseColumnNames="time_zone_id"
-                constraintName="fk_user_timezone_supported_timezone_id"
-                referencedTableName="supported_timezone"
-                referencedColumnNames="id"
                 onDelete="CASCADE"
                 onUpdate="CASCADE"/>
         <addForeignKeyConstraint

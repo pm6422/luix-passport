@@ -18,7 +18,7 @@ import { AccountService } from "@/services/account-service"
 import { UserService } from "@/services/user-service"
 import { RoleService } from "@/services/role-service"
 import { Option } from "@/components/custom/multi-select"
-import type { SupportedTimezone } from "@/domains/supported-timezone"
+import { type DataDict } from "@/domains/data-dict"
 import type { SupportedDateTimeFormat } from "@/domains/supported-date-time-format"
 import { Skeleton } from '@/components/ui/skeleton.tsx'
 
@@ -57,8 +57,8 @@ export function EditDialog({
     ]).then(results => {
       // load options
       setEnabledRoles(results[0].data.map((item: string) => ({label: item, value: item})));
-      setSupportedTimezones(results[1].data.map((item: SupportedTimezone) =>
-        ({label: "(UTC" + item.utcOffset + ") " + item.id , value: item.id})));
+      setSupportedTimezones(results[1].data.map((item: DataDict) =>
+        ({label: "(UTC" + item.dictName + ") " + item.dictCode , value: item.dictCode})));
       setSupportedDateTimeFormats(results[2].data.map((item: SupportedDateTimeFormat) =>
         ({label: item.displayName + " (" + item.example + ")", value: item.id})));
 

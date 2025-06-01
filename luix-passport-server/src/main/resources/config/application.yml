@@ -168,6 +168,8 @@ luix:
 # Application specific properties
 # ===================================================================
 application:
+  timezone:
+    defaultTimezone: Europe/Amsterdam
   account:
     default-password: ${spring.application.name}
   company:

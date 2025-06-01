@@ -10,4 +10,8 @@ public interface DataDictService {
     Page<DataDict> find(Pageable pageable, String num, String categoryCode, Boolean enabled);
 
     void batchUpdateCategoryCode(List<String> ids, String targetCategoryCode);
+
+    List<DataDict> findAllTimezone();
+
+    void updateTimezoneUtcOffset();
 }

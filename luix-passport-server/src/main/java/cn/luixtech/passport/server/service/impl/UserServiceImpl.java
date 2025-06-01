@@ -1,14 +1,13 @@
 package cn.luixtech.passport.server.service.impl;
 
+import cn.luixtech.passport.server.config.ApplicationProperties;
 import cn.luixtech.passport.server.config.oauth.AuthUser;
 import cn.luixtech.passport.server.domain.SupportedDateTimeFormat;
-import cn.luixtech.passport.server.domain.SupportedTimezone;
 import cn.luixtech.passport.server.domain.User;
 import cn.luixtech.passport.server.domain.UserRole;
 import cn.luixtech.passport.server.exception.UserNotActivatedException;
 import cn.luixtech.passport.server.pojo.ManagedUser;
 import cn.luixtech.passport.server.repository.SupportedDateTimeFormatRepository;
-import cn.luixtech.passport.server.repository.SupportedTimezoneRepository;
 import cn.luixtech.passport.server.repository.UserRepository;
 import cn.luixtech.passport.server.repository.UserRoleRepository;
 import cn.luixtech.passport.server.service.*;
@@ -66,18 +65,18 @@ import static org.apache.commons.lang3.time.DateFormatUtils.ISO_8601_EXTENDED_DA
 @Service
 @AllArgsConstructor
 public class UserServiceImpl implements UserService, UserDetailsService {
+    private final ApplicationProperties              applicationProperties;
     private final PasswordEncoder                    passwordEncoder;
     private final DSLContext                         dslContext;
-    private final SupportedTimezoneRepository        supportedTimezoneRepository;
     private final SupportedDateTimeFormatRepository  supportedDateTimeFormatRepository;
     private final UserRepository                     userRepository;
     private final UserRoleRepository                 userRoleRepository;
     private final UserRoleService                    userRoleService;
     private final UserNotificationService            userNotificationService;
     private final RolePermissionService              rolePermissionService;
-    private final UserProfilePicService userProfilePicService;
-    private final TeamUserService       teamUserService;
-    private final MessageCreator        messageCreator;
+    private final UserProfilePicService              userProfilePicService;
+    private final TeamUserService                    teamUserService;
+    private final MessageCreator                     messageCreator;
     private final HttpServletRequest                 httpServletRequest;
     private final Environment                        env;
     private final StateMachine<UserState, UserEvent> stateMachine;
@@ -181,9 +180,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         domain.setPasswordExpiresAt(Instant.now().plus(90, ChronoUnit.DAYS));
         domain.setLocale(env.getProperty("spring.web.locale"));
 
-        SupportedTimezone presetTimezone = supportedTimezoneRepository.findByPresetIsTrue()
-                .orElseThrow(() -> new DataNotFoundException("preset timezone"));
-        domain.setTimeZoneId(presetTimezone.getId());
+        domain.setTimeZoneId(applicationProperties.getTimezone().getDefaultTimezone());
 
         SupportedDateTimeFormat presetDateTimeFormat = supportedDateTimeFormatRepository.findByPresetIsTrue()
                 .orElseThrow(() -> new DataNotFoundException("preset date time format"));
