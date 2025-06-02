@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { Avatar } from "@/components/ui/avatar"
 import { Button } from "@/components/custom/button"
 import { Link } from "react-router-dom"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -63,7 +63,6 @@ export function AccountNav() {
                   alt="Profile"
                   className="w-full h-full object-cover"
                 />
-                <AvatarFallback><Skeleton className="w-full h-full" /></AvatarFallback>
               </Avatar>
             )}
           </div>
