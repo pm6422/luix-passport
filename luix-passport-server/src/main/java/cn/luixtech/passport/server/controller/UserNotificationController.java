@@ -1,15 +1,20 @@
 package cn.luixtech.passport.server.controller;
 
+import cn.luixtech.passport.server.domain.Notification;
 import cn.luixtech.passport.server.domain.UserNotification;
 import cn.luixtech.passport.server.pojo.MyNotification;
 import cn.luixtech.passport.server.service.UserNotificationService;
 import cn.luixtech.passport.server.utils.AuthUtils;
+import com.luixtech.springbootframework.component.HttpHeaderCreator;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +30,18 @@ import static com.luixtech.springbootframework.utils.HttpHeaderUtils.generatePag
 @AllArgsConstructor
 @Slf4j
 public class UserNotificationController {
+    private final HttpHeaderCreator       httpHeaderCreator;
     private final UserNotificationService userNotificationService;
+
+    @Operation(summary = "create a new contact us notification")
+    @PostMapping("/open-api/user-notifications/contact")
+    public ResponseEntity<Void> createContactUsNotification(@Parameter(description = "notification", required = true) @Valid @RequestBody Notification domain) {
+        userNotificationService.sendPersonalNotification(List.of("louis", "admin"),
+                domain.getTitle(), domain.getContent(), domain.getSender(), domain.getSenderEmail());
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .headers(httpHeaderCreator.createSuccessHeader("SM1001", domain.getId()))
+                .build();
+    }
 
     @Operation(summary = "find notifications for current user")
     @GetMapping("/api/user-notifications")
