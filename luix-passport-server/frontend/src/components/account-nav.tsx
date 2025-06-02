@@ -43,8 +43,7 @@ export function AccountNav() {
     }).then((response) => {
       setIsLoading(false);
       const blob = new Blob([response.data], { type: response.headers["content-type"] });
-      const objectUrl = URL.createObjectURL(blob);
-      setImageUrl(objectUrl);
+      setImageUrl(URL.createObjectURL(blob));
     })
   }, []);
 
