@@ -24,6 +24,7 @@ interface Props<TFieldValues extends FieldValues> {
   placeholder?: string
   required?: boolean
   disabled?: boolean
+  inputClassName?: string
   selectContentClassName?: string
   formItemClassName?: string
   hide?: boolean
@@ -39,6 +40,7 @@ const SelectFormField = <TFieldValues extends FieldValues>({
   placeholder,
   required,
   disabled,
+ inputClassName,
   selectContentClassName,
   formItemClassName,
   hide = false
@@ -51,7 +53,7 @@ const SelectFormField = <TFieldValues extends FieldValues>({
       <FormItem className={formItemClassName}>
         {label && <RequiredFormLabel required={required}>{label}</RequiredFormLabel>}
         <Select onValueChange={field.onChange} value={field.value}>
-          <FormControl>
+          <FormControl className={inputClassName}>
             <SelectTrigger>
               <SelectValue placeholder={placeholder}/>
             </SelectTrigger>

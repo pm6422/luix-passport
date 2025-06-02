@@ -14,8 +14,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { yesNoOptions } from '@/data/yes-no-options'
-import SelectFormField from '@/components/custom/form-field/select'
+import { yesNoOptions } from "@/data/yes-no-options"
+import SelectFormField from "@/components/custom/form-field/select"
 
 interface DataTableToolbarProps{
   entityName: string,
