@@ -47,7 +47,13 @@ export function AccountNav() {
         <Button variant="ghost" className="relative size-12 rounded-full">
           {avatarVisible ? (
             <Avatar className="size-12">
-              <AvatarImage src="/api/accounts/profile-pic"/>
+              <AvatarImage
+                src="/api/accounts/profile-pic"
+                loading="eager"
+                onError={(e) => {
+                 e.currentTarget.src = '/api/accounts/profile-pic?retry='+Date.now()
+                }}
+              />
               <AvatarFallback><Skeleton className="w-full" /></AvatarFallback>
             </Avatar>
           ) : (
