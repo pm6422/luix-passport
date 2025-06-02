@@ -201,23 +201,23 @@ export default function Notifications() {
                 {/* Add sender information section */}
                 {(selectedNotification.sender || selectedNotification.senderEmail) && (
                   <div className="mb-6 p-4 bg-muted/50 rounded-lg">
-                    <h3 className="text-sm font-medium mb-2">From</h3>
                     <div className="space-y-2">
                       {selectedNotification.sender && (
                         <p className="text-sm">
-                          <span className="text-muted-foreground">Name: </span>
-                          {selectedNotification.sender}
-                        </p>
-                      )}
-                      {selectedNotification.senderEmail && (
-                        <p className="text-sm">
-                          <span className="text-muted-foreground">Email: </span>
-                          <a
-                            href={`mailto:${selectedNotification.senderEmail}`}
-                            className="text-primary hover:underline"
-                          >
-                            {selectedNotification.senderEmail}
-                          </a>
+                          <span className="text-muted-foreground">From: </span>
+                          <span className="text-muted-foreground">{selectedNotification.sender}</span>
+                          {selectedNotification.senderEmail && (
+                            <span className="text-sm">
+                              <span className="text-muted-foreground">&nbsp;(</span>
+                              <a
+                                href={`mailto:${selectedNotification.senderEmail}`}
+                                className="text-primary hover:underline"
+                              >
+                                {selectedNotification.senderEmail}
+                              </a>
+                              <span className="text-muted-foreground">)</span>
+                            </span>
+                          )}
                         </p>
                       )}
                     </div>
