@@ -58,7 +58,6 @@ export default function ContactUs() {
       loading: "Sending message...",
       success: () => {
         setIsLoading(false)
-        window.location.href = "/login"
         return "Sent message successfully"
       },
       error: (error) => {
