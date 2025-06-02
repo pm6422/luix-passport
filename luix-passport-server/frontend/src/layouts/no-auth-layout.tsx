@@ -29,6 +29,11 @@ export default function NoAuthLayout() {
       title: "Docs",
       href: "docs",
       isActive: false,
+    },
+    {
+      title: "Contact",
+      href: "contact-us",
+      isActive: false,
     }
   ]
   const authTopNav = [
@@ -55,6 +60,11 @@ export default function NoAuthLayout() {
     {
       title: "Docs",
       href: "/docs",
+      isActive: false,
+    },
+    {
+      title: "Contact",
+      href: "contact-us",
       isActive: false,
     }
   ]
