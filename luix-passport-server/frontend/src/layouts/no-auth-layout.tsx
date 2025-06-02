@@ -15,38 +15,11 @@ export default function NoAuthLayout() {
       href: "/",
       isActive: true,
     },
-    {
-      title: "Features",
-      href: "features",
-      isActive: false,
-    },
-    {
-      title: "Pricing",
-      href: "pricing",
-      isActive: false,
-    },
-    {
-      title: "Docs",
-      href: "docs",
-      isActive: false,
-    },
-    {
-      title: "Contact",
-      href: "contact-us",
-      isActive: false,
-    }
-  ]
-  const authTopNav = [
-    {
-      title: "Home",
-      href: "/",
-      isActive: true,
-    },
-    {
+    ...(loginUser.isAuthenticated ? [{
       title: "Dashboard",
       href: "/console",
       isActive: false,
-    },
+    }] : []),
     {
       title: "Features",
       href: "/features",
@@ -78,11 +51,7 @@ export default function NoAuthLayout() {
         <Layout>
           <LayoutHeader>
             <div className="ml-auto flex items-center space-x-4">
-              {loginUser.isAuthenticated ? (
-                <CentralTopNav links={authTopNav}/>
-              ) : (
-                <CentralTopNav links={topNav}/>
-              )}
+              <CentralTopNav links={topNav}/>
               {loginUser.isAuthenticated ? (
                 <AccountNav />
               ) : (
