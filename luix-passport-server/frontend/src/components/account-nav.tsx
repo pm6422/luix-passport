@@ -30,7 +30,7 @@ import { useEffect, useRef, useState } from 'react'
 export function AccountNav() {
   const { appInfo } = useStore(appInfoStore)
   const { loginUser } = useStore(loginUserStore)
-  const avatarRef = useRef<HTMLDivElement>(null);
+  const avatarRef = useRef<HTMLButtonElement>(null);
   const [isInView, setIsInView] = useState(false);
 
   useEffect(() => {
@@ -60,14 +60,13 @@ export function AccountNav() {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative size-12 rounded-full" ref={avatarRef}>
           {isInView ? (
-            <Avatar className="size-12 -intro-y">
+            <Avatar className="size-12">
               <AvatarImage src="/api/accounts/profile-pic" loading="lazy" decoding="async"/>
               <AvatarFallback><Skeleton className="w-full" /></AvatarFallback>
             </Avatar>
           ) : (
             <Skeleton className="w-full h-full rounded-full" />
           )}
-
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-48" align="end" forceMount>
