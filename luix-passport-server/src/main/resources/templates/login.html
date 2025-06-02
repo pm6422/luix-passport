@@ -7,7 +7,7 @@
 	<link rel="shortcut icon" th:href="@{/favicon.ico}"/>
 	<script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-white rounded-lg py-10">
+<body>
 	<div class="container relative grid h-svh flex-col items-center justify-center lg:max-w-none lg:grid-cols-2">
 		<div class="lg:flex relative hidden lg:px-28 ms-10 mb-36">
 			<div class="max-md:text-center">
@@ -19,7 +19,7 @@
 				<p class="text-sm mt-10">Don't have an account. <a href="/sign-up" class="text-blue-700 font-semibold hover:underline ml-1">Register here</a></p>
 			</div>
 		</div>
-		<div class="flex flex-col w-full h-full xl:px-48 lg:px-28 px-5 text-center bg-white rounded-3xl">
+		<div class="flex flex-col w-full h-full xl:px-48 lg:px-28 px-5 text-center rounded-3xl">
 			<img alt="Logo" th:src="@{/assets/images/logos/logo-round.svg}" class="h-16 my-5" />
 			<h3 class="mb-3 text-2xl font-extrabold text-dark-gray-900">Sign In</h3>
 			<a href="/oauth2/authorization/github-idp"
