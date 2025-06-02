@@ -451,6 +451,10 @@
             <column name="type" type="VARCHAR(8)">
                 <constraints nullable="false"/>
             </column>
+            <column name="sender" type="VARCHAR(20)">
+            </column>
+            <column name="sender_email" type="VARCHAR(20)">
+            </column>
             <column name="created_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>

@@ -25,4 +25,6 @@ public class Notification extends AbstractUpdatableDomain implements Serializabl
     private String title;
     private String content;
     private String type;
+    private String sender;
+    private String senderEmail;
 }

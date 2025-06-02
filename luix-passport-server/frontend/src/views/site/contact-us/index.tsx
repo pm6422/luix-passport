@@ -1,4 +1,52 @@
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { z } from "zod"
+import { toast } from "sonner"
+import { LoadingButton } from "@/components/custom/loading-button"
+import { getErrorMessage } from "@/lib/handle-error"
+import { ContactService } from "@/services/contact-service"
+
+// Define the form schema with updated field names
+const contactFormSchema = z.object({
+  sender: z.string().trim().min(1, { message: "Required" }),
+  senderEmail: z.string().email("Please enter a valid email address"),
+  title: z.string().trim().min(1, { message: "Required" }),
+  content: z.string().trim().min(1, { message: "Required" })
+})
+
+export type ContactFormSchema = z.infer<typeof contactFormSchema>
+
 export default function ContactUs() {
+  const [isLoading, setIsLoading] = useState(false)
+
+  const form = useForm<ContactFormSchema>({
+    resolver: zodResolver(contactFormSchema),
+    defaultValues: {
+      sender: "",
+      senderEmail: "",
+      title: "",
+      content: ""
+    }
+  })
+
+  async function onSubmit(data: ContactFormSchema) {
+    setIsLoading(true)
+
+    toast.promise(ContactService.create(data), {
+      loading: "Sending message...",
+      success: () => {
+        setIsLoading(false)
+        window.location.href = "/login";
+        return "Sent message successfully"
+      },
+      error: (error) => {
+        setIsLoading(false)
+        return getErrorMessage(error)
+      }
+    })
+  }
+
   return (
     <div className="container relative grid flex-col items-center justify-center lg:max-w-none lg:grid-cols-2">
       {/* Left side - hidden on mobile */}
@@ -35,41 +83,51 @@ export default function ContactUs() {
             Fill out the form below and we'll get back to you soon
           </p>
 
-          <form className="space-y-6">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <div>
-              <label htmlFor="name" className="block text-sm font-medium mb-2">
+              <label htmlFor="sender" className="block text-sm font-medium mb-2">
                 Full Name
               </label>
               <input
                 type="text"
-                id="name"
+                id="sender"
                 className="w-full px-5 py-4 h-14 text-base rounded-2xl border border-input bg-background"
                 placeholder="Your name"
-                required
+                {...form.register("sender")}
               />
+              {form.formState.errors.sender && (
+                <p className="mt-1 text-sm text-destructive">
+                  {form.formState.errors.sender.message}
+                </p>
+              )}
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium mb-2">
+              <label htmlFor="senderEmail" className="block text-sm font-medium mb-2">
                 Email Address
               </label>
               <input
                 type="email"
-                id="email"
+                id="senderEmail"
                 className="w-full px-5 py-4 h-14 text-base rounded-2xl border border-input bg-background"
                 placeholder="your@email.com"
-                required
+                {...form.register("senderEmail")}
               />
+              {form.formState.errors.senderEmail && (
+                <p className="mt-1 text-sm text-destructive">
+                  {form.formState.errors.senderEmail.message}
+                </p>
+              )}
             </div>
 
             <div>
-              <label htmlFor="subject" className="block text-sm font-medium mb-2">
+              <label htmlFor="title" className="block text-sm font-medium mb-2">
                 Subject
               </label>
               <select
-                id="subject"
+                id="title"
                 className="w-full px-5 py-4 h-14 text-base rounded-2xl border border-input bg-background"
-                required
+                {...form.register("title")}
               >
                 <option value="">Select a subject</option>
                 <option value="support">Technical Support</option>
@@ -77,27 +135,38 @@ export default function ContactUs() {
                 <option value="feedback">Product Feedback</option>
                 <option value="other">Other</option>
               </select>
+              {form.formState.errors.title && (
+                <p className="mt-1 text-sm text-destructive">
+                  {form.formState.errors.title.message}
+                </p>
+              )}
             </div>
 
             <div>
-              <label htmlFor="message" className="block text-sm font-medium mb-2">
+              <label htmlFor="content" className="block text-sm font-medium mb-2">
                 Message
               </label>
               <textarea
-                id="message"
+                id="content"
                 rows={4}
                 className="w-full px-5 py-4 text-base rounded-2xl border border-input bg-background"
                 placeholder="How can we help you?"
-                required
+                {...form.register("content")}
               ></textarea>
+              {form.formState.errors.content && (
+                <p className="mt-1 text-sm text-destructive">
+                  {form.formState.errors.content.message}
+                </p>
+              )}
             </div>
 
-            <button
+            <LoadingButton
               type="submit"
+              loading={isLoading}
               className="w-full px-5 py-4 h-14 mt-4 text-base font-medium rounded-2xl bg-primary text-primary-foreground hover:bg-primary/90"
             >
-              Send Message
-            </button>
+              {isLoading ? "Sending..." : "Send Message"}
+            </LoadingButton>
           </form>
 
           <div className="mt-8 pt-8 border-t">
@@ -127,5 +196,5 @@ export default function ContactUs() {
         </div>
       </div>
     </div>
-  );
+  )
 }
