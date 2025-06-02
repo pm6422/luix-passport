@@ -54,16 +54,16 @@ export function AccountNav() {
           <div>
             {isLoading ? (
               <Avatar className="size-12">
-                <Skeleton className="w-full" />
+                <Skeleton className="w-full h-full" />
               </Avatar>
             ) : (
               <Avatar className="size-12 -intro-y">
                 <img
                   src={imageUrl}
                   alt="Profile"
-                  className="w-full object-cover"
+                  className="w-full h-full object-cover"
                 />
-                <AvatarFallback><Skeleton className="w-full" /></AvatarFallback>
+                <AvatarFallback><Skeleton className="w-full h-full" /></AvatarFallback>
               </Avatar>
             )}
           </div>
