@@ -208,14 +208,14 @@ export default function Notifications() {
                           <span className="text-muted-foreground">{selectedNotification.sender}</span>
                           {selectedNotification.senderEmail && (
                             <span className="text-sm">
-                              <span className="text-muted-foreground">&nbsp;(</span>
+                              &nbsp;(
                               <a
                                 href={`mailto:${selectedNotification.senderEmail}`}
-                                className="text-muted-foreground hover:underline"
+                                className="underline hover:text-primary"
                               >
                                 {selectedNotification.senderEmail}
                               </a>
-                              <span className="text-muted-foreground">)</span>
+                              )
                             </span>
                           )}
                         </p>
