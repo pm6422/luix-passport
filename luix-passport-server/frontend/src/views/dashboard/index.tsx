@@ -15,10 +15,9 @@ export default function DashboardPage() {
         <h1 className="text-3xl font-bold">Dashboard</h1>
         <div className="flex items-center space-x-2">
           <User className="h-5 w-5" />
-          <span>{loginUser?.username}</span>
           <span className="bg-primary text-primary-foreground px-2 py-1 rounded-full text-xs">
             {loginUser?.roleIds?.map((roleId) => {
-              return roleId.replace("ROLE_", "");
+              return roleId.replace("ROLE_", "") + ", ";
             })}
           </span>
         </div>
