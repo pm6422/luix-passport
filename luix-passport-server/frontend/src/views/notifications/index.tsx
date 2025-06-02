@@ -198,7 +198,7 @@ export default function Notifications() {
                   <DateTime value={selectedNotification.createdAt} className="text-sm text-muted-foreground"/>
                 </div>
 
-                {/* Add sender information section */}
+                {/* Add a sender information section */}
                 {(selectedNotification.sender || selectedNotification.senderEmail) && (
                   <div className="mb-6 p-4 bg-muted/50 rounded-lg">
                     <div className="space-y-2">
@@ -211,7 +211,7 @@ export default function Notifications() {
                               <span className="text-muted-foreground">&nbsp;(</span>
                               <a
                                 href={`mailto:${selectedNotification.senderEmail}`}
-                                className="text-primary hover:underline"
+                                className="text-muted-foreground hover:underline"
                               >
                                 {selectedNotification.senderEmail}
                               </a>
