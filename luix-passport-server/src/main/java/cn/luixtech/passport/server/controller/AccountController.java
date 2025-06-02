@@ -46,6 +46,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static cn.luixtech.passport.server.service.impl.UserProfilePicServiceImpl.CURRENT_USER_PHOTO_URL;
+import static cn.luixtech.passport.server.utils.ImageCompressor.compressImage;
 import static com.luixtech.springbootframework.utils.NetworkUtils.getRequestUrl;
 
 /**
@@ -195,7 +196,10 @@ public class AccountController {
     @Operation(summary = "upload profile picture of the current user")
     @PostMapping(value = "/api/accounts/profile-pic/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public void uploadProfilePicture(@Parameter(description = "user profile photo", required = true) @RequestPart MultipartFile file) throws IOException {
-        userProfilePicService.save(userService.getCurrentUser().getUsername(), file.getBytes());
+        log.info("Original file size: {} bytes ({} KB)", file.getSize(), file.getSize() / 1024);
+        byte[] compressedImage = compressImage(file);
+        log.info("Compressed file size: {} bytes ({} KB)", compressedImage.length, compressedImage.length / 1024);
+        userProfilePicService.save(userService.getCurrentUser().getUsername(), compressedImage);
         log.info("Uploaded profile picture with file name {}", file.getOriginalFilename());
     }
 
