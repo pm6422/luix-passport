@@ -19,58 +19,29 @@ import {
   IconLogout,
   IconBellRinging,
   IconDatabase,
-} from "@tabler/icons-react"
+} from '@tabler/icons-react'
 import { RoleDeveloper } from "@/components/custom/role/role-developer"
 import { AccountService } from "@/services/account-service"
 import { useStore } from "exome/react"
 import { appInfoStore } from "@/stores/app-info-store"
 import { loginUserStore } from "@/stores/login-user-store"
-import { useEffect, useState } from "react"
-import axios from "axios";
 
 export function AccountNav() {
   const { appInfo } = useStore(appInfoStore)
   const { loginUser } = useStore(loginUserStore)
-  const [imageUrl, setImageUrl] = useState<string | undefined>(undefined);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    setIsLoading(true);
-    axios.get("/api/accounts/profile-pic", {
-      responseType: "blob",
-      withCredentials: true,
-      headers: {
-        "Cache-Control": "no-cache"
-      },
-      timeout: 5000
-    }).then((response) => {
-      setIsLoading(false);
-      const blob = new Blob([response.data], { type: response.headers["content-type"] });
-      const objectUrl = URL.createObjectURL(blob);
-      setImageUrl(objectUrl);
-    })
-  }, []);
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative size-12 rounded-full">
-          <div>
-            {isLoading ? (
-              <Avatar className="size-12">
-                <Skeleton className="w-full h-full" />
-              </Avatar>
-            ) : (
-              <Avatar className="size-12">
-                <img
-                  src={imageUrl}
-                  alt="Profile"
-                  className="w-full h-full object-cover"
-                />
-                <AvatarFallback><Skeleton className="w-full" /></AvatarFallback>
-              </Avatar>
-            )}
-          </div>
+          <Avatar className="size-12 -intro-y">
+            <img
+              src="/api/accounts/profile-pic"
+              alt="Profile"
+              className="w-full h-full object-cover"
+            />
+            <AvatarFallback><Skeleton className="w-full" /></AvatarFallback>
+          </Avatar>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-48" align="end" forceMount>
