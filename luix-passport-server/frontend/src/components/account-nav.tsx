@@ -25,47 +25,33 @@ import { AccountService } from "@/services/account-service"
 import { useStore } from "exome/react"
 import { appInfoStore } from "@/stores/app-info-store"
 import { loginUserStore } from "@/stores/login-user-store"
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export function AccountNav() {
   const { appInfo } = useStore(appInfoStore)
   const { loginUser } = useStore(loginUserStore)
-  const avatarRef = useRef<HTMLButtonElement>(null);
-  const [isInView, setIsInView] = useState(false);
+  const [avatarVisible, setAvatarVisible] = useState(false);
 
   useEffect(() => {
-    if (!avatarRef.current) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsInView(true);
-          observer.unobserve(entry.target);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    observer.observe(avatarRef.current);
-
-    return () => {
-      if (avatarRef.current) {
-        observer.unobserve(avatarRef.current);
-      }
-    };
-  }, []);
+    if (!loginUser.isAuthenticated) {
+      return;
+    }
+    setTimeout(() => {
+      setAvatarVisible(true);
+    }, 2000);
+  }, [loginUser]);
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative size-12 rounded-full" ref={avatarRef}>
-          {isInView ? (
+        <Button variant="ghost" className="relative size-12 rounded-full">
+          {avatarVisible ? (
             <Avatar className="size-12">
               <AvatarImage src="/api/accounts/profile-pic"/>
               <AvatarFallback><Skeleton className="w-full" /></AvatarFallback>
             </Avatar>
           ) : (
-            <Skeleton className="w-full h-full rounded-full" />
+            <Skeleton className="w-fulll" />
           )}
         </Button>
       </DropdownMenuTrigger>
