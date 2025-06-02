@@ -9,6 +9,8 @@ import { ContactService } from "@/services/contact-service"
 import InputFormField from "@/components/custom/form-field/input"
 import SelectFormField from "@/components/custom/form-field/select"
 import { Form } from "@/components/ui/form"
+import { useNavigate } from "react-router-dom"
+
 
 // Define the form schema with updated field names
 const contactFormSchema = z.object({
@@ -22,6 +24,7 @@ export type ContactFormSchema = z.infer<typeof contactFormSchema>
 
 export default function ContactUs() {
   const [isLoading, setIsLoading] = useState(false)
+  const navigate = useNavigate()
   const subjects = [
     {
       label: "Technical Support",
@@ -58,6 +61,7 @@ export default function ContactUs() {
       loading: "Sending message...",
       success: () => {
         setIsLoading(false)
+        navigate("/submitted")
         return "Sent message successfully"
       },
       error: (error) => {

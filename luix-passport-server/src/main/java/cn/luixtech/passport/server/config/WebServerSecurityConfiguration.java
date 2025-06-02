@@ -38,6 +38,7 @@ public class WebServerSecurityConfiguration {
             "/activate-account",
             "/forgot-password",
             "/reset-password",
+			"/submitted",
 			"/403",
 			"/404",
 			"/500",
