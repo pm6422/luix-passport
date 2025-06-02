@@ -143,7 +143,9 @@ export default function AuthLayout() {
           <LayoutHeader>
             <div className="ml-auto flex items-center space-x-4">
               <CentralTopNav links={topNav}/>
-              <AccountNav />
+              {loginUser.isAuthenticated && (
+                <AccountNav />
+              )}
             </div>
           </LayoutHeader>
           {/* ===== View Content ===== */}
