@@ -70,7 +70,7 @@ public class DataDict extends TableImpl<DataDictRecord> {
     /**
      * The column <code>public.data_dict.dict_code</code>.
      */
-    public final TableField<DataDictRecord, String> DICT_CODE = createField(DSL.name("dict_code"), SQLDataType.VARCHAR(30).nullable(false), this, "");
+    public final TableField<DataDictRecord, String> DICT_CODE = createField(DSL.name("dict_code"), SQLDataType.VARCHAR(40).nullable(false), this, "");
 
     /**
      * The column <code>public.data_dict.dict_name</code>.

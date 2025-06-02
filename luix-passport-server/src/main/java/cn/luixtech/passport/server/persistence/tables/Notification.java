@@ -13,11 +13,11 @@ import java.util.function.Function;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function8;
+import org.jooq.Function10;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row8;
+import org.jooq.Row10;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -69,6 +69,16 @@ public class Notification extends TableImpl<NotificationRecord> {
      * The column <code>public.notification.type</code>.
      */
     public final TableField<NotificationRecord, String> TYPE = createField(DSL.name("type"), SQLDataType.VARCHAR(8).nullable(false), this, "");
+
+    /**
+     * The column <code>public.notification.sender</code>.
+     */
+    public final TableField<NotificationRecord, String> SENDER = createField(DSL.name("sender"), SQLDataType.VARCHAR(20), this, "");
+
+    /**
+     * The column <code>public.notification.sender_email</code>.
+     */
+    public final TableField<NotificationRecord, String> SENDER_EMAIL = createField(DSL.name("sender_email"), SQLDataType.VARCHAR(20), this, "");
 
     /**
      * The column <code>public.notification.created_at</code>.
@@ -173,18 +183,18 @@ public class Notification extends TableImpl<NotificationRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row8 type methods
+    // Row10 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row8<String, String, String, String, Instant, String, Instant, String> fieldsRow() {
-        return (Row8) super.fieldsRow();
+    public Row10<String, String, String, String, String, String, Instant, String, Instant, String> fieldsRow() {
+        return (Row10) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function8<? super String, ? super String, ? super String, ? super String, ? super Instant, ? super String, ? super Instant, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function10<? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super Instant, ? super String, ? super Instant, ? super String, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -192,7 +202,7 @@ public class Notification extends TableImpl<NotificationRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function8<? super String, ? super String, ? super String, ? super String, ? super Instant, ? super String, ? super Instant, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function10<? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super Instant, ? super String, ? super Instant, ? super String, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }
