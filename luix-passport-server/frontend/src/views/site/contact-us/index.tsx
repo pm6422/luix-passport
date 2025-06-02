@@ -28,19 +28,19 @@ export default function ContactUs() {
   const subjects = [
     {
       label: "Technical Support",
-      value: "support",
+      value: "Technical Support",
     },
     {
       label: "Billing Inquiry",
-      value: "billing",
+      value: "Billing Inquiry",
     },
     {
       label: "Product Feedback",
-      value: "feedback",
+      value: "Product Feedback",
     },
     {
-      label: "Other",
-      value: "other",
+      label: "Other Problem",
+      value: "Other Problem",
     },
   ]
 
