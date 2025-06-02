@@ -97,7 +97,7 @@ export default function ForgotPassword() {
       </div>
 
       {/* Right side - form */}
-      <div className="flex flex-col w-full h-full xl:px-48 lg:px-28 px-5 rounded-3xl py-10">
+      <div className="flex flex-col w-full xl:px-48 lg:px-28 px-5 rounded-3xl py-10">
         <img
           src="/assets/images/logos/logo-round.svg"
           alt="Logo"

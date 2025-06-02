@@ -29,7 +29,7 @@ export default function SignUp() {
       </div>
 
       {/* Right side - form */}
-      <div className="flex flex-col w-full h-full xl:px-48 lg:px-28 px-5 text-center rounded-3xl">
+      <div className="flex flex-col w-full xl:px-48 lg:px-28 px-5 text-center rounded-3xl">
         <img
           src="/assets/images/logos/logo-round.svg"
           alt="Logo"
