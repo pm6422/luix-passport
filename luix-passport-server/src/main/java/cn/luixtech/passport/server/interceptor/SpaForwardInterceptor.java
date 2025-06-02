@@ -22,14 +22,22 @@ public class SpaForwardInterceptor implements HandlerInterceptor {
                              @NonNull Object handler) throws Exception {
         String path = request.getRequestURI();
 
+        // Allow non-GET requests to proceed
+        if (!"GET".equalsIgnoreCase(request.getMethod())) {
+            return true;
+        }
+
+        // Allow static resources to proceed
         if (STATIC_RESOURCE_EXTENSIONS.stream().anyMatch(path::endsWith)) {
             return true;
         }
 
-        if (isAjaxRequest(request)) {
+        // Allow JSON requests to proceed
+        if (isJsonRequest(request)) {
             return true;
         }
-        // other requests forward to index.html
+
+        // Forward non-static, non-AJAX GET requests to index.html (except for "/" and "/index.html")
         if (!path.equals("/") && !path.equals("/index.html")) {
             request.getRequestDispatcher("/index.html").forward(request, response);
             return false;
@@ -37,7 +45,7 @@ public class SpaForwardInterceptor implements HandlerInterceptor {
         return true;
     }
 
-    public boolean isAjaxRequest(HttpServletRequest request) {
+    public boolean isJsonRequest(HttpServletRequest request) {
         String acceptHeader = request.getHeader("Accept");
         return acceptHeader != null && acceptHeader.contains("application/json");
     }
