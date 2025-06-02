@@ -11,112 +11,137 @@
       document.consent_form.reset();
       document.consent_form.submit();
     }
+
+    function toggleAllScopes(source) {
+      const checkboxes = document.querySelectorAll('input[name="scope"]');
+      checkboxes.forEach(checkbox => {
+        checkbox.checked = source.checked;
+      });
+    }
   </script>
 </head>
-<body class="bg-white rounded-lg py-10">
-  <div class="container relative grid h-svh flex-col items-center justify-center lg:max-w-none lg:grid-cols-2">
-    <!-- Left side (same as login.html) -->
-    <div class="lg:flex relative hidden lg:px-28 ms-10 mb-36">
-      <div class="max-md:text-center">
-        <img alt="Logo" th:src="@{/assets/images/logos/logo-with-text.svg}" class="h-14 my-12" />
-        <h2 class="lg:text-5xl text-4xl font-extrabold lg:leading-[55px]">
-          Secure Authorization for Your Account
-        </h2>
-        <h4 class="mt-6">Control which applications can access your account and what permissions they have.</h4>
-        <p class="text-sm mt-10">Need help? <a href="/contact-us" class="text-blue-700 font-semibold hover:underline ml-1">Contact support</a></p>
-      </div>
-    </div>
-
-    <!-- Right side (authorization form) - Now vertically centered -->
-    <div class="flex flex-col w-full xl:px-48 lg:px-28 px-5 text-center bg-white rounded-3xl justify-center">
-      <div class="mx-auto w-full max-w-md">
-        <img alt="Logo" th:src="@{/assets/images/logos/logo-round.svg}" class="h-16 mx-auto mb-5" />
-        <h3 class="mb-3 text-2xl font-extrabold text-dark-gray-900">Authorization Request</h3>
-
-        <div class="my-5">
-          <div class="font-bold text-gray-900 text-xl"><span th:text="${clientId}"></span> wants to access your account</div>
-          <div class="text-gray-600 mt-2">Signed in as <span class="font-semibold" th:text="${principalName}"></span></div>
-        </div>
-
-        <div th:if="${userCode}" class="py-3 mb-5 bg-yellow-100 rounded-lg">
-          <p class="text-yellow-800">
-            Verification code: <span class="font-bold" th:text="${userCode}"></span>
-          </p>
-        </div>
-
-        <div class="mb-5">
-          <p class="text-gray-700">This application will be able to:</p>
-        </div>
-
-        <form name="consent_form" method="post" th:action="${requestURI}" class="text-left">
-          <input type="hidden" name="client_id" th:value="${clientId}">
-          <input type="hidden" name="state" th:value="${state}">
-          <input th:if="${userCode}" type="hidden" name="user_code" th:value="${userCode}">
-
-          <div class="mb-6 bg-gray-100 p-4 rounded-2xl">
-            <div th:each="scope: ${scopes}" class="mb-3 last:mb-0">
-              <div class="flex items-center">
-                <input
-                  type="checkbox"
-                  name="scope"
-                  th:value="${scope.scope}"
-                  th:id="${scope.scope}"
-                  class="h-5 w-5 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
-                />
-                <label th:for="${scope.scope}" class="ml-3">
-                  <span class="font-medium" th:text="${scope.scope}"></span>
-                  <span class="text-gray-600"> - </span>
-                  <span th:text="${scope.description}"></span>
-                </label>
-              </div>
-            </div>
-          </div>
-
-          <div th:if="${not #lists.isEmpty(previouslyApprovedScopes)}" class="mb-6 bg-gray-100 p-4 rounded-2xl">
-            <p class="text-sm text-gray-500 mb-3">Previously granted permissions:</p>
-            <div th:each="scope: ${previouslyApprovedScopes}" class="mb-3 last:mb-0">
-              <div class="flex items-center">
-                <input
-                  type="checkbox"
-                  th:id="${scope.scope}"
-                  disabled
-                  checked
-                  class="h-5 w-5 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
-                />
-                <label th:for="${scope.scope}" class="ml-3">
-                  <span class="font-medium" th:text="${scope.scope}"></span>
-                  <span class="text-gray-600"> - </span>
-                  <span th:text="${scope.description}"></span>
-                </label>
-              </div>
-            </div>
-          </div>
-
-          <div class="flex gap-4 mt-8">
-            <button
-              id="cancel-consent"
-              type="button"
-              class="w-full focus:outline-none text-white bg-gray-500 hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 font-medium rounded-2xl text-sm px-5 py-4 mb-2"
-              onclick="cancelConsent();"
-            >
-              Cancel
-            </button>
-
-            <button
-              id="submit-consent"
-              type="submit"
-              class="w-full focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-2xl text-sm px-5 py-4 mb-2"
-            >
-              Authorize
-            </button>
-          </div>
-        </form>
-
-        <p class="mt-5 text-center text-sm text-gray-900">
-          By authorizing, you agree to our <a href="/terms-of-service" class="font-bold hover:underline text-blue-700">Terms of Service</a> and <a href="/privacy-policy" class="font-bold hover:underline text-blue-700">Privacy Policy</a>.
-        </p>
-      </div>
+<body class="bg-gray-50 rounded-lg py-10">
+<div class="container relative grid h-svh flex-col items-center justify-center lg:max-w-none lg:grid-cols-2">
+  <!-- Left side -->
+  <div class="lg:flex relative hidden lg:px-28 ms-10 mb-36">
+    <div class="max-md:text-center">
+      <img alt="Logo" th:src="@{/assets/images/logos/logo-with-text.svg}" class="h-14 my-12" />
+      <h2 class="lg:text-5xl text-4xl font-extrabold lg:leading-[55px]">
+        Secure Authorization for Your Account
+      </h2>
+      <h4 class="mt-6">Control which applications can access your account and what permissions they have.</h4>
+      <p class="text-sm mt-10">Need help? <a href="/contact-us" class="text-blue-700 font-semibold hover:underline ml-1">Contact support</a></p>
     </div>
   </div>
+
+  <!-- Right side (authorization form) -->
+  <div class="flex flex-col w-full xl:px-48 lg:px-28 px-5 text-center rounded-3xl justify-center">
+    <div class="mx-auto w-full max-w-md">
+      <img alt="Logo" th:src="@{/assets/images/logos/logo-round.svg}" class="h-16 mx-auto mb-5" />
+      <h3 class="mb-3 text-2xl font-extrabold text-dark-gray-900">Authorization Request</h3>
+
+      <div class="my-5">
+        <div class="text-gray-900">
+          <span class="font-bold text-purple-700" th:text="${clientId}"></span>
+          <span>wants access to your LUIX Passport account</span>
+        </div>
+        <div class="text-gray-600 mt-2">Signed in as <span class="font-semibold" th:text="${principalName}"></span></div>
+      </div>
+
+      <div th:if="${userCode}" class="py-3 mb-5 bg-yellow-100 rounded-lg">
+        <p class="text-yellow-800">
+          Verification code: <span class="font-bold" th:text="${userCode}"></span>
+        </p>
+      </div>
+
+      <div class="mb-5">
+        <p class="text-gray-700">This application will be able to:</p>
+      </div>
+
+      <form name="consent_form" method="post" th:action="${requestURI}" class="text-left">
+        <input type="hidden" name="client_id" th:value="${clientId}">
+        <input type="hidden" name="state" th:value="${state}">
+        <input th:if="${userCode}" type="hidden" name="user_code" th:value="${userCode}">
+
+        <!-- Select All checkbox - Removed background color -->
+        <div class="mb-3 p-4">
+          <div class="flex items-center">
+            <input
+              type="checkbox"
+              id="selectAll"
+              onclick="toggleAllScopes(this)"
+              class="h-5 w-5 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+            />
+            <label for="selectAll" class="ml-3 font-medium text-gray-900">
+              Select all permissions
+            </label>
+          </div>
+        </div>
+
+        <div class="mb-6 bg-gray-100 p-4 rounded-2xl">
+          <div th:each="scope: ${scopes}" class="mb-3 last:mb-0">
+            <div class="flex items-center">
+              <input
+                type="checkbox"
+                name="scope"
+                th:value="${scope.scope}"
+                th:id="${scope.scope}"
+                class="h-5 w-5 rounded border-gray-300 text-purple-600 focus:ring-purple-500 scope-checkbox"
+              />
+              <label th:for="${scope.scope}" class="ml-3">
+                <span class="font-medium" th:text="${scope.scope}"></span>
+                <span class="text-gray-600"> - </span>
+                <span th:text="${scope.description}"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div th:if="${not #lists.isEmpty(previouslyApprovedScopes)}" class="mb-6 bg-gray-100 p-4 rounded-2xl">
+          <p class="text-sm text-gray-500 mb-3">Previously granted permissions:</p>
+          <div th:each="scope: ${previouslyApprovedScopes}" class="mb-3 last:mb-0">
+            <div class="flex items-center">
+              <input
+                type="checkbox"
+                th:id="${scope.scope}"
+                disabled
+                checked
+                class="h-5 w-5 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+              />
+              <label th:for="${scope.scope}" class="ml-3">
+                <span class="font-medium" th:text="${scope.scope}"></span>
+                <span class="text-gray-600"> - </span>
+                <span th:text="${scope.description}"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex gap-4 mt-8">
+          <button
+            id="cancel-consent"
+            type="button"
+            class="w-full focus:outline-none text-white bg-gray-500 hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 font-medium rounded-2xl text-sm px-5 py-4 mb-2"
+            onclick="cancelConsent();"
+          >
+            Cancel
+          </button>
+
+          <button
+            id="submit-consent"
+            type="submit"
+            class="w-full focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-2xl text-sm px-5 py-4 mb-2"
+          >
+            Authorize
+          </button>
+        </div>
+      </form>
+
+      <p class="mt-5 text-center text-sm text-gray-900">
+        By authorizing, you agree to our <a href="/terms-of-service" class="font-bold hover:underline text-blue-700">Terms of Service</a> and <a href="/privacy-policy" class="font-bold hover:underline text-blue-700">Privacy Policy</a>.
+      </p>
+    </div>
+  </div>
+</div>
 </body>
 </html>
