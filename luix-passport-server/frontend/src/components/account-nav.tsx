@@ -19,72 +19,39 @@ import {
   IconLogout,
   IconBellRinging,
   IconDatabase,
-} from '@tabler/icons-react'
+} from "@tabler/icons-react"
 import { RoleDeveloper } from "@/components/custom/role/role-developer"
 import { AccountService } from "@/services/account-service"
 import { useStore } from "exome/react"
 import { appInfoStore } from "@/stores/app-info-store"
 import { loginUserStore } from "@/stores/login-user-store"
-import { useEffect, useRef, useState } from 'react'
-import axios from 'axios';
+import { useEffect, useRef, useState } from "react"
+import axios from "axios";
 
 export function AccountNav() {
   const { appInfo } = useStore(appInfoStore)
   const { loginUser } = useStore(loginUserStore)
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [imageUrl, setImageUrl] = useState<string | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<Error | null>(null);
   const avatarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const fetchProfileImage = async () => {
-      setIsLoading(true);
-      setError(null);
-
-      try {
-        // 1. 使用Axios发起请求，设置responseType为'blob'
-        const response = await axios.get('/api/accounts/profile-pic', {
-          responseType: 'blob',
-          withCredentials: true, // 携带cookie
-          headers: {
-            'Cache-Control': 'no-cache'
-          },
-          timeout: 5000 // 设置5秒超时
-        });
-
-        // 2. 创建Blob URL
-        const blob = new Blob([response.data], { type: response.headers['content-type'] });
-        const objectUrl = URL.createObjectURL(blob);
-        setImageUrl(objectUrl);
-
-      } catch (err) {
-        console.error('Failed to load profile image:', err);
-        setError(axios.isAxiosError(err) ? err : new Error('Unknown error'));
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    // 3. 实现懒加载
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          fetchProfileImage();
-          observer.disconnect();
-        }
+    setIsLoading(true);
+    // 1. 使用Axios发起请求，设置responseType为"blob"
+    axios.get("/api/accounts/profile-pic", {
+      responseType: "blob",
+      withCredentials: true,
+      headers: {
+        "Cache-Control": "no-cache"
       },
-      { threshold: 0.1 }
-    );
-
-    if (avatarRef.current) {
-      observer.observe(avatarRef.current);
-    }
-
-    return () => {
-      observer.disconnect();
-      // 清理Blob URL防止内存泄漏
-      if (imageUrl) URL.revokeObjectURL(imageUrl);
-    };
+      timeout: 5000 // 设置5秒超时
+    }).then((response) => {
+      setIsLoading(false);
+      // 2. 创建Blob URL
+      const blob = new Blob([response.data], { type: response.headers["content-type"] });
+      const objectUrl = URL.createObjectURL(blob);
+      setImageUrl(objectUrl);
+    })
   }, []);
 
   return (
@@ -96,27 +63,13 @@ export function AccountNav() {
               <Avatar className="size-12">
                 <Skeleton className="w-full h-full" />
               </Avatar>
-            ) : error ? (
-              <Avatar className="size-12">
-                <AvatarFallback><Skeleton className="w-full" /></AvatarFallback>
-              </Avatar>
-            ) : imageUrl ? (
+            ) : (
               <Avatar className="size-12">
                 <img
                   src={imageUrl}
                   alt="Profile"
                   className="w-full h-full object-cover"
-                  onLoad={() => {
-                    // 可以在这里添加加载完成后的逻辑
-                  }}
-                  onError={() => {
-                    setError(new Error('Image load failed'));
-                    setImageUrl(null);
-                  }}
                 />
-              </Avatar>
-            ) : (
-              <Avatar className="size-12">
                 <AvatarFallback><Skeleton className="w-full" /></AvatarFallback>
               </Avatar>
             )}
