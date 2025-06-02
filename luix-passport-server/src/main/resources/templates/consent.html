@@ -22,7 +22,7 @@
 </head>
 <body>
 <div class="container relative grid h-svh flex-col items-center justify-center lg:max-w-none lg:grid-cols-2">
-  <!-- Left side -->
+  <!-- Left side - hidden on mobile -->
   <div class="lg:flex relative hidden lg:px-28 ms-10 mb-36">
     <div class="max-md:text-center">
       <img alt="Logo" th:src="@{/assets/images/logos/logo-with-text.svg}" class="h-14 my-12"/>
@@ -36,7 +36,7 @@
     </div>
   </div>
 
-  <!-- Right side (authorization form) -->
+  <!-- Right side - form -->
   <div class="flex flex-col w-full xl:px-48 lg:px-28 px-5 text-center rounded-3xl justify-center">
     <div class="mx-auto w-full max-w-md">
       <img alt="Logo" th:src="@{/assets/images/logos/logo-round.svg}" class="h-16 mx-auto mb-5"/>
