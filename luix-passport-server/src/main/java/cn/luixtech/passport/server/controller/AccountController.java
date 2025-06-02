@@ -45,6 +45,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import static cn.luixtech.passport.server.service.impl.UserProfilePicServiceImpl.CURRENT_USER_PHOTO_URL;
 import static com.luixtech.springbootframework.utils.NetworkUtils.getRequestUrl;
 
 /**
@@ -186,7 +187,7 @@ public class AccountController {
     }
 
     @Operation(summary = "get profile picture of the current user")
-    @GetMapping("/api/accounts/profile-pic")
+    @GetMapping(CURRENT_USER_PHOTO_URL)
     public ResponseEntity<byte[]> getProfilePicture(HttpServletRequest request) throws IOException {
         return ResponseEntity.ok(userProfilePicService.getProfilePic(AuthUtils.getCurrentUsername(), request));
     }

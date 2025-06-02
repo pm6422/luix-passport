@@ -22,6 +22,7 @@ import static com.luixtech.utilities.encryption.JasyptEncryptUtils.DEFAULT_ALGOR
 @AllArgsConstructor
 public class UserProfilePicServiceImpl implements UserProfilePicService {
     private static final String                   DEFAULT_USER_PHOTO_URL = "/assets/images/cartoon/01.png";
+    public static final  String                   CURRENT_USER_PHOTO_URL = "/api/accounts/profile-pic";
     public static final  String                   USER_PHOTO_URL         = "/open-api/user-profile-pics/";
     public static final  String                   USER_PHOTO_TOKEN_KEY   = "dw4rfer54g&^@dsfd#";
     private final        UserProfilePicRepository userProfilePicRepository;

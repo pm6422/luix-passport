@@ -40,14 +40,19 @@
   <div class="flex flex-col w-full xl:px-48 lg:px-28 px-5 text-center rounded-3xl">
     <div class="mx-auto w-full max-w-md">
       <img alt="Logo" th:src="@{/assets/images/logos/logo-round.svg}" class="h-16 mx-auto mb-5"/>
-      <h3 class="mb-3 text-2xl font-extrabold text-dark-gray-900">Authorization Request</h3>
+      <h3 class="mb-3 text-2xl font-extrabold text-dark-gray-900">Passport Authorization Request</h3>
 
-      <div class="my-5">
+      <div class="my-10">
         <div class="text-gray-900">
           <span class="font-bold text-purple-700" th:text="${clientId}"></span>
-          <span>wants access to your LUIX Passport account</span>
+          <span>wants access to your account</span>
         </div>
-        <div class="text-gray-600 mt-2">Signed in as <span class="font-semibold" th:text="${principalName}"></span>
+        <div class="text-gray-600 mt-2 flex items-center justify-center">
+          <!-- User avatar - only shown if available -->
+          <img th:if="${userProfilePic}" th:src="${userProfilePic}"
+               class="size-6 rounded-full mx-2"
+               alt="User avatar"/>
+          <span class="text-sm font-semibold" th:text="${principalName}"></span>
         </div>
       </div>
 
@@ -67,7 +72,7 @@
         <input th:if="${userCode}" type="hidden" name="user_code" th:value="${userCode}">
 
         <!-- Select All checkbox - Removed background color -->
-        <div class="mb-3 p-4">
+        <div class="mb-2 p-4">
           <div class="flex items-center">
             <input
               type="checkbox"
@@ -75,7 +80,7 @@
               onclick="toggleAllScopes(this)"
               class="h-5 w-5 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
             />
-            <label for="selectAll" class="ml-3 font-medium text-gray-900">
+            <label for="selectAll" class="ml-3 text-gray-900">
               Select all permissions
             </label>
           </div>

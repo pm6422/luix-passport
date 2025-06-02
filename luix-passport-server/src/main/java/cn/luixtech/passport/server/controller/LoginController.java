@@ -3,6 +3,7 @@ package cn.luixtech.passport.server.controller;
 import cn.luixtech.passport.server.config.oauth.ScopeWithDescription;
 import cn.luixtech.passport.server.domain.User;
 import cn.luixtech.passport.server.repository.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
@@ -19,6 +20,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.security.Principal;
 import java.util.*;
 
+import static cn.luixtech.passport.server.service.impl.UserProfilePicServiceImpl.CURRENT_USER_PHOTO_URL;
+import static com.luixtech.springbootframework.utils.NetworkUtils.getRequestUrl;
+
 @Controller
 @AllArgsConstructor
 public class LoginController {
@@ -28,6 +32,7 @@ public class LoginController {
 
     @GetMapping(value = "/oauth2/consent")
     public String consent(Principal principal, Model model,
+                          HttpServletRequest request,
                           @RequestParam(OAuth2ParameterNames.CLIENT_ID) String clientId,
                           @RequestParam(OAuth2ParameterNames.SCOPE) String scope,
                           @RequestParam(OAuth2ParameterNames.STATE) String state,
@@ -63,6 +68,7 @@ public class LoginController {
         model.addAttribute("previouslyApprovedScopes", withDescription(previouslyApprovedScopes));
         model.addAttribute("principalName", user.isPresent() ? user.get().getEmail() : principal.getName());
         model.addAttribute("userCode", userCode);
+        model.addAttribute("userProfilePic", getRequestUrl(request) + CURRENT_USER_PHOTO_URL);
         if (StringUtils.hasText(userCode)) {
             model.addAttribute("requestURI", "/oauth2/device_verification");
         } else {
