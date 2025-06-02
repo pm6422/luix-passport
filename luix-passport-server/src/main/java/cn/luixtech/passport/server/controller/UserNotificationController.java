@@ -11,13 +11,11 @@ import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static cn.luixtech.passport.server.domain.UserRole.ROLE_USER;
 import static com.luixtech.springbootframework.utils.HttpHeaderUtils.generatePageHeaders;
 
 /**
@@ -25,7 +23,6 @@ import static com.luixtech.springbootframework.utils.HttpHeaderUtils.generatePag
  */
 @RestController
 @AllArgsConstructor
-@PreAuthorize("hasAuthority(\"" + ROLE_USER + "\")")
 @Slf4j
 public class UserNotificationController {
     private final UserNotificationService userNotificationService;
