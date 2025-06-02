@@ -6,6 +6,10 @@ import { toast } from "sonner"
 import { LoadingButton } from "@/components/custom/loading-button"
 import { getErrorMessage } from "@/lib/handle-error"
 import { ContactService } from "@/services/contact-service"
+import InputFormField from '@/components/custom/form-field/input'
+import {
+  Form,
+} from "@/components/ui/form";
 
 // Define the form schema with updated field names
 const contactFormSchema = z.object({
@@ -83,91 +87,70 @@ export default function ContactUs() {
             Fill out the form below and we'll get back to you soon
           </p>
 
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <div>
-              <label htmlFor="sender" className="block text-sm font-medium mb-2">
-                Full Name
-              </label>
-              <input
-                type="text"
-                id="sender"
-                className="w-full px-5 py-4 h-14 text-base rounded-2xl border border-input bg-background"
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <InputFormField
+                control={form.control}
+                name="sender"
+                label="Full Name"
+                formItemClassName="text-left"
+                inputClassName="w-full h-14 px-5 py-4 rounded-2xl"
                 placeholder="Your name"
-                {...form.register("sender")}
+                required={true}
               />
-              {form.formState.errors.sender && (
-                <p className="mt-1 text-sm text-destructive">
-                  {form.formState.errors.sender.message}
-                </p>
-              )}
-            </div>
 
-            <div>
-              <label htmlFor="senderEmail" className="block text-sm font-medium mb-2">
-                Email Address
-              </label>
-              <input
-                type="email"
-                id="senderEmail"
-                className="w-full px-5 py-4 h-14 text-base rounded-2xl border border-input bg-background"
+              <InputFormField
+                control={form.control}
+                name="senderEmail"
+                label="Email Address"
+                formItemClassName="text-left"
+                inputClassName="w-full h-14 px-5 py-4 rounded-2xl"
                 placeholder="your@email.com"
-                {...form.register("senderEmail")}
+                required={true}
               />
-              {form.formState.errors.senderEmail && (
-                <p className="mt-1 text-sm text-destructive">
-                  {form.formState.errors.senderEmail.message}
-                </p>
-              )}
-            </div>
 
-            <div>
-              <label htmlFor="title" className="block text-sm font-medium mb-2">
-                Subject
-              </label>
-              <select
-                id="title"
-                className="w-full px-5 py-4 h-14 text-base rounded-2xl border border-input bg-background"
-                {...form.register("title")}
-              >
-                <option value="">Select a subject</option>
-                <option value="support">Technical Support</option>
-                <option value="billing">Billing Inquiry</option>
-                <option value="feedback">Product Feedback</option>
-                <option value="other">Other</option>
-              </select>
-              {form.formState.errors.title && (
-                <p className="mt-1 text-sm text-destructive">
-                  {form.formState.errors.title.message}
-                </p>
-              )}
-            </div>
+              <div>
+                <label htmlFor="title" className="block text-sm font-medium mb-2">
+                  Subject
+                </label>
+                <select
+                  id="title"
+                  className="w-full px-5 py-4 h-14 text-base rounded-2xl border border-input bg-background"
+                  {...form.register("title")}
+                >
+                  <option value="">Select a subject</option>
+                  <option value="support">Technical Support</option>
+                  <option value="billing">Billing Inquiry</option>
+                  <option value="feedback">Product Feedback</option>
+                  <option value="other">Other</option>
+                </select>
+                {form.formState.errors.title && (
+                  <p className="mt-1 text-sm text-destructive">
+                    {form.formState.errors.title.message}
+                  </p>
+                )}
+              </div>
 
-            <div>
-              <label htmlFor="content" className="block text-sm font-medium mb-2">
-                Message
-              </label>
-              <textarea
-                id="content"
-                rows={4}
-                className="w-full px-5 py-4 text-base rounded-2xl border border-input bg-background"
+              <InputFormField
+                control={form.control}
+                name="content"
+                label="Message"
+                type="textarea"
+                formItemClassName="text-left"
+                inputClassName="w-full h-40 px-5 py-4 rounded-2xl"
                 placeholder="How can we help you?"
-                {...form.register("content")}
-              ></textarea>
-              {form.formState.errors.content && (
-                <p className="mt-1 text-sm text-destructive">
-                  {form.formState.errors.content.message}
-                </p>
-              )}
-            </div>
+                required={true}
+              />
 
-            <LoadingButton
-              type="submit"
-              loading={isLoading}
-              className="w-full px-5 py-4 h-14 mt-4 text-base font-medium rounded-2xl bg-primary text-primary-foreground hover:bg-primary/90"
-            >
-              {isLoading ? "Sending..." : "Send Message"}
-            </LoadingButton>
-          </form>
+              <LoadingButton
+                type="submit"
+                loading={isLoading}
+                className="w-full px-5 py-4 h-14 mt-4 text-base font-medium rounded-2xl bg-primary text-primary-foreground hover:bg-primary/90"
+              >
+                {isLoading ? "Sending..." : "Send Message"}
+              </LoadingButton>
+            </form>
+          </Form>
 
           <div className="mt-8 pt-8 border-t">
             <h3 className="text-lg font-semibold mb-4">Other Ways to Reach Us</h3>

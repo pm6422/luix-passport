@@ -58,6 +58,7 @@ const InputFormField = <TFieldValues extends FieldValues>({
           <div className="relative flex w-full items-center gap-2">
             {type === "textarea" ? (
               <Textarea
+                className={inputClassName}
                 placeholder={placeholder}
                 onFocus={onFocus}
                 defaultValue={defaultValue}
