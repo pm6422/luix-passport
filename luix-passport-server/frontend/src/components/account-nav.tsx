@@ -39,9 +39,6 @@ export function AccountNav() {
     axios.get("/api/accounts/profile-pic", {
       responseType: "blob",
       withCredentials: true,
-      headers: {
-        "Cache-Control": "no-cache"
-      },
       timeout: 5000
     }).then((response) => {
       setIsLoading(false);
