@@ -13,111 +13,107 @@
 		}
 	</script>
 </head>
-<body>
-<div class="flex flex-col items-center p-5">
-	<div class="card w-lg-650px px-10 py-5 shadow-lg rounded-lg">
-		<div class="card-body py-15 py-lg-20">
-			<div class="mb-14">
-				<div class="text-gray-500 font-semibold text-sm">
-					<div class="flex justify-center">
-						<img alt="Logo" th:src="@{/assets/images/logos/logo-with-text.svg}" class="h-12 my-12" />
+<body class="bg-white rounded-lg py-10">
+<div class="container relative grid h-svh flex-col items-center justify-center lg:max-w-none lg:grid-cols-2">
+	<!-- Left side (same as login.html) -->
+	<div class="lg:flex relative hidden lg:px-28 ms-10 mb-36">
+		<div class="max-md:text-center">
+			<img alt="Logo" th:src="@{/assets/images/logos/logo-with-text.svg}" class="h-14 my-12" />
+			<h2 class="lg:text-5xl text-4xl font-extrabold lg:leading-[55px]">
+				Secure Authorization for Your Account
+			</h2>
+			<h4 class="mt-6">Control which applications can access your account and what permissions they have.</h4>
+			<p class="text-sm mt-10">Need help? <a href="/contact-us" class="text-blue-700 font-semibold hover:underline ml-1">Contact support</a></p>
+		</div>
+	</div>
+
+	<!-- Right side (authorization form) -->
+	<div class="flex flex-col w-full h-full xl:px-48 lg:px-28 px-5 text-center bg-white rounded-3xl">
+		<img alt="Logo" th:src="@{/assets/images/logos/logo-round.svg}" class="h-16 my-5" />
+		<h3 class="mb-3 text-2xl font-extrabold text-dark-gray-900">Authorization Request</h3>
+
+		<div class="my-5">
+			<div class="font-bold text-gray-900 text-xl"><span th:text="${clientId}"></span> wants to access your account</div>
+			<div class="text-gray-600 mt-2">Signed in as <span class="font-semibold" th:text="${principalName}"></span></div>
+		</div>
+
+		<div th:if="${userCode}" class="py-3 mb-5 bg-yellow-100 rounded-lg">
+			<p class="text-yellow-800">
+				Verification code: <span class="font-bold" th:text="${userCode}"></span>
+			</p>
+		</div>
+
+		<div class="mb-5">
+			<p class="text-gray-700">This application will be able to:</p>
+		</div>
+
+		<form name="consent_form" method="post" th:action="${requestURI}" class="text-left">
+			<input type="hidden" name="client_id" th:value="${clientId}">
+			<input type="hidden" name="state" th:value="${state}">
+			<input th:if="${userCode}" type="hidden" name="user_code" th:value="${userCode}">
+
+			<div class="mb-6 bg-gray-100 p-4 rounded-2xl">
+				<div th:each="scope: ${scopes}" class="mb-3 last:mb-0">
+					<div class="flex items-center">
+						<input
+							type="checkbox"
+							name="scope"
+							th:value="${scope.scope}"
+							th:id="${scope.scope}"
+							class="h-5 w-5 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+						/>
+						<label th:for="${scope.scope}" class="ml-3">
+							<span class="font-medium" th:text="${scope.scope}"></span>
+							<span class="text-gray-600"> - </span>
+							<span th:text="${scope.description}"></span>
+						</label>
 					</div>
 				</div>
 			</div>
-			<div class="font-bold text-gray-900 text-2xl text-center">Application <span th:text="${clientId}"></span> wants to access your account</div>
-			<div class="my-12">
-				<div class="font-bold text-gray-900 text-xl text-center"><span th:text="${principalName}"></span></div>
-			</div>
-			<div th:if="${userCode}" class="row">
-				<div class="col text-center">
-					<p class="alert alert-warning">
-						You have provided the code
-						<span class="font-bold" th:text="${userCode}"></span>.
-						Verify that this code matches what is shown on your device.
-					</p>
+
+			<div th:if="${not #lists.isEmpty(previouslyApprovedScopes)}" class="mb-6 bg-gray-100 p-4 rounded-2xl">
+				<p class="text-sm text-gray-500 mb-3">Previously granted permissions:</p>
+				<div th:each="scope: ${previouslyApprovedScopes}" class="mb-3 last:mb-0">
+					<div class="flex items-center">
+						<input
+							type="checkbox"
+							th:id="${scope.scope}"
+							disabled
+							checked
+							class="h-5 w-5 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+						/>
+						<label th:for="${scope.scope}" class="ml-3">
+							<span class="font-medium" th:text="${scope.scope}"></span>
+							<span class="text-gray-600"> - </span>
+							<span th:text="${scope.description}"></span>
+						</label>
+					</div>
 				</div>
 			</div>
-			<div class="mb-15">
-				<div class="font-bold text-gray-900 text-xl text-center mb-5">When you allow this access, <span class="text-gray-800" th:text="${clientId}"></span> will be able to
-				</div>
+
+			<div class="flex gap-4 mt-8">
+				<button
+					id="cancel-consent"
+					type="button"
+					class="w-full focus:outline-none text-white bg-gray-500 hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 font-medium rounded-2xl text-sm px-5 py-4 mb-2"
+					onclick="cancelConsent();"
+				>
+					Cancel
+				</button>
+
+				<button
+					id="submit-consent"
+					type="submit"
+					class="w-full focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-2xl text-sm px-5 py-4 mb-2"
+				>
+					Authorize
+				</button>
 			</div>
-			<div class="row">
-				<div class="col text-center">
-					<form name="consent_form" method="post" th:action="${requestURI}">
-						<input type="hidden" name="client_id" th:value="${clientId}">
-						<input type="hidden" name="state" th:value="${state}">
-						<input th:if="${userCode}" type="hidden" name="user_code" th:value="${userCode}">
+		</form>
 
-						<div th:each="scope: ${scopes}">
-							<div class="border-b border-dashed"></div>
-							<div class="flex gap-3">
-								<div class="flex my-3 ms-3">
-									<label class="form-check form-check-custom form-check-solid me-5">
-										<input
-											type="checkbox"
-											name="scope"
-											th:value="${scope.scope}"
-											th:id="${scope.scope}"
-										/>
-									</label>
-								</div>
-								<div class="flex items-center justify-start">
-									<span class="font-bold" th:for="${scope.scope}" th:text="${scope.scope}"></span>
-									:&nbsp;
-									<span class="font-bold" th:text="${scope.description}"></span>
-								</div>
-							</div>
-							<div class="border-b border-dashed"></div>
-						</div>
-
-						<div th:if="${not #lists.isEmpty(previouslyApprovedScopes)}" class="mt-8 mb-3 font-bold text-warning">
-							You have already granted the following permissions to the above app:
-						</div>
-						<div th:each="scope: ${previouslyApprovedScopes}" class="">
-							<div class="border-b border-dashed"></div>
-							<div class="flex gap-3">
-								<div class="flex my-3 ms-3">
-									<label class="form-check form-check-custom form-check-solid me-5">
-										<input
-											class="form-check-input"
-											type="checkbox"
-											th:id="${scope.scope}"
-											disabled
-											checked
-										/>
-									</label>
-								</div>
-								<div class="flex items-center justify-start">
-									<span class="font-bold" th:for="${scope.scope}" th:text="${scope.scope}"></span>
-									:&nbsp;
-									<span class="font-bold" th:text="${scope.description}"></span>
-								</div>
-							</div>
-							<div class="border-b border-dashed"></div>
-						</div>
-
-						<div class="flex items-center justify-between gap-3 py-16">
-							<button
-								id="cancel-consent"
-								type="button"
-								class="w-full px-6 py-5 mb-5 text-sm font-bold leading-none text-white transition duration-300 rounded-2xl bg-gray-500"
-								onclick="cancelConsent();"
-							>
-								Cancel
-							</button>
-
-							<button
-								id="submit-consent"
-								type="submit"
-								class="w-full px-6 py-5 mb-5 text-sm font-bold leading-none text-white transition duration-300 rounded-2xl hover:bg-purple-blue-600 focus:ring-4 focus:ring-purple-blue-100 bg-purple-500"
-							>
-								Authorize
-							</button>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
+		<p class="mt-5 px-8 text-center text-sm text-gray-900">
+			By authorizing, you agree to our <a href="/terms-of-service" class="font-bold hover:underline text-blue-700">Terms of Service</a> and <a href="/privacy-policy" class="font-bold hover:underline text-blue-700">Privacy Policy</a>.
+		</p>
 	</div>
 </div>
 </body>
