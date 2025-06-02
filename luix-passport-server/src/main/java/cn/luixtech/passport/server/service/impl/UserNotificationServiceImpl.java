@@ -8,14 +8,12 @@ import cn.luixtech.passport.server.repository.UserNotificationRepository;
 import cn.luixtech.passport.server.repository.UserRepository;
 import cn.luixtech.passport.server.service.SseService;
 import cn.luixtech.passport.server.service.UserNotificationService;
-import com.luixtech.uidgenerator.core.id.IdGenerator;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -27,8 +25,8 @@ public class UserNotificationServiceImpl implements UserNotificationService {
     private final SseService                 sseService;
 
     @Override
-    public void sendBroadcastNotification(String title, String content) {
-        Notification notification = saveNotification(title, content, Notification.TYPE_SYSTEM);
+    public void sendBroadcastNotification(String title, String content, String sender, String senderEmail) {
+        Notification notification = saveNotification(title, content, Notification.TYPE_SYSTEM, sender, senderEmail);
 
         // Create user notifications for each user
         List<User> allUsers = userRepository.findAll();
@@ -39,7 +37,12 @@ public class UserNotificationServiceImpl implements UserNotificationService {
 
     @Override
     public void sendPersonalNotification(List<String> receiverIds, String title, String content) {
-        Notification notification = saveNotification(title, content, Notification.TYPE_PERSONAL);
+        sendPersonalNotification(receiverIds, title, content, null, null);
+    }
+
+    @Override
+    public void sendPersonalNotification(List<String> receiverIds, String title, String content, String sender, String senderEmail) {
+        Notification notification = saveNotification(title, content, Notification.TYPE_PERSONAL, sender, senderEmail);
 
         // Create user notifications for each receiver
         List<User> receivers = userRepository.findAllById(receiverIds);
@@ -48,11 +51,13 @@ public class UserNotificationServiceImpl implements UserNotificationService {
         }
     }
 
-    private Notification saveNotification(String title, String content, String type) {
+    private Notification saveNotification(String title, String content, String type, String sender, String senderEmail) {
         Notification notification = new Notification();
         notification.setTitle(title);
         notification.setContent(content);
         notification.setType(type);
+        notification.setSender(sender);
+        notification.setSenderEmail(senderEmail);
         notification = notificationRepository.save(notification);
 
         return notification;
