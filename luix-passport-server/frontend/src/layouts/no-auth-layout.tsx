@@ -35,11 +35,11 @@ export default function NoAuthLayout() {
       href: "/docs",
       isActive: false,
     },
-    {
+    ...(!loginUser.isAuthenticated ? [{
       title: "Contact",
-      href: "contact-us",
+      href: "/contact-us",
       isActive: false,
-    }
+    }] : [])
   ]
 
   return (
