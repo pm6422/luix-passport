@@ -25,7 +25,7 @@ import { AccountService } from "@/services/account-service"
 import { useStore } from "exome/react"
 import { appInfoStore } from "@/stores/app-info-store"
 import { loginUserStore } from "@/stores/login-user-store"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import axios from "axios";
 
 export function AccountNav() {
@@ -33,21 +33,18 @@ export function AccountNav() {
   const { loginUser } = useStore(loginUserStore)
   const [imageUrl, setImageUrl] = useState<string | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(false);
-  const avatarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setIsLoading(true);
-    // 1. 使用Axios发起请求，设置responseType为"blob"
     axios.get("/api/accounts/profile-pic", {
       responseType: "blob",
       withCredentials: true,
       headers: {
         "Cache-Control": "no-cache"
       },
-      timeout: 5000 // 设置5秒超时
+      timeout: 5000
     }).then((response) => {
       setIsLoading(false);
-      // 2. 创建Blob URL
       const blob = new Blob([response.data], { type: response.headers["content-type"] });
       const objectUrl = URL.createObjectURL(blob);
       setImageUrl(objectUrl);
@@ -58,7 +55,7 @@ export function AccountNav() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative size-12 rounded-full">
-          <div ref={avatarRef}>
+          <div>
             {isLoading ? (
               <Avatar className="size-12">
                 <Skeleton className="w-full h-full" />
