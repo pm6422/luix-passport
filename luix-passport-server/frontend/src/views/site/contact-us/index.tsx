@@ -78,7 +78,7 @@ export default function ContactUs() {
             className="my-12 h-14"
           />
           <h2 className="text-4xl font-extrabold lg:text-5xl lg:leading-[55px]">
-            We"re Here to Help
+            We are Here to Help
           </h2>
           <h4 className="mt-6 text-lg">
             Have questions or feedback? Reach out to our team anytime.
