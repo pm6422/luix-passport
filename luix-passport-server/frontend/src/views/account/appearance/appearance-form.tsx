@@ -47,7 +47,7 @@ export function AppearanceForm() {
             <FormItem className="space-y-1">
               <FormLabel>Theme</FormLabel>
               <FormDescription>
-                Select the theme for the dashboard.
+                Select the theme for the console.
               </FormDescription>
               <FormMessage />
               <RadioGroup

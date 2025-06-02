@@ -137,7 +137,7 @@ export default function SiteHome() {
             />
             {loginUser.isAuthenticated ? (
               <>
-                <h1 className="text-4xl font-bold mb-6">Welcome to Your Dashboard</h1>
+                <h1 className="text-4xl font-bold mb-6">Welcome to Your Console</h1>
                 <p className="text-lg text-muted-foreground max-w-md">
                   Hi {loginUser.username}<br></br> You have {unreadNotifications} new notifications.
                 </p>
@@ -146,7 +146,7 @@ export default function SiteHome() {
                     <Link to="/console/notifications">View Notifications</Link>
                   </Button>
                   <Button asChild className="w-full px-5 py-4 h-14 text-base font-medium rounded-2xl">
-                    <Link to="/console">Go to Dashboard</Link>
+                    <Link to="/console">Go to Console</Link>
                   </Button>
                 </div>
               </>
@@ -154,7 +154,7 @@ export default function SiteHome() {
               <>
                 <h1 className="text-4xl font-bold mb-6">Ready to Continue Your Journey?</h1>
                 <p className="text-lg text-muted-foreground mb-10 max-w-md">
-                  Sign in to access your personalized dashboard and features.
+                  Sign in to access your personalized console and features.
                 </p>
                 <div className="w-full max-w-sm space-y-6">
                   <Button asChild className="w-full px-5 py-4 h-14 text-base font-medium rounded-2xl">

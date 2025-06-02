@@ -125,7 +125,7 @@ const router = createBrowserRouter([
       {
         index: true,
         lazy: async () => ({
-          Component: (await import("./views/dashboard")).default
+          Component: (await import("./views/console")).default
         }),
       },
       {

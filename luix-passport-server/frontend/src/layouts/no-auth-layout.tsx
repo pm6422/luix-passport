@@ -16,7 +16,7 @@ export default function NoAuthLayout() {
       isActive: true,
     },
     ...(loginUser.isAuthenticated ? [{
-      title: "Dashboard",
+      title: "Console",
       href: "/console",
       isActive: false,
     }] : []),

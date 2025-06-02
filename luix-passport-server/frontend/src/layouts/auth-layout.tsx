@@ -29,7 +29,7 @@ export default function AuthLayout() {
     },
     ...(loginUser.isOnlyUser ? [
       {
-        title: "Dashboard",
+        title: "Console",
         href: "/console",
         isActive: true,
       },

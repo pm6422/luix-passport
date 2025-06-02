@@ -4,7 +4,7 @@ import { Activity, CreditCard, Key, Lock, Shield, User, Users } from "lucide-rea
 import { useStore } from "exome/react"
 import { loginUserStore } from "@/stores/login-user-store"
 
-export default function DashboardPage() {
+export default function ConsolePage() {
   const { loginUser } = useStore(loginUserStore)
   const isAdmin = loginUser?.isAdmin;
 
@@ -12,7 +12,7 @@ export default function DashboardPage() {
     <div className="container mx-auto px-4 py-8">
       {/* Header */}
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold">Dashboard</h1>
+        <h1 className="text-3xl font-bold">Console</h1>
         <div className="flex items-center space-x-2">
           <User className="h-5 w-5" />
           <span className="bg-primary text-primary-foreground px-2 py-1 rounded-full text-xs">
@@ -169,7 +169,7 @@ export default function DashboardPage() {
         <div className="mt-8">
           <Card>
             <CardHeader>
-              <CardTitle>Admin Dashboard</CardTitle>
+              <CardTitle>Admin Console</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">

@@ -56,9 +56,6 @@ Start the server
 ```
 
 ## TODOs
-- dashboard page
-- register page
-- forget password page
 - table page no url query param
 - introduce signal
 
