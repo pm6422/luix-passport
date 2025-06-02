@@ -61,7 +61,7 @@ export function AccountNav() {
         <Button variant="ghost" className="relative size-12 rounded-full" ref={avatarRef}>
           {isInView ? (
             <Avatar className="size-12">
-              <AvatarImage src="/api/accounts/profile-pic" loading="lazy" decoding="async"/>
+              <AvatarImage src="/api/accounts/profile-pic"/>
               <AvatarFallback><Skeleton className="w-full" /></AvatarFallback>
             </Avatar>
           ) : (
