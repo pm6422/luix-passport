@@ -197,13 +197,40 @@ export default function Notifications() {
                   <h2 className="text-xl font-bold">{selectedNotification.title}</h2>
                   <DateTime value={selectedNotification.createdAt} className="text-sm text-muted-foreground"/>
                 </div>
+
+                {/* Add sender information section */}
+                {(selectedNotification.sender || selectedNotification.senderEmail) && (
+                  <div className="mb-6 p-4 bg-muted/50 rounded-lg">
+                    <h3 className="text-sm font-medium mb-2">From</h3>
+                    <div className="space-y-2">
+                      {selectedNotification.sender && (
+                        <p className="text-sm">
+                          <span className="text-muted-foreground">Name: </span>
+                          {selectedNotification.sender}
+                        </p>
+                      )}
+                      {selectedNotification.senderEmail && (
+                        <p className="text-sm">
+                          <span className="text-muted-foreground">Email: </span>
+                          <a
+                            href={`mailto:${selectedNotification.senderEmail}`}
+                            className="text-primary hover:underline"
+                          >
+                            {selectedNotification.senderEmail}
+                          </a>
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                )}
+
                 <div className="prose max-w-none">
                   <p>{selectedNotification.content}</p>
                 </div>
               </div>
             ) : (
               <div className="text-center py-8 text-muted-foreground">
-                No notification.
+                No notification selected
               </div>
             )}
           </CardContent>

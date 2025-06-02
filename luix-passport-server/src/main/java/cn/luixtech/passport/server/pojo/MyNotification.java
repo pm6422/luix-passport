@@ -15,6 +15,8 @@ public class MyNotification {
     private String  title;
     private String  content;
     private String  type;
+    private String  sender;
+    private String  senderEmail;
     private String  receiverId;
     private String  status;
     private Boolean active;
