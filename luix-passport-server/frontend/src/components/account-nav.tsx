@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Button } from "@/components/custom/button"
 import { Link } from "react-router-dom"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -25,40 +25,102 @@ import { AccountService } from "@/services/account-service"
 import { useStore } from "exome/react"
 import { appInfoStore } from "@/stores/app-info-store"
 import { loginUserStore } from "@/stores/login-user-store"
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import axios from 'axios';
 
 export function AccountNav() {
   const { appInfo } = useStore(appInfoStore)
   const { loginUser } = useStore(loginUserStore)
-  const [avatarVisible, setAvatarVisible] = useState(false);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+  const avatarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!loginUser.isAuthenticated) {
-      return;
+    const fetchProfileImage = async () => {
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        // 1. 使用Axios发起请求，设置responseType为'blob'
+        const response = await axios.get('/api/accounts/profile-pic', {
+          responseType: 'blob',
+          withCredentials: true, // 携带cookie
+          headers: {
+            'Cache-Control': 'no-cache'
+          },
+          timeout: 5000 // 设置5秒超时
+        });
+
+        // 2. 创建Blob URL
+        const blob = new Blob([response.data], { type: response.headers['content-type'] });
+        const objectUrl = URL.createObjectURL(blob);
+        setImageUrl(objectUrl);
+
+      } catch (err) {
+        console.error('Failed to load profile image:', err);
+        setError(axios.isAxiosError(err) ? err : new Error('Unknown error'));
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    // 3. 实现懒加载
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          fetchProfileImage();
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (avatarRef.current) {
+      observer.observe(avatarRef.current);
     }
-    setTimeout(() => {
-      setAvatarVisible(true);
-    }, 2000);
-  }, [loginUser]);
+
+    return () => {
+      observer.disconnect();
+      // 清理Blob URL防止内存泄漏
+      if (imageUrl) URL.revokeObjectURL(imageUrl);
+    };
+  }, []);
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative size-12 rounded-full">
-          {avatarVisible ? (
-            <Avatar className="size-12">
-              <AvatarImage
-                src="/api/accounts/profile-pic"
-                loading="eager"
-                onError={(e) => {
-                 e.currentTarget.src = '/api/accounts/profile-pic?retry='+Date.now()
-                }}
-              />
-              <AvatarFallback><Skeleton className="w-full" /></AvatarFallback>
-            </Avatar>
-          ) : (
-            <Skeleton className="w-fulll" />
-          )}
+          <div ref={avatarRef}>
+            {isLoading ? (
+              <Avatar className="size-12">
+                <Skeleton className="w-full h-full" />
+              </Avatar>
+            ) : error ? (
+              <Avatar className="size-12">
+                <AvatarFallback><Skeleton className="w-full" /></AvatarFallback>
+              </Avatar>
+            ) : imageUrl ? (
+              <Avatar className="size-12">
+                <img
+                  src={imageUrl}
+                  alt="Profile"
+                  className="w-full h-full object-cover"
+                  onLoad={() => {
+                    // 可以在这里添加加载完成后的逻辑
+                  }}
+                  onError={() => {
+                    setError(new Error('Image load failed'));
+                    setImageUrl(null);
+                  }}
+                />
+              </Avatar>
+            ) : (
+              <Avatar className="size-12">
+                <AvatarFallback><Skeleton className="w-full" /></AvatarFallback>
+              </Avatar>
+            )}
+          </div>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-48" align="end" forceMount>
