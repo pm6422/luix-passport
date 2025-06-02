@@ -6,7 +6,6 @@ import { appInfoStore } from "@/stores/app-info-store"
 import { useStore } from "exome/react"
 import { loginUserStore } from "@/stores/login-user-store"
 import { RoleAdmin } from "@/components/custom/role/role-admin"
-import { RoleOnlyUser } from "@/components/custom/role/role-only-user"
 import { useLocation } from "react-router-dom"
 import { CentralTopNav } from "@/components/central-top-nav"
 // import { NotificationNav } from "@/components/notification-nav"
@@ -28,28 +27,23 @@ export default function AuthLayout() {
       href: "/",
       isActive: false,
     },
-  ]
-  const userRoleTopNav = [
-    {
-      title: "Home",
-      href: "/",
-      isActive: false,
-    },
-    {
-      title: "Dashboard",
-      href: "/console",
-      isActive: true,
-    },
-    {
-      title: "Personal Account",
-      href: "/console/account",
-      isActive: false,
-    },
-    {
-      title: "Notifications",
-      href: "/console/notifications",
-      isActive: false,
-    },
+    ...(loginUser.isOnlyUser ? [
+      {
+        title: "Dashboard",
+        href: "/console",
+        isActive: true,
+      },
+      {
+        title: "Personal Account",
+        href: "/console/account",
+        isActive: false,
+      },
+      {
+        title: "Notifications",
+        href: "/console/notifications",
+        isActive: false,
+      }
+    ] : [])
   ]
   let reconnectAttempts = 0;
   const maxReconnectAttempts = 5;
@@ -148,14 +142,7 @@ export default function AuthLayout() {
         <Layout>
           <LayoutHeader>
             <div className="ml-auto flex items-center space-x-4">
-              <RoleAdmin>
-                <CentralTopNav links={topNav}/>
-              </RoleAdmin>
-              <RoleOnlyUser>
-                <CentralTopNav links={userRoleTopNav}/>
-              </RoleOnlyUser>
-              {/* <Search /> */}
-              {/*<NotificationNav/>*/}
+              <CentralTopNav links={topNav}/>
               <AccountNav />
             </div>
           </LayoutHeader>
