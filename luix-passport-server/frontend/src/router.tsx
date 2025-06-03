@@ -104,13 +104,7 @@ const router = createBrowserRouter([
         lazy: async () => ({
           Component: (await import("./views/site/contact-us")).default
         }),
-      },
-      {
-        path: "/submitted",
-        lazy: async () => ({
-          Component: (await import("./views/submitted")).default
-        }),
-      },
+      }
     ],
   },
 
