@@ -361,7 +361,7 @@ export default function LuixRpcPage() {
       </section>
 
       {/* Author's Voice */}
-      <section id="authors-voice" className="py-12 bg-primary text-primary-foreground">
+      <section id="author's-voice" className="py-12 bg-primary text-primary-foreground">
         <div className="container text-center">
           <MessageCircleIcon className="mx-auto h-12 w-12 mb-6" />
           <h2 className="text-3xl font-bold mb-6">Why Develop This Framework?</h2>
