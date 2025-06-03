@@ -9,10 +9,8 @@ import { ContactService } from "@/services/contact-service"
 import InputFormField from "@/components/custom/form-field/input"
 import SelectFormField from "@/components/custom/form-field/select"
 import { Form } from "@/components/ui/form"
-import { useNavigate } from "react-router-dom"
+import { ContactSuccessAlertDialog } from "./components/contact-success"
 
-
-// Define the form schema with updated field names
 const contactFormSchema = z.object({
   sender: z.string().trim().min(1, { message: "Required" }),
   senderEmail: z.string().email("Please enter a valid email address"),
@@ -24,7 +22,7 @@ export type ContactFormSchema = z.infer<typeof contactFormSchema>
 
 export default function ContactUs() {
   const [isLoading, setIsLoading] = useState(false)
-  const navigate = useNavigate()
+  const [showSuccess, setShowSuccess] = useState(false)
   const subjects = [
     {
       label: "Technical Support",
@@ -61,7 +59,7 @@ export default function ContactUs() {
       loading: "Sending message...",
       success: () => {
         setIsLoading(false)
-        navigate("/submitted")
+        setShowSuccess(true)
         return "Sent message successfully"
       },
       error: (error) => {
@@ -226,6 +224,10 @@ export default function ContactUs() {
           </div>
         </div>
       </div>
+      <ContactSuccessAlertDialog
+        open={showSuccess}
+        onOpenChange={setShowSuccess}
+      />
     </div>
   )
 }
