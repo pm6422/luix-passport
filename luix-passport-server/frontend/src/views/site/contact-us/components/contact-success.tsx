@@ -24,7 +24,7 @@ export function ContactSuccessAlertDialog({ open, onOpenChange }: Props) {
 
   useEffect(() => {
     if (open) {
-      // setIsAnimating(true)
+      setIsAnimating(true)
       const timer = setTimeout(() => setIsAnimating(false), 1000)
       return () => clearTimeout(timer)
     }
