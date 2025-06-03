@@ -14,7 +14,7 @@ import { Layout, LayoutHeader } from "@/layouts/layout-definitions"
 // import { Search } from "@/components/custom/search"
 import { isEmpty } from "lodash"
 import { toast } from "sonner"
-import { IconInfoCircle } from "@tabler/icons-react"
+import { IconBellBolt, IconX } from "@tabler/icons-react"
 
 export default function AuthLayout() {
   const { appInfo } = useStore(appInfoStore)
@@ -68,7 +68,7 @@ export default function AuthLayout() {
     const eventSource = setupSse();
 
     return () => {
-      // Close connection on component unmount
+      // Close connection on part unmount
       if (eventSource) {
         eventSource.close();
         console.log('SSE connection closed');
@@ -91,24 +91,43 @@ export default function AuthLayout() {
         // const data = JSON.parse(event.data);
         // console.log("Received message from the server:", data);
         setTimeout(() => {
-          toast(
-            <div className="flex flex-col">
-              <div className="flex">
-                <IconInfoCircle className="size-4 mr-2"/>
-                <span className="font-bold mb-2">{event.data}</span>
+          toast.custom(
+            (t) => (
+              <div className="group w-full max-w-sm rounded-lg border bg-background p-4 shadow-lg">
+                <div className="flex items-start gap-3">
+                  <IconBellBolt className="mt-0.5 size-5 text-blue-500" />
+                  <div className="flex-1">
+                    <div className="mb-2 flex items-center justify-between">
+                      <h3 className="text-sm font-semibold text-foreground">
+                        {event.data}
+                      </h3>
+                      <button
+                        onClick={() => toast.dismiss(t)}
+                        className="opacity-0 transition-opacity group-hover:opacity-100 focus:opacity-100 focus:outline-none"
+                        aria-label="Close notification"
+                      >
+                        <IconX className="size-4 text-muted-foreground hover:text-foreground" />
+                      </button>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      Please go to{" "}
+                      <a
+                        href="/console/notifications"
+                        className="font-medium text-blue-500 underline-offset-4 hover:text-blue-600 hover:underline"
+                      >
+                        Notification Center
+                      </a>{" "}
+                      to check the details.
+                    </p>
+                  </div>
+                </div>
               </div>
-              <span>
-                    Please go to{' '}
-                <a
-                  href="/console/notifications"
-                  className="text-blue-500 hover:text-blue-700 underline underline-offset-4 decoration-blue-300 hover:decoration-blue-500 transition-all font-bold"
-                >
-                  notification center
-                </a>{' '}
-                to check.
-              </span>
-            </div>,
-            { duration: 5000 })
+            ),
+            {
+              duration: 5000,
+              position: "top-right",
+            }
+          )
         }, 2000)
 
         return eventSource;
