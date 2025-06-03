@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Separator } from "@/components/ui/separator";
+import { IconBrandGithub, IconBrandWeibo, IconMessageCircle, IconCircle, IconMenu2 } from "@tabler/icons-react";
 
 // ====================== CAROUSEL IMPROVEMENTS ======================
 const CarouselBackground = () => (
@@ -283,7 +284,7 @@ export default function LuixRpcPage() {
             className="md:hidden"
             onClick={() => setMobileMenuOpen(prev => !prev)}
           >
-            <MenuIcon className="h-5 w-5" />
+            <IconMenu2 className="h-5 w-5" />
           </Button>
 
           {/* 移动端浮层菜单（在小屏幕时显示） */}
@@ -349,7 +350,7 @@ export default function LuixRpcPage() {
               {content.additionalFeatures.leftColumn.map((feature, index) => (
                 <div key={index} className="flex items-start gap-4">
                   <div className="bg-primary/10 p-2 rounded-full">
-                    <CircleIcon className="h-5 w-5 text-primary" />
+                    <IconCircle className="h-5 w-5 text-primary" />
                   </div>
                   <div>
                     <h3 className="font-semibold">{feature}</h3>
@@ -377,7 +378,7 @@ export default function LuixRpcPage() {
               {content.additionalFeatures.rightColumn.map((feature, index) => (
                 <div key={index} className="flex items-start gap-4">
                   <div className="bg-primary/10 p-2 rounded-full">
-                    <CircleIcon className="h-5 w-5 text-primary" />
+                    <IconCircle className="h-5 w-5 text-primary" />
                   </div>
                   <div>
                     <h3 className="font-semibold">{feature}</h3>
@@ -512,7 +513,7 @@ export default function LuixRpcPage() {
       {/* Author's Voice */}
       <section id="authors-voice" className="py-12 bg-primary text-primary-foreground">
         <div className="container text-center">
-          <MessageCircleIcon className="mx-auto h-12 w-12 mb-6" />
+          <IconMessageCircle className="mx-auto h-12 w-12 mb-6" />
           <h2 className="text-3xl font-bold mb-6">{content.authorVoice.title}</h2>
           <blockquote className="max-w-3xl mx-auto text-lg italic mb-6">
             "{content.authorVoice.quote}"
@@ -580,10 +581,10 @@ export default function LuixRpcPage() {
 
             <div className="flex justify-center gap-4 mt-6">
               <a href="https://github.com/pm6422" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full hover:bg-muted">
-                <GithubIcon className="h-6 w-6" />
+                <IconBrandGithub className="h-6 w-6" />
               </a>
               <a href="http://weibo.cn/luix" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full hover:bg-muted">
-                <WeiboIcon className="h-6 w-6" />
+                <IconBrandWeibo className="h-6 w-6" />
               </a>
             </div>
 
@@ -595,104 +596,5 @@ export default function LuixRpcPage() {
         </div>
       </section>
     </div>
-  );
-}
-
-// ====================== ICONS ======================
-function MenuIcon(props: any) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <line x1="4" x2="20" y1="12" y2="12" />
-      <line x1="4" x2="20" y1="6" y2="6" />
-      <line x1="4" x2="20" y1="18" y2="18" />
-    </svg>
-  );
-}
-
-function CircleIcon(props: any) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <circle cx="12" cy="12" r="10" />
-    </svg>
-  );
-}
-
-function MessageCircleIcon(props: any) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
-    </svg>
-  );
-}
-
-function GithubIcon(props: any) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
-      <path d="M9 18c-4.51 2-5-2-7-2" />
-    </svg>
-  );
-}
-
-function WeiboIcon(props: any) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z" />
-    </svg>
   );
 }
