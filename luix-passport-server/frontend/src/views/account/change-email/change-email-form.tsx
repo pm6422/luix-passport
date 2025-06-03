@@ -23,6 +23,7 @@ import { AccountService } from "@/services/account-service"
 import { getErrorMessage } from "@/lib/handle-error"
 import { Link } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
+import { LoadingButton } from "@/components/custom/loading-button"
 
 const formSchema = z.object({
   currentEmail: z.string().trim().min(1, { message: "Required" }).email("Invalid email format"),
@@ -172,14 +173,13 @@ export function ChangeEmailForm() {
               Back
             </Button>
           </Link>
-          <Button
-            type="submit"
+          <LoadingButton 
+            type="submit" 
+            loading={saving}
             disabled={Object.values(form.formState.errors).length > 0 || saving}
-            className="w-full sm:w-auto"
-          >
-            {saving ? "Waiting..." : "Save"}
-            {saving && (<IconReload className="ml-1 size-4 animate-spin"/>)}
-          </Button>
+            className="w-full sm:w-auto">
+            {saving ? "Waiting" : "Save"}
+          </LoadingButton>
         </div>
       </form>
     </Form>
