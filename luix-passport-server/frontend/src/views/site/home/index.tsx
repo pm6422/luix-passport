@@ -155,7 +155,7 @@ export default function SiteHome() {
                   </Button>
                   <Button variant="secondary" className="w-full px-5 py-4 h-14 text-base font-medium rounded-2xl"
                           onClick={() => AccountService.signOut()}>
-                    Sign Out
+                    Sign out
                   </Button>
                 </div>
               </>
