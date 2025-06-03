@@ -511,7 +511,7 @@ export default function LuixRpcPage() {
       </section>
 
       {/* Author's Voice */}
-      <section id="authors-voice" className="py-12 bg-primary text-primary-foreground">
+      <section id="author's-voice" className="py-12 bg-primary text-primary-foreground">
         <div className="container text-center">
           <IconMessageCircle className="mx-auto h-12 w-12 mb-6" />
           <h2 className="text-3xl font-bold mb-6">{content.authorVoice.title}</h2>
@@ -581,10 +581,10 @@ export default function LuixRpcPage() {
 
             <div className="flex justify-center gap-4 mt-6">
               <a href="https://github.com/pm6422" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full hover:bg-muted">
-                <IconBrandGithub className="h-6 w-6" />
+                <IconBrandGithub className="h-6 w-6 animate-pulse" />
               </a>
               <a href="http://weibo.cn/luix" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full hover:bg-muted">
-                <IconBrandWeibo className="h-6 w-6" />
+                <IconBrandWeibo className="h-6 w-6 animate-pulse" />
               </a>
             </div>
 
