@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import {
   Card,
   CardContent,
@@ -10,6 +11,65 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Separator } from "@/components/ui/separator";
+
+// ====================== CAROUSEL IMPROVEMENTS ======================
+const CarouselBackground = () => (
+  <svg
+    className="absolute inset-0 -z-10 h-full w-full"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 1440 320"
+    preserveAspectRatio="none"
+  >
+    <defs>
+      <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stopColor="hsl(210, 80%, 60%)" />
+        <stop offset="100%" stopColor="hsl(210, 80%, 30%)" />
+      </linearGradient>
+    </defs>
+    <path
+      fill="url(#gradient)"
+      fillOpacity="0.1"
+      d="M0,256L48,261.3C96,267,192,277,288,266.7C384,256,480,224,576,218.7C672,213,768,235,864,250.7C960,267,1056,277,1152,261.3C1248,245,1344,203,1392,181.3L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+    ></path>
+  </svg>
+);
+
+const CarouselComponent = ({ items }: { items: { title: string; description: string }[] }) => {
+  // Auto-rotation effect
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const nextButton = document.querySelector('.carousel-next-button');
+      if (nextButton) {
+        (nextButton as HTMLElement).click();
+      }
+    }, 5000); // Rotate every 5 seconds
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="relative h-[400px] overflow-hidden rounded-lg"> {/* Increased height */}
+      <CarouselBackground />
+      <Carousel className="w-full h-full">
+        <CarouselContent className="h-full">
+          {items.map((item, index) => (
+            <CarouselItem key={index} className="h-full flex items-center justify-center">
+              <div className="p-6 text-center max-w-3xl mx-auto">
+                <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">{item.title}</h1>
+                <p className="text-lg md:text-xl text-muted-foreground">
+                  {item.description}
+                </p>
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        {/* Enlarged navigation buttons */}
+        <CarouselPrevious className="carousel-prev-button left-6 h-12 w-12 scale-150" />
+        <CarouselNext className="carousel-next-button right-6 h-12 w-12 scale-150" />
+      </Carousel>
+    </div>
+  );
+};
 
 // ====================== TEXT CONTENT ======================
 const content = {
@@ -184,6 +244,17 @@ const content = {
 
 // ====================== COMPONENT ======================
 export default function LuixRpcPage() {
+  const carouselItems = [
+    {
+      title: "LUI✘ RPC – A Remote Procedure Call Framework",
+      description: "A distributed remote call framework that makes remote procedure calls as straightforward as local ones."
+    },
+    {
+      title: "LUI✘ RPC – Service Governance System",
+      description: "Offers a comprehensive suite of service governance tools, including application management, server monitoring, and more."
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-background">
       {/* Navigation */}
@@ -209,28 +280,7 @@ export default function LuixRpcPage() {
 
       {/* Hero Carousel */}
       <section id="home" className="pt-24 pb-12">
-        <Carousel className="w-full">
-          <CarouselContent>
-            <CarouselItem>
-              <div className="p-6 text-center">
-                <h1 className="text-4xl font-bold tracking-tight mb-4">{content.hero.title1}</h1>
-                <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-                  {content.hero.description1}
-                </p>
-              </div>
-            </CarouselItem>
-            <CarouselItem>
-              <div className="p-6 text-center">
-                <h1 className="text-4xl font-bold tracking-tight mb-4">{content.hero.title2}</h1>
-                <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-                  {content.hero.description2}
-                </p>
-              </div>
-            </CarouselItem>
-          </CarouselContent>
-          <CarouselPrevious className="left-4" />
-          <CarouselNext className="right-4" />
-        </Carousel>
+        <CarouselComponent items={carouselItems} />
       </section>
 
       {/* Features Section */}
