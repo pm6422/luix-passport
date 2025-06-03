@@ -5,8 +5,9 @@ import { Button } from "@/components/ui/button"
 import { useStore } from "exome/react"
 import { loginUserStore } from "@/stores/login-user-store"
 import { motion } from "framer-motion"
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from "react"
 import { UserNotificationService } from "@/services/user-notification-service"
+import { Badge } from "@/components/ui/badge.tsx"
 
 export default function SiteHome() {
   const { loginUser } = useStore(loginUserStore)
@@ -60,8 +61,8 @@ export default function SiteHome() {
               transition={{ delay: 0.4 }}
             >
               {loginUser.isAuthenticated
-                ? 'Your secure gateway to connected services'
-                : 'Your passport to seamless authentication'}
+                ? "Your secure gateway to connected services"
+                : "Your passport to seamless authentication"}
             </motion.h4>
 
             <div className="mt-10 flex space-x-4">
@@ -121,7 +122,7 @@ export default function SiteHome() {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1.2 }}
               >
-                {loginUser.isAuthenticated ? 'VERIFIED' : 'SECURE'}
+                {loginUser.isAuthenticated ? "VERIFIED" : "SECURE"}
               </motion.text>
             </svg>
           </motion.div>
@@ -139,7 +140,10 @@ export default function SiteHome() {
               <>
                 <h1 className="text-4xl font-bold mb-6">Welcome to Your Console</h1>
                 <p className="text-lg text-muted-foreground max-w-md">
-                  Hi {loginUser.username}<br></br> You have {unreadNotifications} new notifications.
+                  Hi {loginUser.username}<br></br> You have
+                  <Badge className="bg-green-500 h-5 min-w-5 rounded-full ms-2 me-1 font-mono tabular-nums">
+                    {unreadNotifications}
+                </Badge> new notifications.
                 </p>
                 <div className="w-full max-w-sm space-y-6">
                   <Button asChild variant="link" className="w-full px-5 py-4 h-14 text-base font-medium rounded-2xl">

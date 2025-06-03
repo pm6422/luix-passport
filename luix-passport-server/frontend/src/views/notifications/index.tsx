@@ -75,7 +75,7 @@ export default function Notifications() {
                       Notifications
                     </div>
                   </div>
-                  <Badge variant="outline" className="h-4">{totalCount}</Badge>
+                  <Badge className="bg-green-500 h-5 min-w-5 rounded-full ms-2 font-mono tabular-nums">{totalCount}</Badge>
                 </div>
             </CardTitle>
           </CardHeader>
