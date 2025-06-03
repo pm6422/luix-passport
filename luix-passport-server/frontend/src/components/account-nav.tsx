@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react"
 import { Avatar } from "@/components/ui/avatar"
 import { Button } from "@/components/custom/button"
 import { Link } from "react-router-dom"
@@ -25,7 +26,6 @@ import { AccountService } from "@/services/account-service"
 import { useStore } from "exome/react"
 import { appInfoStore } from "@/stores/app-info-store"
 import { loginUserStore } from "@/stores/login-user-store"
-import { useEffect, useState } from "react"
 
 export function AccountNav() {
   const { appInfo } = useStore(appInfoStore)
