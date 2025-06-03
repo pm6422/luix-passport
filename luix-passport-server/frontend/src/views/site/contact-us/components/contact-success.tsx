@@ -38,9 +38,9 @@ export function ContactSuccessAlertDialog({ open, onOpenChange }: Props) {
             <motion.div
               initial={{ scale: 0 }}
               animate={isAnimating ? { scale: [0, 1.2, 1] } : { scale: 1 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
+              transition={{ duration: 2, ease: "easeOut" }}
             >
-              <CheckCircle2 className="size-16 text-green-600" />
+              <CheckCircle2 className="size-16 text-green-500" />
             </motion.div>
           </div>
           <AlertDialogTitle className="text-2xl">Thank You!</AlertDialogTitle>
