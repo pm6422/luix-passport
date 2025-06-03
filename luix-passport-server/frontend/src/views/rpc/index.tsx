@@ -11,50 +11,192 @@ import { Badge } from "@/components/ui/badge";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Separator } from "@/components/ui/separator";
 
-export default function LuixRpcPage() {
-  // Timeline data
-  const timelineItems = [
-    {
-      date: "2021/12",
-      title: "Compatible with JDK 8 through JDK 17",
-      description: "Replaced registry and Kryo serialization with extensive code to support JDK 9+."
+// ====================== TEXT CONTENT ======================
+const content = {
+  navigation: {
+    brand: "LUI✘",
+    links: ['Home', 'Features', 'Code Examples', 'Design Concepts', 'Development Progress', "Author's Voice", 'Contact']
+  },
+  hero: {
+    title1: "LUI✘ RPC – A Remote Procedure Call Framework",
+    description1: "A distributed remote call framework that makes remote procedure calls as straightforward as local ones.",
+    title2: "LUI✘ RPC – Service Governance System",
+    description2: "Offers a comprehensive suite of service governance tools, including application management, server monitoring, and more."
+  },
+  features: {
+    title: "Key Features",
+    subtitle: "Comprehensive solution for distributed system communication",
+    items: [
+      {
+        title: "Interface-Oriented RPC Calls",
+        description: "Interface-oriented, TCP-based remote procedure calls that simplify client-side logic."
+      },
+      {
+        title: "Service Registration and Auto-Discovery",
+        description: "Applications automatically register their IP addresses with the registry upon startup."
+      },
+      {
+        title: "Fault Tolerance and Load Balancing",
+        description: "Clients select optimal addresses for remote calls using advanced load balancing algorithms."
+      },
+      {
+        title: "High-Performance Protocol and Serialization",
+        description: "Custom, high-performance TCP protocol with support for multiple serialization algorithms."
+      },
+      {
+        title: "Intelligent Parameter Configuration",
+        description: "Built-in algorithms automatically choose optimal parameters to minimize manual setup."
+      },
+      {
+        title: "Service Governance Control Center",
+        description: "A powerful, web-based control center for service management and monitoring."
+      }
+    ]
+  },
+  additionalFeatures: {
+    title: "Additional Features",
+    subtitle: "More exceptional features to enhance your experience",
+    leftColumn: [
+      "Multiple Registry Center Types & Instances",
+      "Multiple Interface Formats",
+      "Retry Count and Request Timeouts",
+      "Direct Invocation",
+      "Intelligent Serialization & Deserialization",
+      "Scheduled Tasks"
+    ],
+    rightColumn: [
+      "Concurrency Control & Rate Limiting",
+      "Multi-Version Interfaces",
+      "Broadcast Calls",
+      "Generic Calls",
+      "Visual Monitoring & Reporting",
+      "Automatic and Manual Service Degradation"
+    ]
+  },
+  codeExamples: {
+    title: "Code Demonstration",
+    subtitle: "Examples of server and client setup",
+    server: {
+      title: "Server Setup",
+      steps: [
+        { title: "1. Add LUIX dependency", image: "/content/img/code/luix-dependency.png" },
+        { title: "2. Add server interface dependency", image: "/content/img/code/common-dependency.png" },
+        { title: "3. Add LUIX configuration", image: "/content/img/code/server.png" },
+        { title: "4. Expose server services", image: "/content/img/code/provider.png" }
+      ]
     },
-    {
-      date: "2021/08",
-      title: "Portal Development Phase",
-      description: "Began development of the portal interface."
-    },
-    {
-      date: "2021/06",
-      title: "Web Center Development Phase",
-      description: "Initiated development of the Web Center module."
-    },
-    {
-      date: "2020/08",
-      title: "Key Feature Development Phase",
-      description: "Commenced development of core features."
-    },
-    {
-      date: "2020/01",
-      title: "Core Module Development Phase",
-      description: "Officially started system development."
-    },
-    {
-      date: "2019/10",
-      title: "Ideation Stage",
-      description: "Decision made to develop a custom RPC framework."
+    client: {
+      title: "Client Setup",
+      steps: [
+        { title: "1. Add LUIX dependency", image: "/content/img/code/luix-dependency.png" },
+        { title: "2. Add server interface dependency", image: "/content/img/code/common-dependency.png" },
+        { title: "3. Add LUIX configuration", image: "/content/img/code/client.png" },
+        { title: "4. Reference services on the client", image: "/content/img/code/consumer.png" }
+      ]
     }
-  ];
+  },
+  designConcepts: {
+    title: "Product Design Concepts",
+    subtitle: "Product Concepts",
+    simplicity: {
+      badge: "LUI✘ RPC",
+      title: "Simplicity",
+      description: "The product is designed with simplicity in mind, enabling even recent graduates to get started quickly."
+    },
+    intelligence: {
+      badge: "LUI✘ RPC",
+      title: "Intelligence",
+      description: "With numerous parameters and values, manual selection can be confusing. LUI✘ RPC employs algorithms to automatically select the optimal options."
+    }
+  },
+  timeline: {
+    title: "Development Progress & Roadmap",
+    subtitle: "Progress and Plans",
+    items: [
+      {
+        date: "2021/12",
+        title: "Compatible with JDK 8 through JDK 17",
+        description: "Replaced registry and Kryo serialization with extensive code to support JDK 9+."
+      },
+      {
+        date: "2021/08",
+        title: "Portal Development Phase",
+        description: "Began development of the portal interface."
+      },
+      {
+        date: "2021/06",
+        title: "Web Center Development Phase",
+        description: "Initiated development of the Web Center module."
+      },
+      {
+        date: "2020/08",
+        title: "Key Feature Development Phase",
+        description: "Commenced development of core features."
+      },
+      {
+        date: "2020/01",
+        title: "Core Module Development Phase",
+        description: "Officially started system development."
+      },
+      {
+        date: "2019/10",
+        title: "Ideation Stage",
+        description: "Decision made to develop a custom RPC framework."
+      }
+    ]
+  },
+  authorVoice: {
+    title: "Why Develop This Framework?",
+    quote: "After years of building a knowledge system, I aimed to unify my learnings through a challenging middleware project. Dubbo, an Apache project, is a renowned open-source framework encompassing distributed systems, high performance, and network programming. It represents a massive undertaking that Alibaba invested millions into. Developing a similar system with distinctive features would showcase my capabilities.",
+    signature: "2019/10/01 - Louis Lau"
+  },
+  thoughts: {
+    title: "What I'm Thinking",
+    items: [
+      "Remote service calls comprise a significant portion of developers' daily work. Developing HTTP interfaces is costly, and implementing RESTful design can be complex.",
+      "Through this project, I'm refining my product design skills, distilling essential RPC features, and crafting a product with a polished, high-quality UI for a comprehensive user experience.",
+      "Beyond basic RPC functionality, I'm providing developers with various tools to streamline development, debugging, and troubleshooting."
+    ]
+  },
+  contact: {
+    title: "Contact Us",
+    info: {
+      title: "Luix Universe",
+      items: [
+        "Amsterdam, Netherlands",
+        "WeChat ID: pm6422"
+      ]
+    },
+    resources: {
+      title: "GitHub Resources",
+      items: [
+        { text: "My GitHub Profile", url: "https://github.com/pm6422" },
+        { text: "Luix Passport", url: "https://github.com/pm6422/passport" },
+        { text: "Luix RPC", url: "https://github.com/pm6422/luix-rpc" }
+      ]
+    },
+    footer: {
+      text: "We are seeking talented individuals to join the open-source community. If you're interested, please get in touch.",
+      copyright: "© 2021 Luix Universe"
+    }
+  }
+};
 
+// ====================== COMPONENT ======================
+export default function LuixRpcPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Navigation */}
       <nav className="fixed top-0 w-full bg-background z-50 border-b">
         <div className="container flex items-center justify-between h-16">
-          <a href="#" className="text-xl font-bold">LUI✘</a>
+          <a href="#" className="text-xl font-bold">{content.navigation.brand}</a>
           <div className="hidden md:flex gap-8">
-            {['Home', 'Features', 'Code Examples', 'Design Concepts', 'Development Progress', "Author's Voice", 'Contact'].map((item) => (
-              <a key={item} href={`#${item.toLowerCase().replace(/ /g, '-')}`} className="text-sm font-medium hover:text-primary">
+            {content.navigation.links.map((item) => (
+              <a
+                key={item}
+                href={`#${item.toLowerCase().replace(/ /g, '-')}`}
+                className="text-sm font-medium hover:text-primary"
+              >
                 {item}
               </a>
             ))}
@@ -71,17 +213,17 @@ export default function LuixRpcPage() {
           <CarouselContent>
             <CarouselItem>
               <div className="p-6 text-center">
-                <h1 className="text-4xl font-bold tracking-tight mb-4">LUI✘ RPC – A Remote Procedure Call Framework</h1>
+                <h1 className="text-4xl font-bold tracking-tight mb-4">{content.hero.title1}</h1>
                 <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-                  A distributed remote call framework that makes remote procedure calls as straightforward as local ones.
+                  {content.hero.description1}
                 </p>
               </div>
             </CarouselItem>
             <CarouselItem>
               <div className="p-6 text-center">
-                <h1 className="text-4xl font-bold tracking-tight mb-4">LUI✘ RPC – Service Governance System</h1>
+                <h1 className="text-4xl font-bold tracking-tight mb-4">{content.hero.title2}</h1>
                 <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-                  Offers a comprehensive suite of service governance tools, including application management, server monitoring, and more.
+                  {content.hero.description2}
                 </p>
               </div>
             </CarouselItem>
@@ -95,37 +237,13 @@ export default function LuixRpcPage() {
       <section id="features" className="py-12 bg-muted/50">
         <div className="container">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Key Features</h2>
+            <h2 className="text-3xl font-bold mb-4">{content.features.title}</h2>
             <Separator className="mx-auto w-24 h-1 bg-primary" />
+            <p className="text-muted-foreground mt-4">{content.features.subtitle}</p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              {
-                title: "Interface-Oriented RPC Calls",
-                description: "Interface-oriented, TCP-based remote procedure calls that simplify client-side logic."
-              },
-              {
-                title: "Service Registration and Auto-Discovery",
-                description: "Applications automatically register their IP addresses with the registry upon startup."
-              },
-              {
-                title: "Fault Tolerance and Load Balancing",
-                description: "Clients select optimal addresses for remote calls using advanced load balancing algorithms."
-              },
-              {
-                title: "High-Performance Protocol and Serialization",
-                description: "Custom, high-performance TCP protocol with support for multiple serialization algorithms."
-              },
-              {
-                title: "Intelligent Parameter Configuration",
-                description: "Built-in algorithms automatically choose optimal parameters to minimize manual setup."
-              },
-              {
-                title: "Service Governance Control Center",
-                description: "A powerful, web-based control center for service management and monitoring."
-              }
-            ].map((feature, index) => (
+            {content.features.items.map((feature, index) => (
               <Card key={index}>
                 <CardHeader>
                   <CardTitle>{feature.title}</CardTitle>
@@ -143,21 +261,14 @@ export default function LuixRpcPage() {
       <section className="py-12">
         <div className="container">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Additional Features</h2>
+            <h2 className="text-3xl font-bold mb-4">{content.additionalFeatures.title}</h2>
             <Separator className="mx-auto w-24 h-1 bg-primary" />
-            <p className="text-muted-foreground mt-4">More exceptional features to enhance your experience</p>
+            <p className="text-muted-foreground mt-4">{content.additionalFeatures.subtitle}</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
             <div className="space-y-8">
-              {[
-                "Multiple Registry Center Types & Instances",
-                "Multiple Interface Formats",
-                "Retry Count and Request Timeouts",
-                "Direct Invocation",
-                "Intelligent Serialization & Deserialization",
-                "Scheduled Tasks"
-              ].map((feature, index) => (
+              {content.additionalFeatures.leftColumn.map((feature, index) => (
                 <div key={index} className="flex items-start gap-4">
                   <div className="bg-primary/10 p-2 rounded-full">
                     <CircleIcon className="h-5 w-5 text-primary" />
@@ -185,14 +296,7 @@ export default function LuixRpcPage() {
             </div>
 
             <div className="space-y-8">
-              {[
-                "Concurrency Control & Rate Limiting",
-                "Multi-Version Interfaces",
-                "Broadcast Calls",
-                "Generic Calls",
-                "Visual Monitoring & Reporting",
-                "Automatic and Manual Service Degradation"
-              ].map((feature, index) => (
+              {content.additionalFeatures.rightColumn.map((feature, index) => (
                 <div key={index} className="flex items-start gap-4">
                   <div className="bg-primary/10 p-2 rounded-full">
                     <CircleIcon className="h-5 w-5 text-primary" />
@@ -211,9 +315,9 @@ export default function LuixRpcPage() {
       <section id="code-examples" className="py-12 bg-muted/50">
         <div className="container">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Code Demonstration</h2>
+            <h2 className="text-3xl font-bold mb-4">{content.codeExamples.title}</h2>
             <Separator className="mx-auto w-24 h-1 bg-primary" />
-            <p className="text-muted-foreground mt-4">Examples of server and client setup</p>
+            <p className="text-muted-foreground mt-4">{content.codeExamples.subtitle}</p>
           </div>
 
           <Tabs defaultValue="server" className="w-full">
@@ -224,66 +328,34 @@ export default function LuixRpcPage() {
             <TabsContent value="server">
               <Card>
                 <CardHeader>
-                  <CardTitle>Server Setup</CardTitle>
+                  <CardTitle>{content.codeExamples.server.title}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6">
-                  <div>
-                    <h3 className="font-medium mb-2">1. Add LUIX dependency</h3>
-                    <div className="bg-muted p-4 rounded-md">
-                      <img src="/content/img/code/luix-dependency.png" alt="Dependency" className="w-full max-w-md" />
+                  {content.codeExamples.server.steps.map((step, index) => (
+                    <div key={index}>
+                      <h3 className="font-medium mb-2">{step.title}</h3>
+                      <div className="bg-muted p-4 rounded-md">
+                        <img src={step.image} alt={step.title} className="w-full max-w-md" />
+                      </div>
                     </div>
-                  </div>
-                  <div>
-                    <h3 className="font-medium mb-2">2. Add server interface dependency</h3>
-                    <div className="bg-muted p-4 rounded-md">
-                      <img src="/content/img/code/common-dependency.png" alt="Dependency" className="w-full max-w-md" />
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="font-medium mb-2">3. Add LUIX configuration</h3>
-                    <div className="bg-muted p-4 rounded-md">
-                      <img src="/content/img/code/server.png" alt="Configuration" className="w-full max-w-md" />
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="font-medium mb-2">4. Expose server services</h3>
-                    <div className="bg-muted p-4 rounded-md">
-                      <img src="/content/img/code/provider.png" alt="Service exposure" className="w-full max-w-md" />
-                    </div>
-                  </div>
+                  ))}
                 </CardContent>
               </Card>
             </TabsContent>
             <TabsContent value="client">
               <Card>
                 <CardHeader>
-                  <CardTitle>Client Setup</CardTitle>
+                  <CardTitle>{content.codeExamples.client.title}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6">
-                  <div>
-                    <h3 className="font-medium mb-2">1. Add LUIX dependency</h3>
-                    <div className="bg-muted p-4 rounded-md">
-                      <img src="/content/img/code/luix-dependency.png" alt="Dependency" className="w-full max-w-md" />
+                  {content.codeExamples.client.steps.map((step, index) => (
+                    <div key={index}>
+                      <h3 className="font-medium mb-2">{step.title}</h3>
+                      <div className="bg-muted p-4 rounded-md">
+                        <img src={step.image} alt={step.title} className="w-full max-w-md" />
+                      </div>
                     </div>
-                  </div>
-                  <div>
-                    <h3 className="font-medium mb-2">2. Add server interface dependency</h3>
-                    <div className="bg-muted p-4 rounded-md">
-                      <img src="/content/img/code/common-dependency.png" alt="Dependency" className="w-full max-w-md" />
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="font-medium mb-2">3. Add LUIX configuration</h3>
-                    <div className="bg-muted p-4 rounded-md">
-                      <img src="/content/img/code/client.png" alt="Configuration" className="w-full max-w-md" />
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="font-medium mb-2">4. Reference services on the client</h3>
-                    <div className="bg-muted p-4 rounded-md">
-                      <img src="/content/img/code/consumer.png" alt="Service reference" className="w-full max-w-md" />
-                    </div>
-                  </div>
+                  ))}
                 </CardContent>
               </Card>
             </TabsContent>
@@ -295,17 +367,17 @@ export default function LuixRpcPage() {
       <section id="design-concepts" className="py-12">
         <div className="container">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Product Design Concepts</h2>
+            <h2 className="text-3xl font-bold mb-4">{content.designConcepts.title}</h2>
             <Separator className="mx-auto w-24 h-1 bg-primary" />
-            <p className="text-muted-foreground mt-4">Product Concepts</p>
+            <p className="text-muted-foreground mt-4">{content.designConcepts.subtitle}</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8 items-center">
             <div>
-              <Badge variant="outline" className="mb-2">LUI✘ RPC</Badge>
-              <h3 className="text-2xl font-semibold mb-4">Simplicity</h3>
+              <Badge variant="outline" className="mb-2">{content.designConcepts.simplicity.badge}</Badge>
+              <h3 className="text-2xl font-semibold mb-4">{content.designConcepts.simplicity.title}</h3>
               <p className="text-muted-foreground">
-                The product is designed with simplicity in mind, enabling even recent graduates to get started quickly.
+                {content.designConcepts.simplicity.description}
               </p>
             </div>
             <div className="flex justify-center">
@@ -316,10 +388,10 @@ export default function LuixRpcPage() {
               />
             </div>
             <div className="text-right">
-              <Badge variant="outline" className="mb-2">LUI✘ RPC</Badge>
-              <h3 className="text-2xl font-semibold mb-4">Intelligence</h3>
+              <Badge variant="outline" className="mb-2">{content.designConcepts.intelligence.badge}</Badge>
+              <h3 className="text-2xl font-semibold mb-4">{content.designConcepts.intelligence.title}</h3>
               <p className="text-muted-foreground">
-                With numerous parameters and values, manual selection can be confusing. LUI✘ RPC employs algorithms to automatically select the optimal options.
+                {content.designConcepts.intelligence.description}
               </p>
             </div>
           </div>
@@ -330,9 +402,9 @@ export default function LuixRpcPage() {
       <section id="development-progress" className="py-12 bg-muted/50">
         <div className="container">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Development Progress & Roadmap</h2>
+            <h2 className="text-3xl font-bold mb-4">{content.timeline.title}</h2>
             <Separator className="mx-auto w-24 h-1 bg-primary" />
-            <p className="text-muted-foreground mt-4">Progress and Plans</p>
+            <p className="text-muted-foreground mt-4">{content.timeline.subtitle}</p>
           </div>
 
           <div className="relative">
@@ -341,14 +413,13 @@ export default function LuixRpcPage() {
 
             {/* Timeline items */}
             <div className="space-y-8">
-              {timelineItems.map((item, index) => (
+              {content.timeline.items.map((item, index) => (
                 <div key={index} className="relative">
                   {/* Dot */}
                   <div className={`absolute top-1/2 h-4 w-4 rounded-full bg-primary -translate-y-1/2 ${index % 2 === 0 ? 'left-1/2 -translate-x-8' : 'right-1/2 translate-x-8'}`}></div>
 
                   {/* Content */}
-                  <div className={`w-full md:w-1/2 p-4 ${index % 2 === 0 ? 'md:pr-8 md:text-right' : 'md:pl-8 md:text-left'}`}
-                  >
+                  <div className={`w-full md:w-1/2 p-4 ${index % 2 === 0 ? 'md:pr-8 md:text-right' : 'md:pl-8 md:text-left'}`}>
                     <p className="text-sm text-muted-foreground">{item.date}</p>
                     <h3 className="font-semibold">{item.title}</h3>
                     <p className="text-muted-foreground">{item.description}</p>
@@ -361,14 +432,14 @@ export default function LuixRpcPage() {
       </section>
 
       {/* Author's Voice */}
-      <section id="author's-voice" className="py-12 bg-primary text-primary-foreground">
+      <section id="authors-voice" className="py-12 bg-primary text-primary-foreground">
         <div className="container text-center">
           <MessageCircleIcon className="mx-auto h-12 w-12 mb-6" />
-          <h2 className="text-3xl font-bold mb-6">Why Develop This Framework?</h2>
+          <h2 className="text-3xl font-bold mb-6">{content.authorVoice.title}</h2>
           <blockquote className="max-w-3xl mx-auto text-lg italic mb-6">
-            "After years of building a knowledge system, I aimed to unify my learnings through a challenging middleware project. Dubbo, an Apache project, is a renowned open-source framework encompassing distributed systems, high performance, and network programming. It represents a massive undertaking that Alibaba invested millions into. Developing a similar system with distinctive features would showcase my capabilities."
+            "{content.authorVoice.quote}"
           </blockquote>
-          <p className="font-medium">2019/10/01 - Louis Lau</p>
+          <p className="font-medium">{content.authorVoice.signature}</p>
         </div>
       </section>
 
@@ -376,16 +447,12 @@ export default function LuixRpcPage() {
       <section className="py-12">
         <div className="container">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">What I'm Thinking</h2>
+            <h2 className="text-3xl font-bold mb-4">{content.thoughts.title}</h2>
             <Separator className="mx-auto w-24 h-1 bg-primary" />
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {[
-              "Remote service calls comprise a significant portion of developers' daily work. Developing HTTP interfaces is costly, and implementing RESTful design can be complex.",
-              "Through this project, I'm refining my product design skills, distilling essential RPC features, and crafting a product with a polished, high-quality UI for a comprehensive user experience.",
-              "Beyond basic RPC functionality, I'm providing developers with various tools to streamline development, debugging, and troubleshooting."
-            ].map((thought, index) => (
+            {content.thoughts.items.map((thought, index) => (
               <Card key={index} className="relative">
                 <CardContent className="p-6">
                   <div className="absolute top-4 left-4 text-6xl opacity-10">"</div>
@@ -401,24 +468,29 @@ export default function LuixRpcPage() {
       <section id="contact" className="py-12 bg-muted/50">
         <div className="container">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Contact Us</h2>
+            <h2 className="text-3xl font-bold mb-4">{content.contact.title}</h2>
             <Separator className="mx-auto w-24 h-1 bg-primary" />
           </div>
 
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <div>
-              <h3 className="text-xl font-semibold mb-4">Luix Universe</h3>
+              <h3 className="text-xl font-semibold mb-4">{content.contact.info.title}</h3>
               <address className="not-italic space-y-2">
-                <p>Amsterdam, Netherlands</p>
-                <p>WeChat ID: pm6422</p>
+                {content.contact.info.items.map((item, index) => (
+                  <p key={index}>{item}</p>
+                ))}
               </address>
             </div>
             <div>
-              <h3 className="text-xl font-semibold mb-4">GitHub Resources</h3>
+              <h3 className="text-xl font-semibold mb-4">{content.contact.resources.title}</h3>
               <div className="space-y-2">
-                <p><a href="https://github.com/pm6422" className="text-primary hover:underline">My GitHub Profile</a></p>
-                <p><a href="https://github.com/pm6422/passport" className="text-primary hover:underline">Luix Passport</a></p>
-                <p><a href="https://github.com/pm6422/luix-rpc" className="text-primary hover:underline">Luix RPC</a></p>
+                {content.contact.resources.items.map((item, index) => (
+                  <p key={index}>
+                    <a href={item.url} className="text-primary hover:underline">
+                      {item.text}
+                    </a>
+                  </p>
+                ))}
               </div>
             </div>
           </div>
@@ -438,9 +510,9 @@ export default function LuixRpcPage() {
             </div>
 
             <p className="mt-8 text-muted-foreground max-w-2xl mx-auto">
-              We are seeking talented individuals to join the open-source community. If you're interested, please get in touch.
+              {content.contact.footer.text}
             </p>
-            <p className="mt-4 text-sm text-muted-foreground">&copy; 2021 Luix Universe</p>
+            <p className="mt-4 text-sm text-muted-foreground">{content.contact.footer.copyright}</p>
           </div>
         </div>
       </section>
@@ -448,7 +520,7 @@ export default function LuixRpcPage() {
   );
 }
 
-// Icons (import these from your icon library)
+// ====================== ICONS ======================
 function MenuIcon(props: any) {
   return (
     <svg
