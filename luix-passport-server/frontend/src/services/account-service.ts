@@ -30,6 +30,14 @@ export class AccountService {
       })
   }
 
+  public static async getProfilePic(): Promise<AxiosResponse<Blob>> {
+    return axios.get("/api/accounts/profile-pic", {
+      responseType: "blob",
+      withCredentials: true,
+      timeout: 5000
+    })
+  }
+
   public static async signOut(): Promise<void> {
     await http.post("/api/accounts/sign-out")
     window.location.reload()

@@ -26,7 +26,6 @@ import { useStore } from "exome/react"
 import { appInfoStore } from "@/stores/app-info-store"
 import { loginUserStore } from "@/stores/login-user-store"
 import { useEffect, useState } from "react"
-import axios from "axios";
 
 export function AccountNav() {
   const { appInfo } = useStore(appInfoStore)
@@ -36,13 +35,10 @@ export function AccountNav() {
 
   useEffect(() => {
     setIsLoading(true);
-    axios.get("/api/accounts/profile-pic", {
-      responseType: "blob",
-      withCredentials: true,
-      timeout: 5000
-    }).then((response) => {
+
+    AccountService.getProfilePic().then((res) => {
       setIsLoading(false);
-      const blob = new Blob([response.data], { type: response.headers["content-type"] });
+      const blob = new Blob([res.data], { type: res.headers["content-type"] });
       setImageUrl(URL.createObjectURL(blob));
     })
   }, []);
