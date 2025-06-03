@@ -9,7 +9,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import { Separator } from '@/components/ui/separator.tsx'
+import { Separator } from "@/components/ui/separator.tsx"
+import { Link } from "react-router-dom"
 
 interface Props {
   open: boolean
@@ -26,7 +27,7 @@ export function ContactSuccessAlertDialog({ open, onOpenChange }: Props) {
           </div>
           <AlertDialogTitle className="text-2xl">Thank You!</AlertDialogTitle>
           <AlertDialogDescription className="text-base">
-            Your contact request has been submitted successfully. We'll respond within 24 hours.
+            Your contact request has been submitted successfully. We"ll respond within 24 hours.
           </AlertDialogDescription>
         </AlertDialogHeader>
 
@@ -52,7 +53,11 @@ export function ContactSuccessAlertDialog({ open, onOpenChange }: Props) {
 
         <AlertDialogFooter className="mt-6 !flex-col gap-3">
           <AlertDialogAction asChild>
-            <Button className="h-11 w-full">Back to Homepage</Button>
+            <Button asChild className="h-11 w-full">
+              <Link to="/">
+                Back to Homepage
+              </Link>
+            </Button>
           </AlertDialogAction>
           <Button variant="outline" className="h-11 w-full" onClick={() => onOpenChange(false)}>
             Send Another Message
