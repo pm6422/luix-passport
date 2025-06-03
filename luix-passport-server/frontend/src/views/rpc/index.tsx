@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import {
   Card,
   CardContent,
@@ -244,6 +244,8 @@ const content = {
 
 // ====================== COMPONENT ======================
 export default function LuixRpcPage() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   const carouselItems = [
     {
       title: "LUI✘ RPC – A Remote Procedure Call Framework",
@@ -259,8 +261,10 @@ export default function LuixRpcPage() {
     <div className="min-h-screen bg-background">
       {/* Navigation */}
       <nav className="fixed top-0 w-full bg-background z-50 border-b">
-        <div className="container flex items-center justify-between h-16">
+        <div className="container flex items-center justify-between h-16 relative">
           <a href="#" className="text-xl font-bold">{content.navigation.brand}</a>
+
+          {/* 大屏链接 */}
           <div className="hidden md:flex gap-8">
             {content.navigation.links.map((item) => (
               <a
@@ -272,9 +276,33 @@ export default function LuixRpcPage() {
               </a>
             ))}
           </div>
-          <Button variant="ghost" className="md:hidden">
+
+          {/* 移动端菜单按钮 */}
+          <Button
+            variant="ghost"
+            className="md:hidden"
+            onClick={() => setMobileMenuOpen(prev => !prev)}
+          >
             <MenuIcon className="h-5 w-5" />
           </Button>
+
+          {/* 移动端浮层菜单（在小屏幕时显示） */}
+          {mobileMenuOpen && (
+            <div className="absolute top-full left-0 w-full bg-background border-t border-muted z-40 md:hidden">
+              <div className="flex flex-col py-4 space-y-2">
+                {content.navigation.links.map((item) => (
+                  <a
+                    key={item}
+                    href={`#${item.toLowerCase().replace(/ /g, '-')}`}
+                    className="px-4 py-2 text-base font-medium hover:bg-muted"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {item}
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </nav>
 
