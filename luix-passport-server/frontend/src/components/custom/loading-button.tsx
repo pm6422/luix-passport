@@ -35,7 +35,6 @@ export interface ButtonProps
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
   loading?: boolean;
-  disabled?: boolean;
 }
 
 const LoadingDots = () => {
@@ -60,16 +59,15 @@ const LoadingDots = () => {
 
 const LoadingButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
-    { className, loading = false, children, disabled = false, variant, size, asChild = false, ...props },
+    { className, loading = false, children, disabled, variant, size, asChild = false, ...props },
     ref,
   ) => {
-    const isDisabled = loading || disabled;
     const Comp = asChild ? Slot : "button";
     return (
       <Comp
         className={cn(buttonVariants({ variant, size, className }), "relative")}
         ref={ref}
-        disabled={isDisabled}
+        disabled={loading || disabled}
         {...props}
       >
         <div className="flex items-end">
