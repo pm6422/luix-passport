@@ -142,7 +142,7 @@ export default function ContactUs() {
                 label="Message"
                 type="textarea"
                 formItemClassName="text-left"
-                inputClassName="w-full h-40 px-5 py-4 rounded-2xl"
+                inputClassName="w-full h-36 px-5 py-4 rounded-2xl"
                 placeholder="How can we help you?"
                 required={true}
               />

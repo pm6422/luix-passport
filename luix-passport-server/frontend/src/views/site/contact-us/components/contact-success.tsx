@@ -11,6 +11,8 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Separator } from "@/components/ui/separator.tsx"
 import { Link } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { motion } from "framer-motion"
 
 interface Props {
   open: boolean
@@ -18,12 +20,28 @@ interface Props {
 }
 
 export function ContactSuccessAlertDialog({ open, onOpenChange }: Props) {
+  const [isAnimating, setIsAnimating] = useState(false)
+
+  useEffect(() => {
+    if (open) {
+      setIsAnimating(true)
+      const timer = setTimeout(() => setIsAnimating(false), 1000)
+      return () => clearTimeout(timer)
+    }
+  }, [open])
+  
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent className="rounded-2xl sm:max-w-[425px]">
         <AlertDialogHeader className="items-center text-center">
           <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-green-50">
-            <CheckCircle2 className="h-6 w-6 text-green-600" />
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={isAnimating ? { scale: [0, 1.2, 1] } : { scale: 1 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+            >
+              <CheckCircle2 className="h-6 w-6 text-green-600" />
+            </motion.div>
           </div>
           <AlertDialogTitle className="text-2xl">Thank You!</AlertDialogTitle>
           <AlertDialogDescription className="text-base">
