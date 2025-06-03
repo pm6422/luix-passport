@@ -48,7 +48,7 @@ const CarouselComponent = ({ items }: { items: { title: string; description: str
   }, []);
 
   return (
-    <div className="relative h-[400px] overflow-hidden rounded-lg"> {/* Increased height */}
+    <div className="relative h-[300px] overflow-hidden rounded-lg"> {/* Increased height */}
       <CarouselBackground />
       <Carousel className="w-full h-full">
         <CarouselContent className="h-full">
