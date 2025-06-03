@@ -99,7 +99,7 @@ const SaveDialogContent = ({
             </DialogClose>
             { !readonly &&
               <LoadingButton type='submit' loading={saving}>
-                {saving ? "Saving..." : "Save"}
+                {saving ? "Saving" : "Save"}
               </LoadingButton>
             }
           </DialogFooter>

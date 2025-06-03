@@ -190,7 +190,7 @@ export function UploadDialog({
                 </DialogClose>
               }
               <LoadingButton loading={uploading}>
-                {uploading ? "Uploading..." : "Upload"}
+                {uploading ? "Uploading" : "Upload"}
               </LoadingButton>
             </DialogFooter>
           </form>

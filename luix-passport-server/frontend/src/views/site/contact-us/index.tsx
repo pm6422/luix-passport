@@ -152,7 +152,7 @@ export default function ContactUs() {
                 loading={isLoading}
                 className="mt-4 h-14 w-full rounded-2xl bg-primary px-5 py-4 text-base font-medium text-primary-foreground hover:bg-primary/90"
               >
-                {isLoading ? "Sending..." : "Send Message"}
+                {isLoading ? "Sending" : "Send Message"}
               </LoadingButton>
             </form>
           </Form>

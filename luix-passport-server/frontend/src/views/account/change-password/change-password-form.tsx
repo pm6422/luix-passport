@@ -171,7 +171,7 @@ export function ChangePasswordForm() {
 
         <div className="flex justify-end">
           <LoadingButton type='submit' loading={saving} className="w-full sm:w-auto">
-            {saving ? "Waiting..." : "Update password"}
+            {saving ? "Waiting" : "Update password"}
           </LoadingButton>
         </div>
       </form>

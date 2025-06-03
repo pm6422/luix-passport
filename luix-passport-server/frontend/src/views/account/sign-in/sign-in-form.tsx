@@ -148,7 +148,7 @@ export function SignInForm() {
               )}
             />
             <LoadingButton type="submit" loading={isLoading} className="w-full py-4 h-14 rounded-2xl">
-              {isLoading ? "Waiting..." : "Sign In"}
+              {isLoading ? "Waiting" : "Sign In"}
             </LoadingButton>
           </form>
         </Form>
