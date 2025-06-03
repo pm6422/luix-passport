@@ -2,7 +2,7 @@ import * as React from "react";
 import { Slot, Slottable } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
-import { IconReload } from "@tabler/icons-react";
+import { motion } from "framer-motion";
 
 const buttonVariants = cva(
   "inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
@@ -37,6 +37,26 @@ export interface ButtonProps
   loading?: boolean;
 }
 
+const LoadingDots = () => {
+  return (
+    <span className="relative ml-1 flex items-end justify-center h-4">
+      {[0, 1, 2].map((i) => (
+        <motion.span
+          key={i}
+          className="mx-[1px] h-1.5 w-1.5 rounded-full bg-current"
+          animate={{ scale: [1, 1.5, 1], opacity: [1, 0.7, 1] }}
+          transition={{
+            duration: 0.6,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: i * 0.15,
+          }}
+        />
+      ))}
+    </span>
+  );
+};
+
 const LoadingButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
     { className, loading = false, children, disabled, variant, size, asChild = false, ...props },
@@ -45,13 +65,15 @@ const LoadingButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const Comp = asChild ? Slot : "button";
     return (
       <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
+        className={cn(buttonVariants({ variant, size, className }), "relative")}
         ref={ref}
         disabled={loading || disabled}
         {...props}
       >
-        <Slottable>{children}</Slottable>
-        {loading && <IconReload className="ml-1 size-4 animate-spin" />}
+        <div className="flex items-end">
+          <Slottable>{children}</Slottable>
+          {loading && <LoadingDots />}
+        </div>
       </Comp>
     );
   },
