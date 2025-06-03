@@ -575,7 +575,6 @@ export default function LuixRpcPage() {
             </div>
           </div>
 
-
           <div className="text-center mt-12">
             <Button asChild>
               <a href="mailto:louis@luixtech.cn">Send Email</a>
