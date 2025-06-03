@@ -39,7 +39,7 @@ export interface ButtonProps
 
 const LoadingDots = () => {
   return (
-    <span className="relative ml-1 flex items-end justify-center h-4">
+    <span className="relative ml-1 flex items-end justify-center h-4 mb-1">
       {[0, 1, 2].map((i) => (
         <motion.span
           key={i}
