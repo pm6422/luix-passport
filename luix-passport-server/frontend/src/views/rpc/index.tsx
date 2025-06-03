@@ -551,8 +551,8 @@ export default function LuixRpcPage() {
             <Separator className="mx-auto w-24 h-1 bg-primary" />
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            <div>
+          <div className="flex justify-between max-w-4xl mx-auto gap-8">
+            <div className="flex-1">
               <h3 className="text-xl font-semibold mb-4">{content.contact.info.title}</h3>
               <address className="not-italic space-y-2">
                 {content.contact.info.items.map((item, index) => (
@@ -560,7 +560,8 @@ export default function LuixRpcPage() {
                 ))}
               </address>
             </div>
-            <div>
+
+            <div className="flex-1 text-right">
               <h3 className="text-xl font-semibold mb-4">{content.contact.resources.title}</h3>
               <div className="space-y-2">
                 {content.contact.resources.items.map((item, index) => (
@@ -573,6 +574,7 @@ export default function LuixRpcPage() {
               </div>
             </div>
           </div>
+
 
           <div className="text-center mt-12">
             <Button asChild>
