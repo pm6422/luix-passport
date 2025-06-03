@@ -8,6 +8,7 @@ import { motion } from "framer-motion"
 import { useEffect, useState } from "react"
 import { UserNotificationService } from "@/services/user-notification-service"
 import { Badge } from "@/components/ui/badge.tsx"
+import { AccountService } from '@/services/account-service.ts'
 
 export default function SiteHome() {
   const { loginUser } = useStore(loginUserStore)
@@ -152,6 +153,10 @@ export default function SiteHome() {
                   <Button asChild className="w-full px-5 py-4 h-14 text-base font-medium rounded-2xl">
                     <Link to="/console">Go to my console</Link>
                   </Button>
+                  <Button variant="secondary" className="w-full px-5 py-4 h-14 text-base font-medium rounded-2xl"
+                          onClick={() => AccountService.signOut()}>
+                    Sign Out
+                  </Button>
                 </div>
               </>
             ) : (
@@ -164,7 +169,7 @@ export default function SiteHome() {
                   <Button asChild className="w-full px-5 py-4 h-14 text-base font-medium rounded-2xl">
                     <a href="/login">Sign In</a>
                   </Button>
-                  <Button asChild variant="outline" className="w-full px-5 py-4 h-14 text-base font-medium rounded-2xl">
+                  <Button asChild variant="secondary" className="w-full px-5 py-4 h-14 text-base font-medium rounded-2xl">
                     <Link to="/sign-up">Create Account</Link>
                   </Button>
                 </div>
