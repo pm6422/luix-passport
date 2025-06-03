@@ -147,7 +147,7 @@ export function SettingsForm() {
 
         <div className="flex justify-end">
           <LoadingButton type="submit" loading={saving} className="w-full sm:w-auto">
-            {saving ? "Updating account..." : "Update account"}
+            {saving ? "Updating account" : "Update account"}
           </LoadingButton>
         </div>
       </form>
