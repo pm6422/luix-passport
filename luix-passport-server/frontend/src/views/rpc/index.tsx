@@ -11,7 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Separator } from "@/components/ui/separator";
-import { IconBrandGithub, IconBrandWeibo, IconMessageCircle, IconCircle, IconMenu2 } from "@tabler/icons-react";
+import { IconBrandGithub, IconBrandWeibo, IconMessageCircle, IconCircle, IconMenu2, IconExternalLink, IconMail } from "@tabler/icons-react";
 
 // ====================== CAROUSEL IMPROVEMENTS ======================
 const CarouselBackground = () => (
@@ -551,48 +551,84 @@ export default function LuixRpcPage() {
             <Separator className="mx-auto w-24 h-1 bg-primary" />
           </div>
 
-          <div className="flex justify-between max-w-4xl mx-auto gap-8">
-            <div className="flex-1">
-              <h3 className="text-xl font-semibold mb-4">{content.contact.info.title}</h3>
-              <address className="not-italic space-y-2">
-                {content.contact.info.items.map((item, index) => (
-                  <p key={index}>{item}</p>
-                ))}
-              </address>
-            </div>
+          {/* Redesigned contact cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {/* Luix Universe Card */}
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-primary animate-pulse"></div>
+                  {content.contact.info.title}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-3">
+                  {content.contact.info.items.map((item, index) => (
+                    <li key={index} className="flex items-start gap-3">
+                      <div className="flex-shrink-0 mt-1">
+                        <IconCircle className="h-3 w-3 text-primary" />
+                      </div>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
 
-            <div className="flex-1 text-right">
-              <h3 className="text-xl font-semibold mb-4">{content.contact.resources.title}</h3>
-              <div className="space-y-2">
-                {content.contact.resources.items.map((item, index) => (
-                  <p key={index}>
-                    <a href={item.url} className="text-primary hover:underline">
-                      {item.text}
-                    </a>
-                  </p>
-                ))}
-              </div>
-            </div>
+            {/* GitHub Resources Card */}
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <IconBrandGithub className="h-5 w-5" />
+                  {content.contact.resources.title}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-3">
+                  {content.contact.resources.items.map((item, index) => (
+                    <li key={index}>
+                      <a
+                        href={item.url}
+                        className="flex items-center gap-3 text-primary hover:underline"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <IconExternalLink className="h-4 w-4" />
+                        <span>{item.text}</span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
           </div>
 
+          {/* Social links centered below cards */}
           <div className="text-center mt-12">
-            <Button asChild>
-              <a href="mailto:louis@luixtech.cn">Send Email</a>
-            </Button>
-
-            <div className="flex justify-center gap-4 mt-6">
-              <a href="https://github.com/pm6422" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full hover:bg-muted">
-                <IconBrandGithub className="h-6 w-6 animate-pulse" />
-              </a>
-              <a href="http://weibo.cn/luix" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full hover:bg-muted">
-                <IconBrandWeibo className="h-6 w-6 animate-pulse" />
-              </a>
+            <div className="flex justify-center gap-6">
+              <Button variant="outline" size="icon" asChild>
+                <a href="mailto:louis@luixtech.cn" aria-label="Email">
+                  <IconMail className="h-5 w-5" />
+                </a>
+              </Button>
+              <Button variant="outline" size="icon" asChild>
+                <a href="https://github.com/pm6422" aria-label="GitHub" target="_blank" rel="noopener noreferrer">
+                  <IconBrandGithub className="h-5 w-5" />
+                </a>
+              </Button>
+              <Button variant="outline" size="icon" asChild>
+                <a href="http://weibo.cn/luix" aria-label="Weibo" target="_blank" rel="noopener noreferrer">
+                  <IconBrandWeibo className="h-5 w-5" />
+                </a>
+              </Button>
             </div>
 
             <p className="mt-8 text-muted-foreground max-w-2xl mx-auto">
               {content.contact.footer.text}
             </p>
-            <p className="mt-4 text-sm text-muted-foreground">{content.contact.footer.copyright}</p>
+            <p className="mt-4 text-sm text-muted-foreground">
+              {content.contact.footer.copyright}
+            </p>
           </div>
         </div>
       </section>
