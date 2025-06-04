@@ -7,6 +7,7 @@ import { SettingsFormSchema } from "@/views/account/settings/settings-form"
 import { ChangePasswordFormSchema } from "@/views/account/change-password/change-password-form"
 import { ResetPasswordFormSchema } from "@/views/account/reset-password"
 import { type UserRegistrationFormSchema } from "@/domains/user-registration"
+import { SignInFormSchema } from "@/views/account/sign-in/sign-in-form"
 
 export class AccountService {
   constructor() {
@@ -28,6 +29,10 @@ export class AccountService {
           "Content-Type": "multipart/form-data", // Important for form data
         }
       })
+  }
+
+  public static async signIn(model: SignInFormSchema): Promise<void> {
+    return http.post("/open-api/accounts/sign-in", model)
   }
 
   public static async getProfilePic(): Promise<AxiosResponse<Blob>> {

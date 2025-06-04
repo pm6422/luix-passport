@@ -10,7 +10,9 @@ import cn.luixtech.passport.server.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -29,28 +31,28 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 @AllArgsConstructor
 @Configuration(proxyBeanMethods = false)
 public class WebServerSecurityConfiguration {
-    private static final String[]       PERMITTED_PAGES       = {
-			"/",
-			"/index.html",
+    private static final String[]       PERMITTED_PAGES     = {
+            "/",
+            "/index.html",
             "/login",
-			"/sign-in",
+            "/sign-in",
             "/sign-up",
             "/activate-account",
             "/forgot-password",
             "/reset-password",
-			"/submitted",
-			"/403",
-			"/404",
-			"/500",
-			"/503",
-			"/features",
-			"/pricing",
-			"/docs/**",
-			"/terms-of-service",
-			"/privacy-policy",
-			"/contact-us",
+            "/submitted",
+            "/403",
+            "/404",
+            "/500",
+            "/503",
+            "/features",
+            "/pricing",
+            "/docs/**",
+            "/terms-of-service",
+            "/privacy-policy",
+            "/contact-us",
     };
-    public static final String[]       STATIC_RESOURCES    = {
+    public static final  String[]       STATIC_RESOURCES    = {
 //            "/static/**",
 //            "/public/**",
 //            "/resources/**",
@@ -61,12 +63,12 @@ public class WebServerSecurityConfiguration {
             "/assets/**",
             "/webjars/**",
     };
-    public static final String[]       MANAGEMENT_REQUESTS = {
+    public static final  String[]       MANAGEMENT_REQUESTS = {
             "/management/health/**",
             "/management/info/**",
     };
-    private final       UserRepository userRepository;
-    private final       UserService    userService;
+    private final        UserRepository userRepository;
+    private final        UserService    userService;
 
 //    /**
 //     * Refer to <a href="https://docs.spring.io/spring-security/reference/servlet/authorization/method-security.html">Using a Custom Authorization Manager</a>
@@ -148,5 +150,10 @@ public class WebServerSecurityConfiguration {
     @Bean
     public SessionRegistry sessionRegistry() {
         return new SessionRegistryImpl();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 }

@@ -18,32 +18,29 @@ import { Link } from "react-router-dom"
 import { AccountService } from "@/services/account-service"
 import { toast } from "sonner"
 
-const formSchema = z.object({
+const signInformSchema = z.object({
   username: z.string().min(1, { message: "Please enter your username" }),
   password: z.string().min(1, { message: "Please enter your password" }),
 });
+
+export type SignInFormSchema = z.infer<typeof signInformSchema>
 
 export function SignInForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [logoutMessage, setLogoutMessage] = useState<string | null>(null);
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<SignInFormSchema>({
+    resolver: zodResolver(signInformSchema),
     defaultValues: {
       username: "",
       password: "",
     },
   });
 
-  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+  const onSubmit = async (data: SignInFormSchema) => {
     setIsLoading(true);
 
-    // Using FormData to match traditional form submission
-    const formData = new FormData();
-    formData.append("username", data.username);
-    formData.append("password", data.password);
-
-    toast.promise(AccountService.login(formData), {
+    toast.promise(AccountService.signIn(data), {
       loading: "Signing in...",
       success: () => {
         setIsLoading(false)
@@ -133,7 +130,7 @@ export function SignInForm() {
                 <FormItem>
                   <div className="flex items-center justify-between">
                     <FormLabel>Password</FormLabel>
-                    <Link to="/forgot-password" className="text-sm font-medium text-blue-600 hover:underline">
+                    <Link to="/forgot-password" className="text-sm font-medium text-primary hover:underline">
                       Forgot password?
                     </Link>
                   </div>

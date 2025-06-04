@@ -113,7 +113,7 @@ export default function AuthLayout() {
                       Please go to{" "}
                       <a
                         href="/console/notifications"
-                        className="font-medium text-blue-500 underline-offset-4 hover:text-blue-600 hover:underline"
+                        className="font-medium text-primary underline-offset-4 hover:underline"
                       >
                         Notification Center
                       </a>{" "}

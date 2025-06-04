@@ -5,10 +5,7 @@ import cn.luixtech.passport.server.domain.SupportedDateTimeFormat;
 import cn.luixtech.passport.server.domain.User;
 import cn.luixtech.passport.server.domain.UserProfilePic;
 import cn.luixtech.passport.server.event.LogoutEvent;
-import cn.luixtech.passport.server.pojo.ChangePassword;
-import cn.luixtech.passport.server.pojo.LoginUser;
-import cn.luixtech.passport.server.pojo.ManagedUser;
-import cn.luixtech.passport.server.pojo.PasswordRecovery;
+import cn.luixtech.passport.server.pojo.*;
 import cn.luixtech.passport.server.repository.SupportedDateTimeFormatRepository;
 import cn.luixtech.passport.server.repository.UserProfilePicRepository;
 import cn.luixtech.passport.server.repository.UserRepository;
@@ -24,6 +21,7 @@ import com.luixtech.utilities.lang.DateUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +33,10 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -66,6 +68,7 @@ public class AccountController {
     private final UserProfilePicService             userProfilePicService;
     private final DataDictService                   dataDictService;
     private final ApplicationEventPublisher         applicationEventPublisher;
+    private final AuthenticationManager             authenticationManager;
 
     @Operation(summary = "get current user who are signed in")
     @GetMapping("/open-api/accounts/user")
@@ -81,6 +84,29 @@ public class AccountController {
         loginUser.setDateFormat(supportedDateTimeFormat.getDateFormat());
         loginUser.setTimeFormat(supportedDateTimeFormat.getTimeFormat());
         return ResponseEntity.ok(loginUser);
+    }
+
+    @Operation(summary = "sign in for current system")
+    @PostMapping("/open-api/accounts/sign-in")
+    public ResponseEntity<Void> signIn(HttpServletRequest request,
+                                       @Valid @RequestBody LoginRequest loginRequest) {
+        // create an authentication token
+        UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(
+                loginRequest.getUsername(),
+                loginRequest.getPassword()
+        );
+
+        // authenticate
+        Authentication authentication = authenticationManager.authenticate(authRequest);
+
+        // save the result of authentication to security context
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        // create a new session
+        HttpSession session = request.getSession(true);
+        session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
+
+        return ResponseEntity.ok().build();
     }
 
     @Operation(summary = "sign out current user")
