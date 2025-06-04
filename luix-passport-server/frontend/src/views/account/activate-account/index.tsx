@@ -79,13 +79,15 @@ export default function ActivateAccount() {
               </div>
             ) : (
               <div className="space-y-4">
-                <p className="text-lg text-muted-foreground">
+                <p className="text-lg text-muted-foreground pb-4">
                   {code ? "Activating your account..." : "Invalid activation link"}
                 </p>
                 {!code && (
-                  <Button variant="outline" className="w-full py-4 h-14 rounded-2xl">
-                    <Link to="/sign-up">Sign Up</Link>
-                  </Button>
+                  <Link to="/sign-up">
+                    <Button variant="outline" className="w-full h-14 rounded-2xl">
+                      Sign Up
+                    </Button>
+                  </Link>
                 )}
               </div>
             )}
