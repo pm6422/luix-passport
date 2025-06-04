@@ -12,7 +12,14 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import Autoplay from "embla-carousel-autoplay"
 import { Separator } from "@/components/ui/separator";
 import {
-  IconBrandGithub, IconBrandWeibo, IconMessageCircle, IconCircle, IconMenu2, IconExternalLink, IconMail, IconCalendarCheck,
+  IconBrandGithub,
+  IconBrandWeibo,
+  IconMessageCircle,
+  IconCircle,
+  IconMenu2,
+  IconExternalLink,
+  IconMail, 
+  IconCalendarCheck,
   IconDatabase,
   IconCode,
   IconReload,
