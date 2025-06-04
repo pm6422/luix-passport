@@ -496,10 +496,20 @@ export default function LuixRpcPage() {
               {content.timeline.items.map((item, index) => (
                 <div key={index} className="relative">
                   {/* Dot */}
-                  <div className={`absolute top-1/2 h-4 w-4 rounded-full bg-primary -translate-y-1/2 ${index % 2 === 0 ? 'left-1/2 -translate-x-8' : 'right-1/2 translate-x-8'}`}></div>
+                  <div
+                    className={`absolute top-1/2 h-4 w-4 rounded-full bg-primary -translate-y-1/2 ${
+                      index % 2 === 0 ? 'right-1/2 translate-x-8' : 'left-1/2 -translate-x-8'
+                    }`}
+                  ></div>
 
                   {/* Content */}
-                  <div className={`w-full md:w-1/2 p-4 ${index % 2 === 0 ? 'md:pr-8 md:text-right' : 'md:pl-8 md:text-left'}`}>
+                  <div
+                    className={`w-full md:w-1/2 p-4 ${
+                      index % 2 === 0
+                        ? 'md:ml-auto md:pl-8 md:text-left'
+                        : 'md:mr-auto md:pr-8 md:text-right'
+                    }`}
+                  >
                     <p className="text-sm text-muted-foreground">{item.date}</p>
                     <h3 className="font-semibold">{item.title}</h3>
                     <p className="text-muted-foreground">{item.description}</p>
