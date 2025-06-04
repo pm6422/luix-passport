@@ -143,19 +143,19 @@ export default function LuixRpcPage() {
       server: {
         title: "Server Setup",
         steps: [
-          { title: "1. Add LUIX dependency", image: "/content/img/code/luix-dependency.png" },
-          { title: "2. Add server interface dependency", image: "/content/img/code/common-dependency.png" },
-          { title: "3. Add LUIX configuration", image: "/content/img/code/server.png" },
-          { title: "4. Expose server services", image: "/content/img/code/provider.png" }
+          { title: "1. Add LUIX dependency", image: "/assets/images/rpc/code/luix-dependency.png" },
+          { title: "2. Add server interface dependency", image: "/assets/images/rpc/code/common-dependency.png" },
+          { title: "3. Add LUIX configuration", image: "/assets/images/rpc/code/server.png" },
+          { title: "4. Expose server services", image: "/assets/images/rpc/code/provider.png" }
         ]
       },
       client: {
         title: "Client Setup",
         steps: [
-          { title: "1. Add LUIX dependency", image: "/content/img/code/luix-dependency.png" },
-          { title: "2. Add server interface dependency", image: "/content/img/code/common-dependency.png" },
-          { title: "3. Add LUIX configuration", image: "/content/img/code/client.png" },
-          { title: "4. Reference services on the client", image: "/content/img/code/consumer.png" }
+          { title: "1. Add LUIX dependency", image: "/assets/images/rpc/code/luix-dependency.png" },
+          { title: "2. Add server interface dependency", image: "/assets/images/rpc/code/common-dependency.png" },
+          { title: "3. Add LUIX configuration", image: "/assets/images/rpc/code/client.png" },
+          { title: "4. Reference services on the client", image: "/assets/images/rpc/code/consumer.png" }
         ]
       }
     },
@@ -507,7 +507,7 @@ export default function LuixRpcPage() {
             </div>
             <div className="flex justify-center">
               <img
-                src="/content/img/landing/screenshot2.png"
+                src="/assets/images/rpc/landing/screenshot2.png"
                 alt="Design concept"
                 className="rounded-lg shadow-lg border max-h-80"
               />
