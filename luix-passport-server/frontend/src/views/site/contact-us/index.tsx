@@ -70,7 +70,7 @@ export default function ContactUs() {
   }
 
   return (
-    <div className="container relative grid flex-col items-center justify-center lg:max-w-none lg:grid-cols-2">
+    <div className="container relative grid flex-col justify-center lg:max-w-none lg:grid-cols-2">
       {/* Left side - hidden on mobile */}
       <div className="relative mb-36 ms-10 hidden lg:flex lg:px-28">
         <div className="max-md:text-center">
@@ -90,7 +90,7 @@ export default function ContactUs() {
       </div>
 
       {/* Right side - form */}
-      <div className="flex w-full flex-col rounded-3xl px-5 py-10 lg:px-28 xl:px-48">
+      <div className="flex w-full flex-col items-center rounded-3xl px-5 py-10 lg:px-28 xl:px-48">
         <img
           src="/assets/images/logos/logo-round.svg"
           alt="Logo"
