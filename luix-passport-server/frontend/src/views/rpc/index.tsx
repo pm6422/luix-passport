@@ -191,7 +191,7 @@ export default function LuixRpcPage() {
       },
       footer: {
         text: "We are seeking talented individuals to join the open-source community. If you're interested, please get in touch.",
-        copyright: "© 2021 Luix Universe"
+        copyright: "© 2025 Luix Universe"
       }
     }
   };
