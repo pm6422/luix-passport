@@ -489,7 +489,7 @@ export default function LuixRpcPage() {
 
           <div className="relative">
             {/* Timeline line */}
-            <div className="absolute left-1/2 h-full w-0.5 bg-primary/20 -translate-x-1/2"></div>
+            <div className="absolute left-1/2 h-full w-0.5 bg-primary/20 -translate-x-1/2 hidden md:block"></div>
 
             {/* Timeline items */}
             <div className="space-y-8">
@@ -497,8 +497,8 @@ export default function LuixRpcPage() {
                 <div key={index} className="relative">
                   {/* Dot */}
                   <div
-                    className={`absolute top-1/2 h-4 w-4 rounded-full bg-primary -translate-y-1/2 ${
-                      index % 2 === 0 ? 'right-1/2 translate-x-8' : 'left-1/2 -translate-x-8'
+                    className={`absolute top-1/2 h-4 w-4 rounded-full bg-primary -translate-y-1/2 hidden md:block ${
+                      index % 2 === 0 ? 'right-1/2 translate-x-8 mr-2' : 'left-1/2 -translate-x-8 ml-2'
                     }`}
                   ></div>
 
