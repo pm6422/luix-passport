@@ -459,7 +459,7 @@ export default function LuixRpcPage() {
                 {content.codeExamples.server.steps.map((step, index) => (
                   <div key={index}>
                     <h3 className="font-medium mb-2">{step.title}</h3>
-                    <div className="bg-muted p-4 rounded-md">
+                    <div className="p-4 rounded-md flex justify-center">
                       <img src={step.image} alt={step.title} className="w-full max-w-md" />
                     </div>
                   </div>
@@ -479,7 +479,7 @@ export default function LuixRpcPage() {
                 {content.codeExamples.client.steps.map((step, index) => (
                   <div key={index}>
                     <h3 className="font-medium mb-2">{step.title}</h3>
-                    <div className="bg-muted p-4 rounded-md">
+                    <div className="p-4 rounded-md flex justify-center">
                       <img src={step.image} alt={step.title} className="w-full max-w-md" />
                     </div>
                   </div>
