@@ -507,9 +507,9 @@ export default function LuixRpcPage() {
             </div>
             <div className="flex justify-center">
               <img
-                src="/assets/images/rpc/landing/screenshot2.png"
+                src="/assets/images/rpc/screenshot2.png"
                 alt="Design concept"
-                className="rounded-lg shadow-lg border max-h-80"
+                className="max-h-80"
               />
             </div>
             <div className="text-right">
