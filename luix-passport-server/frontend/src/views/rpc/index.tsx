@@ -271,7 +271,10 @@ export default function LuixRpcPage() {
       {/* Navigation */}
       <nav className="fixed top-0 w-full bg-background z-50 border-b">
         <div className="container flex items-center justify-between h-16 relative">
-          <a href="#" className="text-xl font-bold">{content.navigation.brand}</a>
+          <a href="#" className="flex items-center gap-2 text-xl font-bold">
+            <img src="/assets/images/rpc/logo.png" alt="Logo" className="h-8 w-8" />
+            {content.navigation.brand}
+          </a>
 
           {/* 大屏链接 */}
           <div className="hidden md:flex gap-8">
