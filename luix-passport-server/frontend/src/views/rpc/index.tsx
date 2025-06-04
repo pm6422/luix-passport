@@ -87,53 +87,65 @@ export default function LuixRpcPage() {
       subtitle: "More exceptional features to enhance your experience",
       leftColumn: [
         {
-          text: "Multiple Registry Center Types & Instances",
+          title: "Multiple Registry Center Types & Instances",
+          description: "Support for various registry center implementations including Zookeeper, Nacos, and etcd with multiple instance configurations.",
           icon: IconDatabase
         },
         {
-          text: "Multiple Interface Formats",
+          title: "Multiple Interface Formats",
+          description: "Flexible interface definitions supporting REST, gRPC, and custom protocols with automatic format detection.",
           icon: IconCode
         },
         {
-          text: "Retry Count and Request Timeouts",
+          title: "Retry Count and Request Timeouts",
+          description: "Configurable retry mechanisms and intelligent timeout settings to handle network instability gracefully.",
           icon: IconReload
         },
         {
-          text: "Direct Invocation",
+          title: "Direct Invocation",
+          description: "Bypass registry for direct service-to-service communication when needed for specific performance requirements.",
           icon: IconRocket
         },
         {
-          text: "Intelligent Serialization & Deserialization",
+          title: "Intelligent Serialization & Deserialization",
+          description: "Automatic selection of optimal serialization protocol based on payload characteristics and performance metrics.",
           icon: IconBinary
         },
         {
-          text: "Scheduled Tasks",
+          title: "Scheduled Tasks",
+          description: "Built-in distributed task scheduling with cron expressions and one-time execution capabilities.",
           icon: IconClock
         }
       ],
       rightColumn: [
         {
-          text: "Concurrency Control & Rate Limiting",
+          title: "Concurrency Control & Rate Limiting",
+          description: "Fine-grained control over concurrent requests with adaptive rate limiting algorithms to prevent service overload.",
           icon: IconSpeedboat
         },
         {
-          text: "Multi-Version Interfaces",
+          title: "Multi-Version Interfaces",
+          description: "Seamless version management allowing multiple interface versions to coexist with smart routing between them.",
           icon: IconVersions
         },
         {
-          text: "Broadcast Calls",
+          title: "Broadcast Calls",
+          description: "Simultaneous invocation across all available service instances for distributed operations.",
           icon: IconBroadcast
         },
         {
-          text: "Generic Calls",
+          title: "Generic Calls",
+          description: "Dynamic service invocation without requiring interface definitions at compile time.",
           icon: IconApi
         },
         {
-          text: "Visual Monitoring & Reporting",
+          title: "Visual Monitoring & Reporting",
+          description: "Real-time dashboards showing call metrics, success rates, and performance characteristics.",
           icon: IconChartBar
         },
         {
-          text: "Automatic and Manual Service Degradation",
+          title: "Automatic and Manual Service Degradation",
+          description: "Circuit breakers and fallback mechanisms with both automatic triggers and manual override capabilities.",
           icon: IconShieldHalf
         }
       ]
@@ -392,23 +404,24 @@ export default function LuixRpcPage() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {/* 左侧功能列表 */}
+            {/* Left Column */}
             <div className="space-y-8">
               {content.additionalFeatures.leftColumn.map((item, index) => (
-                <div key={index} className="flex items-start gap-4 md:py-10">
-                  <div className="bg-primary/10 p-2 rounded-full">
+                <div key={index} className="flex items-start gap-4 md:py-6">
+                  <div className="bg-primary/10 p-2 rounded-full flex-shrink-0">
                     <item.icon className="h-5 w-5 text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-semibold">{item.text}</h3>
+                    <h3 className="font-semibold mb-2">{item.title}</h3>
+                    <p className="text-sm text-muted-foreground">{item.description}</p>
                   </div>
                 </div>
               ))}
             </div>
 
-            {/* 中间图片 */}
-            <div className="flex justify-center hidden md:block">
-              <div className="space-y-4">
+            {/* Center Images */}
+            <div className="flex justify-center hidden md:flex">
+              <div className="space-y-4 sticky top-20 h-fit">
                 <img
                   src="/assets/images/rpc/perspective1.png"
                   alt="Dashboard Screenshot"
@@ -420,15 +433,16 @@ export default function LuixRpcPage() {
               </div>
             </div>
 
-            {/* 右侧功能列表 */}
+            {/* Right Column */}
             <div className="space-y-8">
               {content.additionalFeatures.rightColumn.map((item, index) => (
-                <div key={index} className="flex items-start gap-4 md:py-10">
-                  <div className="bg-primary/10 p-2 rounded-full">
+                <div key={index} className="flex items-start gap-4 md:py-6">
+                  <div className="bg-primary/10 p-2 rounded-full flex-shrink-0">
                     <item.icon className="h-5 w-5 text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-semibold">{item.text}</h3>
+                    <h3 className="font-semibold mb-2">{item.title}</h3>
+                    <p className="text-sm text-muted-foreground">{item.description}</p>
                   </div>
                 </div>
               ))}
