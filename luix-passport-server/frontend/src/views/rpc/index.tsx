@@ -21,42 +21,22 @@ export default function LuixRpcPage() {
     Autoplay({ delay: 4000, stopOnInteraction: true })
   )
 
-  const CarouselComponent = ({ items }: { items: { title: string; description: string }[] }) => {
-    return (
-      <div className="relative h-[300px] overflow-hidden rounded-lg"> {/* Increased height */}
-        <Carousel className="w-full h-full" plugins={[plugin.current]}>
-          <CarouselContent className="h-full">
-            {items.map((item, index) => (
-              <CarouselItem key={index} className="h-full flex items-center justify-center">
-                <div className="p-6 text-center max-w-3xl mx-auto">
-                  <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">{item.title}</h1>
-                  <p className="text-lg md:text-xl text-muted-foreground">
-                    {item.description}
-                  </p>
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          {/* Enlarged navigation buttons */}
-          <CarouselPrevious className="carousel-prev-button left-6 h-12 w-12 scale-150" />
-          <CarouselNext className="carousel-next-button right-6 h-12 w-12 scale-150" />
-        </Carousel>
-      </div>
-    );
-  };
-
   // ====================== TEXT CONTENT ======================
   const content = {
     navigation: {
       brand: "LUI✘",
       links: ['Home', 'Features', 'Code Examples', 'Design Concepts', 'Development Progress', "Author's Voice", 'Contact']
     },
-    hero: {
-      title1: "LUI✘ RPC – A Remote Procedure Call Framework",
-      description1: "A distributed remote call framework that makes remote procedure calls as straightforward as local ones.",
-      title2: "LUI✘ RPC – Service Governance System",
-      description2: "Offers a comprehensive suite of service governance tools, including application management, server monitoring, and more."
-    },
+    hero: [
+      {
+        title: "LUI✘ RPC – A Remote Procedure Call Framework",
+        description: "A distributed remote call framework that makes remote procedure calls as straightforward as local ones."
+      },
+      {
+        title: "LUI✘ RPC – Service Governance System",
+        description: "Offers a comprehensive suite of service governance tools, including application management, server monitoring, and more."
+      }
+    ],
     features: {
       title: "Key Features",
       subtitle: "Comprehensive solution for distributed system communication",
@@ -216,17 +196,6 @@ export default function LuixRpcPage() {
     }
   };
 
-  const carouselItems = [
-    {
-      title: "LUI✘ RPC – A Remote Procedure Call Framework",
-      description: "A distributed remote call framework that makes remote procedure calls as straightforward as local ones."
-    },
-    {
-      title: "LUI✘ RPC – Service Governance System",
-      description: "Offers a comprehensive suite of service governance tools, including application management, server monitoring, and more."
-    }
-  ];
-
   return (
     <div className="min-h-screen bg-background">
       {/* Navigation */}
@@ -278,7 +247,25 @@ export default function LuixRpcPage() {
 
       {/* Hero Carousel */}
       <section id="home" className="pt-24 pb-12">
-        <CarouselComponent items={carouselItems} />
+        <div className="relative h-[300px] overflow-hidden rounded-lg"> {/* Increased height */}
+          <Carousel className="w-full h-full" plugins={[plugin.current]}>
+            <CarouselContent className="h-full">
+              {content.hero.map((item, index) => (
+                <CarouselItem key={index} className="h-full flex items-center justify-center">
+                  <div className="p-6 text-center max-w-3xl mx-auto">
+                    <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">{item.title}</h1>
+                    <p className="text-lg md:text-xl text-muted-foreground">
+                      {item.description}
+                    </p>
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            {/* Enlarged navigation buttons */}
+            <CarouselPrevious className="carousel-prev-button left-6 h-12 w-12 scale-150" />
+            <CarouselNext className="carousel-next-button right-6 h-12 w-12 scale-150" />
+          </Carousel>
+        </div>
       </section>
 
       {/* Features Section */}
