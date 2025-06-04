@@ -497,7 +497,7 @@ export default function LuixRpcPage() {
                 <div key={index} className="relative">
                   {/* Dot */}
                   <div
-                    className={`absolute top-1/2 h-4 w-4 rounded-full bg-primary -translate-y-1/2 hidden md:block ${
+                    className={`absolute animate-pulse top-1/2 h-4 w-4 rounded-full bg-primary -translate-y-1/2 hidden md:block ${
                       index % 2 === 0 ? 'right-1/2 translate-x-8 mr-2' : 'left-1/2 -translate-x-8 ml-2'
                     }`}
                   ></div>
