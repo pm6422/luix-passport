@@ -550,7 +550,7 @@ export default function LuixRpcPage() {
                   {/*></div>*/}
                   <div
                     className={`absolute top-1/2 -translate-y-1/2 hidden md:block ${
-                      index % 2 === 0 ? 'right-1/2 translate-x-8 mr-2' : 'left-1/2 -translate-x-8 ml-2'
+                      index % 2 === 0 ? 'right-1/2 translate-x-8' : 'left-1/2 -translate-x-8'
                     }`}
                   >
                     <IconCalendarCheck className="h-6 w-6 text-primary" />
@@ -560,8 +560,8 @@ export default function LuixRpcPage() {
                   <div
                     className={`w-full md:w-1/2 p-4 ${
                       index % 2 === 0
-                        ? 'md:ml-auto md:pl-8 md:text-left'
-                        : 'md:mr-auto md:pr-8 md:text-right'
+                        ? 'md:ml-auto md:pl-12 md:text-left'
+                        : 'md:mr-auto md:pr-12 md:text-right'
                     }`}
                   >
                     <p className="text-sm text-muted-foreground">{item.date}</p>
