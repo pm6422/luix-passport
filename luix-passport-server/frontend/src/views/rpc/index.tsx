@@ -484,7 +484,7 @@ export default function LuixRpcPage() {
                   <div key={index}>
                     <h3 className="font-medium mb-2">{step.title}</h3>
                     <div className="p-4 rounded-md flex justify-center">
-                      <img src={step.image} alt={step.title} className="w-full max-w-md" />
+                      <img src={step.image} alt={step.title} className="w-full max-w-md rounded-lg border shadow-lg object-cover" />
                     </div>
                   </div>
                 ))}
@@ -504,7 +504,7 @@ export default function LuixRpcPage() {
                   <div key={index}>
                     <h3 className="font-medium mb-2">{step.title}</h3>
                     <div className="p-4 rounded-md flex justify-center">
-                      <img src={step.image} alt={step.title} className="w-full max-w-md" />
+                      <img src={step.image} alt={step.title} className="w-full max-w-md rounded-lg border shadow-lg object-cover" />
                     </div>
                   </div>
                 ))}
