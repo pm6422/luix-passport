@@ -17,11 +17,11 @@ import { IconBrandGithub, IconBrandWeibo, IconMessageCircle, IconCircle, IconMen
 // ====================== COMPONENT ======================
 export default function LuixRpcPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const plugin = useRef(
+    Autoplay({ delay: 4000, stopOnInteraction: true })
+  )
 
   const CarouselComponent = ({ items }: { items: { title: string; description: string }[] }) => {
-    const plugin = useRef(
-      Autoplay({ delay: 4000, stopOnInteraction: true })
-    )
     return (
       <div className="relative h-[300px] overflow-hidden rounded-lg"> {/* Increased height */}
         <Carousel className="w-full h-full" plugins={[plugin.current]}>
