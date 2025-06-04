@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import InputFormField from "@/components/custom/form-field/input";
 import { AccountService } from "@/services/account-service";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom"
 import { getErrorMessage } from "@/lib/handle-error";
 
 const formSchema = z.object({
@@ -19,6 +20,7 @@ const formSchema = z.object({
 });
 
 export default function ForgotPassword() {
+  const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -34,7 +36,8 @@ export default function ForgotPassword() {
       success: () => {
         setTimeout(() => {
           setIsLoading(false);
-        }, 60000);
+          navigate("/sign-in")
+        }, 5000);
         return "Reset link sent successfully. Please check your email.";
       },
       error: (error) => {
