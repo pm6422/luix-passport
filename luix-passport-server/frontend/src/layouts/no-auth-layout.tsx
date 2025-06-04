@@ -35,11 +35,6 @@ export default function NoAuthLayout() {
       href: "/docs",
       isActive: false,
     },
-    {
-      title: "RPC",
-      href: "/rpc",
-      isActive: false,
-    },
     ...(!loginUser.isAuthenticated ? [{
       title: "Contact",
       href: "/contact-us",
