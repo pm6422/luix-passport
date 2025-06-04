@@ -7,7 +7,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay"
@@ -26,6 +25,8 @@ import {
   IconApi,
   IconChartBar,
   IconShieldHalf,
+  IconServer,
+  IconDeviceLaptop
 } from "@tabler/icons-react";
 
 // ====================== COMPONENT ======================
@@ -445,46 +446,47 @@ export default function LuixRpcPage() {
             <p className="text-muted-foreground mt-4">{content.codeExamples.subtitle}</p>
           </div>
 
-          <Tabs defaultValue="server" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="server">Server Examples</TabsTrigger>
-              <TabsTrigger value="client">Client Examples</TabsTrigger>
-            </TabsList>
-            <TabsContent value="server">
-              <Card>
-                <CardHeader>
-                  <CardTitle>{content.codeExamples.server.title}</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  {content.codeExamples.server.steps.map((step, index) => (
-                    <div key={index}>
-                      <h3 className="font-medium mb-2">{step.title}</h3>
-                      <div className="bg-muted p-4 rounded-md">
-                        <img src={step.image} alt={step.title} className="w-full max-w-md" />
-                      </div>
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Server Examples Column */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <IconServer className="h-5 w-5 text-primary" />
+                  {content.codeExamples.server.title}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {content.codeExamples.server.steps.map((step, index) => (
+                  <div key={index}>
+                    <h3 className="font-medium mb-2">{step.title}</h3>
+                    <div className="bg-muted p-4 rounded-md">
+                      <img src={step.image} alt={step.title} className="w-full max-w-md" />
                     </div>
-                  ))}
-                </CardContent>
-              </Card>
-            </TabsContent>
-            <TabsContent value="client">
-              <Card>
-                <CardHeader>
-                  <CardTitle>{content.codeExamples.client.title}</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  {content.codeExamples.client.steps.map((step, index) => (
-                    <div key={index}>
-                      <h3 className="font-medium mb-2">{step.title}</h3>
-                      <div className="bg-muted p-4 rounded-md">
-                        <img src={step.image} alt={step.title} className="w-full max-w-md" />
-                      </div>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+
+            {/* Client Examples Column */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <IconDeviceLaptop className="h-5 w-5 text-primary" />
+                  {content.codeExamples.client.title}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {content.codeExamples.client.steps.map((step, index) => (
+                  <div key={index}>
+                    <h3 className="font-medium mb-2">{step.title}</h3>
+                    <div className="bg-muted p-4 rounded-md">
+                      <img src={step.image} alt={step.title} className="w-full max-w-md" />
                     </div>
-                  ))}
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </section>
 
