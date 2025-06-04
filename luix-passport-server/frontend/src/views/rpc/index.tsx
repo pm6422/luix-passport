@@ -245,7 +245,7 @@ export default function LuixRpcPage() {
     contact: {
       title: "Contact Us",
       info: {
-        title: "Luix Universe",
+        title: "Contact Information",
         items: [
           "Amsterdam, Netherlands",
           "WeChat ID: pm6422"
