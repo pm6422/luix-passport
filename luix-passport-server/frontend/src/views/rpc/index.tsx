@@ -11,7 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Separator } from "@/components/ui/separator";
-import { IconBrandGithub, IconBrandWeibo, IconMessageCircle, IconCircle, IconMenu2, IconExternalLink, IconMail } from "@tabler/icons-react";
+import { IconBrandGithub, IconBrandWeibo, IconMessageCircle, IconCircle, IconMenu2, IconExternalLink, IconMail, IconCalendarCheck } from "@tabler/icons-react";
 
 
 // ====================== COMPONENT ======================
@@ -496,11 +496,18 @@ export default function LuixRpcPage() {
               {content.timeline.items.map((item, index) => (
                 <div key={index} className="relative">
                   {/* Dot */}
+                  {/*<div*/}
+                  {/*  className={`absolute animate-pulse top-1/2 h-4 w-4 rounded-full bg-primary -translate-y-1/2 hidden md:block ${*/}
+                  {/*    index % 2 === 0 ? 'right-1/2 translate-x-8 mr-2' : 'left-1/2 -translate-x-8 ml-2'*/}
+                  {/*  }`}*/}
+                  {/*></div>*/}
                   <div
-                    className={`absolute animate-pulse top-1/2 h-4 w-4 rounded-full bg-primary -translate-y-1/2 hidden md:block ${
+                    className={`absolute top-1/2 -translate-y-1/2 hidden md:block ${
                       index % 2 === 0 ? 'right-1/2 translate-x-8 mr-2' : 'left-1/2 -translate-x-8 ml-2'
                     }`}
-                  ></div>
+                  >
+                    <IconCalendarCheck className="h-6 w-6 text-primary" />
+                  </div>
 
                   {/* Content */}
                   <div
