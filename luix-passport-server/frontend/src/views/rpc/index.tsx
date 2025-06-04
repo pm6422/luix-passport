@@ -258,9 +258,10 @@ export default function LuixRpcPage() {
             >
               <defs>
                 <linearGradient id="waveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#FF3E9D" stopOpacity="0.5" />
-                  <stop offset="50%" stopColor="#0CC0FF" stopOpacity="0.5" />
-                  <stop offset="100%" stopColor="#FFDE59" stopOpacity="0.5" />
+                  <stop offset="0%" stopColor="#FF007F" /> {/* 鲜艳玫红 */}
+                  <stop offset="33%" stopColor="#00F0FF" /> {/* 亮青色 */}
+                  <stop offset="66%" stopColor="#FFEE00" /> {/* 纯黄色 */}
+                  <stop offset="100%" stopColor="#FF5100" /> {/* 橙红色 */}
                 </linearGradient>
               </defs>
               <path
