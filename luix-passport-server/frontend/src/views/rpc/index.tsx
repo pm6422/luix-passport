@@ -12,7 +12,21 @@ import { Badge } from "@/components/ui/badge";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay"
 import { Separator } from "@/components/ui/separator";
-import { IconBrandGithub, IconBrandWeibo, IconMessageCircle, IconCircle, IconMenu2, IconExternalLink, IconMail, IconCalendarCheck } from "@tabler/icons-react";
+import {
+  IconBrandGithub, IconBrandWeibo, IconMessageCircle, IconCircle, IconMenu2, IconExternalLink, IconMail, IconCalendarCheck,
+  IconDatabase,
+  IconCode,
+  IconReload,
+  IconRocket,
+  IconBinary,
+  IconClock,
+  IconSpeedboat,
+  IconVersions,
+  IconBroadcast,
+  IconApi,
+  IconChartBar,
+  IconShieldHalf,
+} from "@tabler/icons-react";
 
 // ====================== COMPONENT ======================
 export default function LuixRpcPage() {
@@ -71,20 +85,56 @@ export default function LuixRpcPage() {
       title: "Additional Features",
       subtitle: "More exceptional features to enhance your experience",
       leftColumn: [
-        "Multiple Registry Center Types & Instances",
-        "Multiple Interface Formats",
-        "Retry Count and Request Timeouts",
-        "Direct Invocation",
-        "Intelligent Serialization & Deserialization",
-        "Scheduled Tasks"
+        {
+          text: "Multiple Registry Center Types & Instances",
+          icon: IconDatabase
+        },
+        {
+          text: "Multiple Interface Formats",
+          icon: IconCode
+        },
+        {
+          text: "Retry Count and Request Timeouts",
+          icon: IconReload
+        },
+        {
+          text: "Direct Invocation",
+          icon: IconRocket
+        },
+        {
+          text: "Intelligent Serialization & Deserialization",
+          icon: IconBinary
+        },
+        {
+          text: "Scheduled Tasks",
+          icon: IconClock
+        }
       ],
       rightColumn: [
-        "Concurrency Control & Rate Limiting",
-        "Multi-Version Interfaces",
-        "Broadcast Calls",
-        "Generic Calls",
-        "Visual Monitoring & Reporting",
-        "Automatic and Manual Service Degradation"
+        {
+          text: "Concurrency Control & Rate Limiting",
+          icon: IconSpeedboat
+        },
+        {
+          text: "Multi-Version Interfaces",
+          icon: IconVersions
+        },
+        {
+          text: "Broadcast Calls",
+          icon: IconBroadcast
+        },
+        {
+          text: "Generic Calls",
+          icon: IconApi
+        },
+        {
+          text: "Visual Monitoring & Reporting",
+          icon: IconChartBar
+        },
+        {
+          text: "Automatic and Manual Service Degradation",
+          icon: IconShieldHalf
+        }
       ]
     },
     codeExamples: {
@@ -341,19 +391,21 @@ export default function LuixRpcPage() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
+            {/* 左侧功能列表 */}
             <div className="space-y-8">
-              {content.additionalFeatures.leftColumn.map((feature, index) => (
+              {content.additionalFeatures.leftColumn.map((item, index) => (
                 <div key={index} className="flex items-start gap-4">
                   <div className="bg-primary/10 p-2 rounded-full">
-                    <IconCircle className="h-5 w-5 text-primary" />
+                    <item.icon className="h-5 w-5 text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-semibold">{feature}</h3>
+                    <h3 className="font-semibold">{item.text}</h3>
                   </div>
                 </div>
               ))}
             </div>
 
+            {/* 中间图片 */}
             <div className="flex justify-center">
               <div className="space-y-4">
                 <img
@@ -369,14 +421,15 @@ export default function LuixRpcPage() {
               </div>
             </div>
 
+            {/* 右侧功能列表 */}
             <div className="space-y-8">
-              {content.additionalFeatures.rightColumn.map((feature, index) => (
+              {content.additionalFeatures.rightColumn.map((item, index) => (
                 <div key={index} className="flex items-start gap-4">
                   <div className="bg-primary/10 p-2 rounded-full">
-                    <IconCircle className="h-5 w-5 text-primary" />
+                    <item.icon className="h-5 w-5 text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-semibold">{feature}</h3>
+                    <h3 className="font-semibold">{item.text}</h3>
                   </div>
                 </div>
               ))}
