@@ -151,7 +151,7 @@ export default function SiteHome() {
                     <Link to="/console/notifications">View Notifications</Link>
                   </Button>
                   <Button asChild className="w-full px-5 py-4 h-14 text-base font-medium rounded-2xl">
-                    <Link to="/console">Go to my console</Link>
+                    <Link to="/console">Go to console</Link>
                   </Button>
                   <Button variant="secondary" className="w-full px-5 py-4 h-14 text-base font-medium rounded-2xl"
                           onClick={() => AccountService.signOut()}>
