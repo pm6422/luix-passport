@@ -35,8 +35,8 @@ export default function ForgotPassword() {
       loading: "Sending reset link...",
       success: () => {
         setTimeout(() => {
-          setIsLoading(false);
           navigate("/sign-in")
+          setIsLoading(false);
         }, 5000);
         return "Reset link sent successfully. Please check your email.";
       },
