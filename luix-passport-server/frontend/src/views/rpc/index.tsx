@@ -46,7 +46,7 @@ export default function LuixRpcPage() {
   // ====================== TEXT CONTENT ======================
   const content = {
     navigation: {
-      brand: "LUI✘",
+      brand: "LUI✘ RPC",
       links: ['Home', 'Features', 'Code Examples', 'Design Concepts', 'Development Progress', "Author's Voice", 'Contact']
     },
     hero: [
@@ -272,7 +272,7 @@ export default function LuixRpcPage() {
       <nav className="fixed top-0 w-full bg-background z-50 border-b">
         <div className="container flex items-center justify-between h-16 relative">
           <a href="#" className="flex items-center gap-2 text-xl font-bold">
-            <img src="/assets/images/rpc/logo.png" alt="Logo" className="h-8 w-8" />
+            <img src="/assets/images/rpc/logo.png" alt="Logo" className="size-10" />
             {content.navigation.brand}
           </a>
 
