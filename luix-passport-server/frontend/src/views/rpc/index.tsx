@@ -13,239 +13,240 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { Separator } from "@/components/ui/separator";
 import { IconBrandGithub, IconBrandWeibo, IconMessageCircle, IconCircle, IconMenu2, IconExternalLink, IconMail } from "@tabler/icons-react";
 
-// ====================== CAROUSEL IMPROVEMENTS ======================
-const CarouselBackground = () => (
-  <svg
-    className="absolute inset-0 -z-10 h-full w-full"
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 1440 320"
-    preserveAspectRatio="none"
-  >
-    <defs>
-      <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-        <stop offset="0%" stopColor="hsl(210, 80%, 60%)" />
-        <stop offset="100%" stopColor="hsl(210, 80%, 30%)" />
-      </linearGradient>
-    </defs>
-    <path
-      fill="url(#gradient)"
-      fillOpacity="0.1"
-      d="M0,256L48,261.3C96,267,192,277,288,266.7C384,256,480,224,576,218.7C672,213,768,235,864,250.7C960,267,1056,277,1152,261.3C1248,245,1344,203,1392,181.3L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
-    ></path>
-  </svg>
-);
-
-const CarouselComponent = ({ items }: { items: { title: string; description: string }[] }) => {
-  // Auto-rotation effect
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const nextButton = document.querySelector('.carousel-next-button');
-      if (nextButton) {
-        (nextButton as HTMLElement).click();
-      }
-    }, 5000); // Rotate every 5 seconds
-
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <div className="relative h-[300px] overflow-hidden rounded-lg"> {/* Increased height */}
-      <CarouselBackground />
-      <Carousel className="w-full h-full">
-        <CarouselContent className="h-full">
-          {items.map((item, index) => (
-            <CarouselItem key={index} className="h-full flex items-center justify-center">
-              <div className="p-6 text-center max-w-3xl mx-auto">
-                <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">{item.title}</h1>
-                <p className="text-lg md:text-xl text-muted-foreground">
-                  {item.description}
-                </p>
-              </div>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-        {/* Enlarged navigation buttons */}
-        <CarouselPrevious className="carousel-prev-button left-6 h-12 w-12 scale-150" />
-        <CarouselNext className="carousel-next-button right-6 h-12 w-12 scale-150" />
-      </Carousel>
-    </div>
-  );
-};
-
-// ====================== TEXT CONTENT ======================
-const content = {
-  navigation: {
-    brand: "LUI✘",
-    links: ['Home', 'Features', 'Code Examples', 'Design Concepts', 'Development Progress', "Author's Voice", 'Contact']
-  },
-  hero: {
-    title1: "LUI✘ RPC – A Remote Procedure Call Framework",
-    description1: "A distributed remote call framework that makes remote procedure calls as straightforward as local ones.",
-    title2: "LUI✘ RPC – Service Governance System",
-    description2: "Offers a comprehensive suite of service governance tools, including application management, server monitoring, and more."
-  },
-  features: {
-    title: "Key Features",
-    subtitle: "Comprehensive solution for distributed system communication",
-    items: [
-      {
-        title: "Interface-Oriented RPC Calls",
-        description: "Interface-oriented, TCP-based remote procedure calls that simplify client-side logic."
-      },
-      {
-        title: "Service Registration and Auto-Discovery",
-        description: "Applications automatically register their IP addresses with the registry upon startup."
-      },
-      {
-        title: "Fault Tolerance and Load Balancing",
-        description: "Clients select optimal addresses for remote calls using advanced load balancing algorithms."
-      },
-      {
-        title: "High-Performance Protocol and Serialization",
-        description: "Custom, high-performance TCP protocol with support for multiple serialization algorithms."
-      },
-      {
-        title: "Intelligent Parameter Configuration",
-        description: "Built-in algorithms automatically choose optimal parameters to minimize manual setup."
-      },
-      {
-        title: "Service Governance Control Center",
-        description: "A powerful, web-based control center for service management and monitoring."
-      }
-    ]
-  },
-  additionalFeatures: {
-    title: "Additional Features",
-    subtitle: "More exceptional features to enhance your experience",
-    leftColumn: [
-      "Multiple Registry Center Types & Instances",
-      "Multiple Interface Formats",
-      "Retry Count and Request Timeouts",
-      "Direct Invocation",
-      "Intelligent Serialization & Deserialization",
-      "Scheduled Tasks"
-    ],
-    rightColumn: [
-      "Concurrency Control & Rate Limiting",
-      "Multi-Version Interfaces",
-      "Broadcast Calls",
-      "Generic Calls",
-      "Visual Monitoring & Reporting",
-      "Automatic and Manual Service Degradation"
-    ]
-  },
-  codeExamples: {
-    title: "Code Demonstration",
-    subtitle: "Examples of server and client setup",
-    server: {
-      title: "Server Setup",
-      steps: [
-        { title: "1. Add LUIX dependency", image: "/content/img/code/luix-dependency.png" },
-        { title: "2. Add server interface dependency", image: "/content/img/code/common-dependency.png" },
-        { title: "3. Add LUIX configuration", image: "/content/img/code/server.png" },
-        { title: "4. Expose server services", image: "/content/img/code/provider.png" }
-      ]
-    },
-    client: {
-      title: "Client Setup",
-      steps: [
-        { title: "1. Add LUIX dependency", image: "/content/img/code/luix-dependency.png" },
-        { title: "2. Add server interface dependency", image: "/content/img/code/common-dependency.png" },
-        { title: "3. Add LUIX configuration", image: "/content/img/code/client.png" },
-        { title: "4. Reference services on the client", image: "/content/img/code/consumer.png" }
-      ]
-    }
-  },
-  designConcepts: {
-    title: "Product Design Concepts",
-    subtitle: "Product Concepts",
-    simplicity: {
-      badge: "LUI✘ RPC",
-      title: "Simplicity",
-      description: "The product is designed with simplicity in mind, enabling even recent graduates to get started quickly."
-    },
-    intelligence: {
-      badge: "LUI✘ RPC",
-      title: "Intelligence",
-      description: "With numerous parameters and values, manual selection can be confusing. LUI✘ RPC employs algorithms to automatically select the optimal options."
-    }
-  },
-  timeline: {
-    title: "Development Progress & Roadmap",
-    subtitle: "Progress and Plans",
-    items: [
-      {
-        date: "2021/12",
-        title: "Compatible with JDK 8 through JDK 17",
-        description: "Replaced registry and Kryo serialization with extensive code to support JDK 9+."
-      },
-      {
-        date: "2021/08",
-        title: "Portal Development Phase",
-        description: "Began development of the portal interface."
-      },
-      {
-        date: "2021/06",
-        title: "Web Center Development Phase",
-        description: "Initiated development of the Web Center module."
-      },
-      {
-        date: "2020/08",
-        title: "Key Feature Development Phase",
-        description: "Commenced development of core features."
-      },
-      {
-        date: "2020/01",
-        title: "Core Module Development Phase",
-        description: "Officially started system development."
-      },
-      {
-        date: "2019/10",
-        title: "Ideation Stage",
-        description: "Decision made to develop a custom RPC framework."
-      }
-    ]
-  },
-  authorVoice: {
-    title: "Why Develop This Framework?",
-    quote: "After years of building a knowledge system, I aimed to unify my learnings through a challenging middleware project. Dubbo, an Apache project, is a renowned open-source framework encompassing distributed systems, high performance, and network programming. It represents a massive undertaking that Alibaba invested millions into. Developing a similar system with distinctive features would showcase my capabilities.",
-    signature: "2019/10/01 - Louis Lau"
-  },
-  thoughts: {
-    title: "What I'm Thinking",
-    items: [
-      "Remote service calls comprise a significant portion of developers' daily work. Developing HTTP interfaces is costly, and implementing RESTful design can be complex.",
-      "Through this project, I'm refining my product design skills, distilling essential RPC features, and crafting a product with a polished, high-quality UI for a comprehensive user experience.",
-      "Beyond basic RPC functionality, I'm providing developers with various tools to streamline development, debugging, and troubleshooting."
-    ]
-  },
-  contact: {
-    title: "Contact Us",
-    info: {
-      title: "Luix Universe",
-      items: [
-        "Amsterdam, Netherlands",
-        "WeChat ID: pm6422"
-      ]
-    },
-    resources: {
-      title: "GitHub Resources",
-      items: [
-        { text: "My GitHub Profile", url: "https://github.com/pm6422" },
-        { text: "Luix Passport", url: "https://github.com/pm6422/passport" },
-        { text: "Luix RPC", url: "https://github.com/pm6422/luix-rpc" }
-      ]
-    },
-    footer: {
-      text: "We are seeking talented individuals to join the open-source community. If you're interested, please get in touch.",
-      copyright: "© 2021 Luix Universe"
-    }
-  }
-};
 
 // ====================== COMPONENT ======================
 export default function LuixRpcPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // ====================== CAROUSEL IMPROVEMENTS ======================
+  const CarouselBackground = () => (
+    <svg
+      className="absolute inset-0 -z-10 h-full w-full"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 1440 320"
+      preserveAspectRatio="none"
+    >
+      <defs>
+        <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="hsl(210, 80%, 60%)" />
+          <stop offset="100%" stopColor="hsl(210, 80%, 30%)" />
+        </linearGradient>
+      </defs>
+      <path
+        fill="url(#gradient)"
+        fillOpacity="0.1"
+        d="M0,256L48,261.3C96,267,192,277,288,266.7C384,256,480,224,576,218.7C672,213,768,235,864,250.7C960,267,1056,277,1152,261.3C1248,245,1344,203,1392,181.3L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+      ></path>
+    </svg>
+  );
+
+  const CarouselComponent = ({ items }: { items: { title: string; description: string }[] }) => {
+    // Auto-rotation effect
+    useEffect(() => {
+      const interval = setInterval(() => {
+        const nextButton = document.querySelector('.carousel-next-button');
+        if (nextButton) {
+          (nextButton as HTMLElement).click();
+        }
+      }, 5000); // Rotate every 5 seconds
+
+      return () => clearInterval(interval);
+    }, []);
+
+    return (
+      <div className="relative h-[300px] overflow-hidden rounded-lg"> {/* Increased height */}
+        <CarouselBackground />
+        <Carousel className="w-full h-full">
+          <CarouselContent className="h-full">
+            {items.map((item, index) => (
+              <CarouselItem key={index} className="h-full flex items-center justify-center">
+                <div className="p-6 text-center max-w-3xl mx-auto">
+                  <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">{item.title}</h1>
+                  <p className="text-lg md:text-xl text-muted-foreground">
+                    {item.description}
+                  </p>
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          {/* Enlarged navigation buttons */}
+          <CarouselPrevious className="carousel-prev-button left-6 h-12 w-12 scale-150" />
+          <CarouselNext className="carousel-next-button right-6 h-12 w-12 scale-150" />
+        </Carousel>
+      </div>
+    );
+  };
+
+  // ====================== TEXT CONTENT ======================
+  const content = {
+    navigation: {
+      brand: "LUI✘",
+      links: ['Home', 'Features', 'Code Examples', 'Design Concepts', 'Development Progress', "Author's Voice", 'Contact']
+    },
+    hero: {
+      title1: "LUI✘ RPC – A Remote Procedure Call Framework",
+      description1: "A distributed remote call framework that makes remote procedure calls as straightforward as local ones.",
+      title2: "LUI✘ RPC – Service Governance System",
+      description2: "Offers a comprehensive suite of service governance tools, including application management, server monitoring, and more."
+    },
+    features: {
+      title: "Key Features",
+      subtitle: "Comprehensive solution for distributed system communication",
+      items: [
+        {
+          title: "Interface-Oriented RPC Calls",
+          description: "Interface-oriented, TCP-based remote procedure calls that simplify client-side logic."
+        },
+        {
+          title: "Service Registration and Auto-Discovery",
+          description: "Applications automatically register their IP addresses with the registry upon startup."
+        },
+        {
+          title: "Fault Tolerance and Load Balancing",
+          description: "Clients select optimal addresses for remote calls using advanced load balancing algorithms."
+        },
+        {
+          title: "High-Performance Protocol and Serialization",
+          description: "Custom, high-performance TCP protocol with support for multiple serialization algorithms."
+        },
+        {
+          title: "Intelligent Parameter Configuration",
+          description: "Built-in algorithms automatically choose optimal parameters to minimize manual setup."
+        },
+        {
+          title: "Service Governance Control Center",
+          description: "A powerful, web-based control center for service management and monitoring."
+        }
+      ]
+    },
+    additionalFeatures: {
+      title: "Additional Features",
+      subtitle: "More exceptional features to enhance your experience",
+      leftColumn: [
+        "Multiple Registry Center Types & Instances",
+        "Multiple Interface Formats",
+        "Retry Count and Request Timeouts",
+        "Direct Invocation",
+        "Intelligent Serialization & Deserialization",
+        "Scheduled Tasks"
+      ],
+      rightColumn: [
+        "Concurrency Control & Rate Limiting",
+        "Multi-Version Interfaces",
+        "Broadcast Calls",
+        "Generic Calls",
+        "Visual Monitoring & Reporting",
+        "Automatic and Manual Service Degradation"
+      ]
+    },
+    codeExamples: {
+      title: "Code Demonstration",
+      subtitle: "Examples of server and client setup",
+      server: {
+        title: "Server Setup",
+        steps: [
+          { title: "1. Add LUIX dependency", image: "/content/img/code/luix-dependency.png" },
+          { title: "2. Add server interface dependency", image: "/content/img/code/common-dependency.png" },
+          { title: "3. Add LUIX configuration", image: "/content/img/code/server.png" },
+          { title: "4. Expose server services", image: "/content/img/code/provider.png" }
+        ]
+      },
+      client: {
+        title: "Client Setup",
+        steps: [
+          { title: "1. Add LUIX dependency", image: "/content/img/code/luix-dependency.png" },
+          { title: "2. Add server interface dependency", image: "/content/img/code/common-dependency.png" },
+          { title: "3. Add LUIX configuration", image: "/content/img/code/client.png" },
+          { title: "4. Reference services on the client", image: "/content/img/code/consumer.png" }
+        ]
+      }
+    },
+    designConcepts: {
+      title: "Product Design Concepts",
+      subtitle: "Product Concepts",
+      simplicity: {
+        badge: "LUI✘ RPC",
+        title: "Simplicity",
+        description: "The product is designed with simplicity in mind, enabling even recent graduates to get started quickly."
+      },
+      intelligence: {
+        badge: "LUI✘ RPC",
+        title: "Intelligence",
+        description: "With numerous parameters and values, manual selection can be confusing. LUI✘ RPC employs algorithms to automatically select the optimal options."
+      }
+    },
+    timeline: {
+      title: "Development Progress & Roadmap",
+      subtitle: "Progress and Plans",
+      items: [
+        {
+          date: "2021/12",
+          title: "Compatible with JDK 8 through JDK 17",
+          description: "Replaced registry and Kryo serialization with extensive code to support JDK 9+."
+        },
+        {
+          date: "2021/08",
+          title: "Portal Development Phase",
+          description: "Began development of the portal interface."
+        },
+        {
+          date: "2021/06",
+          title: "Web Center Development Phase",
+          description: "Initiated development of the Web Center module."
+        },
+        {
+          date: "2020/08",
+          title: "Key Feature Development Phase",
+          description: "Commenced development of core features."
+        },
+        {
+          date: "2020/01",
+          title: "Core Module Development Phase",
+          description: "Officially started system development."
+        },
+        {
+          date: "2019/10",
+          title: "Ideation Stage",
+          description: "Decision made to develop a custom RPC framework."
+        }
+      ]
+    },
+    authorVoice: {
+      title: "Why Develop This Framework?",
+      quote: "After years of building a knowledge system, I aimed to unify my learnings through a challenging middleware project. Dubbo, an Apache project, is a renowned open-source framework encompassing distributed systems, high performance, and network programming. It represents a massive undertaking that Alibaba invested millions into. Developing a similar system with distinctive features would showcase my capabilities.",
+      signature: "2019/10/01 - Louis Lau"
+    },
+    thoughts: {
+      title: "What I'm Thinking",
+      items: [
+        "Remote service calls comprise a significant portion of developers' daily work. Developing HTTP interfaces is costly, and implementing RESTful design can be complex.",
+        "Through this project, I'm refining my product design skills, distilling essential RPC features, and crafting a product with a polished, high-quality UI for a comprehensive user experience.",
+        "Beyond basic RPC functionality, I'm providing developers with various tools to streamline development, debugging, and troubleshooting."
+      ]
+    },
+    contact: {
+      title: "Contact Us",
+      info: {
+        title: "Luix Universe",
+        items: [
+          "Amsterdam, Netherlands",
+          "WeChat ID: pm6422"
+        ]
+      },
+      resources: {
+        title: "GitHub Resources",
+        items: [
+          { text: "My GitHub Profile", url: "https://github.com/pm6422" },
+          { text: "Luix Passport", url: "https://github.com/pm6422/passport" },
+          { text: "Luix RPC", url: "https://github.com/pm6422/luix-rpc" }
+        ]
+      },
+      footer: {
+        text: "We are seeking talented individuals to join the open-source community. If you're interested, please get in touch.",
+        copyright: "© 2021 Luix Universe"
+      }
+    }
+  };
 
   const carouselItems = [
     {
