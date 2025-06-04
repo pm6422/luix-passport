@@ -247,7 +247,7 @@ export default function LuixRpcPage() {
 
       {/* Hero Carousel */}
       <section id="home" className="pt-24 pb-12">
-        <div className="relative h-[300px] overflow-hidden rounded-lg"> {/* Increased height */}
+        <div className="relative h-[300px] overflow-hidden rounded-lg">
           <Carousel className="w-full h-full" plugins={[plugin.current]}>
             <CarouselContent className="h-full">
               {content.hero.map((item, index) => (
@@ -261,7 +261,6 @@ export default function LuixRpcPage() {
                 </CarouselItem>
               ))}
             </CarouselContent>
-            {/* Enlarged navigation buttons */}
             <CarouselPrevious className="carousel-prev-button left-6 h-12 w-12 scale-150" />
             <CarouselNext className="carousel-next-button right-6 h-12 w-12 scale-150" />
           </Carousel>
