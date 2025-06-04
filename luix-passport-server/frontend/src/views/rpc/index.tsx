@@ -18,7 +18,7 @@ import {
   IconCircle,
   IconMenu2,
   IconExternalLink,
-  IconMail, 
+  IconMail,
   IconCalendarCheck,
   IconDatabase,
   IconCode,
@@ -95,64 +95,64 @@ export default function LuixRpcPage() {
       leftColumn: [
         {
           title: "Multiple Registry Center Types & Instances",
-          description: "Support for various registry center implementations including Zookeeper, Nacos, and etcd with multiple instance configurations.",
+          description: "Supports Consul and ZooKeeper registries and reserves extension interfaces for future integrations. An application can also register with multiple registries of different types simultaneously.",
           icon: IconDatabase
         },
         {
           title: "Multiple Interface Formats",
-          description: "Flexible interface definitions supporting REST, gRPC, and custom protocols with automatic format detection.",
+          description: "A single service interface can have multiple implementation classes to meet different needs, all coexisting permanently. Example: separate implementations for mobile and PC versions.",
           icon: IconCode
         },
         {
           title: "Retry Count and Request Timeouts",
-          description: "Configurable retry mechanisms and intelligent timeout settings to handle network instability gracefully.",
+          description: "Sets retry count for repeated requests in case of RPC call failures, along with a request timeout. If a response isn’t received within the timeout period, the call is treated as a failure.",
           icon: IconReload
         },
         {
           title: "Direct Invocation",
-          description: "Bypass registry for direct service-to-service communication when needed for specific performance requirements.",
+          description: "The client can discover and call services through the registry, or skip the registry and call the server directly, similar to an HTTP call using the configured server address.",
           icon: IconRocket
         },
         {
           title: "Intelligent Serialization & Deserialization",
-          description: "Automatic selection of optimal serialization protocol based on payload characteristics and performance metrics.",
+          description: "The system automatically chooses the most suitable serialization algorithm based on data type, bypassing incompatible algorithms like Hessian if Serializable is not implemented.",
           icon: IconBinary
         },
         {
           title: "Scheduled Tasks",
-          description: "Built-in distributed task scheduling with cron expressions and one-time execution capabilities.",
+          description: "The LUIX RPC Web Center includes a scheduling system that uses CRON expressions or fixed intervals to initiate RPC calls, with support for timeout settings, retries, fault tolerance, and reports..",
           icon: IconClock
         }
       ],
       rightColumn: [
         {
           title: "Concurrency Control & Rate Limiting",
-          description: "Fine-grained control over concurrent requests with adaptive rate limiting algorithms to prevent service overload.",
+          description: "The system offers traffic control capabilities, including algorithms to limit client and server concurrent threads, along with multiple request limit algorithms, such as QPS rate limiting..",
           icon: IconSpeedboat
         },
         {
           title: "Multi-Version Interfaces",
-          description: "Seamless version management allowing multiple interface versions to coexist with smart routing between them.",
+          description: "A single service interface can have different implementation versions, a temporary coexistence measure for seamless user experience during production upgrades.",
           icon: IconVersions
         },
         {
           title: "Broadcast Calls",
-          description: "Simultaneous invocation across all available service instances for distributed operations.",
+          description: "Clients can issue a single request that simultaneously calls all server programs under an interface, ideal for scenarios like synchronizing cache values across nodes.",
           icon: IconBroadcast
         },
         {
           title: "Generic Calls",
-          description: "Dynamic service invocation without requiring interface definitions at compile time.",
+          description: "Clients can complete RPC calls without server interface dependencies, useful for cases like PHP clients calling Java interfaces without importing Java dependencies.",
           icon: IconApi
         },
         {
           title: "Visual Monitoring & Reporting",
-          description: "Real-time dashboards showing call metrics, success rates, and performance characteristics.",
+          description: "The LUIX RPC Web Center lists all applications, services, and server hardware configurations and offers graphs for service dependency, scheduled tasks, and various reports.",
           icon: IconChartBar
         },
         {
           title: "Automatic and Manual Service Degradation",
-          description: "Circuit breakers and fallback mechanisms with both automatic triggers and manual override capabilities.",
+          description: "The LUI️X RPC Web Center provides multiple automatic service downgrade configurations, including scheduled and conditional downgrades, and also supports manual downgrade.",
           icon: IconShieldHalf
         }
       ]
