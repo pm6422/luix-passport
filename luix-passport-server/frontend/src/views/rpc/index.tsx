@@ -394,7 +394,7 @@ export default function LuixRpcPage() {
             {/* 左侧功能列表 */}
             <div className="space-y-8">
               {content.additionalFeatures.leftColumn.map((item, index) => (
-                <div key={index} className="flex items-start gap-4">
+                <div key={index} className="flex items-start gap-4 md:py-10">
                   <div className="bg-primary/10 p-2 rounded-full">
                     <item.icon className="h-5 w-5 text-primary" />
                   </div>
@@ -406,17 +406,15 @@ export default function LuixRpcPage() {
             </div>
 
             {/* 中间图片 */}
-            <div className="flex justify-center">
+            <div className="flex justify-center hidden md:block">
               <div className="space-y-4">
                 <img
-                  src="/content/img/landing/perspective1.png"
+                  src="/assets/images/rpc/perspective1.png"
                   alt="Dashboard Screenshot"
-                  className="rounded-lg shadow-lg border"
                 />
                 <img
-                  src="/content/img/landing/perspective2.png"
+                  src="/assets/images/rpc/perspective2.png"
                   alt="Dashboard Screenshot"
-                  className="rounded-lg shadow-lg border"
                 />
               </div>
             </div>
@@ -424,7 +422,7 @@ export default function LuixRpcPage() {
             {/* 右侧功能列表 */}
             <div className="space-y-8">
               {content.additionalFeatures.rightColumn.map((item, index) => (
-                <div key={index} className="flex items-start gap-4">
+                <div key={index} className="flex items-start gap-4 md:py-10">
                   <div className="bg-primary/10 p-2 rounded-full">
                     <item.icon className="h-5 w-5 text-primary" />
                   </div>
