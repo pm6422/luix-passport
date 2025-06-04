@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState, useRef } from "react"
 import {
   Card,
   CardContent,
@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay"
 import { Separator } from "@/components/ui/separator";
 import { IconBrandGithub, IconBrandWeibo, IconMessageCircle, IconCircle, IconMenu2, IconExternalLink, IconMail, IconCalendarCheck } from "@tabler/icons-react";
 
@@ -18,21 +19,12 @@ export default function LuixRpcPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const CarouselComponent = ({ items }: { items: { title: string; description: string }[] }) => {
-    // Auto-rotation effect
-    useEffect(() => {
-      const interval = setInterval(() => {
-        const nextButton = document.querySelector('.carousel-next-button');
-        if (nextButton) {
-          (nextButton as HTMLElement).click();
-        }
-      }, 5000); // Rotate every 5 seconds
-
-      return () => clearInterval(interval);
-    }, []);
-
+    const plugin = useRef(
+      Autoplay({ delay: 4000, stopOnInteraction: true })
+    )
     return (
       <div className="relative h-[300px] overflow-hidden rounded-lg"> {/* Increased height */}
-        <Carousel className="w-full h-full">
+        <Carousel className="w-full h-full" plugins={[plugin.current]}>
           <CarouselContent className="h-full">
             {items.map((item, index) => (
               <CarouselItem key={index} className="h-full flex items-center justify-center">
