@@ -248,6 +248,38 @@ export default function LuixRpcPage() {
       {/* Hero Carousel */}
       <section id="home" className="pt-24 pb-12">
         <div className="relative h-[300px] overflow-hidden rounded-lg">
+          {/* Animated SVG Background */}
+          <div className="absolute inset-0 -z-10 overflow-hidden">
+            <svg
+              className="absolute w-full h-full"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 1440 320"
+              preserveAspectRatio="none"
+            >
+              <defs>
+                <linearGradient id="waveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.1" />
+                  <stop offset="50%" stopColor="#8b5cf6" stopOpacity="0.1" />
+                  <stop offset="100%" stopColor="#ec4899" stopOpacity="0.1" />
+                </linearGradient>
+              </defs>
+              <path
+                fill="url(#waveGradient)"
+                d="M0,192L48,197.3C96,203,192,213,288,229.3C384,245,480,267,576,250.7C672,235,768,181,864,181.3C960,181,1056,235,1152,234.7C1248,235,1344,181,1392,154.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+              >
+                <animate
+                  attributeName="d"
+                  values="
+          M0,192L48,197.3C96,203,192,213,288,229.3C384,245,480,267,576,250.7C672,235,768,181,864,181.3C960,181,1056,235,1152,234.7C1248,235,1344,181,1392,154.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z;
+          M0,128L48,154.7C96,181,192,235,288,234.7C384,235,480,181,576,181.3C672,181,768,235,864,250.7C960,267,1056,245,1152,229.3C1248,213,1344,203,1392,197.3L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z;
+          M0,192L48,197.3C96,203,192,213,288,229.3C384,245,480,267,576,250.7C672,235,768,181,864,181.3C960,181,1056,235,1152,234.7C1248,235,1344,181,1392,154.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z
+        "
+                  dur="15s"
+                  repeatCount="indefinite"
+                />
+              </path>
+            </svg>
+          </div>
           <Carousel className="w-full h-full" plugins={[plugin.current]}>
             <CarouselContent className="h-full">
               {content.hero.map((item, index) => (
