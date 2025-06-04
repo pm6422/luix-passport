@@ -7,6 +7,7 @@ import { useStore } from "exome/react"
 import { loginUserStore } from "@/stores/login-user-store"
 import { RoleAdmin } from "@/components/custom/role/role-admin"
 import { useLocation } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { CentralTopNav } from "@/components/central-top-nav"
 // import { NotificationNav } from "@/components/notification-nav"
 import { AccountNav } from "@/components/account-nav"
@@ -17,6 +18,7 @@ import { toast } from "sonner"
 import { IconBellBolt, IconX } from "@tabler/icons-react"
 
 export default function AuthLayout() {
+  const navigate = useNavigate()
   const { appInfo } = useStore(appInfoStore)
   const { loginUser } = useStore(loginUserStore)
   const [isCollapsed, setIsCollapsed] = useIsCollapsed()
@@ -51,8 +53,8 @@ export default function AuthLayout() {
 
   useEffect(() => {
     if(!loginUser.isAuthenticated) {
-      console.log("Redirecting to login for null auth user")
-      window.location.href = "/login"
+      console.log("Redirecting to login for empty auth user")
+      navigate("/sign-in")
     }
   }, [location, loginUser]);
 

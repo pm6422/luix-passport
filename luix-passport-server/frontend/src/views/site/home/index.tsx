@@ -167,7 +167,7 @@ export default function SiteHome() {
                 </p>
                 <div className="w-full max-w-sm space-y-6">
                   <Button asChild className="w-full px-5 py-4 h-14 text-base font-medium rounded-2xl">
-                    <a href="/login">Sign In</a>
+                    <Link to="/sign-in">Sign In</Link>
                   </Button>
                   <Button asChild variant="secondary" className="w-full px-5 py-4 h-14 text-base font-medium rounded-2xl">
                     <Link to="/sign-up">Create Account</Link>

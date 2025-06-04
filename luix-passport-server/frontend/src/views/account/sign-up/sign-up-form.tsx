@@ -8,6 +8,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { useNavigate } from "react-router-dom"
 import { PasswordInput } from "@/components/custom/password-input";
 import { AccountService } from "@/services/account-service"
 import { type UserRegistrationFormSchema, userRegistrationFormSchema } from "@/domains/user-registration"
@@ -16,8 +17,10 @@ import { useState } from "react"
 import { getErrorMessage } from "@/lib/handle-error"
 import { LoadingButton } from "@/components/custom/loading-button"
 import InputFormField from "@/components/custom/form-field/input"
+import { Link } from "react-router-dom"
 
 export function SignUpForm() {
+  const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
 
   const form = useForm<UserRegistrationFormSchema>({
@@ -37,7 +40,7 @@ export function SignUpForm() {
       loading: "Registering account...",
       success: () => {
         setIsLoading(false)
-        window.location.href = "/login";
+        navigate("/sign-in")
         return "Registered account successfully"
       },
       error: (error) => {
@@ -111,9 +114,7 @@ export function SignUpForm() {
 
           <p className="mt-3 text-sm text-muted-foreground">
             Already have an account?{" "}
-            <a href="/login" className="font-bold text-primary hover:underline">
-              Sign In
-            </a>
+            <Link to="/sign-in" className="font-bold text-primary hover:underline">Sign In</Link>
           </p>
         </div>
       </form>

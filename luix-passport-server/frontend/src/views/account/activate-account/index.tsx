@@ -71,10 +71,11 @@ export default function ActivateAccount() {
                 <p className="text-lg text-muted-foreground">
                   Your account has been successfully activated!
                 </p>
-                <Button className="w-full py-4 h-14 rounded-2xl">
-                  <a href="/login">
-                    Continue to Login
-                  </a>
+                <Button
+                  asChild
+                  className="w-full py-4 h-14 rounded-2xl"
+                >
+                  <Link to="/sign-in">Continue to Login</Link>
                 </Button>
               </div>
             ) : (

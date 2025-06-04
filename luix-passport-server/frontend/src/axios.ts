@@ -24,7 +24,7 @@ instance.interceptors.response.use(
     // Modify response data before resolving the promise
     if(response.request.responseURL.indexOf("/login") !== -1) {
       // Redirect to login page
-      window.location.href = "/login"
+      window.location.href = "/sign-in"
     }
     return response
   },
@@ -36,7 +36,7 @@ instance.interceptors.response.use(
     } else if (error.response.status === 401) {
       // Handle 401 unauthorized error
       console.log("Redirecting to login")
-      window.location.href = "/login"
+      window.location.href = "/sign-in"
     } else {
       // Handle other errors
       console.error("Request failed: ", error.message)

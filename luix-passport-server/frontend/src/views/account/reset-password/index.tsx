@@ -2,6 +2,7 @@ import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from 'zod';
+import { useNavigate } from "react-router-dom"
 import { Button } from "@/components/custom/button";
 import { Link, useSearchParams } from 'react-router-dom'
 import {
@@ -35,6 +36,7 @@ const resetPasswordFormSchema = z
 export type ResetPasswordFormSchema = z.infer<typeof resetPasswordFormSchema>
 
 export default function ForgotPassword() {
+  const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false);
   const [searchParams] = useSearchParams();
   const resetCode = searchParams.get('resetCode');
@@ -60,7 +62,7 @@ export default function ForgotPassword() {
       success: () => {
         setIsLoading(false);
         setTimeout(() => {
-          window.location.href = "/login";
+          navigate("/sign-in")
         }, 2000);
         return "Password reset successfully!";
       },
@@ -89,9 +91,7 @@ export default function ForgotPassword() {
           </h4>
           <p className="text-sm mt-10">
             Remember your password?{" "}
-            <a href="/login" className="font-bold text-primary hover:underline">
-              Sign in here
-            </a>
+            <Link to="/sign-in" className="font-bold text-primary hover:underline">Sign in here</Link>
           </p>
         </div>
       </div>

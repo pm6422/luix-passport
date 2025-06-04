@@ -5,6 +5,7 @@ import { AccountNav } from "@/components/account-nav"
 import { useStore } from "exome/react"
 import { loginUserStore } from "@/stores/login-user-store"
 import { Button } from "@/components/custom/button"
+import { Link } from "react-router-dom"
 
 export default function NoAuthLayout() {
   const { loginUser } = useStore(loginUserStore)
@@ -55,9 +56,14 @@ export default function NoAuthLayout() {
               {loginUser.isAuthenticated ? (
                 <AccountNav />
               ) : (
-                <Button variant="outline" className="rounded-2xl">
-                  <a href="/login">Sign In</a>
-                </Button>
+                <Link to="/sign-in">
+                  <Button
+                    variant="outline"
+                    className="rounded-2xl"
+                  >
+                    Sign In
+                  </Button>
+                </Link>
               )}
             </div>
           </LayoutHeader>

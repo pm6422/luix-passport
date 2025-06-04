@@ -19,9 +19,9 @@ export default function SignIn() {
             Immerse yourself in a hassle-free login journey with our account protection technology. Effortlessly access your account.
           </h4>
           <p className="text-sm mt-10">
-            Don't have an account?{" "}
-            <Link to="/sign-up" className="font-bold text-primary hover:underline">
-              Register here
+            Back to {" "}
+            <Link to="/" className="font-bold text-primary hover:underline">
+              Home
             </Link>
           </p>
         </div>
