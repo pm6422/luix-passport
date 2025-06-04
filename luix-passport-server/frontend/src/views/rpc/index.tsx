@@ -197,7 +197,7 @@ export default function LuixRpcPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       {/* Navigation */}
       <nav className="fixed top-0 w-full bg-background z-50 border-b">
         <div className="container flex items-center justify-between h-16 relative">
