@@ -5,6 +5,7 @@ import cn.luixtech.passport.server.domain.User;
 import cn.luixtech.passport.server.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationConsent;
@@ -29,6 +30,15 @@ public class LoginController {
     private final RegisteredClientRepository        registeredClientRepository;
     private final OAuth2AuthorizationConsentService authorizationConsentService;
     private final UserRepository                    userRepository;
+
+    @GetMapping("/login")
+    public String login(Authentication authentication) {
+        // Check if the user is already authenticated
+        if (authentication != null && authentication.isAuthenticated()) {
+            return "redirect:/";
+        }
+        return "login";
+    }
 
     @GetMapping(value = "/oauth2/consent")
     public String consent(Principal principal, Model model,
