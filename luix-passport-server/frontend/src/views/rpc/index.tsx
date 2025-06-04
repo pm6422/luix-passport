@@ -13,7 +13,6 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { Separator } from "@/components/ui/separator";
 import { IconBrandGithub, IconBrandWeibo, IconMessageCircle, IconCircle, IconMenu2, IconExternalLink, IconMail, IconCalendarCheck } from "@tabler/icons-react";
 
-
 // ====================== COMPONENT ======================
 export default function LuixRpcPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
