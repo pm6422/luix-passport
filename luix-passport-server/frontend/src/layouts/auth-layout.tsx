@@ -97,7 +97,7 @@ export default function AuthLayout() {
             (t) => (
               <div className="group w-full max-w-sm rounded-lg border bg-background p-4 shadow-lg">
                 <div className="flex items-start gap-3">
-                  <IconBellBolt className="mt-0.5 size-5 text-blue-500" />
+                  <IconBellBolt className="mt-0.5 size-5 text-primary" />
                   <div className="flex-1">
                     <div className="mb-2 flex items-center justify-between">
                       <h3 className="text-sm font-semibold text-foreground">
