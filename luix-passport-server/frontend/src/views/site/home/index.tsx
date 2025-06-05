@@ -8,7 +8,8 @@ import { motion } from "framer-motion"
 import { useEffect, useState } from "react"
 import { UserNotificationService } from "@/services/user-notification-service"
 import { Badge } from "@/components/ui/badge.tsx"
-import { AccountService } from '@/services/account-service.ts'
+import { AccountService } from "@/services/account-service"
+import ColourfulText from "@/components/custom/colourful-text"
 
 export default function SiteHome() {
   const { loginUser } = useStore(loginUserStore)
@@ -41,7 +42,7 @@ export default function SiteHome() {
                 transition={{ duration: 0.5 }}
               >
                 <h2 className="lg:text-5xl text-4xl font-extrabold lg:leading-[55px] mt-8">
-                  Welcome back
+                  <ColourfulText text="Welcome back" />
                 </h2>
               </motion.div>
             ) : (
@@ -140,12 +141,17 @@ export default function SiteHome() {
             {loginUser.isAuthenticated ? (
               <>
                 <h1 className="text-4xl font-bold mb-6">Welcome to Your Console</h1>
-                <p className="text-lg text-muted-foreground max-w-md">
-                  Hi {loginUser.username}<br></br> You have
-                  <Badge className="bg-green-500 h-5 min-w-5 rounded-full ms-2 me-1 font-mono tabular-nums">
+                <div className="flex items-center">
+                  <p className="text-lg text-muted-foreground max-w-md">
+                    Hi {loginUser.username}, you have
+                  </p>
+                  <Badge className="bg-green-500 h-5 min-w-5 rounded-full mx-2 font-mono tabular-nums">
                     {unreadNotifications}
-                </Badge> new notifications.
-                </p>
+                  </Badge>
+                  <p className="text-lg text-muted-foreground">
+                    new notifications.
+                  </p>
+                </div>
                 <div className="w-full max-w-sm space-y-6">
                   <Button asChild variant="link" className="w-full px-5 py-4 h-14 text-base font-medium rounded-2xl">
                     <Link to="/console/notifications">View Notifications</Link>
