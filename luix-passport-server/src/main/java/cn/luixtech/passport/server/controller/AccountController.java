@@ -52,6 +52,7 @@ import java.util.Optional;
 import static cn.luixtech.passport.server.service.impl.UserProfilePicServiceImpl.CURRENT_USER_PHOTO_URL;
 import static cn.luixtech.passport.server.utils.ImageCompressor.compressImage;
 import static com.luixtech.springbootframework.utils.NetworkUtils.getRequestUrl;
+import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
 
 /**
  * REST controller for managing the user's account.
@@ -106,7 +107,7 @@ public class AccountController {
 
         // create a new session
         HttpSession session = request.getSession(true);
-        session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
+        session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
 
         return ResponseEntity.ok().build();
     }
