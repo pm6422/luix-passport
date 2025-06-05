@@ -60,7 +60,7 @@ export default function Sidebar2({
             <div
                 className={`flex flex-col ms-1 justify-end truncate ${isCollapsed ? "invisible w-0" : "visible w-auto"}`}
             >
-              { appInfo.ribbonProfile && <span className="flex justify-end text-[0.5rem]"> {appInfo.ribbonProfile} env</span> }
+              { appInfo.ribbonProfile && <span className="flex justify-end text-[0.6rem]"> {appInfo.ribbonProfile} env</span> }
               <img
                   src="/assets/images/logos/logo-text.svg"
                   alt="logo"
