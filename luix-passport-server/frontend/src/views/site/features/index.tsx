@@ -71,7 +71,7 @@ export default function FeaturesPage() {
       </div>
 
       {/* Right side - content - now takes 2/3 */}
-      <div className="flex flex-col items-center w-full h-full lg:col-span-2 xl:px-32 lg:px-10 px-5 rounded-3xl py-10 overflow-y-auto">
+      <div className="flex flex-col items-center w-full h-full lg:col-span-2 xl:px-32 lg:px-15 px-5 rounded-3xl py-10 overflow-y-auto">
         <div className="flex-1">
           <h1 className="text-3xl font-bold mb-2">Passport Login System Features</h1>
           <p className="text-lg text-muted-foreground mb-10">
