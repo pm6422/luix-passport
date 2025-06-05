@@ -72,7 +72,7 @@ export default function ContactUs() {
   return (
     <div className="container relative grid flex-col justify-center lg:max-w-none lg:grid-cols-2">
       {/* Left side - hidden on mobile */}
-      <div className="relative mb-36 ms-10 hidden lg:flex xl:px-28 lg:px-5">
+      <div className="relative mb-36 ms-10 hidden lg:flex xl:px-28 lg:px-2">
         <div className="max-md:text-center">
           <img
             src="/assets/images/logos/logo-with-text.svg"

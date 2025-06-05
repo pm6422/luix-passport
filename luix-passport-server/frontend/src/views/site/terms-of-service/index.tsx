@@ -4,7 +4,7 @@ export default function TermsOfService() {
   return (
     <div className="container relative grid flex-col justify-center lg:max-w-none lg:grid-cols-2">
       {/* Left side - hidden on mobile */}
-      <div className="lg:flex relative hidden xl:px-12 lg:px-5 ms-10 mb-36">
+      <div className="lg:flex relative hidden xl:px-12 lg:px-2 ms-10 mb-36">
         <div className="max-md:text-center">
           <img
             src="/assets/images/logos/logo-with-text.svg"
