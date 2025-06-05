@@ -2,9 +2,9 @@ import { Link } from "react-router-dom"
 
 export default function TermsOfService() {
   return (
-    <div className="container relative grid flex-col items-center justify-center lg:max-w-none lg:grid-cols-2">
+    <div className="container relative grid flex-col justify-center lg:max-w-none lg:grid-cols-2">
       {/* Left side - hidden on mobile */}
-      <div className="lg:flex relative hidden lg:px-28 ms-10 mb-36">
+      <div className="lg:flex relative hidden xl:px-12 lg:px-5 ms-10 mb-36">
         <div className="max-md:text-center">
           <img
             src="/assets/images/logos/logo-with-text.svg"
@@ -27,7 +27,7 @@ export default function TermsOfService() {
       </div>
 
       {/* Right side - content */}
-      <div className="flex flex-col w-full h-full xl:px-48 lg:px-28 px-5 text-left rounded-3xl overflow-y-auto py-10">
+      <div className="flex flex-col items-center w-full h-full xl:px-48 lg:px-18 px-5 text-left rounded-3xl overflow-y-auto py-10">
         <img
           src="/assets/images/logos/logo-round.svg"
           alt="Logo"
