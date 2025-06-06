@@ -144,7 +144,7 @@ export default function SiteHome() {
                 <div className="text-lg text-muted-foreground">
                   Hi {loginUser.username}, you have{" "}
                   <span className="inline-flex items-center">
-                    <Badge className="bg-green-500 h-5 min-w-5 rounded-full mx-1">
+                    <Badge className="bg-green-600/10 dark:bg-green-600/20 hover:bg-green-600/10 text-green-500 shadow-none rounded-full mx-1">
                       {unreadNotifications}
                     </Badge>
                   </span>{" "}
