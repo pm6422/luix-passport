@@ -99,7 +99,7 @@ function NavLink({
           variant: checkActiveNav(href) ? "secondary" : "ghost",
           size: "sm",
         }),
-        "h-12 justify-start text-wrap rounded-none px-6",
+        "h-12 justify-start text-wrap rounded-lg px-6",
         subLink && "h-10 w-full px-2"
       )}
       aria-current={checkActiveNav(href) ? "page" : undefined}
@@ -148,7 +148,7 @@ function NavLinkDropdown({ title, icon, label, sub, closeNav }: NavLinkProps) {
       <CollapsibleContent className="collapsibleDropdown" asChild>
         <ul>
           {sub!.map((sublink) => (
-            <li key={sublink.title} className="my-1 ml-8">
+            <li key={sublink.title} className="my-1 mx-8">
               <NavLink {...sublink} subLink closeNav={closeNav} />
             </li>
           ))}
