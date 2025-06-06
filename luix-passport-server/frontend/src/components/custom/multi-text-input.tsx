@@ -11,7 +11,7 @@ interface MultiTextInputProps {
   description?: string;
   placeholder?: string;
   addButtonText?: string;
-  className?: string;
+  inputClassName?: string;
   required?: boolean
 }
 
@@ -21,7 +21,7 @@ export function MultiTextInput({
                                  description,
                                  placeholder = "Enter text...",
                                  addButtonText = "Add",
-                                 className,
+                                 inputClassName,
                                  required
                                }: MultiTextInputProps) {
   const { control } = useFormContext();
@@ -31,7 +31,7 @@ export function MultiTextInput({
   });
 
   return (
-    <div className={`space-y-2 ${className}`}>
+    <div className="space-y-2">
       {label && (
         <div className="space-y-1">
           <RequiredFormLabel required={required}>{label}</RequiredFormLabel>
@@ -47,6 +47,7 @@ export function MultiTextInput({
         {fields.map((field, index) => (
           <div key={field.id} className="flex items-center gap-2">
             <Input
+              className={inputClassName}
               placeholder={placeholder}
               {...control.register(`${name}.${index}`)}
             />
