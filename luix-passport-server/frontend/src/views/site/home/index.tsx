@@ -140,7 +140,7 @@ export default function SiteHome() {
             />
             {loginUser.isAuthenticated ? (
               <>
-                <h1 className="text-4xl font-bold mb-6">Welcome to Your Console</h1>
+                <h1 className="text-4xl font-bold mb-6">Welcome to LUIX passport</h1>
                 <div className="flex items-center">
                   <p className="text-lg text-muted-foreground max-w-md">
                     Hi {loginUser.username}, you have
