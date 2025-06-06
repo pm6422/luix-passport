@@ -39,6 +39,7 @@ export default function ProfileForm() {
       loading: "Updating profile picture...",
       success: () => {
         setSaving(false)
+        form.reset()
         return "Updated profile picture"
       },
       error: (error) => {
