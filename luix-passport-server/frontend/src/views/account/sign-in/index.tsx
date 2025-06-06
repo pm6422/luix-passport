@@ -5,7 +5,7 @@ export default function SignIn() {
   return (
     <div className="container relative grid h-screen flex-col items-center justify-center lg:max-w-none lg:grid-cols-2">
       {/* Left side - hidden on mobile */}
-      <div className="lg:flex relative hidden lg:px-28 ms-10 mb-36">
+      <div className="lg:flex relative hidden xl:px-28 lg:px-10 ms-10 mb-36">
         <div className="max-md:text-center">
           <img
             src="/assets/images/logos/logo-with-text.svg"
@@ -28,7 +28,7 @@ export default function SignIn() {
       </div>
 
       {/* Right side - form */}
-      <div className="flex flex-col w-full xl:px-48 lg:px-28 px-5 rounded-3xl py-10">
+      <div className="flex flex-col w-full xl:px-48 lg:px-10 px-5 rounded-3xl py-10">
         <img
           src="/assets/images/logos/logo-round.svg"
           alt="Logo"
