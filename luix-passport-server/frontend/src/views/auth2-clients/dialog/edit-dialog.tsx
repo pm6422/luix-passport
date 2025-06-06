@@ -1,18 +1,15 @@
 import { useState, useEffect, ReactNode } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm, useFieldArray } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { Dialog, DialogTrigger } from "@/components/ui/dialog"
 import SaveDialogContent from "@/components/custom/dialog/save-dialog-content"
 import InputFormField from "@/components/custom/form-field/input"
 import MultiSelectFormField from "@/components/custom/form-field/multi-select"
 import { Option } from "@/components/custom/multi-select"
-import { Button } from "@/components/custom/button"
-import { IconX, IconCirclePlus } from "@tabler/icons-react"
-import { FormLabel, FormDescription } from "@/components/ui/form"
-import { RequiredFormLabel } from "@/components/custom/required-form-label"
 import SwitchFormField from "@/components/custom/form-field/switch"
 import { type Auth2Client, auth2ClientSchema, initialAuth2ClientState } from "@/domains/auth2-client"
 import { Oauth2ClientService } from "@/services/oauth2-client-service"
+import { MultiTextInput } from "@/components/custom/multi-text-input"
 
 interface EditDialogProps {
   children: ReactNode,
@@ -36,26 +33,6 @@ export function EditDialog({
   const form = useForm<Auth2Client>({
     resolver: zodResolver(auth2ClientSchema),
     defaultValues: initialAuth2ClientState
-  })
-
-  const { 
-    fields: redirectUriFields, 
-    append: addRedirectUri, 
-    remove: removeRedirectUri
-  } = useFieldArray({
-    // @ts-ignore
-    name: "redirectUris",
-    control: form.control,
-  })
-
-  const { 
-    fields: postLogoutRedirectUriFields, 
-    append: addPostLogoutRedirectUri, 
-    remove: removePostLogoutRedirectUri
-  } = useFieldArray({
-    // @ts-ignore
-    name: "postLogoutRedirectUris",
-    control: form.control,
   })
 
   useEffect(() => {
@@ -127,71 +104,22 @@ export function EditDialog({
           multiple={true}
         />
 
-        <div>
-          <RequiredFormLabel>
-            Redirect URIs
-          </RequiredFormLabel>
-          <FormDescription className="mb-3">
-            Valid redirect URIs after login successfully.
-          </FormDescription>
-          {redirectUriFields.map((field, index) => (
-            <InputFormField 
-              control={form.control} 
-              key={field.id}
-              // @ts-ignore
-              name={`redirectUris.${index}`}
-              formItemClassName="mt-2"
-              icon={
-                <Button 
-                  type="button"
-                  variant="outline" 
-                  className="flex size-9 p-0" 
-                  onClick={() => removeRedirectUri(index)}>
-                    <IconX className="size-4" />
-                    <span className="sr-only">Delete</span>
-                </Button>
-              }
-            />
-          ))}
-          <div className="flex items-center justify-end w-full mt-2">
-            <IconCirclePlus
-              className="size-6 mt-1 mr-1 cursor-pointer text-muted-foreground"
-              type="button"
-              onClick={() => addRedirectUri("")}
-            />
-          </div>
-        </div>
-        <div>
-          <FormLabel className="mb-3">
-            Post Logout Redirect URIs
-          </FormLabel>
-          {postLogoutRedirectUriFields.map((field, index) => (
-            <InputFormField 
-              control={form.control} 
-              key={field.id}
-              // @ts-ignore
-              name={`postLogoutRedirectUris.${index}`}
-              formItemClassName="mt-2"
-              icon={
-                <Button 
-                  type="button"
-                  variant="outline" 
-                  className="flex size-9 p-0" 
-                  onClick={() => removePostLogoutRedirectUri(index)}>
-                    <IconX className="size-4" />
-                    <span className="sr-only">Delete</span>
-                </Button>
-              }
-            />
-          ))}
-          <div className="flex items-center justify-end w-full mt-2">
-            <IconCirclePlus
-              className="size-6 mt-1 mr-1 cursor-pointer text-muted-foreground"
-              type="button"
-              onClick={() => addPostLogoutRedirectUri("")}
-            />
-          </div>
-        </div>
+        <MultiTextInput
+          name="redirectUris"
+          label="Redirect URIs"
+          required
+          placeholder="Enter an URI"
+          description="Valid redirect URIs after login successfully."
+          addButtonText="Add URI"
+        />
+
+        <MultiTextInput
+          name="postLogoutRedirectUris"
+          label="Post Logout Redirect URIs"
+          required
+          placeholder="Enter an URI"
+          addButtonText="Add URI"
+        />
 
         <MultiSelectFormField
           control={form.control} 
