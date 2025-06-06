@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Activity, CreditCard, Key, Lock, Shield, User, Users } from "lucide-react";
 import { useStore } from "exome/react"
 import { loginUserStore } from "@/stores/login-user-store"
+import { Badge } from '@/components/ui/badge'
 
 export default function ConsolePage() {
   const { loginUser } = useStore(loginUserStore)
@@ -15,11 +16,11 @@ export default function ConsolePage() {
         <h1 className="text-3xl font-bold">Console</h1>
         <div className="flex items-center space-x-2">
           <User className="h-5 w-5" />
-          <span className="bg-primary text-primary-foreground px-2 py-1 rounded-full text-xs">
+          <Badge className="bg-amber-600/10 dark:bg-amber-600/20 hover:bg-amber-600/10 text-amber-500 shadow-none rounded-full">
             {loginUser?.roleIds?.map((roleId) => {
               return roleId.replace("ROLE_", "") + ", ";
             })}
-          </span>
+          </Badge>
         </div>
       </div>
 
