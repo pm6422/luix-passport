@@ -141,16 +141,14 @@ export default function SiteHome() {
             {loginUser.isAuthenticated ? (
               <>
                 <h1 className="text-4xl font-bold mb-6">Welcome to LUIX passport</h1>
-                <div className="flex items-center">
-                  <p className="text-lg text-muted-foreground max-w-md">
-                    Hi {loginUser.username}, you have
-                  </p>
-                  <Badge className="bg-green-500 h-5 min-w-5 rounded-full mx-2">
-                    {unreadNotifications}
-                  </Badge>
-                  <p className="text-lg text-muted-foreground">
-                    new notifications.
-                  </p>
+                <div className="text-lg text-muted-foreground">
+                  Hi {loginUser.username}, you have{" "}
+                  <span className="inline-flex items-center">
+                    <Badge className="bg-green-500 h-5 min-w-5 rounded-full mx-1">
+                      {unreadNotifications}
+                    </Badge>
+                  </span>{" "}
+                      new notifications.
                 </div>
                 <div className="w-full max-w-sm space-y-6">
                   <Button asChild variant="link" className="w-full px-5 py-4 h-14 text-base font-medium rounded-2xl">
