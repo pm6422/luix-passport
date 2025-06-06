@@ -15,7 +15,7 @@ import { Layout, LayoutHeader } from "@/layouts/layout-definitions"
 // import { Search } from "@/components/custom/search"
 import { isEmpty } from "lodash"
 import { toast } from "sonner"
-import { IconBellBolt, IconX } from "@tabler/icons-react"
+import { IconBellBolt } from "@tabler/icons-react"
 
 export default function AuthLayout() {
   const navigate = useNavigate()
@@ -63,9 +63,9 @@ export default function AuthLayout() {
       return;
     }
 
-    // if(appInfo.ribbonProfile === "dev") {
-    //   return;
-    // }
+    if(appInfo.ribbonProfile === "dev") {
+      return;
+    }
 
     const eventSource = setupSse();
 
@@ -94,23 +94,24 @@ export default function AuthLayout() {
         // console.log("Received message from the server:", data);
         setTimeout(() => {
           toast(
-            <div className="flex flex-col">
-              <div className="flex">
-                <IconBellBolt className="size-4 mr-2"/>
-                <span className="font-bold mb-2">{event.data}</span>
-              </div>
-              <span>
+            <div className="flex items-start gap-2">
+              <IconBellBolt className="size-8 flex-shrink-0 self-center mr-2 text-primary" />
+              <div className="flex flex-col gap-1">
+                <span className="font-bold">{event.data}</span>
+                  <span>
                     Please go to{' '}
-                <a
-                  href="/console/notifications"
-                  className="font-medium text-primary underline-offset-4 hover:underline"
-                >
-                  notification center
-                </a>{' '}
-                to check.
-              </span>
-            </div>,
-            { duration: 5000 })
+                      <a
+                        href="/console/notifications"
+                        className="font-medium text-primary underline-offset-4 hover:underline"
+                      >
+                        notification center
+                      </a>{' '}
+                        to check.
+                  </span>
+                </div>
+              </div>,
+            { duration: 5000 }
+          )
         }, 2000)
 
         return eventSource;
