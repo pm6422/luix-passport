@@ -63,9 +63,9 @@ export default function AuthLayout() {
       return;
     }
 
-    if(appInfo.ribbonProfile === "dev") {
-      return;
-    }
+    // if(appInfo.ribbonProfile === "dev") {
+    //   return;
+    // }
 
     const eventSource = setupSse();
 
@@ -93,43 +93,24 @@ export default function AuthLayout() {
         // const data = JSON.parse(event.data);
         // console.log("Received message from the server:", data);
         setTimeout(() => {
-          toast.custom(
-            (t) => (
-              <div className="group w-full max-w-sm rounded-lg border bg-background p-4 shadow-lg">
-                <div className="flex items-start gap-3">
-                  <IconBellBolt className="mt-0.5 size-5 text-primary" />
-                  <div className="flex-1">
-                    <div className="mb-2 flex items-center justify-between">
-                      <h3 className="text-sm font-semibold text-foreground">
-                        {event.data}
-                      </h3>
-                      <button
-                        onClick={() => toast.dismiss(t)}
-                        className="opacity-0 transition-opacity group-hover:opacity-100 focus:opacity-100 focus:outline-none"
-                        aria-label="Close notification"
-                      >
-                        <IconX className="size-4 text-muted-foreground hover:text-foreground" />
-                      </button>
-                    </div>
-                    <p className="text-sm text-muted-foreground">
-                      Please go to{" "}
-                      <a
-                        href="/console/notifications"
-                        className="font-medium text-primary underline-offset-4 hover:underline"
-                      >
-                        Notification Center
-                      </a>{" "}
-                      to check the details.
-                    </p>
-                  </div>
-                </div>
+          toast(
+            <div className="flex flex-col">
+              <div className="flex">
+                <IconBellBolt className="size-4 mr-2"/>
+                <span className="font-bold mb-2">{event.data}</span>
               </div>
-            ),
-            {
-              duration: 5000,
-              position: "top-right",
-            }
-          )
+              <span>
+                    Please go to{' '}
+                <a
+                  href="/console/notifications"
+                  className="font-medium text-primary underline-offset-4 hover:underline"
+                >
+                  notification center
+                </a>{' '}
+                to check.
+              </span>
+            </div>,
+            { duration: 5000 })
         }, 2000)
 
         return eventSource;
