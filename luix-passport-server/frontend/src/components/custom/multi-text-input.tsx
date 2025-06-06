@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { IconMinus, IconCirclePlus } from "@tabler/icons-react"
+import { IconMinus, IconPlus } from "@tabler/icons-react"
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { FormDescription } from "@/components/ui/form";
 import { RequiredFormLabel } from "@/components/custom/required-form-label"
@@ -56,7 +56,7 @@ export function MultiTextInput({
               size="icon"
               onClick={() => remove(index)}
             >
-              <IconMinus className="h-4 w-4" />
+              <IconMinus className="size-4" />
             </Button>
           </div>
         ))}
@@ -68,7 +68,7 @@ export function MultiTextInput({
         className="mt-2"
         onClick={() => append("")}
       >
-        <IconCirclePlus className="h-4 w-4 mr-2" />
+        <IconPlus className="size-4" />
         {addButtonText}
       </Button>
     </div>
