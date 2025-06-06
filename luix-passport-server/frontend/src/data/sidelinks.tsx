@@ -33,19 +33,19 @@ export const sidelinks: SideLink[] = [
       {
         title: "Users",
         label: "",
-        href: "/console/users",
+        href: "/users",
         icon: <IconPoint size={15} />,
       },
       {
         title: "Permissions",
         label: "",
-        href: "/console/permissions",
+        href: "/permissions",
         icon: <IconPoint size={15} />,
       },
       {
         title: "Roles",
         label: "",
-        href: "/console/roles",
+        href: "/roles",
         icon: <IconPoint size={15} />,
       },
     ],
@@ -59,7 +59,7 @@ export const sidelinks: SideLink[] = [
       {
         title: "Oauth2 Clients",
         label: "",
-        href: "/console/oauth2-clients",
+        href: "/oauth2-clients",
         icon: <IconPoint size={15} />,
       },
     ],

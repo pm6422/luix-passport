@@ -37,12 +37,12 @@ export default function AuthLayout() {
       },
       {
         title: "Personal Account",
-        href: "/console/account",
+        href: "/account",
         isActive: false,
       },
       {
         title: "Notifications",
-        href: "/console/notifications",
+        href: "/notifications",
         isActive: false,
       }
     ] : [])
@@ -101,7 +101,7 @@ export default function AuthLayout() {
                   <span>
                     Please go to{' '}
                       <a
-                        href="/console/notifications"
+                        href="/notifications"
                         className="font-medium text-primary underline-offset-4 hover:underline"
                       >
                         notification center

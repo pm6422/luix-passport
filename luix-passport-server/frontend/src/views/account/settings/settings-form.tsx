@@ -94,7 +94,7 @@ export function SettingsForm() {
               {form.getValues("email")}
             </p>
           </div>
-          <Link to="/console/account/change-email">
+          <Link to="/account/change-email">
             <Button
               type="button"
               variant={"link"}

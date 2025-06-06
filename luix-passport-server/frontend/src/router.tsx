@@ -116,14 +116,14 @@ const router = createBrowserRouter([
 
   // auth routes
   {
-    path: "/console",
+    path: "/",
     lazy: async () => ({
       Component: (await import("./layouts/auth-layout")).default
     }),
     errorElement: <GeneralError />,
     children: [
       {
-        index: true,
+        path: "console",
         lazy: async () => ({
           Component: (await import("./views/console")).default
         }),

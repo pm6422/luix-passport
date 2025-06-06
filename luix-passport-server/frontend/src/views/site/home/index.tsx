@@ -152,7 +152,7 @@ export default function SiteHome() {
                 </div>
                 <div className="w-full max-w-sm space-y-6">
                   <Button asChild variant="link" className="w-full px-5 py-4 h-14 text-base font-medium rounded-2xl">
-                    <Link to="/console/notifications">View Notifications</Link>
+                    <Link to="/notifications">View Notifications</Link>
                   </Button>
                   <Button asChild className="w-full px-5 py-4 h-14 text-base font-medium rounded-2xl">
                     <Link to="/console">Go to console</Link>

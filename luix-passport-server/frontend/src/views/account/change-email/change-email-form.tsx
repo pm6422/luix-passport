@@ -98,7 +98,7 @@ export function ChangeEmailForm() {
       loading: "Updating account...",
       success: () => {
         setSaving(false)
-        navigate("/console/account/settings")
+        navigate("/account/settings")
         return "Updated account"
       },
       error: (error) => {
@@ -164,7 +164,7 @@ export function ChangeEmailForm() {
         />
 
         <div className="flex flex-col sm:flex-row gap-2 sm:justify-end">
-          <Link to="/console/account/settings">
+          <Link to="/account/settings">
             <Button
               type="button"
               variant="outline"
