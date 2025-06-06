@@ -4,16 +4,16 @@ import { motion } from "motion/react";
 
 export default function ColourfulText({ text }: { text: string }) {
   const colors = [
-    "rgb(224, 187, 228)",  // #E0BBE4
-    "rgb(200, 158, 196)",  // #C89EC4
-    "rgb(171, 114, 176)",  // #AB72B0
-    "rgb(142, 68, 173)",   // #8E44AD
-    "rgb(108, 52, 131)",   // #6C3483
-    "rgb(224, 187, 228)",  // #E0BBE4
-    "rgb(200, 158, 196)",  // #C89EC4
-    "rgb(171, 114, 176)",  // #AB72B0
-    "rgb(142, 68, 173)",   // #8E44AD
-    "rgb(108, 52, 131)"    // #6C3483
+    "rgb(210, 248, 210)",  // #D2F8D2
+    "rgb(160, 231, 160)",  // #A0E7A0
+    "rgb(107, 203, 119)",  // #6BCB77
+    "rgb(63, 163, 77)",    // #3FA34D
+    "rgb(45, 106, 79)",    // #2D6A4F
+    "rgb(210, 248, 210)",  // #D2F8D2
+    "rgb(160, 231, 160)",  // #A0E7A0
+    "rgb(107, 203, 119)",  // #6BCB77
+    "rgb(63, 163, 77)",    // #3FA34D
+    "rgb(45, 106, 79)"     // #2D6A4F
   ];
 
   const [currentColors, setCurrentColors] = React.useState(colors);
