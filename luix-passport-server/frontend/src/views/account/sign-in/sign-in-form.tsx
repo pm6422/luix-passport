@@ -17,6 +17,7 @@ import { LoadingButton } from "@/components/custom/loading-button"
 import { Link } from "react-router-dom"
 import { AccountService } from "@/services/account-service"
 import { toast } from "sonner"
+import { getErrorMessage } from "@/lib/handle-error"
 
 const signInformSchema = z.object({
   username: z.string().min(1, { message: "Please enter your username" }),
@@ -47,9 +48,9 @@ export function SignInForm() {
         window.location.href = "/";
         return "Signed in successfully"
       },
-      error: () => {
+      error: (error) => {
         setIsLoading(false)
-        return "Invalid username or password"
+        return getErrorMessage(error)
       }
     })
   }
