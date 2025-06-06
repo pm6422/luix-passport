@@ -8,7 +8,7 @@ import { Key } from "react"
 
 interface Props<TFieldValues extends FieldValues> {
   control: Control<TFieldValues>
-  name: keyof TFieldValues
+  name: Path<TFieldValues>
   key?: Key
   label?: string
   value?: string
@@ -53,11 +53,15 @@ const InputFormField = <TFieldValues extends FieldValues>({
     key={key}
     render={({ field: { value: formFieldValue, ...rest } }) => (
       <FormItem className={formItemClassName}>
-        {label && <RequiredFormLabel required={required}>{label}</RequiredFormLabel>}
+        {label && <RequiredFormLabel
+                    htmlFor={name.toString()}
+                    required={required}>{label}
+        </RequiredFormLabel>}
         <FormControl>
           <div className="relative flex w-full items-center gap-2">
             {type === "textarea" ? (
               <Textarea
+                id={name.toString()}
                 className={inputClassName}
                 placeholder={placeholder}
                 onFocus={onFocus}
@@ -68,6 +72,7 @@ const InputFormField = <TFieldValues extends FieldValues>({
               />
             ) : (
               <Input
+                id={name.toString()}
                 className={inputClassName}
                 type={type}
                 onFocus={onFocus}
