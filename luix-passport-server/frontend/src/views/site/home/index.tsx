@@ -145,7 +145,7 @@ export default function SiteHome() {
                   <p className="text-lg text-muted-foreground max-w-md">
                     Hi {loginUser.username}, you have
                   </p>
-                  <Badge className="bg-green-500 h-5 min-w-5 rounded-full mx-2 font-mono tabular-nums">
+                  <Badge className="bg-green-500 h-5 min-w-5 rounded-full mx-2">
                     {unreadNotifications}
                   </Badge>
                   <p className="text-lg text-muted-foreground">
