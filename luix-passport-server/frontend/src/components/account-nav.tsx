@@ -20,7 +20,7 @@ import {
 import { AccountService } from "@/services/account-service"
 import { useStore } from "exome/react"
 import { loginUserStore } from "@/stores/login-user-store"
-import { MinusIntroY } from "@/components/custom/intro-motion"
+import { MinusIntroY } from "@/components/custom/intro-animation"
 
 export function AccountNav() {
   const { loginUser } = useStore(loginUserStore)

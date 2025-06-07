@@ -22,7 +22,7 @@ import { Button } from "@/components/ui/button"
 import { IconTrash } from "@tabler/icons-react"
 import { toast } from "sonner"
 import { getErrorMessage } from "@/lib/handle-error"
-import { MinusIntroY } from "@/components/custom/intro-motion"
+import { MinusIntroY } from "@/components/custom/intro-animation"
 
 import {
   Table,
