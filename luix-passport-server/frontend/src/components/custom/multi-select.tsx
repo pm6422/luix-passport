@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/command"
 
 const multiSelectVariants = cva(
-  "m-1 transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 shadow-sm font-normal",
+  "m-1 transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 shadow-xs font-normal",
   {
     variants: {
       variant: {
@@ -145,7 +145,7 @@ const MultiSelect: React.ForwardRefRenderFunction<HTMLButtonElement, MultiSelect
           {...props}
           onClick={() => setIsPopoverOpen(!isPopoverOpen)}
           disabled={disabled}
-          className="flex w-full rounded-md border min-h-9 h-auto py-0 px-1 items-center justify-between bg-inherit hover:bg-card shadow-sm"
+          className="flex w-full rounded-md border min-h-9 h-auto py-0 px-1 items-center justify-between bg-inherit hover:bg-card shadow-xs"
         >
           {selectedValues.length > 0 ? (
             <div className="flex justify-between items-center w-full">
@@ -198,7 +198,7 @@ const MultiSelect: React.ForwardRefRenderFunction<HTMLButtonElement, MultiSelect
         </Button>
       </PopoverTrigger>
       <PopoverContent
-        className="min-w-fit p-0 drop-shadow-sm"
+        className="min-w-fit p-0 drop-shadow-xs"
         align="start"
         onEscapeKeyDown={() => setIsPopoverOpen(false)}
         onInteractOutside={(event) => {

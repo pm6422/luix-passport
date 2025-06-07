@@ -75,7 +75,7 @@ const ComboboxFormField = <TFieldValues extends FieldValues>({
               </PopoverTrigger>
             </FormControl>
             <PopoverContent
-              className="min-w-fit p-0 drop-shadow-sm"
+              className="min-w-fit p-0 drop-shadow-xs"
               align="start"
             >
               <Command>

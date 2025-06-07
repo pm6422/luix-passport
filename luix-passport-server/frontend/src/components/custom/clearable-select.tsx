@@ -47,7 +47,7 @@ export const ClearableSelect = ({
         <Button
           variant="outline"
           role="combobox"
-          className="flex w-full rounded-md border min-h-9 h-auto py-0 px-1 items-center justify-between bg-inherit hover:bg-card shadow-sm"
+          className="flex w-full rounded-md border min-h-9 h-auto py-0 px-1 items-center justify-between bg-inherit hover:bg-card shadow-xs"
           onClick={() => setIsPopoverOpen(!isPopoverOpen)}
         >
           <span className="text-sm font-normal px-2">
@@ -83,7 +83,7 @@ export const ClearableSelect = ({
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="min-w-fit p-0 drop-shadow-sm" align="start">
+      <PopoverContent className="min-w-fit p-0 drop-shadow-xs" align="start">
         <Command>
           <CommandInput placeholder="Search..." />
           <CommandEmpty>No results found.</CommandEmpty>
