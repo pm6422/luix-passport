@@ -107,7 +107,7 @@ export default function PricingPage() {
                 <ul className="space-y-3 mb-8 flex-grow"> {/* Added flex-grow */}
                   {plan.features.map((feature, featureIndex) => (
                     <li key={featureIndex} className="flex items-start">
-                      <IconCheck className="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                      <IconCheck className="h-5 w-5 text-green-500 mr-2 mt-0.5 shrink-0" />
                       <span>{feature}</span>
                     </li>
                   ))}

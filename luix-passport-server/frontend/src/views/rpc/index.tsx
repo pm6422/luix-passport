@@ -418,7 +418,7 @@ export default function LuixRpcPage() {
             <div className="space-y-8">
               {content.additionalFeatures.leftColumn.map((item, index) => (
                 <div key={index} className="flex items-start gap-4 md:py-6">
-                  <div className="bg-primary/10 p-2 rounded-full flex-shrink-0">
+                  <div className="bg-primary/10 p-2 rounded-full shrink-0">
                     <item.icon className="h-5 w-5 text-primary" />
                   </div>
                   <div>
@@ -447,7 +447,7 @@ export default function LuixRpcPage() {
             <div className="space-y-8">
               {content.additionalFeatures.rightColumn.map((item, index) => (
                 <div key={index} className="flex items-start gap-4 md:py-6">
-                  <div className="bg-primary/10 p-2 rounded-full flex-shrink-0">
+                  <div className="bg-primary/10 p-2 rounded-full shrink-0">
                     <item.icon className="h-5 w-5 text-primary" />
                   </div>
                   <div>
@@ -654,7 +654,7 @@ export default function LuixRpcPage() {
                 <ul className="space-y-3">
                   {content.contact.info.items.map((item, index) => (
                     <li key={index} className="flex items-start gap-3">
-                      <div className="flex-shrink-0 mt-1">
+                      <div className="shrink-0 mt-1">
                         <IconCircle className="h-3 w-3 text-primary" />
                       </div>
                       <span>{item}</span>
