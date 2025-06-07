@@ -53,7 +53,6 @@ export default function AuthLayout() {
 
   useEffect(() => {
     if(!loginUser.isAuthenticated) {
-      console.log("Redirecting to login for empty auth user")
       navigate("/sign-in")
     }
   }, [location, loginUser]);
@@ -73,7 +72,6 @@ export default function AuthLayout() {
       // Close connection on part unmount
       if (eventSource) {
         eventSource.close();
-        console.log('SSE connection closed');
       }
     };
   }, [loginUser]);
@@ -87,7 +85,6 @@ export default function AuthLayout() {
       eventSource.onopen = function () {
         // reset reconnect attempts
         reconnectAttempts = 0;
-        console.log("Opened SSE connection to the server");
       }
       eventSource.onmessage = function (event) {
         // const data = JSON.parse(event.data);
@@ -122,12 +119,7 @@ export default function AuthLayout() {
         if (reconnectAttempts < maxReconnectAttempts) {
           const delay = initialReconnectDelay * Math.pow(2, reconnectAttempts);
           reconnectAttempts++;
-
-          console.log(`Disconnected from the server, will try to reconnect in ${delay/1000} seconds with ${reconnectAttempts} attempts...`);
-
           setTimeout(setupSse, delay);
-        } else {
-          console.log('Exceeded max reconnect attempts, stop trying to reconnect.');
         }
       }
     }
