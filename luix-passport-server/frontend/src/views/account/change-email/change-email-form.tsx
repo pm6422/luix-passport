@@ -13,9 +13,12 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import InputFormField from "@/components/custom/form-field/input"
-import { Input } from "@/components/ui/input"
 import { toast } from "sonner"
-import { PinInput, PinInputField } from "@/components/custom/pin-input"
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "@/components/ui/input-otp"
 import { RequiredFormLabel } from "@/components/custom/required-form-label"
 import { useStore } from "exome/react"
 import { loginUserStore } from "@/stores/login-user-store"
@@ -145,17 +148,18 @@ export function ChangeEmailForm() {
             <FormItem>
               <RequiredFormLabel required={true}>Verification Code</RequiredFormLabel>
               <FormControl>
-                <PinInput
-                  className="flex h-10 space-x-4"
+                <InputOTP
+                  maxLength={6}
                   value={field.value}
                   onChange={field.onChange}
                   disabled={verificationCodeInputDisabled}
-                  onComplete={(str) => console.log("completed", str)}
                 >
-                  {Array.from({ length: 6 }, (_, i) => (
-                    <PinInputField key={i} component={Input} className="capitalize"/>
-                  ))}
-                </PinInput>
+                  <InputOTPGroup>
+                    {Array.from({ length: 6 }, (_, i) => (
+                      <InputOTPSlot index={i} className="capitalize"/>
+                    ))}
+                  </InputOTPGroup>
+                </InputOTP>
               </FormControl>
               <FormDescription className={verificationCodeInputDisabled ? "invisible" : ""}>Enter the verification code sent to {form.getValues("newEmail")}</FormDescription>
               <FormMessage />
