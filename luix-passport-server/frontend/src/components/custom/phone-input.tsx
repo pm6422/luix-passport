@@ -6,7 +6,7 @@ import * as RPNInput from "react-phone-number-input";
 
 import flags from "react-phone-number-input/flags";
 
-import { Button } from "@/components/custom/button";
+import { Button } from "@/components/ui/button";
 import {
   Command,
   CommandEmpty,

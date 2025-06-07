@@ -1,6 +1,6 @@
 import { useState, HTMLAttributes, JSX } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { buttonVariants } from '@/components/custom/button'
+import { buttonVariants } from '@/components/ui/button'
 import {
   Select,
   SelectContent,

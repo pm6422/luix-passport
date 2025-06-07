@@ -18,7 +18,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { DataTablePagination } from "./data-table-pagination"
 import { DataTableViewOptions } from "@/components/custom/data-table/data-table-view-options"
 import { parseSorts } from "@/lib/table-utils"
-import { Button } from "@/components/custom/button"
+import { Button } from "@/components/ui/button"
 import { IconTrash } from "@tabler/icons-react"
 import { toast } from "sonner"
 import { getErrorMessage } from "@/lib/handle-error"

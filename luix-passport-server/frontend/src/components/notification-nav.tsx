@@ -1,4 +1,4 @@
-import { Button } from "@/components/custom/button"
+import { Button } from "@/components/ui/button"
 import { IconBellRinging } from "@tabler/icons-react"
 
 export function NotificationNav() {

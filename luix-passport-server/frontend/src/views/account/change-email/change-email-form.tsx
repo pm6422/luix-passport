@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { Button } from "@/components/custom/button"
+import { Button } from "@/components/ui/button"
 import { IconReload, IconSend } from "@tabler/icons-react"
 import {
   Form,

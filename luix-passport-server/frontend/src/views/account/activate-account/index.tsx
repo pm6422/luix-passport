@@ -1,7 +1,7 @@
 import { useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { AccountService } from "@/services/account-service";
-import { Button } from "@/components/custom/button";
+import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
 import { getErrorMessage } from "@/lib/handle-error";

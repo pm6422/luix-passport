@@ -3,7 +3,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { IconCheck, IconX, IconCircleX, IconSelector, IconCirclePlus } from "@tabler/icons-react"
 import { cn } from "@/lib/utils"
 import { Separator } from "@/components/ui/separator"
-import { Button } from "@/components/custom/button"
+import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import {
   Popover,

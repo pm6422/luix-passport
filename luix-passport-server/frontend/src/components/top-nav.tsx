@@ -6,7 +6,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Button } from "./custom/button"
+import { Button } from "@/components/ui/button"
 import { IconMenu } from "@tabler/icons-react"
 
 interface Props extends React.HTMLAttributes<HTMLElement> {

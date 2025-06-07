@@ -14,7 +14,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { Button } from "@/components/custom/button"
+import { Button } from "@/components/ui/button"
 import { IconSelector, IconCheck, IconX } from "@tabler/icons-react"
 import { cn } from "@/lib/utils"
 

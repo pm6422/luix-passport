@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
-import { Button } from "@/components/custom/button"
+import { Button } from "@/components/ui/button"
 import RadioGroupFormField from "@/components/custom/form-field/radio-group"
 import { Checkbox } from "@/components/ui/checkbox"
 import {

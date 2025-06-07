@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from 'zod';
 import { useNavigate } from "react-router-dom"
-import { Button } from "@/components/custom/button";
+import { LoadingButton } from "@/components/custom/loading-button";
 import { Link, useSearchParams } from 'react-router-dom'
 import {
   Form,
@@ -165,13 +165,13 @@ export default function ForgotPassword() {
               )}
             />
 
-            <Button
+            <LoadingButton
               type="submit"
               className="w-full py-4 h-14 rounded-2xl mt-2"
               loading={isLoading}
             >
               {isLoading ? "Resetting..." : "Reset Password"}
-            </Button>
+            </LoadingButton>
           </form>
         </Form>
 

@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import InputFormField from "@/components/custom/form-field/input"
-import { Button } from "@/components/custom/button"
+import { Button } from "@/components/ui/button"
 import { IconPlus } from "@tabler/icons-react"
 import { EditDialog } from "../dialog/edit-dialog"
 import { type Role, type RoleCriteriaSchema, roleCriteriaSchema, initialRoleCriteriaState } from "@/domains/role"

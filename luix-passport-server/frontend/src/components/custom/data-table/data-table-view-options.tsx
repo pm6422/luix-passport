@@ -1,7 +1,7 @@
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu"
 import { IconAdjustmentsHorizontal } from "@tabler/icons-react"
 import { Column } from "@tanstack/react-table"
-import { Button } from "@/components/custom/button"
+import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,

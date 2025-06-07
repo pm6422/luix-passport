@@ -19,7 +19,7 @@ import {
 } from "react-dropzone";
 import { toast } from "sonner";
 import { IconTrash } from "@tabler/icons-react";
-import { buttonVariants } from "@/components/custom/button";
+import { buttonVariants } from "@/components/ui/button";
 
 type DirectionOptions = "rtl" | "ltr" | undefined;
 
