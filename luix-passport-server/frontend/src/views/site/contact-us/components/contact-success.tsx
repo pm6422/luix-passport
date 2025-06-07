@@ -69,7 +69,7 @@ export function ContactSuccessAlertDialog({ open, onOpenChange }: Props) {
           </div>
         </div>
 
-        <AlertDialogFooter className="mt-6 !flex-col gap-3">
+        <AlertDialogFooter className="mt-6 flex-col! gap-3">
           <AlertDialogAction asChild>
             <Button asChild className="h-11 w-full">
               <Link to="/">

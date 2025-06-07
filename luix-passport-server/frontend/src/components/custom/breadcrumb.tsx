@@ -62,7 +62,7 @@ const BreadcrumbItem = React.forwardRef<HTMLLIElement, BreadcrumbItemProps>(
       <li ref={ref} className={cn(`group`, className)} {...rest}>
         {children}
         {!isLastChild && (
-          <span className='mx-2 *:!inline-block'>{separator ?? '/'}</span>
+          <span className='mx-2 *:inline-block!'>{separator ?? '/'}</span>
         )}
       </li>
     )

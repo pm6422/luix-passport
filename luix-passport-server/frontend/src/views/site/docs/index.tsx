@@ -85,7 +85,7 @@ export default function DocsPage() {
                   {section.icon}
                   <h3 className="text-xl font-semibold">{section.title}</h3>
                 </div>
-                <p className="text-muted-foreground mb-6 flex-grow">{section.description}</p>
+                <p className="text-muted-foreground mb-6 grow">{section.description}</p>
                 <Button
                   asChild
                   variant="outline"

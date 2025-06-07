@@ -43,7 +43,7 @@ const LoadingDots = () => {
       {[0, 1, 2].map((i) => (
         <motion.span
           key={i}
-          className="mx-[1px] h-1.5 w-1.5 rounded-full bg-current"
+          className="mx-px h-1.5 w-1.5 rounded-full bg-current"
           animate={{ scale: [1, 1.5, 1], opacity: [1, 0.7, 1] }}
           transition={{
             duration: 0.6,
