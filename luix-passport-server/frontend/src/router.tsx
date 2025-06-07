@@ -171,9 +171,15 @@ const router = createBrowserRouter([
         }),
       },
       {
-        path: "oauth2-clients",
+        path: "oauth-clients",
         lazy: async () => ({
           Component: (await import("@/views/auth2-clients")).default
+        }),
+      },
+      {
+        path: "tech-docs",
+        lazy: async () => ({
+          Component: (await import("@/views/site/docs")).default
         }),
       },
       {

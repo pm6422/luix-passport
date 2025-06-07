@@ -66,7 +66,7 @@ export function MultiTextInput({
       <Button
         type="button"
         variant="outline"
-        className="mt-2"
+        className="mt-1"
         onClick={() => append("")}
       >
         <IconPlus className="size-4" />

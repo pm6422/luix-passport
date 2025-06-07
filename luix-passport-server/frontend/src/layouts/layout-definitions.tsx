@@ -30,7 +30,7 @@ const LayoutHeader = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      "flex h-(--header-height) flex-none items-center gap-4 bg-background p-4 md:px-8",
+      "flex h-(--header-height) flex-none items-center gap-4 bg-background px-4 md:px-4 py-1",
       className
     )}
     {...props}
@@ -47,7 +47,7 @@ const LayoutBody = React.forwardRef<HTMLDivElement, LayoutBodyProps>(
     <div
       ref={ref}
       className={cn(
-        "flex-1 overflow-hidden px-4 py-6 md:px-8",
+        "flex-1 overflow-hidden px-4 md:px-4 py-4",
         fixedHeight && "h-[calc(100%-var(--header-height))]",
         className
       )}

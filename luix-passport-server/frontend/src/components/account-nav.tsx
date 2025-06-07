@@ -14,22 +14,15 @@ import {
 } from "@/components/ui/dropdown-menu"
 import {
   IconUser,
-  IconCodeCircle2,
-  IconApi,
-  IconVocabulary,
   IconLogout,
   IconBellRinging,
-  IconDatabase,
 } from "@tabler/icons-react"
-import { RoleDeveloper } from "@/components/custom/role/role-developer"
 import { AccountService } from "@/services/account-service"
 import { useStore } from "exome/react"
-import { appInfoStore } from "@/stores/app-info-store"
 import { loginUserStore } from "@/stores/login-user-store"
 import { MinusIntroY } from "@/components/custom/intro-motion"
 
 export function AccountNav() {
-  const { appInfo } = useStore(appInfoStore)
   const { loginUser } = useStore(loginUserStore)
   const [imageUrl, setImageUrl] = useState<string | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(false);
@@ -91,30 +84,6 @@ export function AccountNav() {
           </Link>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <RoleDeveloper>
-          <DropdownMenuLabel className="flex items-center gap-2">
-            <IconCodeCircle2 className="size-6"/>Developer Tools
-          </DropdownMenuLabel>
-          <DropdownMenuGroup>
-            { appInfo.apiDocsEnabled && <Link to="/api-docs">
-              <DropdownMenuItem className="cursor-pointer">
-                <IconApi className="size-4 mr-2"/>API Documentation
-              </DropdownMenuItem>
-            </Link>
-            }
-            <Link to="/db-schema">
-              <DropdownMenuItem className="cursor-pointer">
-                <IconDatabase className="size-4 mr-2"/>DB Schema
-              </DropdownMenuItem>
-            </Link>
-            <Link to="/data-dicts">
-              <DropdownMenuItem className="cursor-pointer">
-                <IconVocabulary className="size-4 mr-2"/>Data Dictionaries
-              </DropdownMenuItem>
-            </Link>
-          </DropdownMenuGroup>
-          <DropdownMenuSeparator />
-        </RoleDeveloper>
         <DropdownMenuItem className="cursor-pointer" onClick={() => AccountService.signOut()}>
           <IconLogout className="size-4 mr-2"/>Sign out
           {/*<DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>*/}
