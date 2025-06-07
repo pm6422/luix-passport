@@ -61,7 +61,9 @@ export const ClearableSelect = ({
             <IconX
               className="h-4 mr-1 cursor-pointer text-muted-foreground"
               onClick={event => {
-                onValueChange && onValueChange("")
+                if (onValueChange) {
+                  onValueChange("")
+                }
                 event.stopPropagation()
               }}
               onMouseLeave={() => {
@@ -94,7 +96,9 @@ export const ClearableSelect = ({
                 key={option.value}
                 onSelect={() => {
                   setQuery(option.value)
-                  onValueChange && onValueChange(option.value)
+                  if (onValueChange) {
+                    onValueChange(option.value)
+                  }
                 }}
               >
                 <IconCheck
@@ -116,7 +120,9 @@ export const ClearableSelect = ({
                   <>
                     <CommandItem
                       onSelect={() => {
-                        onValueChange && onValueChange("")
+                        if (onValueChange) {
+                          onValueChange("")
+                        }
                       }}
                       style={{
                         pointerEvents: "auto",
