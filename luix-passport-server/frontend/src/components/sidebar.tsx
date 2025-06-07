@@ -8,6 +8,7 @@ import SidebarMenu from "./sidebar-menu"
 import { cn } from "@/lib/utils"
 import { useStore } from "exome/react"
 import { appInfoStore } from "@/stores/app-info-store"
+import { IntroY, MinusIntroY } from "@/components/custom/intro-motion"
 
 interface SidebarProps extends HTMLAttributes<HTMLElement> {
   isCollapsed: boolean
@@ -49,26 +50,29 @@ export default function Sidebar2({
         {/* Header */}
         <LayoutHeader className="sticky top-0 justify-between px-4 py-3 shadow md:px-4">
           <div className={`flex items-center ${!isCollapsed ? "gap-2" : ""}`}>
-            <img
-              src="/assets/images/logos/site.svg"
-              alt="favicon"
-              className="relative m-auto -intro-y"
-              width={45}
-              height={45}
-              onClick={() => navigate("/console")}
-            />
+            <MinusIntroY>
+              <img
+                src="/assets/images/logos/site.svg"
+                alt="favicon"
+                className="relative m-auto"
+                width={45}
+                height={45}
+                onClick={() => navigate("/console")}
+              />
+            </MinusIntroY>
             <div
                 className={`flex flex-col ms-1 justify-end truncate ${isCollapsed ? "invisible w-0" : "visible w-auto"}`}
             >
               { appInfo.ribbonProfile && <span className="flex justify-end text-[0.6rem]"> {appInfo.ribbonProfile} env</span> }
-              <img
+              <IntroY>
+                <img
                   src="/assets/images/logos/logo-text.svg"
                   alt="logo"
-                  className="intro-y"
                   width={150}
                   height={50}
                   onClick={() => navigate("/console")}
-              />
+                />
+              </IntroY>
             </div>
           </div>
 

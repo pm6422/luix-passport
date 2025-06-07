@@ -26,6 +26,7 @@ import { AccountService } from "@/services/account-service"
 import { useStore } from "exome/react"
 import { appInfoStore } from "@/stores/app-info-store"
 import { loginUserStore } from "@/stores/login-user-store"
+import { MinusIntroY } from "@/components/custom/intro-motion"
 
 export function AccountNav() {
   const { appInfo } = useStore(appInfoStore)
@@ -53,13 +54,15 @@ export function AccountNav() {
                 <Skeleton className="w-full h-full" />
               </Avatar>
             ) : (
-              <Avatar className="size-12 -intro-y">
-                <img
-                  src={imageUrl}
-                  alt="Profile"
-                  className="w-full h-full object-cover"
-                />
-              </Avatar>
+              <MinusIntroY>
+                <Avatar className="size-12">
+                  <img
+                    src={imageUrl}
+                    alt="Profile"
+                    className="w-full h-full object-cover"
+                  />
+                </Avatar>
+              </MinusIntroY>
             )}
           </div>
         </Button>
