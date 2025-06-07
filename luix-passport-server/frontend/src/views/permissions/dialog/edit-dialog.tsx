@@ -46,9 +46,11 @@ export function EditDialog({
       setResourceTypes(results[0].data.map((item: DataDict) => ({label: item.dictCode , value: item.dictCode})));
       setActions(results[1].data.map((item: DataDict) => ({label: item.dictCode , value: item.dictCode})));
 
-      id && PermissionService.findById(id).then(r => {
-        form.reset(r.data)
-      })
+      if (id) {
+        PermissionService.findById(id).then(r => {
+          form.reset(r.data)
+        })
+      }
     })
   }, [form, id, open])
 

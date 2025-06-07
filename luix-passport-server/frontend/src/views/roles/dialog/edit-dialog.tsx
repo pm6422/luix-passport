@@ -43,9 +43,11 @@ export function EditDialog({
       // load options
       setPermissions(results[0].data.map((item: Permission) => ({label: item.id, value: item.id})));
 
-      id && RoleService.findById(id).then(r => {
-        form.reset(r.data)
-      })
+      if (id) {
+        RoleService.findById(id).then(r => {
+          form.reset(r.data)
+        })
+      }
     })
   }, [form, id, open])
 

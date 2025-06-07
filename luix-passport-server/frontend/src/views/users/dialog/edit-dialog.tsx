@@ -62,9 +62,11 @@ export function EditDialog({
       setSupportedDateTimeFormats(results[2].data.map((item: SupportedDateTimeFormat) =>
         ({label: item.displayName + " (" + item.example + ")", value: item.id})));
 
-      id && UserService.findById(id).then(r => {
-        form.reset(r.data)
-      })
+      if (id) {
+        UserService.findById(id).then(r => {
+          form.reset(r.data)
+        })
+      }
     })
   }, [form, id, open])
 

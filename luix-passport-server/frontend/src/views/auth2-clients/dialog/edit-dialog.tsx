@@ -51,9 +51,11 @@ export function EditDialog({
       const options = res.data.map((item: string) => ({ label: item, value: item }))
       setScopeOptions(options)
     })
-    id && Oauth2ClientService.findById(id).then(r => {
-      form.reset(r.data)
-    })
+    if (id) {
+      Oauth2ClientService.findById(id).then(r => {
+        form.reset(r.data)
+      })
+    }
   }, [form, id, open])
 
   return (

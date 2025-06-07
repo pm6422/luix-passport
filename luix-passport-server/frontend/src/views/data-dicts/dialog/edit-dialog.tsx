@@ -40,9 +40,11 @@ export function EditDialog({
       const options: Array<Option> = Array.from(new Set<string>(res.data.map((item: DataDict) => item.categoryCode))).map(code => ({ label: code, value: code }))
       setCategoryCodeOptions(options)
     })
-    id && DataDictService.findById(id).then(r => {
-      form.reset(r.data)
-    })
+    if (id) {
+      DataDictService.findById(id).then(r => {
+        form.reset(r.data)
+      })
+    }
   }, [form, id, open])
 
   return (
