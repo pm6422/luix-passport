@@ -52,13 +52,17 @@ const SaveDialogContent = ({
       success: () => {
         setOpen(false)
         form.reset()
-        afterSave && afterSave(true)
+        if (afterSave) {
+          afterSave(true)
+        }
         setSaving(false)
         return "Saved " + entityName
       },
       error: (error) => {
         setOpen(false)
-        afterSave && afterSave(false)
+        if (afterSave) {
+          afterSave(false)
+        }
         setSaving(false)
         return getErrorMessage(error)
       }
