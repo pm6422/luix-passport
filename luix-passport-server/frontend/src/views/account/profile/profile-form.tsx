@@ -32,6 +32,7 @@ export default function ProfileForm() {
     },
     mode: "onChange",
   })
+  const { isDirty } = form.formState;
 
   function onSubmit(formData: FormSchema) {
     setSaving(true)
@@ -71,7 +72,7 @@ export default function ProfileForm() {
           )}
         />
         <div className="flex justify-end">
-          <LoadingButton type="submit" loading={saving} disabled={saving || !(form.getValues().file instanceof File)} className="w-full sm:w-auto">
+          <LoadingButton type="submit" loading={saving} disabled={saving || !isDirty} className="w-full sm:w-auto">
             {saving ? "Saving picture" : "Save picture"}
           </LoadingButton>
         </div>
