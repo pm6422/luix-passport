@@ -31,6 +31,7 @@ interface Props<TFieldValues extends FieldValues> {
   placeholder?: string
   required?: boolean
   disabled?: boolean
+  inputClassName?: string
   formItemClassName?: string
   hide?: boolean
 }
@@ -45,6 +46,7 @@ const ComboboxFormField = <TFieldValues extends FieldValues>({
                                                                placeholder,
                                                                required,
                                                                disabled,
+                                                               inputClassName,
                                                                formItemClassName,
                                                                hide = false
                                                              }: Props<TFieldValues>) => {
@@ -65,7 +67,10 @@ const ComboboxFormField = <TFieldValues extends FieldValues>({
                   variant="outline"
                   role="combobox"
                   aria-expanded={open}
-                  className="w-full justify-between font-normal"
+                  className={cn(
+                    "w-full justify-between font-normal",
+                    inputClassName
+                  )}
                 >
                   {field.value
                     ? options.find((option) => option.value === field.value)?.label

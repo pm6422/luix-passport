@@ -7,7 +7,7 @@ import { LoadingButton } from "@/components/custom/loading-button"
 import { getErrorMessage } from "@/lib/handle-error"
 import { ContactService } from "@/services/contact-service"
 import InputFormField from "@/components/custom/form-field/input"
-import SelectFormField from "@/components/custom/form-field/select"
+import ComboboxFormField from "@/components/custom/form-field/combobox"
 import { Form } from "@/components/ui/form"
 import { ContactSuccessAlertDialog } from "./components/contact-success"
 
@@ -110,7 +110,7 @@ export default function ContactUs() {
                 name="sender"
                 label="Full Name"
                 formItemClassName="text-left"
-                inputClassName="w-full px-5 py-4 rounded-2xl"
+                inputClassName="w-full h-14 px-5 py-4 rounded-2xl"
                 placeholder="Your name"
                 required={true}
               />
@@ -120,18 +120,17 @@ export default function ContactUs() {
                 name="senderEmail"
                 label="Email Address"
                 formItemClassName="text-left"
-                inputClassName="w-full px-5 py-4 rounded-2xl"
+                inputClassName="w-full h-14 px-5 py-4 rounded-2xl"
                 placeholder="your@email.com"
                 required={true}
               />
 
-              <SelectFormField
+              <ComboboxFormField
                 control={form.control}
                 name="title"
                 label="Subject"
                 options={subjects}
-                inputClassName="w-full px-5 py-4 rounded-2xl"
-                formItemClassName="w-full"
+                inputClassName="w-full h-14 px-5 py-4 rounded-2xl"
                 placeholder="Select a subject"
                 required
               />
@@ -142,7 +141,7 @@ export default function ContactUs() {
                 label="Message"
                 type="textarea"
                 formItemClassName="text-left"
-                inputClassName="w-full h-30 px-5 py-4 rounded-2xl"
+                inputClassName="w-full h-36 px-5 py-4 rounded-2xl"
                 placeholder="How can we help you?"
                 required={true}
               />
