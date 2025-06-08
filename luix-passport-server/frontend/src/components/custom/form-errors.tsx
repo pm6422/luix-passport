@@ -12,11 +12,11 @@ interface Props {
 }
 
 const FormErrors = ({
-  children,
-  form,
-  variant = "destructive",
-  error
-}: Props) => {
+                      children,
+                      form,
+                      variant = "destructive",
+                      error
+                    }: Props) => {
   const [errors, setErrors] = useState<Array<any>>([])
 
   useEffect(() => {
@@ -27,14 +27,26 @@ const FormErrors = ({
     }, [])
     setErrors(results)
   }, [error])
-  
 
   return (
     Object.values(form.formState.errors).length > 0 && (
       <Alert variant={variant}>
-        <AlertTitle className="flex items-center mb-3"><IconExclamationCircle className="size-5 me-1" />There was errors in your form, please check inputs and retry.</AlertTitle>
-        { errors && errors.map((err, index) => <p key={`${err.field}-${index}`} className="ms-1">- {err.field}: {err.message}</p>) }
-        {children && <AlertDescription className="pr-8 font-light">{children}</AlertDescription>}
+        <AlertTitle className="flex items-center mb-3">
+          <IconExclamationCircle className="size-5 me-1" />
+          There were errors in your form, please check inputs and retry.
+        </AlertTitle>
+        <div className="space-y-1">
+          {errors && errors.map((err, index) => (
+            <div key={`${err.field}-${index}`} className="ms-1 whitespace-nowrap">
+              - {err.field}: {err.message}
+            </div>
+          ))}
+        </div>
+        {children && (
+          <AlertDescription className="pr-8 font-light mt-3">
+            {children}
+          </AlertDescription>
+        )}
       </Alert>
     )
   )
