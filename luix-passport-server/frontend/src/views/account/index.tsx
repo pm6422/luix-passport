@@ -54,7 +54,7 @@ export default function Account() {
         <aside className="sticky top-0 lg:w-1/5">
           <OneLevelSidebar items={sidebarNavItems} />
         </aside>
-        <div className="w-full p-1 pr-4 lg:max-w-xl">
+        <div className="w-full p-1 lg:max-w-xl">
           <div className="pb-16">
             <Outlet />
           </div>
