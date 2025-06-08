@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { LoadingButton } from "@/components/custom/loading-button"
 import InputFormField from "@/components/custom/form-field/input"
 import { PasswordInput } from "@/components/custom/password-input"
+import { PasswordStrengthIndicator } from "@/components/custom/password-strength-indicator"
 import { IconReload, IconSend } from "@tabler/icons-react"
 import {
   Form,
@@ -43,6 +44,8 @@ export function ChangePasswordForm() {
   const [saving, setSaving] = useState(false)
   const [countdown, setCountdown] = useState(0)
   const lastSentTime = useRef<number>(0)
+  const [newPassword, setNewPassword] = useState("")
+  const [isPasswordStrongEnough, setIsPasswordStrongEnough] = useState(false)
 
   const form = useForm<ChangePasswordFormSchema>({
     resolver: zodResolver(changePasswordFormSchema),
@@ -126,8 +129,19 @@ export function ChangePasswordForm() {
             <FormItem className='space-y-1'>
               <RequiredFormLabel required={true}>New Password</RequiredFormLabel>
               <FormControl>
-                <PasswordInput {...field} placeholder=""/>
+                <PasswordInput
+                  {...field}
+                  placeholder=""
+                  onChange={(e) => {
+                    field.onChange(e);
+                    setNewPassword(e.target.value);
+                  }}
+                />
               </FormControl>
+              <PasswordStrengthIndicator
+                password={newPassword}
+                onStrengthChange={setIsPasswordStrongEnough}
+              />
               <FormMessage />
             </FormItem>
           )}
@@ -176,7 +190,12 @@ export function ChangePasswordForm() {
         />
 
         <div className="flex justify-end">
-          <LoadingButton type='submit' loading={saving} className="w-full sm:w-auto">
+          <LoadingButton
+            type='submit'
+            loading={saving}
+            disabled={!isPasswordStrongEnough || saving}
+            className="w-full sm:w-auto"
+          >
             {saving ? "Waiting" : "Update password"}
           </LoadingButton>
         </div>
