@@ -36,7 +36,7 @@ export default function OneLevelSidebar({
     <>
       <div className="p-1 md:hidden">
         <Select value={val} onValueChange={handleSelect}>
-          <SelectTrigger className="h-12 w-full sm:w-48">
+          <SelectTrigger className="h-12 w-full">
             <SelectValue placeholder="Theme" />
           </SelectTrigger>
           <SelectContent>
