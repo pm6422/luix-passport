@@ -110,7 +110,7 @@ export default function ContactUs() {
                 name="sender"
                 label="Full Name"
                 formItemClassName="text-left"
-                inputClassName="w-full h-14 px-5 py-4 rounded-2xl"
+                inputClassName="w-full px-5 py-4 rounded-2xl"
                 placeholder="Your name"
                 required={true}
               />
@@ -120,7 +120,7 @@ export default function ContactUs() {
                 name="senderEmail"
                 label="Email Address"
                 formItemClassName="text-left"
-                inputClassName="w-full h-14 px-5 py-4 rounded-2xl"
+                inputClassName="w-full px-5 py-4 rounded-2xl"
                 placeholder="your@email.com"
                 required={true}
               />
@@ -130,7 +130,7 @@ export default function ContactUs() {
                 name="title"
                 label="Subject"
                 options={subjects}
-                inputClassName="w-full h-14 px-5 py-4 rounded-2xl"
+                inputClassName="w-full px-5 py-4 rounded-2xl"
                 formItemClassName="w-full"
                 placeholder="Select a subject"
                 required
@@ -142,7 +142,7 @@ export default function ContactUs() {
                 label="Message"
                 type="textarea"
                 formItemClassName="text-left"
-                inputClassName="w-full h-36 px-5 py-4 rounded-2xl"
+                inputClassName="w-full h-30 px-5 py-4 rounded-2xl"
                 placeholder="How can we help you?"
                 required={true}
               />
