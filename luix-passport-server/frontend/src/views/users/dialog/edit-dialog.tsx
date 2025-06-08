@@ -1,4 +1,4 @@
-import { useState, useEffect, ReactNode } from 'react'
+import { useState, useEffect, ReactNode } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { Dialog, DialogTrigger } from "@/components/ui/dialog"
@@ -20,7 +20,9 @@ import { RoleService } from "@/services/role-service"
 import { Option } from "@/components/custom/multi-select"
 import { type DataDict } from "@/domains/data-dict"
 import type { SupportedDateTimeFormat } from "@/domains/supported-date-time-format"
-import { Skeleton } from '@/components/ui/skeleton.tsx'
+import { Skeleton } from "@/components/ui/skeleton"
+import { loginUserStore } from "@/stores/login-user-store"
+import { useStore } from "exome/react"
 
 interface EditDialogProps {
   children: ReactNode,
@@ -37,6 +39,7 @@ export function EditDialog({
   save,
   afterSave
 }: EditDialogProps) {
+  const { loginUser } = useStore(loginUserStore)
   const [open, setOpen] = useState(false)
   const [enabledRoles, setEnabledRoles] = useState(Array<CheckboxOption>)
   const [supportedTimezones, setSupportedTimezones] = useState(Array<Option>)
@@ -77,10 +80,18 @@ export function EditDialog({
       </DialogTrigger>
       <SaveDialogContent<User> entityName={entityName} id={id} form={form} save={save} afterSave={afterSave} setOpen={setOpen}>
         <div className="flex flex-col md:flex-row items-center justify-between gap-5">
-          <Avatar className="size-20">
-            <AvatarImage src={"/api/user-profile-pics/" + id} alt="profile" />
-            <AvatarFallback><Skeleton className="w-full" /></AvatarFallback>
-          </Avatar>
+          <div className="flex items-center gap-2">
+            <div className="relative">
+              <Avatar className="size-20">
+                <AvatarImage src={"/api/user-profile-pics/" + id} alt="profile" />
+                <AvatarFallback><Skeleton className="w-full" /></AvatarFallback>
+              </Avatar>
+              { loginUser?.username === id && <span className="border-background absolute -end-0.5 -bottom-0.5 size-6 rounded-full border-4 bg-emerald-500">
+                <span className="sr-only">Online</span>
+              </span> }
+            </div>
+          </div>
+
           <Separator orientation="vertical" className="hidden md:block" />
           <InputFormField
             control={form.control}
