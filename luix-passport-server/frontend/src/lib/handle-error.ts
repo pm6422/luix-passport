@@ -11,7 +11,7 @@ export function getErrorMessage(err: unknown) {
     return errors.join("\n")
   } else if (err instanceof Error) {
     if("response" in err) {
-      return err.response.data.message
+      return (err as any).response.data.message;
     } else {
       return err.message
     }
