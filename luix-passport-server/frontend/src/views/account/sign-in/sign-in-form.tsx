@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -18,6 +18,9 @@ import { Link } from "react-router-dom"
 import { AccountService } from "@/services/account-service"
 import { toast } from "sonner"
 import { getErrorMessage } from "@/lib/handle-error"
+import { loginUserStore } from "@/stores/login-user-store"
+import { useStore } from "exome/react"
+import { useNavigate } from "react-router-dom"
 
 const signInformSchema = z.object({
   username: z.string().min(1, { message: "Please enter your username" }),
@@ -27,6 +30,8 @@ const signInformSchema = z.object({
 export type SignInFormSchema = z.infer<typeof signInformSchema>
 
 export function SignInForm() {
+  const navigate = useNavigate()
+  const { loginUser } = useStore(loginUserStore)
   const [isLoading, setIsLoading] = useState(false);
   const [logoutMessage, setLogoutMessage] = useState<string | null>(null);
 
@@ -37,6 +42,12 @@ export function SignInForm() {
       password: "",
     },
   });
+
+  useEffect(() => {
+    if (loginUser.isAuthenticated) {
+      navigate("/")
+    }
+  }, [])
 
   const onSubmit = async (data: SignInFormSchema) => {
     setIsLoading(true);
