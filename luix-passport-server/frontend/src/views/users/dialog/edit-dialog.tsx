@@ -86,7 +86,7 @@ export function EditDialog({
                 <AvatarImage src={"/api/user-profile-pics/" + id} alt="profile" />
                 <AvatarFallback><Skeleton className="w-full" /></AvatarFallback>
               </Avatar>
-              { loginUser?.username === id && <span className="border-background absolute -end-0.5 -bottom-0.5 size-6 rounded-full border-4 bg-emerald-500">
+              { loginUser?.username === id && <span className="animate-pulse border-background absolute -end-0.5 -bottom-0.5 size-6 rounded-full border-4 bg-emerald-500">
                 <span className="sr-only">Online</span>
               </span> }
             </div>
