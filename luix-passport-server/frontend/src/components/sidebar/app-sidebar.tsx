@@ -7,8 +7,8 @@ import {
 } from "@/components/ui/sidebar"
 import { AppSidebarHeader } from "./app-sidebar-header"
 import { AppSidebarNavGroup } from "./app-sidebar-nav-group"
-import { UserNav } from "./user-nav"
-// import { TeamSwitcher } from "./team-switcher"
+// import { UserNav } from "./user-nav"
+import { TeamSwitcher } from "./team-switcher"
 import {
   IconDashboard,
   IconUsers,
@@ -25,8 +25,8 @@ import {
   IconVocabulary
 } from "@tabler/icons-react"
 import { loginUserStore } from "@/stores/login-user-store"
-import { useStore } from 'exome/react'
-import { appInfoStore } from '@/stores/app-info-store.ts'
+import { useStore } from "exome/react"
+import { appInfoStore } from "@/stores/app-info-store"
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { appInfo } = useStore(appInfoStore)
@@ -128,7 +128,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     <Sidebar collapsible="icon" variant="floating" {...props}>
       <SidebarHeader>
         <AppSidebarHeader/>
-        {/*<TeamSwitcher />*/}
       </SidebarHeader>
       <SidebarContent>
         {navGroups.map((props) => (
@@ -136,7 +135,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         ))}
       </SidebarContent>
       <SidebarFooter>
-        <UserNav/>
+        {/*<UserNav/>*/}
+        <TeamSwitcher />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

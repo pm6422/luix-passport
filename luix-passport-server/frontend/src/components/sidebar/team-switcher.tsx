@@ -1,5 +1,10 @@
 import * as React from "react"
-import { AudioWaveform, ChevronsUpDown, Command, GalleryVerticalEnd, Plus } from "lucide-react"
+import {
+  IconUsersGroup,
+  IconDroplets,
+  IconPlus,
+  IconSelector
+} from "@tabler/icons-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,19 +25,14 @@ export function TeamSwitcher() {
   const { isMobile } = useSidebar()
   const teams =  [
     {
-      name: "Shadcn Admin",
-      logo: Command,
-      plan: "Vite + ShadcnUI",
+      name: "Team 1",
+      logo: IconUsersGroup,
+      plan: "Premium",
     },
     {
-      name: "Acme Inc",
-      logo: GalleryVerticalEnd,
+      name: "Team 2",
+      logo: IconDroplets,
       plan: "Enterprise",
-    },
-    {
-      name: "Acme Corp.",
-      logo: AudioWaveform,
-      plan: "Startup",
     }
   ]
   const [activeTeam, setActiveTeam] = React.useState(teams[0])
@@ -55,7 +55,7 @@ export function TeamSwitcher() {
                 </span>
                 <span className="truncate text-xs">{activeTeam.plan}</span>
               </div>
-              <ChevronsUpDown className="ml-auto" />
+              <IconSelector className="ml-auto" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
@@ -83,7 +83,7 @@ export function TeamSwitcher() {
             <DropdownMenuSeparator />
             <DropdownMenuItem className="gap-2 p-2">
               <div className="bg-background flex size-6 items-center justify-center rounded-md border">
-                <Plus className="size-4" />
+                <IconPlus className="size-4" />
               </div>
               <div className="text-muted-foreground font-medium">Add team</div>
             </DropdownMenuItem>
