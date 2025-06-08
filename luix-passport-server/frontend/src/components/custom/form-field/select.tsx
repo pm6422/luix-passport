@@ -1,4 +1,5 @@
 import type { Control, FieldValues, Path } from "react-hook-form"
+import { cn } from "@/lib/utils"
 import { FormControl, FormDescription, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { RequiredFormLabel } from "../required-form-label"
 import {
@@ -53,8 +54,12 @@ const SelectFormField = <TFieldValues extends FieldValues>({
       <FormItem className={formItemClassName}>
         {label && <RequiredFormLabel required={required}>{label}</RequiredFormLabel>}
         <Select onValueChange={field.onChange} value={field.value}>
-          <FormControl className={inputClassName}>
-            <SelectTrigger>
+          <FormControl>
+            <SelectTrigger
+              className={cn(
+              "w-full",
+              inputClassName
+            )}>
               <SelectValue placeholder={placeholder}/>
             </SelectTrigger>
           </FormControl>
