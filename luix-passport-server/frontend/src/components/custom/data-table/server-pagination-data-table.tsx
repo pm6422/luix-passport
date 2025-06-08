@@ -40,7 +40,7 @@ interface DataTableProps<TData, TValue> {
   totalCount: number,
   totalPages: number,
   loadPage: Function,
-  deleteRows?: (rows: Array<any>) => Promise<any>
+  deleteRows?: (rows: Array<any>) => Promise<Array<void>>
 }
 
 export function DataTable<TData, TValue>({

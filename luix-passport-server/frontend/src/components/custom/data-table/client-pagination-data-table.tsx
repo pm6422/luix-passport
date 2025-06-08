@@ -36,7 +36,7 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[],
   loadPage: Function,
-  deleteRows?: (rows: Array<any>) => Promise<any>
+  deleteRows?: (rows: Array<any>) => Promise<Array<void>>
 }
 
 export function DataTable<TData, TValue>({
