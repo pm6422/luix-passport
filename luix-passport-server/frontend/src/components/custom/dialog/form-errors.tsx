@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { FieldValues, UseFormReturn } from 'react-hook-form'
+import { FieldErrors, FieldValues, UseFormReturn } from "react-hook-form"
 import { IconExclamationCircle } from "@tabler/icons-react"
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert"
 import { transform } from "lodash"
@@ -8,7 +8,7 @@ interface Props<T extends FieldValues> {
   children?: React.ReactNode
   form: UseFormReturn<T>
   variant?: "default" | "destructive"
-  error?: Object
+  error?: FieldErrors
 }
 
 const FormErrors = <T extends FieldValues,>({
