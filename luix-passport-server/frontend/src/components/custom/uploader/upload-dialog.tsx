@@ -91,13 +91,18 @@ export function UploadDialog({
       loading: "Uploading " + entityName + "...",
       success: () => {
         setOpen(false)
-        afterUpload && afterUpload(true)
+        if (afterUpload) {
+          afterUpload(true)
+        }
         setUploading(false)
+        form.reset()
         return "Uploaded " + entityName
       },
       error: (error) => {
         setOpen(false)
-        afterUpload && afterUpload(false)
+        if (afterUpload) {
+          afterUpload(false)
+        }
         setUploading(false)
         return getErrorMessage(error)
       }
@@ -184,7 +189,7 @@ export function UploadDialog({
               }
               {!templateUrl && 
                 <DialogClose asChild>
-                  <Button type="button" variant="outline" onClick={() => afterUpload && afterUpload(true)}>
+                  <Button type="button" variant="outline" onClick={() => { if (afterUpload) afterUpload(true) }}>
                     Cancel
                   </Button>
                 </DialogClose>
