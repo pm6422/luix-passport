@@ -14,7 +14,7 @@ export function AuthLayoutHeader() {
   ]
 
   return (
-    <div className="flex items-center justify-between w-full">
+    <div className="flex items-center justify-between w-full lg:pr-2 pr-0">
       <div className="bg-background flex h-16 items-center gap-3 sm:gap-4">
         <SidebarTrigger variant="outline" className="scale-125 sm:scale-100" />
         <TopNav links={topNavLinks}/>

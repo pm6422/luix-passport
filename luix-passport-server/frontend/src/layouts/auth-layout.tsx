@@ -46,7 +46,9 @@ export default function AuthLayout() {
               <AuthLayoutHeader/>
             </LayoutHeader>
             {/* View Content */}
-            <Outlet />
+            <div className="lg:pr-2 pr-0">
+              <Outlet/>
+            </div>
           </Layout>
         </main>
       </SidebarProvider>
