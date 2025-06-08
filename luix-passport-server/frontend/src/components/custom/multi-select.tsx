@@ -242,13 +242,22 @@ const MultiSelect: React.ForwardRefRenderFunction<HTMLButtonElement, MultiSelect
                       className={cn(
                         "mr-2 flex size-4 items-center justify-center rounded-sm border border-primary",
                         isSelected
-                          ? "text-primary-foreground dark:bg-primary"
-                          : "opacity-50 [&_svg]:invisible dark:opacity-70"
+                          ? "bg-primary dark:bg-primary"
+                          : "opacity-50 dark:opacity-70"
                       )}
                     >
-                      <IconCheck className="size-4" />
+                      <IconCheck
+                        className={cn(
+                          "size-4",
+                          isSelected
+                            ? "text-white dark:text-primary-foreground"
+                            : "text-transparent"
+                        )}
+                      />
                     </div>
-                    {option.icon && <option.icon className="mr-2 size-4 text-muted-foreground" />}
+                    {option.icon && (
+                      <option.icon className="mr-2 size-4 text-muted-foreground" />
+                    )}
                     <span>{option.label}</span>
                   </CommandItem>
                 )
