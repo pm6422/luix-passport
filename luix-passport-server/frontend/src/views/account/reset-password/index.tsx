@@ -18,6 +18,7 @@ import { Input } from "@/components/ui/input";
 import { AccountService } from "@/services/account-service";
 import { PasswordInput } from '@/components/custom/password-input';
 import { getErrorMessage } from '@/lib/handle-error';
+import { PasswordStrengthIndicator } from "@/components/custom/password-strength-indicator";
 
 const resetPasswordFormSchema = z
   .object({
@@ -37,6 +38,8 @@ export type ResetPasswordFormSchema = z.infer<typeof resetPasswordFormSchema>
 export default function ForgotPassword() {
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false);
+  const [newRawPassword, setNewRawPassword] = useState("")
+  const [isPasswordStrongEnough, setIsPasswordStrongEnough] = useState(false)
   const [searchParams] = useSearchParams();
   const resetCode = searchParams.get('resetCode');
 
@@ -140,8 +143,16 @@ export default function ForgotPassword() {
                     <PasswordInput
                       className="px-5 py-4 h-14 rounded-2xl"
                       {...field}
+                      onChange={(e) => {
+                        field.onChange(e);
+                        setNewRawPassword(e.target.value);
+                      }}
                     />
                   </FormControl>
+                  <PasswordStrengthIndicator
+                    password={newRawPassword}
+                    onStrengthChange={setIsPasswordStrongEnough}
+                  />
                   <FormMessage />
                 </FormItem>
               )}
@@ -168,6 +179,7 @@ export default function ForgotPassword() {
               type="submit"
               className="w-full py-4 h-14 rounded-2xl mt-2"
               loading={isLoading}
+              disabled={!isPasswordStrongEnough || isLoading}
             >
               {isLoading ? "Resetting..." : "Reset Password"}
             </LoadingButton>

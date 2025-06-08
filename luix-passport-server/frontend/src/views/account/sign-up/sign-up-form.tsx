@@ -122,8 +122,8 @@ export function SignUpForm() {
 
           <LoadingButton
             type="submit"
-            loading={isLoading}
             className="w-full h-14 px-5 py-4 mt-4 mb-2 text-sm font-medium rounded-2xl"
+            loading={isLoading}
             disabled={!isPasswordStrongEnough || isLoading}
           >
             {isLoading ? "Waiting" : "Create Account"}
