@@ -84,7 +84,7 @@ export function SignUpForm() {
                   <FormLabel className="mb-2 text-sm">Password</FormLabel>
                   <FormControl>
                     <PasswordInput
-                      className="w-full h-14 px-5 py-4 rounded-2xl"
+                      className="w-full h-14 py-4 rounded-2xl"
                       {...field}
                       onChange={(e) => {
                         field.onChange(e);

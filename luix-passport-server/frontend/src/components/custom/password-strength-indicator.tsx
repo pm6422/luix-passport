@@ -54,14 +54,6 @@ export function PasswordStrengthIndicator({
     return "bg-green-500"
   }, [strengthScore, requirements.length])
 
-  // Strength description text
-  const strengthText = useMemo(() => {
-    if (strengthScore === 0) return "Enter a password"
-    if (strengthScore <= Math.floor(requirements.length/2)) return "Weak password"
-    if (strengthScore === requirements.length-1) return "Medium password"
-    return "Strong password"
-  }, [strengthScore, requirements.length])
-
   return (
     <div className="mt-2">
       {/* Password strength meter */}
@@ -72,13 +64,8 @@ export function PasswordStrengthIndicator({
         />
       </div>
 
-      {/* Strength description */}
-      <p className="text-sm font-medium mt-3 mb-2">
-        {strengthText} {strengthScore > 0 && `(${strengthScore}/${requirements.length} requirements met)`}
-      </p>
-
       {/* Requirements list */}
-      <ul className="space-y-1.5">
+      <ul className="space-y-1.5 mt-3">
         {strength.map((req, index) => (
           <li key={index} className="flex items-center gap-2">
             {req.met ? (
