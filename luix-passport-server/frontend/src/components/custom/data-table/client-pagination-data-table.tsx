@@ -1,4 +1,4 @@
-import { useState } from "react"
+import React, { useState } from "react"
 import {
   ColumnDef,
   SortingState,
@@ -30,13 +30,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { BaseCriteria } from '@/domains/base/base-criteria.ts'
 
 interface DataTableProps<TData, TValue> {
   children: React.ReactNode,
   columns: ColumnDef<TData, TValue>[]
   data: TData[],
-  loadPage: Function,
-  deleteRows?: (rows: Array<any>) => Promise<Array<void>>
+  loadPage: (criteria?: BaseCriteria) => void,
+  deleteRows?: (rows: TData[]) => Promise<void[]>
 }
 
 export function DataTable<TData, TValue>({

@@ -1,4 +1,5 @@
 import { z } from "zod"
+import { BaseCriteria } from "./base/base-criteria"
 
 export const dataDictSchema = z.object({
   id: z.string().optional().nullable(),
@@ -30,7 +31,7 @@ export const dataDictCriteriaSchema = z.object({
   enabled: z.string().optional().nullable()
 })
 
-export type DataDictCriteria = z.infer<typeof dataDictCriteriaSchema>
+export type DataDictCriteria = z.infer<typeof dataDictCriteriaSchema> & BaseCriteria
 
 export const initialDataDictCriteriaState: DataDictCriteria = {
   num: null,

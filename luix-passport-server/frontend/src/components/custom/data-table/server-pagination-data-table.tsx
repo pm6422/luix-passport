@@ -32,6 +32,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { BaseCriteria } from "@/domains/base/base-criteria"
 
 interface DataTableProps<TData, TValue> {
   children: React.ReactNode,
@@ -39,8 +40,13 @@ interface DataTableProps<TData, TValue> {
   data: TData[],
   totalCount: number,
   totalPages: number,
-  loadPage: Function,
-  deleteRows?: (rows: Array<any>) => Promise<Array<void>>
+  loadPage: (
+    pageNo: number,
+    pageSize: number,
+    sorts?: string[],
+    criteria?: BaseCriteria
+  ) => void,
+  deleteRows?: (rows: TData[]) => Promise<void[]>
 }
 
 export function DataTable<TData, TValue>({

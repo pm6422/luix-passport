@@ -1,4 +1,5 @@
 import { z } from "zod"
+import { BaseCriteria } from "./base/base-criteria"
 
 export const auth2ClientSchema = z.object({
   id: z.string().optional().nullable(),
@@ -39,7 +40,7 @@ export const auth2ClientCriteriaSchema = z.object({
   keyword: z.string().optional(),
 })
 
-export type Auth2ClientCriteriaSchema = z.infer<typeof auth2ClientCriteriaSchema>
+export type Auth2ClientCriteriaSchema = z.infer<typeof auth2ClientCriteriaSchema> & BaseCriteria
 
 export const initialAuth2ClientCriteriaState: Auth2ClientCriteriaSchema = {
   keyword: ""

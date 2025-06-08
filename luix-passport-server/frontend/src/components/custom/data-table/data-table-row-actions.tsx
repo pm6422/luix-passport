@@ -1,4 +1,4 @@
-import { useState } from "react"
+import React, { useState } from "react"
 import { IconTrash } from "@tabler/icons-react"
 import { Row } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
@@ -6,21 +6,21 @@ import { ConfirmPopover } from "@/components/custom/confirm-popover"
 import { toast } from "sonner"
 import { getErrorMessage } from "@/lib/handle-error"
 
-interface DataTableRowActionsProps {
+interface DataTableRowActionsProps<TData> {
   children: React.ReactNode,
   moreActions?: React.ReactNode,
   entityName: string,
-  row: Row<any>,
-  deleteRow: (row: any) => Promise<any>
+  row: Row<TData>,
+  deleteRow: (row: TData) => Promise<void>
 }
 
-export function DataTableRowActions({
+export function DataTableRowActions<TData>({
   children,
   moreActions,
   entityName,
   row,
   deleteRow
-}: DataTableRowActionsProps) {
+}: DataTableRowActionsProps<TData>) {
   const [delConfirmPopoverOpen, setDelConfirmPopoverOpen] = useState(false)
 
   function clickDeleteYes(): void {

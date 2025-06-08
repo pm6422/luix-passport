@@ -1,5 +1,6 @@
 import { z } from "zod"
 import { isValidPhoneNumber } from "react-phone-number-input"
+import { BaseCriteria } from "./base/base-criteria"
 
 export const userSchema = z.object({
   username: z.string().trim().min(1, { message: "Required" }),
@@ -52,7 +53,7 @@ export const userCriteriaSchema = z.object({
   enabled: z.string().optional().nullable()
 })
 
-export type UserCriteriaSchema = z.infer<typeof userCriteriaSchema>
+export type UserCriteriaSchema = z.infer<typeof userCriteriaSchema> & BaseCriteria
 
 export const initialUserCriteriaState: UserCriteriaSchema = {
   username: null,

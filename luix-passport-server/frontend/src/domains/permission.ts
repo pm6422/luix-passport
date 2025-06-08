@@ -1,4 +1,5 @@
 import { z } from "zod"
+import { BaseCriteria } from "./base/base-criteria"
 
 export const permissionSchema = z.object({
   id: z.string().trim().min(1, { message: "Required" }),
@@ -24,7 +25,7 @@ export const permissionCriteriaSchema = z.object({
   action: z.string().optional().nullable()
 })
 
-export type PermissionCriteriaSchema = z.infer<typeof permissionCriteriaSchema>
+export type PermissionCriteriaSchema = z.infer<typeof permissionCriteriaSchema> & BaseCriteria
 
 export const initialPermissionCriteriaState: PermissionCriteriaSchema = {
   resourceType: null,

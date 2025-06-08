@@ -7,15 +7,20 @@ export function parseSorts(sorting: Array<ColumnSort>): Array<string> | undefine
     : undefined
 }
 
-export function filterTable(initialTableData: Array<Record<string, unknown>>, searchKeyword: string): Array<any> {
-  const tableData = cloneDeep(initialTableData)
-  const results: Array<Record<string, unknown>> = []
+export function filterTable<T extends Record<string, unknown>>(
+  initialTableData: T[],
+  searchKeyword: string
+): T[] {
+  const tableData = cloneDeep(initialTableData);
+  const results: T[] = [];
+
   for (let i = 0; i < tableData.length; i++) {
     if (searchRow(tableData[i], searchKeyword)) {
-      results.push(tableData[i])
+      results.push(tableData[i]);
     }
   }
-  return cloneDeep(results)
+
+  return cloneDeep(results);
 }
 
 function searchRow(row: Record<string, unknown>, keyword: string): boolean {

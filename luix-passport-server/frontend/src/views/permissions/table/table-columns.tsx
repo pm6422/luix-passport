@@ -87,7 +87,7 @@ export function tableColumns(
     {
       id: "actions",
       cell: ({ row }) => (
-        <DataTableRowActions entityName={entityName} row={row} deleteRow={deleteRow} 
+        <DataTableRowActions<Permission> entityName={entityName} row={row} deleteRow={deleteRow}
           children={
             <EditDialog entityName={entityName} id={row.original.id} save={save}>
               <Button variant="secondary" className="flex size-8 p-0">

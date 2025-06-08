@@ -1,4 +1,5 @@
 import { z } from "zod"
+import { BaseCriteria } from "./base/base-criteria"
 
 export const roleSchema = z.object({
   id: z.string().trim().min(1, { message: "Required" }),
@@ -21,7 +22,7 @@ export const roleCriteriaSchema = z.object({
   keyword: z.string().optional(),
 })
 
-export type RoleCriteriaSchema = z.infer<typeof roleCriteriaSchema>
+export type RoleCriteriaSchema = z.infer<typeof roleCriteriaSchema> & BaseCriteria
 
 export const initialRoleCriteriaState: RoleCriteriaSchema = {
   keyword: ""
