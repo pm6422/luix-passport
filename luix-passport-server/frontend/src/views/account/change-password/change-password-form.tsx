@@ -29,7 +29,9 @@ import { getErrorMessage } from "@/lib/handle-error"
 
 const changePasswordFormSchema = z.object({
   currentPassword: z.string().trim().min(1, { message: "Required" }),
-  newPassword: z.string().trim().min(1, { message: "Required" }),
+  newPassword: z
+    .string()
+    .min(5, "New password must be at least 5 characters"),
   email: z.string().trim(),
   verificationCode: z.string().trim().min(1, { message: "Required" })
 })

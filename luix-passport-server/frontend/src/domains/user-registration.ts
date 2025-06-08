@@ -6,8 +6,7 @@ export const userRegistrationFormSchema = z
     username: z.string().min(3, "Username must be at least 3 characters"),
     password: z
       .string()
-      .min(5, "Password must be at least 5 characters")
-      .max(10, "Password must be at most 10 characters"),
+      .min(5, "Password must be at least 5 characters"),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
