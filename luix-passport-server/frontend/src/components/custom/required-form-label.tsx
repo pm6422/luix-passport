@@ -11,8 +11,8 @@ export const RequiredFormLabel = ({
   required = false,
   htmlFor
 }: Props) => (
-  <FormLabel htmlFor={htmlFor}>
+  <FormLabel htmlFor={htmlFor} className="flex items-center gap-1">
     {children}
-    {required && <span className="ml-1 text-destructive font-bold align-middle">*</span>}
+    {required && <span className="text-destructive font-bold">*</span>}
   </FormLabel>
 )
