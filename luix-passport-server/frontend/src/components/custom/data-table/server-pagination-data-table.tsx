@@ -89,7 +89,9 @@ export function DataTable<TData, TValue>({
 
   // Use the useEffect hook to listen for changes and trigger the loadPage callback when it changes
   useEffect(() => {
-    loadPage && loadPage(pagination.pageIndex, pagination.pageSize, parseSorts(sorting));
+    if (loadPage) {
+      loadPage(pagination.pageIndex, pagination.pageSize, parseSorts(sorting));
+    }
   }, [pagination, sorting]);
 
   return (
