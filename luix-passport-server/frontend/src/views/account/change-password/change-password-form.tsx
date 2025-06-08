@@ -27,12 +27,13 @@ import { useStore } from "exome/react"
 import { loginUserStore } from "@/stores/login-user-store"
 import { AccountService } from "@/services/account-service"
 import { getErrorMessage } from "@/lib/handle-error"
+import { PASSWORD_MIN_LENGTH } from "@/domains/user-registration"
 
 const changePasswordFormSchema = z.object({
   currentPassword: z.string().trim().min(1, { message: "Required" }),
   newPassword: z
     .string()
-    .min(5, "New password must be at least 5 characters"),
+    .min(PASSWORD_MIN_LENGTH, "New password must be at least 5 characters"),
   email: z.string().trim(),
   verificationCode: z.string().trim().min(1, { message: "Required" })
 })
@@ -113,7 +114,7 @@ export function ChangePasswordForm() {
           control={form.control}
           name="currentPassword"
           render={({ field }) => (
-            <FormItem className='space-y-1'>
+            <FormItem className="space-y-1">
               <RequiredFormLabel required={true}>Current Password</RequiredFormLabel>
               <FormControl>
                 <PasswordInput {...field} placeholder=""/>
@@ -126,7 +127,7 @@ export function ChangePasswordForm() {
           control={form.control}
           name="newPassword"
           render={({ field }) => (
-            <FormItem className='space-y-1'>
+            <FormItem className="space-y-1">
               <RequiredFormLabel required={true}>New Password</RequiredFormLabel>
               <FormControl>
                 <PasswordInput
@@ -141,6 +142,7 @@ export function ChangePasswordForm() {
               <PasswordStrengthIndicator
                 password={newPassword}
                 onStrengthChange={setIsPasswordStrongEnough}
+                minLength={PASSWORD_MIN_LENGTH}
               />
               <FormMessage />
             </FormItem>
@@ -191,7 +193,7 @@ export function ChangePasswordForm() {
 
         <div className="flex justify-end">
           <LoadingButton
-            type='submit'
+            type="submit"
             loading={saving}
             disabled={!isPasswordStrongEnough || saving}
             className="w-full sm:w-auto"

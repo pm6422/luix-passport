@@ -11,7 +11,7 @@ import {
 import { useNavigate } from "react-router-dom"
 import { PasswordInput } from "@/components/custom/password-input";
 import { AccountService } from "@/services/account-service"
-import { type UserRegistrationFormSchema, userRegistrationFormSchema } from "@/domains/user-registration"
+import { PASSWORD_MIN_LENGTH, type UserRegistrationFormSchema, userRegistrationFormSchema } from "@/domains/user-registration"
 import { toast } from "sonner";
 import { useState } from "react"
 import { getErrorMessage } from "@/lib/handle-error"
@@ -96,6 +96,7 @@ export function SignUpForm() {
                   <PasswordStrengthIndicator
                     password={password}
                     onStrengthChange={setIsPasswordStrongEnough}
+                    minLength={PASSWORD_MIN_LENGTH}
                   />
                   <FormMessage />
                 </FormItem>

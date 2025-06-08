@@ -18,13 +18,14 @@ import { Input } from "@/components/ui/input";
 import { AccountService } from "@/services/account-service";
 import { PasswordInput } from "@/components/custom/password-input";
 import { PasswordStrengthIndicator } from "@/components/custom/password-strength-indicator";
+import { PASSWORD_MIN_LENGTH } from "@/domains/user-registration";
 import { getErrorMessage } from "@/lib/handle-error";
 
 const resetPasswordFormSchema = z
   .object({
     newRawPassword: z
       .string()
-      .min(5, { message: "Password must be at least 5 characters" }),
+      .min(PASSWORD_MIN_LENGTH, { message: "Password must be at least 5 characters" }),
     confirmPassword: z.string(),
     resetCode: z.string().min(1, { message: "Please enter your reset code" }),
   })
@@ -152,6 +153,7 @@ export default function ForgotPassword() {
                   <PasswordStrengthIndicator
                     password={newRawPassword}
                     onStrengthChange={setIsPasswordStrongEnough}
+                    minLength={PASSWORD_MIN_LENGTH}
                   />
                   <FormMessage />
                 </FormItem>
