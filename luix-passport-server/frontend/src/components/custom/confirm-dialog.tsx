@@ -9,6 +9,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger
 } from "@/components/ui/alert-dialog"
+import React from "react"
 
 type Props = {
   children: React.ReactNode

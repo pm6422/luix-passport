@@ -1,22 +1,22 @@
-import { useState, useEffect } from "react"
-import { UseFormReturn } from "react-hook-form"
+import React, { useState, useEffect } from "react"
+import { FieldValues, UseFormReturn } from 'react-hook-form'
 import { IconExclamationCircle } from "@tabler/icons-react"
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert"
 import { transform } from "lodash"
 
-interface Props {
+interface Props<T extends FieldValues> {
   children?: React.ReactNode
-  form: UseFormReturn<any, any, any>
+  form: UseFormReturn<T>
   variant?: "default" | "destructive"
   error?: Object
 }
 
-const FormErrors = ({
+const FormErrors = <T extends FieldValues,>({
                       children,
                       form,
                       variant = "destructive",
                       error
-                    }: Props) => {
+                    }: Props<T>) => {
   const [errors, setErrors] = useState<Array<any>>([])
 
   useEffect(() => {

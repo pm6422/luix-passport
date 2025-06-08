@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dialog"
 import { Form } from "@/components/ui/form"
 import { FieldErrors, FieldValues, UseFormReturn } from 'react-hook-form'
-import FormErrors from "@/components/custom/form-errors"
+import FormErrors from "@/components/custom/dialog/form-errors"
 import { Button } from "@/components/ui/button"
 import { LoadingButton } from "@/components/custom/loading-button"
 import { Separator } from "@/components/ui/separator"
