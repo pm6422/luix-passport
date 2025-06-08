@@ -40,7 +40,7 @@ const SelectFormField = <TFieldValues extends FieldValues>({
   placeholder,
   required,
   disabled,
- inputClassName,
+  inputClassName,
   selectContentClassName,
   formItemClassName,
   hide = false
