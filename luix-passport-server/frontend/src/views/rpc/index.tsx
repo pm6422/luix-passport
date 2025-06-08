@@ -385,7 +385,7 @@ export default function LuixRpcPage() {
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">{content.features.title}</h2>
-            <Separator className="mx-auto w-24 h-1 bg-primary" />
+            <Separator className="mx-auto w-24 h-1" />
             <p className="text-muted-foreground mt-4">{content.features.subtitle}</p>
           </div>
 
@@ -409,7 +409,7 @@ export default function LuixRpcPage() {
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">{content.additionalFeatures.title}</h2>
-            <Separator className="mx-auto w-24 h-1 bg-primary" />
+            <Separator className="mx-auto w-24 h-1" />
             <p className="text-muted-foreground mt-4">{content.additionalFeatures.subtitle}</p>
           </div>
 
@@ -466,7 +466,7 @@ export default function LuixRpcPage() {
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">{content.codeExamples.title}</h2>
-            <Separator className="mx-auto w-24 h-1 bg-primary" />
+            <Separator className="mx-auto w-24 h-1" />
             <p className="text-muted-foreground mt-4">{content.codeExamples.subtitle}</p>
           </div>
 
@@ -519,7 +519,7 @@ export default function LuixRpcPage() {
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">{content.designConcepts.title}</h2>
-            <Separator className="mx-auto w-24 h-1 bg-primary" />
+            <Separator className="mx-auto w-24 h-1" />
             <p className="text-muted-foreground mt-4">{content.designConcepts.subtitle}</p>
           </div>
 
@@ -554,7 +554,7 @@ export default function LuixRpcPage() {
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">{content.timeline.title}</h2>
-            <Separator className="mx-auto w-24 h-1 bg-primary" />
+            <Separator className="mx-auto w-24 h-1" />
             <p className="text-muted-foreground mt-4">{content.timeline.subtitle}</p>
           </div>
 
@@ -616,7 +616,7 @@ export default function LuixRpcPage() {
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">{content.thoughts.title}</h2>
-            <Separator className="mx-auto w-24 h-1 bg-primary" />
+            <Separator className="mx-auto w-24 h-1" />
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
@@ -637,7 +637,7 @@ export default function LuixRpcPage() {
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">{content.contact.title}</h2>
-            <Separator className="mx-auto w-24 h-1 bg-primary" />
+            <Separator className="mx-auto w-24 h-1" />
           </div>
 
           {/* Redesigned contact cards */}
