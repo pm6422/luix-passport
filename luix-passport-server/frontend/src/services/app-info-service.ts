@@ -10,8 +10,7 @@ export class AppInfoService {
     try {
       const res = await axios.get<AppInfo>("/management/info")
       return res.data
-    } catch (error) {
-      console.error(error)
+    } catch (_error) {
       return null
     }
   }

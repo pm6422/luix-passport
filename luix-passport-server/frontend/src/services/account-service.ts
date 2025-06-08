@@ -17,8 +17,7 @@ export class AccountService {
     try {
       const res = await axios.get<LoginUser>("/open-api/accounts/user")
       return res.data
-    } catch (error) {
-      console.error(error)
+    } catch (_error) {
       return {} as LoginUser
     }
   }
