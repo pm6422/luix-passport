@@ -63,7 +63,7 @@ export function EditDialog({
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <SaveDialogContent entityName={entityName} id={id} form={form} save={save} afterSave={afterSave} setOpen={setOpen} debug={false}>
+      <SaveDialogContent<Auth2Client> entityName={entityName} id={id} form={form} save={save} afterSave={afterSave} setOpen={setOpen} debug={false}>
         <InputFormField 
           control={form.control} 
           name="clientId" 

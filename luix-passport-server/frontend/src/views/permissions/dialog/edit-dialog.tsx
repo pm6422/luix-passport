@@ -59,7 +59,7 @@ export function EditDialog({
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <SaveDialogContent entityName={entityName} id={id} form={form} save={save} afterSave={afterSave} setOpen={setOpen}>
+      <SaveDialogContent<Permission> entityName={entityName} id={id} form={form} save={save} afterSave={afterSave} setOpen={setOpen}>
 
         <InputFormField
           control={form.control}

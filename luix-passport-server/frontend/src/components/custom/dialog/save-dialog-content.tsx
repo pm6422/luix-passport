@@ -8,7 +8,7 @@ import {
   DialogDescription
 } from "@/components/ui/dialog"
 import { Form } from "@/components/ui/form"
-import { UseFormReturn } from "react-hook-form"
+import { FieldErrors, FieldValues, UseFormReturn } from 'react-hook-form'
 import FormErrors from "@/components/custom/form-errors"
 import { Button } from "@/components/ui/button"
 import { LoadingButton } from "@/components/custom/loading-button"
@@ -17,35 +17,35 @@ import { toast } from "sonner"
 import { getErrorMessage } from "@/lib/handle-error"
 import { cn } from "@/lib/utils"
 
-interface Props {
+interface Props<T extends FieldValues> {
   children: ReactNode;
   entityName: string;
   id?: string | null;
-  form: UseFormReturn<any, any, any>;
+  form: UseFormReturn<T>;
   size?: "sm" | "md" | "lg";
-  save: (formData: any) => Promise<any>;
+  save: (formData: T) => Promise<void>;
   afterSave?: (success: boolean) => void;
   setOpen: (open: boolean) => void;
   readonly?: boolean;
   debug?: boolean;
 }
 
-const SaveDialogContent = ({
-  children,
-  entityName,
-  id,
-  form,
-  size = "md",
-  save,
-  afterSave,
-  setOpen,
-  readonly = false,
-  debug = false
-}: Props) => {
+const SaveDialogContent = <T extends FieldValues,>({
+                                 children,
+                                 entityName,
+                                 id,
+                                 form,
+                                 size = "md",
+                                 save,
+                                 afterSave,
+                                 setOpen,
+                                 readonly = false,
+                                 debug = false
+                               }: Props<T>) => {
   const [saving, setSaving] = useState(false)
-  const [error, setError] = useState<Object>({})
+  const [error, setError] = useState<FieldErrors>({})
 
-  function onSubmit(formData: any): void {
+  function onSubmit(formData: T): void {
     setSaving(true)
     toast.promise(save(formData), {
       loading: "Saving " + entityName + "...",
@@ -69,7 +69,7 @@ const SaveDialogContent = ({
     })
   }
 
-  function onFormError(error: any): void {
+  function onFormError(error: FieldErrors): void {
     setError(error)
   }
 
