@@ -113,16 +113,21 @@ export function SettingsForm() {
           </p>
         </div>
 
-        <InputFormField
-          control={form.control}
-          name="firstName"
-          label="First Name"
-        />
-        <InputFormField
-          control={form.control}
-          name="lastName"
-          label="Last Name"
-        />
+        <div className="flex flex-col md:flex-row items-center gap-2 space-y-4 md:space-y-0">
+          <InputFormField
+            control={form.control}
+            name="firstName"
+            label="First Name"
+            formItemClassName="w-full"
+          />
+
+          <InputFormField
+            control={form.control}
+            name="lastName"
+            label="Last Name"
+            formItemClassName="w-full"
+          />
+        </div>
         <SelectFormField
           control={form.control}
           name="locale"
