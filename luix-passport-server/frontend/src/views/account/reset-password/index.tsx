@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from 'zod';
+import { z } from "zod";
 import { useNavigate } from "react-router-dom"
 import { LoadingButton } from "@/components/custom/loading-button";
-import { Link, useSearchParams } from 'react-router-dom'
+import { Link, useSearchParams } from "react-router-dom"
 import {
   Form,
   FormControl,
@@ -16,9 +16,9 @@ import {
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { AccountService } from "@/services/account-service";
-import { PasswordInput } from '@/components/custom/password-input';
-import { getErrorMessage } from '@/lib/handle-error';
+import { PasswordInput } from "@/components/custom/password-input";
 import { PasswordStrengthIndicator } from "@/components/custom/password-strength-indicator";
+import { getErrorMessage } from "@/lib/handle-error";
 
 const resetPasswordFormSchema = z
   .object({
@@ -41,7 +41,7 @@ export default function ForgotPassword() {
   const [newRawPassword, setNewRawPassword] = useState("")
   const [isPasswordStrongEnough, setIsPasswordStrongEnough] = useState(false)
   const [searchParams] = useSearchParams();
-  const resetCode = searchParams.get('resetCode');
+  const resetCode = searchParams.get("resetCode");
 
   if (!resetCode) {
     toast.error("Invalid empty reset code");
