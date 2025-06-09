@@ -1,6 +1,5 @@
 import { Outlet } from "react-router-dom"
 import {
-  IconNotification,
   IconPalette,
   IconTool,
   IconUser,
@@ -31,11 +30,6 @@ export default function Account() {
       title: "Appearance",
       icon: <IconPalette size={18} />,
       href: "/account/appearance",
-    },
-    {
-      title: "Notifications",
-      icon: <IconNotification size={18} />,
-      href: "/account/notifications",
     }
   ]
 
