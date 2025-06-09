@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card"
 export default function DbSchema() {
   return (
     <LayoutBody className="flex flex-col" fixedHeight>
-      <Card>
+      <Card className="py-0">
         <iframe
           src="https://dbdocs.io/pm6422/luix-passport"
           className="rounded-lg"

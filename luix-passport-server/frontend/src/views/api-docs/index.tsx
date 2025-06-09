@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card"
 export default function ApiDocs() {
   return (
     <LayoutBody className="flex flex-col" fixedHeight>
-      <Card>
+      <Card className="py-0">
         <iframe
           src="/swagger-ui/index.html"
           className="rounded-lg"
