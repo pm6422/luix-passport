@@ -224,12 +224,6 @@ const router = createBrowserRouter([
             lazy: async () => ({
               Component: (await import("./views/account/appearance")).default
             }),
-          },
-          {
-            path: "notifications",
-            lazy: async () => ({
-              Component: (await import("./views/account/notifications")).default
-            }),
           }
         ],
       }
