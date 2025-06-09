@@ -94,20 +94,20 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         items: [
           ...(appInfo.apiDocsEnabled ? [
             {
-              title: "API Documentation",
-              url: "/api-docs",
-              icon: IconApi,
+              title: "Data Dictionaries",
+              url: "/data-dicts",
+              icon: IconVocabulary,
             }
           ] : []),
+          {
+            title: "API Documentation",
+            url: "/api-docs",
+            icon: IconApi,
+          },
           {
             title: "DB Schema",
             url: "/db-schema",
             icon: IconDatabase,
-          },
-          {
-            title: "Data Dictionaries",
-            url: "/data-dicts",
-            icon: IconVocabulary,
           }
         ],
       }
