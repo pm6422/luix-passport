@@ -19,8 +19,12 @@ import { LoadingButton } from "@/components/custom/loading-button"
 import InputFormField from "@/components/custom/form-field/input"
 import { Link } from "react-router-dom"
 import { PasswordStrengthIndicator } from "@/components/custom/password-strength-indicator"
+import { useId } from "react"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Label } from "@/components/ui/label"
 
 export function SignUpForm() {
+  const id = useId()
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
   const [password, setPassword] = useState("")
@@ -119,6 +123,16 @@ export function SignUpForm() {
                 </FormItem>
               )}
             />
+
+            <div className="flex items-center gap-2">
+              <Checkbox id={id} />
+              <Label htmlFor={id}>
+                I agree to the{" "}
+                <Link to="/terms-of-service" className="underline hover:text-primary">
+                  Terms of Service
+                </Link>{" "}
+              </Label>
+            </div>
           </div>
 
           <LoadingButton
