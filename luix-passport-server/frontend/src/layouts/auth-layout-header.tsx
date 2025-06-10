@@ -2,7 +2,7 @@ import { AccountNav } from "@/components/account-nav";
 import { TopNav } from "@/components/top-nav";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 // import { Search } from "@/components/custom/search"
-import { NotificationNav } from "@/components/notification-nav"
+// import { NotificationNav } from "@/components/notification-nav"
 
 export function AuthLayoutHeader() {
   const topNavLinks = [
@@ -21,7 +21,7 @@ export function AuthLayoutHeader() {
         {/*<Search />*/}
       </div>
       <div className="flex items-center gap-4">
-        <NotificationNav />
+        {/*<NotificationNav />*/}
         <AccountNav />
       </div>
     </div>
