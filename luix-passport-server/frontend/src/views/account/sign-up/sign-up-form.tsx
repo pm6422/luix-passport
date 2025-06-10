@@ -29,6 +29,7 @@ export function SignUpForm() {
   const [isLoading, setIsLoading] = useState(false)
   const [password, setPassword] = useState("")
   const [isPasswordStrongEnough, setIsPasswordStrongEnough] = useState(false)
+  const [isTermsAccepted, setIsTermsAccepted] = useState(false)
 
   const form = useForm<UserRegistrationFormSchema>({
     resolver: zodResolver(userRegistrationFormSchema),
@@ -125,7 +126,11 @@ export function SignUpForm() {
             />
 
             <div className="flex items-center gap-2">
-              <Checkbox id={id} />
+              <Checkbox
+                id={id}
+                checked={isTermsAccepted}
+                onCheckedChange={(checked) => setIsTermsAccepted(checked === true)}
+              />
               <Label htmlFor={id}>
                 I agree to the{" "}
                 <Link to="/terms-of-service" className="underline hover:text-primary">
@@ -139,7 +144,7 @@ export function SignUpForm() {
             type="submit"
             className="w-full h-14 px-5 py-4 mt-4 mb-2 text-sm font-medium rounded-2xl"
             loading={isLoading}
-            disabled={!isPasswordStrongEnough || isLoading}
+            disabled={!isPasswordStrongEnough || isLoading || !isTermsAccepted}
           >
             {isLoading ? "Waiting" : "Create Account"}
           </LoadingButton>
