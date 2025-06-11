@@ -88,10 +88,21 @@ npm run all:up
 |admin
 |user,admin
 
-|louis
-|louis
-|user,admin,developer
+|===
 
+
+[[scope_permission]]
+== Client Scope vs. UserPermission
+[cols="1,1,1", options="header"]
+|===
+| Aspect         | Scope (OAuth2)                | Permission (RBAC)
+| **Purpose**    | Controls what _client apps_ can access (API/resources) | Controls what _users_ can do within the system
+| **Managed By** | Authorization Server (e.g., Keycloak, Auth0) | Business Application (e.g., Spring Security + DB)
+| **Storage**    | In JWT's `scope` claim         | In database `permission` table
+| **Format**     | Typically `resource:action` (e.g., `api:read`) | Often `entity:operation` (e.g., `user:delete`)
+| **Example**    | `orders:write` (Client can modify orders) | `report:export` (User can export reports)
+| **Transformed in Spring Security** | Becomes `SCOPE_` + scope (e.g., `SCOPE_orders:write`) | Used directly as `Authority` (e.g., `report:export`)
+| **Use Case**   | External apps accessing APIs (e.g., mobile app with `read:profile`) | Internal user role permissions (e.g., admin can `user:delete`)
 |===
 
 [[configuring-social-login]]
