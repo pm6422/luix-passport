@@ -69,7 +69,7 @@ public abstract class AuthUtils {
             if (authentication.getPrincipal() instanceof AuthUser) {
                 user = (AuthUser) authentication.getPrincipal();
             } else if (authentication instanceof JwtAuthenticationToken) {
-                // Use Client ID as username
+                // Use Client ID as a username
                 user = new AuthUser(authentication.getName(), "protected", authentication.getAuthorities());
             } else if (authentication instanceof OAuth2AuthenticationToken) {
                 if (authentication.getPrincipal() instanceof OAuth2User oAuth2User) {
