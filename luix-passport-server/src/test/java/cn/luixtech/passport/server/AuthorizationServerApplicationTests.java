@@ -53,7 +53,7 @@ public class AuthorizationServerApplicationTests {
 
     @Test
     public void whenLoginSuccessfulThenOk() throws IOException {
-        HtmlPage page = this.webClient.getPage("/");
+        HtmlPage page = this.webClient.getPage("/login");
 
         assertLoginPage(page);
 
@@ -65,7 +65,7 @@ public class AuthorizationServerApplicationTests {
 
     @Test
     public void whenLoginFailsThenDisplayBadCredentials() throws IOException {
-        HtmlPage page = this.webClient.getPage("/");
+        HtmlPage page = this.webClient.getPage("/login");
 
         HtmlPage loginErrorPage = signIn(page, "user", "wrong-password");
 
