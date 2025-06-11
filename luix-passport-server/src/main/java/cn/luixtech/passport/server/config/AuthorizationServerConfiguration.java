@@ -83,7 +83,7 @@ public class AuthorizationServerConfiguration {
          * OAuth 2.0 Device Authorization Endpoint and Token Endpoint without
          * a clientId/clientSecret.
          *
-         * CAUTION: These endpoints will not require any authentication, and can
+         * CAUTION: These endpoints will not require any authentication and can
          * be accessed by any client that has a valid clientId.
          *
          * It is therefore RECOMMENDED to carefully monitor the use of these
