@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serial;
@@ -16,6 +17,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class Notification extends AbstractUpdatableDomain implements Serializable {
     @Serial
     private static final long   serialVersionUID = 1L;
