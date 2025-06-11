@@ -102,7 +102,7 @@ public class AccountController {
         // authenticate
         Authentication authentication = authenticationManager.authenticate(authRequest);
 
-        // save the result of authentication to security context
+        // save the result of authentication to the security context
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         // create a new session
