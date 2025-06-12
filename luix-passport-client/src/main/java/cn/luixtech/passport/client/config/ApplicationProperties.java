@@ -25,7 +25,7 @@ public class ApplicationProperties {
     public static class Url {
         private String authServerUrl;
         private String resourceServerUrl;
-        private String allSupportedTimeZones;
+        private String oauthServerMessages;
         private String resourceServerMessages;
     }
 }

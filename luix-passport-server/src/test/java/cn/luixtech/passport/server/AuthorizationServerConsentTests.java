@@ -24,7 +24,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import static cn.luixtech.passport.server.pojo.Oauth2Client.SCOPE_ALL_SUPPORTED_TIME_ZONE_READ;
+import static cn.luixtech.passport.server.pojo.Oauth2Client.SCOPE_MESSAGE_READ;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -41,7 +41,7 @@ public class AuthorizationServerConsentTests {
             .fromPath("/oauth2/authorize")
             .queryParam("client_id", "messaging-client")
             .queryParam("response_type", "code")
-            .queryParam("scope", OidcScopes.OPENID + " " + SCOPE_ALL_SUPPORTED_TIME_ZONE_READ)
+            .queryParam("scope", OidcScopes.OPENID + " " + SCOPE_MESSAGE_READ)
             .queryParam("state", "state")
             .queryParam("redirect_uri", REDIRECT_URI)
             .toUriString();
@@ -77,7 +77,7 @@ public class AuthorizationServerConsentTests {
             assertThat(scope.isChecked()).isTrue();
             scopeIds.add(scope.getId());
         });
-        assertThat(scopeIds).containsExactlyInAnyOrder(SCOPE_ALL_SUPPORTED_TIME_ZONE_READ);
+        assertThat(scopeIds).containsExactlyInAnyOrder(SCOPE_MESSAGE_READ);
 
         DomElement submitConsentButton = consentPage.querySelector("button[id='submit-consent']");
         this.webClient.getOptions().setRedirectEnabled(false);

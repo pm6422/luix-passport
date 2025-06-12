@@ -45,6 +45,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -266,5 +267,11 @@ public class AccountController {
     @GetMapping("/api/accounts/all-supported-date-time-formats")
     public ResponseEntity<List<SupportedDateTimeFormat>> getSupportedDateTimeFormats() {
         return ResponseEntity.ok(supportedDateTimeFormatRepository.findAll());
+    }
+
+    @Operation(summary = "get all messages for oauth2 client")
+    @GetMapping("/api/accounts/oauth2-server-messages")
+    public List<String> getOauth2ServerMessages() {
+        return Arrays.asList("Oauth2 Server Message 1", "Oauth2 Server Message 2", "Oauth2 Server Message 3");
     }
 }

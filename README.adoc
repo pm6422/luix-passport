@@ -121,13 +121,13 @@ npm run all:up
 | `client_credentials`
 | 否
 | 服务端间通信
-| `all_supported_time_zone:read, write`
+| `message_read:read, write`
 
 | `messaging-client-authorization-code`
 | `authorization_code`
 | 是
 | 仅获取API访问权限（非OIDC）
-| `all_supported_time_zone:read`
+| `message_read:read`
 |===
 
 

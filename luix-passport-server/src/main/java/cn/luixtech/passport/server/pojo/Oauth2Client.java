@@ -28,8 +28,8 @@ import static cn.luixtech.passport.server.config.AuthorizationServerConfiguratio
 @NoArgsConstructor
 public class Oauth2Client implements Serializable {
     @Serial
-    private static final long   serialVersionUID                    = 8481969837769002598L;
-    public static final  String SCOPE_ALL_SUPPORTED_TIME_ZONE_READ  = "all_supported_time_zone:read";
+    private static final long   serialVersionUID   = 8481969837769002598L;
+    public static final  String SCOPE_MESSAGE_READ = "message_read:read";
 
     private String  id;
     private String  clientId;

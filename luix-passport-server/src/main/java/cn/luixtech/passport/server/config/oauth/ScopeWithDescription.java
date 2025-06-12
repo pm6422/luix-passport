@@ -6,7 +6,7 @@ import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import java.util.HashMap;
 import java.util.Map;
 
-import static cn.luixtech.passport.server.pojo.Oauth2Client.SCOPE_ALL_SUPPORTED_TIME_ZONE_READ;
+import static cn.luixtech.passport.server.pojo.Oauth2Client.SCOPE_MESSAGE_READ;
 
 @Data
 public class ScopeWithDescription {
@@ -30,8 +30,8 @@ public class ScopeWithDescription {
                 "Read your email data"
         );
         scopeDescriptions.put(
-                SCOPE_ALL_SUPPORTED_TIME_ZONE_READ,
-                "Read all supported time zones"
+                SCOPE_MESSAGE_READ,
+                "Read messages from your account"
         );
         scopeDescriptions.put(
                 "other.scope",

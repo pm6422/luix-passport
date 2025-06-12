@@ -44,7 +44,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     </div>
-    <div th:fragment="timezone-list" th:if="${timeZones}" class="row py-5 justify-content-start">
+    <div th:fragment="message-list" th:if="${messages}" class="row py-5 justify-content-start">
         <div class="col">
             <table class="table table-striped caption-top">
                 <caption>Messages</caption>
@@ -55,9 +55,9 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="timezone,iterStat : ${timeZones}">
+                <tr th:each="message,iterStat : ${messages}">
                     <th scope="row" th:text="${iterStat.count}"></th>
-                    <td th:text="${timezone}"></td>
+                    <td th:text="${message}"></td>
                 </tr>
                 </tbody>
             </table>

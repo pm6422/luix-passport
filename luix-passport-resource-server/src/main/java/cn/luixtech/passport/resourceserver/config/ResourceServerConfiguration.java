@@ -14,9 +14,9 @@ public class ResourceServerConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         // @formatter:off
 		http
-			.securityMatcher("/api/messages/**")
+			.securityMatcher("/api/resource-server-messages/**")
 			.oauth2ResourceServer(server-> server.jwt(Customizer.withDefaults()))
-			.authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/messages/**").hasAuthority("SCOPE_all_supported_time_zone:read"));
+			.authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/resource-server-messages/**").hasAuthority("SCOPE_message_read:read"));
 		return http.build();
 		// @formatter:on
     }
