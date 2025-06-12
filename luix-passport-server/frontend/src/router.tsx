@@ -36,12 +36,6 @@ const router = createBrowserRouter([
       Component: (await import("./views/account/reset-password")).default
     }),
   },
-  {
-    path: "/rpc",
-    lazy: async () => ({
-      Component: (await import("./views/rpc")).default
-    }),
-  },
 
   // no-auth routes
   {
