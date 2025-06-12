@@ -23,6 +23,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
+import static cn.luixtech.passport.server.pojo.Oauth2Client.SCOPE_ALL_SUPPORTED_TIME_ZONE_READ;
+
 /**
  * Use org.springframework.security.crypto.password.DelegatingPasswordEncoder as default
  */
@@ -105,7 +107,7 @@ public class WebServerSecurityConfiguration {
 					.requestMatchers( PERMITTED_PAGES).permitAll()
 					.requestMatchers(MANAGEMENT_REQUESTS).permitAll()
 					.requestMatchers("/open-api/**").permitAll()
-					.requestMatchers("/api/externals/authorities").hasAuthority("SCOPE_external:read")
+					.requestMatchers("/api/accounts/all-supported-time-zones").hasAuthority("SCOPE_" + SCOPE_ALL_SUPPORTED_TIME_ZONE_READ)
 //					.requestMatchers("/userinfo").hasAuthority("SCOPE_external:read")
 					.requestMatchers("/swagger-ui/**").hasAuthority("ROLE_DEVELOPER")
 					.requestMatchers("/v3/api-docs/**").hasAuthority("ROLE_DEVELOPER")

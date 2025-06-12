@@ -18,11 +18,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationConsentService;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import static cn.luixtech.passport.server.pojo.Oauth2Client.SCOPE_ALL_SUPPORTED_TIME_ZONE_READ;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -39,7 +41,7 @@ public class AuthorizationServerConsentTests {
             .fromPath("/oauth2/authorize")
             .queryParam("client_id", "messaging-client")
             .queryParam("response_type", "code")
-            .queryParam("scope", "openid external:read external:write")
+            .queryParam("scope", OidcScopes.OPENID + " " + SCOPE_ALL_SUPPORTED_TIME_ZONE_READ)
             .queryParam("state", "state")
             .queryParam("redirect_uri", REDIRECT_URI)
             .toUriString();
@@ -75,7 +77,7 @@ public class AuthorizationServerConsentTests {
             assertThat(scope.isChecked()).isTrue();
             scopeIds.add(scope.getId());
         });
-        assertThat(scopeIds).containsExactlyInAnyOrder("external:read", "external:write");
+        assertThat(scopeIds).containsExactlyInAnyOrder(SCOPE_ALL_SUPPORTED_TIME_ZONE_READ);
 
         DomElement submitConsentButton = consentPage.querySelector("button[id='submit-consent']");
         this.webClient.getOptions().setRedirectEnabled(false);

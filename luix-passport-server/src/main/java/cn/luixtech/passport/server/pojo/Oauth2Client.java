@@ -28,21 +28,19 @@ import static cn.luixtech.passport.server.config.AuthorizationServerConfiguratio
 @NoArgsConstructor
 public class Oauth2Client implements Serializable {
     @Serial
-    private static final long    serialVersionUID           = 8481969837769002598L;
-    public static final  String  INTERNAL_CLIENT_ID         = "internal-client";
-    public static final  String  AUTH_CODE_CLIENT_ID        = "login-client";
-    public static final  String  INTERNAL_RAW_CLIENT_SECRET = "65G-HD9-4PD-j9F-HP5";
-    public static final  String  CLIENT_NAME                = "passport-client";
-    private              String  id;
-    private              String  clientId;
-    private              String  clientName;
-    private              String  rawClientSecret;
-    private              String  clientSecret;
-    private              Instant clientIdIssuedAt;
-    private              Instant clientSecretExpiresAt;
-    private              Integer validityInDays;
-    private              Boolean enabled;
-    private              byte[]  photo;
+    private static final long   serialVersionUID                    = 8481969837769002598L;
+    public static final  String SCOPE_ALL_SUPPORTED_TIME_ZONE_READ  = "all_supported_time_zone:read";
+
+    private String  id;
+    private String  clientId;
+    private String  clientName;
+    private String  rawClientSecret;
+    private String  clientSecret;
+    private Instant clientIdIssuedAt;
+    private Instant clientSecretExpiresAt;
+    private Integer validityInDays;
+    private Boolean enabled;
+    private byte[]  photo;
 
     private Set<String> clientAuthenticationMethods = new HashSet<>();
     private Set<String> authorizationGrantTypes     = new HashSet<>();
@@ -142,7 +140,7 @@ public class Oauth2Client implements Serializable {
         oauth2Client.setClientIdIssuedAt(registeredClient.getClientIdIssuedAt());
         oauth2Client.setClientAuthenticationMethods(Arrays.stream(registeredClient.getClientAuthenticationMethods().split(",")).collect(Collectors.toSet()));
         oauth2Client.setAuthorizationGrantTypes(Arrays.stream(registeredClient.getAuthorizationGrantTypes().split(",")).collect(Collectors.toSet()));
-        if(StringUtils.isNotEmpty(registeredClient.getRedirectUris())) {
+        if (StringUtils.isNotEmpty(registeredClient.getRedirectUris())) {
             oauth2Client.setRedirectUris(new HashSet<>(Arrays.asList(registeredClient.getRedirectUris().split(","))));
         }
         if (StringUtils.isNotEmpty(registeredClient.getPostLogoutRedirectUris())) {

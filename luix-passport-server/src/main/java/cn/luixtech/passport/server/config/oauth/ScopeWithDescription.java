@@ -6,6 +6,8 @@ import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import java.util.HashMap;
 import java.util.Map;
 
+import static cn.luixtech.passport.server.pojo.Oauth2Client.SCOPE_ALL_SUPPORTED_TIME_ZONE_READ;
+
 @Data
 public class ScopeWithDescription {
     private static final String              DEFAULT_DESCRIPTION = "UNKNOWN SCOPE - We cannot provide information about this permission, use caution when granting this.";
@@ -28,12 +30,8 @@ public class ScopeWithDescription {
                 "Read your email data"
         );
         scopeDescriptions.put(
-                "external:read",
-                "Read authority to the specified resources"
-        );
-        scopeDescriptions.put(
-                "external:write",
-                "Write authority to the specified resources"
+                SCOPE_ALL_SUPPORTED_TIME_ZONE_READ,
+                "Read all supported time zones"
         );
         scopeDescriptions.put(
                 "other.scope",

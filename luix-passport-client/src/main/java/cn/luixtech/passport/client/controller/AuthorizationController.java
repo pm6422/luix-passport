@@ -1,6 +1,7 @@
 package cn.luixtech.passport.client.controller;
 
 import cn.luixtech.passport.client.config.ApplicationProperties;
+import cn.luixtech.passport.client.pojo.DataDict;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
@@ -13,6 +14,11 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import static org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction.clientRegistrationId;
 import static org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction.oauth2AuthorizedClient;
 
@@ -24,14 +30,18 @@ public class AuthorizationController {
 
     @GetMapping(value = "/authorize", params = "grant_type=client_credentials")
     public String clientCredentialsGrant(Model model) {
-        String[] messages = this.webClient
+        DataDict[] dataDicts = this.webClient
                 .get()
-                .uri(applicationProperties.getUrl().getAuthServerAuthorities())
+                .uri(applicationProperties.getUrl().getAllSupportedTimeZones())
                 .attributes(clientRegistrationId("messaging-client-client-credentials"))
                 .retrieve()
-                .bodyToMono(String[].class)
+                .bodyToMono(DataDict[].class)
                 .block();
-        model.addAttribute("messages", messages);
+
+        Set<String> supportedTimeZones = Arrays.stream(Objects.requireNonNull(dataDicts))
+                .toList().stream().map(DataDict::getDictCode)
+                .collect(Collectors.toSet());
+        model.addAttribute("timeZones", supportedTimeZones);
         return "index";
     }
 

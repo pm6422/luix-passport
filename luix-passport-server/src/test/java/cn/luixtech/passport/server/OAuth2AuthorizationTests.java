@@ -7,6 +7,7 @@ import com.gargoylesoftware.htmlunit.WebResponse;
 import com.gargoylesoftware.htmlunit.html.DomElement;
 import com.gargoylesoftware.htmlunit.html.HtmlCheckBoxInput;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import com.google.common.collect.Sets;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.NameValuePair;
@@ -23,6 +24,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
+import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationConsentService;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -38,6 +40,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static cn.luixtech.passport.server.config.AuthorizationServerConfiguration.*;
+import static cn.luixtech.passport.server.pojo.Oauth2Client.SCOPE_ALL_SUPPORTED_TIME_ZONE_READ;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -56,11 +59,11 @@ public class OAuth2AuthorizationTests {
             .fromPath("/oauth2/authorize")
             .queryParam("client_id", "messaging-client")
             .queryParam("response_type", "code")
-            .queryParam("scope", "openid external:read external:write")
+            .queryParam("scope", OidcScopes.OPENID + " " + SCOPE_ALL_SUPPORTED_TIME_ZONE_READ)
             .queryParam("state", "state")
             .queryParam("redirect_uri", REDIRECT_URI)
             .toUriString();
-    private static final String                            PROTECTED_RESOURCE_URI    = "/api/externals/authorities";
+    private static final String                            PROTECTED_RESOURCE_URI    = "/api/accounts/all-supported-time-zones";
     @Resource
     private              MockMvc                           mockMvc;
     @Resource
@@ -84,10 +87,10 @@ public class OAuth2AuthorizationTests {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add(OAuth2ParameterNames.GRANT_TYPE, AuthorizationGrantType.CLIENT_CREDENTIALS.getValue());
         // Get different level access token based on different scope
-        params.add(OAuth2ParameterNames.SCOPE, "external:read");
+        params.add(OAuth2ParameterNames.SCOPE, SCOPE_ALL_SUPPORTED_TIME_ZONE_READ);
         // Request access token
         Map<String, Object> resultMap = requestToken(params);
-        assertThat(resultMap.get(OAuth2ParameterNames.SCOPE)).isEqualTo("external:read");
+        assertThat(resultMap.get(OAuth2ParameterNames.SCOPE)).isEqualTo(SCOPE_ALL_SUPPORTED_TIME_ZONE_READ);
         // Request resource by access token
         assertRequestResource(resultMap.get("access_token").toString());
     }
@@ -139,7 +142,10 @@ public class OAuth2AuthorizationTests {
         params.add(OAuth2ParameterNames.STATE, "some-state");
         params.add(OAuth2ParameterNames.REDIRECT_URI, REDIRECT_URI);
         Map<String, Object> resultMap = requestToken(params);
-        assertThat(resultMap.get(OAuth2ParameterNames.SCOPE)).isEqualTo("openid external:read external:write");
+        String actualScopeStr = resultMap.get(OAuth2ParameterNames.SCOPE).toString();
+
+        assertThat(new HashSet<>(Arrays.stream(actualScopeStr.split(" ")).toList()))
+                .isEqualTo(Sets.newHashSet(OidcScopes.OPENID, SCOPE_ALL_SUPPORTED_TIME_ZONE_READ));
         // Request resource by access token
         assertRequestResource(resultMap.get("access_token").toString());
     }
@@ -150,7 +156,7 @@ public class OAuth2AuthorizationTests {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add(OAuth2ParameterNames.GRANT_TYPE, AuthorizationGrantType.CLIENT_CREDENTIALS.getValue());
         // Get different level access token with different scope
-        params.add(OAuth2ParameterNames.SCOPE, "external:read");
+        params.add(OAuth2ParameterNames.SCOPE, SCOPE_ALL_SUPPORTED_TIME_ZONE_READ);
         // Request access token
         Map<String, Object> resultMap = requestToken(params);
         String accessToken = resultMap.get("access_token").toString();
@@ -227,7 +233,7 @@ public class OAuth2AuthorizationTests {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add(OAuth2ParameterNames.GRANT_TYPE, AuthorizationGrantType.CLIENT_CREDENTIALS.getValue());
         // Get different level access token with different scope
-        params.add(OAuth2ParameterNames.SCOPE, "external:read");
+        params.add(OAuth2ParameterNames.SCOPE, "all_supported_time_zone:read");
         // Request access token
         Map<String, Object> resultMap = requestToken(params);
 
