@@ -272,6 +272,10 @@ public class AccountController {
     @Operation(summary = "get all messages for oauth2 client")
     @GetMapping("/api/accounts/oauth2-server-messages")
     public List<String> getOauth2ServerMessages() {
-        return Arrays.asList("client credentials mode cannot get user info", "Oauth2 Server Message 1", "Oauth2 Server Message 2", "Oauth2 Server Message 3");
+        return Arrays.asList(
+                "client credentials mode cannot get user info",
+                "Oauth2 Server Message 1",
+                "Oauth2 Server Message 2",
+                "Oauth2 Server Message 3");
     }
 }
