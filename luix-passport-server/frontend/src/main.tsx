@@ -12,7 +12,6 @@ import { loginUserStore } from "@/stores/login-user-store"
 import { useStore } from "exome/react"
 import router from "@/router"
 import "@/main.css"
-// import "@/assets/sass/intro.scss"
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
