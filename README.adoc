@@ -92,7 +92,7 @@ npm run all:up
 
 
 [[scope_permission]]
-== Client Scope vs. UserPermission
+== Client Scope vs. User Permission
 [cols="1,1,1", options="header"]
 |===
 | Aspect         | Scope (OAuth2)                | Permission (RBAC)
@@ -104,6 +104,33 @@ npm run all:up
 | **Transformed in Spring Security** | Becomes `SCOPE_` + scope (e.g., `SCOPE_orders:write`) | Used directly as `Authority` (e.g., `report:export`)
 | **Use Case**   | External apps accessing APIs (e.g., mobile app with `read:profile`) | Internal user role permissions (e.g., admin can `user:delete`)
 |===
+
+[[oauth2_client_config]]
+== 客户端注册配置
+[cols="1,1,1,2,2", options="header"]
+|===
+| 配置名称                          | 授权类型              | 用户交互 | 主要用途                          | Scope示例
+
+| `messaging-client-oidc`
+| `authorization_code`
+| 是
+| 获取用户身份（OIDC）
+| `openid, profile`
+
+| `messaging-client-client-credentials`
+| `client_credentials`
+| 否
+| 服务端间通信
+| `notification:read, write`
+
+| `messaging-client-authorization-code`
+| `authorization_code`
+| 是
+| 仅获取API访问权限（非OIDC）
+| `notification:read`
+|===
+
+
 
 [[configuring-social-login]]
 == Configuring Social Login
