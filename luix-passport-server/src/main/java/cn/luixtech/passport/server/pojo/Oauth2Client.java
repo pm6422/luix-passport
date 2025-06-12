@@ -29,7 +29,7 @@ import static cn.luixtech.passport.server.config.AuthorizationServerConfiguratio
 public class Oauth2Client implements Serializable {
     @Serial
     private static final long   serialVersionUID   = 8481969837769002598L;
-    public static final  String SCOPE_MESSAGE_READ = "message_read:read";
+    public static final  String SCOPE_MESSAGE_READ = "message:read";
 
     private String  id;
     private String  clientId;

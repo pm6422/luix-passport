@@ -233,7 +233,7 @@ public class OAuth2AuthorizationTests {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add(OAuth2ParameterNames.GRANT_TYPE, AuthorizationGrantType.CLIENT_CREDENTIALS.getValue());
         // Get different level access token with different scope
-        params.add(OAuth2ParameterNames.SCOPE, "message_read:read");
+        params.add(OAuth2ParameterNames.SCOPE, SCOPE_MESSAGE_READ);
         // Request access token
         Map<String, Object> resultMap = requestToken(params);
 
