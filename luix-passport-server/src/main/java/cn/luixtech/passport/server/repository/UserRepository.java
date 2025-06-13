@@ -27,6 +27,8 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     List<User> findByEnabledIsTrue();
 
+    int countByEmail(String email);
+
     int countByEmailAndUsernameNot(String email, String username);
 
     int countByMobileNoAndUsernameNot(String mobileNo, String username);

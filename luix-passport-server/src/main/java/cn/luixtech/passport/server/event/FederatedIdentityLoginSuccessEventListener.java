@@ -37,7 +37,7 @@ public class FederatedIdentityLoginSuccessEventListener implements BiConsumer<OA
         String email = oAuth2User.getAttribute("email");
         HybridAuthenticationToken newAuthentication;
 
-        if (userRepository.findOneByEmail(email).isPresent()) {
+        if (userRepository.countByEmail(email) > 0) {
             // query existing user
             UserDetails existingUser = this.userDetailsService.loadUserByUsername(email);
             // create a new OAuth2AuthenticationToken and merge authorities
