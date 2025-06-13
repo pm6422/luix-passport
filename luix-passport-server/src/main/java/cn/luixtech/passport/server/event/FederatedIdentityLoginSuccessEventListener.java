@@ -35,9 +35,10 @@ public class FederatedIdentityLoginSuccessEventListener implements BiConsumer<OA
         String clientRegistrationId = ((OAuth2AuthenticationToken) authentication).getAuthorizedClientRegistrationId();
         // email from the 3rd party provider
         String email = oAuth2User.getAttribute("email");
-        // query existing user by email
         HybridAuthenticationToken newAuthentication;
+
         if (userRepository.findOneByEmail(email).isPresent()) {
+            // query existing user
             UserDetails existingUser = this.userDetailsService.loadUserByUsername(email);
             // create a new OAuth2AuthenticationToken and merge authorities
             newAuthentication = new HybridAuthenticationToken(
@@ -46,6 +47,7 @@ public class FederatedIdentityLoginSuccessEventListener implements BiConsumer<OA
                     clientRegistrationId
             );
         } else {
+            // create a new user automatically
             String username = oAuth2User.getName();
             if (userRepository.findById(oAuth2User.getName()).isPresent()) {
                 // username already exists, use email instead
@@ -59,6 +61,9 @@ public class FederatedIdentityLoginSuccessEventListener implements BiConsumer<OA
                     (AuthUser) newUser,
                     clientRegistrationId
             );
+
+            // 方案2: 跳转注册页面，让用户完善信息
+            // response.sendRedirect("/register?email=" + URLEncoder.encode(email, StandardCharsets.UTF_8));
         }
 
         // Set user in security context
