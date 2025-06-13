@@ -1,39 +1,66 @@
 package cn.luixtech.passport.server.event;
 
-import cn.luixtech.passport.server.domain.User;
+import cn.luixtech.passport.server.config.oauth.AuthUser;
+import cn.luixtech.passport.server.config.oauth.HybridAuthenticationToken;
 import cn.luixtech.passport.server.repository.UserRepository;
 import cn.luixtech.passport.server.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
-import java.util.HashSet;
 import java.util.function.BiConsumer;
 
 @Slf4j
 public class FederatedIdentityLoginSuccessEventListener implements BiConsumer<OAuth2User, Authentication> {
 
-    private final UserRepository userRepository;
-    private final UserService    userService;
+    private final UserRepository     userRepository;
+    private final UserDetailsService userDetailsService;
+    private final UserService        userService;
 
     public FederatedIdentityLoginSuccessEventListener(UserRepository userRepository,
+                                                      UserDetailsService userDetailsService,
                                                       UserService userService) {
         this.userRepository = userRepository;
+        this.userDetailsService = userDetailsService;
         this.userService = userService;
     }
 
     @Override
     public void accept(OAuth2User oAuth2User, Authentication authentication) {
         log.info("Federated identity logged in successfully for user: {}", oAuth2User);
-        // Capture user in a local data store on first authentication
-        if (this.userRepository.findOneByEmail(oAuth2User.getAttribute("email")).isEmpty()) {
-            User domain = new User();
-            domain.setEmail(oAuth2User.getAttribute("email"));
-            domain.setUsername(oAuth2User.getName());
-            userService.insert(domain, new HashSet<>(), "", false);
+        // email from the 3rd party provider
+        String email = oAuth2User.getAttribute("email");
+        // query existing user by email
+        HybridAuthenticationToken newAuthentication;
+        if (userRepository.findOneByEmail(email).isPresent()) {
+            UserDetails existingUser = this.userDetailsService.loadUserByUsername(email);
+            // create a new OAuth2AuthenticationToken and merge authorities
+            newAuthentication = new HybridAuthenticationToken(
+                    oAuth2User,
+                    (AuthUser) existingUser,
+                    ((OAuth2AuthenticationToken) authentication).getAuthorizedClientRegistrationId()
+            );
+        } else {
+            String username = oAuth2User.getName();
+            if (userRepository.findById(oAuth2User.getName()).isPresent()) {
+                // username already exists, use email instead
+                username = email;
+            }
+            userService.insert3rdPartyUser(username, email);
+            UserDetails newUser = this.userDetailsService.loadUserByUsername(email);
+            // create a new OAuth2AuthenticationToken and merge authorities
+            newAuthentication = new HybridAuthenticationToken(
+                    oAuth2User,
+                    (AuthUser) newUser,
+                    ((OAuth2AuthenticationToken) authentication).getAuthorizedClientRegistrationId()
+            );
         }
+
         // Set user in security context
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        SecurityContextHolder.getContext().setAuthentication(newAuthentication);
     }
 }

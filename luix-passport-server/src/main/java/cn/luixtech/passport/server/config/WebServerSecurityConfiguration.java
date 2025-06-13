@@ -19,6 +19,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
@@ -33,7 +34,7 @@ import static cn.luixtech.passport.server.pojo.Oauth2Client.SCOPE_MESSAGE_READ;
 @AllArgsConstructor
 @Configuration(proxyBeanMethods = false)
 public class WebServerSecurityConfiguration {
-    private static final String[]       PERMITTED_PAGES     = {
+    private static final String[]           PERMITTED_PAGES     = {
             "/",
             "/index.html",
             "/login",
@@ -54,7 +55,7 @@ public class WebServerSecurityConfiguration {
             "/privacy-policy",
             "/contact-us",
     };
-    public static final  String[]       STATIC_RESOURCES    = {
+    public static final  String[]           STATIC_RESOURCES    = {
 //            "/static/**",
 //            "/public/**",
 //            "/resources/**",
@@ -65,12 +66,13 @@ public class WebServerSecurityConfiguration {
             "/assets/**",
             "/webjars/**",
     };
-    public static final  String[]       MANAGEMENT_REQUESTS = {
+    public static final  String[]           MANAGEMENT_REQUESTS = {
             "/management/health/**",
             "/management/info/**",
     };
-    private final        UserRepository userRepository;
-    private final        UserService    userService;
+    private final        UserRepository     userRepository;
+    private final        UserDetailsService userDetailsService;
+    private final        UserService        userService;
 
 //    /**
 //     * Refer to <a href="https://docs.spring.io/spring-security/reference/servlet/authorization/method-security.html">Using a Custom Authorization Manager</a>
@@ -130,7 +132,7 @@ public class WebServerSecurityConfiguration {
 			.oauth2Login(oauth2Login ->
 				oauth2Login
 					.loginPage("/login")
-					.successHandler(new FederatedIdentityLoginSuccessHandler(new FederatedIdentityLoginSuccessEventListener(userRepository, userService)))
+					.successHandler(new FederatedIdentityLoginSuccessHandler(new FederatedIdentityLoginSuccessEventListener(userRepository,userDetailsService, userService)))
 			);
 //			.headers(headers->headers.frameOptions(x->x.sameOrigin()));
 		/*

@@ -14,6 +14,7 @@ import cn.luixtech.passport.server.service.*;
 import cn.luixtech.passport.server.statemachine.UserEvent;
 import cn.luixtech.passport.server.statemachine.UserState;
 import cn.luixtech.passport.server.utils.AuthUtils;
+import com.google.common.collect.Sets;
 import com.luixtech.springbootframework.component.MessageCreator;
 import com.luixtech.utilities.exception.DataNotFoundException;
 import com.luixtech.utilities.exception.DuplicationException;
@@ -179,7 +180,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         domain.setEnabled(true);
         domain.setPasswordExpiresAt(Instant.now().plus(90, ChronoUnit.DAYS));
         domain.setLocale(env.getProperty("spring.web.locale"));
-
         domain.setTimeZoneId(applicationProperties.getTimezone().getDefaultTimezone());
 
         SupportedDateTimeFormat presetDateTimeFormat = supportedDateTimeFormatRepository.findByPresetIsTrue()
@@ -196,6 +196,34 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         List<UserRole> userRoles = userRoleService.assignWithDefaults(domain.getUsername(), roleIds);
         userRoleRepository.saveAll(userRoles);
+        return domain;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public User insert3rdPartyUser(String username, String email) {
+        User domain = new User();
+        domain.setUsername(username);
+        domain.setEmail(email);
+        domain.setPasswordHash(StringUtils.EMPTY);
+        domain.setActivated(true);
+        domain.setEnabled(true);
+        domain.setLocale(env.getProperty("spring.web.locale"));
+        domain.setTimeZoneId(applicationProperties.getTimezone().getDefaultTimezone());
+
+        SupportedDateTimeFormat presetDateTimeFormat = supportedDateTimeFormatRepository.findByPresetIsTrue()
+                .orElseThrow(() -> new DataNotFoundException("preset date time format"));
+        domain.setDateTimeFormatId(presetDateTimeFormat.getId());
+
+        userRepository.save(domain);
+        log.info("Created 3rd party user: {}", domain);
+
+        List<UserRole> userRoles = userRoleService.assignWithDefaults(domain.getUsername(), Sets.newHashSet());
+        userRoleRepository.saveAll(userRoles);
+
+        userNotificationService.sendPersonalNotification(Collections.singletonList(username),
+                "Created account",
+                "You have successfully created the account, please contact the administrator to grant appropriate roles.");
         return domain;
     }
 

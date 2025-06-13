@@ -24,6 +24,8 @@ public interface UserService {
 
     User insert(User domain, Set<String> roleIds, String rawPassword, boolean permanentAccount);
 
+    User insert3rdPartyUser(String username, String email);
+
     User update(ManagedUser managedUser);
 
     void activate(String activationCode);
