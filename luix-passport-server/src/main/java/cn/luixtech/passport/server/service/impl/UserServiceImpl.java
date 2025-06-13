@@ -201,7 +201,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public User insert3rdPartyUser(String username, String email) {
+    public User insert3rdPartyUser(String username, String email, String source) {
         User domain = new User();
         domain.setUsername(username);
         domain.setEmail(email);
@@ -214,6 +214,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         SupportedDateTimeFormat presetDateTimeFormat = supportedDateTimeFormatRepository.findByPresetIsTrue()
                 .orElseThrow(() -> new DataNotFoundException("preset date time format"));
         domain.setDateTimeFormatId(presetDateTimeFormat.getId());
+        domain.setSource(source);
 
         userRepository.save(domain);
         log.info("Created 3rd party user: {}", domain);

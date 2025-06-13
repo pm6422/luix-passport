@@ -68,4 +68,5 @@ public class User extends AbstractUpdateDomain implements Serializable {
     @Schema
     @Column(nullable = false)
     private String  timeZoneId;
+    private String  source;
 }

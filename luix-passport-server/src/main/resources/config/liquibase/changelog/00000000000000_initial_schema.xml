@@ -235,6 +235,7 @@
             <column name="date_time_format_id" type="varchar(20)">
                 <constraints nullable="false"/>
             </column>
+            <column name="source" type="VARCHAR(20)"/>
             <column name="created_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>

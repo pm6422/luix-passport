@@ -32,6 +32,7 @@ public class FederatedIdentityLoginSuccessEventListener implements BiConsumer<OA
     @Override
     public void accept(OAuth2User oAuth2User, Authentication authentication) {
         log.info("Federated identity logged in successfully for user: {}", oAuth2User);
+        String clientRegistrationId = ((OAuth2AuthenticationToken) authentication).getAuthorizedClientRegistrationId();
         // email from the 3rd party provider
         String email = oAuth2User.getAttribute("email");
         // query existing user by email
@@ -42,7 +43,7 @@ public class FederatedIdentityLoginSuccessEventListener implements BiConsumer<OA
             newAuthentication = new HybridAuthenticationToken(
                     oAuth2User,
                     (AuthUser) existingUser,
-                    ((OAuth2AuthenticationToken) authentication).getAuthorizedClientRegistrationId()
+                    clientRegistrationId
             );
         } else {
             String username = oAuth2User.getName();
@@ -50,13 +51,13 @@ public class FederatedIdentityLoginSuccessEventListener implements BiConsumer<OA
                 // username already exists, use email instead
                 username = email;
             }
-            userService.insert3rdPartyUser(username, email);
+            userService.insert3rdPartyUser(username, email, clientRegistrationId);
             UserDetails newUser = this.userDetailsService.loadUserByUsername(email);
             // create a new OAuth2AuthenticationToken and merge authorities
             newAuthentication = new HybridAuthenticationToken(
                     oAuth2User,
                     (AuthUser) newUser,
-                    ((OAuth2AuthenticationToken) authentication).getAuthorizedClientRegistrationId()
+                    clientRegistrationId
             );
         }
 

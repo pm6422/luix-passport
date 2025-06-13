@@ -155,6 +155,11 @@ public class User extends TableImpl<UserRecord> {
     public final TableField<UserRecord, String> DATE_TIME_FORMAT_ID = createField(DSL.name("date_time_format_id"), SQLDataType.VARCHAR(20).nullable(false), this, "");
 
     /**
+     * The column <code>public.user.source</code>.
+     */
+    public final TableField<UserRecord, String> SOURCE = createField(DSL.name("source"), SQLDataType.VARCHAR(20), this, "");
+
+    /**
      * The column <code>public.user.created_at</code>.
      */
     public final TableField<UserRecord, Instant> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.INSTANT.nullable(false), this, "");

@@ -315,59 +315,73 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> {
     }
 
     /**
+     * Setter for <code>public.user.source</code>.
+     */
+    public void setSource(String value) {
+        set(21, value);
+    }
+
+    /**
+     * Getter for <code>public.user.source</code>.
+     */
+    public String getSource() {
+        return (String) get(21);
+    }
+
+    /**
      * Setter for <code>public.user.created_at</code>.
      */
     public void setCreatedAt(Instant value) {
-        set(21, value);
+        set(22, value);
     }
 
     /**
      * Getter for <code>public.user.created_at</code>.
      */
     public Instant getCreatedAt() {
-        return (Instant) get(21);
+        return (Instant) get(22);
     }
 
     /**
      * Setter for <code>public.user.created_by</code>.
      */
     public void setCreatedBy(String value) {
-        set(22, value);
+        set(23, value);
     }
 
     /**
      * Getter for <code>public.user.created_by</code>.
      */
     public String getCreatedBy() {
-        return (String) get(22);
+        return (String) get(23);
     }
 
     /**
      * Setter for <code>public.user.modified_at</code>.
      */
     public void setModifiedAt(Instant value) {
-        set(23, value);
+        set(24, value);
     }
 
     /**
      * Getter for <code>public.user.modified_at</code>.
      */
     public Instant getModifiedAt() {
-        return (Instant) get(23);
+        return (Instant) get(24);
     }
 
     /**
      * Setter for <code>public.user.modified_by</code>.
      */
     public void setModifiedBy(String value) {
-        set(24, value);
+        set(25, value);
     }
 
     /**
      * Getter for <code>public.user.modified_by</code>.
      */
     public String getModifiedBy() {
-        return (String) get(24);
+        return (String) get(25);
     }
 
     // -------------------------------------------------------------------------
@@ -393,7 +407,7 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> {
     /**
      * Create a detached, initialised UserRecord
      */
-    public UserRecord(String username, String email, String mobileNo, String firstName, String lastName, String passwordHash, String activationCode, String verificationCode, Instant verificationCodeSentAt, String newEmail, String resetCode, Instant resetAt, String remark, Boolean activated, Boolean enabled, Instant accountExpiresAt, Instant passwordExpiresAt, Instant lastSignInAt, String locale, String timeZoneId, String dateTimeFormatId, Instant createdAt, String createdBy, Instant modifiedAt, String modifiedBy) {
+    public UserRecord(String username, String email, String mobileNo, String firstName, String lastName, String passwordHash, String activationCode, String verificationCode, Instant verificationCodeSentAt, String newEmail, String resetCode, Instant resetAt, String remark, Boolean activated, Boolean enabled, Instant accountExpiresAt, Instant passwordExpiresAt, Instant lastSignInAt, String locale, String timeZoneId, String dateTimeFormatId, String source, Instant createdAt, String createdBy, Instant modifiedAt, String modifiedBy) {
         super(User.USER);
 
         setUsername(username);
@@ -417,6 +431,7 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> {
         setLocale(locale);
         setTimeZoneId(timeZoneId);
         setDateTimeFormatId(dateTimeFormatId);
+        setSource(source);
         setCreatedAt(createdAt);
         setCreatedBy(createdBy);
         setModifiedAt(modifiedAt);
