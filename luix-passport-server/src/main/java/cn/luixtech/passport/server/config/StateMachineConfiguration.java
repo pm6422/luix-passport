@@ -23,7 +23,6 @@ public class StateMachineConfiguration extends StateMachineConfigurerAdapter<Use
                 .state(UserState.INACTIVATED)
                 .state(UserState.ACTIVATED)
                 .state(UserState.DISABLED)
-                .state(UserState.DISABLED)
                 .end(UserState.ENABLED);
     }
 
