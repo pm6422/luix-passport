@@ -4,6 +4,7 @@ import cn.luixtech.passport.server.config.oauth.AuthUser;
 import cn.luixtech.passport.server.config.oauth.HybridAuthenticationToken;
 import cn.luixtech.passport.server.repository.UserRepository;
 import cn.luixtech.passport.server.service.UserService;
+import com.luixtech.uidgenerator.core.id.IdGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -50,8 +51,8 @@ public class FederatedIdentityLoginSuccessEventListener implements BiConsumer<OA
             // create a new user automatically
             String username = oAuth2User.getName();
             if (userRepository.findById(oAuth2User.getName()).isPresent()) {
-                // username already exists, use email instead
-                username = email;
+                // username already exists
+                username = "U" + IdGenerator.generateShortId();
             }
             userService.insertThirdPartyUser(username, email, clientRegistrationId);
             UserDetails newUser = this.userDetailsService.loadUserByUsername(email);
