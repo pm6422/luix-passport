@@ -51,7 +51,7 @@ public class FederatedIdentityLoginSuccessEventListener implements BiConsumer<OA
             // create a new user automatically
             String username = oAuth2User.getName();
             if (userRepository.findById(oAuth2User.getName()).isPresent()) {
-                // username already exists
+                // if the username already exists, generate a random username
                 username = "U" + IdGenerator.generateShortId();
             }
             userService.insertThirdPartyUser(username, email, clientRegistrationId);
