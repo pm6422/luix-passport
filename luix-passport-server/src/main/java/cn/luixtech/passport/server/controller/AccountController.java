@@ -144,7 +144,6 @@ public class AccountController {
     public ResponseEntity<Void> update(@Parameter(description = "new user info", required = true) @Valid @RequestBody ManagedUser domain) {
         Validate.isTrue(AuthUtils.getCurrentUsername().equals(domain.getUsername()), "Invalid username!");
         domain.setEmail(null);
-        domain.setMobileNo(null);
         domain.setRemark(null);
         domain.setRoleIds(null);
         domain.setEnabled(null);

@@ -20,13 +20,14 @@ import { type SupportedDateTimeFormat } from "@/domains/supported-date-time-form
 import { type DataDict } from "@/domains/data-dict"
 import { Link } from "react-router-dom"
 import { Option } from "@/components/custom/multi-select"
+import PhoneInputFormField from "@/components/custom/form-field/phone-input"
 
 const settingsFormSchema = z.object({
   username: z.string().trim().min(1, { message: "Required" }),
   email: z.string().trim().min(1, { message: "Required" }).email("Invalid email format"),
   mobileNo: z.string().trim().min(1, { message: "Required" }).refine(isValidPhoneNumber, { message: "Invalid phone number" }),
-  firstName: z.string().optional(),
-  lastName: z.string().optional(),
+  firstName: z.string().optional().nullable(),
+  lastName: z.string().optional().nullable(),
   locale: z.string().trim().min(1, { message: "Required" }),
   timeZoneId: z.string().trim().min(1, { message: "Required" }),
   dateTimeFormatId: z.string().trim().min(1, { message: "Required" }),
@@ -106,12 +107,14 @@ export function SettingsForm() {
           </Link>
         </div>
 
-        <div>
-          <h3 className="text-sm font-medium">Mobile No.</h3>
-          <p className="mt-2 text-sm text-muted-foreground">
-            {form.getValues("mobileNo")}
-          </p>
-        </div>
+        <PhoneInputFormField
+          control={form.control}
+          name="mobileNo"
+          label="Mobile No"
+          formItemClassName="w-full"
+          required
+          placeholder="Enter a phone number"
+        />
 
         <div className="flex flex-col md:flex-row items-center gap-2 space-y-4 md:space-y-0">
           <InputFormField
