@@ -53,7 +53,7 @@ public class FederatedIdentityLoginSuccessEventListener implements BiConsumer<OA
                 // username already exists, use email instead
                 username = email;
             }
-            userService.insert3rdPartyUser(username, email, clientRegistrationId);
+            userService.insertThirdPartyUser(username, email, clientRegistrationId);
             UserDetails newUser = this.userDetailsService.loadUserByUsername(email);
             // create a new OAuth2AuthenticationToken and merge authorities
             newAuthentication = new HybridAuthenticationToken(

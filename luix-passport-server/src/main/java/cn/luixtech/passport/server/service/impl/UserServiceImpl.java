@@ -201,7 +201,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public User insert3rdPartyUser(String username, String email, String source) {
+    public User insertThirdPartyUser(String username, String email, String source) {
         User domain = new User();
         domain.setUsername(username);
         domain.setEmail(email);
