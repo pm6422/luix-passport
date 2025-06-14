@@ -51,9 +51,9 @@ public class Shedlock extends TableImpl<ShedlockRecord> {
     }
 
     /**
-     * The column <code>public.shedlock.name</code>.
+     * The column <code>public.shedlock.id</code>.
      */
-    public final TableField<ShedlockRecord, String> NAME = createField(DSL.name("name"), SQLDataType.VARCHAR(64).nullable(false), this, "");
+    public final TableField<ShedlockRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(64).nullable(false), this, "");
 
     /**
      * The column <code>public.shedlock.lock_until</code>.

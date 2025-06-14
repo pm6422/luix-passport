@@ -503,7 +503,7 @@
                 tableName="user_notification">
         </loadData>
         <createTable tableName="shedlock">
-            <column name="name" type="VARCHAR(64)">
+            <column name="id" type="VARCHAR(64)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="lock_until" type="timestamp">

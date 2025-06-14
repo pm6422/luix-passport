@@ -24,16 +24,16 @@ public class ShedlockRecord extends UpdatableRecordImpl<ShedlockRecord> implemen
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>public.shedlock.name</code>.
+     * Setter for <code>public.shedlock.id</code>.
      */
-    public void setName(String value) {
+    public void setId(String value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>public.shedlock.name</code>.
+     * Getter for <code>public.shedlock.id</code>.
      */
-    public String getName() {
+    public String getId() {
         return (String) get(0);
     }
 
@@ -104,7 +104,7 @@ public class ShedlockRecord extends UpdatableRecordImpl<ShedlockRecord> implemen
 
     @Override
     public Field<String> field1() {
-        return Shedlock.SHEDLOCK.NAME;
+        return Shedlock.SHEDLOCK.ID;
     }
 
     @Override
@@ -124,7 +124,7 @@ public class ShedlockRecord extends UpdatableRecordImpl<ShedlockRecord> implemen
 
     @Override
     public String component1() {
-        return getName();
+        return getId();
     }
 
     @Override
@@ -144,7 +144,7 @@ public class ShedlockRecord extends UpdatableRecordImpl<ShedlockRecord> implemen
 
     @Override
     public String value1() {
-        return getName();
+        return getId();
     }
 
     @Override
@@ -164,7 +164,7 @@ public class ShedlockRecord extends UpdatableRecordImpl<ShedlockRecord> implemen
 
     @Override
     public ShedlockRecord value1(String value) {
-        setName(value);
+        setId(value);
         return this;
     }
 
@@ -209,10 +209,10 @@ public class ShedlockRecord extends UpdatableRecordImpl<ShedlockRecord> implemen
     /**
      * Create a detached, initialised ShedlockRecord
      */
-    public ShedlockRecord(String name, Instant lockUntil, Instant lockedAt, String lockedBy) {
+    public ShedlockRecord(String id, Instant lockUntil, Instant lockedAt, String lockedBy) {
         super(Shedlock.SHEDLOCK);
 
-        setName(name);
+        setId(id);
         setLockUntil(lockUntil);
         setLockedAt(lockedAt);
         setLockedBy(lockedBy);
