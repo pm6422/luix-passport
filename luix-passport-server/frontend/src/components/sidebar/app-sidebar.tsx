@@ -22,7 +22,8 @@ import {
   IconBellRinging,
   IconApi,
   IconDatabase,
-  IconVocabulary
+  IconVocabulary,
+  IconCalendarStats
 } from "@tabler/icons-react"
 import { loginUserStore } from "@/stores/login-user-store"
 import { useStore } from "exome/react"
@@ -99,6 +100,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               icon: IconVocabulary,
             }
           ] : []),
+          {
+            title: "Schedules",
+            url: "/schedules",
+            icon: IconCalendarStats,
+          },
           {
             title: "API Documentation",
             url: "/api-docs",

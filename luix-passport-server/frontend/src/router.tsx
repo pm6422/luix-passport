@@ -147,6 +147,12 @@ const router = createBrowserRouter([
         }),
       },
       {
+        path: "schedules",
+        lazy: async () => ({
+          Component: (await import("@/views/schedules")).default
+        }),
+      },
+      {
         path: "users",
         lazy: async () => ({
           Component: (await import("@/views/users")).default

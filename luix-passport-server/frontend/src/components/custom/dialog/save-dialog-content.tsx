@@ -23,7 +23,7 @@ interface Props<T extends FieldValues> {
   id?: string | null;
   form: UseFormReturn<T>;
   size?: "sm" | "md" | "lg";
-  save: (formData: T) => Promise<void>;
+  save?: (formData: T) => Promise<void>;
   afterSave?: (success: boolean) => void;
   setOpen: (open: boolean) => void;
   readonly?: boolean;
@@ -47,26 +47,28 @@ const SaveDialogContent = <T extends FieldValues,>({
 
   function onSubmit(formData: T): void {
     setSaving(true)
-    toast.promise(save(formData), {
-      loading: "Saving " + entityName + "...",
-      success: () => {
-        setOpen(false)
-        form.reset()
-        if (afterSave) {
-          afterSave(true)
+    if(save) {
+      toast.promise(save(formData), {
+        loading: "Saving " + entityName + "...",
+        success: () => {
+          setOpen(false)
+          form.reset()
+          if (afterSave) {
+            afterSave(true)
+          }
+          setSaving(false)
+          return "Saved " + entityName
+        },
+        error: (error) => {
+          setOpen(false)
+          if (afterSave) {
+            afterSave(false)
+          }
+          setSaving(false)
+          return getErrorMessage(error)
         }
-        setSaving(false)
-        return "Saved " + entityName
-      },
-      error: (error) => {
-        setOpen(false)
-        if (afterSave) {
-          afterSave(false)
-        }
-        setSaving(false)
-        return getErrorMessage(error)
-      }
-    })
+      })
+    }
   }
 
   function onFormError(error: FieldErrors): void {
@@ -76,7 +78,7 @@ const SaveDialogContent = <T extends FieldValues,>({
   return (
     <DialogContent className={cn("max-h-screen overflow-y-auto lg:max-w-screen-md", `lg:max-w-screen-${size}`)}>
       <DialogHeader>
-        <DialogTitle className="capitalize">{id ? "Update" : "Create"} {entityName}</DialogTitle>
+        <DialogTitle className="capitalize">{readonly ? "View" : id ? "Update" : "Create"} {entityName}</DialogTitle>
         <DialogDescription></DialogDescription>
       </DialogHeader>
       <Separator/>

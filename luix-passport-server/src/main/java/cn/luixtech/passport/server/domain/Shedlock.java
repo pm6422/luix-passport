@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.Instant;
 
 @Entity
 @EntityListeners(AuditableEntityListener.class)
@@ -22,8 +23,8 @@ public class Shedlock extends AbstractBaseDomain implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private String lockUntil;
-    private String lockAt;
-    private String lockBy;
+    private Instant lockUntil;
+    private Instant lockedAt;
+    private String  lockedBy;
 
 }
