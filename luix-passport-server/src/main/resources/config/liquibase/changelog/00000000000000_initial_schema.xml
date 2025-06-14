@@ -502,6 +502,20 @@
                 separator=";"
                 tableName="user_notification">
         </loadData>
+        <createTable tableName="shedlock">
+            <column name="name" type="VARCHAR(64)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="lock_until" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="locked_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="locked_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
 
         <createIndex tableName="user" indexName="idx_user_time_zone_id" unique="false">
             <column name="time_zone_id"/>

@@ -1,6 +1,6 @@
 {
   "apiDocsEnabled" : true,
-  "ribbonProfile" : "disconnected",
+  "ribbonProfile" : "dev,test",
   "build" : {
     "artifact" : "luix-passport",
     "name" : "LUix Passport Server",

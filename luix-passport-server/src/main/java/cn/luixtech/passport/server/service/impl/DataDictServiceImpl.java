@@ -6,6 +6,7 @@ import cn.luixtech.passport.server.repository.DataDictRepository;
 import cn.luixtech.passport.server.service.DataDictService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 import org.jooq.DSLContext;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -49,15 +50,12 @@ public class DataDictServiceImpl implements DataDictService {
      * Execute every day at 2:00 AM
      */
     @Scheduled(cron = "0 0 2 * * *")
+    @SchedulerLock(name = "DataDictService::updateTimezoneUtcOffset", lockAtLeastFor = "2m", lockAtMostFor = "5m")
     @Override
     public void updateTimezoneUtcOffset() {
         dataDictRepository.findByCategoryCode(CATEGORY_CODE_TIMEZONE).forEach(timezone -> {
-            try {
-                timezone.setDictName(getOffset(ZoneId.of(timezone.getDictName())));
-                dataDictRepository.save(timezone);
-            } catch (Exception e) {
-                log.error("Failed to update offset for timezone: {}", timezone.getId());
-            }
+            timezone.setDictName(getOffset(ZoneId.of(timezone.getDictName())));
+            dataDictRepository.save(timezone);
         });
     }
 
