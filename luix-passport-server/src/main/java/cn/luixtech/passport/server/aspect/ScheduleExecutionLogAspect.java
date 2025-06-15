@@ -4,7 +4,6 @@ import cn.luixtech.passport.server.annotation.SchedulerExecutionLog;
 import cn.luixtech.passport.server.domain.ScheduleExecutionLog;
 import cn.luixtech.passport.server.repository.ScheduleExecutionLogRepository;
 import cn.luixtech.passport.server.service.SchedulerLockService;
-import com.luixtech.utilities.network.AddressUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
@@ -99,15 +98,6 @@ public class ScheduleExecutionLogAspect {
                     .collect(Collectors.joining(", "));
         } catch (Exception e) {
             return "parameter serialization failed";
-        }
-    }
-
-    private Duration parseDuration(String durationStr) {
-        try {
-            return Duration.parse("PT" + durationStr.toUpperCase());
-        } catch (Exception e) {
-            // 默认10分钟
-            return Duration.ofMinutes(10);
         }
     }
 }
