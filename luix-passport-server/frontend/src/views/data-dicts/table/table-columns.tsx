@@ -4,7 +4,7 @@ import { IconEdit } from "@tabler/icons-react"
 import { DataTableColumnHeader } from "@/components/custom/data-table/data-table-column-header"
 import { DataTableRowActions } from "@/components/custom/data-table/data-table-row-actions"
 import { Button } from "@/components/ui/button"
-import { yesNo } from "@/data/yes-no"
+import { StatusBadge } from "@/components/custom/status-badge"
 import { DataDict } from "@/domains/data-dict"
 import { EditDialog } from "../dialog/edit-dialog"
 import { DateTime } from "@/components/custom/date-time"
@@ -82,13 +82,9 @@ export function tableColumns(
         <DataTableColumnHeader column={column} title="Enabled" />
       ),
       cell: ({ row }) => {
-        const element = yesNo.find(e => e.value === row.getValue("enabled"))
-
         return (
           <div className="flex w-[50px] items-center justify-center">
-            {element && element.icon && (
-              <element.icon className="mr-2 size-5 text-muted-foreground" />
-            )}
+            <StatusBadge value={row.original.enabled} />
           </div>
         )
       },
