@@ -61,14 +61,14 @@ public class ScheduleExecutionLog extends TableImpl<ScheduleExecutionLogRecord> 
     public final TableField<ScheduleExecutionLogRecord, String> SCHEDULE_NAME = createField(DSL.name("schedule_name"), SQLDataType.VARCHAR(100).nullable(false), this, "");
 
     /**
-     * The column <code>public.schedule_execution_log.start_time</code>.
+     * The column <code>public.schedule_execution_log.start_at</code>.
      */
-    public final TableField<ScheduleExecutionLogRecord, Instant> START_TIME = createField(DSL.name("start_time"), SQLDataType.INSTANT.nullable(false), this, "");
+    public final TableField<ScheduleExecutionLogRecord, Instant> START_AT = createField(DSL.name("start_at"), SQLDataType.INSTANT.nullable(false), this, "");
 
     /**
-     * The column <code>public.schedule_execution_log.end_time</code>.
+     * The column <code>public.schedule_execution_log.end_at</code>.
      */
-    public final TableField<ScheduleExecutionLogRecord, Instant> END_TIME = createField(DSL.name("end_time"), SQLDataType.INSTANT, this, "");
+    public final TableField<ScheduleExecutionLogRecord, Instant> END_AT = createField(DSL.name("end_at"), SQLDataType.INSTANT, this, "");
 
     /**
      * The column <code>public.schedule_execution_log.duration_ms</code>.
@@ -92,9 +92,9 @@ public class ScheduleExecutionLog extends TableImpl<ScheduleExecutionLogRecord> 
     public final TableField<ScheduleExecutionLogRecord, String> PARAMETERS = createField(DSL.name("parameters"), SQLDataType.CLOB, this, "");
 
     /**
-     * The column <code>public.schedule_execution_log.message</code>.
+     * The column <code>public.schedule_execution_log.error</code>.
      */
-    public final TableField<ScheduleExecutionLogRecord, String> MESSAGE = createField(DSL.name("message"), SQLDataType.CLOB, this, "");
+    public final TableField<ScheduleExecutionLogRecord, String> ERROR = createField(DSL.name("error"), SQLDataType.CLOB, this, "");
 
     private ScheduleExecutionLog(Name alias, Table<ScheduleExecutionLogRecord> aliased) {
         this(alias, aliased, null);

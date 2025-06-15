@@ -28,13 +28,13 @@ public class ScheduleExecutionLog extends AbstractBaseDomain implements Serializ
     public static final  String STATUS_FAILURE   = "FAILURE";
 
     private String  scheduleName;
-    private Instant startTime;
-    private Instant endTime;
+    private Instant startAt;
+    private Instant endAt;
     private Long    durationMs;
     private String  status;
     private String  node;
     @Lob
     private String  parameters;
     @Lob
-    private String  message;
+    private String  error;
 }

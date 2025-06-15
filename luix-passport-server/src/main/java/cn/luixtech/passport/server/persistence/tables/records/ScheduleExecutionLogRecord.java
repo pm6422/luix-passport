@@ -52,30 +52,30 @@ public class ScheduleExecutionLogRecord extends UpdatableRecordImpl<ScheduleExec
     }
 
     /**
-     * Setter for <code>public.schedule_execution_log.start_time</code>.
+     * Setter for <code>public.schedule_execution_log.start_at</code>.
      */
-    public void setStartTime(Instant value) {
+    public void setStartAt(Instant value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>public.schedule_execution_log.start_time</code>.
+     * Getter for <code>public.schedule_execution_log.start_at</code>.
      */
-    public Instant getStartTime() {
+    public Instant getStartAt() {
         return (Instant) get(2);
     }
 
     /**
-     * Setter for <code>public.schedule_execution_log.end_time</code>.
+     * Setter for <code>public.schedule_execution_log.end_at</code>.
      */
-    public void setEndTime(Instant value) {
+    public void setEndAt(Instant value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>public.schedule_execution_log.end_time</code>.
+     * Getter for <code>public.schedule_execution_log.end_at</code>.
      */
-    public Instant getEndTime() {
+    public Instant getEndAt() {
         return (Instant) get(3);
     }
 
@@ -138,16 +138,16 @@ public class ScheduleExecutionLogRecord extends UpdatableRecordImpl<ScheduleExec
     }
 
     /**
-     * Setter for <code>public.schedule_execution_log.message</code>.
+     * Setter for <code>public.schedule_execution_log.error</code>.
      */
-    public void setMessage(String value) {
+    public void setError(String value) {
         set(8, value);
     }
 
     /**
-     * Getter for <code>public.schedule_execution_log.message</code>.
+     * Getter for <code>public.schedule_execution_log.error</code>.
      */
-    public String getMessage() {
+    public String getError() {
         return (String) get(8);
     }
 
@@ -186,12 +186,12 @@ public class ScheduleExecutionLogRecord extends UpdatableRecordImpl<ScheduleExec
 
     @Override
     public Field<Instant> field3() {
-        return ScheduleExecutionLog.SCHEDULE_EXECUTION_LOG.START_TIME;
+        return ScheduleExecutionLog.SCHEDULE_EXECUTION_LOG.START_AT;
     }
 
     @Override
     public Field<Instant> field4() {
-        return ScheduleExecutionLog.SCHEDULE_EXECUTION_LOG.END_TIME;
+        return ScheduleExecutionLog.SCHEDULE_EXECUTION_LOG.END_AT;
     }
 
     @Override
@@ -216,7 +216,7 @@ public class ScheduleExecutionLogRecord extends UpdatableRecordImpl<ScheduleExec
 
     @Override
     public Field<String> field9() {
-        return ScheduleExecutionLog.SCHEDULE_EXECUTION_LOG.MESSAGE;
+        return ScheduleExecutionLog.SCHEDULE_EXECUTION_LOG.ERROR;
     }
 
     @Override
@@ -231,12 +231,12 @@ public class ScheduleExecutionLogRecord extends UpdatableRecordImpl<ScheduleExec
 
     @Override
     public Instant component3() {
-        return getStartTime();
+        return getStartAt();
     }
 
     @Override
     public Instant component4() {
-        return getEndTime();
+        return getEndAt();
     }
 
     @Override
@@ -261,7 +261,7 @@ public class ScheduleExecutionLogRecord extends UpdatableRecordImpl<ScheduleExec
 
     @Override
     public String component9() {
-        return getMessage();
+        return getError();
     }
 
     @Override
@@ -276,12 +276,12 @@ public class ScheduleExecutionLogRecord extends UpdatableRecordImpl<ScheduleExec
 
     @Override
     public Instant value3() {
-        return getStartTime();
+        return getStartAt();
     }
 
     @Override
     public Instant value4() {
-        return getEndTime();
+        return getEndAt();
     }
 
     @Override
@@ -306,7 +306,7 @@ public class ScheduleExecutionLogRecord extends UpdatableRecordImpl<ScheduleExec
 
     @Override
     public String value9() {
-        return getMessage();
+        return getError();
     }
 
     @Override
@@ -323,13 +323,13 @@ public class ScheduleExecutionLogRecord extends UpdatableRecordImpl<ScheduleExec
 
     @Override
     public ScheduleExecutionLogRecord value3(Instant value) {
-        setStartTime(value);
+        setStartAt(value);
         return this;
     }
 
     @Override
     public ScheduleExecutionLogRecord value4(Instant value) {
-        setEndTime(value);
+        setEndAt(value);
         return this;
     }
 
@@ -359,7 +359,7 @@ public class ScheduleExecutionLogRecord extends UpdatableRecordImpl<ScheduleExec
 
     @Override
     public ScheduleExecutionLogRecord value9(String value) {
-        setMessage(value);
+        setError(value);
         return this;
     }
 
@@ -391,18 +391,18 @@ public class ScheduleExecutionLogRecord extends UpdatableRecordImpl<ScheduleExec
     /**
      * Create a detached, initialised ScheduleExecutionLogRecord
      */
-    public ScheduleExecutionLogRecord(String id, String scheduleName, Instant startTime, Instant endTime, Long durationMs, String status, String node, String parameters, String message) {
+    public ScheduleExecutionLogRecord(String id, String scheduleName, Instant startAt, Instant endAt, Long durationMs, String status, String node, String parameters, String error) {
         super(ScheduleExecutionLog.SCHEDULE_EXECUTION_LOG);
 
         setId(id);
         setScheduleName(scheduleName);
-        setStartTime(startTime);
-        setEndTime(endTime);
+        setStartAt(startAt);
+        setEndAt(endAt);
         setDurationMs(durationMs);
         setStatus(status);
         setNode(node);
         setParameters(parameters);
-        setMessage(message);
+        setError(error);
         resetChangedOnNotNull();
     }
 }

@@ -49,7 +49,7 @@ public class ScheduleExecutionLogAspect {
 
         ScheduleExecutionLog domain = new ScheduleExecutionLog();
         domain.setScheduleName(scheduleName);
-        domain.setStartTime(Instant.now());
+        domain.setStartAt(Instant.now());
         domain.setStatus(STATUS_RUNNING);
         domain.setNode(Utils.getHostname());
 
@@ -65,14 +65,14 @@ public class ScheduleExecutionLogAspect {
             Object result = joinPoint.proceed();
 
             domain.setStatus(STATUS_SUCCESS);
-            domain.setEndTime(Instant.now());
-            long millis = Duration.between(domain.getStartTime(), domain.getEndTime()).toMillis();
+            domain.setEndAt(Instant.now());
+            long millis = Duration.between(domain.getStartAt(), domain.getEndAt()).toMillis();
             domain.setDurationMs(millis);
             return result;
         } catch (Exception e) {
             domain.setStatus(STATUS_FAILURE);
-            domain.setMessage(e.getMessage());
-            domain.setEndTime(Instant.now());
+            domain.setError(e.getMessage());
+            domain.setEndAt(Instant.now());
             throw e;
         } finally {
             // update to final status
