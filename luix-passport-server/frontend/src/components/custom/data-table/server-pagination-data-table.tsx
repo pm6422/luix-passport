@@ -155,10 +155,10 @@ export function DataTable<TData, TValue>({
         )}
         <DataTableViewOptions columns={table.getAllColumns()} />
       </div>
-      <div className="rounded-md border">
+      <div className="overflow-hidden rounded-lg border">
         <MinusIntroY>
           <Table>
-            <TableHeader>
+            <TableHeader className="bg-muted">
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
@@ -182,7 +182,7 @@ export function DataTable<TData, TValue>({
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
-                    className="border-b border-dashed last:border-0"
+                    className="border-b last:border-0"
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id}>
