@@ -91,7 +91,6 @@ public class ScheduleExecutionLogAspect {
         if (args.length == 0) {
             return null;
         }
-
         try {
             return Arrays.stream(args)
                     .map(arg -> arg != null ? arg.toString() : "null")
