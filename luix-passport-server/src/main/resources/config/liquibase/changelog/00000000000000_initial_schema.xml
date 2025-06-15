@@ -531,14 +531,11 @@
             <column name="status" type="VARCHAR(20)" remarks="(RUNNING/SUCCESS/FAILURE)">
                 <constraints nullable="false"/>
             </column>
-            <column name="node_ip" type="VARCHAR(45)">
+            <column name="node" type="VARCHAR(45)">
                 <constraints nullable="false"/>
             </column>
             <column name="parameters" type="TEXT"/>
             <column name="message" type="TEXT"/>
-            <column name="priority" type="VARCHAR(20)">
-                <constraints nullable="false"/>
-            </column>
         </createTable>
 
         <createIndex tableName="user" indexName="idx_user_time_zone_id" unique="false">

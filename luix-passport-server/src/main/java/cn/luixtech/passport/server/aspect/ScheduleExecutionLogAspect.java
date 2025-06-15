@@ -41,9 +41,7 @@ public class ScheduleExecutionLogAspect {
         Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
         SchedulerLock schedulerLockAnnotation = method.getAnnotation(SchedulerLock.class);
 
-        if (schedulerExecutionLog.integrateWithShedLock()
-                && schedulerLockAnnotation != null
-                && !isShedLockHeld(schedulerLockAnnotation.name())) {
+        if (schedulerLockAnnotation != null && !isShedLockHeld(schedulerLockAnnotation.name())) {
             // 如果启用了ShedLock集成且当前未持有锁，则直接跳过
             return null;
         }
@@ -56,8 +54,7 @@ public class ScheduleExecutionLogAspect {
         domain.setScheduleName(scheduleName);
         domain.setStartTime(Instant.now());
         domain.setStatus(STATUS_RUNNING);
-        domain.setNodeIp(AddressUtils.getIntranetIp());
-        domain.setPriority(schedulerExecutionLog.priority().name());
+        domain.setNode(Utils.getHostname());
 
         if (schedulerExecutionLog.logParameters()) {
             domain.setParameters(parseParameters(joinPoint));

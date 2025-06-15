@@ -12,11 +12,4 @@ public @interface SchedulerExecutionLog {
 
     boolean logParameters() default false;
 
-    SchedulePriority priority() default SchedulePriority.NORMAL;
-
-    boolean integrateWithShedLock() default true;
-
-    enum SchedulePriority {
-        LOW, NORMAL, HIGH, CRITICAL
-    }
 }

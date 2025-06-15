@@ -13,11 +13,11 @@ import java.util.function.Function;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function10;
+import org.jooq.Function9;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row10;
+import org.jooq.Row9;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -82,9 +82,9 @@ public class ScheduleExecutionLog extends TableImpl<ScheduleExecutionLogRecord> 
     public final TableField<ScheduleExecutionLogRecord, String> STATUS = createField(DSL.name("status"), SQLDataType.VARCHAR(20).nullable(false), this, "(RUNNING/SUCCESS/FAILURE)");
 
     /**
-     * The column <code>public.schedule_execution_log.node_ip</code>.
+     * The column <code>public.schedule_execution_log.node</code>.
      */
-    public final TableField<ScheduleExecutionLogRecord, String> NODE_IP = createField(DSL.name("node_ip"), SQLDataType.VARCHAR(45).nullable(false), this, "");
+    public final TableField<ScheduleExecutionLogRecord, String> NODE = createField(DSL.name("node"), SQLDataType.VARCHAR(45).nullable(false), this, "");
 
     /**
      * The column <code>public.schedule_execution_log.parameters</code>.
@@ -95,11 +95,6 @@ public class ScheduleExecutionLog extends TableImpl<ScheduleExecutionLogRecord> 
      * The column <code>public.schedule_execution_log.message</code>.
      */
     public final TableField<ScheduleExecutionLogRecord, String> MESSAGE = createField(DSL.name("message"), SQLDataType.CLOB, this, "");
-
-    /**
-     * The column <code>public.schedule_execution_log.priority</code>.
-     */
-    public final TableField<ScheduleExecutionLogRecord, String> PRIORITY = createField(DSL.name("priority"), SQLDataType.VARCHAR(20).nullable(false), this, "");
 
     private ScheduleExecutionLog(Name alias, Table<ScheduleExecutionLogRecord> aliased) {
         this(alias, aliased, null);
@@ -186,18 +181,18 @@ public class ScheduleExecutionLog extends TableImpl<ScheduleExecutionLogRecord> 
     }
 
     // -------------------------------------------------------------------------
-    // Row10 type methods
+    // Row9 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row10<String, String, Instant, Instant, Long, String, String, String, String, String> fieldsRow() {
-        return (Row10) super.fieldsRow();
+    public Row9<String, String, Instant, Instant, Long, String, String, String, String> fieldsRow() {
+        return (Row9) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function10<? super String, ? super String, ? super Instant, ? super Instant, ? super Long, ? super String, ? super String, ? super String, ? super String, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function9<? super String, ? super String, ? super Instant, ? super Instant, ? super Long, ? super String, ? super String, ? super String, ? super String, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -205,7 +200,7 @@ public class ScheduleExecutionLog extends TableImpl<ScheduleExecutionLogRecord> 
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function10<? super String, ? super String, ? super Instant, ? super Instant, ? super Long, ? super String, ? super String, ? super String, ? super String, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function9<? super String, ? super String, ? super Instant, ? super Instant, ? super Long, ? super String, ? super String, ? super String, ? super String, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }
