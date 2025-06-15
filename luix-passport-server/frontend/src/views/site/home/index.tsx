@@ -4,7 +4,6 @@ import { Link } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { useStore } from "exome/react"
 import { loginUserStore } from "@/stores/login-user-store"
-import { motion } from "framer-motion"
 import { useEffect, useState } from "react"
 import { UserNotificationService } from "@/services/user-notification-service"
 import { Badge } from "@/components/ui/badge.tsx"
@@ -36,39 +35,19 @@ export default function SiteHome() {
             />
 
             {loginUser.isAuthenticated ? (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-              >
-                <h2 className="lg:text-5xl text-4xl font-extrabold lg:leading-[55px] mt-8">
-                  <ColourfulText text="Welcome back" />
-                </h2>
-              </motion.div>
+              <h2 className="lg:text-5xl text-4xl font-extrabold lg:leading-[55px] mt-8">
+                <ColourfulText text="Welcome back" />
+              </h2>
             ) : (
-              <motion.h2
-                className="lg:text-5xl text-4xl font-extrabold lg:leading-[55px] mt-8"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.2 }}
-              >
+              <div className="lg:text-5xl text-4xl font-extrabold lg:leading-[55px] mt-8">
                 Unlock Digital Possibilities
-              </motion.h2>
+              </div>
             )}
 
-            <motion.h4
-              className="mt-6 text-lg max-w-md"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.4 }}
-            >
+            <div className="mt-6 text-lg max-w-md">
               {loginUser.isAuthenticated
                 ? "Your secure gateway to connected services"
                 : "Your passport to seamless authentication"}
-            </motion.h4>
-
-            <div className="mt-10 flex space-x-4">
-              {/* ... buttons remain the same ... */}
             </div>
           </div>
         </div>
