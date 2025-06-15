@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ScheduleExecutionLogRepository extends JpaRepository<ScheduleExecutionLog, String> {
 
-    boolean existsByLockIdAndStatus(String lockId, String status);
+    boolean existsByLockId(String lockId);
 }
 

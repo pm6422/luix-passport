@@ -47,7 +47,7 @@ public class ScheduleExecutionLogAspect {
         domain.setPriority(schedulerExecutionLog.priority().name());
 
         if (schedulerExecutionLog.integrateWithShedLock()) {
-            domain.setLockId(getCurrentNodeLockId(joinPoint));
+            domain.setLockId(getLockId(joinPoint));
         }
 
         if (schedulerExecutionLog.logParameters()) {
@@ -86,23 +86,22 @@ public class ScheduleExecutionLogAspect {
                 return true;
             }
             // 查询数据库中的锁记录
-            String currentNodeLockId = getCurrentNodeLockId(joinPoint);
-            return scheduleExecutionLogRepository.existsByLockIdAndStatus(currentNodeLockId, STATUS_RUNNING);
+            String lockId = getLockId(joinPoint);
+            return scheduleExecutionLogRepository.existsByLockId(lockId);
         } catch (Exception e) {
             return false;
         }
     }
 
-    private String getCurrentNodeLockId(ProceedingJoinPoint joinPoint) {
+    private String getLockId(ProceedingJoinPoint joinPoint) {
         Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
         SchedulerLock lockAnnotation = method.getAnnotation(SchedulerLock.class);
         if (lockAnnotation == null) {
             return null;
         }
 
-        String currentNode = env.getProperty("spring.application.name", "unknown")
-                + "-" + AddressUtils.getIntranetIp();
-        return currentNode + "_" + lockAnnotation.name();
+        String appName = env.getProperty("spring.application.name", "unknown");
+        return appName + "_" + lockAnnotation.name();
     }
 
     private String parseParameters(ProceedingJoinPoint joinPoint) {
