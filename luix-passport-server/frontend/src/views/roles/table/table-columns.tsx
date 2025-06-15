@@ -43,7 +43,7 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="ID" />
       ),
-      cell: ({ row }) => <div className="w-[170px]">{row.getValue("id")}</div>,
+      cell: ({ row }) => <div className="w-[170px]">{row.original.id}</div>,
       enableSorting: true,
       enableHiding: false,
     },
@@ -52,7 +52,7 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Remark" />
       ),
-      cell: ({ row }) => <div className="w-[200px]">{row.getValue("remark")}</div>,
+      cell: ({ row }) => <div className="w-[200px]">{row.original.remark}</div>,
       enableSorting: true,
       enableHiding: false,
     },
@@ -61,7 +61,7 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Created At" />
       ),
-      cell: ({ row }) => <div className="w-[150px]"><DateTime value={row.getValue("createdAt")}/></div>,
+      cell: ({ row }) => <div className="w-[150px]"><DateTime value={row.original.createdAt}/></div>,
       enableSorting: true,
       enableHiding: true,
     },
@@ -70,7 +70,7 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Modified At" />
       ),
-      cell: ({ row }) => <div className="w-[150px]"><DateTime value={row.getValue("modifiedAt")}/></div>,
+      cell: ({ row }) => <div className="w-[150px]"><DateTime value={row.original.modifiedAt}/></div>,
       enableSorting: true,
       enableHiding: true,
     },

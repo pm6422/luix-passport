@@ -2,8 +2,8 @@ import dayjs from 'dayjs'
 
 export function formatDateTime(
   dateTimeFormat: string,
-  value: string | Date,
-  timeZone: string
+  timeZone: string,
+  value?: string | null,
 ): string {
   if (!value) {
     return ''
@@ -13,8 +13,8 @@ export function formatDateTime(
 
 export function formatDate(
   dateFormat: string,
-  value: string | Date,
-  timeZone: string
+  timeZone: string,
+  value?: string | null,
 ): string {
   if (!value) {
     return ''

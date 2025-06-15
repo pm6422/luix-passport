@@ -62,7 +62,7 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Username" />
       ),
-      cell: ({ row }) => <div className="w-[30px]">{row.getValue("username")}</div>,
+      cell: ({ row }) => <div className="w-[30px]">{row.original.username}</div>,
       enableSorting: true,
       enableHiding: false,
     },
@@ -71,7 +71,7 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Email" />
       ),
-      cell: ({ row }) => <div className="w-[130px]">{row.getValue("email")}</div>,
+      cell: ({ row }) => <div className="w-[130px]">{row.original.email}</div>,
       enableSorting: true,
       enableHiding: true,
     },
@@ -80,7 +80,7 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Mobile No" />
       ),
-      cell: ({ row }) => <div className="w-[125px]">{row.getValue("mobileNo")}</div>,
+      cell: ({ row }) => <div className="w-[125px]">{row.original.mobileNo}</div>,
       enableSorting: true,
       enableHiding: true,
     },
@@ -89,7 +89,7 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="First Name" />
       ),
-      cell: ({ row }) => <div className="w-[50px]">{row.getValue("firstName")}</div>,
+      cell: ({ row }) => <div className="w-[50px]">{row.original.firstName}</div>,
       enableSorting: false,
       enableHiding: true,
     },
@@ -98,7 +98,7 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Last Name" />
       ),
-      cell: ({ row }) => <div className="w-[50px]">{row.getValue("lastName")}</div>,
+      cell: ({ row }) => <div className="w-[50px]">{row.original.lastName}</div>,
       enableSorting: false,
       enableHiding: true,
     },
@@ -109,7 +109,7 @@ export function tableColumns(
       ),
       cell: ({ row }) => (
         <div className="w-[100px] text-xs">
-          {(row.getValue("roleIds") as string[]).map((item, index) => (
+          {(row.original.roleIds as string[]).map((item, index) => (
             <div key={index}>{item}</div>
           ))}
         </div>
@@ -154,7 +154,7 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Last Sign In" />
       ),
-      cell: ({ row }) => <div className="w-[150px]"><DateTime value={row.getValue("lastSignInAt")}/></div>,
+      cell: ({ row }) => <div className="w-[150px]"><DateTime value={row.original.lastSignInAt}/></div>,
       enableSorting: true,
       enableHiding: true,
     },
@@ -163,7 +163,7 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Modified At" />
       ),
-      cell: ({ row }) => <div className="w-[150px]"><DateTime value={row.getValue("modifiedAt")}/></div>,
+      cell: ({ row }) => <div className="w-[150px]"><DateTime value={row.original.modifiedAt}/></div>,
       enableSorting: true,
       enableHiding: true,
     },

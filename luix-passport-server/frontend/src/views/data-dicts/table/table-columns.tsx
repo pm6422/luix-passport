@@ -45,7 +45,7 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Number" />
       ),
-      cell: ({ row }) => <div className="w-[30px]">{row.getValue("num")}</div>,
+      cell: ({ row }) => <div className="w-[30px]">{row.original.num}</div>,
       enableSorting: true,
       enableHiding: false,
     },
@@ -54,7 +54,7 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Category Code" />
       ),
-      cell: ({ row }) => <div className="w-[175px]">{row.getValue("categoryCode")}</div>,
+      cell: ({ row }) => <div className="w-[175px]">{row.original.categoryCode}</div>,
       enableSorting: true,
       enableHiding: true,
     },
@@ -63,7 +63,7 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Dictionary Code" />
       ),
-      cell: ({ row }) => <div className="w-[150px]">{row.getValue("dictCode")}</div>,
+      cell: ({ row }) => <div className="w-[150px]">{row.original.dictCode}</div>,
       enableSorting: true,
       enableHiding: true,
     },
@@ -72,7 +72,7 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Dictionary Name" />
       ),
-      cell: ({ row }) => <div className="w-[50px]">{row.getValue("dictName")}</div>,
+      cell: ({ row }) => <div className="w-[50px]">{row.original.dictName}</div>,
       enableSorting: true,
       enableHiding: true,
     },
@@ -97,7 +97,7 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Modified At" />
       ),
-      cell: ({ row }) => <div className="w-[150px]"><DateTime value={row.getValue("modifiedAt")}/></div>,
+      cell: ({ row }) => <div className="w-[150px]"><DateTime value={row.original.modifiedAt}/></div>,
       enableSorting: true,
       enableHiding: true,
     },

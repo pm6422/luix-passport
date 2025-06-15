@@ -44,7 +44,7 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="ID" />
       ),
-      cell: ({ row }) => <div className="w-[100px]">{row.getValue("id")}</div>,
+      cell: ({ row }) => <div className="w-[100px]">{row.original.id}</div>,
       enableSorting: true,
       enableHiding: false,
     },
@@ -53,7 +53,7 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Resource Type" />
       ),
-      cell: ({ row }) => <div className="w-[75px]">{row.getValue("resourceType")}</div>,
+      cell: ({ row }) => <div className="w-[75px]">{row.original.resourceType}</div>,
       enableSorting: true,
       enableHiding: true,
     },
@@ -62,7 +62,7 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Action" />
       ),
-      cell: ({ row }) => <div className="w-[125px]">{row.getValue("action")}</div>,
+      cell: ({ row }) => <div className="w-[125px]">{row.original.action}</div>,
       enableSorting: true,
       enableHiding: true,
     },
@@ -71,7 +71,7 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Created At" />
       ),
-      cell: ({ row }) => <div className="w-[150px]"><DateTime value={row.getValue("createdAt")}/></div>,
+      cell: ({ row }) => <div className="w-[150px]"><DateTime value={row.original.createdAt}/></div>,
       enableSorting: true,
       enableHiding: true,
     },
@@ -80,7 +80,7 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Modified At" />
       ),
-      cell: ({ row }) => <div className="w-[150px]"><DateTime value={row.getValue("modifiedAt")}/></div>,
+      cell: ({ row }) => <div className="w-[150px]"><DateTime value={row.original.modifiedAt}/></div>,
       enableSorting: true,
       enableHiding: true,
     },

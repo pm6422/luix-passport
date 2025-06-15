@@ -43,7 +43,7 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Client ID" />
       ),
-      cell: ({ row }) => <div className="w-[170px]">{row.getValue("clientId")}</div>,
+      cell: ({ row }) => <div className="w-[170px]">{row.original.clientId}</div>,
       enableSorting: true,
       enableHiding: false,
     },
@@ -52,7 +52,7 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Client Name" />
       ),
-      cell: ({ row }) => <div className="w-[180px]">{row.getValue("clientName")}</div>,
+      cell: ({ row }) => <div className="w-[180px]">{row.original.clientName}</div>,
       enableSorting: true,
       enableHiding: true,
     },
@@ -63,7 +63,7 @@ export function tableColumns(
       ),
       cell: ({ row }) => (
         <div className="w-[100px] text-xs">
-          {(row.getValue("clientAuthenticationMethods") as string[]).map((item, index) => (
+          {(row.original.clientAuthenticationMethods as string[]).map((item, index) => (
             <div key={index}>{item}</div>
           ))}
         </div>
@@ -78,7 +78,7 @@ export function tableColumns(
       ),
       cell: ({ row }) => (
         <div className="w-[130px] text-xs">
-          {(row.getValue("authorizationGrantTypes") as string[]).map((item, index) => (
+          {(row.original.authorizationGrantTypes as string[]).map((item, index) => (
             <div key={index}>{item}</div>
           ))}
         </div>
@@ -93,7 +93,7 @@ export function tableColumns(
       ),
       cell: ({ row }) => (
         <div className="w-[75px] text-xs">
-          {(row.getValue("scopes") as string[]).map((item, index) => (
+          {(row.original.scopes as string[]).map((item, index) => (
             <div key={index}>{item}</div>
           ))}
         </div>

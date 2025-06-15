@@ -4,7 +4,7 @@ import { formatDate } from '@/lib/time-utils'
 import { cn } from '@/lib/utils'
 
 type Props = {
-  value: string | Date
+  value?: string | null
   className?: string
 }
 
@@ -13,7 +13,7 @@ export const Date = ({ value, className }: Props) => {
 
   return (
     <span className={cn(className)}>
-      {formatDate(loginUser.dateFormat, value, loginUser.timeZoneId)}
+      {formatDate(loginUser.dateFormat, loginUser.timeZoneId, value)}
     </span>
   )
 }
