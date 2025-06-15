@@ -534,8 +534,6 @@
             <column name="node_ip" type="VARCHAR(45)">
                 <constraints nullable="false"/>
             </column>
-            <column name="node_name" type="VARCHAR(100)"/>
-            <column name="lock_id" type="VARCHAR(255)"/>
             <column name="parameters" type="TEXT"/>
             <column name="message" type="TEXT"/>
             <column name="priority" type="VARCHAR(20)">

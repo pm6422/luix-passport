@@ -13,11 +13,11 @@ import java.util.function.Function;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function12;
+import org.jooq.Function10;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row12;
+import org.jooq.Row10;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -85,16 +85,6 @@ public class ScheduleExecutionLog extends TableImpl<ScheduleExecutionLogRecord> 
      * The column <code>public.schedule_execution_log.node_ip</code>.
      */
     public final TableField<ScheduleExecutionLogRecord, String> NODE_IP = createField(DSL.name("node_ip"), SQLDataType.VARCHAR(45).nullable(false), this, "");
-
-    /**
-     * The column <code>public.schedule_execution_log.node_name</code>.
-     */
-    public final TableField<ScheduleExecutionLogRecord, String> NODE_NAME = createField(DSL.name("node_name"), SQLDataType.VARCHAR(100), this, "");
-
-    /**
-     * The column <code>public.schedule_execution_log.lock_id</code>.
-     */
-    public final TableField<ScheduleExecutionLogRecord, String> LOCK_ID = createField(DSL.name("lock_id"), SQLDataType.VARCHAR(255), this, "");
 
     /**
      * The column <code>public.schedule_execution_log.parameters</code>.
@@ -196,18 +186,18 @@ public class ScheduleExecutionLog extends TableImpl<ScheduleExecutionLogRecord> 
     }
 
     // -------------------------------------------------------------------------
-    // Row12 type methods
+    // Row10 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row12<String, String, Instant, Instant, Long, String, String, String, String, String, String, String> fieldsRow() {
-        return (Row12) super.fieldsRow();
+    public Row10<String, String, Instant, Instant, Long, String, String, String, String, String> fieldsRow() {
+        return (Row10) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function12<? super String, ? super String, ? super Instant, ? super Instant, ? super Long, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function10<? super String, ? super String, ? super Instant, ? super Instant, ? super Long, ? super String, ? super String, ? super String, ? super String, ? super String, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -215,7 +205,7 @@ public class ScheduleExecutionLog extends TableImpl<ScheduleExecutionLogRecord> 
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function12<? super String, ? super String, ? super Instant, ? super Instant, ? super Long, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function10<? super String, ? super String, ? super Instant, ? super Instant, ? super Long, ? super String, ? super String, ? super String, ? super String, ? super String, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }
