@@ -136,7 +136,7 @@ export default function SiteHome() {
             <img
               src="/assets/images/logos/logo-round.svg"
               alt="Logo"
-              className="size-16 mb-2 mx-auto"
+              className="size-16 mb-2 mx-auto animate-spin"
             />
             {loginUser.isAuthenticated ? (
               <>
