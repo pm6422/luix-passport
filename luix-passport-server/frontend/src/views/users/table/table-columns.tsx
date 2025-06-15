@@ -1,21 +1,17 @@
-import { ColumnDef } from "@tanstack/react-table"
-import { Checkbox } from "@/components/ui/checkbox"
-import { IconEdit, IconDots } from "@tabler/icons-react"
-import { DataTableColumnHeader } from "@/components/custom/data-table/data-table-column-header"
-import { DataTableRowActions } from "@/components/custom/data-table/data-table-row-actions"
-import { Button } from "@/components/ui/button"
-import { yesNo } from "@/data/yes-no"
-import { User } from "@/domains/user"
-import { EditDialog } from "../dialog/edit-dialog"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu"
-import { ConfirmPopover } from "@/components/custom/confirm-popover"
-import { toast } from "sonner"
-import { getErrorMessage } from "@/lib/handle-error"
-import { DateTime } from "@/components/custom/date-time"
+import { ColumnDef } from "@tanstack/react-table";
+import { IconEdit, IconDots } from "@tabler/icons-react";
+import { User } from "@/domains/user";
+import { toast } from "sonner";
+import { getErrorMessage } from "@/lib/handle-error";
+import { StatusBadge } from "@/components/custom/status-badge";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { ConfirmPopover } from "@/components/custom/confirm-popover";
+import { DataTableColumnHeader } from "@/components/custom/data-table/data-table-column-header";
+import { DataTableRowActions } from "@/components/custom/data-table/data-table-row-actions";
+import { DateTime } from "@/components/custom/date-time";
+import { EditDialog } from "../dialog/edit-dialog";
 
 export function tableColumns(
   entityName: string,
@@ -127,13 +123,9 @@ export function tableColumns(
         <DataTableColumnHeader column={column} title="Activated" />
       ),
       cell: ({ row }) => {
-        const element = yesNo.find(e => e.value === row.getValue("activated"))
-
         return (
-          <div className="flex w-[50px] items-center justify-center">
-            {element && element.icon && (
-              <element.icon className="mr-2 size-5 text-muted-foreground" />
-            )}
+          <div className="flex w-[75px] items-center justify-center">
+            <StatusBadge value={row.original.activated} />
           </div>
         )
       },
@@ -147,13 +139,9 @@ export function tableColumns(
         <DataTableColumnHeader column={column} title="Enabled" />
       ),
       cell: ({ row }) => {
-        const element = yesNo.find(e => e.value === row.getValue("enabled"))
-
         return (
           <div className="flex w-[50px] items-center justify-center">
-            {element && element.icon && (
-              <element.icon className="mr-2 size-5 text-muted-foreground" />
-            )}
+            <StatusBadge value={row.original.enabled} />
           </div>
         )
       },
