@@ -3,12 +3,12 @@ package cn.luixtech.passport.server.aspect;
 import cn.luixtech.passport.server.annotation.SchedulerExecutionLog;
 import cn.luixtech.passport.server.domain.ScheduleExecutionLog;
 import cn.luixtech.passport.server.repository.ScheduleExecutionLogRepository;
+import cn.luixtech.passport.server.service.SchedulerLockService;
 import com.luixtech.utilities.network.AddressUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.javacrumbs.shedlock.core.LockConfiguration;
-import net.javacrumbs.shedlock.core.LockProvider;
 import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
+import net.javacrumbs.shedlock.support.Utils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -34,11 +34,16 @@ import static cn.luixtech.passport.server.domain.ScheduleExecutionLog.*;
 public class ScheduleExecutionLogAspect {
     private final Environment                    env;
     private final ScheduleExecutionLogRepository scheduleExecutionLogRepository;
-    private final LockProvider                   lockProvider;
+    private final SchedulerLockService           schedulerLockService;
 
     @Around("@annotation(schedulerExecutionLog)")
     public Object logScheduleExecution(ProceedingJoinPoint joinPoint, SchedulerExecutionLog schedulerExecutionLog) throws Throwable {
-        if (schedulerExecutionLog.integrateWithShedLock() && !isShedLockHeld(joinPoint)) {
+        Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
+        SchedulerLock schedulerLockAnnotation = method.getAnnotation(SchedulerLock.class);
+
+        if (schedulerExecutionLog.integrateWithShedLock()
+                && schedulerLockAnnotation != null
+                && !isShedLockHeld(schedulerLockAnnotation.name())) {
             // 如果启用了ShedLock集成且当前未持有锁，则直接跳过
             return null;
         }
@@ -81,28 +86,8 @@ public class ScheduleExecutionLogAspect {
         }
     }
 
-    private boolean isShedLockHeld(ProceedingJoinPoint joinPoint) {
-        try {
-            Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
-            SchedulerLock lockAnnotation = method.getAnnotation(SchedulerLock.class);
-            if (lockAnnotation == null) {
-                return true;
-            }
-
-            // 构建与ShedLock相同的锁配置
-            LockConfiguration config = new LockConfiguration(
-                    Instant.now(),
-                    lockAnnotation.name(),
-                    parseDuration(lockAnnotation.lockAtMostFor()),
-                    parseDuration(lockAnnotation.lockAtLeastFor())
-            );
-
-            // 直接通过LockProvider检查锁状态
-            return lockProvider.lock(config).isPresent();
-        } catch (Exception e) {
-            log.error("Check lock failed", e);
-            return false;
-        }
+    private boolean isShedLockHeld(String id) {
+        return schedulerLockService.isLockHeld(id, Utils.getHostname());
     }
 
     private String parseParameters(ProceedingJoinPoint joinPoint) {

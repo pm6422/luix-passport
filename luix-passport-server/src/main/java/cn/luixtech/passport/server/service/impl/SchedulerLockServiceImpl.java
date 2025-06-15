@@ -10,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+
 @Service
 @AllArgsConstructor
 public class SchedulerLockServiceImpl implements SchedulerLockService {
@@ -26,5 +28,10 @@ public class SchedulerLockServiceImpl implements SchedulerLockService {
 
         Example<SchedulerLock> queryExample = Example.of(criteria, matcher);
         return schedulerLockRepository.findAll(queryExample, pageable);
+    }
+
+    @Override
+    public boolean isLockHeld(String id, String lockedBy) {
+        return schedulerLockRepository.countByIdAndLockedByAndLockUntilAfter(id, lockedBy, Instant.now()) > 0;
     }
 }
