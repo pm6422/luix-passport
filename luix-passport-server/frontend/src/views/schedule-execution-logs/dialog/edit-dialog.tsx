@@ -50,26 +50,61 @@ export function EditDialog({
           </p>
         </div>
 
-        {/*<div>*/}
-        {/*  <h3 className="text-sm font-medium">Lock Until</h3>*/}
-        {/*  <p className="mt-2 text-sm text-muted-foreground">*/}
-        {/*    <DateTime value={form.getValues("lockUntil") ?? ""}/>*/}
-        {/*  </p>*/}
-        {/*</div>*/}
+        <div>
+          <h3 className="text-sm font-medium">Schedule Name</h3>
+          <p className="mt-2 text-sm text-muted-foreground">
+            {form.getValues("scheduleName")}
+          </p>
+        </div>
 
-        {/*<div>*/}
-        {/*  <h3 className="text-sm font-medium">Locked At</h3>*/}
-        {/*  <p className="mt-2 text-sm text-muted-foreground">*/}
-        {/*    <DateTime value={form.getValues("lockedAt") ?? ""}/>*/}
-        {/*  </p>*/}
-        {/*</div>*/}
+        <div>
+          <h3 className="text-sm font-medium">Start At</h3>
+          <p className="mt-2 text-sm text-muted-foreground">
+            <DateTime value={form.getValues("startAt") ?? ""}/>
+          </p>
+        </div>
 
-        {/*<div>*/}
-        {/*  <h3 className="text-sm font-medium">Locked By</h3>*/}
-        {/*  <p className="mt-2 text-sm text-muted-foreground">*/}
-        {/*    {form.getValues("lockedBy")}*/}
-        {/*  </p>*/}
-        {/*</div>*/}
+        <div>
+          <h3 className="text-sm font-medium">End At</h3>
+          <p className="mt-2 text-sm text-muted-foreground">
+            <DateTime value={form.getValues("endAt") ?? ""}/>
+          </p>
+        </div>
+
+        <div>
+          <h3 className="text-sm font-medium">Duration(ms)</h3>
+          <p className="mt-2 text-sm text-muted-foreground">
+            {form.getValues("durationMs")}
+          </p>
+        </div>
+
+        <div>
+          <h3 className="text-sm font-medium">Status</h3>
+          <p className="mt-2 text-sm text-muted-foreground">
+            {form.getValues("status")}
+          </p>
+        </div>
+
+        <div>
+          <h3 className="text-sm font-medium">Node</h3>
+          <p className="mt-2 text-sm text-muted-foreground">
+            {form.getValues("node")}
+          </p>
+        </div>
+
+        <div>
+          <h3 className="text-sm font-medium">Parameters</h3>
+          <p className="mt-2 text-sm text-muted-foreground">
+            {form.getValues("parameters")}
+          </p>
+        </div>
+
+        <div>
+          <h3 className="text-sm font-medium">Error</h3>
+          <p className="mt-2 text-sm text-muted-foreground">
+            {form.getValues("error")}
+          </p>
+        </div>
       </SaveDialogContent>
     </Dialog>
   )
