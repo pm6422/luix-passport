@@ -52,8 +52,8 @@ public class DataDictServiceImpl implements DataDictService {
      */
 //    @Scheduled(cron = "0 0 2 * * *")
     @Scheduled(initialDelay = 0, fixedRate = 300000)
-    @SchedulerLock(name = "DataDictService::updateTimezoneUtcOffset", lockAtLeastFor = "1m")
-    @SchedulerExecutionLog(name = "DataDictService::updateTimezoneUtcOffset")
+    @SchedulerLock(name = "updateTimezoneUtcOffset", lockAtLeastFor = "1m")
+    @SchedulerExecutionLog(name = "updateTimezoneUtcOffset")
     @Override
     public void updateTimezoneUtcOffset() {
         dataDictRepository.findByCategoryCode(CATEGORY_CODE_TIMEZONE).forEach(timezone -> {
