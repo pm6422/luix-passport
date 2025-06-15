@@ -34,7 +34,6 @@ public class ScheduleExecutionLog extends AbstractBaseDomain implements Serializ
     private String  status;
     private String  nodeIp;
     private String  nodeName;
-    private String  lockId;
     @Lob
     private String  parameters;
     @Lob
