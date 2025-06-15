@@ -47,7 +47,7 @@ public class ScheduleExecutionLogAspect {
         domain.setPriority(schedulerExecutionLog.priority().name());
 
         if (schedulerExecutionLog.integrateWithShedLock()) {
-            domain.setLockId(getShedLockId(joinPoint));
+            domain.setLockId(getCurrentNodeLockId(joinPoint));
         }
 
         if (schedulerExecutionLog.logParameters()) {
@@ -63,7 +63,8 @@ public class ScheduleExecutionLogAspect {
 
             domain.setStatus(STATUS_SUCCESS);
             domain.setEndTime(Instant.now());
-            domain.setDurationMs(calculateDuration(domain));
+            long millis = Duration.between(domain.getStartTime(), domain.getEndTime()).toMillis();
+            domain.setDurationMs(millis);
             return result;
         } catch (Exception e) {
             domain.setStatus(STATUS_FAILURE);
@@ -85,27 +86,30 @@ public class ScheduleExecutionLogAspect {
                 return true;
             }
             // 查询数据库中的锁记录
-            return scheduleExecutionLogRepository.existsByLockIdAndStatus(getShedLockId(joinPoint), STATUS_RUNNING);
+            String currentNodeLockId = getCurrentNodeLockId(joinPoint);
+            return scheduleExecutionLogRepository.existsByLockIdAndStatus(currentNodeLockId, STATUS_RUNNING);
         } catch (Exception e) {
             return false;
         }
     }
 
-    private String getShedLockId(ProceedingJoinPoint joinPoint) {
+    private String getCurrentNodeLockId(ProceedingJoinPoint joinPoint) {
         Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
         SchedulerLock lockAnnotation = method.getAnnotation(SchedulerLock.class);
         if (lockAnnotation == null) {
             return null;
         }
 
-        String lockedBy = env.getProperty("spring.application.name", "unknown")
+        String currentNode = env.getProperty("spring.application.name", "unknown")
                 + "-" + AddressUtils.getIntranetIp();
-        return lockAnnotation.name() + "_" + lockedBy;
+        return currentNode + "_" + lockAnnotation.name();
     }
 
     private String parseParameters(ProceedingJoinPoint joinPoint) {
         Object[] args = joinPoint.getArgs();
-        if (args.length == 0) return null;
+        if (args.length == 0) {
+            return null;
+        }
 
         try {
             return Arrays.stream(args)
@@ -114,9 +118,5 @@ public class ScheduleExecutionLogAspect {
         } catch (Exception e) {
             return "parameter serialization failed";
         }
-    }
-
-    private long calculateDuration(ScheduleExecutionLog log) {
-        return Duration.between(log.getStartTime(), log.getEndTime()).toMillis();
     }
 }
