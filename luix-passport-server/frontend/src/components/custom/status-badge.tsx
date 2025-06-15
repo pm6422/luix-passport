@@ -21,7 +21,7 @@ export function StatusBadge({ value, className }: StatusBadgeProps) {
       ) : (
         <IconCircleXFilled className="text-red-500 dark:text-red-400" />
       )}
-      {String(value)}
+      {value ? "Yes" : "No"}
     </Badge>
   );
 }
