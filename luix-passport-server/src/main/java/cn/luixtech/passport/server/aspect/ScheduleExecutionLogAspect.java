@@ -82,7 +82,9 @@ public class ScheduleExecutionLogAspect {
         try {
             Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
             SchedulerLock lockAnnotation = method.getAnnotation(SchedulerLock.class);
-            if (lockAnnotation == null) return true;
+            if (lockAnnotation == null) {
+                return true;
+            }
 
             // 构建与ShedLock相同的锁配置
             LockConfiguration config = new LockConfiguration(
