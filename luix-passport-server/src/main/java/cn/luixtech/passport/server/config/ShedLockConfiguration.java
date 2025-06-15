@@ -5,12 +5,13 @@ import net.javacrumbs.shedlock.provider.jdbctemplate.JdbcTemplateLockProvider;
 import net.javacrumbs.shedlock.spring.annotation.EnableSchedulerLock;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 
 @Configuration
-@EnableSchedulerLock(defaultLockAtMostFor = "5m")
+@EnableSchedulerLock(defaultLockAtMostFor = "5m", order = Ordered.HIGHEST_PRECEDENCE)
 public class ShedLockConfiguration {
     @Bean
     public LockProvider lockProvider(DataSource dataSource) {
