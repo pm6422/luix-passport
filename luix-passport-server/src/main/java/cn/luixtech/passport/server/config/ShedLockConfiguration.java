@@ -11,7 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import javax.sql.DataSource;
 
 @Configuration
-@EnableSchedulerLock(defaultLockAtMostFor = "5m", order = Ordered.HIGHEST_PRECEDENCE)
+@EnableSchedulerLock(defaultLockAtLeastFor="1m", defaultLockAtMostFor = "5m", order = Ordered.HIGHEST_PRECEDENCE)
 public class ShedLockConfiguration {
     @Bean
     public LockProvider lockProvider(DataSource dataSource) {

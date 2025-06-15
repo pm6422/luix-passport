@@ -25,7 +25,6 @@ import java.util.List;
 import static cn.luixtech.passport.server.domain.DataDict.CATEGORY_CODE_TIMEZONE;
 import static cn.luixtech.passport.server.persistence.tables.DataDict.DATA_DICT;
 
-
 @Service
 @AllArgsConstructor
 @Slf4j
@@ -52,7 +51,7 @@ public class DataDictServiceImpl implements DataDictService {
      */
 //    @Scheduled(initialDelay = 0, fixedRate = 300000)
     @Scheduled(cron = "0 0 2 * * *")
-    @SchedulerLock(name = "updateTimezoneUtcOffset", lockAtLeastFor = "1m")
+    @SchedulerLock(name = "updateTimezoneUtcOffset")
     @SchedulerExecutionLog(name = "updateTimezoneUtcOffset")
     @Override
     public void updateTimezoneUtcOffset() {
