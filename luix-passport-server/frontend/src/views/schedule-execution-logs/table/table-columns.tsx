@@ -93,7 +93,7 @@ export function tableColumns(
               ) : row.original.status === "FAILURE" ? (
                 <IconCircleXFilled className="text-red-500 dark:text-red-400" />
               ) : (
-                <IconLoader />
+                <IconLoader className="animate-spin" />
               )}
               {String(row.original.status)}
             </Badge>
