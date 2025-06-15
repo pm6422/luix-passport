@@ -1,40 +1,48 @@
 package cn.luixtech.passport.server.domain;
 
-import cn.luixtech.passport.server.domain.base.AbstractBaseDomain;
-import cn.luixtech.passport.server.domain.base.listener.AuditableEntityListener;
+import com.luixtech.uidgenerator.core.id.IdGenerator;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
+import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
+import jakarta.persistence.PrePersist;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
 
 @Entity
-@EntityListeners(AuditableEntityListener.class)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class ScheduleExecutionLog extends AbstractBaseDomain implements Serializable {
+public class ScheduleExecutionLog implements Serializable {
     @Serial
-    private static final long   serialVersionUID = 1L;
-    public static final  String STATUS_RUNNING   = "RUNNING";
-    public static final  String STATUS_SUCCESS   = "SUCCESS";
-    public static final  String STATUS_FAILURE   = "FAILURE";
+    private static final long serialVersionUID = 1L;
 
-    private String  scheduleName;
-    private Instant startAt;
-    private Instant endAt;
-    private Long    durationMs;
-    private String  status;
-    private String  node;
+    public static final String STATUS_RUNNING = "RUNNING";
+    public static final String STATUS_SUCCESS = "SUCCESS";
+    public static final String STATUS_FAILURE = "FAILURE";
+
+    @Id
+    protected String  id;
+    private   String  scheduleName;
+    private   Instant startAt;
+    private   Instant endAt;
+    private   Long    durationMs;
+    private   String  status;
+    private   String  node;
     @Lob
-    private String  parameters;
+    private   String  parameters;
     @Lob
-    private String  error;
+    private   String  error;
+
+    @PrePersist
+    public void prePersist() {
+        if (StringUtils.isEmpty(id)) {
+            id = "S" + IdGenerator.generateShortId();
+        }
+    }
 }
