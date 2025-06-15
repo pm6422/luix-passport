@@ -2,6 +2,7 @@ import { useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import InputFormField from "@/components/custom/form-field/input"
+import SelectFormField from "@/components/custom/form-field/select"
 import { Button } from "@/components/ui/button"
 import { IconFilterSearch } from "@tabler/icons-react"
 import { type ScheduleExecutionLogCriteriaSchema, scheduleExecutionLogCriteriaSchema, initialScheduleExecutionLogCriteriaState } from "@/domains/schedule-execution-log"
@@ -11,6 +12,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import { yesNoOptions } from '@/data/yes-no-options.tsx'
 
 interface DataTableToolbarProps{
   loadPage: (pageNo: number | undefined, pageSize: number | undefined, sorts: Array<string> | undefined, criteria: ScheduleExecutionLogCriteriaSchema) => void
@@ -52,10 +54,11 @@ export function DataTableToolbar ({
                     label="Schedule Name"
                     formItemClassName="w-full"
                   />
-                  <InputFormField
+                  <SelectFormField
                     control={form.control}
                     name="status"
                     label="Status"
+                    options={[{value: "SUCCESS", label: "SUCCESS"}, {value: "FAILURE", label: "FAILURE"}, {value: "RUNNING", label: "RUNNING"}]}
                     formItemClassName="w-full"
                   />
                 </div>
