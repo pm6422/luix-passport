@@ -71,63 +71,6 @@ export default function SiteHome() {
               {/* ... buttons remain the same ... */}
             </div>
           </div>
-
-          {/* Animated background elements */}
-          <motion.div
-            className="absolute right-0 top-0 w-48 h-48 rounded-full bg-primary/10 blur-xl"
-            animate={{
-              scale: [1, 1.2, 1],
-              opacity: [0.8, 0.5, 0.8]
-            }}
-            transition={{
-              duration: 8,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-          />
-
-          {/* Passport stamp animation - moved to top-left */}
-          <motion.div
-            className="absolute right-0 top-0"
-            initial={{ scale: 0, rotate: -15 }}
-            animate={{ scale: 0.8, rotate: 0 }}
-            transition={{
-              type: "spring",
-              stiffness: 260,
-              damping: 20,
-              delay: 0.6
-            }}
-          >
-            <svg width="140" height="140" viewBox="0 0 200 200" className="text-primary">
-              <path
-                d="M100 0C44.8 0 0 44.8 0 100s44.8 100 100 100 100-44.8 100-100S155.2 0 100 0zm0 20c44.2 0 80 35.8 80 80s-35.8 80-80 80S20 144.2 20 100 55.8 20 100 20z"
-                fill="currentColor"
-                fillOpacity="0.1"
-              />
-              <motion.path
-                d="M100 40c33.1 0 60 26.9 60 60s-26.9 60-60 60-60-26.9-60-60 26.9-60 60-60z"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeDasharray="0 1"
-                initial={{ pathLength: 0 }}
-                animate={{ pathLength: 1 }}
-                transition={{ duration: 2, delay: 0.8 }}
-              />
-              <motion.text
-                x="100"
-                y="110"
-                textAnchor="middle"
-                fontSize="20"
-                fill="currentColor"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1.2 }}
-              >
-                {loginUser.isAuthenticated ? "VERIFIED" : "SECURE"}
-              </motion.text>
-            </svg>
-          </motion.div>
         </div>
 
         {/* Right side - content */}
