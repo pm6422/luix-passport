@@ -88,9 +88,9 @@ export function tableColumns(
           </div>
         )
       },
-      filterFn: (row, id, value) => {
-        return value.includes(row.getValue(id))
-      },
+      // filterFn: (row, id, value) => {
+      //   return value.includes(row.getValue(id))
+      // },
     },
     {
       accessorKey: "modifiedAt",

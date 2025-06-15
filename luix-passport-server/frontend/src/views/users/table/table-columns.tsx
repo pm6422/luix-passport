@@ -129,9 +129,6 @@ export function tableColumns(
           </div>
         )
       },
-      filterFn: (row, id, value) => {
-        return value.includes(row.getValue(id))
-      },
     },
     {
       accessorKey: "enabled",
@@ -144,9 +141,6 @@ export function tableColumns(
             <StatusBadge value={row.original.enabled} />
           </div>
         )
-      },
-      filterFn: (row, id, value) => {
-        return value.includes(row.getValue(id))
       },
     },
     {
