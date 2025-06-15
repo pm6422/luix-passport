@@ -27,7 +27,7 @@ public class ScheduleExecutionLog extends AbstractBaseDomain implements Serializ
     public static final  String STATUS_SUCCESS   = "SUCCESS";
     public static final  String STATUS_FAILURE   = "FAILURE";
 
-    private String  taskName;
+    private String  scheduleName;
     private Instant startTime;
     private Instant endTime;
     private Long    durationMs;

@@ -30,17 +30,17 @@ public class ScheduleExecutionLogAspect {
 
     @Around("@annotation(schedulerExecutionLog)")
     public Object logScheduleExecution(ProceedingJoinPoint joinPoint, SchedulerExecutionLog schedulerExecutionLog) throws Throwable {
-        // 如果启用了ShedLock集成且当前未持有锁，则直接跳过
         if (schedulerExecutionLog.integrateWithShedLock() && !isShedLockHeld(joinPoint)) {
+            // 如果启用了ShedLock集成且当前未持有锁，则直接跳过
             return null;
         }
 
-        String taskName = !schedulerExecutionLog.taskName().isEmpty() ?
-                schedulerExecutionLog.taskName() :
+        String scheduleName = !schedulerExecutionLog.name().isEmpty() ?
+                schedulerExecutionLog.name() :
                 joinPoint.getSignature().getName();
 
         ScheduleExecutionLog domain = new ScheduleExecutionLog();
-        domain.setTaskName(taskName);
+        domain.setScheduleName(scheduleName);
         domain.setStartTime(Instant.now());
         domain.setStatus(STATUS_RUNNING);
         domain.setNodeIp(AddressUtils.getIntranetIp());
