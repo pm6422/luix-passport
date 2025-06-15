@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form"
 import InputFormField from "@/components/custom/form-field/input"
 import { Button } from "@/components/ui/button"
 import { IconFilterSearch } from "@tabler/icons-react"
-import { type ScheduleCriteriaSchema, scheduleCriteriaSchema, initialScheduleCriteriaState } from "@/domains/schedule"
+import { type ScheduleExecutionLogCriteriaSchema, scheduleExecutionLogCriteriaSchema, initialScheduleExecutionLogCriteriaState } from "@/domains/schedule-execution-log"
 import { Form } from "@/components/ui/form"
 import {
   Popover,
@@ -13,19 +13,19 @@ import {
 } from "@/components/ui/popover"
 
 interface DataTableToolbarProps{
-  loadPage: (pageNo: number | undefined, pageSize: number | undefined, sorts: Array<string> | undefined, criteria: ScheduleCriteriaSchema) => void
+  loadPage: (pageNo: number | undefined, pageSize: number | undefined, sorts: Array<string> | undefined, criteria: ScheduleExecutionLogCriteriaSchema) => void
 }
 
 export function DataTableToolbar ({
   loadPage
 }: DataTableToolbarProps) {
   const [isFilterPopoverOpen, setIsFilterPopoverOpen] = useState(false)
-  const form = useForm<ScheduleCriteriaSchema>({
-    resolver: zodResolver(scheduleCriteriaSchema),
-    defaultValues: initialScheduleCriteriaState
+  const form = useForm<ScheduleExecutionLogCriteriaSchema>({
+    resolver: zodResolver(scheduleExecutionLogCriteriaSchema),
+    defaultValues: initialScheduleExecutionLogCriteriaState
   })
 
-  function onSubmit(formData: ScheduleCriteriaSchema): void {
+  function onSubmit(formData: ScheduleExecutionLogCriteriaSchema): void {
     loadPage(undefined, undefined, undefined, formData)
     setIsFilterPopoverOpen(false)
   }
@@ -48,8 +48,14 @@ export function DataTableToolbar ({
                 <div className="flex flex-col sm:flex-row gap-2">
                   <InputFormField
                     control={form.control}
-                    name="id"
-                    label="ID"
+                    name="scheduleName"
+                    label="Schedule Name"
+                    formItemClassName="w-full"
+                  />
+                  <InputFormField
+                    control={form.control}
+                    name="status"
+                    label="Status"
                     formItemClassName="w-full"
                   />
                 </div>

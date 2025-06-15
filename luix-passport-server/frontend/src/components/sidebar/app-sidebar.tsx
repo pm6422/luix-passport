@@ -101,8 +101,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             }
           ] : []),
           {
-            title: "Schedules",
-            url: "/schedules",
+            title: "Schedule Logs",
+            url: "/schedule-execution-logs",
             icon: IconCalendarStats,
           },
           {

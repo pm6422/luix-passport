@@ -3,22 +3,23 @@ import { LayoutBody } from "@/layouts/layout-definitions"
 import { DataTableToolbar } from "./table/table-toolbar"
 import { DataTable } from "@/components/custom/data-table/server-pagination-data-table"
 import { tableColumns } from "./table/table-columns"
-import { type Schedule, type ScheduleCriteriaSchema } from "@/domains/schedule"
-import { ScheduleService } from "@/services/schedule-service"
+import { type ScheduleExecutionLog, type ScheduleExecutionLogCriteriaSchema } from "@/domains/schedule-execution-log"
+import { ScheduleExecutionLogService } from "@/services/schedule-execution-log-service"
 
-export default function Schedules() {
+export default function ScheduleExecutionLogs() {
   // State to hold the fetched data
-  const entityName = "schedule"
-  const [tableData, setTableData] = useState([] as Array<Schedule>)
+  const entityName = "schedule execution log"
+  const [tableData, setTableData] = useState([] as Array<ScheduleExecutionLog>)
   const [totalCount, setTotalCount] = useState(0)
   const [totalPages, setTotalPages] = useState(0)
 
-  function loadPage(pageNo: number = 0, pageSize: number = 10, sorts: Array<string> = ["lockedAt,desc"], criteria: ScheduleCriteriaSchema = {}): void {
-    ScheduleService.find({
+  function loadPage(pageNo: number = 0, pageSize: number = 10, sorts: Array<string> = ["startAt,desc"], criteria: ScheduleExecutionLogCriteriaSchema = {}): void {
+    ScheduleExecutionLogService.find({
       page: pageNo,
       size: pageSize,
       sort: sorts,
-      id: criteria.id || null
+      scheduleName: criteria.scheduleName || null,
+      status: criteria.status || null
     }).then(r => {
       setTableData(r.data)
       const total = parseInt(r.headers["x-total-count"])
@@ -27,16 +28,16 @@ export default function Schedules() {
     })
   }
 
-  function deleteRow(row: Schedule): Promise<void> {
+  function deleteRow(row: ScheduleExecutionLog): Promise<void> {
     if(!row.id) {
       return Promise.reject("Invalid empty id")
     }
-    return ScheduleService.deleteById(row.id).then(() => {
+    return ScheduleExecutionLogService.deleteById(row.id).then(() => {
       loadPage()
     })
   }
 
-  function deleteRows(rows: Array<Schedule>): Promise<Array<void>> {
+  function deleteRows(rows: Array<ScheduleExecutionLog>): Promise<Array<void>> {
     return Promise.all(rows.map(deleteRow))
   }
 
