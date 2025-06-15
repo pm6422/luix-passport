@@ -5,6 +5,9 @@ import cn.luixtech.passport.server.domain.ScheduleExecutionLog;
 import cn.luixtech.passport.server.repository.ScheduleExecutionLogRepository;
 import com.luixtech.utilities.network.AddressUtils;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import net.javacrumbs.shedlock.core.LockConfiguration;
+import net.javacrumbs.shedlock.core.LockProvider;
 import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -24,9 +27,11 @@ import static cn.luixtech.passport.server.domain.ScheduleExecutionLog.*;
 @Aspect
 @Component
 @AllArgsConstructor
+@Slf4j
 public class ScheduleExecutionLogAspect {
     private final Environment                    env;
     private final ScheduleExecutionLogRepository scheduleExecutionLogRepository;
+    private final LockProvider                   lockProvider;
 
     @Around("@annotation(schedulerExecutionLog)")
     public Object logScheduleExecution(ProceedingJoinPoint joinPoint, SchedulerExecutionLog schedulerExecutionLog) throws Throwable {
@@ -45,10 +50,6 @@ public class ScheduleExecutionLogAspect {
         domain.setStatus(STATUS_RUNNING);
         domain.setNodeIp(AddressUtils.getIntranetIp());
         domain.setPriority(schedulerExecutionLog.priority().name());
-
-        if (schedulerExecutionLog.integrateWithShedLock()) {
-            domain.setLockId(getLockId(joinPoint));
-        }
 
         if (schedulerExecutionLog.logParameters()) {
             domain.setParameters(parseParameters(joinPoint));
@@ -77,31 +78,26 @@ public class ScheduleExecutionLogAspect {
         }
     }
 
-    // 检查ShedLock是否已被当前节点获取
     private boolean isShedLockHeld(ProceedingJoinPoint joinPoint) {
         try {
             Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
             SchedulerLock lockAnnotation = method.getAnnotation(SchedulerLock.class);
-            if (lockAnnotation == null) {
-                return true;
-            }
-            // 查询数据库中的锁记录
-            String lockId = getLockId(joinPoint);
-            return scheduleExecutionLogRepository.existsByLockId(lockId);
+            if (lockAnnotation == null) return true;
+
+            // 构建与ShedLock相同的锁配置
+            LockConfiguration config = new LockConfiguration(
+                    Instant.now(),
+                    lockAnnotation.name(),
+                    parseDuration(lockAnnotation.lockAtMostFor()),
+                    parseDuration(lockAnnotation.lockAtLeastFor())
+            );
+
+            // 直接通过LockProvider检查锁状态
+            return lockProvider.lock(config).isPresent();
         } catch (Exception e) {
+            log.error("Check lock failed", e);
             return false;
         }
-    }
-
-    private String getLockId(ProceedingJoinPoint joinPoint) {
-        Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
-        SchedulerLock lockAnnotation = method.getAnnotation(SchedulerLock.class);
-        if (lockAnnotation == null) {
-            return null;
-        }
-
-        String appName = env.getProperty("spring.application.name", "unknown");
-        return appName + "_" + lockAnnotation.name();
     }
 
     private String parseParameters(ProceedingJoinPoint joinPoint) {
@@ -116,6 +112,15 @@ public class ScheduleExecutionLogAspect {
                     .collect(Collectors.joining(", "));
         } catch (Exception e) {
             return "parameter serialization failed";
+        }
+    }
+
+    private Duration parseDuration(String durationStr) {
+        try {
+            return Duration.parse("PT" + durationStr.toUpperCase());
+        } catch (Exception e) {
+            // 默认10分钟
+            return Duration.ofMinutes(10);
         }
     }
 }
