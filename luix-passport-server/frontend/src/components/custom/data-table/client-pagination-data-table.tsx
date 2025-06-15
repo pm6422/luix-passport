@@ -131,7 +131,7 @@ export function DataTable<TData, TValue>({
         )}
         <DataTableViewOptions columns={table.getAllColumns()} />
       </div>
-      <div className="rounded-md border">
+      <div className="overflow-hidden rounded-lg border">
         <MinusIntroY>
           <Table>
             <TableHeader className="bg-muted">
