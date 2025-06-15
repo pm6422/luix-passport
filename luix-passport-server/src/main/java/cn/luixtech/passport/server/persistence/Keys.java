@@ -12,6 +12,7 @@ import cn.luixtech.passport.server.persistence.tables.Oauth2RegisteredClient;
 import cn.luixtech.passport.server.persistence.tables.Permission;
 import cn.luixtech.passport.server.persistence.tables.Role;
 import cn.luixtech.passport.server.persistence.tables.RolePermission;
+import cn.luixtech.passport.server.persistence.tables.ScheduleExecutionLog;
 import cn.luixtech.passport.server.persistence.tables.SchedulerLock;
 import cn.luixtech.passport.server.persistence.tables.SpringSession;
 import cn.luixtech.passport.server.persistence.tables.SpringSessionAttributes;
@@ -33,6 +34,7 @@ import cn.luixtech.passport.server.persistence.tables.records.Oauth2RegisteredCl
 import cn.luixtech.passport.server.persistence.tables.records.PermissionRecord;
 import cn.luixtech.passport.server.persistence.tables.records.RolePermissionRecord;
 import cn.luixtech.passport.server.persistence.tables.records.RoleRecord;
+import cn.luixtech.passport.server.persistence.tables.records.ScheduleExecutionLogRecord;
 import cn.luixtech.passport.server.persistence.tables.records.SchedulerLockRecord;
 import cn.luixtech.passport.server.persistence.tables.records.SpringSessionAttributesRecord;
 import cn.luixtech.passport.server.persistence.tables.records.SpringSessionRecord;
@@ -75,6 +77,7 @@ public class Keys {
     public static final UniqueKey<RoleRecord> ROLE_PKEY = Internal.createUniqueKey(Role.ROLE, DSL.name("role_pkey"), new TableField[] { Role.ROLE.ID }, true);
     public static final UniqueKey<RolePermissionRecord> ROLE_PERMISSION_PKEY = Internal.createUniqueKey(RolePermission.ROLE_PERMISSION, DSL.name("role_permission_pkey"), new TableField[] { RolePermission.ROLE_PERMISSION.ID }, true);
     public static final UniqueKey<RolePermissionRecord> UK_ROLE_PERMISSION = Internal.createUniqueKey(RolePermission.ROLE_PERMISSION, DSL.name("uk_role_permission"), new TableField[] { RolePermission.ROLE_PERMISSION.ROLE_ID, RolePermission.ROLE_PERMISSION.PERMISSION_ID }, true);
+    public static final UniqueKey<ScheduleExecutionLogRecord> SCHEDULE_EXECUTION_LOG_PKEY = Internal.createUniqueKey(ScheduleExecutionLog.SCHEDULE_EXECUTION_LOG, DSL.name("schedule_execution_log_pkey"), new TableField[] { ScheduleExecutionLog.SCHEDULE_EXECUTION_LOG.ID }, true);
     public static final UniqueKey<SchedulerLockRecord> SCHEDULER_LOCK_PKEY = Internal.createUniqueKey(SchedulerLock.SCHEDULER_LOCK, DSL.name("scheduler_lock_pkey"), new TableField[] { SchedulerLock.SCHEDULER_LOCK.ID }, true);
     public static final UniqueKey<SpringSessionRecord> SPRING_SESSION_PKEY = Internal.createUniqueKey(SpringSession.SPRING_SESSION, DSL.name("spring_session_pkey"), new TableField[] { SpringSession.SPRING_SESSION.PRIMARY_ID }, true);
     public static final UniqueKey<SpringSessionRecord> SPRING_SESSION_SESSION_ID_KEY = Internal.createUniqueKey(SpringSession.SPRING_SESSION, DSL.name("spring_session_session_id_key"), new TableField[] { SpringSession.SPRING_SESSION.SESSION_ID }, true);
@@ -100,6 +103,7 @@ public class Keys {
 
     public static final ForeignKey<RolePermissionRecord, PermissionRecord> ROLE_PERMISSION__FK_ROLE_PERMISSION_PERMISSION_ID = Internal.createForeignKey(RolePermission.ROLE_PERMISSION, DSL.name("fk_role_permission_permission_id"), new TableField[] { RolePermission.ROLE_PERMISSION.PERMISSION_ID }, Keys.PERMISSION_PKEY, new TableField[] { Permission.PERMISSION.ID }, true);
     public static final ForeignKey<RolePermissionRecord, RoleRecord> ROLE_PERMISSION__FK_ROLE_PERMISSION_ROLE_ID = Internal.createForeignKey(RolePermission.ROLE_PERMISSION, DSL.name("fk_role_permission_role_id"), new TableField[] { RolePermission.ROLE_PERMISSION.ROLE_ID }, Keys.ROLE_PKEY, new TableField[] { Role.ROLE.ID }, true);
+    public static final ForeignKey<ScheduleExecutionLogRecord, SchedulerLockRecord> SCHEDULE_EXECUTION_LOG__FK_SCHEDULE_EXECUTION_LOG_SCHEDULER_LOCK_ID = Internal.createForeignKey(ScheduleExecutionLog.SCHEDULE_EXECUTION_LOG, DSL.name("fk_schedule_execution_log_scheduler_lock_id"), new TableField[] { ScheduleExecutionLog.SCHEDULE_EXECUTION_LOG.SCHEDULER_LOCK_ID }, Keys.SCHEDULER_LOCK_PKEY, new TableField[] { SchedulerLock.SCHEDULER_LOCK.ID }, true);
     public static final ForeignKey<TeamUserRecord, UserRecord> TEAM_USER__FK_TEAM_USER_USERNAME = Internal.createForeignKey(TeamUser.TEAM_USER, DSL.name("fk_team_user_username"), new TableField[] { TeamUser.TEAM_USER.USERNAME }, Keys.USER_PKEY, new TableField[] { User.USER.USERNAME }, true);
     public static final ForeignKey<UserRecord, SupportedDateTimeFormatRecord> USER__FK_USER_DATE_TIME_FORMAT_SUPPORTED_DATE_TIME_FORMAT_ID = Internal.createForeignKey(User.USER, DSL.name("fk_user_date_time_format_supported_date_time_format_id"), new TableField[] { User.USER.DATE_TIME_FORMAT_ID }, Keys.SUPPORTED_DATE_TIME_FORMAT_PKEY, new TableField[] { SupportedDateTimeFormat.SUPPORTED_DATE_TIME_FORMAT.ID }, true);
     public static final ForeignKey<UserLoginRecord, UserRecord> USER_LOGIN__FK_USER_LOGIN_USERNAME = Internal.createForeignKey(UserLogin.USER_LOGIN, DSL.name("fk_user_login_username"), new TableField[] { UserLogin.USER_LOGIN.USERNAME }, Keys.USER_PKEY, new TableField[] { User.USER.USERNAME }, true);

@@ -516,6 +516,32 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+        <createTable tableName="schedule_execution_log">
+            <column name="id" type="VARCHAR(20)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="task_name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="start_time" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_time" type="timestamp"/>
+            <column name="duration_ms" type="BIGINT"/>
+            <column name="status" type="VARCHAR(20)" remarks="(RUNNING/SUCCESS/FAILED)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="node_ip" type="VARCHAR(45)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="node_name" type="VARCHAR(100)"/>
+            <column name="scheduler_lock_id" type="VARCHAR(255)"/>
+            <column name="parameters" type="TEXT"/>
+            <column name="message" type="TEXT"/>
+            <column name="priority" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
 
         <createIndex tableName="user" indexName="idx_user_time_zone_id" unique="false">
             <column name="time_zone_id"/>
@@ -642,6 +668,14 @@
                 baseColumnNames="notification_id"
                 constraintName="fk_user_notification_notification"
                 referencedTableName="notification"
+                referencedColumnNames="id"
+                onDelete="CASCADE"
+                onUpdate="CASCADE"/>
+        <addForeignKeyConstraint
+                baseTableName="schedule_execution_log"
+                baseColumnNames="scheduler_lock_id"
+                constraintName="fk_schedule_execution_log_scheduler_lock_id"
+                referencedTableName="scheduler_lock"
                 referencedColumnNames="id"
                 onDelete="CASCADE"
                 onUpdate="CASCADE"/>

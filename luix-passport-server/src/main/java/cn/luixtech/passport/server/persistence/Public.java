@@ -12,6 +12,7 @@ import cn.luixtech.passport.server.persistence.tables.Oauth2RegisteredClient;
 import cn.luixtech.passport.server.persistence.tables.Permission;
 import cn.luixtech.passport.server.persistence.tables.Role;
 import cn.luixtech.passport.server.persistence.tables.RolePermission;
+import cn.luixtech.passport.server.persistence.tables.ScheduleExecutionLog;
 import cn.luixtech.passport.server.persistence.tables.SchedulerLock;
 import cn.luixtech.passport.server.persistence.tables.SpringSession;
 import cn.luixtech.passport.server.persistence.tables.SpringSessionAttributes;
@@ -86,6 +87,11 @@ public class Public extends SchemaImpl {
      * The table <code>public.role_permission</code>.
      */
     public final RolePermission ROLE_PERMISSION = RolePermission.ROLE_PERMISSION;
+
+    /**
+     * The table <code>public.schedule_execution_log</code>.
+     */
+    public final ScheduleExecutionLog SCHEDULE_EXECUTION_LOG = ScheduleExecutionLog.SCHEDULE_EXECUTION_LOG;
 
     /**
      * The table <code>public.scheduler_lock</code>.
@@ -176,6 +182,7 @@ public class Public extends SchemaImpl {
             Permission.PERMISSION,
             Role.ROLE,
             RolePermission.ROLE_PERMISSION,
+            ScheduleExecutionLog.SCHEDULE_EXECUTION_LOG,
             SchedulerLock.SCHEDULER_LOCK,
             SpringSession.SPRING_SESSION,
             SpringSessionAttributes.SPRING_SESSION_ATTRIBUTES,
