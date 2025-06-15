@@ -50,3 +50,4 @@ nb-configuration.xml
 pom.xml.bak
 luix-passport-server/node
 
+/node_modules/.package-lock.json
