@@ -8,7 +8,7 @@ import { useEffect, useState } from "react"
 import { UserNotificationService } from "@/services/user-notification-service"
 import { Badge } from "@/components/ui/badge.tsx"
 import { AccountService } from "@/services/account-service"
-import AnimatedBackgroundPaths from "@/components/custom/animated-background-paths"
+import AnimatedPathsBackground from "@/components/custom/animated-paths-background"
 import ColourfulText from "@/components/custom/colourful-text"
 
 export default function SiteHome() {
@@ -25,7 +25,7 @@ export default function SiteHome() {
 
   return (
     <LayoutBody className="space-y-4">
-      <AnimatedBackgroundPaths>
+      <AnimatedPathsBackground>
         <div className="container relative grid h-screen flex-col items-center justify-center lg:max-w-none lg:grid-cols-2">
           {/* Left side - hidden on mobile */}
           <div className="lg:flex relative hidden xl:px-28 lg:px-2 ms-10 mb-36 overflow-hidden">
@@ -108,7 +108,7 @@ export default function SiteHome() {
             <SiteFooter />
           </div>
         </div>
-      </AnimatedBackgroundPaths>
+      </AnimatedPathsBackground>
     </LayoutBody>
   )
 }

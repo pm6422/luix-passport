@@ -49,7 +49,7 @@ function FloatingPaths({ position }: { position: number }) {
   );
 }
 
-export default function AnimatedBackgroundPaths({
+export default function AnimatedPathsBackground({
                                              children,
                                              className = "",
                                            }: {
