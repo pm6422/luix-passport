@@ -16,6 +16,7 @@ public class ShedLockConfiguration {
     public LockProvider lockProvider(DataSource dataSource) {
         return new JdbcTemplateLockProvider(
                 JdbcTemplateLockProvider.Configuration.builder()
+                        .withTableName("scheduler_lock")
                         .withColumnNames(new JdbcTemplateLockProvider.ColumnNames("id", "lock_until", "locked_at", "locked_by"))
                         .withJdbcTemplate(new JdbcTemplate(dataSource))
                         .usingDbTime() // Works on Postgres, MySQL, MariaDb, MS SQL, Oracle, DB2, HSQL and H2

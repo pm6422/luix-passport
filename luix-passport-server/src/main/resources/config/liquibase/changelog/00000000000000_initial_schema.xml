@@ -502,8 +502,8 @@
                 separator=";"
                 tableName="user_notification">
         </loadData>
-        <createTable tableName="shedlock">
-            <column name="id" type="VARCHAR(64)">
+        <createTable tableName="scheduler_lock">
+            <column name="id" type="VARCHAR(128)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="lock_until" type="timestamp">

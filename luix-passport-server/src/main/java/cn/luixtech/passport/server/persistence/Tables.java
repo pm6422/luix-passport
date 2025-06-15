@@ -12,7 +12,7 @@ import cn.luixtech.passport.server.persistence.tables.Oauth2RegisteredClient;
 import cn.luixtech.passport.server.persistence.tables.Permission;
 import cn.luixtech.passport.server.persistence.tables.Role;
 import cn.luixtech.passport.server.persistence.tables.RolePermission;
-import cn.luixtech.passport.server.persistence.tables.Shedlock;
+import cn.luixtech.passport.server.persistence.tables.SchedulerLock;
 import cn.luixtech.passport.server.persistence.tables.SpringSession;
 import cn.luixtech.passport.server.persistence.tables.SpringSessionAttributes;
 import cn.luixtech.passport.server.persistence.tables.SupportedDateTimeFormat;
@@ -74,9 +74,9 @@ public class Tables {
     public static final RolePermission ROLE_PERMISSION = RolePermission.ROLE_PERMISSION;
 
     /**
-     * The table <code>public.shedlock</code>.
+     * The table <code>public.scheduler_lock</code>.
      */
-    public static final Shedlock SHEDLOCK = Shedlock.SHEDLOCK;
+    public static final SchedulerLock SCHEDULER_LOCK = SchedulerLock.SCHEDULER_LOCK;
 
     /**
      * The table <code>public.spring_session</code>.

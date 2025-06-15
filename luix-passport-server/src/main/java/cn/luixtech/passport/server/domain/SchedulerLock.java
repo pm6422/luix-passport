@@ -19,7 +19,7 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class Shedlock extends AbstractBaseDomain implements Serializable {
+public class SchedulerLock extends AbstractBaseDomain implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 

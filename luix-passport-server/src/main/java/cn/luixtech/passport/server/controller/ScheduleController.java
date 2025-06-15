@@ -1,8 +1,8 @@
 package cn.luixtech.passport.server.controller;
 
-import cn.luixtech.passport.server.domain.Shedlock;
-import cn.luixtech.passport.server.repository.ShedlockRepository;
-import cn.luixtech.passport.server.service.ShedlockService;
+import cn.luixtech.passport.server.domain.SchedulerLock;
+import cn.luixtech.passport.server.repository.SchedulerLockRepository;
+import cn.luixtech.passport.server.service.SchedulerLockService;
 import com.luixtech.utilities.exception.DataNotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -25,28 +25,28 @@ import static com.luixtech.springbootframework.utils.HttpHeaderUtils.generatePag
 @PreAuthorize("hasAuthority(\"" + ROLE_ADMIN + "\")")
 @Slf4j
 public class ScheduleController {
-    private final ShedlockRepository shedlockRepository;
-    private final ShedlockService    shedlockService;
+    private final SchedulerLockRepository schedulerLockRepository;
+    private final SchedulerLockService    schedulerLockService;
 
     @Operation(summary = "find schedule list")
     @GetMapping("/api/schedules")
-    public ResponseEntity<List<Shedlock>> find(@ParameterObject Pageable pageable,
-                                               @RequestParam(value = "id", required = false) String id) {
-        Page<Shedlock> domains = shedlockService.find(pageable, id);
+    public ResponseEntity<List<SchedulerLock>> find(@ParameterObject Pageable pageable,
+                                                    @RequestParam(value = "id", required = false) String id) {
+        Page<SchedulerLock> domains = schedulerLockService.find(pageable, id);
         return ResponseEntity.ok().headers(generatePageHeaders(domains)).body(domains.getContent());
     }
 
     @Operation(summary = "find schedule by id")
     @GetMapping("/api/schedules/{id}")
-    public ResponseEntity<Shedlock> findById(@Parameter(description = "ID", required = true) @PathVariable String id) {
-        Shedlock domain = shedlockRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
+    public ResponseEntity<SchedulerLock> findById(@Parameter(description = "ID", required = true) @PathVariable String id) {
+        SchedulerLock domain = schedulerLockRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
         return ResponseEntity.ok(domain);
     }
 
     @Operation(summary = "delete schedule by id")
     @DeleteMapping("/api/schedules/{id}")
     public ResponseEntity<Void> delete(@Parameter(description = "ID", required = true) @PathVariable String id) {
-        shedlockRepository.deleteById(id);
+        schedulerLockRepository.deleteById(id);
         return ResponseEntity.ok().build();
     }
 }

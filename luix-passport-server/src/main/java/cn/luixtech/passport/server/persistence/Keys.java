@@ -12,7 +12,7 @@ import cn.luixtech.passport.server.persistence.tables.Oauth2RegisteredClient;
 import cn.luixtech.passport.server.persistence.tables.Permission;
 import cn.luixtech.passport.server.persistence.tables.Role;
 import cn.luixtech.passport.server.persistence.tables.RolePermission;
-import cn.luixtech.passport.server.persistence.tables.Shedlock;
+import cn.luixtech.passport.server.persistence.tables.SchedulerLock;
 import cn.luixtech.passport.server.persistence.tables.SpringSession;
 import cn.luixtech.passport.server.persistence.tables.SpringSessionAttributes;
 import cn.luixtech.passport.server.persistence.tables.SupportedDateTimeFormat;
@@ -33,7 +33,7 @@ import cn.luixtech.passport.server.persistence.tables.records.Oauth2RegisteredCl
 import cn.luixtech.passport.server.persistence.tables.records.PermissionRecord;
 import cn.luixtech.passport.server.persistence.tables.records.RolePermissionRecord;
 import cn.luixtech.passport.server.persistence.tables.records.RoleRecord;
-import cn.luixtech.passport.server.persistence.tables.records.ShedlockRecord;
+import cn.luixtech.passport.server.persistence.tables.records.SchedulerLockRecord;
 import cn.luixtech.passport.server.persistence.tables.records.SpringSessionAttributesRecord;
 import cn.luixtech.passport.server.persistence.tables.records.SpringSessionRecord;
 import cn.luixtech.passport.server.persistence.tables.records.SupportedDateTimeFormatRecord;
@@ -75,7 +75,7 @@ public class Keys {
     public static final UniqueKey<RoleRecord> ROLE_PKEY = Internal.createUniqueKey(Role.ROLE, DSL.name("role_pkey"), new TableField[] { Role.ROLE.ID }, true);
     public static final UniqueKey<RolePermissionRecord> ROLE_PERMISSION_PKEY = Internal.createUniqueKey(RolePermission.ROLE_PERMISSION, DSL.name("role_permission_pkey"), new TableField[] { RolePermission.ROLE_PERMISSION.ID }, true);
     public static final UniqueKey<RolePermissionRecord> UK_ROLE_PERMISSION = Internal.createUniqueKey(RolePermission.ROLE_PERMISSION, DSL.name("uk_role_permission"), new TableField[] { RolePermission.ROLE_PERMISSION.ROLE_ID, RolePermission.ROLE_PERMISSION.PERMISSION_ID }, true);
-    public static final UniqueKey<ShedlockRecord> SHEDLOCK_PKEY = Internal.createUniqueKey(Shedlock.SHEDLOCK, DSL.name("shedlock_pkey"), new TableField[] { Shedlock.SHEDLOCK.ID }, true);
+    public static final UniqueKey<SchedulerLockRecord> SCHEDULER_LOCK_PKEY = Internal.createUniqueKey(SchedulerLock.SCHEDULER_LOCK, DSL.name("scheduler_lock_pkey"), new TableField[] { SchedulerLock.SCHEDULER_LOCK.ID }, true);
     public static final UniqueKey<SpringSessionRecord> SPRING_SESSION_PKEY = Internal.createUniqueKey(SpringSession.SPRING_SESSION, DSL.name("spring_session_pkey"), new TableField[] { SpringSession.SPRING_SESSION.PRIMARY_ID }, true);
     public static final UniqueKey<SpringSessionRecord> SPRING_SESSION_SESSION_ID_KEY = Internal.createUniqueKey(SpringSession.SPRING_SESSION, DSL.name("spring_session_session_id_key"), new TableField[] { SpringSession.SPRING_SESSION.SESSION_ID }, true);
     public static final UniqueKey<SpringSessionAttributesRecord> SPRING_SESSION_ATTRIBUTES_PKEY = Internal.createUniqueKey(SpringSessionAttributes.SPRING_SESSION_ATTRIBUTES, DSL.name("spring_session_attributes_pkey"), new TableField[] { SpringSessionAttributes.SPRING_SESSION_ATTRIBUTES.SESSION_PRIMARY_ID, SpringSessionAttributes.SPRING_SESSION_ATTRIBUTES.ATTRIBUTE_NAME }, true);
