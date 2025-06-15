@@ -28,7 +28,7 @@ import static cn.luixtech.passport.server.domain.ScheduleExecutionLog.*;
 @Component
 @AllArgsConstructor
 @Slf4j
-@Order(Ordered.LOWEST_PRECEDENCE - 1) // 确保比ShedLock的切面优先级低
+@Order(Ordered.LOWEST_PRECEDENCE - 1)// keep this aspect lower than ShedLock
 public class ScheduleExecutionLogAspect {
     private final ScheduleExecutionLogRepository scheduleExecutionLogRepository;
     private final SchedulerLockService           schedulerLockService;
@@ -39,7 +39,7 @@ public class ScheduleExecutionLogAspect {
         SchedulerLock schedulerLockAnnotation = method.getAnnotation(SchedulerLock.class);
 
         if (schedulerLockAnnotation != null && !isShedLockHeld(schedulerLockAnnotation.name())) {
-            // 如果启用了ShedLock集成且当前未持有锁，则直接跳过执行
+            // if shed lock is not held, skip execution
             return null;
         }
 
