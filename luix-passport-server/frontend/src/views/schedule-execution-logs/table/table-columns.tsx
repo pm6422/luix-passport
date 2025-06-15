@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button"
 import { ScheduleExecutionLog } from "@/domains/schedule-execution-log.ts"
 import { EditDialog } from "../dialog/edit-dialog"
 import { DateTime } from "@/components/custom/date-time"
+import { IconCircleCheckFilled, IconCircleXFilled, IconLoader } from "@tabler/icons-react";
+import { Badge } from '@/components/ui/badge.tsx'
 
 export function tableColumns(
   entityName: string,
@@ -79,7 +81,25 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Status" />
       ),
-      cell: ({ row }) => <div className="w-[50px]">{row.original.status}</div>,
+      cell: ({ row }) => {
+        return (
+          <div className="flex w-[50px] items-center justify-center">
+            <Badge
+              variant="outline"
+              className="flex gap-1 px-1.5 text-muted-foreground [&_svg]:size-3 uppercase"
+            >
+              {row.original.status === "SUCCESS" ? (
+                <IconCircleCheckFilled className="text-green-500 dark:text-green-400" />
+              ) : row.original.status === "FAILURE" ? (
+                <IconCircleXFilled className="text-red-500 dark:text-red-400" />
+              ) : (
+                <IconLoader />
+              )}
+              {String(row.original.status)}
+            </Badge>
+          </div>
+        )
+      },
       enableSorting: true,
       enableHiding: true,
     },
