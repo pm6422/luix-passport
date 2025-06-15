@@ -12,7 +12,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { yesNoOptions } from '@/data/yes-no-options.tsx'
 
 interface DataTableToolbarProps{
   loadPage: (pageNo: number | undefined, pageSize: number | undefined, sorts: Array<string> | undefined, criteria: ScheduleExecutionLogCriteriaSchema) => void
