@@ -56,14 +56,14 @@ public class SchedulerLock extends TableImpl<SchedulerLockRecord> {
     public final TableField<SchedulerLockRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(128).nullable(false), this, "");
 
     /**
-     * The column <code>public.scheduler_lock.lock_until</code>.
-     */
-    public final TableField<SchedulerLockRecord, Instant> LOCK_UNTIL = createField(DSL.name("lock_until"), SQLDataType.INSTANT.nullable(false), this, "");
-
-    /**
      * The column <code>public.scheduler_lock.locked_at</code>.
      */
     public final TableField<SchedulerLockRecord, Instant> LOCKED_AT = createField(DSL.name("locked_at"), SQLDataType.INSTANT.nullable(false), this, "");
+
+    /**
+     * The column <code>public.scheduler_lock.lock_until</code>.
+     */
+    public final TableField<SchedulerLockRecord, Instant> LOCK_UNTIL = createField(DSL.name("lock_until"), SQLDataType.INSTANT.nullable(false), this, "");
 
     /**
      * The column <code>public.scheduler_lock.locked_by</code>.

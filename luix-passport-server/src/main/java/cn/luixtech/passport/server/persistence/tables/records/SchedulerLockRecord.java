@@ -38,30 +38,30 @@ public class SchedulerLockRecord extends UpdatableRecordImpl<SchedulerLockRecord
     }
 
     /**
-     * Setter for <code>public.scheduler_lock.lock_until</code>.
-     */
-    public void setLockUntil(Instant value) {
-        set(1, value);
-    }
-
-    /**
-     * Getter for <code>public.scheduler_lock.lock_until</code>.
-     */
-    public Instant getLockUntil() {
-        return (Instant) get(1);
-    }
-
-    /**
      * Setter for <code>public.scheduler_lock.locked_at</code>.
      */
     public void setLockedAt(Instant value) {
-        set(2, value);
+        set(1, value);
     }
 
     /**
      * Getter for <code>public.scheduler_lock.locked_at</code>.
      */
     public Instant getLockedAt() {
+        return (Instant) get(1);
+    }
+
+    /**
+     * Setter for <code>public.scheduler_lock.lock_until</code>.
+     */
+    public void setLockUntil(Instant value) {
+        set(2, value);
+    }
+
+    /**
+     * Getter for <code>public.scheduler_lock.lock_until</code>.
+     */
+    public Instant getLockUntil() {
         return (Instant) get(2);
     }
 
@@ -109,12 +109,12 @@ public class SchedulerLockRecord extends UpdatableRecordImpl<SchedulerLockRecord
 
     @Override
     public Field<Instant> field2() {
-        return SchedulerLock.SCHEDULER_LOCK.LOCK_UNTIL;
+        return SchedulerLock.SCHEDULER_LOCK.LOCKED_AT;
     }
 
     @Override
     public Field<Instant> field3() {
-        return SchedulerLock.SCHEDULER_LOCK.LOCKED_AT;
+        return SchedulerLock.SCHEDULER_LOCK.LOCK_UNTIL;
     }
 
     @Override
@@ -129,12 +129,12 @@ public class SchedulerLockRecord extends UpdatableRecordImpl<SchedulerLockRecord
 
     @Override
     public Instant component2() {
-        return getLockUntil();
+        return getLockedAt();
     }
 
     @Override
     public Instant component3() {
-        return getLockedAt();
+        return getLockUntil();
     }
 
     @Override
@@ -149,12 +149,12 @@ public class SchedulerLockRecord extends UpdatableRecordImpl<SchedulerLockRecord
 
     @Override
     public Instant value2() {
-        return getLockUntil();
+        return getLockedAt();
     }
 
     @Override
     public Instant value3() {
-        return getLockedAt();
+        return getLockUntil();
     }
 
     @Override
@@ -170,13 +170,13 @@ public class SchedulerLockRecord extends UpdatableRecordImpl<SchedulerLockRecord
 
     @Override
     public SchedulerLockRecord value2(Instant value) {
-        setLockUntil(value);
+        setLockedAt(value);
         return this;
     }
 
     @Override
     public SchedulerLockRecord value3(Instant value) {
-        setLockedAt(value);
+        setLockUntil(value);
         return this;
     }
 
@@ -209,12 +209,12 @@ public class SchedulerLockRecord extends UpdatableRecordImpl<SchedulerLockRecord
     /**
      * Create a detached, initialised SchedulerLockRecord
      */
-    public SchedulerLockRecord(String id, Instant lockUntil, Instant lockedAt, String lockedBy) {
+    public SchedulerLockRecord(String id, Instant lockedAt, Instant lockUntil, String lockedBy) {
         super(SchedulerLock.SCHEDULER_LOCK);
 
         setId(id);
-        setLockUntil(lockUntil);
         setLockedAt(lockedAt);
+        setLockUntil(lockUntil);
         setLockedBy(lockedBy);
         resetChangedOnNotNull();
     }
