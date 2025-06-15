@@ -45,7 +45,7 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="ID" />
       ),
-      cell: ({ row }) => <div className="w-[100px]">{row.original.id}</div>,
+      cell: ({ row }) => <div className="w-[175px]">{row.original.id}</div>,
       enableSorting: true,
       enableHiding: false,
     },
@@ -54,7 +54,7 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Schedule Name" />
       ),
-      cell: ({ row }) => <div className="w-[175px]">{row.original.scheduleName}</div>,
+      cell: ({ row }) => <div className="w-[200px]">{row.original.scheduleName}</div>,
       enableSorting: true,
       enableHiding: true,
     },
@@ -63,7 +63,7 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Start At" />
       ),
-      cell: ({ row }) => <div className="w-[75px]"><DateTime value={row.original.startAt}/></div>,
+      cell: ({ row }) => <div className="w-[150px]"><DateTime value={row.original.startAt}/></div>,
       enableSorting: true,
       enableHiding: true,
     },
@@ -72,7 +72,7 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="End At" />
       ),
-      cell: ({ row }) => <div className="w-[75px]"><DateTime value={row.original.endAt}/></div>,
+      cell: ({ row }) => <div className="w-[150px]"><DateTime value={row.original.endAt}/></div>,
       enableSorting: true,
       enableHiding: true,
     },
@@ -108,7 +108,7 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Node" />
       ),
-      cell: ({ row }) => <div className="w-[75px]">{row.original.node}</div>,
+      cell: ({ row }) => <div className="w-[150px]">{row.original.node}</div>,
       enableSorting: true,
       enableHiding: true,
     },
