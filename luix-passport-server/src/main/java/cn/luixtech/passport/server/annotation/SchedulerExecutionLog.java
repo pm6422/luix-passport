@@ -1,0 +1,22 @@
+package cn.luixtech.passport.server.annotation;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface SchedulerExecutionLog {
+    String taskName() default "";
+
+    boolean logParameters() default false;
+
+    SchedulePriority priority() default SchedulePriority.NORMAL;
+
+    boolean integrateWithShedLock() default true;
+
+    enum SchedulePriority {
+        LOW, NORMAL, HIGH, CRITICAL
+    }
+}

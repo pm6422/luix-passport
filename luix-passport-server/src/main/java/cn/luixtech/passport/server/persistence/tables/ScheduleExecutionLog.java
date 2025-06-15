@@ -9,8 +9,6 @@ import cn.luixtech.passport.server.persistence.Public;
 import cn.luixtech.passport.server.persistence.tables.records.ScheduleExecutionLogRecord;
 
 import java.time.Instant;
-import java.util.Arrays;
-import java.util.List;
 import java.util.function.Function;
 
 import org.jooq.Field;
@@ -79,9 +77,9 @@ public class ScheduleExecutionLog extends TableImpl<ScheduleExecutionLogRecord> 
 
     /**
      * The column <code>public.schedule_execution_log.status</code>.
-     * (RUNNING/SUCCESS/FAILED)
+     * (RUNNING/SUCCESS/FAILURE)
      */
-    public final TableField<ScheduleExecutionLogRecord, String> STATUS = createField(DSL.name("status"), SQLDataType.VARCHAR(20).nullable(false), this, "(RUNNING/SUCCESS/FAILED)");
+    public final TableField<ScheduleExecutionLogRecord, String> STATUS = createField(DSL.name("status"), SQLDataType.VARCHAR(20).nullable(false), this, "(RUNNING/SUCCESS/FAILURE)");
 
     /**
      * The column <code>public.schedule_execution_log.node_ip</code>.
@@ -94,9 +92,9 @@ public class ScheduleExecutionLog extends TableImpl<ScheduleExecutionLogRecord> 
     public final TableField<ScheduleExecutionLogRecord, String> NODE_NAME = createField(DSL.name("node_name"), SQLDataType.VARCHAR(100), this, "");
 
     /**
-     * The column <code>public.schedule_execution_log.scheduler_lock_id</code>.
+     * The column <code>public.schedule_execution_log.lock_id</code>.
      */
-    public final TableField<ScheduleExecutionLogRecord, String> SCHEDULER_LOCK_ID = createField(DSL.name("scheduler_lock_id"), SQLDataType.VARCHAR(255), this, "");
+    public final TableField<ScheduleExecutionLogRecord, String> LOCK_ID = createField(DSL.name("lock_id"), SQLDataType.VARCHAR(255), this, "");
 
     /**
      * The column <code>public.schedule_execution_log.parameters</code>.
@@ -156,24 +154,6 @@ public class ScheduleExecutionLog extends TableImpl<ScheduleExecutionLogRecord> 
     @Override
     public UniqueKey<ScheduleExecutionLogRecord> getPrimaryKey() {
         return Keys.SCHEDULE_EXECUTION_LOG_PKEY;
-    }
-
-    @Override
-    public List<ForeignKey<ScheduleExecutionLogRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.SCHEDULE_EXECUTION_LOG__FK_SCHEDULE_EXECUTION_LOG_SCHEDULER_LOCK_ID);
-    }
-
-    private transient SchedulerLock _schedulerLock;
-
-    /**
-     * Get the implicit join path to the <code>public.scheduler_lock</code>
-     * table.
-     */
-    public SchedulerLock schedulerLock() {
-        if (_schedulerLock == null)
-            _schedulerLock = new SchedulerLock(this, Keys.SCHEDULE_EXECUTION_LOG__FK_SCHEDULE_EXECUTION_LOG_SCHEDULER_LOCK_ID);
-
-        return _schedulerLock;
     }
 
     @Override

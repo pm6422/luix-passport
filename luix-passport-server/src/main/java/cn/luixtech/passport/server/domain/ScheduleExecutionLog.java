@@ -22,7 +22,10 @@ import java.time.Instant;
 @EqualsAndHashCode(callSuper = true)
 public class ScheduleExecutionLog extends AbstractBaseDomain implements Serializable {
     @Serial
-    private static final long serialVersionUID = 1L;
+    private static final long   serialVersionUID = 1L;
+    public static final  String STATUS_RUNNING   = "RUNNING";
+    public static final  String STATUS_SUCCESS   = "SUCCESS";
+    public static final  String STATUS_FAILURE   = "FAILURE";
 
     private String  taskName;
     private Instant startTime;
@@ -31,7 +34,7 @@ public class ScheduleExecutionLog extends AbstractBaseDomain implements Serializ
     private String  status;
     private String  nodeIp;
     private String  nodeName;
-    private String  schedulerLockId;
+    private String  lockId;
     @Lob
     private String  parameters;
     @Lob

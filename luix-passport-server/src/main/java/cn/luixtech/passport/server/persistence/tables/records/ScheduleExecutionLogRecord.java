@@ -95,7 +95,7 @@ public class ScheduleExecutionLogRecord extends UpdatableRecordImpl<ScheduleExec
 
     /**
      * Setter for <code>public.schedule_execution_log.status</code>.
-     * (RUNNING/SUCCESS/FAILED)
+     * (RUNNING/SUCCESS/FAILURE)
      */
     public void setStatus(String value) {
         set(5, value);
@@ -103,7 +103,7 @@ public class ScheduleExecutionLogRecord extends UpdatableRecordImpl<ScheduleExec
 
     /**
      * Getter for <code>public.schedule_execution_log.status</code>.
-     * (RUNNING/SUCCESS/FAILED)
+     * (RUNNING/SUCCESS/FAILURE)
      */
     public String getStatus() {
         return (String) get(5);
@@ -138,16 +138,16 @@ public class ScheduleExecutionLogRecord extends UpdatableRecordImpl<ScheduleExec
     }
 
     /**
-     * Setter for <code>public.schedule_execution_log.scheduler_lock_id</code>.
+     * Setter for <code>public.schedule_execution_log.lock_id</code>.
      */
-    public void setSchedulerLockId(String value) {
+    public void setLockId(String value) {
         set(8, value);
     }
 
     /**
-     * Getter for <code>public.schedule_execution_log.scheduler_lock_id</code>.
+     * Getter for <code>public.schedule_execution_log.lock_id</code>.
      */
-    public String getSchedulerLockId() {
+    public String getLockId() {
         return (String) get(8);
     }
 
@@ -258,7 +258,7 @@ public class ScheduleExecutionLogRecord extends UpdatableRecordImpl<ScheduleExec
 
     @Override
     public Field<String> field9() {
-        return ScheduleExecutionLog.SCHEDULE_EXECUTION_LOG.SCHEDULER_LOCK_ID;
+        return ScheduleExecutionLog.SCHEDULE_EXECUTION_LOG.LOCK_ID;
     }
 
     @Override
@@ -318,7 +318,7 @@ public class ScheduleExecutionLogRecord extends UpdatableRecordImpl<ScheduleExec
 
     @Override
     public String component9() {
-        return getSchedulerLockId();
+        return getLockId();
     }
 
     @Override
@@ -378,7 +378,7 @@ public class ScheduleExecutionLogRecord extends UpdatableRecordImpl<ScheduleExec
 
     @Override
     public String value9() {
-        return getSchedulerLockId();
+        return getLockId();
     }
 
     @Override
@@ -446,7 +446,7 @@ public class ScheduleExecutionLogRecord extends UpdatableRecordImpl<ScheduleExec
 
     @Override
     public ScheduleExecutionLogRecord value9(String value) {
-        setSchedulerLockId(value);
+        setLockId(value);
         return this;
     }
 
@@ -499,7 +499,7 @@ public class ScheduleExecutionLogRecord extends UpdatableRecordImpl<ScheduleExec
     /**
      * Create a detached, initialised ScheduleExecutionLogRecord
      */
-    public ScheduleExecutionLogRecord(String id, String taskName, Instant startTime, Instant endTime, Long durationMs, String status, String nodeIp, String nodeName, String schedulerLockId, String parameters, String message, String priority) {
+    public ScheduleExecutionLogRecord(String id, String taskName, Instant startTime, Instant endTime, Long durationMs, String status, String nodeIp, String nodeName, String lockId, String parameters, String message, String priority) {
         super(ScheduleExecutionLog.SCHEDULE_EXECUTION_LOG);
 
         setId(id);
@@ -510,7 +510,7 @@ public class ScheduleExecutionLogRecord extends UpdatableRecordImpl<ScheduleExec
         setStatus(status);
         setNodeIp(nodeIp);
         setNodeName(nodeName);
-        setSchedulerLockId(schedulerLockId);
+        setLockId(lockId);
         setParameters(parameters);
         setMessage(message);
         setPriority(priority);
