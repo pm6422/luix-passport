@@ -56,9 +56,9 @@ public class ScheduleExecutionLog extends TableImpl<ScheduleExecutionLogRecord> 
     public final TableField<ScheduleExecutionLogRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(20).nullable(false), this, "");
 
     /**
-     * The column <code>public.schedule_execution_log.task_name</code>.
+     * The column <code>public.schedule_execution_log.schedule_name</code>.
      */
-    public final TableField<ScheduleExecutionLogRecord, String> TASK_NAME = createField(DSL.name("task_name"), SQLDataType.VARCHAR(100).nullable(false), this, "");
+    public final TableField<ScheduleExecutionLogRecord, String> SCHEDULE_NAME = createField(DSL.name("schedule_name"), SQLDataType.VARCHAR(100).nullable(false), this, "");
 
     /**
      * The column <code>public.schedule_execution_log.start_time</code>.

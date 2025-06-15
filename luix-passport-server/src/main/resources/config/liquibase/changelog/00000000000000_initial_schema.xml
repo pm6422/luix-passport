@@ -520,7 +520,7 @@
             <column name="id" type="VARCHAR(20)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="task_name" type="VARCHAR(100)">
+            <column name="schedule_name" type="VARCHAR(100)">
                 <constraints nullable="false"/>
             </column>
             <column name="start_time" type="timestamp">

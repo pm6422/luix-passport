@@ -13,6 +13,8 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
@@ -28,6 +30,7 @@ import static cn.luixtech.passport.server.domain.ScheduleExecutionLog.*;
 @Component
 @AllArgsConstructor
 @Slf4j
+@Order(Ordered.LOWEST_PRECEDENCE - 1) // 确保比ShedLock的切面优先级低
 public class ScheduleExecutionLogAspect {
     private final Environment                    env;
     private final ScheduleExecutionLogRepository scheduleExecutionLogRepository;

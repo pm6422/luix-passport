@@ -38,16 +38,16 @@ public class ScheduleExecutionLogRecord extends UpdatableRecordImpl<ScheduleExec
     }
 
     /**
-     * Setter for <code>public.schedule_execution_log.task_name</code>.
+     * Setter for <code>public.schedule_execution_log.schedule_name</code>.
      */
-    public void setTaskName(String value) {
+    public void setScheduleName(String value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>public.schedule_execution_log.task_name</code>.
+     * Getter for <code>public.schedule_execution_log.schedule_name</code>.
      */
-    public String getTaskName() {
+    public String getScheduleName() {
         return (String) get(1);
     }
 
@@ -195,7 +195,7 @@ public class ScheduleExecutionLogRecord extends UpdatableRecordImpl<ScheduleExec
 
     @Override
     public Field<String> field2() {
-        return ScheduleExecutionLog.SCHEDULE_EXECUTION_LOG.TASK_NAME;
+        return ScheduleExecutionLog.SCHEDULE_EXECUTION_LOG.SCHEDULE_NAME;
     }
 
     @Override
@@ -245,7 +245,7 @@ public class ScheduleExecutionLogRecord extends UpdatableRecordImpl<ScheduleExec
 
     @Override
     public String component2() {
-        return getTaskName();
+        return getScheduleName();
     }
 
     @Override
@@ -295,7 +295,7 @@ public class ScheduleExecutionLogRecord extends UpdatableRecordImpl<ScheduleExec
 
     @Override
     public String value2() {
-        return getTaskName();
+        return getScheduleName();
     }
 
     @Override
@@ -346,7 +346,7 @@ public class ScheduleExecutionLogRecord extends UpdatableRecordImpl<ScheduleExec
 
     @Override
     public ScheduleExecutionLogRecord value2(String value) {
-        setTaskName(value);
+        setScheduleName(value);
         return this;
     }
 
@@ -427,11 +427,11 @@ public class ScheduleExecutionLogRecord extends UpdatableRecordImpl<ScheduleExec
     /**
      * Create a detached, initialised ScheduleExecutionLogRecord
      */
-    public ScheduleExecutionLogRecord(String id, String taskName, Instant startTime, Instant endTime, Long durationMs, String status, String nodeIp, String parameters, String message, String priority) {
+    public ScheduleExecutionLogRecord(String id, String scheduleName, Instant startTime, Instant endTime, Long durationMs, String status, String nodeIp, String parameters, String message, String priority) {
         super(ScheduleExecutionLog.SCHEDULE_EXECUTION_LOG);
 
         setId(id);
-        setTaskName(taskName);
+        setScheduleName(scheduleName);
         setStartTime(startTime);
         setEndTime(endTime);
         setDurationMs(durationMs);
