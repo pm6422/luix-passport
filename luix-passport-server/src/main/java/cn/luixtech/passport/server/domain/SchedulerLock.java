@@ -23,8 +23,8 @@ public class SchedulerLock extends AbstractBaseDomain implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private Instant lockUntil;
     private Instant lockedAt;
+    private Instant lockUntil;
     private String  lockedBy;
 
 }
