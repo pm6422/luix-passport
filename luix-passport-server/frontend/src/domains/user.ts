@@ -37,7 +37,7 @@ export const initialUserState: User = {
   resetAt: "",
   remark: "",
   locale: "en_US",
-  timeZoneId: "Asia/Shanghai",
+  timeZoneId: "Europe/Amsterdam",
   dateTimeFormatId: "1",
   profilePhotoEnabled: false,
   activated: false,
