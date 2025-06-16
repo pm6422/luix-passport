@@ -50,7 +50,7 @@ public class DataDictServiceImpl implements DataDictService {
      * Execute every day at 2:00 AM
      */
 //    @Scheduled(initialDelay = 0, fixedRate = 300000)
-    @Scheduled(cron = "0 0 0 * * *", zone = "UTC")
+    @Scheduled(cron = "0 0 17 * * *")
     @SchedulerLock(name = "updateTimezoneUtcOffset")
     @SchedulerExecutionLog(name = "updateTimezoneUtcOffset")
     @Override
