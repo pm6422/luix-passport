@@ -6,6 +6,7 @@ import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@
 import { Badge } from "@/components/ui/badge"
 import { IconRefresh, IconEye } from "@tabler/icons-react"
 import { ManagementService } from "@/services/management-service"
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
 
 interface HealthData {
   name: string
@@ -25,7 +26,7 @@ interface HealthComponent {
 export default function HealthChecksPage() {
   const [healthList, setHealthList] = useState<HealthData[]>([])
   const [modalData, setModalData] = useState<Record<string, unknown>>({})
-  const [showModal, setShowModal] = useState(false)
+  const [showDrawer, setShowDrawer] = useState(false)
 
   const refresh = async () => {
     ManagementService.getHealth()
@@ -50,7 +51,7 @@ export default function HealthChecksPage() {
       ...data.details,
       ...(data.error && { error: data.error })
     })
-    setShowModal(true)
+    setShowDrawer(true)
   }
 
   const transformHealthData = (data: { components: Record<string, HealthComponent> }): HealthData[] => {
@@ -150,14 +151,26 @@ export default function HealthChecksPage() {
           <Table>
             <TableHeader>
               <TableRow>
+                <TableHead className="w-[50px]">Details</TableHead>
                 <TableHead className="w-[300px]">Service name</TableHead>
                 <TableHead className="w-[100px]">Status</TableHead>
-                <TableHead className="text-right">Details</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {healthList.map((row) => (
                 <TableRow key={row.name}>
+                  <TableCell>
+                    {(row.details || row.error) && (
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => showDetails(row)}
+                        className="h-8 w-8 p-0"
+                      >
+                        <IconEye className="size-4 text-muted-foreground" />
+                      </Button>
+                    )}
+                  </TableCell>
                   <TableCell className="font-medium">{row.name}</TableCell>
                   <TableCell>
                     <Badge
@@ -170,17 +183,6 @@ export default function HealthChecksPage() {
                       {row.status}
                     </Badge>
                   </TableCell>
-                  <TableCell className="text-right">
-                    {(row.details || row.error) && (
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => showDetails(row)}
-                      >
-                        <IconEye className="size-6 text-muted-foreground" />
-                      </Button>
-                    )}
-                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -188,24 +190,24 @@ export default function HealthChecksPage() {
         </CardContent>
       </Card>
 
-      {/* Modal for details */}
-      {showModal && (
-        <Card className="mt-4">
-          <CardHeader>
-            <CardTitle>Health Check Details</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <pre className="rounded-md bg-muted p-4 overflow-auto max-h-[400px] text-xs">
+      {/* Drawer for details */}
+      <Drawer open={showDrawer} onOpenChange={setShowDrawer}>
+        <DrawerContent className="max-h-[80vh]">
+          <DrawerHeader className="text-left">
+            <DrawerTitle>Health Check Details</DrawerTitle>
+          </DrawerHeader>
+          <div className="p-4 overflow-auto">
+            <pre className="rounded-md bg-muted p-4 overflow-auto text-xs">
               <code>{JSON.stringify(modalData, null, 2)}</code>
             </pre>
             <div className="mt-4 flex justify-end">
-              <Button onClick={() => setShowModal(false)}>
+              <Button onClick={() => setShowDrawer(false)}>
                 Close
               </Button>
             </div>
-          </CardContent>
-        </Card>
-      )}
+          </div>
+        </DrawerContent>
+      </Drawer>
     </LayoutBody>
   )
 }
