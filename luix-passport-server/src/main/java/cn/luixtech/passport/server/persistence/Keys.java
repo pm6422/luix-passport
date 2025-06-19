@@ -5,6 +5,7 @@ package cn.luixtech.passport.server.persistence;
 
 
 import cn.luixtech.passport.server.persistence.tables.DataDict;
+import cn.luixtech.passport.server.persistence.tables.JobQueue;
 import cn.luixtech.passport.server.persistence.tables.Notification;
 import cn.luixtech.passport.server.persistence.tables.Oauth2Authorization;
 import cn.luixtech.passport.server.persistence.tables.Oauth2AuthorizationConsent;
@@ -27,6 +28,7 @@ import cn.luixtech.passport.server.persistence.tables.UserNotification;
 import cn.luixtech.passport.server.persistence.tables.UserProfilePic;
 import cn.luixtech.passport.server.persistence.tables.UserRole;
 import cn.luixtech.passport.server.persistence.tables.records.DataDictRecord;
+import cn.luixtech.passport.server.persistence.tables.records.JobQueueRecord;
 import cn.luixtech.passport.server.persistence.tables.records.NotificationRecord;
 import cn.luixtech.passport.server.persistence.tables.records.Oauth2AuthorizationConsentRecord;
 import cn.luixtech.passport.server.persistence.tables.records.Oauth2AuthorizationRecord;
@@ -69,6 +71,7 @@ public class Keys {
 
     public static final UniqueKey<DataDictRecord> DATA_DICT_PKEY = Internal.createUniqueKey(DataDict.DATA_DICT, DSL.name("data_dict_pkey"), new TableField[] { DataDict.DATA_DICT.ID }, true);
     public static final UniqueKey<DataDictRecord> UK_DATA_DICT_CATEGORY_CODE_DICT_CODE = Internal.createUniqueKey(DataDict.DATA_DICT, DSL.name("uk_data_dict_category_code_dict_code"), new TableField[] { DataDict.DATA_DICT.CATEGORY_CODE, DataDict.DATA_DICT.DICT_CODE }, true);
+    public static final UniqueKey<JobQueueRecord> JOB_QUEUE_PKEY = Internal.createUniqueKey(JobQueue.JOB_QUEUE, DSL.name("job_queue_pkey"), new TableField[] { JobQueue.JOB_QUEUE.ID }, true);
     public static final UniqueKey<NotificationRecord> NOTIFICATION_PKEY = Internal.createUniqueKey(Notification.NOTIFICATION, DSL.name("notification_pkey"), new TableField[] { Notification.NOTIFICATION.ID }, true);
     public static final UniqueKey<Oauth2AuthorizationRecord> OAUTH2_AUTHORIZATION_PKEY = Internal.createUniqueKey(Oauth2Authorization.OAUTH2_AUTHORIZATION, DSL.name("oauth2_authorization_pkey"), new TableField[] { Oauth2Authorization.OAUTH2_AUTHORIZATION.ID }, true);
     public static final UniqueKey<Oauth2AuthorizationConsentRecord> OAUTH2_AUTHORIZATION_CONSENT_PKEY = Internal.createUniqueKey(Oauth2AuthorizationConsent.OAUTH2_AUTHORIZATION_CONSENT, DSL.name("oauth2_authorization_consent_pkey"), new TableField[] { Oauth2AuthorizationConsent.OAUTH2_AUTHORIZATION_CONSENT.REGISTERED_CLIENT_ID, Oauth2AuthorizationConsent.OAUTH2_AUTHORIZATION_CONSENT.PRINCIPAL_NAME }, true);

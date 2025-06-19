@@ -537,6 +537,16 @@
             <column name="parameters" type="TEXT"/>
             <column name="error" type="TEXT"/>
         </createTable>
+        <createTable tableName="job_queue">
+            <column name="id" type="VARCHAR(20)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="job_type" type="VARCHAR(50)"/>
+            <column name="payload" type="JSONB"/>
+            <column name="status" type="VARCHAR(20)" defaultValue="pending"/>
+            <column name="created_at" type="timestamp" defaultValueComputed="NOW()"/>
+            <column name="processed_at" type="timestamp"/>
+        </createTable>
 
         <createIndex tableName="user" indexName="idx_user_time_zone_id" unique="false">
             <column name="time_zone_id"/>

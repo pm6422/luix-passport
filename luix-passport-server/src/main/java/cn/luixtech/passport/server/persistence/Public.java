@@ -5,6 +5,7 @@ package cn.luixtech.passport.server.persistence;
 
 
 import cn.luixtech.passport.server.persistence.tables.DataDict;
+import cn.luixtech.passport.server.persistence.tables.JobQueue;
 import cn.luixtech.passport.server.persistence.tables.Notification;
 import cn.luixtech.passport.server.persistence.tables.Oauth2Authorization;
 import cn.luixtech.passport.server.persistence.tables.Oauth2AuthorizationConsent;
@@ -52,6 +53,11 @@ public class Public extends SchemaImpl {
      * The table <code>public.data_dict</code>.
      */
     public final DataDict DATA_DICT = DataDict.DATA_DICT;
+
+    /**
+     * The table <code>public.job_queue</code>.
+     */
+    public final JobQueue JOB_QUEUE = JobQueue.JOB_QUEUE;
 
     /**
      * The table <code>public.notification</code>.
@@ -175,6 +181,7 @@ public class Public extends SchemaImpl {
     public final List<Table<?>> getTables() {
         return Arrays.asList(
             DataDict.DATA_DICT,
+            JobQueue.JOB_QUEUE,
             Notification.NOTIFICATION,
             Oauth2Authorization.OAUTH2_AUTHORIZATION,
             Oauth2AuthorizationConsent.OAUTH2_AUTHORIZATION_CONSENT,

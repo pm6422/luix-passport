@@ -5,6 +5,7 @@ package cn.luixtech.passport.server.persistence;
 
 
 import cn.luixtech.passport.server.persistence.tables.DataDict;
+import cn.luixtech.passport.server.persistence.tables.JobQueue;
 import cn.luixtech.passport.server.persistence.tables.Notification;
 import cn.luixtech.passport.server.persistence.tables.Oauth2Authorization;
 import cn.luixtech.passport.server.persistence.tables.Oauth2AuthorizationConsent;
@@ -38,6 +39,11 @@ public class Tables {
      * The table <code>public.data_dict</code>.
      */
     public static final DataDict DATA_DICT = DataDict.DATA_DICT;
+
+    /**
+     * The table <code>public.job_queue</code>.
+     */
+    public static final JobQueue JOB_QUEUE = JobQueue.JOB_QUEUE;
 
     /**
      * The table <code>public.notification</code>.
