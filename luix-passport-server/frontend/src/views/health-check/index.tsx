@@ -140,7 +140,7 @@ export default function HealthChecksPage() {
   return (
     <LayoutBody className="flex flex-col" fixedHeight>
       <Card>
-        <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <CardHeader className="flex flex-row items-center justify-between gap-4">
           <CardTitle>Health Checks</CardTitle>
           <Button variant="outline" className="gap-2" onClick={refresh}>
             <IconRefresh className="size-4" />
