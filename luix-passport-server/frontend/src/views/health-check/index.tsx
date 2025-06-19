@@ -1,5 +1,5 @@
 import { LayoutBody } from "@/layouts/layout-definitions"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table"
@@ -132,7 +132,7 @@ export default function HealthChecksPage() {
   }
 
   // Initial load
-  useState(() => {
+  useEffect(() => {
     refresh()
   }, [])
 
