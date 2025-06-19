@@ -190,13 +190,13 @@ export default function HealthChecksPage() {
         </CardContent>
       </Card>
 
-      {/* Right-side Drawer for details */}
-      <Drawer open={showDrawer} onOpenChange={setShowDrawer} direction="right">
-        <DrawerContent className="h-full top-0 right-0 left-auto mt-0 w-[500px] rounded-none">
+      {/* Drawer for details */}
+      <Drawer open={showDrawer} onOpenChange={setShowDrawer}>
+        <DrawerContent className="max-h-[80vh]">
           <DrawerHeader className="text-left">
             <DrawerTitle>Health Check Details</DrawerTitle>
           </DrawerHeader>
-          <div className="p-4 overflow-auto h-[calc(100vh-60px)]">
+          <div className="p-4 overflow-auto">
             <pre className="rounded-md bg-muted p-4 overflow-auto text-xs">
               <code>{JSON.stringify(modalData, null, 2)}</code>
             </pre>
