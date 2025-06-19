@@ -13,12 +13,12 @@ import java.util.function.Function;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function6;
+import org.jooq.Function8;
 import org.jooq.JSONB;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row6;
+import org.jooq.Row8;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -67,14 +67,24 @@ public class JobQueue extends TableImpl<JobQueueRecord> {
     public final TableField<JobQueueRecord, JSONB> PAYLOAD = createField(DSL.name("payload"), SQLDataType.JSONB, this, "");
 
     /**
+     * The column <code>public.job_queue.priority</code>.
+     */
+    public final TableField<JobQueueRecord, Long> PRIORITY = createField(DSL.name("priority"), SQLDataType.BIGINT, this, "");
+
+    /**
      * The column <code>public.job_queue.status</code>.
      */
-    public final TableField<JobQueueRecord, String> STATUS = createField(DSL.name("status"), SQLDataType.VARCHAR(20).defaultValue(DSL.field(DSL.raw("'pending'::character varying"), SQLDataType.VARCHAR)), this, "");
+    public final TableField<JobQueueRecord, String> STATUS = createField(DSL.name("status"), SQLDataType.VARCHAR(20), this, "");
+
+    /**
+     * The column <code>public.job_queue.error</code>.
+     */
+    public final TableField<JobQueueRecord, String> ERROR = createField(DSL.name("error"), SQLDataType.CLOB, this, "");
 
     /**
      * The column <code>public.job_queue.created_at</code>.
      */
-    public final TableField<JobQueueRecord, Instant> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.INSTANT.defaultValue(DSL.field(DSL.raw("now()"), SQLDataType.INSTANT)), this, "");
+    public final TableField<JobQueueRecord, Instant> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.INSTANT, this, "");
 
     /**
      * The column <code>public.job_queue.processed_at</code>.
@@ -164,18 +174,18 @@ public class JobQueue extends TableImpl<JobQueueRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row6 type methods
+    // Row8 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row6<String, String, JSONB, String, Instant, Instant> fieldsRow() {
-        return (Row6) super.fieldsRow();
+    public Row8<String, String, JSONB, Long, String, String, Instant, Instant> fieldsRow() {
+        return (Row8) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function6<? super String, ? super String, ? super JSONB, ? super String, ? super Instant, ? super Instant, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function8<? super String, ? super String, ? super JSONB, ? super Long, ? super String, ? super String, ? super Instant, ? super Instant, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -183,7 +193,7 @@ public class JobQueue extends TableImpl<JobQueueRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function6<? super String, ? super String, ? super JSONB, ? super String, ? super Instant, ? super Instant, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function8<? super String, ? super String, ? super JSONB, ? super Long, ? super String, ? super String, ? super Instant, ? super Instant, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

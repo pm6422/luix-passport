@@ -28,13 +28,16 @@ public class JobQueue extends AbstractBaseDomain implements Serializable {
     public static final  String  STATUS_FAILED     = "failed";
     private              String  jobType;
     private              String  payload;
+    private              Integer priority;
     private              String  status;
+    private              String  error;
     private              Instant createdAt;
     private              Instant processedAt;
 
     public JobQueue(String jobType, String payload) {
         this.jobType = jobType;
         this.payload = payload;
+        this.priority = 0;
         this.status = STATUS_PENDING;
         this.createdAt = Instant.now();
     }

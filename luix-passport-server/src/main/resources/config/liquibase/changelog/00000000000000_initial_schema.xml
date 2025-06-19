@@ -543,8 +543,10 @@
             </column>
             <column name="job_type" type="VARCHAR(50)"/>
             <column name="payload" type="JSONB"/>
-            <column name="status" type="VARCHAR(20)" defaultValue="pending"/>
-            <column name="created_at" type="timestamp" defaultValueComputed="NOW()"/>
+            <column name="priority" type="BIGINT"/>
+            <column name="status" type="VARCHAR(20)"/>
+            <column name="error" type="TEXT"/>
+            <column name="created_at" type="timestamp"/>
             <column name="processed_at" type="timestamp"/>
         </createTable>
 
