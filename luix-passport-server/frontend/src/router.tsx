@@ -141,6 +141,12 @@ const router = createBrowserRouter([
         }),
       },
       {
+        path: "health-check",
+        lazy: async () => ({
+          Component: (await import("@/views/health-check")).default
+        }),
+      },
+      {
         path: "data-dicts",
         lazy: async () => ({
           Component: (await import("@/views/data-dicts")).default

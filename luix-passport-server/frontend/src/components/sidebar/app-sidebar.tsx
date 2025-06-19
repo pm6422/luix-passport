@@ -23,7 +23,8 @@ import {
   IconApi,
   IconDatabase,
   IconVocabulary,
-  IconCalendarStats
+  IconCalendarStats,
+  IconHeartbeat
 } from "@tabler/icons-react"
 import { loginUserStore } from "@/stores/login-user-store"
 import { useStore } from "exome/react"
@@ -114,6 +115,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             title: "DB Schema",
             url: "/db-schema",
             icon: IconDatabase,
+          },
+          {
+            title: "Health Check",
+            url: "/health-check",
+            icon: IconHeartbeat,
           }
         ],
       }
