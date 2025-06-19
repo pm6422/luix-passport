@@ -10,7 +10,7 @@ import { ManagementService } from "@/services/management-service"
 interface HealthData {
   name: string
   status: 'UP' | 'DOWN' | 'UNKNOWN'
-  details: Record<string, unknown>
+  details?: Record<string, unknown>
   error?: string
 }
 
