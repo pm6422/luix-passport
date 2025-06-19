@@ -28,21 +28,21 @@ export default function HealthChecksPage() {
   const [showModal, setShowModal] = useState(false)
 
   const refresh = async () => {
-    try {
-      const res = await ManagementService.getHealth()
-      setHealthList(transformHealthData(res.data))
-    } catch (error: any) {
-      if (error.response?.status === 503) {
-        setHealthList(transformHealthData(error.response.data))
-      } else {
-        console.error("Error fetching health data:", error)
-        setHealthList([{
-          name: 'Health API',
-          status: 'DOWN',
-          error: error.message
-        }])
-      }
-    }
+    ManagementService.getHealth()
+      .then(res => {
+        setHealthList(transformHealthData(res.data))
+      })
+      .catch(error => {
+        if (error.response?.status === 503) {
+          setHealthList(transformHealthData(error.response.data))
+        } else {
+          setHealthList([{
+            name: 'Health API',
+            status: 'DOWN',
+            error: error.message
+          }])
+        }
+      })
   }
 
   const showDetails = (data: HealthData) => {
