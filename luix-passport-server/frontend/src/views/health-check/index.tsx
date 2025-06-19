@@ -161,11 +161,10 @@ export default function HealthChecksPage() {
                   <TableCell className="font-medium">{row.name}</TableCell>
                   <TableCell>
                     <Badge
-                      variant="outline"
                       className={
-                        row.status === 'DOWN' ? 'bg-red-100 text-red-800 border-red-200' :
-                          row.status === 'UNKNOWN' ? 'bg-yellow-100 text-yellow-800 border-yellow-200' :
-                            'bg-green-100 text-green-500 border-green-600'
+                        row.status === 'DOWN' ? 'bg-red-600/10 dark:bg-red-600/20 hover:bg-red-600/10 text-red-500 shadow-none' :
+                          row.status === 'UNKNOWN' ? 'bg-yellow-600/10 dark:bg-yellow-600/20 hover:bg-yellow-600/10 text-yellow-500 shadow-none' :
+                            'bg-green-600/10 dark:bg-green-600/20 hover:bg-green-600/10 text-green-500 shadow-none'
                       }
                     >
                       {row.status}
