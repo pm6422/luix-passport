@@ -165,7 +165,7 @@ export default function HealthChecksPage() {
                       className={
                         row.status === 'DOWN' ? 'bg-red-100 text-red-800 border-red-200' :
                           row.status === 'UNKNOWN' ? 'bg-yellow-100 text-yellow-800 border-yellow-200' :
-                            'bg-green-100 text-green-800 border-green-200'
+                            'bg-green-100 text-green-500 border-green-600'
                       }
                     >
                       {row.status}
@@ -178,7 +178,7 @@ export default function HealthChecksPage() {
                         size="icon"
                         onClick={() => showDetails(row)}
                       >
-                        <IconEye className="size-4" />
+                        <IconEye className="size-5" />
                       </Button>
                     )}
                   </TableCell>
