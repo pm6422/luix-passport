@@ -17,13 +17,6 @@ import java.util.List;
 @Repository
 public interface JobQueueRepository extends JpaRepository<JobQueue, String> {
 
-    @Transactional
-    @Modifying
-    @Query("UPDATE JobQueue j SET j.status = 'processing', j.processedAt = :now " +
-            "WHERE j.id = (SELECT j2.id FROM JobQueue j2 WHERE j2.status = 'pending' " +
-            "ORDER BY j2.createdAt ASC LIMIT 1)")
-    int lockOldestPendingJob(Instant now);
-
     @Query(nativeQuery = true,
             value = "SELECT * FROM job_queue WHERE status = 'pending' " +
                     "ORDER BY created_at ASC FOR UPDATE SKIP LOCKED LIMIT 1")
@@ -33,7 +26,5 @@ public interface JobQueueRepository extends JpaRepository<JobQueue, String> {
             value = "SELECT * FROM job_queue WHERE status = 'pending' " +
                     "ORDER BY created_at ASC FOR UPDATE SKIP LOCKED LIMIT :limit")
     List<JobQueue> findPendingJobs(@Param("limit") int limit);
-
-    List<JobQueue> findByStatusOrderByCreatedAtAsc(String status);
 
 }

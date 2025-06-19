@@ -18,9 +18,8 @@ public class JobProducer {
 
     private final JobQueueRepository jobQueueRepository;
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void enqueueJob(String jobType, Object payload) {
-        // 使用Jackson或其他JSON库将payload转为JSON字符串
         String payloadJson = convertToJson(payload);
 
         JobQueue job = new JobQueue(jobType, payloadJson);
@@ -35,8 +34,7 @@ public class JobProducer {
         }
     }
 
-    // 批量添加作业
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void enqueueJobs(List<Pair<String, Object>> jobs) {
         List<JobQueue> jobEntities = jobs.stream()
                 .map(job -> new JobQueue(job.getKey(), convertToJson(job.getValue())))
