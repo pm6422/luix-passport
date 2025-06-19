@@ -35,7 +35,7 @@ export default function Account() {
 
   return (
     <LayoutBody className="flex flex-col" fixedHeight>
-      <div className="space-y-0.5">
+      <div className="py-0">
         <h1 className="text-2xl font-bold tracking-tight md:text-3xl">
           Personal Account
         </h1>
@@ -44,7 +44,7 @@ export default function Account() {
         </p>
       </div>
       <Separator className="my-6" />
-      <div className="flex flex-1 flex-col space-y-8 overflow-auto lg:flex-row lg:space-x-12 lg:space-y-0">
+      <div className="flex flex-1 flex-col space-y-8 overflow-auto lg:flex-row lg:space-y-0">
         <aside className="sticky top-0 lg:w-1/5">
           <OneLevelSidebar items={sidebarNavItems} />
         </aside>
