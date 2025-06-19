@@ -4,7 +4,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
-import { RefreshCw, Eye } from "lucide-react"
+import { IconRefresh, IconEye } from "@tabler/icons-react"
 import { ManagementService } from "@/services/management-service"
 
 interface HealthData {
@@ -138,20 +138,19 @@ export default function HealthChecksPage() {
 
   return (
     <LayoutBody className="flex flex-col" fixedHeight>
-      <Card className="py-0">
+      <Card>
         <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <CardTitle>Health Checks</CardTitle>
           <Button variant="outline" className="gap-2" onClick={refresh}>
-            <RefreshCw className="h-4 w-4" />
+            <IconRefresh className="size-4" />
             Refresh
           </Button>
         </CardHeader>
-
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="w-[200px]">Service name</TableHead>
+                <TableHead className="w-[300px]">Service name</TableHead>
                 <TableHead className="w-[100px]">Status</TableHead>
                 <TableHead className="text-right">Details</TableHead>
               </TableRow>
@@ -179,7 +178,7 @@ export default function HealthChecksPage() {
                         size="icon"
                         onClick={() => showDetails(row)}
                       >
-                        <Eye className="h-4 w-4" />
+                        <IconEye className="size-4" />
                       </Button>
                     )}
                   </TableCell>
@@ -197,7 +196,7 @@ export default function HealthChecksPage() {
             <CardTitle>Health Check Details</CardTitle>
           </CardHeader>
           <CardContent>
-            <pre className="rounded-md bg-muted p-4 overflow-auto max-h-[400px]">
+            <pre className="rounded-md bg-muted p-4 overflow-auto max-h-[400px] text-xs">
               <code>{JSON.stringify(modalData, null, 2)}</code>
             </pre>
             <div className="mt-4 flex justify-end">
