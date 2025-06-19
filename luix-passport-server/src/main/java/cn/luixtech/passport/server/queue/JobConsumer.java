@@ -63,7 +63,8 @@ public class JobConsumer {
         log.info("Job consumer stopped");
     }
 
-    private void processJobs() {
+    @Transactional
+    public void processJobs() {
         while (running && !Thread.currentThread().isInterrupted()) {
             try {
                 // 优先处理批量作业
