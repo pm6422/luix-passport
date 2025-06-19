@@ -178,7 +178,7 @@ export default function HealthChecksPage() {
                         size="icon"
                         onClick={() => showDetails(row)}
                       >
-                        <IconEye className="size-5" />
+                        <IconEye className="size-6 text-muted-foreground" />
                       </Button>
                     )}
                   </TableCell>
