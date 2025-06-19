@@ -32,6 +32,11 @@ public class JobQueue extends AbstractBaseDomain implements Serializable {
     private              Instant createdAt;
     private              Instant processedAt;
 
+    public JobQueue(String jobType, String payload) {
+        this.jobType = jobType;
+        this.payload = payload;
+    }
+
     public void markAsProcessing() {
         this.status = STATUS_PROCESSING;
         this.processedAt = Instant.now();
