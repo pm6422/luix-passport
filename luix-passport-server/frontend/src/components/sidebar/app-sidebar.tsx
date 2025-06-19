@@ -102,6 +102,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             }
           ] : []),
           {
+            title: "Health Check",
+            url: "/health-check",
+            icon: IconHeartbeat,
+          },
+          {
             title: "Schedule Logs",
             url: "/schedule-execution-logs",
             icon: IconCalendarStats,
@@ -115,11 +120,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             title: "DB Schema",
             url: "/db-schema",
             icon: IconDatabase,
-          },
-          {
-            title: "Health Check",
-            url: "/health-check",
-            icon: IconHeartbeat,
           }
         ],
       }
