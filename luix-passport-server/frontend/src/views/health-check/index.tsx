@@ -151,8 +151,8 @@ export default function HealthChecksPage() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="w-[50px]">Details</TableHead>
-                <TableHead className="w-[300px]">Service name</TableHead>
+                <TableHead className="w-[50px]">ShowDetails</TableHead>
+                <TableHead className="w-[400px]">Service name</TableHead>
                 <TableHead className="w-[100px]">Status</TableHead>
               </TableRow>
             </TableHeader>
