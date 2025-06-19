@@ -5,18 +5,18 @@ import { Button } from "@/components/ui/button"
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
 import { IconRefresh, IconEye } from "@tabler/icons-react"
-import { ManagementService } from "@/services/management-service"
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
+import { ManagementService } from "@/services/management-service"
 
 interface HealthData {
   name: string
-  status: 'UP' | 'DOWN' | 'UNKNOWN'
+  status: "UP" | "DOWN" | "UNKNOWN"
   details?: Record<string, unknown>
   error?: string
 }
 
 interface HealthComponent {
-  status?: 'UP' | 'DOWN' | 'UNKNOWN'
+  status?: "UP" | "DOWN" | "UNKNOWN"
   components?: Record<string, HealthComponent>
   details?: Record<string, unknown>
   error?: string
@@ -38,8 +38,8 @@ export default function HealthChecksPage() {
           setHealthList(transformHealthData(error.response.data))
         } else {
           setHealthList([{
-            name: 'Health API',
-            status: 'DOWN',
+            name: "Health API",
+            status: "DOWN",
             error: error.message
           }])
         }
@@ -103,7 +103,7 @@ export default function HealthChecksPage() {
   ): HealthData => {
     const healthData: HealthData = {
       name,
-      status: healthObject.status || 'UNKNOWN',
+      status: healthObject.status || "UNKNOWN",
       details: {},
       error: healthObject.error
     }
@@ -114,7 +114,7 @@ export default function HealthChecksPage() {
     for (const key in healthObject) {
       if (
         Object.prototype.hasOwnProperty.call(healthObject, key) &&
-        !['status', 'error', 'components'].includes(key)
+        !["status", "error", "components"].includes(key)
       ) {
         details[key] = healthObject[key]
         hasDetails = true
@@ -175,9 +175,9 @@ export default function HealthChecksPage() {
                   <TableCell>
                     <Badge
                       className={
-                        row.status === 'DOWN' ? 'bg-red-600/10 dark:bg-red-600/20 hover:bg-red-600/10 text-red-500 shadow-none' :
-                          row.status === 'UNKNOWN' ? 'bg-yellow-600/10 dark:bg-yellow-600/20 hover:bg-yellow-600/10 text-yellow-500 shadow-none' :
-                            'bg-green-600/10 dark:bg-green-600/20 hover:bg-green-600/10 text-green-500 shadow-none'
+                        row.status === "DOWN" ? "bg-red-600/10 dark:bg-red-600/20 hover:bg-red-600/10 text-red-500 shadow-none" :
+                          row.status === "UNKNOWN" ? "bg-yellow-600/10 dark:bg-yellow-600/20 hover:bg-yellow-600/10 text-yellow-500 shadow-none" :
+                            "bg-green-600/10 dark:bg-green-600/20 hover:bg-green-600/10 text-green-500 shadow-none"
                       }
                     >
                       {row.status}
