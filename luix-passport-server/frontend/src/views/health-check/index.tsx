@@ -192,16 +192,18 @@ export default function HealthChecksPage() {
 
       {/* Drawer for details */}
       <Drawer open={showDrawer} onOpenChange={setShowDrawer}>
-        <DrawerContent className="max-h-[80vh]">
-          <DrawerHeader className="text-left">
-            <DrawerTitle>Health Check Details</DrawerTitle>
-          </DrawerHeader>
-          <div className="p-4 overflow-auto">
-            <pre className="rounded-md bg-muted p-4 overflow-auto text-xs">
-              <code>{JSON.stringify(modalData, null, 2)}</code>
-            </pre>
-          </div>
-        </DrawerContent>
+        <div className="mx-auto w-full max-w-sm">
+          <DrawerContent>
+            <DrawerHeader>
+              <DrawerTitle>Health Check Details</DrawerTitle>
+            </DrawerHeader>
+            <div className="p-4 overflow-auto">
+              <pre className="rounded-md bg-muted p-4 overflow-auto text-xs">
+                <code>{JSON.stringify(modalData, null, 2)}</code>
+              </pre>
+            </div>
+          </DrawerContent>
+        </div>
       </Drawer>
     </LayoutBody>
   )
