@@ -99,7 +99,7 @@ const SaveDialogContent = <T extends FieldValues,>({
 
           <DialogFooter className="gap-2 pt-2 sm:space-x-0">
             <DialogClose asChild>
-              <Button type="button" variant="outline" onClick={() => afterSave && afterSave(true)}>
+              <Button type="button" variant="outline">
                 Cancel
               </Button>
             </DialogClose>
