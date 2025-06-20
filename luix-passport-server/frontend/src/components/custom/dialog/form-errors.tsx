@@ -1,80 +1,88 @@
-import React, { useState, useEffect } from "react";
-import { FieldValues, UseFormReturn, FieldError, FieldErrors } from "react-hook-form";
-import { IconExclamationCircle } from "@tabler/icons-react";
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import React, { useEffect, useState } from 'react'
+import {
+  FieldError,
+  FieldErrors,
+  FieldValues,
+  UseFormReturn,
+} from 'react-hook-form'
+import { IconAlertSquareRoundedFilled } from '@tabler/icons-react'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
 interface ErrorItem {
-  field: string;
-  message?: string;
+  field: string
+  message?: string
 }
 
 interface Props<T extends FieldValues> {
-  children?: React.ReactNode;
-  form: UseFormReturn<T>;
-  variant?: "default" | "destructive";
-  error?: FieldErrors;
+  children?: React.ReactNode
+  form: UseFormReturn<T>
+  variant?: 'default' | 'destructive'
+  error?: FieldErrors
 }
 
 const FormErrors = <T extends FieldValues>({
-                                             children,
-                                             form,
-                                             variant = "destructive",
-                                             error
-                                           }: Props<T>) => {
-  const [errors, setErrors] = useState<ErrorItem[]>([]);
+  children,
+  form,
+  variant = 'destructive',
+  error,
+}: Props<T>) => {
+  const [errors, setErrors] = useState<ErrorItem[]>([])
 
   useEffect(() => {
-    if (!error) return;
+    if (!error) return
 
-    const results: ErrorItem[] = [];
+    const results: ErrorItem[] = []
 
     Object.entries(error).forEach(([field, errorValue]) => {
       if (isFieldError(errorValue)) {
         results.push({
           field,
-          message: errorValue.message
-        });
+          message: errorValue.message,
+        })
       } else if (typeof errorValue === 'object' && errorValue !== null) {
         Object.entries(errorValue).forEach(([nestedField, nestedError]) => {
           if (isFieldError(nestedError)) {
             results.push({
               field: `${field}.${nestedField}`,
-              message: nestedError.message
-            });
+              message: nestedError.message,
+            })
           }
-        });
+        })
       }
-    });
+    })
 
-    setErrors(results);
-  }, [error]);
+    setErrors(results)
+  }, [error])
 
   return (
     Object.values(form.formState.errors).length > 0 && (
       <Alert variant={variant}>
-        <AlertTitle className="flex items-center mb-3">
-          <IconExclamationCircle className="size-5 me-1" />
+        <AlertTitle className='mb-3 flex items-center'>
+          <IconAlertSquareRoundedFilled className='me-1 size-5' />
           There were errors in your form, please check inputs and retry.
         </AlertTitle>
-        <div className="space-y-1">
+        <div className='space-y-1'>
           {errors.map((err, index) => (
-            <div key={`${err.field}-${index}`} className="ms-1 whitespace-nowrap">
+            <div
+              key={`${err.field}-${index}`}
+              className='ms-1 whitespace-nowrap'
+            >
               - {err.field}: {err.message}
             </div>
           ))}
         </div>
         {children && (
-          <AlertDescription className="pr-8 font-light mt-3">
+          <AlertDescription className='mt-3 pr-8 font-light'>
             {children}
           </AlertDescription>
         )}
       </Alert>
     )
-  );
-};
-
-function isFieldError(error: unknown): error is FieldError {
-  return typeof error === 'object' && error !== null && 'message' in error;
+  )
 }
 
-export default FormErrors;
+function isFieldError(error: unknown): error is FieldError {
+  return typeof error === 'object' && error !== null && 'message' in error
+}
+
+export default FormErrors

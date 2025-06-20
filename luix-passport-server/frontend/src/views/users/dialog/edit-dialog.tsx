@@ -21,6 +21,7 @@ import { Option } from "@/components/custom/multi-select"
 import { type DataDict } from "@/domains/data-dict"
 import type { SupportedDateTimeFormat } from "@/domains/supported-date-time-format"
 import { Skeleton } from "@/components/ui/skeleton"
+import Notice from "@/components/custom/notice"
 import { loginUserStore } from "@/stores/login-user-store"
 import { useStore } from "exome/react"
 
@@ -28,16 +29,14 @@ interface EditDialogProps {
   children: ReactNode,
   entityName: string,
   id?: string | null,
-  save: (formData: User) => Promise<void>,
-  afterSave?: (success: boolean) => void
+  save: (formData: User) => Promise<void>
 }
 
 export function EditDialog({
   children,
   entityName,
   id,
-  save,
-  afterSave
+  save
 }: EditDialogProps) {
   const { loginUser } = useStore(loginUserStore)
   const [open, setOpen] = useState(false)
@@ -73,12 +72,19 @@ export function EditDialog({
     })
   }, [form, id, open])
 
+  function afterSave(): void {
+    if (loginUser.username === id) {
+      AccountService.signOut();
+    }
+  }
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
       <SaveDialogContent<User> entityName={entityName} id={id} form={form} save={save} afterSave={afterSave} setOpen={setOpen}>
+        { loginUser.username === id && <Notice message="After modifying the current logged-in user information, you will be automatically logged out." /> }
         <div className="flex flex-col md:flex-row items-center justify-between gap-5">
           <div className="flex items-center gap-2">
             <div className="relative">
