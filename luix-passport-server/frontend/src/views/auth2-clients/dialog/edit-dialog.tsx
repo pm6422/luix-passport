@@ -15,16 +15,14 @@ interface EditDialogProps {
   children: ReactNode,
   entityName: string,
   id?: string | null,
-  save: (formData: Auth2Client) => Promise<void>,
-  afterSave?: (success: boolean) => void
+  save: (formData: Auth2Client) => Promise<void>
 }
 
 export function EditDialog({
   children,
   entityName,
   id,
-  save,
-  afterSave
+  save
 }: EditDialogProps) {
   const [open, setOpen] = useState(false)
   const [authenticationMethodOptions, setAuthenticationMethodOptions] = useState(Array<Option>)
@@ -63,7 +61,7 @@ export function EditDialog({
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <SaveDialogContent<Auth2Client> entityName={entityName} id={id} form={form} save={save} afterSave={afterSave} setOpen={setOpen} debug={false}>
+      <SaveDialogContent<Auth2Client> entityName={entityName} id={id} form={form} save={save} setOpen={setOpen} debug={false}>
         <InputFormField 
           control={form.control} 
           name="clientId" 

@@ -15,16 +15,14 @@ interface EditDialogProps {
   children: ReactNode,
   entityName: string,
   id?: string | null,
-  save: (formData: Permission) => Promise<void>,
-  afterSave?: (success: boolean) => void
+  save: (formData: Permission) => Promise<void>
 }
 
 export function EditDialog({
   children,
   entityName,
   id,
-  save,
-  afterSave
+  save
 }: EditDialogProps) {
   const [open, setOpen] = useState(false)
   const [resourceTypes, setResourceTypes] = useState(Array<Option>)
@@ -59,7 +57,7 @@ export function EditDialog({
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <SaveDialogContent<Permission> entityName={entityName} id={id} form={form} save={save} afterSave={afterSave} setOpen={setOpen}>
+      <SaveDialogContent<Permission> entityName={entityName} id={id} form={form} save={save} setOpen={setOpen}>
 
         <InputFormField
           control={form.control}

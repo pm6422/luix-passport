@@ -14,16 +14,14 @@ interface EditDialogProps {
   children: ReactNode,
   entityName: string,
   id?: string | null,
-  save: (formData: DataDict) => Promise<void>,
-  afterSave?: (success: boolean) => void
+  save: (formData: DataDict) => Promise<void>
 }
 
 export function EditDialog({
   children,
   entityName,
   id,
-  save,
-  afterSave
+  save
 }: EditDialogProps) {
   const [open, setOpen] = useState(false)
   const [categoryCodeOptions, setCategoryCodeOptions] = useState(Array<Option>)
@@ -52,7 +50,7 @@ export function EditDialog({
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <SaveDialogContent<DataDict> entityName={entityName} id={id} form={form} save={save} afterSave={afterSave} setOpen={setOpen} debug={false}>
+      <SaveDialogContent<DataDict> entityName={entityName} id={id} form={form} save={save} setOpen={setOpen} debug={false}>
         <MultiSelectFormField
           control={form.control} 
           name="categoryCode"
