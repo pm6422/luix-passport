@@ -13,19 +13,18 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Component
 @Slf4j
 public class JobConsumer {
-    private final    JobQueueRepository      jobQueueRepository;
-    private final    Map<String, JobHandler> jobHandlers;
-    private final    ExecutorService         executorService;
-    private volatile boolean                 running = true;
+    private static final Map<String, JobHandler> JOB_HANDLERS = new ConcurrentHashMap<>();
+    private final        JobQueueRepository      jobQueueRepository;
+    private final        ExecutorService         executorService;
+    private volatile     boolean                 running      = true;
 
     // 配置参数
     private static final int WORKER_THREADS   = 3;
@@ -33,10 +32,8 @@ public class JobConsumer {
     private static final int BATCH_SIZE       = 5;
 
     @Autowired
-    public JobConsumer(JobQueueRepository jobQueueRepository, List<JobHandler> handlers) {
+    public JobConsumer(JobQueueRepository jobQueueRepository) {
         this.jobQueueRepository = jobQueueRepository;
-        this.jobHandlers = handlers.stream()
-                .collect(Collectors.toMap(JobHandler::getJobType, Function.identity()));
         this.executorService = Executors.newFixedThreadPool(WORKER_THREADS);
     }
 
@@ -61,6 +58,41 @@ public class JobConsumer {
             Thread.currentThread().interrupt();
         }
         log.info("Job consumer stopped");
+    }
+
+    /**
+     * 注册单个作业处理器
+     *
+     * @param handler 作业处理器实例
+     */
+    public void registerHandler(JobHandler handler) {
+        if (handler != null) {
+            JOB_HANDLERS.put(handler.getJobType(), handler);
+            log.info("Registered job handler for type: {}", handler.getJobType());
+        }
+    }
+
+    /**
+     * 批量注册作业处理器
+     *
+     * @param handlers 作业处理器列表
+     */
+    public void registerHandlers(List<JobHandler> handlers) {
+        if (handlers != null) {
+            handlers.forEach(this::registerHandler);
+        }
+    }
+
+    /**
+     * 移除作业处理器
+     *
+     * @param jobType 作业类型
+     */
+    public void unregisterHandler(String jobType) {
+        if (jobType != null) {
+            JOB_HANDLERS.remove(jobType);
+            log.info("Unregistered job handler for type: {}", jobType);
+        }
     }
 
     @Transactional
@@ -126,7 +158,7 @@ public class JobConsumer {
     }
 
     private void processJobWithHandler(JobQueue job) throws Exception {
-        JobHandler handler = jobHandlers.get(job.getJobType());
+        JobHandler handler = JOB_HANDLERS.get(job.getJobType());
         if (handler == null) {
             throw new RuntimeException("No handler found for job type: " + job.getJobType());
         }
