@@ -91,8 +91,7 @@ public class JobConsumer {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Optional<JobQueue> fetchAndProcessSingleJob() {
-        return jobQueueRepository.lockAndGetNextPendingJob()
-                .map(this::processJob);
+        return jobQueueRepository.lockAndGetNextPendingJob().map(this::processJob);
     }
 
     @Transactional
