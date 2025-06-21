@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class SseConsumer implements BroadcastHandler {
-    public static final String CHANNEL_SSE_BROADCAST = "sse_broadcast";
+    public static final String CHANNEL_SSE_BROADCAST = "sse";
 
     @Autowired
     public SseConsumer(JobConsumer jobConsumer) {
