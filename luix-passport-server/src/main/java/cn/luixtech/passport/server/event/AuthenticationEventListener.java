@@ -2,8 +2,9 @@ package cn.luixtech.passport.server.event;
 
 import cn.luixtech.passport.server.config.oauth.AuthUser;
 import cn.luixtech.passport.server.domain.UserAuthEvent;
+import cn.luixtech.passport.server.pojo.SseMessage;
+import cn.luixtech.passport.server.queue.JobProducer;
 import cn.luixtech.passport.server.repository.UserAuthEventRepository;
-import cn.luixtech.passport.server.service.SseService;
 import cn.luixtech.passport.server.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,7 @@ import java.util.List;
 
 import static cn.luixtech.passport.server.domain.UserAuthEvent.AUTH_FAILURE;
 import static cn.luixtech.passport.server.domain.UserAuthEvent.AUTH_SUCCESS;
+import static cn.luixtech.passport.server.queue.consumer.SseConsumer.TOPIC_SSE_BROADCAST;
 import static cn.luixtech.passport.server.utils.AuthUtils.getCurrentUsername;
 
 @Slf4j
@@ -33,7 +35,7 @@ public class AuthenticationEventListener {
     private final UserAuthEventRepository userAuthEventRepository;
     private final UserService             userService;
     private final SessionRegistry         sessionRegistry;
-    private final SseService              sseService;
+    private final JobProducer             jobProducer;
 
     @EventListener
     public void authenticationSuccessEvent(AuthenticationSuccessEvent event) {
@@ -72,7 +74,7 @@ public class AuthenticationEventListener {
             if (principal instanceof AuthUser authUser) {
                 if (authUser.getUsername().equals(event.getUsername())) {
                     // remove user from sse
-                    sseService.remove(authUser.getUsername());
+                    jobProducer.enqueueJob(TOPIC_SSE_BROADCAST, SseMessage.buildRemove(authUser.getUsername()));
 
                     List<SessionInformation> sessionsInfo = sessionRegistry.getAllSessions(principal, false);
                     if (sessionsInfo != null && !sessionsInfo.isEmpty()) {

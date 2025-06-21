@@ -8,6 +8,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SseMessage {
-    private String username;
-    private String message;
+    public static final String OPERATION_PUSH   = "push";
+    public static final String OPERATION_REMOVE = "remove";
+    private             String operation;
+    private             String username;
+    private             String message;
+
+    public static SseMessage buildPush(String username, String message) {
+        return new SseMessage(OPERATION_PUSH, username, message);
+    }
+
+    public static SseMessage buildRemove(String username) {
+        return new SseMessage(OPERATION_REMOVE, username, null);
+    }
 }

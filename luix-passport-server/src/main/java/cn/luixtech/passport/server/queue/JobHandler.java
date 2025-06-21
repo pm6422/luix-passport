@@ -5,5 +5,5 @@ import cn.luixtech.passport.server.domain.JobQueue;
 public interface JobHandler {
     String getJobType();
 
-    void handle(JobQueue job) throws Exception;
+    void accept(JobQueue job) throws Exception;
 }

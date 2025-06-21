@@ -164,7 +164,7 @@ public class JobConsumer {
         }
 
         log.info("Processing job {} of type {}", job.getId(), job.getJobType());
-        handler.handle(job);
+        handler.accept(job);
         markJobAsCompleted(job);
     }
 

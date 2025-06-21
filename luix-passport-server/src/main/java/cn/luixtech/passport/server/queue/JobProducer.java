@@ -26,20 +26,19 @@ public class JobProducer {
         jobQueueRepository.save(job);
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    public void enqueueJobs(List<Pair<String, Object>> jobs) {
+        List<JobQueue> jobEntities = jobs.stream()
+                .map(job -> new JobQueue(job.getKey(), convertToJson(job.getValue())))
+                .collect(Collectors.toList());
+        jobQueueRepository.saveAll(jobEntities);
+    }
+
     private String convertToJson(Object payload) {
         try {
             return new ObjectMapper().writeValueAsString(payload);
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Failed to convert payload to JSON", e);
         }
-    }
-
-    @Transactional(rollbackFor = Exception.class)
-    public void enqueueJobs(List<Pair<String, Object>> jobs) {
-        List<JobQueue> jobEntities = jobs.stream()
-                .map(job -> new JobQueue(job.getKey(), convertToJson(job.getValue())))
-                .collect(Collectors.toList());
-
-        jobQueueRepository.saveAll(jobEntities);
     }
 }
