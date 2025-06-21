@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class JobProducer {
     private final JobQueueRepository jobQueueRepository;
-    private final ObjectMapper       objectMapper;
 
     @Transactional
     public void enqueue(String channel, Object payload, boolean broadcastFlag) {
