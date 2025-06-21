@@ -111,7 +111,7 @@ public class JobConsumer {
             if (job.getBroadcastFlag()) {
                 BroadcastHandler handler = broadcastHandlers.get(job.getChannel());
                 if (handler != null) {
-                    handler.handleBroadcast(job.getPayload());
+                    handler.handleBroadcast(job);
                 }
             } else {
                 JobHandler handler = pointToPointHandlers.get(job.getChannel());

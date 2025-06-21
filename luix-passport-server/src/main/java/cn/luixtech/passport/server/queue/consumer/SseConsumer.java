@@ -1,5 +1,6 @@
 package cn.luixtech.passport.server.queue.consumer;
 
+import cn.luixtech.passport.server.domain.JobQueue;
 import cn.luixtech.passport.server.pojo.SseMessage;
 import cn.luixtech.passport.server.queue.BroadcastHandler;
 import cn.luixtech.passport.server.queue.JobConsumer;
@@ -22,8 +23,8 @@ public class SseConsumer implements BroadcastHandler {
     }
 
     @Override
-    public void handleBroadcast(String payload) {
-        SseMessage message = parsePayload(payload);
+    public void handleBroadcast(JobQueue job) {
+        SseMessage message = parsePayload(job.getPayload());
         if (message != null) {
             SseEmitterUtils.pushUserMessage(message.getUsername(), message.getMessage());
         }
