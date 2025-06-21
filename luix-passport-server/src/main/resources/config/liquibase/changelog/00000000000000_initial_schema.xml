@@ -541,9 +541,10 @@
             <column name="id" type="VARCHAR(20)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="job_type" type="VARCHAR(50)"/>
+            <column name="broadcast_flag" type="boolean"/>
+            <column name="channel" type="VARCHAR(30)"/>
             <column name="payload" type="JSONB"/>
-            <column name="priority" type="BIGINT"/>
+            <column name="priority" type="INT"/>
             <column name="status" type="VARCHAR(20)"/>
             <column name="error" type="TEXT"/>
             <column name="created_at" type="timestamp"/>

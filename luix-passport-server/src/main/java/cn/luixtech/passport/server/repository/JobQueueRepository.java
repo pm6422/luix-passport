@@ -18,7 +18,7 @@ public interface JobQueueRepository extends JpaRepository<JobQueue, String> {
     @Query(nativeQuery = true,
             value = "UPDATE job_queue SET status = 'processing', processed_at = NOW() " +
                     "WHERE id = (SELECT id FROM job_queue WHERE status = 'pending' " +
-                    "ORDER BY created_at ASC FOR UPDATE SKIP LOCKED LIMIT 1) " +
+                    "ORDER BY priority DESC, created_at ASC FOR UPDATE SKIP LOCKED LIMIT 1) " +
                     "RETURNING *")
     Optional<JobQueue> lockAndGetNextPendingJob();
 
@@ -29,14 +29,9 @@ public interface JobQueueRepository extends JpaRepository<JobQueue, String> {
                     "RETURNING *")
     List<JobQueue> lockAndGetNextPendingJobs(@Param("limit") int limit);
 
-    @Query(nativeQuery = true,
-            value = "SELECT * FROM job_queue WHERE status = 'pending' " +
-                    "ORDER BY created_at ASC FOR UPDATE SKIP LOCKED LIMIT 1")
-    JobQueue findNextPendingJob();
-
-    @Query(nativeQuery = true,
-            value = "SELECT * FROM job_queue WHERE status = 'pending' " +
-                    "ORDER BY created_at ASC FOR UPDATE SKIP LOCKED LIMIT :limit")
-    List<JobQueue> findPendingJobs(@Param("limit") int limit);
+    @Query("SELECT j FROM JobQueue j WHERE j.status = :status AND j.broadcastFlag = :broadcastFlag " +
+            "ORDER BY j.priority DESC, j.createdAt ASC")
+    List<JobQueue> findByStatusAndBroadcast(@Param("status") String status,
+                                            @Param("broadcastFlag") boolean broadcastFlag);
 
 }

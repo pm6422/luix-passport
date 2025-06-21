@@ -1,6 +1,7 @@
 package cn.luixtech.passport.server.queue;
 
 import cn.luixtech.passport.server.domain.JobQueue;
+import cn.luixtech.passport.server.exception.JobQueueException;
 import cn.luixtech.passport.server.repository.JobQueueRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,30 +16,32 @@ import java.util.stream.Collectors;
 @Component
 @AllArgsConstructor
 public class JobProducer {
-
     private final JobQueueRepository jobQueueRepository;
+    private final ObjectMapper       objectMapper;
 
-    @Transactional(rollbackFor = Exception.class)
-    public void enqueueJob(String jobType, Object payload) {
-        String payloadJson = convertToJson(payload);
-
-        JobQueue job = new JobQueue(jobType, payloadJson);
+    @Transactional
+    public void enqueue(String channel, Object payload, boolean broadcastFlag) {
+        JobQueue job = createJob(channel, payload, broadcastFlag);
         jobQueueRepository.save(job);
     }
 
-    @Transactional(rollbackFor = Exception.class)
-    public void enqueueJobs(List<Pair<String, Object>> jobs) {
-        List<JobQueue> jobEntities = jobs.stream()
-                .map(job -> new JobQueue(job.getKey(), convertToJson(job.getValue())))
+    @Transactional
+    public void enqueueBatch(List<Pair<String, Object>> jobs, boolean broadcastFlag) {
+        List<JobQueue> entities = jobs.stream()
+                .map(job -> createJob(job.getKey(), job.getValue(), broadcastFlag))
                 .collect(Collectors.toList());
-        jobQueueRepository.saveAll(jobEntities);
+        jobQueueRepository.saveAll(entities);
     }
 
-    private String convertToJson(Object payload) {
+    private JobQueue createJob(String channel, Object payload, boolean broadcastFlag) {
+        return new JobQueue(channel, serializePayload(payload), broadcastFlag);
+    }
+
+    private String serializePayload(Object payload) {
         try {
             return new ObjectMapper().writeValueAsString(payload);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("Failed to convert payload to JSON", e);
+            throw new JobQueueException("Failed to serialize payload", e);
         }
     }
 }

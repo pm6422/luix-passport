@@ -25,7 +25,7 @@ import java.util.List;
 
 import static cn.luixtech.passport.server.domain.UserAuthEvent.AUTH_FAILURE;
 import static cn.luixtech.passport.server.domain.UserAuthEvent.AUTH_SUCCESS;
-import static cn.luixtech.passport.server.queue.consumer.SseConsumer.TOPIC_SSE_BROADCAST;
+import static cn.luixtech.passport.server.queue.consumer.SseConsumer.CHANNEL_SSE_BROADCAST;
 import static cn.luixtech.passport.server.utils.AuthUtils.getCurrentUsername;
 
 @Slf4j
@@ -74,7 +74,7 @@ public class AuthenticationEventListener {
             if (principal instanceof AuthUser authUser) {
                 if (authUser.getUsername().equals(event.getUsername())) {
                     // remove user from sse
-                    jobProducer.enqueueJob(TOPIC_SSE_BROADCAST, SseMessage.buildRemove(authUser.getUsername()));
+                    jobProducer.enqueue(CHANNEL_SSE_BROADCAST, SseMessage.buildRemove(authUser.getUsername()), true);
 
                     List<SessionInformation> sessionsInfo = sessionRegistry.getAllSessions(principal, false);
                     if (sessionsInfo != null && !sessionsInfo.isEmpty()) {

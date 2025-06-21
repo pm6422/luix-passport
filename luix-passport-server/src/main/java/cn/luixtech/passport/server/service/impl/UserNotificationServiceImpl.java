@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static cn.luixtech.passport.server.queue.consumer.SseConsumer.TOPIC_SSE_BROADCAST;
+import static cn.luixtech.passport.server.queue.consumer.SseConsumer.CHANNEL_SSE_BROADCAST;
 
 @Service
 @AllArgsConstructor
@@ -75,7 +75,7 @@ public class UserNotificationServiceImpl implements UserNotificationService {
 
         userNotificationRepository.save(userNotification);
 
-        jobProducer.enqueueJob(TOPIC_SSE_BROADCAST, SseMessage.buildPush(user.getUsername(), notification.getTitle()));
+        jobProducer.enqueue(CHANNEL_SSE_BROADCAST, SseMessage.buildPush(user.getUsername(), notification.getTitle()), true);
     }
 
     @Override
