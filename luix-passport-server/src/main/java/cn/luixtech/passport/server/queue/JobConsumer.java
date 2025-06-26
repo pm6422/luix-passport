@@ -20,11 +20,10 @@ import java.util.concurrent.TimeUnit;
 @Component
 @Slf4j
 public class JobConsumer {
-    private final    JobQueueRepository            jobQueueRepository;
-    private final    Map<String, JobHandler>       pointToPointHandlers = new ConcurrentHashMap<>();
-    private final    Map<String, BroadcastHandler> broadcastHandlers    = new ConcurrentHashMap<>();
-    private final    ExecutorService               executorService;
-    private volatile boolean                       running              = true;
+    private final    JobQueueRepository      jobQueueRepository;
+    private final    Map<String, JobHandler> pointToPointHandlers = new ConcurrentHashMap<>();
+    private final    ExecutorService         executorService;
+    private volatile boolean                 running              = true;
 
     // 配置参数
     private static final int WORKER_THREADS   = 3;
@@ -62,11 +61,6 @@ public class JobConsumer {
     public void registerPointToPointHandler(String channel, JobHandler handler) {
         pointToPointHandlers.put(channel, handler);
         log.info("Registered point-to-point handler for channel: {}", channel);
-    }
-
-    public void registerBroadcastHandler(String channel, BroadcastHandler handler) {
-        broadcastHandlers.put(channel, handler);
-        log.info("Registered broadcast handler for channel: {}", channel);
     }
 
     @Transactional
@@ -107,16 +101,9 @@ public class JobConsumer {
 
     private JobQueue processJob(JobQueue job) {
         try {
-            if (job.getBroadcastFlag()) {
-                BroadcastHandler handler = broadcastHandlers.get(job.getChannel());
-                if (handler != null) {
-                    handler.handleBroadcast(job);
-                }
-            } else {
-                JobHandler handler = pointToPointHandlers.get(job.getChannel());
-                if (handler != null) {
-                    handler.handle(job);
-                }
+            JobHandler handler = pointToPointHandlers.get(job.getChannel());
+            if (handler != null) {
+                handler.handle(job);
             }
             job.markAsCompleted();
         } catch (Exception e) {

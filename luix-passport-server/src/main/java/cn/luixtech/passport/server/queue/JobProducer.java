@@ -19,21 +19,21 @@ public class JobProducer {
     private final JobQueueRepository jobQueueRepository;
 
     @Transactional
-    public void enqueue(String channel, Object payload, boolean broadcastFlag) {
-        JobQueue job = createJob(channel, payload, broadcastFlag);
+    public void enqueue(String channel, Object payload) {
+        JobQueue job = createJob(channel, payload);
         jobQueueRepository.save(job);
     }
 
     @Transactional
-    public void enqueueBatch(List<Pair<String, Object>> jobs, boolean broadcastFlag) {
+    public void enqueueBatch(List<Pair<String, Object>> jobs) {
         List<JobQueue> entities = jobs.stream()
-                .map(job -> createJob(job.getKey(), job.getValue(), broadcastFlag))
+                .map(job -> createJob(job.getKey(), job.getValue()))
                 .collect(Collectors.toList());
         jobQueueRepository.saveAll(entities);
     }
 
-    private JobQueue createJob(String channel, Object payload, boolean broadcastFlag) {
-        return new JobQueue(channel, serializePayload(payload), broadcastFlag);
+    private JobQueue createJob(String channel, Object payload) {
+        return new JobQueue(channel, serializePayload(payload));
     }
 
     private String serializePayload(Object payload) {

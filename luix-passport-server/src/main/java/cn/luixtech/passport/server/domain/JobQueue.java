@@ -26,7 +26,6 @@ public class JobQueue extends AbstractBaseDomain implements Serializable {
     public static final  String  STATUS_PROCESSING = "processing";
     public static final  String  STATUS_COMPLETED  = "completed";
     public static final  String  STATUS_FAILED     = "failed";
-    private              Boolean broadcastFlag;
     private              String  channel;
     private              String  payload;
     private              Integer priority;
@@ -36,15 +35,6 @@ public class JobQueue extends AbstractBaseDomain implements Serializable {
     private              Instant processedAt;
 
     public JobQueue(String channel, String payload) {
-        this.channel = channel;
-        this.payload = payload;
-        this.priority = 0;
-        this.status = STATUS_PENDING;
-        this.createdAt = Instant.now();
-    }
-
-    public JobQueue(String channel, String payload, Boolean broadcastFlag) {
-        this.broadcastFlag = broadcastFlag;
         this.channel = channel;
         this.payload = payload;
         this.priority = 0;

@@ -541,7 +541,6 @@
             <column name="id" type="VARCHAR(20)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="broadcast_flag" type="boolean"/>
             <column name="channel" type="VARCHAR(30)"/>
             <column name="payload" type="JSONB"/>
             <column name="priority" type="INT"/>

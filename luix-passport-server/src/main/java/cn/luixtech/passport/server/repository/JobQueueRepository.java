@@ -29,9 +29,5 @@ public interface JobQueueRepository extends JpaRepository<JobQueue, String> {
                     "RETURNING *")
     List<JobQueue> lockAndGetNextPendingJobs(@Param("limit") int limit);
 
-    @Query("SELECT j FROM JobQueue j WHERE j.status = :status AND j.broadcastFlag = :broadcastFlag " +
-            "ORDER BY j.priority DESC, j.createdAt ASC")
-    List<JobQueue> findByStatusAndBroadcast(@Param("status") String status,
-                                            @Param("broadcastFlag") boolean broadcastFlag);
 
 }

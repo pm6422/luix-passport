@@ -2,8 +2,8 @@ package cn.luixtech.passport.server.queue.consumer;
 
 import cn.luixtech.passport.server.domain.JobQueue;
 import cn.luixtech.passport.server.pojo.SseMessage;
-import cn.luixtech.passport.server.queue.BroadcastHandler;
 import cn.luixtech.passport.server.queue.JobConsumer;
+import cn.luixtech.passport.server.queue.JobHandler;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.luixtech.springbootframework.utils.SseEmitterUtils;
@@ -13,17 +13,17 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-public class SseConsumer implements BroadcastHandler {
-    public static final String CHANNEL_SSE_BROADCAST = "sse";
+public class SseConsumer implements JobHandler {
+    public static final String CHANNEL_SSE = "sse";
 
     @Autowired
     public SseConsumer(JobConsumer jobConsumer) {
         // 注册为SSE作业处理器
-        jobConsumer.registerBroadcastHandler(CHANNEL_SSE_BROADCAST, this);
+        jobConsumer.registerPointToPointHandler(CHANNEL_SSE, this);
     }
 
     @Override
-    public void handleBroadcast(JobQueue job) {
+    public void handle(JobQueue job) {
         SseMessage message = parsePayload(job.getPayload());
         if (message != null) {
             SseEmitterUtils.pushUserMessage(message.getUsername(), message.getMessage());

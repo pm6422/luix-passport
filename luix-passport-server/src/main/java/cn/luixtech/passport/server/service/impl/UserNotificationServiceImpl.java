@@ -3,12 +3,11 @@ package cn.luixtech.passport.server.service.impl;
 import cn.luixtech.passport.server.domain.Notification;
 import cn.luixtech.passport.server.domain.User;
 import cn.luixtech.passport.server.domain.UserNotification;
-import cn.luixtech.passport.server.pojo.SseMessage;
-import cn.luixtech.passport.server.queue.JobProducer;
 import cn.luixtech.passport.server.repository.NotificationRepository;
 import cn.luixtech.passport.server.repository.UserNotificationRepository;
 import cn.luixtech.passport.server.repository.UserRepository;
 import cn.luixtech.passport.server.service.UserNotificationService;
+import com.luixtech.springbootframework.utils.SseEmitterUtils;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
@@ -17,15 +16,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static cn.luixtech.passport.server.queue.consumer.SseConsumer.CHANNEL_SSE_BROADCAST;
-
 @Service
 @AllArgsConstructor
 public class UserNotificationServiceImpl implements UserNotificationService {
     private final NotificationRepository     notificationRepository;
     private final UserNotificationRepository userNotificationRepository;
     private final UserRepository             userRepository;
-    private final JobProducer                jobProducer;
 
     @Override
     public void sendBroadcastNotification(String title, String content, String sender, String senderEmail) {
@@ -75,7 +71,7 @@ public class UserNotificationServiceImpl implements UserNotificationService {
 
         userNotificationRepository.save(userNotification);
 
-        jobProducer.enqueue(CHANNEL_SSE_BROADCAST, SseMessage.buildPush(user.getUsername(), notification.getTitle()), true);
+        SseEmitterUtils.pushUserMessage(user.getUsername(), notification.getTitle());
     }
 
     @Override
