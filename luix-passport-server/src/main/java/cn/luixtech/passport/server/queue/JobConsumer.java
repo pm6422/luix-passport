@@ -1,6 +1,7 @@
 package cn.luixtech.passport.server.queue;
 
 import cn.luixtech.passport.server.domain.JobQueue;
+import cn.luixtech.passport.server.queue.consumer.base.JobConsumerHandler;
 import cn.luixtech.passport.server.repository.JobQueueRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
@@ -20,9 +21,9 @@ import java.util.concurrent.TimeUnit;
 @Component
 @Slf4j
 public class JobConsumer {
-    private final    JobQueueRepository      jobQueueRepository;
-    private final    Map<String, JobHandler> pointToPointHandlers = new ConcurrentHashMap<>();
-    private final    ExecutorService         executorService;
+    private final    JobQueueRepository              jobQueueRepository;
+    private final    Map<String, JobConsumerHandler> pointToPointHandlers = new ConcurrentHashMap<>();
+    private final    ExecutorService                 executorService;
     private volatile boolean                 running              = true;
 
     // 配置参数
@@ -58,7 +59,7 @@ public class JobConsumer {
         log.info("Job consumer stopped");
     }
 
-    public void registerPointToPointHandler(String channel, JobHandler handler) {
+    public void registerPointToPointHandler(String channel, JobConsumerHandler handler) {
         pointToPointHandlers.put(channel, handler);
         log.info("Registered point-to-point handler for channel: {}", channel);
     }
@@ -101,7 +102,7 @@ public class JobConsumer {
 
     private JobQueue processJob(JobQueue job) {
         try {
-            JobHandler handler = pointToPointHandlers.get(job.getChannel());
+            JobConsumerHandler handler = pointToPointHandlers.get(job.getChannel());
             if (handler != null) {
                 handler.handle(job);
             }
