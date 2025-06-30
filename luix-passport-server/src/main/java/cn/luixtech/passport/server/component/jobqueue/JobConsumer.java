@@ -1,7 +1,7 @@
-package cn.luixtech.passport.server.queue;
+package cn.luixtech.passport.server.component.jobqueue;
 
 import cn.luixtech.passport.server.domain.JobQueue;
-import cn.luixtech.passport.server.queue.consumer.base.JobConsumerHandler;
+import cn.luixtech.passport.server.jobconsumer.base.JobConsumerHandler;
 import cn.luixtech.passport.server.repository.JobQueueRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;

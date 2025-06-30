@@ -1,4 +1,4 @@
-package cn.luixtech.passport.server.queue;
+package cn.luixtech.passport.server.component.jobqueue;
 
 import cn.luixtech.passport.server.domain.JobQueue;
 import cn.luixtech.passport.server.exception.JobQueueException;

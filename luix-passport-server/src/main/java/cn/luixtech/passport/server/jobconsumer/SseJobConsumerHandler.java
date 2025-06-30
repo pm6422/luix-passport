@@ -1,9 +1,9 @@
-package cn.luixtech.passport.server.queue.consumer;
+package cn.luixtech.passport.server.jobconsumer;
 
 import cn.luixtech.passport.server.domain.JobQueue;
 import cn.luixtech.passport.server.pojo.SseMessage;
-import cn.luixtech.passport.server.queue.JobConsumer;
-import cn.luixtech.passport.server.queue.consumer.base.JobConsumerHandler;
+import cn.luixtech.passport.server.component.jobqueue.JobConsumer;
+import cn.luixtech.passport.server.jobconsumer.base.JobConsumerHandler;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.luixtech.springbootframework.utils.SseEmitterUtils;
@@ -13,11 +13,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-public class SseConsumer implements JobConsumerHandler {
+public class SseJobConsumerHandler implements JobConsumerHandler {
     public static final String CHANNEL_SSE = "sse";
 
     @Autowired
-    public SseConsumer(JobConsumer jobConsumer) {
+    public SseJobConsumerHandler(JobConsumer jobConsumer) {
         // 注册为SSE作业处理器
         jobConsumer.registerPointToPointHandler(CHANNEL_SSE, this);
     }

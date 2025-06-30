@@ -1,4 +1,4 @@
-package cn.luixtech.passport.server.queue.consumer.base;
+package cn.luixtech.passport.server.jobconsumer.base;
 
 import cn.luixtech.passport.server.domain.JobQueue;
 
