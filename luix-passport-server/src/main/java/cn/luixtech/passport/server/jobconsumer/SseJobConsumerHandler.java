@@ -18,7 +18,7 @@ public class SseJobConsumerHandler implements JobConsumerHandler {
 
     @Autowired
     public SseJobConsumerHandler(JobConsumer jobConsumer) {
-        // 注册为SSE作业处理器
+        // register p2p consumer handler
         jobConsumer.registerPointToPointHandler(CHANNEL_SSE, this);
     }
 
