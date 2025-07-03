@@ -1,13 +1,12 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { Checkbox } from "@/components/ui/checkbox"
-import { IconEdit } from "@tabler/icons-react"
+import { IconEye, IconCircleCheckFilled, IconCircleXFilled, IconLoader } from "@tabler/icons-react"
 import { DataTableColumnHeader } from "@/components/custom/data-table/data-table-column-header"
 import { DataTableRowActions } from "@/components/custom/data-table/data-table-row-actions"
 import { Button } from "@/components/ui/button"
-import { ScheduleExecutionLog } from "@/domains/schedule-execution-log.ts"
+import { ScheduleExecutionLog } from "@/domains/schedule-execution-log"
 import { EditDialog } from "../dialog/edit-dialog"
 import { DateTime } from "@/components/custom/date-time"
-import { IconCircleCheckFilled, IconCircleXFilled, IconLoader } from "@tabler/icons-react";
 import { Badge } from '@/components/ui/badge.tsx'
 
 export function tableColumns(
@@ -119,7 +118,7 @@ export function tableColumns(
                                                    children={
             <EditDialog entityName={entityName} id={row.original.id}>
               <Button variant="secondary" className="flex size-8 p-0">
-                <IconEdit className="size-4" />
+                <IconEye className="size-4" />
                 <span className="sr-only">Update</span>
               </Button>
             </EditDialog>
