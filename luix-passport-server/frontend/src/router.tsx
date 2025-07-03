@@ -36,6 +36,12 @@ const router = createBrowserRouter([
       Component: (await import("./views/account/reset-password")).default
     }),
   },
+  {
+    path: "/sec-portal",
+    lazy: async () => ({
+      Component: (await import("./views/sec-portal")).default
+    }),
+  },
 
   // no-auth routes
   {
