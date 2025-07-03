@@ -40,6 +40,7 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
     "dayjs": "^1.11.10",
+    "embla-carousel-react": "^8.6.0",
     "exome": "^2.5.0",
     "framer-motion": "^12.15.0",
     "input-otp": "^1.4.2",

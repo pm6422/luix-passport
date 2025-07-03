@@ -1,15 +1,14 @@
-// 路径: app/page.tsx
-
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   AlertTriangle,
+  Car,
   CheckCircle,
-  ChevronRight,
   FileText,
   LifeBuoy,
   LineChart,
@@ -22,6 +21,8 @@ import {
   User,
   Users,
 } from "lucide-react";
+import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+
 
 // --- Helper Components (可以移到单独的文件中) ---
 
@@ -52,6 +53,16 @@ const ListItem = ({ icon: Icon, title, description, action }: { icon: React.Elem
     {action}
   </div>
 );
+
+// 图表数据
+const chartData = [
+  { month: "一月", fixed: 12 },
+  { month: "二月", fixed: 19 },
+  { month: "三月", fixed: 15 },
+  { month: "四月", fixed: 23 },
+  { month: "五月", fixed: 18 },
+  { month: "六月", fixed: 25 },
+];
 
 // --- Main Page Component ---
 
@@ -102,6 +113,20 @@ export default function SecurityPortalPage() {
           <KpiCard title="安全评分" value="92/100" icon={LineChart} description="Improved by 5 points" />
         </div>
 
+        {/* VTA 认证请求入口 */}
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between">
+            <div className="space-y-1.5">
+              <CardTitle>车辆 VTA 认证请求</CardTitle>
+              <CardDescription>为您的车辆或组件申请 VTA 安全认证</CardDescription>
+            </div>
+            <Button size="lg">
+              <Car className="mr-2 h-5 w-5" />
+              发起新请求
+            </Button>
+          </CardHeader>
+        </Card>
+
         {/* 主要内容区域 */}
         <div className="grid gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-3">
           <div className="grid auto-rows-max items-start gap-4 md:gap-8 lg:col-span-2">
@@ -150,26 +175,21 @@ export default function SecurityPortalPage() {
                   <CardHeader>
                     <CardTitle>部门成果</CardTitle>
                     <CardDescription>
-                      本季度安全部门的主要工作成果和贡献。
+                      过去六个月的漏洞修复趋势。
                     </CardDescription>
                   </CardHeader>
-                  <CardContent className="space-y-4">
-                    {/* 图表占位符 */}
-                    <div className="my-4 h-60 w-full rounded-lg border border-dashed flex items-center justify-center">
-                      <p className="text-muted-foreground">月度漏洞修复趋势图 (Chart Placeholder)</p>
+                  <CardContent>
+                    <div className="h-60 w-full">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <BarChart data={chartData}>
+                          <CartesianGrid strokeDasharray="3 3" />
+                          <XAxis dataKey="month" />
+                          <YAxis />
+                          <Tooltip />
+                          <Bar dataKey="fixed" fill="#8884d8" name="已修复漏洞" />
+                        </BarChart>
+                      </ResponsiveContainer>
                     </div>
-                    <ListItem
-                      icon={CheckCircle}
-                      title="完成核心系统渗透测试"
-                      description="发现并修复 5 个高危漏洞"
-                      action={<span className="text-sm text-muted-foreground">2周前</span>}
-                    />
-                    <ListItem
-                      icon={CheckCircle}
-                      title="组织全员安全意识培训"
-                      description="参与率 98%，平均得分 91"
-                      action={<span className="text-sm text-muted-foreground">1个月前</span>}
-                    />
                   </CardContent>
                 </Card>
               </TabsContent>
@@ -213,19 +233,46 @@ export default function SecurityPortalPage() {
                 <CardTitle>安防专栏</CardTitle>
                 <CardDescription>阅读最新的安全文章和指南</CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <a href="#" className="flex items-center justify-between hover:bg-muted/50 p-2 rounded-lg transition-colors">
-                  <p>如何防范社会工程学攻击</p>
-                  <ChevronRight className="h-4 w-4 text-muted-foreground" />
-                </a>
-                <a href="#" className="flex items-center justify-between hover:bg-muted/50 p-2 rounded-lg transition-colors">
-                  <p>企业数据安全保护最佳实践</p>
-                  <ChevronRight className="h-4 w-4 text-muted-foreground" />
-                </a>
-                <a href="#" className="flex items-center justify-between hover:bg-muted/50 p-2 rounded-lg transition-colors">
-                  <p>供应链安全：你需要知道的</p>
-                  <ChevronRight className="h-4 w-4 text-muted-foreground" />
-                </a>
+              <CardContent>
+                <Carousel className="w-full max-w-xs mx-auto">
+                  <CarouselContent>
+                    <CarouselItem>
+                      <div className="p-1">
+                        <Card>
+                          <CardContent className="flex aspect-video items-center justify-center p-6 flex-col">
+                            <h3 className="font-semibold text-lg mb-2">如何防范社会工程学攻击</h3>
+                            <p className="text-sm text-muted-foreground text-center">了解常见的攻击手段，保护您的敏感信息不被泄露。</p>
+                            <Button variant="link" className="mt-4">阅读全文</Button>
+                          </CardContent>
+                        </Card>
+                      </div>
+                    </CarouselItem>
+                    <CarouselItem>
+                      <div className="p-1">
+                        <Card>
+                          <CardContent className="flex aspect-video items-center justify-center p-6 flex-col">
+                            <h3 className="font-semibold text-lg mb-2">企业数据安全最佳实践</h3>
+                            <p className="text-sm text-muted-foreground text-center">从访问控制到加密，全面了解如何保护企业数据。</p>
+                            <Button variant="link" className="mt-4">阅读全文</Button>
+                          </CardContent>
+                        </Card>
+                      </div>
+                    </CarouselItem>
+                    <CarouselItem>
+                      <div className="p-1">
+                        <Card>
+                          <CardContent className="flex aspect-video items-center justify-center p-6 flex-col">
+                            <h3 className="font-semibold text-lg mb-2">供应链安全：你需要知道的</h3>
+                            <p className="text-sm text-muted-foreground text-center">第三方风险正在加剧，学习如何管理和缓解供应链风险。</p>
+                            <Button variant="link" className="mt-4">阅读全文</Button>
+                          </CardContent>
+                        </Card>
+                      </div>
+                    </CarouselItem>
+                  </CarouselContent>
+                  <CarouselPrevious />
+                  <CarouselNext />
+                </Carousel>
               </CardContent>
             </Card>
           </div>
