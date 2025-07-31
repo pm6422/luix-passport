@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils"
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,11 +13,12 @@ interface Props extends React.HTMLAttributes<HTMLElement> {
   links: {
     title: string
     href: string
-    isActive: boolean
   }[]
 }
 
 export function TopNav({ className, links, ...props }: Props) {
+  const location = useLocation()
+
   return (
     <>
       <div className="md:hidden">
@@ -28,16 +29,19 @@ export function TopNav({ className, links, ...props }: Props) {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent side="bottom" align="start">
-            {links.map(({ title, href, isActive }) => (
-              <DropdownMenuItem key={`${title}-${href}`} asChild>
-                <Link
-                  to={href}
-                  className={!isActive ? "text-muted-foreground" : ""}
-                >
-                  {title}
-                </Link>
-              </DropdownMenuItem>
-            ))}
+            {links.map(({ title, href }) => {
+              const isActive = location.pathname === href
+              return (
+                <DropdownMenuItem key={`${title}-${href}`} asChild>
+                  <Link
+                    to={href}
+                    className={!isActive ? "text-muted-foreground" : ""}
+                  >
+                    {title}
+                  </Link>
+                </DropdownMenuItem>
+              )
+            })}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
@@ -49,15 +53,20 @@ export function TopNav({ className, links, ...props }: Props) {
         )}
         {...props}
       >
-        {links.map(({ title, href, isActive }) => (
-          <Link
-            key={`${title}-${href}`}
-            to={href}
-            className={`text-sm font-medium transition-colors hover:text-primary ${isActive ? "" : "text-muted-foreground"}`}
-          >
-            {title}
-          </Link>
-        ))}
+        {links.map(({ title, href }) => {
+          const isActive = location.pathname === href
+          return (
+            <Link
+              key={`${title}-${href}`}
+              to={href}
+              className={`text-sm font-medium transition-colors hover:text-primary ${
+                isActive ? "" : "text-muted-foreground"
+              }`}
+            >
+              {title}
+            </Link>
+          )
+        })}
       </nav>
     </>
   )

@@ -11,33 +11,27 @@ export function NoAuthLayoutHeader() {
   const topNav = [
     {
       title: "Home",
-      href: "/",
-      isActive: true,
+      href: "/"
     },
     ...(loginUser.isAuthenticated ? [{
       title: "Console",
-      href: "/console",
-      isActive: false,
+      href: "/console"
     }] : []),
     {
       title: "Features",
-      href: "/features",
-      isActive: false,
+      href: "/features"
     },
     {
       title: "Pricing",
-      href: "/pricing",
-      isActive: false,
+      href: "/pricing"
     },
     {
       title: "Docs",
-      href: "/docs",
-      isActive: false,
+      href: "/docs"
     },
     ...(!loginUser.isAuthenticated ? [{
       title: "Contact",
-      href: "/contact-us",
-      isActive: false,
+      href: "/contact-us"
     }] : [])
   ]
 
