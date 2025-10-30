@@ -30,7 +30,7 @@ jobs:
         run: npm run docker:push -- -Djib.image.version=latest -Djib.registry.url=ghcr.io/${{vars.GHCR_USERNAME}}/
 
       - name: Send success notification
-        uses: niniyas/ntfy-action@master
+        uses: rtmctrl/ntfy-action@v1
         if: success()
         with:
           url: 'https://ntfy.sh'
@@ -38,7 +38,7 @@ jobs:
           title: '😀 Successfully built docker image'
 
       - name: Send failure notification
-        uses: niniyas/ntfy-action@master
+        uses: rtmctrl/ntfy-action@v1
         if: failure()
         with:
           url: 'https://ntfy.sh'
