@@ -21,7 +21,7 @@ jobs:
           cache: maven
       - name: Build and push docker image to registry
         # run: mvn compile jib:build
-        run: npm run docker:push -- -Djib.image.version=${{vars.DOCKER_IMAGE_VERSION}} -Djib.registry.url=${{vars.DOCKER_REGISTRY_URL}} -Djib.registry.username=${{vars.DOCKER_REGISTRY_USERNAME}} -Djib.registry.password=${{vars.DOCKER_REGISTRY_PASSWORD}}
+        run: npm run docker:push -- -Djib.image.version=${{vars.DOCKER_IMAGE_VERSION}} -Djib.registry.url=${{vars.GH_REGISTRY_URL}} -Djib.registry.username=${{vars.GH_USERNAME}} -Djib.registry.password=${{vars.GH_PASSWORD}}
       - name: Send successful ntfy notification
         uses: niniyas/ntfy-action@master
         if: success()
