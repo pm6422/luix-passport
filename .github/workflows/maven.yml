@@ -19,9 +19,11 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
           cache: maven
-      - name: Build and push docker image to registry
+      - name: Log in to GHCR
+        run: echo "${{ vars.GHCR_ACCESS_TOKEN }}" | docker login ghcr.io -u ${{ vars.GHCR_USERNAME }} --password-stdin
+      - name: Build and push docker image to GHCR
         # run: mvn compile jib:build
-        run: npm run docker:push -- -Djib.image.version=${{vars.DOCKER_IMAGE_VERSION}} -Djib.registry.url=${{vars.GH_REGISTRY_URL}} -Djib.registry.username=${{vars.GH_USERNAME}} -Djib.registry.password=${{vars.GH_PASSWORD}}
+        run: npm run docker:push -- -Djib.image.version=${{vars.DOCKER_IMAGE_VERSION}} -Djib.registry.url=ghcr.io/${{vars.GHCR_USERNAME}}/
       - name: Send successful ntfy notification
         uses: niniyas/ntfy-action@master
         if: success()
