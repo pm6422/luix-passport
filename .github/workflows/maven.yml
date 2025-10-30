@@ -23,11 +23,6 @@ jobs:
           distribution: 'corretto'
           cache: maven
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-
       - name: Login to registry
         run: echo "${{ vars.GHCR_ACCESS_TOKEN }}" | docker login ${{ vars.GHCR_URL }} -u ${{ vars.GHCR_USERNAME }} --password-stdin
 
