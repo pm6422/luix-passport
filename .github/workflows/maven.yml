@@ -20,7 +20,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: '21'
-          distribution: 'temurin'
+          distribution: 'corretto'
           cache: maven
 
       - name: Login to registry
@@ -36,7 +36,7 @@ jobs:
           url: '${{ vars.NTFY_URL }}'
           topic: '${{ vars.NTFY_TOPIC }}'
           title: '😀 Successfully built docker image'
-          icon: 'https://raw.githubusercontent.com/pm6422/luix-passport/main/luix-passport-server/frontend/public/assets/images/logos/logo.svg'
+          icon: 'https://raw.githubusercontent.com/pm6422/luix-passport/main/luix-passport-server/frontend/public/assets/images/logos/logo-round.png'
 
       - name: Send failure notification
         uses: niniyas/ntfy-action@master
