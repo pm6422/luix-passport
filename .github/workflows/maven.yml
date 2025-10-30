@@ -1,4 +1,4 @@
-name: Push docker image to GHCR
+name: Push docker image to registry
 
 on:
   push:
@@ -23,10 +23,10 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Login to GHCR
+      - name: Login to registry
         run: echo "${{ vars.GHCR_ACCESS_TOKEN }}" | docker login ${{ vars.GHCR_URL }} -u ${{ vars.GHCR_USERNAME }} --password-stdin
 
-      - name: Build and push docker image to GHCR
+      - name: Build and push docker image to registry
         run: npm run docker:push -- -Djib.image.version=latest -Djib.registry.url=${{ vars.GHCR_URL }}/${{vars.GHCR_USERNAME}}/
 
       - name: Send success notification
