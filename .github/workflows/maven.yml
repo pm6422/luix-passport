@@ -36,7 +36,7 @@ jobs:
           url: '${{ vars.NTFY_URL }}'
           topic: '${{ vars.NTFY_TOPIC }}'
           title: '😀 Successfully built docker image'
-          icon: 'https://raw.githubusercontent.com/pm6422/luix-passport/main/luix-passport-server/frontend/public/assets/images/logos/logo-round.png'
+          icon: 'https://raw.githubusercontent.com/pm6422/luix-passport/main/luix-passport-server/frontend/public/assets/images/logos/logo.svg'
 
       - name: Send failure notification
         uses: niniyas/ntfy-action@master
