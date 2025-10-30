@@ -24,10 +24,10 @@ jobs:
           cache: maven
 
       - name: Login to GHCR
-        run: echo "${{ vars.GHCR_ACCESS_TOKEN }}" | docker login ghcr.io -u ${{ vars.GHCR_USERNAME }} --password-stdin
+        run: echo "${{ vars.GHCR_ACCESS_TOKEN }}" | docker login ${{ vars.GHCR_URL }} -u ${{ vars.GHCR_USERNAME }} --password-stdin
 
       - name: Build and push docker image to GHCR
-        run: npm run docker:push -- -Djib.image.version=latest -Djib.registry.url=ghcr.io/${{vars.GHCR_USERNAME}}/
+        run: npm run docker:push -- -Djib.image.version=latest -Djib.registry.url=${{ vars.GHCR_URL }}/${{vars.GHCR_USERNAME}}/
 
       - name: Send success notification
         uses: niniyas/ntfy-action@master
