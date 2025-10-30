@@ -36,6 +36,7 @@ jobs:
           url: '${{ vars.NTFY_URL }}'
           topic: '${{ vars.NTFY_TOPIC }}'
           title: '😀 Successfully built docker image'
+          icon: 'https://styles.redditmedia.com/t5_32uhe/styles/communityIcon_xnt6chtnr2j21.png'
 
       - name: Send failure notification
         uses: niniyas/ntfy-action@master
