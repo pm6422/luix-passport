@@ -1,40 +1,46 @@
-# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
+name: Push docker image to GHCR
 
-name: Push docker image to registry
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
+
 jobs:
-  build:
+  build-and-push:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
     steps:
-      - name: Checkout codes
+      - name: Checkout code
         uses: actions/checkout@v4
+
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'temurin'
           cache: maven
-      - name: Log in to GHCR
+
+      - name: Login to GHCR
         run: echo "${{ vars.GHCR_ACCESS_TOKEN }}" | docker login ghcr.io -u ${{ vars.GHCR_USERNAME }} --password-stdin
+
       - name: Build and push docker image to GHCR
-        # run: mvn compile jib:build
         run: npm run docker:push -- -Djib.image.version=latest -Djib.registry.url=ghcr.io/${{vars.GHCR_USERNAME}}/
-      - name: Send successful ntfy notification
+
+      - name: Send success notification
         uses: niniyas/ntfy-action@master
         if: success()
         with:
           url: 'https://ntfy.sh'
           topic: 'luix-universe'
-          title: '😀Successfully built docker image'
-      - name: Send failed ntfy notification
+          title: '😀 Successfully built docker image'
+
+      - name: Send failure notification
         uses: niniyas/ntfy-action@master
         if: failure()
         with:
           url: 'https://ntfy.sh'
           topic: 'luix-universe'
-          title: '😂Failed to build docker image'
+          title: '😂 Failed to build docker image'
