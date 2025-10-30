@@ -30,17 +30,17 @@ jobs:
         run: npm run docker:push -- -Djib.image.version=latest -Djib.registry.url=ghcr.io/${{vars.GHCR_USERNAME}}/
 
       - name: Send success notification
-        uses: rtmctrl/ntfy-action@v1
+        uses: niniyas/ntfy-action@master
         if: success()
         with:
-          url: 'https://ntfy.sh'
-          topic: 'luix-universe'
+          url: '${{ vars.NTFY_URL }}'
+          topic: '${{ vars.NTFY_TOPIC }}'
           title: '😀 Successfully built docker image'
 
       - name: Send failure notification
-        uses: rtmctrl/ntfy-action@v1
+        uses: niniyas/ntfy-action@master
         if: failure()
         with:
-          url: 'https://ntfy.sh'
-          topic: 'luix-universe'
+          url: '${{ vars.NTFY_URL }}'
+          topic: '${{ vars.NTFY_TOPIC }}'
           title: '😂 Failed to build docker image'
