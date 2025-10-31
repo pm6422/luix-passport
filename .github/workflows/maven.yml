@@ -35,7 +35,7 @@ jobs:
         with:
           url: '${{ vars.NTFY_URL }}'
           topic: '${{ vars.NTFY_TOPIC }}'
-          title: '😀 Successfully built docker image'
+          title: '✅ Successfully built docker image'
           icon: 'https://raw.githubusercontent.com/pm6422/pm6422/main/assets/images/logo/luix-passport.png'
 
       - name: Send failure notification
@@ -44,4 +44,4 @@ jobs:
         with:
           url: '${{ vars.NTFY_URL }}'
           topic: '${{ vars.NTFY_TOPIC }}'
-          title: '😂 Failed to build docker image'
+          title: '❌ Failed to build docker image'
