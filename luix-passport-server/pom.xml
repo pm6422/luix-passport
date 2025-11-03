@@ -301,7 +301,7 @@
                                     <goal>npm</goal>
                                 </goals>
                                 <configuration>
-                                    <arguments>install --prefix frontend</arguments>
+                                    <arguments>ci --prefer-offline --prefix frontend</arguments>
                                 </configuration>
                             </execution>
                             <execution>
