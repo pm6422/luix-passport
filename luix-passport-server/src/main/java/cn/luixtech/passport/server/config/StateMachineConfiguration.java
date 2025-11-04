@@ -23,14 +23,31 @@ public class StateMachineConfiguration extends StateMachineConfigurerAdapter<Use
                 .state(UserState.INACTIVATED)
                 .state(UserState.ACTIVATED)
                 .state(UserState.DISABLED)
-                .end(UserState.ENABLED);
+                .state(UserState.ENABLED)
+                .end(UserState.ENABLED); // 结束状态应该是已定义的状态
     }
 
     @Override
     public void configure(StateMachineTransitionConfigurer<UserState, UserEvent> transitions) throws Exception {
         transitions
-                .withExternal().source(UserState.CREATED).target(UserState.INACTIVATED).event(UserEvent.CREATE)
+                .withExternal()
+                .source(UserState.CREATED)
+                .target(UserState.INACTIVATED)
+                .event(UserEvent.CREATE)
                 .and()
-                .withExternal().source(UserState.INACTIVATED).target(UserState.ACTIVATED).event(UserEvent.ACTIVATE);
+                .withExternal()
+                .source(UserState.INACTIVATED)
+                .target(UserState.ACTIVATED)
+                .event(UserEvent.ACTIVATE)
+                .and()
+                .withExternal()
+                .source(UserState.ACTIVATED)
+                .target(UserState.DISABLED)
+                .event(UserEvent.DISABLE)
+                .and()
+                .withExternal()
+                .source(UserState.DISABLED)
+                .target(UserState.ENABLED)
+                .event(UserEvent.ENABLE);
     }
 }

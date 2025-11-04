@@ -4,5 +4,7 @@ public enum UserEvent {
     CREATE,
     ACTIVATE,
     SIGN_IN,
-    SIGN_OUT
+    SIGN_OUT,
+    ENABLE,
+    DISABLE
 }
