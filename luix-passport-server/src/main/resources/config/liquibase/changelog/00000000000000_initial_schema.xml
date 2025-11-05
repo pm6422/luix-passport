@@ -668,7 +668,7 @@
                 constraintName="fk_user_notification_user"
                 referencedTableName="user"
                 referencedColumnNames="username"
-                onDelete="SET NULL"
+                onDelete="CASCADE"
                 onUpdate="CASCADE"/>
         <addForeignKeyConstraint
                 baseTableName="user_notification"
