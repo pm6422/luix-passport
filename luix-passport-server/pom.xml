@@ -329,8 +329,7 @@
                         <version>3.4.6</version>
                         <configuration>
                             <from>
-                                <image>eclipse-temurin:21-jre-jammy</image>
-                                <digest>sha256:db1689535962d757a5adabf57387584ed543d38c0b9d1fe870123ea362ad73b0</digest>
+                                <image>eclipse-temurin:21-jre-jammy@sha256:db1689535962d757a5adabf57387584ed543d38c0b9d1fe870123ea362ad73b0</image>
                                 <platforms>
                                     <platform>
                                         <architecture>${jib.arch}</architecture>
