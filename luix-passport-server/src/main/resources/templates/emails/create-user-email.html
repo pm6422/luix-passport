@@ -1,17 +1,74 @@
-<div th:fragment="content">
-    <div style="font-size: 16px; margin-bottom: 5px;">
-        <span style="font-weight: bold; color: #444444;" th:text="#{email.greeting(${user.username})}">Hey User,</span>
-    </div>
+<div th:fragment="content" style="margin:0; padding:0; font-family:Arial,Helvetica,sans-serif;">
 
-    <div style="font-size: 16px; margin-bottom: 25px;">
-        <span style="font-weight: 600; color: #444444;" th:text="#{create.user.email.text}">Your account has been successfully created. To set your password, click the button below:</span>
-    </div>
+    <!-- Mobile Responsive -->
+    <style>
+        @media only screen and (max-width: 600px) {
+            .container {
+                width: 100% !important;
+                padding: 16px !important;
+            }
+            .btn-set {
+                width: 100% !important;
+                display: block !important;
+                text-align: center !important;
+            }
+        }
+    </style>
 
-    <div style="margin-bottom: 30px; text-align: center;">
-        <a th:href="@{|${baseUrl}/#/reset-password?resetCode=${user.resetCode}|}"
-           style="display: inline-block; padding: 12px 24px; background-color: #7c3aed; color: white; font-size: 16px; font-weight: 600; text-decoration: none; border-radius: 6px; transition: background-color 0.3s ease;"
-           onmouseover="this.style.backgroundColor='#6b21a8'"
-           onmouseout="this.style.backgroundColor='#7c3aed'"
-           th:text="#{create.user.email.button.text}">Set Password</a>
-    </div>
+    <table style="background:#ffffff;">
+        <tr>
+            <td style="padding:0;">
+
+                <!-- Main Card -->
+                <table class="container" style="max-width:600px;width:100%;background:#ffffff;">
+
+                    <!-- Spacer -->
+                    <tr><td style="padding-top:20px;"></td></tr>
+
+                    <!-- Greeting -->
+                    <tr>
+                        <td style="padding:0 28px 12px; font-size:20px; font-weight:700; color:#111827;">
+                            <span th:text="#{email.greeting(${user.username})}">Hello User,</span>
+                        </td>
+                    </tr>
+
+                    <!-- Intro Text -->
+                    <tr>
+                        <td style="padding:0 28px 18px; font-size:16px; color:#374151;">
+                            <span th:text="#{create.user.email.text}">
+                                Your account has been successfully created. To set your password, click the button below:
+                            </span>
+                        </td>
+                    </tr>
+
+                    <!-- Button -->
+                    <tr>
+                        <td style="padding:10px 28px 28px; text-align:center;">
+                            <a th:href="@{|${baseUrl}/#/reset-password?resetCode=${user.resetCode}|}"
+                               class="btn-set"
+                               style="display:inline-block; padding:14px 28px; font-size:16px;
+                                      font-weight:700; background:#6d28d9; color:#ffffff;
+                                      text-decoration:none; border-radius:8px;">
+                                <span th:text="#{create.user.email.button.text}">Set Password</span>
+                            </a>
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td style="padding:0 28px 30px; font-size:13px; color:#6b7280;">
+                            <span th:text="#{reset.password.ignore.tip(${user.email})}">
+                                If you did not expect this email, please contact support or ignore it.
+                            </span>
+                        </td>
+                    </tr>
+
+                    <!-- Spacer -->
+                    <tr><td style="padding-bottom:20px;"></td></tr>
+
+                </table>
+
+            </td>
+        </tr>
+    </table>
 </div>
