@@ -54,7 +54,7 @@ public class JobQueue extends TableImpl<JobQueueRecord> {
     /**
      * The column <code>public.job_queue.id</code>.
      */
-    public final TableField<JobQueueRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(20).nullable(false), this, "");
+    public final TableField<JobQueueRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(36).nullable(false), this, "");
 
     /**
      * The column <code>public.job_queue.channel</code>.

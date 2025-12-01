@@ -14,7 +14,7 @@ export default function Permissions() {
   const [totalPages, setTotalPages] = useState(0)
   const [currentPageNo, setCurrentPageNo] = useState(0)
 
-  function loadPage(pageNo: number = 0, pageSize: number = 10, sorts: Array<string> = ["modifiedAt,desc"], criteria: PermissionCriteriaSchema = {}): void {
+  function loadPage(pageNo: number = 0, pageSize: number = 10, sorts: Array<string> = ["updatedAt,desc"], criteria: PermissionCriteriaSchema = {}): void {
     setCurrentPageNo(pageNo)
     PermissionService.find({
       page: pageNo,

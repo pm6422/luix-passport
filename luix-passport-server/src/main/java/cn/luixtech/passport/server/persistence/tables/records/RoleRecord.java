@@ -80,30 +80,30 @@ public class RoleRecord extends UpdatableRecordImpl<RoleRecord> implements Recor
     }
 
     /**
-     * Setter for <code>public.role.modified_at</code>.
+     * Setter for <code>public.role.updated_at</code>.
      */
-    public void setModifiedAt(Instant value) {
+    public void setUpdatedAt(Instant value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>public.role.modified_at</code>.
+     * Getter for <code>public.role.updated_at</code>.
      */
-    public Instant getModifiedAt() {
+    public Instant getUpdatedAt() {
         return (Instant) get(4);
     }
 
     /**
-     * Setter for <code>public.role.modified_by</code>.
+     * Setter for <code>public.role.updated_by</code>.
      */
-    public void setModifiedBy(String value) {
+    public void setUpdatedBy(String value) {
         set(5, value);
     }
 
     /**
-     * Getter for <code>public.role.modified_by</code>.
+     * Getter for <code>public.role.updated_by</code>.
      */
-    public String getModifiedBy() {
+    public String getUpdatedBy() {
         return (String) get(5);
     }
 
@@ -152,12 +152,12 @@ public class RoleRecord extends UpdatableRecordImpl<RoleRecord> implements Recor
 
     @Override
     public Field<Instant> field5() {
-        return Role.ROLE.MODIFIED_AT;
+        return Role.ROLE.UPDATED_AT;
     }
 
     @Override
     public Field<String> field6() {
-        return Role.ROLE.MODIFIED_BY;
+        return Role.ROLE.UPDATED_BY;
     }
 
     @Override
@@ -182,12 +182,12 @@ public class RoleRecord extends UpdatableRecordImpl<RoleRecord> implements Recor
 
     @Override
     public Instant component5() {
-        return getModifiedAt();
+        return getUpdatedAt();
     }
 
     @Override
     public String component6() {
-        return getModifiedBy();
+        return getUpdatedBy();
     }
 
     @Override
@@ -212,12 +212,12 @@ public class RoleRecord extends UpdatableRecordImpl<RoleRecord> implements Recor
 
     @Override
     public Instant value5() {
-        return getModifiedAt();
+        return getUpdatedAt();
     }
 
     @Override
     public String value6() {
-        return getModifiedBy();
+        return getUpdatedBy();
     }
 
     @Override
@@ -246,13 +246,13 @@ public class RoleRecord extends UpdatableRecordImpl<RoleRecord> implements Recor
 
     @Override
     public RoleRecord value5(Instant value) {
-        setModifiedAt(value);
+        setUpdatedAt(value);
         return this;
     }
 
     @Override
     public RoleRecord value6(String value) {
-        setModifiedBy(value);
+        setUpdatedBy(value);
         return this;
     }
 
@@ -281,15 +281,15 @@ public class RoleRecord extends UpdatableRecordImpl<RoleRecord> implements Recor
     /**
      * Create a detached, initialised RoleRecord
      */
-    public RoleRecord(String id, String remark, Instant createdAt, String createdBy, Instant modifiedAt, String modifiedBy) {
+    public RoleRecord(String id, String remark, Instant createdAt, String createdBy, Instant updatedAt, String updatedBy) {
         super(Role.ROLE);
 
         setId(id);
         setRemark(remark);
         setCreatedAt(createdAt);
         setCreatedBy(createdBy);
-        setModifiedAt(modifiedAt);
-        setModifiedBy(modifiedBy);
+        setUpdatedAt(updatedAt);
+        setUpdatedBy(updatedBy);
         resetChangedOnNotNull();
     }
 }

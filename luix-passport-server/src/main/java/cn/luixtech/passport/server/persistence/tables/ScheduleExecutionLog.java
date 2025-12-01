@@ -53,7 +53,7 @@ public class ScheduleExecutionLog extends TableImpl<ScheduleExecutionLogRecord> 
     /**
      * The column <code>public.schedule_execution_log.id</code>.
      */
-    public final TableField<ScheduleExecutionLogRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(20).nullable(false), this, "");
+    public final TableField<ScheduleExecutionLogRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(36).nullable(false), this, "");
 
     /**
      * The column <code>public.schedule_execution_log.schedule_name</code>.

@@ -1,35 +1,59 @@
 package cn.luixtech.passport.server.domain;
 
-import cn.luixtech.passport.server.domain.base.AbstractUpdatableDomain;
-import cn.luixtech.passport.server.domain.base.listener.AuditableEntityListener;
+import cn.luixtech.passport.server.utils.AuthUtils;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.UuidGenerator;
 
-import java.io.Serial;
-import java.io.Serializable;
+import java.time.Instant;
 
-@Entity
-@EntityListeners(AuditableEntityListener.class)
 @Data
+@Entity
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
-public class UserNotification extends AbstractUpdatableDomain implements Serializable {
-    @Serial
-    private static final long   serialVersionUID = 1L;
-    public static final  String STATUS_READ      = "READ";
-    public static final  String STATUS_UNREAD    = "UNREAD";
+public class UserNotification {
 
-    private   String       receiverId;
+    @Id
+    @UuidGenerator
+    @Column(length = 36)
+    private String id;
+    public static final String STATUS_READ = "READ";
+    public static final String STATUS_UNREAD = "UNREAD";
+
+    private String receiverId;
     /**
      * 一条Notification可以发送给多个用户 (体现在多个UserNotification记录中)
      * 一个用户通知 (UserNotification) 只能关联一条具体的通知
      */
     @ManyToOne
-    private   Notification notification;
-    private   String       status;
-    private   Boolean      active;
+    private Notification notification;
+    private String status;
+    private Boolean active;
+
+    @Column(nullable = false, updatable = false)
+    private Instant createdAt;
+
+    @Column(nullable = false)
+    private Instant updatedAt;
+
+    @Column(updatable = false)
+    private String createdBy;
+
+    private String updatedBy;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = Instant.now();
+        updatedAt = Instant.now();
+        createdBy = AuthUtils.getCurrentUsername();
+        updatedBy = createdBy;
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = Instant.now();
+        updatedBy = AuthUtils.getCurrentUsername();
+    }
 }

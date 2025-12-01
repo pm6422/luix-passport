@@ -12,7 +12,7 @@ export const userNotificationSchema = z.object({
   status: z.string(),
   active: z.boolean(),
   createdAt: z.string(),
-  modifiedAt: z.string()
+  updatedAt: z.string()
 })
 
 export type UserNotification = z.infer<typeof userNotificationSchema>
@@ -29,5 +29,5 @@ export const initialUserNotificationState: UserNotification = {
   status: "",
   active: true,
   createdAt: "",
-  modifiedAt: ""
+  updatedAt: ""
 }

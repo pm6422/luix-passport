@@ -53,7 +53,7 @@ public class Notification extends TableImpl<NotificationRecord> {
     /**
      * The column <code>public.notification.id</code>.
      */
-    public final TableField<NotificationRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(20).nullable(false), this, "");
+    public final TableField<NotificationRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(36).nullable(false), this, "");
 
     /**
      * The column <code>public.notification.title</code>.
@@ -91,14 +91,14 @@ public class Notification extends TableImpl<NotificationRecord> {
     public final TableField<NotificationRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(50), this, "");
 
     /**
-     * The column <code>public.notification.modified_at</code>.
+     * The column <code>public.notification.updated_at</code>.
      */
-    public final TableField<NotificationRecord, Instant> MODIFIED_AT = createField(DSL.name("modified_at"), SQLDataType.INSTANT.nullable(false), this, "");
+    public final TableField<NotificationRecord, Instant> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.INSTANT.nullable(false), this, "");
 
     /**
-     * The column <code>public.notification.modified_by</code>.
+     * The column <code>public.notification.updated_by</code>.
      */
-    public final TableField<NotificationRecord, String> MODIFIED_BY = createField(DSL.name("modified_by"), SQLDataType.VARCHAR(50), this, "");
+    public final TableField<NotificationRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(50), this, "");
 
     private Notification(Name alias, Table<NotificationRecord> aliased) {
         this(alias, aliased, null);

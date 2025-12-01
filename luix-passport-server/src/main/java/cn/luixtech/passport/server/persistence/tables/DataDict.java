@@ -55,7 +55,7 @@ public class DataDict extends TableImpl<DataDictRecord> {
     /**
      * The column <code>public.data_dict.id</code>.
      */
-    public final TableField<DataDictRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(20).nullable(false), this, "");
+    public final TableField<DataDictRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(36).nullable(false), this, "");
 
     /**
      * The column <code>public.data_dict.category_code</code>.
@@ -93,14 +93,14 @@ public class DataDict extends TableImpl<DataDictRecord> {
     public final TableField<DataDictRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(50), this, "");
 
     /**
-     * The column <code>public.data_dict.modified_at</code>.
+     * The column <code>public.data_dict.updated_at</code>.
      */
-    public final TableField<DataDictRecord, Instant> MODIFIED_AT = createField(DSL.name("modified_at"), SQLDataType.INSTANT.nullable(false), this, "");
+    public final TableField<DataDictRecord, Instant> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.INSTANT.nullable(false), this, "");
 
     /**
-     * The column <code>public.data_dict.modified_by</code>.
+     * The column <code>public.data_dict.updated_by</code>.
      */
-    public final TableField<DataDictRecord, String> MODIFIED_BY = createField(DSL.name("modified_by"), SQLDataType.VARCHAR(50), this, "");
+    public final TableField<DataDictRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(50), this, "");
 
     private DataDict(Name alias, Table<DataDictRecord> aliased) {
         this(alias, aliased, null);

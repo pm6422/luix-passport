@@ -7,7 +7,7 @@ export const permissionSchema = z.object({
   action: z.string().trim().min(1, { message: "Required" }),
   remark: z.string().optional().nullable(),
   createdAt: z.string().optional().nullable(),
-  modifiedAt: z.string().optional().nullable()
+  updatedAt: z.string().optional().nullable()
 })
 
 export type Permission = z.infer<typeof permissionSchema>
@@ -18,7 +18,7 @@ export const initialPermissionState: Permission = {
   action: "",
   remark: "",
   createdAt: "",
-  modifiedAt: ""
+  updatedAt: ""
 }
 export const permissionCriteriaSchema = z.object({
   resourceType: z.string().optional().nullable(),

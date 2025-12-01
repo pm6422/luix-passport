@@ -1,30 +1,40 @@
 package cn.luixtech.passport.server.domain;
 
-import cn.luixtech.passport.server.domain.base.AbstractCreatableDomain;
-import cn.luixtech.passport.server.domain.base.listener.AuditableEntityListener;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
+import cn.luixtech.passport.server.utils.AuthUtils;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.UuidGenerator;
 
-import java.io.Serial;
-import java.io.Serializable;
+import java.time.Instant;
 
-@Entity
-@EntityListeners(AuditableEntityListener.class)
 @Data
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class UserAuthEvent extends AbstractCreatableDomain implements Serializable {
-    @Serial
-    private static final long   serialVersionUID = 1L;
-    public static final  String AUTH_SUCCESS     = "AuthenticationSuccess";
-    public static final  String AUTH_FAILURE     = "AuthenticationFailure";
+public class UserAuthEvent {
+
+    @Id
+    @UuidGenerator
+    @Column(length = 36)
+    private String id;
+    public static final String AUTH_SUCCESS = "AuthenticationSuccess";
+    public static final String AUTH_FAILURE = "AuthenticationFailure";
 
     private String username;
     private String event;
     private String remark;
+
+    @Column(nullable = false, updatable = false)
+    private Instant createdAt;
+
+    @Column(updatable = false)
+    private String createdBy;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = Instant.now();
+        createdBy = AuthUtils.getCurrentUsername();
+    }
 }

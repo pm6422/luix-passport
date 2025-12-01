@@ -52,7 +52,7 @@ public class Team extends TableImpl<TeamRecord> {
     /**
      * The column <code>public.team.id</code>.
      */
-    public final TableField<TeamRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(20).nullable(false), this, "");
+    public final TableField<TeamRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(36).nullable(false), this, "");
 
     /**
      * The column <code>public.team.remark</code>.

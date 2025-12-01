@@ -57,7 +57,7 @@ public class UserLogin extends TableImpl<UserLoginRecord> {
     /**
      * The column <code>public.user_login.id</code>.
      */
-    public final TableField<UserLoginRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(20).nullable(false), this, "");
+    public final TableField<UserLoginRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(36).nullable(false), this, "");
 
     /**
      * The column <code>public.user_login.username</code>.

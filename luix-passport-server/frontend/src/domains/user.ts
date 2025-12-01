@@ -22,7 +22,7 @@ export const userSchema = z.object({
   lastSignInAt: z.string().optional().nullable(),
   roleIds: z.array(z.string()).min(1, { message: "Required" }),
   createdAt: z.string().optional().nullable(),
-  modifiedAt: z.string().optional().nullable()
+  updatedAt: z.string().optional().nullable()
 })
 
 export type User = z.infer<typeof userSchema>
@@ -44,7 +44,7 @@ export const initialUserState: User = {
   enabled: true,
   roleIds: ["ROLE_ANONYMOUS", "ROLE_USER"],
   createdAt: "",
-  modifiedAt: ""
+  updatedAt: ""
 }
 export const userCriteriaSchema = z.object({
   username: z.string().optional().nullable(),

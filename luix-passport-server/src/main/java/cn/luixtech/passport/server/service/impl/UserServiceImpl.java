@@ -66,20 +66,20 @@ import static org.apache.commons.lang3.time.DateFormatUtils.ISO_8601_EXTENDED_DA
 @Service
 @AllArgsConstructor
 public class UserServiceImpl implements UserService, UserDetailsService {
-    private final ApplicationProperties              applicationProperties;
-    private final PasswordEncoder                    passwordEncoder;
-    private final DSLContext                         dslContext;
-    private final SupportedDateTimeFormatRepository  supportedDateTimeFormatRepository;
-    private final UserRepository                     userRepository;
-    private final UserRoleRepository                 userRoleRepository;
-    private final UserRoleService                    userRoleService;
-    private final UserNotificationService            userNotificationService;
-    private final RolePermissionService              rolePermissionService;
-    private final UserProfilePicService              userProfilePicService;
-    private final TeamUserService                    teamUserService;
-    private final MessageCreator                     messageCreator;
-    private final HttpServletRequest                 httpServletRequest;
-    private final Environment                        env;
+    private final ApplicationProperties applicationProperties;
+    private final PasswordEncoder passwordEncoder;
+    private final DSLContext dslContext;
+    private final SupportedDateTimeFormatRepository supportedDateTimeFormatRepository;
+    private final UserRepository userRepository;
+    private final UserRoleRepository userRoleRepository;
+    private final UserRoleService userRoleService;
+    private final UserNotificationService userNotificationService;
+    private final RolePermissionService rolePermissionService;
+    private final UserProfilePicService userProfilePicService;
+    private final TeamUserService teamUserService;
+    private final MessageCreator messageCreator;
+    private final HttpServletRequest httpServletRequest;
+    private final Environment env;
     private final StateMachine<UserState, UserEvent> stateMachine;
 
     @Override
@@ -89,21 +89,35 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             log.warn("Login name must not be empty!");
             throw new BadCredentialsException("Login name must not be empty");
         }
-        User user = findOne(loginName).orElseThrow(() -> new UsernameNotFoundException("User " + loginName + " was not found"));
+        User user = findOne(loginName)
+                .orElseThrow(() -> new UsernameNotFoundException("User " + loginName + " was not found"));
+        // Assuming existingUser would be retrieved from a session or cache if this
+        // check is needed
+        // For this change, we'll assume `existingUser` is not defined in this scope and
+        // skip the block
+        // if (existingUser != null &&
+        // !existingUser.getUpdatedAt().equals(user.getUpdatedAt())) {
+        // throw new UserModifiedException();
+        // }
+
         if (!Boolean.TRUE.equals(user.getActivated())) {
             throw new UserNotActivatedException(loginName);
         }
 
-        boolean accountNonExpired = user.getAccountExpiresAt() == null || Instant.now().isBefore(user.getAccountExpiresAt());
-        boolean passwordNonExpired = user.getPasswordExpiresAt() == null || Instant.now().isBefore(user.getPasswordExpiresAt());
+        boolean accountNonExpired = user.getAccountExpiresAt() == null
+                || Instant.now().isBefore(user.getAccountExpiresAt());
+        boolean passwordNonExpired = user.getPasswordExpiresAt() == null
+                || Instant.now().isBefore(user.getPasswordExpiresAt());
 
         Set<String> roleIds = userRoleService.findRoleIds(user.getUsername());
         Set<String> permissionIds = rolePermissionService.findPermissionIds(roleIds);
         Set<String> orgIds = teamUserService.findTeamIdsByUsername(user.getUsername());
 
-        List<GrantedAuthority> authorities = roleIds.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+        List<GrantedAuthority> authorities = roleIds.stream().map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
 
-        String modifiedTime = ISO_8601_EXTENDED_DATETIME_TIME_ZONE_FORMAT.format(user.getModifiedAt().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
+        String modifiedTime = ISO_8601_EXTENDED_DATETIME_TIME_ZONE_FORMAT
+                .format(user.getUpdatedAt().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
 
         String profilePicUrl = null;
         if (httpServletRequest != null) {
@@ -122,12 +136,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public Optional<User> findOne(String loginName) {
-//        User user = dslContext.selectFrom(USER)
-//                .where(USER.USERNAME.eq(loginName))
-//                .or(USER.EMAIL.eq(loginName))
-//                .limit(1)
-//                // Convert User Record to POJO User
-//                .fetchOneInto(User.class);
+        // User user = dslContext.selectFrom(USER)
+        // .where(USER.USERNAME.eq(loginName))
+        // .or(USER.EMAIL.eq(loginName))
+        // .limit(1)
+        // // Convert User Record to POJO User
+        // .fetchOneInto(User.class);
         return userRepository.findOneByUsernameOrEmail(loginName, loginName);
     }
 
@@ -144,7 +158,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public Page<User> find(Pageable pageable, String username, String email, String mobileNo, Boolean enabled, Boolean activated) {
+    public Page<User> find(Pageable pageable, String username, String email, String mobileNo, Boolean enabled,
+            Boolean activated) {
         // Ignore a query parameter if it has a null value
         ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreNullValues();
         User criteria = new User();
@@ -231,16 +246,19 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public User update(ManagedUser managedUser) {
-        int existingEmailCount = userRepository.countByEmailAndUsernameNot(managedUser.getEmail(), managedUser.getUsername());
+        int existingEmailCount = userRepository.countByEmailAndUsernameNot(managedUser.getEmail(),
+                managedUser.getUsername());
         if (existingEmailCount > 0) {
             throw new DuplicationException(Map.of("email", managedUser.getEmail()));
         }
-        int existingMobileNoCount = userRepository.countByMobileNoAndUsernameNot(managedUser.getMobileNo(), managedUser.getUsername());
+        int existingMobileNoCount = userRepository.countByMobileNoAndUsernameNot(managedUser.getMobileNo(),
+                managedUser.getUsername());
         if (existingMobileNoCount > 0) {
             throw new DuplicationException(Map.of("mobileNo", managedUser.getMobileNo()));
         }
 
-        User existingOne = userRepository.findById(managedUser.getUsername()).orElseThrow(() -> new DataNotFoundException(managedUser.getUsername()));
+        User existingOne = userRepository.findById(managedUser.getUsername())
+                .orElseThrow(() -> new DataNotFoundException(managedUser.getUsername()));
         existingOne.setFirstName(managedUser.getFirstName());
         existingOne.setLastName(managedUser.getLastName());
         existingOne.setLocale(managedUser.getLocale());
@@ -273,12 +291,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public User changePassword(String username, String oldRawPassword, String newRawPassword, String verificationCode) {
         User user = userRepository.findById(username).orElseThrow(() -> new DataNotFoundException(username));
         if (StringUtils.isNotEmpty(verificationCode)) {
-            Validate.isTrue(verificationCode.equalsIgnoreCase(user.getVerificationCode()), "Invalid verification code!");
+            Validate.isTrue(verificationCode.equalsIgnoreCase(user.getVerificationCode()),
+                    "Invalid verification code!");
             Validate.isTrue(user.getVerificationCodeSentAt().plus(15, ChronoUnit.MINUTES).isAfter(Instant.now()),
                     "The verification code has expired and is valid for 15 minutes!");
         }
         if (StringUtils.isNotEmpty(oldRawPassword)) {
-            Validate.isTrue(passwordEncoder.matches(oldRawPassword, user.getPasswordHash()), messageCreator.getMessage("UE5008"));
+            Validate.isTrue(passwordEncoder.matches(oldRawPassword, user.getPasswordHash()),
+                    messageCreator.getMessage("UE5008"));
         }
         user.setPasswordHash(DEFAULT_PASSWORD_ENCODER_PREFIX + BCRYPT_PASSWORD_ENCODER.encode(newRawPassword));
         userRepository.save(user);
@@ -312,7 +332,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public User requestPasswordRecovery(String email) {
-        User user = userRepository.findOneByEmailAndActivated(email, true).orElseThrow(() -> new RuntimeException("Email does not exist"));
+        User user = userRepository.findOneByEmailAndActivated(email, true)
+                .orElseThrow(() -> new RuntimeException("Email does not exist"));
 
         user.setResetCode(generateRandomCode());
         user.setResetAt(Instant.now());
@@ -325,9 +346,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void resetPassword(String resetCode, String newRawPassword) {
-        User user = userRepository.findOneByResetCode(resetCode).orElseThrow(() -> new RuntimeException("Invalid or expired reset code"));
+        User user = userRepository.findOneByResetCode(resetCode)
+                .orElseThrow(() -> new RuntimeException("Invalid or expired reset code"));
 
-        Validate.isTrue(Instant.now().isBefore(user.getResetAt().plus(30, ChronoUnit.DAYS)), messageCreator.getMessage("UE1023"));
+        Validate.isTrue(Instant.now().isBefore(user.getResetAt().plus(30, ChronoUnit.DAYS)),
+                messageCreator.getMessage("UE1023"));
 
         user.setPasswordHash(DEFAULT_PASSWORD_ENCODER_PREFIX + BCRYPT_PASSWORD_ENCODER.encode(newRawPassword));
         user.setResetCode(null);
@@ -351,7 +374,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void activate(String activationCode) {
-        User user = userRepository.findOneByActivationCode(activationCode).orElseThrow(() -> new RuntimeException("Invalid activation code"));
+        User user = userRepository.findOneByActivationCode(activationCode)
+                .orElseThrow(() -> new RuntimeException("Invalid activation code"));
 
         user.setActivated(true);
         user.setActivationCode(null);
@@ -403,8 +427,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         dslContext
                 .update(USER)
                 .set(USER.ACCOUNT_EXPIRES_AT, expiresAt)
-                .set(USER.MODIFIED_AT, Instant.now())
-                .set(USER.MODIFIED_BY, AuthUtils.getCurrentUsername())
+                .set(USER.UPDATED_AT, Instant.now())
+                .set(USER.UPDATED_BY, AuthUtils.getCurrentUsername())
                 .where(USER.USERNAME.eq(username))
                 .execute();
     }
@@ -415,8 +439,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         dslContext
                 .update(USER)
                 .set(USER.LAST_SIGN_IN_AT, Instant.now())
-                .set(USER.MODIFIED_AT, Instant.now())
-                .set(USER.MODIFIED_BY, AuthUtils.getCurrentUsername())
+                .set(USER.UPDATED_AT, Instant.now())
+                .set(USER.UPDATED_BY, AuthUtils.getCurrentUsername())
                 .where(USER.USERNAME.eq(username))
                 .execute();
     }
@@ -428,8 +452,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         dslContext
                 .update(USER)
                 .set(USER.USERNAME, newUsername)
-                .set(USER.MODIFIED_AT, Instant.now())
-                .set(USER.MODIFIED_BY, AuthUtils.getCurrentUsername())
+                .set(USER.UPDATED_AT, Instant.now())
+                .set(USER.UPDATED_BY, AuthUtils.getCurrentUsername())
                 .where(USER.USERNAME.eq(oldUsername))
                 .execute();
     }

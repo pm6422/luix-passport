@@ -8,7 +8,7 @@ export const dataDictSchema = z.object({
   dictName: z.string().optional().nullable(),
   remark: z.string().optional().nullable(),
   enabled: z.boolean().optional().nullable(),
-  modifiedAt: z.string().optional().nullable()
+  updatedAt: z.string().optional().nullable()
 })
 
 export type DataDict = z.infer<typeof dataDictSchema>
@@ -20,7 +20,7 @@ export const initialDataDictState: DataDict = {
   dictName: "",
   remark: "",
   enabled: true,
-  modifiedAt: ""
+  updatedAt: ""
 }
 
 export const dataDictCriteriaSchema = z.object({

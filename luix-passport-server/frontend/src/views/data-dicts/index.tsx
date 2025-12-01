@@ -15,7 +15,7 @@ export default function DataDict() {
   const [totalPages, setTotalPages] = useState(0)
   const [currentPageNo, setCurrentPageNo] = useState(0)
 
-  function loadPage(pageNo: number = 0, pageSize: number = 10, sorts: Array<string> = ["modifiedAt,desc"], criteria: DataDictCriteria = {}): void {
+  function loadPage(pageNo: number = 0, pageSize: number = 10, sorts: Array<string> = ["updatedAt,desc"], criteria: DataDictCriteria = {}): void {
     setCurrentPageNo(pageNo)
     DataDictService.find({
       page: pageNo,

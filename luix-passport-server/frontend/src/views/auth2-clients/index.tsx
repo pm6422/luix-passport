@@ -21,7 +21,7 @@ export default function Auth2Client() {
       setTableData(filterTable(tableData, criteria.keyword))
       return
     }
-    Oauth2ClientService.find({ page: 0, size: 2000, sort: ["modifiedAt,desc"]}).then(r => {
+    Oauth2ClientService.find({ page: 0, size: 2000, sort: ["updatedAt,desc"]}).then(r => {
       setTableData(r.data)
     })
   }

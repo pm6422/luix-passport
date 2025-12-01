@@ -21,7 +21,7 @@ export default function Role() {
       setTableData(filterTable(tableData, criteria.keyword))
       return
     }
-    RoleService.find({ page: 0, size: 2000, sort: ["modifiedAt,desc"]}).then(r => {
+    RoleService.find({ page: 0, size: 2000, sort: ["updatedAt,desc"]}).then(r => {
       setTableData(r.data)
     })
   }

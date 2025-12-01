@@ -272,30 +272,30 @@ public class Oauth2RegisteredClientRecord extends UpdatableRecordImpl<Oauth2Regi
     }
 
     /**
-     * Setter for <code>public.oauth2_registered_client.modified_at</code>.
+     * Setter for <code>public.oauth2_registered_client.updated_at</code>.
      */
-    public void setModifiedAt(Instant value) {
+    public void setUpdatedAt(Instant value) {
         set(17, value);
     }
 
     /**
-     * Getter for <code>public.oauth2_registered_client.modified_at</code>.
+     * Getter for <code>public.oauth2_registered_client.updated_at</code>.
      */
-    public Instant getModifiedAt() {
+    public Instant getUpdatedAt() {
         return (Instant) get(17);
     }
 
     /**
-     * Setter for <code>public.oauth2_registered_client.modified_by</code>.
+     * Setter for <code>public.oauth2_registered_client.updated_by</code>.
      */
-    public void setModifiedBy(String value) {
+    public void setUpdatedBy(String value) {
         set(18, value);
     }
 
     /**
-     * Getter for <code>public.oauth2_registered_client.modified_by</code>.
+     * Getter for <code>public.oauth2_registered_client.updated_by</code>.
      */
-    public String getModifiedBy() {
+    public String getUpdatedBy() {
         return (String) get(18);
     }
 
@@ -409,12 +409,12 @@ public class Oauth2RegisteredClientRecord extends UpdatableRecordImpl<Oauth2Regi
 
     @Override
     public Field<Instant> field18() {
-        return Oauth2RegisteredClient.OAUTH2_REGISTERED_CLIENT.MODIFIED_AT;
+        return Oauth2RegisteredClient.OAUTH2_REGISTERED_CLIENT.UPDATED_AT;
     }
 
     @Override
     public Field<String> field19() {
-        return Oauth2RegisteredClient.OAUTH2_REGISTERED_CLIENT.MODIFIED_BY;
+        return Oauth2RegisteredClient.OAUTH2_REGISTERED_CLIENT.UPDATED_BY;
     }
 
     @Override
@@ -504,12 +504,12 @@ public class Oauth2RegisteredClientRecord extends UpdatableRecordImpl<Oauth2Regi
 
     @Override
     public Instant component18() {
-        return getModifiedAt();
+        return getUpdatedAt();
     }
 
     @Override
     public String component19() {
-        return getModifiedBy();
+        return getUpdatedBy();
     }
 
     @Override
@@ -599,12 +599,12 @@ public class Oauth2RegisteredClientRecord extends UpdatableRecordImpl<Oauth2Regi
 
     @Override
     public Instant value18() {
-        return getModifiedAt();
+        return getUpdatedAt();
     }
 
     @Override
     public String value19() {
-        return getModifiedBy();
+        return getUpdatedBy();
     }
 
     @Override
@@ -711,13 +711,13 @@ public class Oauth2RegisteredClientRecord extends UpdatableRecordImpl<Oauth2Regi
 
     @Override
     public Oauth2RegisteredClientRecord value18(Instant value) {
-        setModifiedAt(value);
+        setUpdatedAt(value);
         return this;
     }
 
     @Override
     public Oauth2RegisteredClientRecord value19(String value) {
-        setModifiedBy(value);
+        setUpdatedBy(value);
         return this;
     }
 
@@ -759,7 +759,7 @@ public class Oauth2RegisteredClientRecord extends UpdatableRecordImpl<Oauth2Regi
     /**
      * Create a detached, initialised Oauth2RegisteredClientRecord
      */
-    public Oauth2RegisteredClientRecord(String id, String clientId, Instant clientIdIssuedAt, String clientSecret, Instant clientSecretExpiresAt, String clientName, String clientAuthenticationMethods, String authorizationGrantTypes, String redirectUris, String postLogoutRedirectUris, String scopes, String clientSettings, String tokenSettings, byte[] photo, Boolean enabled, Instant createdAt, String createdBy, Instant modifiedAt, String modifiedBy) {
+    public Oauth2RegisteredClientRecord(String id, String clientId, Instant clientIdIssuedAt, String clientSecret, Instant clientSecretExpiresAt, String clientName, String clientAuthenticationMethods, String authorizationGrantTypes, String redirectUris, String postLogoutRedirectUris, String scopes, String clientSettings, String tokenSettings, byte[] photo, Boolean enabled, Instant createdAt, String createdBy, Instant updatedAt, String updatedBy) {
         super(Oauth2RegisteredClient.OAUTH2_REGISTERED_CLIENT);
 
         setId(id);
@@ -779,8 +779,8 @@ public class Oauth2RegisteredClientRecord extends UpdatableRecordImpl<Oauth2Regi
         setEnabled(enabled);
         setCreatedAt(createdAt);
         setCreatedBy(createdBy);
-        setModifiedAt(modifiedAt);
-        setModifiedBy(modifiedBy);
+        setUpdatedAt(updatedAt);
+        setUpdatedBy(updatedBy);
         resetChangedOnNotNull();
     }
 }

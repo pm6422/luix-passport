@@ -40,7 +40,7 @@ public class Oauth2RegisteredClientServiceImpl implements Oauth2RegisteredClient
         dslContext.update(Tables.OAUTH2_REGISTERED_CLIENT)
                 .set(OAUTH2_REGISTERED_CLIENT.ENABLED, pojo.getEnabled())
                 .set(OAUTH2_REGISTERED_CLIENT.CREATED_AT, Instant.now())
-                .set(OAUTH2_REGISTERED_CLIENT.MODIFIED_AT, Instant.now())
+                .set(OAUTH2_REGISTERED_CLIENT.UPDATED_AT, Instant.now())
                 .where(OAUTH2_REGISTERED_CLIENT.ID.eq(pojo.getId()))
                 .execute();
     }
@@ -84,7 +84,7 @@ public class Oauth2RegisteredClientServiceImpl implements Oauth2RegisteredClient
 
         dslContext.update(Tables.OAUTH2_REGISTERED_CLIENT)
                 .set(OAUTH2_REGISTERED_CLIENT.ENABLED, pojo.getEnabled())
-                .set(OAUTH2_REGISTERED_CLIENT.MODIFIED_AT, Instant.now())
+                .set(OAUTH2_REGISTERED_CLIENT.UPDATED_AT, Instant.now())
                 .where(OAUTH2_REGISTERED_CLIENT.ID.eq(pojo.getId()))
                 .execute();
     }

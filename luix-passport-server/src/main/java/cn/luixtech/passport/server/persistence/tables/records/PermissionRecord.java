@@ -108,30 +108,30 @@ public class PermissionRecord extends UpdatableRecordImpl<PermissionRecord> impl
     }
 
     /**
-     * Setter for <code>public.permission.modified_at</code>.
+     * Setter for <code>public.permission.updated_at</code>.
      */
-    public void setModifiedAt(Instant value) {
+    public void setUpdatedAt(Instant value) {
         set(6, value);
     }
 
     /**
-     * Getter for <code>public.permission.modified_at</code>.
+     * Getter for <code>public.permission.updated_at</code>.
      */
-    public Instant getModifiedAt() {
+    public Instant getUpdatedAt() {
         return (Instant) get(6);
     }
 
     /**
-     * Setter for <code>public.permission.modified_by</code>.
+     * Setter for <code>public.permission.updated_by</code>.
      */
-    public void setModifiedBy(String value) {
+    public void setUpdatedBy(String value) {
         set(7, value);
     }
 
     /**
-     * Getter for <code>public.permission.modified_by</code>.
+     * Getter for <code>public.permission.updated_by</code>.
      */
-    public String getModifiedBy() {
+    public String getUpdatedBy() {
         return (String) get(7);
     }
 
@@ -190,12 +190,12 @@ public class PermissionRecord extends UpdatableRecordImpl<PermissionRecord> impl
 
     @Override
     public Field<Instant> field7() {
-        return Permission.PERMISSION.MODIFIED_AT;
+        return Permission.PERMISSION.UPDATED_AT;
     }
 
     @Override
     public Field<String> field8() {
-        return Permission.PERMISSION.MODIFIED_BY;
+        return Permission.PERMISSION.UPDATED_BY;
     }
 
     @Override
@@ -230,12 +230,12 @@ public class PermissionRecord extends UpdatableRecordImpl<PermissionRecord> impl
 
     @Override
     public Instant component7() {
-        return getModifiedAt();
+        return getUpdatedAt();
     }
 
     @Override
     public String component8() {
-        return getModifiedBy();
+        return getUpdatedBy();
     }
 
     @Override
@@ -270,12 +270,12 @@ public class PermissionRecord extends UpdatableRecordImpl<PermissionRecord> impl
 
     @Override
     public Instant value7() {
-        return getModifiedAt();
+        return getUpdatedAt();
     }
 
     @Override
     public String value8() {
-        return getModifiedBy();
+        return getUpdatedBy();
     }
 
     @Override
@@ -316,13 +316,13 @@ public class PermissionRecord extends UpdatableRecordImpl<PermissionRecord> impl
 
     @Override
     public PermissionRecord value7(Instant value) {
-        setModifiedAt(value);
+        setUpdatedAt(value);
         return this;
     }
 
     @Override
     public PermissionRecord value8(String value) {
-        setModifiedBy(value);
+        setUpdatedBy(value);
         return this;
     }
 
@@ -353,7 +353,7 @@ public class PermissionRecord extends UpdatableRecordImpl<PermissionRecord> impl
     /**
      * Create a detached, initialised PermissionRecord
      */
-    public PermissionRecord(String id, String remark, String resourceType, String action, Instant createdAt, String createdBy, Instant modifiedAt, String modifiedBy) {
+    public PermissionRecord(String id, String remark, String resourceType, String action, Instant createdAt, String createdBy, Instant updatedAt, String updatedBy) {
         super(Permission.PERMISSION);
 
         setId(id);
@@ -362,8 +362,8 @@ public class PermissionRecord extends UpdatableRecordImpl<PermissionRecord> impl
         setAction(action);
         setCreatedAt(createdAt);
         setCreatedBy(createdBy);
-        setModifiedAt(modifiedAt);
-        setModifiedBy(modifiedBy);
+        setUpdatedAt(updatedAt);
+        setUpdatedBy(updatedBy);
         resetChangedOnNotNull();
     }
 }

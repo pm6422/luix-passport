@@ -132,10 +132,10 @@
             </column>
             <column name="created_by" type="VARCHAR(50)">
             </column>
-            <column name="modified_at" type="timestamp">
+            <column name="updated_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
-            <column name="modified_by" type="VARCHAR(50)"/>
+            <column name="updated_by" type="VARCHAR(50)"/>
         </createTable>
         <loadData
                 file="config/liquibase/data/oauth2_registered_client.csv"
@@ -175,7 +175,7 @@
             </column>
         </createTable>
         <createTable tableName="team">
-            <column name="id" type="VARCHAR(20)">
+            <column name="id" type="VARCHAR(36)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="remark" type="VARCHAR(36)"/>
@@ -185,7 +185,7 @@
             <column name="photo" type="BYTEA"/>
         </createTable>
         <createTable tableName="team_user">
-            <column name="id" type="VARCHAR(20)">
+            <column name="id" type="VARCHAR(36)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="team_id" type="VARCHAR(20)">
@@ -241,10 +241,10 @@
             </column>
             <column name="created_by" type="VARCHAR(50)">
             </column>
-            <column name="modified_at" type="timestamp">
+            <column name="updated_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
-            <column name="modified_by" type="VARCHAR(50)"/>
+            <column name="updated_by" type="VARCHAR(50)"/>
         </createTable>
         <loadData
                 file="config/liquibase/data/user.csv"
@@ -252,7 +252,7 @@
                 tableName="user">
         </loadData>
         <createTable tableName="role">
-            <column name="id" type="VARCHAR(20)">
+            <column name="id" type="VARCHAR(36)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="remark" type="VARCHAR(255)"/>
@@ -261,10 +261,10 @@
             </column>
             <column name="created_by" type="VARCHAR(50)">
             </column>
-            <column name="modified_at" type="timestamp">
+            <column name="updated_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
-            <column name="modified_by" type="VARCHAR(50)"/>
+            <column name="updated_by" type="VARCHAR(50)"/>
         </createTable>
         <loadData
                 file="config/liquibase/data/role.csv"
@@ -272,7 +272,7 @@
                 tableName="role">
         </loadData>
         <createTable tableName="user_role">
-            <column name="id" type="VARCHAR(20)">
+            <column name="id" type="VARCHAR(36)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="username" type="VARCHAR(20)">
@@ -286,10 +286,10 @@
             </column>
             <column name="created_by" type="VARCHAR(50)">
             </column>
-            <column name="modified_at" type="timestamp">
+            <column name="updated_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
-            <column name="modified_by" type="VARCHAR(50)"/>
+            <column name="updated_by" type="VARCHAR(50)"/>
         </createTable>
         <loadData
                 file="config/liquibase/data/user_role.csv"
@@ -297,7 +297,7 @@
                 tableName="user_role">
         </loadData>
         <createTable tableName="permission">
-            <column name="id" type="VARCHAR(25)">
+            <column name="id" type="VARCHAR(36)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="remark" type="VARCHAR(255)"/>
@@ -312,10 +312,10 @@
             </column>
             <column name="created_by" type="VARCHAR(50)">
             </column>
-            <column name="modified_at" type="timestamp">
+            <column name="updated_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
-            <column name="modified_by" type="VARCHAR(50)"/>
+            <column name="updated_by" type="VARCHAR(50)"/>
         </createTable>
         <loadData
                 file="config/liquibase/data/permission.csv"
@@ -323,7 +323,7 @@
                 tableName="permission">
         </loadData>
         <createTable tableName="role_permission">
-            <column name="id" type="VARCHAR(20)">
+            <column name="id" type="VARCHAR(36)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="role_id" type="VARCHAR(20)">
@@ -337,10 +337,10 @@
             </column>
             <column name="created_by" type="VARCHAR(50)">
             </column>
-            <column name="modified_at" type="timestamp">
+            <column name="updated_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
-            <column name="modified_by" type="VARCHAR(50)"/>
+            <column name="updated_by" type="VARCHAR(50)"/>
         </createTable>
         <loadData
                 file="config/liquibase/data/role_permission.csv"
@@ -348,7 +348,7 @@
                 tableName="role_permission">
         </loadData>
         <createTable tableName="user_auth_event">
-            <column name="id" type="VARCHAR(20)">
+            <column name="id" type="VARCHAR(36)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="username" type="VARCHAR(20)">
@@ -365,7 +365,7 @@
             </column>
         </createTable>
         <createTable tableName="user_login">
-            <column name="id" type="VARCHAR(20)">
+            <column name="id" type="VARCHAR(36)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="username" type="VARCHAR(20)">
@@ -396,7 +396,7 @@
             </column>
         </createTable>
         <createTable tableName="data_dict">
-            <column name="id" type="varchar(20)">
+            <column name="id" type="varchar(36)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="category_code" type="varchar(25)">
@@ -415,10 +415,10 @@
             </column>
             <column name="created_by" type="VARCHAR(50)">
             </column>
-            <column name="modified_at" type="timestamp">
+            <column name="updated_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
-            <column name="modified_by" type="VARCHAR(50)"/>
+            <column name="updated_by" type="VARCHAR(50)"/>
         </createTable>
         <loadData
                 file="config/liquibase/data/data_dict.csv"
@@ -426,7 +426,7 @@
                 tableName="data_dict">
         </loadData>
         <createTable tableName="notification">
-            <column name="id" type="VARCHAR(20)">
+            <column name="id" type="VARCHAR(36)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="title" type="VARCHAR(20)">
@@ -447,10 +447,10 @@
             </column>
             <column name="created_by" type="VARCHAR(50)">
             </column>
-            <column name="modified_at" type="timestamp">
+            <column name="updated_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
-            <column name="modified_by" type="VARCHAR(50)"/>
+            <column name="updated_by" type="VARCHAR(50)"/>
         </createTable>
         <loadData
                 file="config/liquibase/data/notification.csv"
@@ -458,7 +458,7 @@
                 tableName="notification">
         </loadData>
         <createTable tableName="user_notification">
-            <column name="id" type="VARCHAR(20)">
+            <column name="id" type="VARCHAR(36)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="receiver_id" type="VARCHAR(20)">
@@ -478,10 +478,10 @@
             </column>
             <column name="created_by" type="VARCHAR(50)">
             </column>
-            <column name="modified_at" type="timestamp">
+            <column name="updated_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
-            <column name="modified_by" type="VARCHAR(50)"/>
+            <column name="updated_by" type="VARCHAR(50)"/>
         </createTable>
         <loadData
                 file="config/liquibase/data/user_notification.csv"
@@ -503,7 +503,7 @@
             </column>
         </createTable>
         <createTable tableName="schedule_execution_log">
-            <column name="id" type="VARCHAR(20)">
+            <column name="id" type="VARCHAR(36)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="schedule_name" type="VARCHAR(100)">
@@ -524,7 +524,7 @@
             <column name="error" type="TEXT"/>
         </createTable>
         <createTable tableName="job_queue">
-            <column name="id" type="VARCHAR(20)">
+            <column name="id" type="VARCHAR(36)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="channel" type="VARCHAR(30)"/>

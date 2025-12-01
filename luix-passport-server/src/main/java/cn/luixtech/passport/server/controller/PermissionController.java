@@ -36,11 +36,12 @@ import static com.luixtech.springbootframework.utils.HttpHeaderUtils.generatePag
 @Slf4j
 public class PermissionController {
     private final PermissionRepository permissionRepository;
-    private final PermissionService    permissionService;
+    private final PermissionService permissionService;
 
     @Operation(summary = "save permission")
     @PostMapping("/api/permissions")
-    public ResponseEntity<Void> save(@Parameter(description = "domain", required = true) @Valid @RequestBody Permission domain) {
+    public ResponseEntity<Void> save(
+            @Parameter(description = "domain", required = true) @Valid @RequestBody Permission domain) {
         permissionRepository.save(domain);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
@@ -48,15 +49,16 @@ public class PermissionController {
     @Operation(summary = "find permission list")
     @GetMapping("/api/permissions")
     public ResponseEntity<List<Permission>> find(@ParameterObject Pageable pageable,
-                                                 @RequestParam(value = "resourceType", required = false) String resourceType,
-                                                 @RequestParam(value = "action", required = false) String action) {
+            @RequestParam(value = "resourceType", required = false) String resourceType,
+            @RequestParam(value = "action", required = false) String action) {
         Page<Permission> domains = permissionService.find(pageable, resourceType, action);
         return ResponseEntity.ok().headers(generatePageHeaders(domains)).body(domains.getContent());
     }
 
     @Operation(summary = "find permission by id")
     @GetMapping("/api/permissions/{id}")
-    public ResponseEntity<Permission> findById(@Parameter(description = "ID", required = true) @PathVariable String id) {
+    public ResponseEntity<Permission> findById(
+            @Parameter(description = "ID", required = true) @PathVariable String id) {
         Permission domain = permissionRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
         return ResponseEntity.ok(domain);
     }
@@ -70,14 +72,14 @@ public class PermissionController {
 
     @Operation(summary = "import permissions", description = "file format should be JSON")
     @PostMapping(value = "/api/permissions/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public void importData(@Parameter(description = "file", required = true) @RequestPart MultipartFile file) throws IOException {
+    public void importData(@Parameter(description = "file", required = true) @RequestPart MultipartFile file)
+            throws IOException {
         String jsonStr = StreamUtils.copyToString(file.getInputStream(), StandardCharsets.UTF_8);
         List<Permission> records = JSON.parseArray(jsonStr, Permission.class);
         List<Permission> all = new ArrayList<>(records.size());
         records.forEach(record -> {
             record.setId(null);
             record.setCreatedAt(Instant.now());
-            record.setModifiedAt(record.getCreatedAt());
             all.add(record);
         });
         permissionRepository.saveAll(all);

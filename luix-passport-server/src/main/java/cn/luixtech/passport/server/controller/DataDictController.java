@@ -40,12 +40,13 @@ import static com.luixtech.springbootframework.utils.HttpHeaderUtils.generatePag
 @Slf4j
 public class DataDictController {
     private final DataDictRepository dataDictRepository;
-    private final DataDictService    dataDictService;
+    private final DataDictService dataDictService;
 
     @Operation(summary = "create new data dict")
     @PreAuthorize("hasAuthority(\"" + ROLE_DEVELOPER + "\")")
     @PostMapping("/api/data-dicts")
-    public ResponseEntity<Void> create(@Parameter(description = "domain", required = true) @Valid @RequestBody DataDict domain) {
+    public ResponseEntity<Void> create(
+            @Parameter(description = "domain", required = true) @Valid @RequestBody DataDict domain) {
         dataDictRepository.save(domain);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -54,9 +55,9 @@ public class DataDictController {
     @PreAuthorize("hasAuthority('" + ROLE_ADMIN + "') or hasAuthority('" + ROLE_DEVELOPER + "')")
     @GetMapping("/api/data-dicts")
     public ResponseEntity<List<DataDict>> find(@ParameterObject Pageable pageable,
-                                               @RequestParam(value = "id", required = false) String id,
-                                               @RequestParam(value = "categoryCode", required = false) String categoryCode,
-                                               @RequestParam(value = "enabled", required = false) Boolean enabled) {
+            @RequestParam(value = "id", required = false) String id,
+            @RequestParam(value = "categoryCode", required = false) String categoryCode,
+            @RequestParam(value = "enabled", required = false) Boolean enabled) {
         Page<DataDict> domains = dataDictService.find(pageable, id, categoryCode, enabled);
         return ResponseEntity.ok().headers(generatePageHeaders(domains)).body(domains.getContent());
     }
@@ -72,7 +73,8 @@ public class DataDictController {
     @Operation(summary = "update data dict")
     @PreAuthorize("hasAuthority(\"" + ROLE_DEVELOPER + "\")")
     @PutMapping("/api/data-dicts")
-    public ResponseEntity<Void> update(@Parameter(description = "domain", required = true) @Valid @RequestBody DataDict domain) {
+    public ResponseEntity<Void> update(
+            @Parameter(description = "domain", required = true) @Valid @RequestBody DataDict domain) {
         dataDictRepository.save(domain);
         return ResponseEntity.ok().build();
     }
@@ -80,7 +82,8 @@ public class DataDictController {
     @Operation(summary = "batch update data dict")
     @PreAuthorize("hasAuthority(\"" + ROLE_DEVELOPER + "\")")
     @PutMapping("/api/data-dicts/batch-update")
-    public ResponseEntity<Void> batchUpdate(@Parameter(description = "target", required = true) @Valid @RequestBody BatchUpdateDataDict target) {
+    public ResponseEntity<Void> batchUpdate(
+            @Parameter(description = "target", required = true) @Valid @RequestBody BatchUpdateDataDict target) {
         dataDictService.batchUpdateCategoryCode(target.getIds(), target.getTargetCategoryCode());
         return ResponseEntity.ok().build();
     }
@@ -96,14 +99,15 @@ public class DataDictController {
     @Operation(summary = "import data dicts", description = "file format should be JSON")
     @PreAuthorize("hasAuthority(\"" + ROLE_DEVELOPER + "\")")
     @PostMapping(value = "/api/data-dicts/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public void importData(@Parameter(description = "file", required = true) @RequestPart MultipartFile file) throws IOException {
+    public void importData(@Parameter(description = "file", required = true) @RequestPart MultipartFile file)
+            throws IOException {
         String jsonStr = StreamUtils.copyToString(file.getInputStream(), StandardCharsets.UTF_8);
         List<DataDict> records = JSON.parseArray(jsonStr, DataDict.class);
         List<DataDict> all = new ArrayList<>(records.size());
         records.forEach(record -> {
             record.setId(null);
             record.setCreatedAt(Instant.now());
-            record.setModifiedAt(record.getCreatedAt());
+            record.setUpdatedAt(record.getCreatedAt());
             all.add(record);
         });
         dataDictRepository.saveAll(all);
@@ -113,7 +117,8 @@ public class DataDictController {
     @GetMapping("/api/data-dicts/import-template")
     public ResponseEntity<ByteArrayResource> getImportTemplate() {
         DataDict dataDict = dataDictRepository.findFirstByOrderByIdAsc();
-        byte[] data = JSON.toJSONString(Collections.singletonList(dataDict), JSONWriter.Feature.PrettyFormat).getBytes();
+        byte[] data = JSON.toJSONString(Collections.singletonList(dataDict), JSONWriter.Feature.PrettyFormat)
+                .getBytes();
         ByteArrayResource resource = new ByteArrayResource(data);
         String fileName = "data-dict-" + DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.format(new Date()) + ".json";
         return ResponseEntity.ok()

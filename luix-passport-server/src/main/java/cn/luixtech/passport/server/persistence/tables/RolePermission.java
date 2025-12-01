@@ -57,7 +57,7 @@ public class RolePermission extends TableImpl<RolePermissionRecord> {
     /**
      * The column <code>public.role_permission.id</code>.
      */
-    public final TableField<RolePermissionRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(20).nullable(false), this, "");
+    public final TableField<RolePermissionRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(36).nullable(false), this, "");
 
     /**
      * The column <code>public.role_permission.role_id</code>.
@@ -80,14 +80,14 @@ public class RolePermission extends TableImpl<RolePermissionRecord> {
     public final TableField<RolePermissionRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(50), this, "");
 
     /**
-     * The column <code>public.role_permission.modified_at</code>.
+     * The column <code>public.role_permission.updated_at</code>.
      */
-    public final TableField<RolePermissionRecord, Instant> MODIFIED_AT = createField(DSL.name("modified_at"), SQLDataType.INSTANT.nullable(false), this, "");
+    public final TableField<RolePermissionRecord, Instant> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.INSTANT.nullable(false), this, "");
 
     /**
-     * The column <code>public.role_permission.modified_by</code>.
+     * The column <code>public.role_permission.updated_by</code>.
      */
-    public final TableField<RolePermissionRecord, String> MODIFIED_BY = createField(DSL.name("modified_by"), SQLDataType.VARCHAR(50), this, "");
+    public final TableField<RolePermissionRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(50), this, "");
 
     private RolePermission(Name alias, Table<RolePermissionRecord> aliased) {
         this(alias, aliased, null);

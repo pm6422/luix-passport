@@ -53,7 +53,7 @@ public class Role extends TableImpl<RoleRecord> {
     /**
      * The column <code>public.role.id</code>.
      */
-    public final TableField<RoleRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(20).nullable(false), this, "");
+    public final TableField<RoleRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(36).nullable(false), this, "");
 
     /**
      * The column <code>public.role.remark</code>.
@@ -71,14 +71,14 @@ public class Role extends TableImpl<RoleRecord> {
     public final TableField<RoleRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(50), this, "");
 
     /**
-     * The column <code>public.role.modified_at</code>.
+     * The column <code>public.role.updated_at</code>.
      */
-    public final TableField<RoleRecord, Instant> MODIFIED_AT = createField(DSL.name("modified_at"), SQLDataType.INSTANT.nullable(false), this, "");
+    public final TableField<RoleRecord, Instant> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.INSTANT.nullable(false), this, "");
 
     /**
-     * The column <code>public.role.modified_by</code>.
+     * The column <code>public.role.updated_by</code>.
      */
-    public final TableField<RoleRecord, String> MODIFIED_BY = createField(DSL.name("modified_by"), SQLDataType.VARCHAR(50), this, "");
+    public final TableField<RoleRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(50), this, "");
 
     private Role(Name alias, Table<RoleRecord> aliased) {
         this(alias, aliased, null);

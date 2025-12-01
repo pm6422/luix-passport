@@ -36,7 +36,7 @@ export function EditDialog({
       return
     }
     Promise.all([
-      PermissionService.find({ page: 0, size: 2000, sort: ["modifiedAt,desc"]}),
+      PermissionService.find({ page: 0, size: 2000, sort: ["updatedAt,desc"]}),
     ]).then(results => {
       // load options
       setPermissions(results[0].data.map((item: Permission) => ({label: item.id, value: item.id})));

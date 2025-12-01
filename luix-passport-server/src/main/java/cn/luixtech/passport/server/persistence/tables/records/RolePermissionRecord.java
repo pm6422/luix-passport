@@ -94,30 +94,30 @@ public class RolePermissionRecord extends UpdatableRecordImpl<RolePermissionReco
     }
 
     /**
-     * Setter for <code>public.role_permission.modified_at</code>.
+     * Setter for <code>public.role_permission.updated_at</code>.
      */
-    public void setModifiedAt(Instant value) {
+    public void setUpdatedAt(Instant value) {
         set(5, value);
     }
 
     /**
-     * Getter for <code>public.role_permission.modified_at</code>.
+     * Getter for <code>public.role_permission.updated_at</code>.
      */
-    public Instant getModifiedAt() {
+    public Instant getUpdatedAt() {
         return (Instant) get(5);
     }
 
     /**
-     * Setter for <code>public.role_permission.modified_by</code>.
+     * Setter for <code>public.role_permission.updated_by</code>.
      */
-    public void setModifiedBy(String value) {
+    public void setUpdatedBy(String value) {
         set(6, value);
     }
 
     /**
-     * Getter for <code>public.role_permission.modified_by</code>.
+     * Getter for <code>public.role_permission.updated_by</code>.
      */
-    public String getModifiedBy() {
+    public String getUpdatedBy() {
         return (String) get(6);
     }
 
@@ -171,12 +171,12 @@ public class RolePermissionRecord extends UpdatableRecordImpl<RolePermissionReco
 
     @Override
     public Field<Instant> field6() {
-        return RolePermission.ROLE_PERMISSION.MODIFIED_AT;
+        return RolePermission.ROLE_PERMISSION.UPDATED_AT;
     }
 
     @Override
     public Field<String> field7() {
-        return RolePermission.ROLE_PERMISSION.MODIFIED_BY;
+        return RolePermission.ROLE_PERMISSION.UPDATED_BY;
     }
 
     @Override
@@ -206,12 +206,12 @@ public class RolePermissionRecord extends UpdatableRecordImpl<RolePermissionReco
 
     @Override
     public Instant component6() {
-        return getModifiedAt();
+        return getUpdatedAt();
     }
 
     @Override
     public String component7() {
-        return getModifiedBy();
+        return getUpdatedBy();
     }
 
     @Override
@@ -241,12 +241,12 @@ public class RolePermissionRecord extends UpdatableRecordImpl<RolePermissionReco
 
     @Override
     public Instant value6() {
-        return getModifiedAt();
+        return getUpdatedAt();
     }
 
     @Override
     public String value7() {
-        return getModifiedBy();
+        return getUpdatedBy();
     }
 
     @Override
@@ -281,13 +281,13 @@ public class RolePermissionRecord extends UpdatableRecordImpl<RolePermissionReco
 
     @Override
     public RolePermissionRecord value6(Instant value) {
-        setModifiedAt(value);
+        setUpdatedAt(value);
         return this;
     }
 
     @Override
     public RolePermissionRecord value7(String value) {
-        setModifiedBy(value);
+        setUpdatedBy(value);
         return this;
     }
 
@@ -317,7 +317,7 @@ public class RolePermissionRecord extends UpdatableRecordImpl<RolePermissionReco
     /**
      * Create a detached, initialised RolePermissionRecord
      */
-    public RolePermissionRecord(String id, String roleId, String permissionId, Instant createdAt, String createdBy, Instant modifiedAt, String modifiedBy) {
+    public RolePermissionRecord(String id, String roleId, String permissionId, Instant createdAt, String createdBy, Instant updatedAt, String updatedBy) {
         super(RolePermission.ROLE_PERMISSION);
 
         setId(id);
@@ -325,8 +325,8 @@ public class RolePermissionRecord extends UpdatableRecordImpl<RolePermissionReco
         setPermissionId(permissionId);
         setCreatedAt(createdAt);
         setCreatedBy(createdBy);
-        setModifiedAt(modifiedAt);
-        setModifiedBy(modifiedBy);
+        setUpdatedAt(updatedAt);
+        setUpdatedBy(updatedBy);
         resetChangedOnNotNull();
     }
 }

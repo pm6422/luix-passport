@@ -357,30 +357,30 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> {
     }
 
     /**
-     * Setter for <code>public.user.modified_at</code>.
+     * Setter for <code>public.user.updated_at</code>.
      */
-    public void setModifiedAt(Instant value) {
+    public void setUpdatedAt(Instant value) {
         set(24, value);
     }
 
     /**
-     * Getter for <code>public.user.modified_at</code>.
+     * Getter for <code>public.user.updated_at</code>.
      */
-    public Instant getModifiedAt() {
+    public Instant getUpdatedAt() {
         return (Instant) get(24);
     }
 
     /**
-     * Setter for <code>public.user.modified_by</code>.
+     * Setter for <code>public.user.updated_by</code>.
      */
-    public void setModifiedBy(String value) {
+    public void setUpdatedBy(String value) {
         set(25, value);
     }
 
     /**
-     * Getter for <code>public.user.modified_by</code>.
+     * Getter for <code>public.user.updated_by</code>.
      */
-    public String getModifiedBy() {
+    public String getUpdatedBy() {
         return (String) get(25);
     }
 
@@ -407,7 +407,7 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> {
     /**
      * Create a detached, initialised UserRecord
      */
-    public UserRecord(String username, String email, String mobileNo, String firstName, String lastName, String passwordHash, String activationCode, String verificationCode, Instant verificationCodeSentAt, String newEmail, String resetCode, Instant resetAt, String remark, Boolean activated, Boolean enabled, Instant accountExpiresAt, Instant passwordExpiresAt, Instant lastSignInAt, String locale, String timeZoneId, String dateTimeFormatId, String source, Instant createdAt, String createdBy, Instant modifiedAt, String modifiedBy) {
+    public UserRecord(String username, String email, String mobileNo, String firstName, String lastName, String passwordHash, String activationCode, String verificationCode, Instant verificationCodeSentAt, String newEmail, String resetCode, Instant resetAt, String remark, Boolean activated, Boolean enabled, Instant accountExpiresAt, Instant passwordExpiresAt, Instant lastSignInAt, String locale, String timeZoneId, String dateTimeFormatId, String source, Instant createdAt, String createdBy, Instant updatedAt, String updatedBy) {
         super(User.USER);
 
         setUsername(username);
@@ -434,8 +434,8 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> {
         setSource(source);
         setCreatedAt(createdAt);
         setCreatedBy(createdBy);
-        setModifiedAt(modifiedAt);
-        setModifiedBy(modifiedBy);
+        setUpdatedAt(updatedAt);
+        setUpdatedBy(updatedBy);
         resetChangedOnNotNull();
     }
 }

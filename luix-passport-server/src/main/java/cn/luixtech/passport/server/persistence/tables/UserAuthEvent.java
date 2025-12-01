@@ -53,7 +53,7 @@ public class UserAuthEvent extends TableImpl<UserAuthEventRecord> {
     /**
      * The column <code>public.user_auth_event.id</code>.
      */
-    public final TableField<UserAuthEventRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(20).nullable(false), this, "");
+    public final TableField<UserAuthEventRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(36).nullable(false), this, "");
 
     /**
      * The column <code>public.user_auth_event.username</code>.

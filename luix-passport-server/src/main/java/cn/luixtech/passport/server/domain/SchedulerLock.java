@@ -1,30 +1,25 @@
 package cn.luixtech.passport.server.domain;
 
-import cn.luixtech.passport.server.domain.base.AbstractBaseDomain;
-import cn.luixtech.passport.server.domain.base.listener.AuditableEntityListener;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.UuidGenerator;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.time.Instant;
 
-@Entity
-@EntityListeners(AuditableEntityListener.class)
 @Data
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class SchedulerLock extends AbstractBaseDomain implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 1L;
+public class SchedulerLock {
+
+    @Id
+    @UuidGenerator
+    @Column(length = 36)
+    private String id;
 
     private Instant lockedAt;
     private Instant lockUntil;
-    private String  lockedBy;
-
+    private String lockedBy;
 }

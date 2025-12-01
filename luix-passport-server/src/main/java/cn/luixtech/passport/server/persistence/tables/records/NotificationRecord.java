@@ -136,30 +136,30 @@ public class NotificationRecord extends UpdatableRecordImpl<NotificationRecord> 
     }
 
     /**
-     * Setter for <code>public.notification.modified_at</code>.
+     * Setter for <code>public.notification.updated_at</code>.
      */
-    public void setModifiedAt(Instant value) {
+    public void setUpdatedAt(Instant value) {
         set(8, value);
     }
 
     /**
-     * Getter for <code>public.notification.modified_at</code>.
+     * Getter for <code>public.notification.updated_at</code>.
      */
-    public Instant getModifiedAt() {
+    public Instant getUpdatedAt() {
         return (Instant) get(8);
     }
 
     /**
-     * Setter for <code>public.notification.modified_by</code>.
+     * Setter for <code>public.notification.updated_by</code>.
      */
-    public void setModifiedBy(String value) {
+    public void setUpdatedBy(String value) {
         set(9, value);
     }
 
     /**
-     * Getter for <code>public.notification.modified_by</code>.
+     * Getter for <code>public.notification.updated_by</code>.
      */
-    public String getModifiedBy() {
+    public String getUpdatedBy() {
         return (String) get(9);
     }
 
@@ -228,12 +228,12 @@ public class NotificationRecord extends UpdatableRecordImpl<NotificationRecord> 
 
     @Override
     public Field<Instant> field9() {
-        return Notification.NOTIFICATION.MODIFIED_AT;
+        return Notification.NOTIFICATION.UPDATED_AT;
     }
 
     @Override
     public Field<String> field10() {
-        return Notification.NOTIFICATION.MODIFIED_BY;
+        return Notification.NOTIFICATION.UPDATED_BY;
     }
 
     @Override
@@ -278,12 +278,12 @@ public class NotificationRecord extends UpdatableRecordImpl<NotificationRecord> 
 
     @Override
     public Instant component9() {
-        return getModifiedAt();
+        return getUpdatedAt();
     }
 
     @Override
     public String component10() {
-        return getModifiedBy();
+        return getUpdatedBy();
     }
 
     @Override
@@ -328,12 +328,12 @@ public class NotificationRecord extends UpdatableRecordImpl<NotificationRecord> 
 
     @Override
     public Instant value9() {
-        return getModifiedAt();
+        return getUpdatedAt();
     }
 
     @Override
     public String value10() {
-        return getModifiedBy();
+        return getUpdatedBy();
     }
 
     @Override
@@ -386,13 +386,13 @@ public class NotificationRecord extends UpdatableRecordImpl<NotificationRecord> 
 
     @Override
     public NotificationRecord value9(Instant value) {
-        setModifiedAt(value);
+        setUpdatedAt(value);
         return this;
     }
 
     @Override
     public NotificationRecord value10(String value) {
-        setModifiedBy(value);
+        setUpdatedBy(value);
         return this;
     }
 
@@ -425,7 +425,7 @@ public class NotificationRecord extends UpdatableRecordImpl<NotificationRecord> 
     /**
      * Create a detached, initialised NotificationRecord
      */
-    public NotificationRecord(String id, String title, String content, String type, String sender, String senderEmail, Instant createdAt, String createdBy, Instant modifiedAt, String modifiedBy) {
+    public NotificationRecord(String id, String title, String content, String type, String sender, String senderEmail, Instant createdAt, String createdBy, Instant updatedAt, String updatedBy) {
         super(Notification.NOTIFICATION);
 
         setId(id);
@@ -436,8 +436,8 @@ public class NotificationRecord extends UpdatableRecordImpl<NotificationRecord> 
         setSenderEmail(senderEmail);
         setCreatedAt(createdAt);
         setCreatedBy(createdBy);
-        setModifiedAt(modifiedAt);
-        setModifiedBy(modifiedBy);
+        setUpdatedAt(updatedAt);
+        setUpdatedBy(updatedBy);
         resetChangedOnNotNull();
     }
 }

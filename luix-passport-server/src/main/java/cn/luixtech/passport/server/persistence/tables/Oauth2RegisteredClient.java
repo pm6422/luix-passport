@@ -141,14 +141,14 @@ public class Oauth2RegisteredClient extends TableImpl<Oauth2RegisteredClientReco
     public final TableField<Oauth2RegisteredClientRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(50), this, "");
 
     /**
-     * The column <code>public.oauth2_registered_client.modified_at</code>.
+     * The column <code>public.oauth2_registered_client.updated_at</code>.
      */
-    public final TableField<Oauth2RegisteredClientRecord, Instant> MODIFIED_AT = createField(DSL.name("modified_at"), SQLDataType.INSTANT.nullable(false), this, "");
+    public final TableField<Oauth2RegisteredClientRecord, Instant> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.INSTANT.nullable(false), this, "");
 
     /**
-     * The column <code>public.oauth2_registered_client.modified_by</code>.
+     * The column <code>public.oauth2_registered_client.updated_by</code>.
      */
-    public final TableField<Oauth2RegisteredClientRecord, String> MODIFIED_BY = createField(DSL.name("modified_by"), SQLDataType.VARCHAR(50), this, "");
+    public final TableField<Oauth2RegisteredClientRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(50), this, "");
 
     private Oauth2RegisteredClient(Name alias, Table<Oauth2RegisteredClientRecord> aliased) {
         this(alias, aliased, null);

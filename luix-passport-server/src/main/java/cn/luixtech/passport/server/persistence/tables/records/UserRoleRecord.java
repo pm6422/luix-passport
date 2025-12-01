@@ -94,30 +94,30 @@ public class UserRoleRecord extends UpdatableRecordImpl<UserRoleRecord> implemen
     }
 
     /**
-     * Setter for <code>public.user_role.modified_at</code>.
+     * Setter for <code>public.user_role.updated_at</code>.
      */
-    public void setModifiedAt(Instant value) {
+    public void setUpdatedAt(Instant value) {
         set(5, value);
     }
 
     /**
-     * Getter for <code>public.user_role.modified_at</code>.
+     * Getter for <code>public.user_role.updated_at</code>.
      */
-    public Instant getModifiedAt() {
+    public Instant getUpdatedAt() {
         return (Instant) get(5);
     }
 
     /**
-     * Setter for <code>public.user_role.modified_by</code>.
+     * Setter for <code>public.user_role.updated_by</code>.
      */
-    public void setModifiedBy(String value) {
+    public void setUpdatedBy(String value) {
         set(6, value);
     }
 
     /**
-     * Getter for <code>public.user_role.modified_by</code>.
+     * Getter for <code>public.user_role.updated_by</code>.
      */
-    public String getModifiedBy() {
+    public String getUpdatedBy() {
         return (String) get(6);
     }
 
@@ -171,12 +171,12 @@ public class UserRoleRecord extends UpdatableRecordImpl<UserRoleRecord> implemen
 
     @Override
     public Field<Instant> field6() {
-        return UserRole.USER_ROLE.MODIFIED_AT;
+        return UserRole.USER_ROLE.UPDATED_AT;
     }
 
     @Override
     public Field<String> field7() {
-        return UserRole.USER_ROLE.MODIFIED_BY;
+        return UserRole.USER_ROLE.UPDATED_BY;
     }
 
     @Override
@@ -206,12 +206,12 @@ public class UserRoleRecord extends UpdatableRecordImpl<UserRoleRecord> implemen
 
     @Override
     public Instant component6() {
-        return getModifiedAt();
+        return getUpdatedAt();
     }
 
     @Override
     public String component7() {
-        return getModifiedBy();
+        return getUpdatedBy();
     }
 
     @Override
@@ -241,12 +241,12 @@ public class UserRoleRecord extends UpdatableRecordImpl<UserRoleRecord> implemen
 
     @Override
     public Instant value6() {
-        return getModifiedAt();
+        return getUpdatedAt();
     }
 
     @Override
     public String value7() {
-        return getModifiedBy();
+        return getUpdatedBy();
     }
 
     @Override
@@ -281,13 +281,13 @@ public class UserRoleRecord extends UpdatableRecordImpl<UserRoleRecord> implemen
 
     @Override
     public UserRoleRecord value6(Instant value) {
-        setModifiedAt(value);
+        setUpdatedAt(value);
         return this;
     }
 
     @Override
     public UserRoleRecord value7(String value) {
-        setModifiedBy(value);
+        setUpdatedBy(value);
         return this;
     }
 
@@ -317,7 +317,7 @@ public class UserRoleRecord extends UpdatableRecordImpl<UserRoleRecord> implemen
     /**
      * Create a detached, initialised UserRoleRecord
      */
-    public UserRoleRecord(String id, String username, String roleId, Instant createdAt, String createdBy, Instant modifiedAt, String modifiedBy) {
+    public UserRoleRecord(String id, String username, String roleId, Instant createdAt, String createdBy, Instant updatedAt, String updatedBy) {
         super(UserRole.USER_ROLE);
 
         setId(id);
@@ -325,8 +325,8 @@ public class UserRoleRecord extends UpdatableRecordImpl<UserRoleRecord> implemen
         setRoleId(roleId);
         setCreatedAt(createdAt);
         setCreatedBy(createdBy);
-        setModifiedAt(modifiedAt);
-        setModifiedBy(modifiedBy);
+        setUpdatedAt(updatedAt);
+        setUpdatedBy(updatedBy);
         resetChangedOnNotNull();
     }
 }

@@ -6,7 +6,7 @@ export const roleSchema = z.object({
   remark: z.string().optional().nullable(),
   permissionIds: z.array(z.string()).min(1, { message: "Required" }),
   createdAt: z.string().optional().nullable(),
-  modifiedAt: z.string().optional().nullable()
+  updatedAt: z.string().optional().nullable()
 })
 
 export type Role = z.infer<typeof roleSchema>
@@ -16,7 +16,7 @@ export const initialRoleState: Role = {
   remark: "",
   permissionIds: [],
   createdAt: "",
-  modifiedAt: ""
+  updatedAt: ""
 }
 export const roleCriteriaSchema = z.object({
   keyword: z.string().optional(),

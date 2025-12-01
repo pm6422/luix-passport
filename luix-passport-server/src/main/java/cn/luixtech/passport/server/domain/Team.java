@@ -1,30 +1,54 @@
 package cn.luixtech.passport.server.domain;
 
-import cn.luixtech.passport.server.domain.base.AbstractUpdatableDomain;
-import cn.luixtech.passport.server.domain.base.listener.AuditableEntityListener;
+import cn.luixtech.passport.server.utils.AuthUtils;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.UuidGenerator;
 
-import java.io.Serial;
-import java.io.Serializable;
+import java.time.Instant;
 
-@Entity
-@EntityListeners(AuditableEntityListener.class)
 @Data
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class Team extends AbstractUpdatableDomain implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 1L;
+public class Team {
 
-    private String  remark;
+    @Id
+    @UuidGenerator
+    @Column(length = 36)
+    private String id;
+
+    private String remark;
     private Boolean enabled;
 
     @Basic(fetch = FetchType.LAZY)
     @Column(columnDefinition = "bytea", nullable = false)
     private byte[] photo;
+
+    @Column(nullable = false, updatable = false)
+    private Instant createdAt;
+
+    @Column(nullable = false)
+    private Instant updatedAt;
+
+    @Column(updatable = false)
+    private String createdBy;
+
+    private String updatedBy;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = Instant.now();
+        updatedAt = Instant.now();
+        createdBy = AuthUtils.getCurrentUsername();
+        updatedBy = createdBy;
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = Instant.now();
+        updatedBy = AuthUtils.getCurrentUsername();
+    }
 }

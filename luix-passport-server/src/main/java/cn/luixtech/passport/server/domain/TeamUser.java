@@ -1,29 +1,25 @@
 package cn.luixtech.passport.server.domain;
 
-import cn.luixtech.passport.server.domain.base.AbstractBaseDomain;
-import cn.luixtech.passport.server.domain.base.listener.AuditableEntityListener;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.UuidGenerator;
 
-import java.io.Serial;
-import java.io.Serializable;
+import java.time.Instant;
 
-@Entity
-@EntityListeners(AuditableEntityListener.class)
 @Data
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class TeamUser extends AbstractBaseDomain implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 1L;
+public class TeamUser {
+
+    @Id
+    @UuidGenerator
+    @Column(length = 36)
+    private String id;
 
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     @NotEmpty(message = "teamId:{Validation.NotEmpty}")
@@ -31,7 +27,12 @@ public class TeamUser extends AbstractBaseDomain implements Serializable {
     private String teamId;
 
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotEmpty(message = "username:{Validation.NotEmpty}")
+    @NotEmpty(message = "userId:{Validation.NotEmpty}")
     @Column(nullable = false)
-    private String username;
+    private String userId;
+
+    public TeamUser(String teamId, String userId) {
+        this.teamId = teamId;
+        this.userId = userId;
+    }
 }

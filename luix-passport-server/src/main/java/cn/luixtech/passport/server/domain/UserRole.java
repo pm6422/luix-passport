@@ -1,35 +1,31 @@
 package cn.luixtech.passport.server.domain;
 
-import cn.luixtech.passport.server.domain.base.AbstractUpdatableDomain;
-import cn.luixtech.passport.server.domain.base.listener.AuditableEntityListener;
+import cn.luixtech.passport.server.utils.AuthUtils;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.UuidGenerator;
 
-import java.io.Serial;
-import java.io.Serializable;
+import java.time.Instant;
 
-@Entity
-@EntityListeners(AuditableEntityListener.class)
 @Data
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class UserRole extends AbstractUpdatableDomain implements Serializable {
+public class UserRole {
+
+    @Id
+    @UuidGenerator
+    @Column(length = 36)
+    private String id;
 
     public static final String ROLE_ANONYMOUS = "ROLE_ANONYMOUS";
-    public static final String ROLE_USER      = "ROLE_USER";
-    public static final String ROLE_ADMIN     = "ROLE_ADMIN";
+    public static final String ROLE_USER = "ROLE_USER";
+    public static final String ROLE_ADMIN = "ROLE_ADMIN";
     public static final String ROLE_DEVELOPER = "ROLE_DEVELOPER";
-    
-    @Serial
-    private static final long serialVersionUID = 1L;
 
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     @NotEmpty(message = "username:{Validation.NotEmpty}")
@@ -40,4 +36,29 @@ public class UserRole extends AbstractUpdatableDomain implements Serializable {
     @NotEmpty(message = "roleId:{Validation.NotEmpty}")
     @Column(nullable = false)
     private String roleId;
+
+    @Column(nullable = false, updatable = false)
+    private Instant createdAt;
+
+    @Column(nullable = false)
+    private Instant updatedAt;
+
+    @Column(updatable = false)
+    private String createdBy;
+
+    private String updatedBy;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = Instant.now();
+        updatedAt = Instant.now();
+        createdBy = AuthUtils.getCurrentUsername();
+        updatedBy = createdBy;
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = Instant.now();
+        updatedBy = AuthUtils.getCurrentUsername();
+    }
 }

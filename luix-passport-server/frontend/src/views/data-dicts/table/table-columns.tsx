@@ -93,11 +93,11 @@ export function tableColumns(
       // },
     },
     {
-      accessorKey: "modifiedAt",
+      accessorKey: "updatedAt",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Modified At" />
+        <DataTableColumnHeader column={column} title="Updated At" />
       ),
-      cell: ({ row }) => <div className="w-[150px]"><DateTime value={row.original.modifiedAt}/></div>,
+      cell: ({ row }) => <div className="w-[150px]"><DateTime value={row.original.updatedAt}/></div>,
       enableSorting: true,
       enableHiding: true,
     },

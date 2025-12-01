@@ -1,4 +1,4 @@
-id;category_code;dict_code;dict_name;enabled;created_at;created_by;modified_at;modified_by
+id;category_code;dict_code;dict_name;enabled;created_at;created_by;updated_at;updated_by
 11;PermissionResourceType;api;;true;now;SYSTEM;now;SYSTEM
 12;PermissionResourceType;content;;true;now;SYSTEM;now;SYSTEM
 13;PermissionResourceType;file;;true;now;SYSTEM;now;SYSTEM

@@ -53,7 +53,7 @@ public class Permission extends TableImpl<PermissionRecord> {
     /**
      * The column <code>public.permission.id</code>.
      */
-    public final TableField<PermissionRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(25).nullable(false), this, "");
+    public final TableField<PermissionRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(36).nullable(false), this, "");
 
     /**
      * The column <code>public.permission.remark</code>.
@@ -81,14 +81,14 @@ public class Permission extends TableImpl<PermissionRecord> {
     public final TableField<PermissionRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(50), this, "");
 
     /**
-     * The column <code>public.permission.modified_at</code>.
+     * The column <code>public.permission.updated_at</code>.
      */
-    public final TableField<PermissionRecord, Instant> MODIFIED_AT = createField(DSL.name("modified_at"), SQLDataType.INSTANT.nullable(false), this, "");
+    public final TableField<PermissionRecord, Instant> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.INSTANT.nullable(false), this, "");
 
     /**
-     * The column <code>public.permission.modified_by</code>.
+     * The column <code>public.permission.updated_by</code>.
      */
-    public final TableField<PermissionRecord, String> MODIFIED_BY = createField(DSL.name("modified_by"), SQLDataType.VARCHAR(50), this, "");
+    public final TableField<PermissionRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(50), this, "");
 
     private Permission(Name alias, Table<PermissionRecord> aliased) {
         this(alias, aliased, null);
