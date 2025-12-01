@@ -284,7 +284,7 @@ public class JooqSortBuilder {
         );
     }
 
-    private void checkNotEmpty(final Field[] fields) {
+    private void checkNotEmpty(final Field<?>[] fields) {
         if (fields == null || fields.length == 0)
             throw new IllegalArgumentException("Fields cannot be null/empty");
     }
