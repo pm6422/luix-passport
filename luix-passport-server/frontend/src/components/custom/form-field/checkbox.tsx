@@ -50,23 +50,23 @@ const CheckboxFormField = <TFieldValues extends FieldValues>({
             </div>
           )}
 
-          {options.map((item) => (
+          {(() => {
+            const selectedValues = Array.isArray(field.value) ? (field.value as string[]) : []
+            return options.map((item) => (
             <FormItem
               key={item.value}
               className="flex flex-row items-start space-x-3 space-y-0"
             >
               <FormControl>
                 <Checkbox
-                  checked={field.value?.includes(item.value)}
+                  checked={selectedValues.includes(item.value)}
                   disabled={disabled || requiredOptionValues.includes(item.value)}
                   onCheckedChange={(checked) => {
-                    return checked
-                      ? field.onChange([...field.value, item.value])
-                      : field.onChange(
-                        field.value?.filter(
-                          (value: string) => value !== item.value
-                        ) || []
-                      )
+                    const current = Array.isArray(field.value) ? (field.value as string[]) : []
+                    const next = checked
+                      ? [...current, item.value]
+                      : current.filter((value) => value !== item.value)
+                    field.onChange(next)
                   }}
                 />
               </FormControl>
@@ -77,7 +77,8 @@ const CheckboxFormField = <TFieldValues extends FieldValues>({
                 )}
               </FormLabel>
             </FormItem>
-          ))}
+            ))
+          })()}
           <FormMessage />
         </FormItem>
       )}

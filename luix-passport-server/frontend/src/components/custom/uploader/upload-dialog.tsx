@@ -131,8 +131,8 @@ export function UploadDialog({
               render={({ field }) => (
                 <FormItem>
                   <FileUploader
-                    value={field.value}
-                    onValueChange={field.onChange}
+                    value={field.value ?? null}
+                    onValueChange={(val) => field.onChange(val ?? [])}
                     dropzoneOptions={dropzoneOptions}
                     reSelect={true}
                   >
