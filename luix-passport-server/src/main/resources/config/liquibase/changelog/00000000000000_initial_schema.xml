@@ -399,9 +399,6 @@
             <column name="id" type="varchar(20)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="num" type="varchar(20)">
-                <constraints nullable="false"/>
-            </column>
             <column name="category_code" type="varchar(25)">
                 <constraints nullable="false"/>
             </column>
@@ -428,17 +425,6 @@
                 separator=";"
                 tableName="data_dict">
         </loadData>
-        <createTable tableName="table_seq_number">
-            <column name="id" type="VARCHAR(20)">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="table_name" type="VARCHAR(36)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="max_seq_num" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
         <createTable tableName="notification">
             <column name="id" type="VARCHAR(20)">
                 <constraints primaryKey="true" nullable="false"/>

@@ -9,7 +9,7 @@ import java.util.List;
 public interface DataDictService {
     void initAllTimezones();
 
-    Page<DataDict> find(Pageable pageable, String num, String categoryCode, Boolean enabled);
+    Page<DataDict> find(Pageable pageable, String id, String categoryCode, Boolean enabled);
 
     void batchUpdateCategoryCode(List<String> ids, String targetCategoryCode);
 

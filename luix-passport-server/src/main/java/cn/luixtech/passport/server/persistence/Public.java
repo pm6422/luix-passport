@@ -18,7 +18,6 @@ import cn.luixtech.passport.server.persistence.tables.SchedulerLock;
 import cn.luixtech.passport.server.persistence.tables.SpringSession;
 import cn.luixtech.passport.server.persistence.tables.SpringSessionAttributes;
 import cn.luixtech.passport.server.persistence.tables.SupportedDateTimeFormat;
-import cn.luixtech.passport.server.persistence.tables.TableSeqNumber;
 import cn.luixtech.passport.server.persistence.tables.Team;
 import cn.luixtech.passport.server.persistence.tables.TeamUser;
 import cn.luixtech.passport.server.persistence.tables.User;
@@ -120,11 +119,6 @@ public class Public extends SchemaImpl {
     public final SupportedDateTimeFormat SUPPORTED_DATE_TIME_FORMAT = SupportedDateTimeFormat.SUPPORTED_DATE_TIME_FORMAT;
 
     /**
-     * The table <code>public.table_seq_number</code>.
-     */
-    public final TableSeqNumber TABLE_SEQ_NUMBER = TableSeqNumber.TABLE_SEQ_NUMBER;
-
-    /**
      * The table <code>public.team</code>.
      */
     public final Team TEAM = Team.TEAM;
@@ -194,7 +188,6 @@ public class Public extends SchemaImpl {
             SpringSession.SPRING_SESSION,
             SpringSessionAttributes.SPRING_SESSION_ATTRIBUTES,
             SupportedDateTimeFormat.SUPPORTED_DATE_TIME_FORMAT,
-            TableSeqNumber.TABLE_SEQ_NUMBER,
             Team.TEAM,
             TeamUser.TEAM_USER,
             User.USER,

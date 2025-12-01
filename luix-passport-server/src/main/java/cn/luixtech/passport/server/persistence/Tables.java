@@ -18,7 +18,6 @@ import cn.luixtech.passport.server.persistence.tables.SchedulerLock;
 import cn.luixtech.passport.server.persistence.tables.SpringSession;
 import cn.luixtech.passport.server.persistence.tables.SpringSessionAttributes;
 import cn.luixtech.passport.server.persistence.tables.SupportedDateTimeFormat;
-import cn.luixtech.passport.server.persistence.tables.TableSeqNumber;
 import cn.luixtech.passport.server.persistence.tables.Team;
 import cn.luixtech.passport.server.persistence.tables.TeamUser;
 import cn.luixtech.passport.server.persistence.tables.User;
@@ -104,11 +103,6 @@ public class Tables {
      * The table <code>public.supported_date_time_format</code>.
      */
     public static final SupportedDateTimeFormat SUPPORTED_DATE_TIME_FORMAT = SupportedDateTimeFormat.SUPPORTED_DATE_TIME_FORMAT;
-
-    /**
-     * The table <code>public.table_seq_number</code>.
-     */
-    public static final TableSeqNumber TABLE_SEQ_NUMBER = TableSeqNumber.TABLE_SEQ_NUMBER;
 
     /**
      * The table <code>public.team</code>.

@@ -15,11 +15,11 @@ import java.util.function.Function;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function11;
+import org.jooq.Function10;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row11;
+import org.jooq.Row10;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -56,11 +56,6 @@ public class DataDict extends TableImpl<DataDictRecord> {
      * The column <code>public.data_dict.id</code>.
      */
     public final TableField<DataDictRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(20).nullable(false), this, "");
-
-    /**
-     * The column <code>public.data_dict.num</code>.
-     */
-    public final TableField<DataDictRecord, String> NUM = createField(DSL.name("num"), SQLDataType.VARCHAR(20).nullable(false), this, "");
 
     /**
      * The column <code>public.data_dict.category_code</code>.
@@ -195,18 +190,18 @@ public class DataDict extends TableImpl<DataDictRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row11 type methods
+    // Row10 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row11<String, String, String, String, String, String, Boolean, Instant, String, Instant, String> fieldsRow() {
-        return (Row11) super.fieldsRow();
+    public Row10<String, String, String, String, String, Boolean, Instant, String, Instant, String> fieldsRow() {
+        return (Row10) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function11<? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super Boolean, ? super Instant, ? super String, ? super Instant, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function10<? super String, ? super String, ? super String, ? super String, ? super String, ? super Boolean, ? super Instant, ? super String, ? super Instant, ? super String, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -214,7 +209,7 @@ public class DataDict extends TableImpl<DataDictRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function11<? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super Boolean, ? super Instant, ? super String, ? super Instant, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function10<? super String, ? super String, ? super String, ? super String, ? super String, ? super Boolean, ? super Instant, ? super String, ? super Instant, ? super String, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

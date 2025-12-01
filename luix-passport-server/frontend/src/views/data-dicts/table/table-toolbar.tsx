@@ -59,8 +59,8 @@ export function DataTableToolbar ({
                 <div className="flex flex-col sm:flex-row gap-2">
                   <InputFormField 
                     control={form.control} 
-                    name="num" 
-                    label="Number" 
+                    name="id"
+                    label="ID"
                     formItemClassName="w-full"
                   />
 

@@ -54,10 +54,10 @@ public class DataDictController {
     @PreAuthorize("hasAuthority('" + ROLE_ADMIN + "') or hasAuthority('" + ROLE_DEVELOPER + "')")
     @GetMapping("/api/data-dicts")
     public ResponseEntity<List<DataDict>> find(@ParameterObject Pageable pageable,
-                                               @RequestParam(value = "num", required = false) String num,
+                                               @RequestParam(value = "id", required = false) String id,
                                                @RequestParam(value = "categoryCode", required = false) String categoryCode,
                                                @RequestParam(value = "enabled", required = false) Boolean enabled) {
-        Page<DataDict> domains = dataDictService.find(pageable, num, categoryCode, enabled);
+        Page<DataDict> domains = dataDictService.find(pageable, id, categoryCode, enabled);
         return ResponseEntity.ok().headers(generatePageHeaders(domains)).body(domains.getContent());
     }
 

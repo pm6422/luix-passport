@@ -41,11 +41,11 @@ export function tableColumns(
       enableHiding: false,
     },
     {
-      accessorKey: "num",
+      accessorKey: "id",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Number" />
+        <DataTableColumnHeader column={column} title="ID" />
       ),
-      cell: ({ row }) => <div className="w-[30px]">{row.original.num}</div>,
+      cell: ({ row }) => <div className="w-[120px]">{row.original.id}</div>,
       enableSorting: true,
       enableHiding: false,
     },

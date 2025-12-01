@@ -21,7 +21,7 @@ export default function DataDict() {
       page: pageNo,
       size: pageSize,
       sort: sorts,
-      num: criteria.num || null,
+      id: criteria.id || null,
       categoryCode: criteria.categoryCode || null,
       enabled: criteria.enabled || null,
     }).then(r => {

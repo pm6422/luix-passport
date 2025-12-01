@@ -62,11 +62,11 @@ public class DataDictServiceImpl implements DataDictService {
     }
 
     @Override
-    public Page<DataDict> find(Pageable pageable, String num, String categoryCode, Boolean enabled) {
+    public Page<DataDict> find(Pageable pageable, String id, String categoryCode, Boolean enabled) {
         // Ignore a query parameter if it has a null value
         ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreNullValues();
         DataDict criteria = new DataDict();
-        criteria.setNum(num);
+        criteria.setId(id);
         criteria.setCategoryCode(categoryCode);
         criteria.setEnabled(enabled);
         Example<DataDict> queryExample = Example.of(criteria, matcher);

@@ -3,7 +3,6 @@ import { BaseCriteria } from "./base/base-criteria"
 
 export const dataDictSchema = z.object({
   id: z.string().optional().nullable(),
-  num: z.string().optional().nullable(),
   categoryCode: z.string().trim().min(1, { message: "Required" }),
   dictCode: z.string().trim().min(1, { message: "Required" }),
   dictName: z.string().optional().nullable(),
@@ -16,7 +15,6 @@ export type DataDict = z.infer<typeof dataDictSchema>
 
 export const initialDataDictState: DataDict = {
   id: "",
-  num: "",
   categoryCode: "",
   dictCode: "",
   dictName: "",
@@ -26,7 +24,7 @@ export const initialDataDictState: DataDict = {
 }
 
 export const dataDictCriteriaSchema = z.object({
-  num: z.string().optional().nullable(),
+  id: z.string().optional().nullable(),
   categoryCode: z.string().optional().nullable(),
   enabled: z.string().optional().nullable()
 })
@@ -34,7 +32,7 @@ export const dataDictCriteriaSchema = z.object({
 export type DataDictCriteria = z.infer<typeof dataDictCriteriaSchema> & BaseCriteria
 
 export const initialDataDictCriteriaState: DataDictCriteria = {
-  num: null,
+  id: null,
   categoryCode: null,
   enabled: null
 }
