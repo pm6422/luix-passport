@@ -1,11 +1,11 @@
 # ===================================================================
 # Spring Boot configuration.
 #
-# This configuration will be overridden by the Spring profile you use it,
-# for example, application-test.yml if you use the "test" profile.
+# This configuration is overridden by profile-specific settings
+# (e.g., application-dev.yml for the "dev" profile).
 # Full reference is available at:
-# https://docs.spring.io/spring-boot/docs/3.2.0/reference/html/application-properties.html#application-properties
-# ===================================================================
+# https://docs.spring.io/spring-boot/appendix/application-properties/i
+# =================================================================== 
 server:
   port: 4001
   servlet:
