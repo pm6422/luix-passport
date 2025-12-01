@@ -6,9 +6,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-/**
- * Spring Data JPA repository for the {@link SpringSession} entity.
- */
 @Repository
 public interface SpringSessionRepository extends JpaRepository<SpringSession, String> {
 

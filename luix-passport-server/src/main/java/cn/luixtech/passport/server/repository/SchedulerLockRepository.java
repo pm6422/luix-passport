@@ -6,9 +6,6 @@ import org.springframework.stereotype.Repository;
 
 import java.time.Instant;
 
-/**
- * Spring Data JPA repository for the {@link SchedulerLock} entity.
- */
 @Repository
 public interface SchedulerLockRepository extends JpaRepository<SchedulerLock, String> {
 

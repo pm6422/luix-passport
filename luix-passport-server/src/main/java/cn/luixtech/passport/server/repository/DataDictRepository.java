@@ -6,9 +6,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-/**
- * Spring Data JPA repository for the {@link DataDict} entity.
- */
 @Repository
 public interface DataDictRepository extends JpaRepository<DataDict, String> {
 

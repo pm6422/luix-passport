@@ -6,9 +6,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-/**
- * Spring Data JPA repository for the {@link TeamUser} entity.
- */
 @Repository
 public interface TeamUserRepository extends JpaRepository<TeamUser, String> {
 

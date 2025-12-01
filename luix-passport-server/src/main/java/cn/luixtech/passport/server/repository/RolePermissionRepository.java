@@ -7,9 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Spring Data JPA repository for the {@link RolePermission} entity.
- */
 @Repository
 public interface RolePermissionRepository extends JpaRepository<RolePermission, String> {
 

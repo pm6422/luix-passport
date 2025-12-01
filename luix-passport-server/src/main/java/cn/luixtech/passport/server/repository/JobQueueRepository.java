@@ -9,9 +9,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Spring Data JPA repository for the {@link JobQueue} entity.
- */
 @Repository
 public interface JobQueueRepository extends JpaRepository<JobQueue, String> {
 

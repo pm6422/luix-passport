@@ -6,9 +6,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-/**
- * Spring Data JPA repository for the {@link SupportedDateTimeFormat} entity.
- */
 @Repository
 public interface SupportedDateTimeFormatRepository extends JpaRepository<SupportedDateTimeFormat, String> {
 

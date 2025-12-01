@@ -6,9 +6,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-/**
- * Spring Data JPA repository for the {@link Oauth2RegisteredClient} entity.
- */
 @Repository
 public interface Oauth2RegisteredClientRepository extends JpaRepository<Oauth2RegisteredClient, String> {
 
