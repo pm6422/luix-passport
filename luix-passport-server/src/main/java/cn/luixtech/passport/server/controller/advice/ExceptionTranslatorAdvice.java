@@ -175,7 +175,6 @@ public class ExceptionTranslatorAdvice {
     @ResponseBody
     public ResponseEntity<Result<Void>> handleUserNotFoundException(UserNotFoundException ex) {
         log.warn("User not found: ", ex);
-        String message = messageCreator.getMessage("UE1002", ex.getUsername());
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 

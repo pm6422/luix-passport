@@ -49,7 +49,7 @@ public final class DeviceClientAuthenticationProvider implements AuthenticationP
             log.trace("Retrieved registered client");
         }
 
-        if (!registeredClient.getClientAuthenticationMethods().contains(
+        if (registeredClient != null && !registeredClient.getClientAuthenticationMethods().contains(
                 deviceClientAuthentication.getClientAuthenticationMethod())) {
             throwInvalidClient("authentication_method");
         }

@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import static com.luixtech.springbootframework.utils.NetworkUtils.getRequestUrl;
-
 /**
  * Solve form csrf issue, add below
  * <th:input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
