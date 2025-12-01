@@ -19,8 +19,8 @@
         <jib.registry.password/>
         <jib.registry.url/>
         <jib.registry.username/>
-        <node.version>v22.9.0</node.version>
-        <npm.version>10.9.0</npm.version>
+        <node.version>v24.2.0</node.version>
+        <npm.version>11.3.0</npm.version>
         <start-class>cn.luixtech.passport.server.PassportServerApplication</start-class>
     </properties>
     <dependencyManagement>
