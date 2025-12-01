@@ -45,7 +45,7 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="ID" />
       ),
-      cell: ({ row }) => <div className="w-[120px]">{row.original.id}</div>,
+      cell: ({ row }) => <div className="w-[200px]">{row.original.id}</div>,
       enableSorting: true,
       enableHiding: false,
     },
