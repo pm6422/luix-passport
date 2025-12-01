@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
  */
 @Slf4j
 @AllArgsConstructor
-@Deprecated
 public class LuixCsrfRequestMatcher implements RequestMatcher {
     private static final Pattern             ALLOWED_METHODS = Pattern.compile("^(GET|HEAD|TRACE|OPTIONS)$");
     private static final List<String>        IGNORED_PATHS   = ImmutableList.of("swagger-ui/index.html");
