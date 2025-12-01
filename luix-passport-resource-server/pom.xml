@@ -84,13 +84,16 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.11.0</version>
+                <version>3.14.1</version>
                 <configuration>
+                    <release>21</release>
+                    <fork>true</fork>
+                    <useModulePath>false</useModulePath>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
-                            <version>1.18.32</version>
+                            <version>1.18.40</version>
                         </path>
                     </annotationProcessorPaths>
                     <compilerArgs>
