@@ -89,7 +89,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             log.warn("Login name must not be empty!");
             throw new BadCredentialsException("Login name must not be empty");
         }
-        User user = findOne(loginName)
+        String normalizedLogin = StringUtils.trimToEmpty(loginName).toLowerCase();
+        User user = findOne(normalizedLogin)
                 .orElseThrow(() -> new UsernameNotFoundException("User " + loginName + " was not found"));
         // Assuming existingUser would be retrieved from a session or cache if this
         // check is needed
@@ -175,7 +176,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public User insert(User domain, Set<String> roleIds, String rawPassword, boolean permanentAccount) {
-        if (userRepository.findById(domain.getUsername().toLowerCase()).isPresent()) {
+        // Normalize inputs before validation to avoid case-sensitive duplicates
+        domain.setUsername(StringUtils.trimToEmpty(domain.getUsername()).toLowerCase());
+        domain.setEmail(StringUtils.trimToEmpty(domain.getEmail()).toLowerCase());
+
+        if (userRepository.findById(domain.getUsername()).isPresent()) {
             throw new DuplicationException(Map.of("username", domain.getUsername()));
         }
         if (userRepository.findOneByEmail(domain.getEmail()).isPresent()) {
@@ -184,9 +189,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (userRepository.findOneByMobileNo(domain.getMobileNo()).isPresent()) {
             throw new DuplicationException(Map.of("mobileNo", domain.getMobileNo()));
         }
-
-        domain.setUsername(domain.getUsername().toLowerCase());
-        domain.setEmail(domain.getEmail().toLowerCase());
+        // Prepare derived fields
         domain.setPasswordHash(DEFAULT_PASSWORD_ENCODER_PREFIX + BCRYPT_PASSWORD_ENCODER.encode(rawPassword));
         domain.setActivationCode(generateRandomCode());
         domain.setResetCode(null);
