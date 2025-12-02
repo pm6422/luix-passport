@@ -400,21 +400,21 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public String generateRandomCode() {
-        return RandomStringUtils.randomAlphanumeric(4).toUpperCase() + "-" +
-                RandomStringUtils.randomAlphanumeric(4).toUpperCase() + "-" +
-                RandomStringUtils.randomAlphanumeric(4).toUpperCase() + "-" +
-                RandomStringUtils.randomAlphanumeric(4).toUpperCase() + "-" +
-                RandomStringUtils.randomAlphanumeric(4).toUpperCase();
+        return RandomStringUtils.secure().nextAlphanumeric(4).toUpperCase() + "-" +
+                RandomStringUtils.secure().nextAlphanumeric(4).toUpperCase() + "-" +
+                RandomStringUtils.secure().nextAlphanumeric(4).toUpperCase() + "-" +
+                RandomStringUtils.secure().nextAlphanumeric(4).toUpperCase() + "-" +
+                RandomStringUtils.secure().nextAlphanumeric(4).toUpperCase();
     }
 
     @Override
     public String generateRandomVerificationCode() {
-        return RandomStringUtils.randomAlphabetic(1).toUpperCase() +
-                RandomStringUtils.randomAlphabetic(1).toUpperCase() +
-                RandomStringUtils.randomAlphabetic(1).toUpperCase() +
-                RandomStringUtils.randomAlphabetic(1).toUpperCase() +
-                RandomStringUtils.randomAlphabetic(1).toUpperCase() +
-                RandomStringUtils.randomAlphabetic(1).toUpperCase();
+        return RandomStringUtils.secure().nextAlphabetic(1).toUpperCase() +
+                RandomStringUtils.secure().nextAlphabetic(1).toUpperCase() +
+                RandomStringUtils.secure().nextAlphabetic(1).toUpperCase() +
+                RandomStringUtils.secure().nextAlphabetic(1).toUpperCase() +
+                RandomStringUtils.secure().nextAlphabetic(1).toUpperCase() +
+                RandomStringUtils.secure().nextAlphabetic(1).toUpperCase();
     }
 
     @Override
