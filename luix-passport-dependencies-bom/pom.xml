@@ -2,10 +2,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.apache</groupId>
-        <artifactId>apache</artifactId>
-        <version>33</version>
-        <relativePath/>
+        <groupId>com.luixtech</groupId>
+        <artifactId>luix-passport</artifactId>
+        <version>${revision}</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <groupId>com.luixtech</groupId>
     <artifactId>luix-passport-dependencies-bom</artifactId>
@@ -15,11 +15,9 @@
     <description>Luix Passport dependencies BOM</description>
     <url>http://www.luixtech.cn</url>
     <properties>
-
-        <luix_commons_version>4.0.0.0</luix_commons_version>
-
         <bootstrap_version>5.3.2</bootstrap_version>
         <jquery_version>3.6.4</jquery_version>
+        <luix_commons_version>4.0.0.0</luix_commons_version>
         <popper_version>2.9.3</popper_version>
         <resend_version>2.2.1</resend_version>
         <spring_security_oauth2_authorization_server_version>7.0.0</spring_security_oauth2_authorization_server_version>
@@ -27,9 +25,9 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>org.springframework.security</groupId>
-                <artifactId>spring-security-oauth2-authorization-server</artifactId>
-                <version>${spring_security_oauth2_authorization_server_version}</version>
+                <groupId>com.luixtech</groupId>
+                <artifactId>luix-springboot4-framework</artifactId>
+                <version>${luix_commons_version}</version>
             </dependency>
             <dependency>
                 <groupId>com.resend</groupId>
@@ -37,11 +35,10 @@
                 <version>${resend_version}</version>
             </dependency>
             <dependency>
-                <groupId>com.luixtech</groupId>
-                <artifactId>luix-springboot4-framework</artifactId>
-                <version>${luix_commons_version}</version>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-oauth2-authorization-server</artifactId>
+                <version>${spring_security_oauth2_authorization_server_version}</version>
             </dependency>
-
             <dependency>
                 <groupId>org.webjars</groupId>
                 <artifactId>bootstrap</artifactId>
@@ -64,24 +61,6 @@
             <plugin>
                 <groupId>com.github.ekryd.sortpom</groupId>
                 <artifactId>sortpom-maven-plugin</artifactId>
-                <version>4.0.0</version>
-                <configuration>
-                    <sortProperties>true</sortProperties>
-                    <nrOfIndentSpace>4</nrOfIndentSpace>
-                    <sortDependencies>groupId,artifactId</sortDependencies>
-                    <sortPlugins>groupId,artifactId</sortPlugins>
-                    <keepBlankLines>false</keepBlankLines>
-                    <expandEmptyElements>false</expandEmptyElements>
-                    <createBackupFile>false</createBackupFile>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>sort</goal>
-                        </goals>
-                        <phase>verify</phase>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -94,18 +73,18 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <id>flatten</id>
-                        <goals>
-                            <goal>flatten</goal>
-                        </goals>
-                        <phase>process-resources</phase>
-                    </execution>
-                    <execution>
                         <id>flatten.clean</id>
                         <goals>
                             <goal>clean</goal>
                         </goals>
                         <phase>clean</phase>
+                    </execution>
+                    <execution>
+                        <id>flatten</id>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                        <phase>process-resources</phase>
                     </execution>
                 </executions>
             </plugin>
