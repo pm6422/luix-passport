@@ -21,10 +21,9 @@
     </modules>
     <properties>
         <java.version>25</java.version>
-        <maven.compiler.source>${java.version}</maven.compiler.source>
-        <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.version>3.9.11</maven.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <spring_boot_version>4.0.0-M2</spring_boot_version>
     </properties>
     <build>
         <resources>
@@ -49,10 +48,16 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.14.1</version>
                     <configuration>
+                        <release>${java.version}</release>
                         <annotationProcessorPaths>
                             <path>
                                 <groupId>org.projectlombok</groupId>
                                 <artifactId>lombok</artifactId>
+                            </path>
+                            <path>
+                                <groupId>org.springframework.boot</groupId>
+                                <artifactId>spring-boot-configuration-processor</artifactId>
+                                <version>${spring_boot_version}</version>
                             </path>
                         </annotationProcessorPaths>
                         <compilerArgs>
