@@ -25,6 +25,11 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
+                <groupId>com.github.wechatpay-apiv3</groupId>
+                <artifactId>wechatpay-java</artifactId>
+                <version>0.2.12</version>
+            </dependency>
+            <dependency>
                 <groupId>com.luixtech</groupId>
                 <artifactId>luix-springboot4-framework</artifactId>
                 <version>${luix_commons_version}</version>
@@ -35,9 +40,34 @@
                 <version>${resend_version}</version>
             </dependency>
             <dependency>
+                <groupId>net.coobird</groupId>
+                <artifactId>thumbnailator</artifactId>
+                <version>0.4.21</version>
+            </dependency>
+            <dependency>
+                <groupId>net.javacrumbs.shedlock</groupId>
+                <artifactId>shedlock-provider-jdbc-template</artifactId>
+                <version>7.2.1</version>
+            </dependency>
+            <dependency>
+                <groupId>net.javacrumbs.shedlock</groupId>
+                <artifactId>shedlock-spring</artifactId>
+                <version>7.2.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.htmlunit</groupId>
+                <artifactId>htmlunit</artifactId>
+                <version>4.19.0</version>
+            </dependency>
+            <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-oauth2-authorization-server</artifactId>
                 <version>${spring_security_oauth2_authorization_server_version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.statemachine</groupId>
+                <artifactId>spring-statemachine-core</artifactId>
+                <version>4.0.1</version>
             </dependency>
             <dependency>
                 <groupId>org.webjars</groupId>
