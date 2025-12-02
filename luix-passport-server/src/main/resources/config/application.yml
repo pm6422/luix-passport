@@ -4,7 +4,7 @@
 # This configuration is overridden by profile-specific settings
 # (e.g., application-dev.yml for the "dev" profile).
 # Full reference is available at:
-# https://docs.spring.io/spring-boot/appendix/application-properties/i
+# https://docs.spring.io/spring-boot/appendix/application-properties
 # =================================================================== 
 server:
   port: 4001
