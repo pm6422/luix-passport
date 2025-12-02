@@ -38,7 +38,6 @@
 						<nrOfIndentSpace>4</nrOfIndentSpace>
 						<sortDependencies>groupId,artifactId</sortDependencies>
 						<sortPlugins>groupId,artifactId</sortPlugins>
-						<lineSeparator>\n</lineSeparator>
 						<keepBlankLines>false</keepBlankLines>
 						<expandEmptyElements>false</expandEmptyElements>
 						<createBackupFile>false</createBackupFile>
