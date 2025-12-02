@@ -23,7 +23,7 @@
         <java.version>25</java.version>
         <maven.version>3.9.11</maven.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring_boot_version>4.0.0-M2</spring_boot_version>
+        <spring_boot_version>4.0.0</spring_boot_version>
     </properties>
     <build>
         <resources>
