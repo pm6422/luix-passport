@@ -21,9 +21,10 @@ import java.io.IOException;
 @WebFilter(filterName = "OpenIdConfigurationEndpointFilter", urlPatterns = "/.well-known/openid-configuration")
 public class OpenIdConfigurationEndpointFilter extends OncePerRequestFilter {
 
+    @Deprecated
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-                                    FilterChain filterChain) throws ServletException, IOException {
+            FilterChain filterChain) throws ServletException, IOException {
         filterChain.doFilter(request, response);
         System.out.println();
     }
