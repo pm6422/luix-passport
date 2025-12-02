@@ -1,7 +1,7 @@
 package cn.luixtech.passport.server.pojo;
 
 import cn.luixtech.passport.server.domain.Oauth2RegisteredClient;
-import com.luixtech.uidgenerator.core.id.IdGenerator;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -28,26 +28,25 @@ import static cn.luixtech.passport.server.config.AuthorizationServerConfiguratio
 @NoArgsConstructor
 public class Oauth2Client implements Serializable {
     @Serial
-    private static final long   serialVersionUID   = 8481969837769002598L;
-    public static final  String SCOPE_MESSAGE_READ = "message:read";
+    private static final long serialVersionUID = 8481969837769002598L;
+    public static final String SCOPE_MESSAGE_READ = "message:read";
 
-    private String  id;
-    private String  clientId;
-    private String  clientName;
-    private String  rawClientSecret;
-    private String  clientSecret;
+    private String id;
+    private String clientId;
+    private String clientName;
+    private String rawClientSecret;
+    private String clientSecret;
     private Instant clientIdIssuedAt;
     private Instant clientSecretExpiresAt;
     private Integer validityInDays;
     private Boolean enabled;
-    private byte[]  photo;
+    private byte[] photo;
 
     private Set<String> clientAuthenticationMethods = new HashSet<>();
-    private Set<String> authorizationGrantTypes     = new HashSet<>();
-    private Set<String> redirectUris                = new HashSet<>();
-    private Set<String> postLogoutRedirectUris      = new HashSet<>();
-    private Set<String> scopes                      = new HashSet<>();
-
+    private Set<String> authorizationGrantTypes = new HashSet<>();
+    private Set<String> redirectUris = new HashSet<>();
+    private Set<String> postLogoutRedirectUris = new HashSet<>();
+    private Set<String> scopes = new HashSet<>();
 
     public void setClientAuthenticationMethods(Set<String> clientAuthenticationMethods) {
         if (this.clientAuthenticationMethods == null) {
@@ -100,23 +99,25 @@ public class Oauth2Client implements Serializable {
      * @return the registered client
      */
     public RegisteredClient toRegisteredClient() {
-        String clientSecret = StringUtils.defaultIfEmpty(this.clientSecret, DEFAULT_PASSWORD_ENCODER_PREFIX + BCRYPT_PASSWORD_ENCODER.encode(this.getRawClientSecret()));
+        String clientSecret = StringUtils.defaultIfEmpty(this.clientSecret,
+                DEFAULT_PASSWORD_ENCODER_PREFIX + BCRYPT_PASSWORD_ENCODER.encode(this.getRawClientSecret()));
         return RegisteredClient
-                .withId(Optional.ofNullable(this.id).orElse(String.valueOf(IdGenerator.generateShortId())))
-                .clientId(Optional.ofNullable(this.clientId).orElse(IdGenerator.generateId()))
+                .withId(Optional.ofNullable(this.id).orElse(java.util.UUID.randomUUID().toString()))
+                .clientId(Optional.ofNullable(this.clientId).orElse(java.util.UUID.randomUUID().toString()))
                 .clientName(this.clientName)
                 .clientSecret(clientSecret)
                 .clientIdIssuedAt(this.clientIdIssuedAt)
-                .clientAuthenticationMethods(clientAuthenticationMethodSet ->
-                        clientAuthenticationMethodSet.addAll(clientAuthenticationMethods.stream()
+                .clientAuthenticationMethods(clientAuthenticationMethodSet -> clientAuthenticationMethodSet
+                        .addAll(clientAuthenticationMethods.stream()
                                 .map(ClientAuthenticationMethod::new)
                                 .collect(Collectors.toSet())))
-                .authorizationGrantTypes(authorizationGrantTypeSet ->
-                        authorizationGrantTypeSet.addAll(authorizationGrantTypes.stream()
+                .authorizationGrantTypes(
+                        authorizationGrantTypeSet -> authorizationGrantTypeSet.addAll(authorizationGrantTypes.stream()
                                 .map(AuthorizationGrantType::new)
                                 .collect(Collectors.toSet())))
                 .redirectUris(redirectUriSet -> redirectUriSet.addAll(redirectUris))
-                .postLogoutRedirectUris(postLogoutRedirectUris -> postLogoutRedirectUris.addAll(this.postLogoutRedirectUris))
+                .postLogoutRedirectUris(
+                        postLogoutRedirectUris -> postLogoutRedirectUris.addAll(this.postLogoutRedirectUris))
                 .scopes(scopeSet -> scopeSet.addAll(scopes))
                 // add openid scope as default
                 .scope(OidcScopes.OPENID)
@@ -138,13 +139,16 @@ public class Oauth2Client implements Serializable {
         oauth2Client.setClientName(registeredClient.getClientName());
         oauth2Client.setRawClientSecret(StringUtils.EMPTY);
         oauth2Client.setClientIdIssuedAt(registeredClient.getClientIdIssuedAt());
-        oauth2Client.setClientAuthenticationMethods(Arrays.stream(registeredClient.getClientAuthenticationMethods().split(",")).collect(Collectors.toSet()));
-        oauth2Client.setAuthorizationGrantTypes(Arrays.stream(registeredClient.getAuthorizationGrantTypes().split(",")).collect(Collectors.toSet()));
+        oauth2Client.setClientAuthenticationMethods(Arrays
+                .stream(registeredClient.getClientAuthenticationMethods().split(",")).collect(Collectors.toSet()));
+        oauth2Client.setAuthorizationGrantTypes(
+                Arrays.stream(registeredClient.getAuthorizationGrantTypes().split(",")).collect(Collectors.toSet()));
         if (StringUtils.isNotEmpty(registeredClient.getRedirectUris())) {
             oauth2Client.setRedirectUris(new HashSet<>(Arrays.asList(registeredClient.getRedirectUris().split(","))));
         }
         if (StringUtils.isNotEmpty(registeredClient.getPostLogoutRedirectUris())) {
-            oauth2Client.setPostLogoutRedirectUris(Stream.of(registeredClient.getPostLogoutRedirectUris()).collect(Collectors.toSet()));
+            oauth2Client.setPostLogoutRedirectUris(
+                    Stream.of(registeredClient.getPostLogoutRedirectUris()).collect(Collectors.toSet()));
         }
         oauth2Client.setScopes(Arrays.stream(registeredClient.getScopes().split(",")).collect(Collectors.toSet()));
         if (registeredClient.getClientSecretExpiresAt() != null) {
@@ -154,4 +158,3 @@ public class Oauth2Client implements Serializable {
         return oauth2Client;
     }
 }
-

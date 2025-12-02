@@ -2,7 +2,6 @@ package cn.luixtech.passport.client.controller;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.core.OAuth2AuthorizationException;
@@ -18,7 +17,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Controller
-public class ApplicationErrorController implements ErrorController {
+public class ApplicationErrorController {
 
     private static final Set<String> DEVICE_GRANT_ERRORS = new HashSet<>(Arrays.asList(
             "authorization_pending",

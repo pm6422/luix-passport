@@ -1,6 +1,6 @@
 = Luix Passport
 
-This project provides you a standard authorization server based on https://datatracker.ietf.org/doc/html/draft-ietf-oauth-v2-1-07#section-1.1[OAuth 2.1 Authorization Server], resource server and client configuration powered by Spring Authorization Server and Spring Boot 3 with the ability to authenticate traditional login and social login.
+This project provides you a standard authorization server based on https://datatracker.ietf.org/doc/html/draft-ietf-oauth-v2-1-07#section-1.1[OAuth 2.1 Authorization Server], resource server and client configuration powered by Spring Authorization Server and Spring Boot 4 with the ability to authenticate traditional login and social login.
 
 Supported social login:
 
@@ -24,15 +24,15 @@ image::images/demo.gif[]
 Prior to building this project, it is necessary to install the JDK on your machine. The JDK can be installed using https://sdkman.io/install[SDK Man].
 
 ```bash
-sdk install java 21.0.1-amzn
+sdk install java 25.0.1-tem
 ```
-NOTE: Java compatability: Java 21 above
+NOTE: Java compatability: Java 25
 
 [[tech-stack]]
 == Tech Stack
-- Java 21
-- Spring Boot 3.2.0
-- Spring Security OAuth2 Authorization Server 1.1.0
+- Java 25
+- Spring Boot 4.0.0
+- Spring Security OAuth2 Authorization Server 7.0.0
 - PostgresSQL 16
 
 [[UsingDocker]]

@@ -17,8 +17,7 @@ import java.util.function.Supplier;
 @Slf4j
 public class DynamicAuthorizationManager implements AuthorizationManager<MethodInvocation> {
     @Override
-    public AuthorizationDecision check(Supplier<Authentication> authentication, MethodInvocation invocation) {
-        log.info("");
+    public AuthorizationDecision authorize(Supplier<? extends Authentication> authentication, MethodInvocation invocation) {
         return new AuthorizationDecision(true);
     }
 }

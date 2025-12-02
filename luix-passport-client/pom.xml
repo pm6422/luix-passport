@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.0</version>
+        <version>4.0.0</version>
         <relativePath/>
     </parent>
     <groupId>com.luixtech</groupId>
@@ -35,7 +35,7 @@
     <dependencies>
         <dependency>
             <groupId>com.luixtech</groupId>
-            <artifactId>luix-springboot3-framework</artifactId>
+            <artifactId>luix-springboot4-framework</artifactId>
         </dependency>
         <dependency>
             <groupId>io.projectreactor.netty</groupId>
@@ -85,7 +85,7 @@
             <plugin>
                 <groupId>com.github.ekryd.sortpom</groupId>
                 <artifactId>sortpom-maven-plugin</artifactId>
-                <version>3.3.0</version>
+                <version>4.0.0</version>
                 <configuration>
                     <sortProperties>true</sortProperties>
                     <nrOfIndentSpace>4</nrOfIndentSpace>
@@ -152,7 +152,7 @@
                         <version>3.4.6</version>
                         <configuration>
                             <from>
-                                <image>eclipse-temurin:21-jre-jammy@sha256:db1689535962d757a5adabf57387584ed543d38c0b9d1fe870123ea362ad73b0</image>
+                                <image>eclipse-temurin:25-jre-jammy</image>
                                 <platforms>
                                     <platform>
                                         <architecture>${jib.arch}</architecture>

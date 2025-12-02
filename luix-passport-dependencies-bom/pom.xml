@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.apache</groupId>
         <artifactId>apache</artifactId>
-        <version>21</version>
+        <version>33</version>
         <relativePath/>
     </parent>
     <groupId>com.luixtech</groupId>
@@ -16,14 +16,21 @@
     <url>http://www.luixtech.cn</url>
     <properties>
         <revision>1.0.0</revision>
-        <luix_commons_version>1.2.4.3</luix_commons_version>
+        <luix_commons_version>4.0.0.0</luix_commons_version>
+
         <bootstrap_version>5.3.2</bootstrap_version>
         <jquery_version>3.6.4</jquery_version>
         <popper_version>2.9.3</popper_version>
         <resend_version>2.2.1</resend_version>
+        <spring_security_oauth2_authorization_server_version>7.0.0</spring_security_oauth2_authorization_server_version>
     </properties>
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-oauth2-authorization-server</artifactId>
+                <version>${spring_security_oauth2_authorization_server_version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.resend</groupId>
                 <artifactId>resend-java</artifactId>
@@ -31,9 +38,10 @@
             </dependency>
             <dependency>
                 <groupId>com.luixtech</groupId>
-                <artifactId>luix-springboot3-framework</artifactId>
+                <artifactId>luix-springboot4-framework</artifactId>
                 <version>${luix_commons_version}</version>
             </dependency>
+
             <dependency>
                 <groupId>org.webjars</groupId>
                 <artifactId>bootstrap</artifactId>
@@ -56,7 +64,7 @@
             <plugin>
                 <groupId>com.github.ekryd.sortpom</groupId>
                 <artifactId>sortpom-maven-plugin</artifactId>
-                <version>3.3.0</version>
+                <version>4.0.0</version>
                 <configuration>
                     <sortProperties>true</sortProperties>
                     <nrOfIndentSpace>4</nrOfIndentSpace>
@@ -78,7 +86,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>flatten-maven-plugin</artifactId>
-                <version>1.1.0</version>
+                <version>1.7.3</version>
                 <configuration>
                     <updatePomFile>true</updatePomFile>
                     <flattenMode>resolveCiFriendliesOnly</flattenMode>

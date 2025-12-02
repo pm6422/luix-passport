@@ -11,8 +11,6 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.OAuth2ErrorCodes;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.web.authentication.AuthenticationConverter;
-import org.springframework.security.web.util.matcher.AndRequestMatcher;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.StringUtils;
 
@@ -21,19 +19,16 @@ public final class DeviceClientAuthenticationConverter implements Authentication
     private final RequestMatcher deviceAccessTokenRequestMatcher;
 
     public DeviceClientAuthenticationConverter(String deviceAuthorizationEndpointUri) {
-        RequestMatcher clientIdParameterMatcher = request ->
-                request.getParameter(OAuth2ParameterNames.CLIENT_ID) != null;
-        this.deviceAuthorizationRequestMatcher = new AndRequestMatcher(
-                new AntPathRequestMatcher(
-                        deviceAuthorizationEndpointUri, HttpMethod.POST.name()),
-                clientIdParameterMatcher);
+        this.deviceAuthorizationRequestMatcher = request ->
+                deviceAuthorizationEndpointUri.equals(request.getRequestURI())
+                        && HttpMethod.POST.matches(request.getMethod())
+                        && request.getParameter(OAuth2ParameterNames.CLIENT_ID) != null;
         this.deviceAccessTokenRequestMatcher = request ->
                 AuthorizationGrantType.DEVICE_CODE.getValue().equals(request.getParameter(OAuth2ParameterNames.GRANT_TYPE)) &&
                         request.getParameter(OAuth2ParameterNames.DEVICE_CODE) != null &&
                         request.getParameter(OAuth2ParameterNames.CLIENT_ID) != null;
     }
 
-    @Nullable
     @Override
     public Authentication convert(HttpServletRequest request) {
         if (!this.deviceAuthorizationRequestMatcher.matches(request) &&

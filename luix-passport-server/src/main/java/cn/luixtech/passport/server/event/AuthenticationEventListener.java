@@ -115,8 +115,8 @@ public class AuthenticationEventListener {
 
     @EventListener
     public void authorizationEvent(AuthorizationEvent event) {
-        log.info("Authorization result: {} for user: [{}] and initiated by {}", event.getAuthorizationDecision(),
-                getCurrentUsername(event.getAuthentication().get())
-                , event.getSource().getClass().getSimpleName());
+        String result = (event instanceof AuthorizationGrantedEvent) ? "GRANTED" : "DENIED";
+        log.info("Authorization result: {} for user: [{}] and initiated by {}", result,
+                getCurrentUsername(event.getAuthentication().get()), event.getSource().getClass().getSimpleName());
     }
 }

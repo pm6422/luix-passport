@@ -19,6 +19,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationConsentService;
@@ -27,8 +28,7 @@ import org.springframework.security.oauth2.server.authorization.OAuth2Authorizat
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.client.JdbcRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
-import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
-import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
@@ -37,6 +37,7 @@ import org.springframework.security.web.authentication.LoginUrlAuthenticationEnt
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 
 @Configuration(proxyBeanMethods = false)
+@EnableWebSecurity
 public class AuthorizationServerConfiguration {
     public static final String                AUTHORIZATION_BEARER            = OAuth2AccessToken.TokenType.BEARER.getValue() + " ";
     public static final String                DEFAULT_PASSWORD_ENCODER_PREFIX = "{bcrypt}";
@@ -71,8 +72,12 @@ public class AuthorizationServerConfiguration {
             HttpSecurity http,
             RegisteredClientRepository registeredClientRepository,
             AuthorizationServerSettings authorizationServerSettings) throws Exception {
-
-        OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
+        http.securityMatcher(
+                "/oauth2/**",
+                "/.well-known/**",
+                DEVICE_VERIFICATION_URI,
+                VIEW_JWK_URI
+        );
 
         /*
          * This sample demonstrates the use of a public client that does not
@@ -96,19 +101,18 @@ public class AuthorizationServerConfiguration {
         DeviceClientAuthenticationProvider deviceClientAuthenticationProvider =
                 new DeviceClientAuthenticationProvider(registeredClientRepository);
 
-        // @formatter:off
-		http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
-			.deviceAuthorizationEndpoint(endpoint -> endpoint.verificationUri(DEVICE_VERIFICATION_URI))
-			.deviceVerificationEndpoint(endpoint -> endpoint.consentPage(CONSENT_PAGE_URI))
-			.clientAuthentication(auth ->
-				auth
-				.authenticationConverter(deviceClientAuthenticationConverter)
-				.authenticationProvider(deviceClientAuthenticationProvider)
-			)
-			.authorizationEndpoint(endpoint -> endpoint.consentPage(CONSENT_PAGE_URI))
-			// Enable OpenID Connect 1.0
-            .oidc(Customizer.withDefaults());
-		// @formatter:on
+        http.oauth2AuthorizationServer(authorizationServer ->
+                authorizationServer
+                        .deviceAuthorizationEndpoint(endpoint -> endpoint.verificationUri(DEVICE_VERIFICATION_URI))
+                        .deviceVerificationEndpoint(endpoint -> endpoint.consentPage(CONSENT_PAGE_URI))
+                        .clientAuthentication(auth ->
+                                auth
+                                        .authenticationConverter(deviceClientAuthenticationConverter)
+                                        .authenticationProvider(deviceClientAuthenticationProvider)
+                        )
+                        .authorizationEndpoint(endpoint -> endpoint.consentPage(CONSENT_PAGE_URI))
+                        .oidc(Customizer.withDefaults())
+        );
 
         // @formatter:off
 		http
@@ -154,7 +158,7 @@ public class AuthorizationServerConfiguration {
 
     @Bean
     public JwtDecoder jwtDecoder(JWKSource<SecurityContext> jwkSource) {
-        return OAuth2AuthorizationServerConfiguration.jwtDecoder(jwkSource);
+        return NimbusJwtDecoder.withJwkSource(jwkSource).build();
     }
 
     @Bean

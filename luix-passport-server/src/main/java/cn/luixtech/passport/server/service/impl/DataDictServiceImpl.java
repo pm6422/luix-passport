@@ -36,14 +36,18 @@ public class DataDictServiceImpl implements DataDictService {
     public void initAllTimezones() {
         List<DataDict> timezones = new ArrayList<>();
         ZoneId.getAvailableZoneIds().forEach(zoneId -> {
-            DataDict timezone = new DataDict();
-            timezone.setCategoryCode(CATEGORY_CODE_TIMEZONE);
-            timezone.setDictCode(zoneId);
-            timezone.setDictName(getOffset(ZoneId.of(zoneId)));
-            timezone.setEnabled(true);
-            timezones.add(timezone);
+            if (!dataDictRepository.existsByCategoryCodeAndDictCode(CATEGORY_CODE_TIMEZONE, zoneId)) {
+                DataDict timezone = new DataDict();
+                timezone.setCategoryCode(CATEGORY_CODE_TIMEZONE);
+                timezone.setDictCode(zoneId);
+                timezone.setDictName(getOffset(ZoneId.of(zoneId)));
+                timezone.setEnabled(true);
+                timezones.add(timezone);
+            }
         });
-        dataDictRepository.saveAll(timezones);
+        if (!timezones.isEmpty()) {
+            dataDictRepository.saveAll(timezones);
+        }
     }
 
     /**

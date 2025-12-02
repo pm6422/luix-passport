@@ -4,24 +4,26 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.WebResponse;
-import com.gargoylesoftware.htmlunit.html.DomElement;
-import com.gargoylesoftware.htmlunit.html.HtmlCheckBoxInput;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import org.htmlunit.WebClient;
+import org.htmlunit.WebResponse;
+import org.htmlunit.html.DomElement;
+import org.htmlunit.html.HtmlCheckBoxInput;
+import org.htmlunit.html.HtmlPage;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationConsentService;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.htmlunit.MockMvcWebClientBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import static cn.luixtech.passport.server.pojo.Oauth2Client.SCOPE_MESSAGE_READ;
@@ -36,9 +38,10 @@ import static org.mockito.Mockito.when;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 public class AuthorizationServerConsentTests {
+    private static final String                            BASE_URL                 = "http://localhost";
     private static final String                            REDIRECT_URI              = "http://127.0.0.1/login/oauth2/code/messaging-client-oidc";
     private static final String                            AUTHORIZATION_REQUEST_URI = UriComponentsBuilder
-            .fromPath("/oauth2/authorize")
+            .fromUriString(BASE_URL + "/oauth2/authorize")
             .queryParam("client_id", "messaging-client")
             .queryParam("response_type", "code")
             .queryParam("scope", OidcScopes.OPENID + " " + SCOPE_MESSAGE_READ)
@@ -47,11 +50,14 @@ public class AuthorizationServerConsentTests {
             .toUriString();
     @Resource
     private              WebClient                         webClient;
-    @MockBean
+    @Resource
+    private              MockMvc                           mockMvc;
+    @MockitoBean
     private              OAuth2AuthorizationConsentService authorizationConsentService;
 
     @BeforeEach
     public void setUp() {
+        this.webClient = MockMvcWebClientBuilder.mockMvcSetup(this.mockMvc).build();
         this.webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
         this.webClient.getOptions().setRedirectEnabled(true);
         this.webClient.getOptions().setThrowExceptionOnScriptError(false);
@@ -59,9 +65,20 @@ public class AuthorizationServerConsentTests {
         when(this.authorizationConsentService.findById(any(), any())).thenReturn(null);
     }
 
+    private static HtmlPage signIn(HtmlPage page, String username, String password) throws IOException {
+        org.htmlunit.html.HtmlInput usernameInput = page.querySelector("input[name='username']");
+        org.htmlunit.html.HtmlInput passwordInput = page.querySelector("input[name='password']");
+        org.htmlunit.html.HtmlButton signInButton = page.querySelector("button");
+        usernameInput.type(username);
+        passwordInput.type(password);
+        return signInButton.click();
+    }
+
     @Test
     @WithMockUser("user1")
     public void whenUserConsentsToAllScopesThenReturnAuthorizationCode() throws IOException {
+        final HtmlPage loginPage = this.webClient.getPage(BASE_URL + "/login");
+        signIn(loginPage, "user", "user");
         final HtmlPage consentPage = this.webClient.getPage(AUTHORIZATION_REQUEST_URI);
         assertThat(consentPage.getTitleText()).isEqualTo("Passport | Authorization");
 
@@ -92,6 +109,8 @@ public class AuthorizationServerConsentTests {
     @Test
     @WithMockUser("user1")
     public void whenUserCancelsConsentThenReturnAccessDeniedError() throws IOException {
+        final HtmlPage loginPage = this.webClient.getPage(BASE_URL + "/login");
+        signIn(loginPage, "user", "user");
         final HtmlPage consentPage = this.webClient.getPage(AUTHORIZATION_REQUEST_URI);
         assertThat(consentPage.getTitleText()).isEqualTo("Passport | Authorization");
 

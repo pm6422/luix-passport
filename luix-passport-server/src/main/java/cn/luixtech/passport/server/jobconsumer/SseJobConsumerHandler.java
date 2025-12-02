@@ -6,9 +6,9 @@ import cn.luixtech.passport.server.component.jobqueue.JobConsumer;
 import cn.luixtech.passport.server.jobconsumer.base.JobConsumerHandler;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.luixtech.springbootframework.utils.SseEmitterUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import com.luixtech.springbootframework.utils.SseEmitterUtils;
 
 @Component
 @Slf4j
@@ -24,7 +24,7 @@ public class SseJobConsumerHandler implements JobConsumerHandler {
     public void handle(JobQueue job) {
         SseMessage message = parsePayload(job.getPayload());
         if (message != null) {
-            SseEmitterUtils.pushUserMessage(message.getUsername(), message.getMessage());
+            SseEmitterUtils.pushToUser(message.getUsername(), message.getMessage());
         }
     }
 

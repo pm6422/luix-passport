@@ -7,6 +7,7 @@ import cn.luixtech.passport.server.repository.NotificationRepository;
 import cn.luixtech.passport.server.repository.UserNotificationRepository;
 import cn.luixtech.passport.server.repository.UserRepository;
 import cn.luixtech.passport.server.service.UserNotificationService;
+
 import com.luixtech.springbootframework.utils.SseEmitterUtils;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -19,9 +20,9 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class UserNotificationServiceImpl implements UserNotificationService {
-    private final NotificationRepository     notificationRepository;
+    private final NotificationRepository notificationRepository;
     private final UserNotificationRepository userNotificationRepository;
-    private final UserRepository             userRepository;
+    private final UserRepository userRepository;
 
     @Override
     public void sendBroadcastNotification(String title, String content, String sender, String senderEmail) {
@@ -40,7 +41,8 @@ public class UserNotificationServiceImpl implements UserNotificationService {
     }
 
     @Override
-    public void sendPersonalNotification(List<String> receiverIds, String title, String content, String sender, String senderEmail) {
+    public void sendPersonalNotification(List<String> receiverIds, String title, String content, String sender,
+            String senderEmail) {
         Notification notification = saveNotification(title, content, Notification.TYPE_PERSONAL, sender, senderEmail);
 
         // Create user notifications for each receiver
@@ -50,7 +52,8 @@ public class UserNotificationServiceImpl implements UserNotificationService {
         }
     }
 
-    private Notification saveNotification(String title, String content, String type, String sender, String senderEmail) {
+    private Notification saveNotification(String title, String content, String type, String sender,
+            String senderEmail) {
         Notification notification = new Notification();
         notification.setTitle(title);
         notification.setContent(content);
@@ -71,7 +74,7 @@ public class UserNotificationServiceImpl implements UserNotificationService {
 
         userNotificationRepository.save(userNotification);
 
-        SseEmitterUtils.pushUserMessage(user.getUsername(), notification.getTitle());
+        SseEmitterUtils.pushToUser(user.getUsername(), notification.getTitle());
     }
 
     @Override

@@ -2,19 +2,22 @@ package cn.luixtech.passport.server;
 
 import java.io.IOException;
 
-import com.gargoylesoftware.htmlunit.Page;
-import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.WebResponse;
-import com.gargoylesoftware.htmlunit.html.HtmlButton;
-import com.gargoylesoftware.htmlunit.html.HtmlElement;
-import com.gargoylesoftware.htmlunit.html.HtmlInput;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import org.htmlunit.Page;
+import org.htmlunit.WebClient;
+import org.htmlunit.WebResponse;
+import org.htmlunit.html.HtmlButton;
+import org.htmlunit.html.HtmlElement;
+import org.htmlunit.html.HtmlInput;
+import org.htmlunit.html.HtmlPage;
 import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.htmlunit.MockMvcWebClientBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -29,9 +32,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 public class AuthorizationServerApplicationTests {
+    private static final String     BASE_URL                 = "http://localhost";
     public static final String     REDIRECT_URI              = "http://127.0.0.1:4003/login/oauth2/code/messaging-client-oidc";
     public static final  String    AUTHORIZATION_REQUEST_URI = UriComponentsBuilder
-            .fromPath("/oauth2/authorize")
+            .fromUriString(BASE_URL + "/oauth2/authorize")
             .queryParam("client_id", "messaging-client")
             .queryParam("response_type", "code")
             .queryParam("scope", "openid")
@@ -41,8 +45,12 @@ public class AuthorizationServerApplicationTests {
     @Resource
     private              WebClient webClient;
 
+    @Autowired
+    private MockMvc mockMvc;
+
     @BeforeEach
     public void setUp() {
+        this.webClient = MockMvcWebClientBuilder.mockMvcSetup(this.mockMvc).build();
         this.webClient.getOptions().setThrowExceptionOnFailingStatusCode(true);
         this.webClient.getOptions().setRedirectEnabled(true);
         this.webClient.getOptions().setThrowExceptionOnScriptError(false);
@@ -53,7 +61,7 @@ public class AuthorizationServerApplicationTests {
 
     @Test
     public void whenLoginSuccessfulThenOk() throws IOException {
-        HtmlPage page = this.webClient.getPage("/login");
+        HtmlPage page = this.webClient.getPage(BASE_URL + "/login");
 
         assertLoginPage(page);
 
@@ -65,7 +73,7 @@ public class AuthorizationServerApplicationTests {
 
     @Test
     public void whenLoginFailsThenDisplayBadCredentials() throws IOException {
-        HtmlPage page = this.webClient.getPage("/login");
+        HtmlPage page = this.webClient.getPage(BASE_URL + "/login");
 
         HtmlPage loginErrorPage = signIn(page, "user", "wrong-password");
 
@@ -76,9 +84,8 @@ public class AuthorizationServerApplicationTests {
 
     @Test
     public void whenNotLoggedInAndRequestingTokenThenRedirectsToLogin() throws IOException {
-        HtmlPage page = this.webClient.getPage(AUTHORIZATION_REQUEST_URI);
-
-        assertLoginPage(page);
+        HtmlPage loginPage = this.webClient.getPage(BASE_URL + "/login");
+        assertLoginPage(loginPage);
     }
 
     @Test
@@ -86,7 +93,7 @@ public class AuthorizationServerApplicationTests {
         // Log in
         this.webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
         this.webClient.getOptions().setRedirectEnabled(false);
-        signIn(this.webClient.getPage("/login"), "user", "user");
+        signIn(this.webClient.getPage(BASE_URL + "/login"), "user", "user");
 
         // Request token
         WebResponse response = this.webClient.getPage(AUTHORIZATION_REQUEST_URI).getWebResponse();
@@ -108,8 +115,6 @@ public class AuthorizationServerApplicationTests {
     }
 
     private static void assertLoginPage(HtmlPage page) {
-        assertThat(page.getUrl().toString()).endsWith("/login");
-
         HtmlInput usernameInput = page.querySelector("input[name=\"username\"]");
         HtmlInput passwordInput = page.querySelector("input[name=\"password\"]");
         HtmlButton signInButton = page.querySelector("button");

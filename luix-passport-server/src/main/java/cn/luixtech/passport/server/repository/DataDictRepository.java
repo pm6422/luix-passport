@@ -14,4 +14,6 @@ public interface DataDictRepository extends JpaRepository<DataDict, String> {
     List<DataDict> findByCategoryCode(String timezone);
 
     List<DataDict> findByCategoryCodeAndEnabledIsTrue(String timezone);
+
+    boolean existsByCategoryCodeAndDictCode(String categoryCode, String dictCode);
 }

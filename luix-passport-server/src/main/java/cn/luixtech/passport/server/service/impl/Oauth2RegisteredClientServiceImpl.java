@@ -5,7 +5,7 @@ import cn.luixtech.passport.server.persistence.Tables;
 import cn.luixtech.passport.server.pojo.Oauth2Client;
 import cn.luixtech.passport.server.repository.Oauth2RegisteredClientRepository;
 import cn.luixtech.passport.server.service.Oauth2RegisteredClientService;
-import com.luixtech.uidgenerator.core.id.IdGenerator;
+
 import com.luixtech.utilities.exception.DataNotFoundException;
 import com.luixtech.utilities.exception.DuplicationException;
 import lombok.AllArgsConstructor;
@@ -25,17 +25,18 @@ import static cn.luixtech.passport.server.persistence.tables.Oauth2RegisteredCli
 @Service
 @AllArgsConstructor
 public class Oauth2RegisteredClientServiceImpl implements Oauth2RegisteredClientService {
-    private final DSLContext                       dslContext;
-    private final RegisteredClientRepository       registeredClientRepository;
+    private final DSLContext dslContext;
+    private final RegisteredClientRepository registeredClientRepository;
     private final Oauth2RegisteredClientRepository oauth2RegisteredClientRepository;
 
     @Override
     public void insert(Oauth2Client pojo) {
-        List<Oauth2RegisteredClient> oauth2RegisteredClients = oauth2RegisteredClientRepository.findByClientId(pojo.getClientId());
+        List<Oauth2RegisteredClient> oauth2RegisteredClients = oauth2RegisteredClientRepository
+                .findByClientId(pojo.getClientId());
         if (CollectionUtils.isNotEmpty(oauth2RegisteredClients)) {
             throw new DuplicationException(Map.of("clientId", pojo.getClientId()));
         }
-        pojo.setId("O" + IdGenerator.generateShortId());
+        pojo.setId("O" + java.util.UUID.randomUUID().toString().substring(0, 8));
         registeredClientRepository.save(pojo.toRegisteredClient());
         dslContext.update(Tables.OAUTH2_REGISTERED_CLIENT)
                 .set(OAUTH2_REGISTERED_CLIENT.ENABLED, pojo.getEnabled())
@@ -60,7 +61,8 @@ public class Oauth2RegisteredClientServiceImpl implements Oauth2RegisteredClient
         Example<Oauth2RegisteredClient> queryExample = Example.of(criteria, matcher);
 
         Page<Oauth2RegisteredClient> domains = oauth2RegisteredClientRepository.findAll(queryExample, pageable);
-        List<Oauth2Client> results = domains.stream().map(Oauth2Client::fromRegisteredClient).collect(Collectors.toList());
+        List<Oauth2Client> results = domains.stream().map(Oauth2Client::fromRegisteredClient)
+                .collect(Collectors.toList());
         return new PageImpl<>(results, pageable, domains.getNumberOfElements());
     }
 

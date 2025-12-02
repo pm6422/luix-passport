@@ -7,7 +7,6 @@ import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
@@ -31,12 +30,12 @@ import static com.luixtech.springbootframework.utils.NetworkUtils.getRequestUrl;
 @Controller
 @AllArgsConstructor
 @Slf4j
-public class SystemController implements ErrorController {
+public class SystemController {
     private final RegisteredClientRepository        registeredClientRepository;
     private final OAuth2AuthorizationConsentService authorizationConsentService;
     private final UserRepository                    userRepository;
 
-    @RequestMapping("/error")
+    @RequestMapping("/system/error")
     public String handleError(Model model, HttpServletRequest request) {
         String errorMessage = getErrorMessage(request);
         if (errorMessage.startsWith("[access_denied]")) {

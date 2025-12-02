@@ -2,11 +2,11 @@ package cn.luixtech.passport.server;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONWriter;
-import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.WebResponse;
-import com.gargoylesoftware.htmlunit.html.DomElement;
-import com.gargoylesoftware.htmlunit.html.HtmlCheckBoxInput;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import org.htmlunit.WebClient;
+import org.htmlunit.WebResponse;
+import org.htmlunit.html.DomElement;
+import org.htmlunit.html.HtmlCheckBoxInput;
+import org.htmlunit.html.HtmlPage;
 import com.google.common.collect.Sets;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -16,10 +16,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.boot.json.JacksonJsonParser;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
@@ -30,6 +30,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.htmlunit.MockMvcWebClientBuilder;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -54,9 +55,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Slf4j
 public class OAuth2AuthorizationTests {
+    private static final String                            BASE_URL                 = "http://localhost";
     private static final String                            REDIRECT_URI              = "http://127.0.0.1/login/oauth2/code/messaging-client-oidc";
     private static final String                            AUTHORIZATION_REQUEST_URI = UriComponentsBuilder
-            .fromPath("/oauth2/authorize")
+            .fromUriString(BASE_URL + "/oauth2/authorize")
             .queryParam("client_id", "messaging-client")
             .queryParam("response_type", "code")
             .queryParam("scope", OidcScopes.OPENID + " " + SCOPE_MESSAGE_READ)
@@ -68,11 +70,12 @@ public class OAuth2AuthorizationTests {
     private              MockMvc                           mockMvc;
     @Resource
     private              WebClient                         webClient;
-    @MockBean
+    @MockitoBean
     private              OAuth2AuthorizationConsentService authorizationConsentService;
 
     @BeforeEach
     public void setUp() {
+        this.webClient = MockMvcWebClientBuilder.mockMvcSetup(this.mockMvc).build();
         this.webClient.getOptions().setThrowExceptionOnFailingStatusCode(true);
         this.webClient.getOptions().setRedirectEnabled(true);
         this.webClient.getOptions().setThrowExceptionOnScriptError(false);
@@ -102,7 +105,7 @@ public class OAuth2AuthorizationTests {
                         .accept(APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk());
         String resultString = result.andReturn().getResponse().getContentAsString();
-        Map<String, Object> resultMap = new JacksonJsonParser().parseMap(resultString);
+        Map<String, Object> resultMap = new ObjectMapper().readValue(resultString, Map.class);
         log.info("Token result: {}", JSON.toJSONString(resultMap, JSONWriter.Feature.PrettyFormat));
         assertThat(resultMap).containsKey("access_token");
         return resultMap;
@@ -168,7 +171,7 @@ public class OAuth2AuthorizationTests {
                 .andExpect(status().isOk());
 
         String resultString = result.andReturn().getResponse().getContentAsString();
-        Map<String, Object> objectMap = new JacksonJsonParser().parseMap(resultString);
+        Map<String, Object> objectMap = new ObjectMapper().readValue(resultString, Map.class);
         log.info("Access token details: {}", JSON.toJSONString(objectMap, JSONWriter.Feature.PrettyFormat));
     }
 
@@ -180,7 +183,7 @@ public class OAuth2AuthorizationTests {
                 .andExpect(status().isOk());
 
         String resultString = result.andReturn().getResponse().getContentAsString();
-        Map<String, Object> objectMap = new JacksonJsonParser().parseMap(resultString);
+        Map<String, Object> objectMap = new ObjectMapper().readValue(resultString, Map.class);
         log.info("JWK details: {}", JSON.toJSONString(objectMap, JSONWriter.Feature.PrettyFormat));
     }
 
@@ -247,7 +250,7 @@ public class OAuth2AuthorizationTests {
                 .andExpect(status().isOk());
 
         String resultString1 = result1.andReturn().getResponse().getContentAsString();
-        Map<String, Object> objectMap1 = new JacksonJsonParser().parseMap(resultString1);
+        Map<String, Object> objectMap1 = new ObjectMapper().readValue(resultString1, Map.class);
         assertThat(objectMap1.get("active")).isEqualTo(true);
 
         // Revoke access token
@@ -265,7 +268,7 @@ public class OAuth2AuthorizationTests {
                 .andExpect(status().isOk());
 
         String resultString2 = result2.andReturn().getResponse().getContentAsString();
-        Map<String, Object> objectMap2 = new JacksonJsonParser().parseMap(resultString2);
+        Map<String, Object> objectMap2 = new ObjectMapper().readValue(resultString2, Map.class);
         assertThat(objectMap2.get("active")).isEqualTo(false);
 
         // It must sleep
@@ -282,7 +285,9 @@ public class OAuth2AuthorizationTests {
     }
 
     private String getAuthCode() throws IOException, URISyntaxException {
-        final HtmlPage consentPage = this.webClient.getPage(AUTHORIZATION_REQUEST_URI);
+        final org.htmlunit.html.HtmlPage loginPage = this.webClient.getPage(BASE_URL + "/login");
+        signIn(loginPage, "user", "user");
+        final org.htmlunit.html.HtmlPage consentPage = this.webClient.getPage(AUTHORIZATION_REQUEST_URI);
         List<HtmlCheckBoxInput> scopes = new ArrayList<>();
         consentPage.querySelectorAll("input[name='scope']").forEach(scope ->
                 scopes.add((HtmlCheckBoxInput) scope));
@@ -310,5 +315,14 @@ public class OAuth2AuthorizationTests {
         Optional<NameValuePair> code = params.stream().filter(p -> p.getName().equals("code")).findFirst();
         assertThat(code.isPresent()).isTrue();
         return code.get().getValue();
+    }
+
+    private static org.htmlunit.html.HtmlPage signIn(org.htmlunit.html.HtmlPage page, String username, String password) throws IOException {
+        org.htmlunit.html.HtmlInput usernameInput = page.querySelector("input[name='username']");
+        org.htmlunit.html.HtmlInput passwordInput = page.querySelector("input[name='password']");
+        org.htmlunit.html.HtmlButton signInButton = page.querySelector("button");
+        usernameInput.type(username);
+        passwordInput.type(password);
+        return signInButton.click();
     }
 }
