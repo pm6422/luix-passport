@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.UuidGenerator;
+import com.luixtech.springbootframework.idgenerator.TsidGenerator;
 
 @Data
 @Entity
@@ -15,8 +15,9 @@ import org.hibernate.annotations.UuidGenerator;
 public class TeamUser {
 
     @Id
-    @UuidGenerator
-    @Column(length = 36)
+    @GeneratedValue
+    @TsidGenerator
+    @Column(length = 19)
     private String id;
 
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)

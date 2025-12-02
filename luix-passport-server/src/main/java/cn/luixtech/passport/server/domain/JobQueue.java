@@ -2,11 +2,12 @@ package cn.luixtech.passport.server.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.UuidGenerator;
+import com.luixtech.springbootframework.idgenerator.TsidGenerator;
 
 import java.time.Instant;
 
@@ -21,8 +22,9 @@ public class JobQueue {
     public static final String STATUS_FAILED     = "failed";
 
     @Id
-    @UuidGenerator
-    @Column(length = 36)
+    @GeneratedValue
+    @TsidGenerator
+    @Column(length = 19)
     private String  id;
     private String  channel;
     private String  payload;

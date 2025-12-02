@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.UuidGenerator;
+import com.luixtech.springbootframework.idgenerator.TsidGenerator;
 
 import java.time.Instant;
 
@@ -19,8 +19,9 @@ public class DataDict {
     public static final String CATEGORY_CODE_TIMEZONE = "Timezone";
 
     @Id
-    @UuidGenerator
-    @Column(length = 36)
+    @GeneratedValue
+    @TsidGenerator
+    @Column(length = 19)
     private String id;
 
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)

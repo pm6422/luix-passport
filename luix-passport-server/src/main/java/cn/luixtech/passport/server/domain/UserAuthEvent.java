@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.UuidGenerator;
+import com.luixtech.springbootframework.idgenerator.TsidGenerator;
 
 import java.time.Instant;
 
@@ -16,8 +16,9 @@ import java.time.Instant;
 public class UserAuthEvent {
 
     @Id
-    @UuidGenerator
-    @Column(length = 36)
+    @GeneratedValue
+    @TsidGenerator
+    @Column(length = 19)
     private String id;
     public static final String AUTH_SUCCESS = "AuthenticationSuccess";
     public static final String AUTH_FAILURE = "AuthenticationFailure";

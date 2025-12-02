@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.UuidGenerator;
+import com.luixtech.springbootframework.idgenerator.TsidGenerator;
 
 import java.time.Instant;
 
@@ -19,8 +19,9 @@ public class ScheduleExecutionLog {
     public static final String STATUS_FAILURE = "FAILURE";
 
     @Id
-    @UuidGenerator
-    @Column(length = 36)
+    @GeneratedValue
+    @TsidGenerator
+    @Column(length = 19)
     protected String id;
     private String scheduleName;
     private Instant startAt;
