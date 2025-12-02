@@ -11,6 +11,8 @@ import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 
+import com.github.f4b6a3.tsid.TsidCreator;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
@@ -102,8 +104,8 @@ public class Oauth2Client implements Serializable {
         String clientSecret = StringUtils.defaultIfEmpty(this.clientSecret,
                 DEFAULT_PASSWORD_ENCODER_PREFIX + BCRYPT_PASSWORD_ENCODER.encode(this.getRawClientSecret()));
         return RegisteredClient
-                .withId(Optional.ofNullable(this.id).orElse(java.util.UUID.randomUUID().toString()))
-                .clientId(Optional.ofNullable(this.clientId).orElse(java.util.UUID.randomUUID().toString()))
+                .withId(Optional.ofNullable(this.id).orElse(TsidCreator.getTsid().toString()))
+                .clientId(Optional.ofNullable(this.clientId).orElse(TsidCreator.getTsid().toString()))
                 .clientName(this.clientName)
                 .clientSecret(clientSecret)
                 .clientIdIssuedAt(this.clientIdIssuedAt)
