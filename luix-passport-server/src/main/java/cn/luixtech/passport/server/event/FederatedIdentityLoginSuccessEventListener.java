@@ -14,6 +14,7 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.function.BiConsumer;
+import com.github.f4b6a3.tsid.TsidCreator;
 
 @Slf4j
 @AllArgsConstructor
@@ -43,8 +44,7 @@ public class FederatedIdentityLoginSuccessEventListener implements BiConsumer<OA
             // create a new user automatically
             String username = oAuth2User.getName();
             if (userRepository.findById(oAuth2User.getName()).isPresent()) {
-                // if the username already exists, generate a random username
-                username = "U" + java.util.UUID.randomUUID().toString().substring(0, 8);
+                username = "U" + TsidCreator.getTsid().toString();
             }
             userService.insertThirdPartyUser(username, email, clientRegistrationId);
             UserDetails newUser = this.userDetailsService.loadUserByUsername(email);

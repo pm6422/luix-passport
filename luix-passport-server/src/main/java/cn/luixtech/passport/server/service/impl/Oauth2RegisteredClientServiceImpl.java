@@ -5,7 +5,7 @@ import cn.luixtech.passport.server.persistence.Tables;
 import cn.luixtech.passport.server.pojo.Oauth2Client;
 import cn.luixtech.passport.server.repository.Oauth2RegisteredClientRepository;
 import cn.luixtech.passport.server.service.Oauth2RegisteredClientService;
-
+import com.github.f4b6a3.tsid.TsidCreator;
 import com.luixtech.utilities.exception.DataNotFoundException;
 import com.luixtech.utilities.exception.DuplicationException;
 import lombok.AllArgsConstructor;
@@ -25,8 +25,8 @@ import static cn.luixtech.passport.server.persistence.tables.Oauth2RegisteredCli
 @Service
 @AllArgsConstructor
 public class Oauth2RegisteredClientServiceImpl implements Oauth2RegisteredClientService {
-    private final DSLContext dslContext;
-    private final RegisteredClientRepository registeredClientRepository;
+    private final DSLContext                       dslContext;
+    private final RegisteredClientRepository       registeredClientRepository;
     private final Oauth2RegisteredClientRepository oauth2RegisteredClientRepository;
 
     @Override
@@ -36,7 +36,7 @@ public class Oauth2RegisteredClientServiceImpl implements Oauth2RegisteredClient
         if (CollectionUtils.isNotEmpty(oauth2RegisteredClients)) {
             throw new DuplicationException(Map.of("clientId", pojo.getClientId()));
         }
-        pojo.setId("O" + java.util.UUID.randomUUID().toString().substring(0, 8));
+        pojo.setId("O" + TsidCreator.getTsid().toLong());
         registeredClientRepository.save(pojo.toRegisteredClient());
         dslContext.update(Tables.OAUTH2_REGISTERED_CLIENT)
                 .set(OAUTH2_REGISTERED_CLIENT.ENABLED, pojo.getEnabled())
