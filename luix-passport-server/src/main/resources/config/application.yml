@@ -153,7 +153,7 @@ luix:
     license-url:
   aop-logging:
     enabled: true
-    method-whitelist-mode: false
+    method-blacklist-mode: false
   elapsed-time-logging:
     enabled: true
     slow-execution-threshold: 300 # unit: ms
@@ -173,5 +173,5 @@ application:
     domain: https://passport.luixtech.cn
   mail:
     resend-api-key: ${RESEND_API_KEY:use-your-resend-api-key} # https://resend.com
-    from-user-name: louis@luixtech.cn
+    from-username: louis@luixtech.cn
     admin-email: ${luix.api-docs.contact-email}
