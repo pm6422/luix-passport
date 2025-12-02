@@ -3,7 +3,6 @@ package cn.luixtech.passport.server.config.oauth;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpMethod;
-import org.springframework.lang.Nullable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;

@@ -19,7 +19,7 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
 		<maven.version>3.9.11</maven.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<revision>1.0.0</revision>
+
 	</properties>
 	<dependencyManagement>
 		<dependencies>
