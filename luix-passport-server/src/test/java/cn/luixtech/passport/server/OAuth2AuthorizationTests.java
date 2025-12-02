@@ -14,6 +14,7 @@ import org.apache.http.client.utils.URIBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -101,7 +102,9 @@ public class OAuth2AuthorizationTests {
                 .accept(APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk());
         String resultString = result.andReturn().getResponse().getContentAsString();
-        Map<String, Object> resultMap = new ObjectMapper().readValue(resultString, Map.class);
+        Map<String, Object> resultMap = new ObjectMapper().readValue(resultString,
+                new TypeReference<Map<String, Object>>() {
+                });
         log.info("Token result: {}", JSON.toJSONString(resultMap, JSONWriter.Feature.PrettyFormat));
         assertThat(resultMap).containsKey("access_token");
         return resultMap;
@@ -167,7 +170,9 @@ public class OAuth2AuthorizationTests {
                 .andExpect(status().isOk());
 
         String resultString = result.andReturn().getResponse().getContentAsString();
-        Map<String, Object> objectMap = new ObjectMapper().readValue(resultString, Map.class);
+        Map<String, Object> objectMap = new ObjectMapper().readValue(resultString,
+                new TypeReference<Map<String, Object>>() {
+                });
         log.info("Access token details: {}", JSON.toJSONString(objectMap, JSONWriter.Feature.PrettyFormat));
     }
 
@@ -179,7 +184,9 @@ public class OAuth2AuthorizationTests {
                 .andExpect(status().isOk());
 
         String resultString = result.andReturn().getResponse().getContentAsString();
-        Map<String, Object> objectMap = new ObjectMapper().readValue(resultString, Map.class);
+        Map<String, Object> objectMap = new ObjectMapper().readValue(resultString,
+                new TypeReference<Map<String, Object>>() {
+                });
         log.info("JWK details: {}", JSON.toJSONString(objectMap, JSONWriter.Feature.PrettyFormat));
     }
 
@@ -246,7 +253,9 @@ public class OAuth2AuthorizationTests {
                 .andExpect(status().isOk());
 
         String resultString1 = result1.andReturn().getResponse().getContentAsString();
-        Map<String, Object> objectMap1 = new ObjectMapper().readValue(resultString1, Map.class);
+        Map<String, Object> objectMap1 = new ObjectMapper().readValue(resultString1,
+                new TypeReference<Map<String, Object>>() {
+                });
         assertThat(objectMap1.get("active")).isEqualTo(true);
 
         // Revoke access token
@@ -264,7 +273,9 @@ public class OAuth2AuthorizationTests {
                 .andExpect(status().isOk());
 
         String resultString2 = result2.andReturn().getResponse().getContentAsString();
-        Map<String, Object> objectMap2 = new ObjectMapper().readValue(resultString2, Map.class);
+        Map<String, Object> objectMap2 = new ObjectMapper().readValue(resultString2,
+                new TypeReference<Map<String, Object>>() {
+                });
         assertThat(objectMap2.get("active")).isEqualTo(false);
 
         // It must sleep
