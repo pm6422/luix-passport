@@ -17,7 +17,7 @@ public class SchedulerLock {
     @Id
     @GeneratedValue
     @TsidGenerator
-    @Column(length = 19)
+    @Column(length = 17)
     private String id;
 
     private Instant lockedAt;

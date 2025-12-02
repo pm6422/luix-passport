@@ -18,7 +18,7 @@ public class Team {
     @Id
     @GeneratedValue
     @TsidGenerator
-    @Column(length = 19)
+    @Column(length = 17)
     private String id;
 
     private String remark;

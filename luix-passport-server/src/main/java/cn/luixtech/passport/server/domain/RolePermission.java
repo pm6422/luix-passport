@@ -20,7 +20,7 @@ public class RolePermission {
     @Id
     @GeneratedValue
     @TsidGenerator
-    @Column(length = 19)
+    @Column(length = 17)
     private String id;
 
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)

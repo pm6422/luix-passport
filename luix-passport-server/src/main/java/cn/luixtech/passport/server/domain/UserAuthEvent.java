@@ -18,7 +18,7 @@ public class UserAuthEvent {
     @Id
     @GeneratedValue
     @TsidGenerator
-    @Column(length = 19)
+    @Column(length = 17)
     private String id;
     public static final String AUTH_SUCCESS = "AuthenticationSuccess";
     public static final String AUTH_FAILURE = "AuthenticationFailure";
