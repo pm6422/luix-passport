@@ -15,12 +15,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.htmlunit.MockMvcWebClientBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -28,13 +26,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * Integration tests for the sample Authorization Server.
  */
-@ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 public class AuthorizationServerApplicationTests {
-    private static final String     BASE_URL                 = "http://localhost";
-    public static final String     REDIRECT_URI              = "http://127.0.0.1:4003/login/oauth2/code/messaging-client-oidc";
-    public static final  String    AUTHORIZATION_REQUEST_URI = UriComponentsBuilder
+    private static final String BASE_URL = "http://localhost";
+    public static final String REDIRECT_URI = "http://127.0.0.1:4003/login/oauth2/code/messaging-client-oidc";
+    public static final String AUTHORIZATION_REQUEST_URI = UriComponentsBuilder
             .fromUriString(BASE_URL + "/oauth2/authorize")
             .queryParam("client_id", "messaging-client")
             .queryParam("response_type", "code")
@@ -43,7 +40,7 @@ public class AuthorizationServerApplicationTests {
             .queryParam("redirect_uri", REDIRECT_URI)
             .toUriString();
     @Resource
-    private              WebClient webClient;
+    private WebClient webClient;
 
     @Autowired
     private MockMvc mockMvc;

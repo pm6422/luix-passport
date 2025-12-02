@@ -12,7 +12,6 @@ import org.htmlunit.html.HtmlPage;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,7 +20,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationConsentService;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.htmlunit.MockMvcWebClientBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -34,13 +32,12 @@ import static org.mockito.Mockito.when;
 /**
  * Consent screen integration tests for the sample Authorization Server.
  */
-@ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 public class AuthorizationServerConsentTests {
-    private static final String                            BASE_URL                 = "http://localhost";
-    private static final String                            REDIRECT_URI              = "http://127.0.0.1/login/oauth2/code/messaging-client-oidc";
-    private static final String                            AUTHORIZATION_REQUEST_URI = UriComponentsBuilder
+    private static final String BASE_URL = "http://localhost";
+    private static final String REDIRECT_URI = "http://127.0.0.1/login/oauth2/code/messaging-client-oidc";
+    private static final String AUTHORIZATION_REQUEST_URI = UriComponentsBuilder
             .fromUriString(BASE_URL + "/oauth2/authorize")
             .queryParam("client_id", "messaging-client")
             .queryParam("response_type", "code")
@@ -49,11 +46,11 @@ public class AuthorizationServerConsentTests {
             .queryParam("redirect_uri", REDIRECT_URI)
             .toUriString();
     @Resource
-    private              WebClient                         webClient;
+    private WebClient webClient;
     @Resource
-    private              MockMvc                           mockMvc;
+    private MockMvc mockMvc;
     @MockitoBean
-    private              OAuth2AuthorizationConsentService authorizationConsentService;
+    private OAuth2AuthorizationConsentService authorizationConsentService;
 
     @BeforeEach
     public void setUp() {
@@ -83,8 +80,7 @@ public class AuthorizationServerConsentTests {
         assertThat(consentPage.getTitleText()).isEqualTo("Passport | Authorization");
 
         List<HtmlCheckBoxInput> scopes = new ArrayList<>();
-        consentPage.querySelectorAll("input[name='scope']").forEach(scope ->
-                scopes.add((HtmlCheckBoxInput) scope));
+        consentPage.querySelectorAll("input[name='scope']").forEach(scope -> scopes.add((HtmlCheckBoxInput) scope));
         for (HtmlCheckBoxInput scope : scopes) {
             scope.click();
         }

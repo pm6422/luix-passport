@@ -14,7 +14,6 @@ import org.apache.http.client.utils.URIBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,7 +25,6 @@ import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationConsentService;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.htmlunit.MockMvcWebClientBuilder;
@@ -49,14 +47,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @Slf4j
 public class OAuth2AuthorizationTests {
-    private static final String                            BASE_URL                 = "http://localhost";
-    private static final String                            REDIRECT_URI              = "http://127.0.0.1/login/oauth2/code/messaging-client-oidc";
-    private static final String                            AUTHORIZATION_REQUEST_URI = UriComponentsBuilder
+    private static final String BASE_URL = "http://localhost";
+    private static final String REDIRECT_URI = "http://127.0.0.1/login/oauth2/code/messaging-client-oidc";
+    private static final String AUTHORIZATION_REQUEST_URI = UriComponentsBuilder
             .fromUriString(BASE_URL + "/oauth2/authorize")
             .queryParam("client_id", "messaging-client")
             .queryParam("response_type", "code")
@@ -64,13 +61,13 @@ public class OAuth2AuthorizationTests {
             .queryParam("state", "state")
             .queryParam("redirect_uri", REDIRECT_URI)
             .toUriString();
-    private static final String                            PROTECTED_RESOURCE_URI    = "/api/accounts/oauth2-server-messages";
+    private static final String PROTECTED_RESOURCE_URI = "/api/accounts/oauth2-server-messages";
     @Resource
-    private              MockMvc                           mockMvc;
+    private MockMvc mockMvc;
     @Resource
-    private              WebClient                         webClient;
+    private WebClient webClient;
     @MockitoBean
-    private              OAuth2AuthorizationConsentService authorizationConsentService;
+    private OAuth2AuthorizationConsentService authorizationConsentService;
 
     @BeforeEach
     public void setUp() {
@@ -99,9 +96,9 @@ public class OAuth2AuthorizationTests {
 
     private Map<String, Object> requestToken(MultiValueMap<String, String> params) throws Exception {
         ResultActions result = mockMvc.perform(post(TOKEN_URI)
-                        .header(HttpHeaders.AUTHORIZATION, getBasicHeader(AUTH_CODE_CLIENT_ID, AUTH_CODE_CLIENT_SECRET))
-                        .params(params)
-                        .accept(APPLICATION_JSON_VALUE))
+                .header(HttpHeaders.AUTHORIZATION, getBasicHeader(AUTH_CODE_CLIENT_ID, AUTH_CODE_CLIENT_SECRET))
+                .params(params)
+                .accept(APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk());
         String resultString = result.andReturn().getResponse().getContentAsString();
         Map<String, Object> resultMap = new ObjectMapper().readValue(resultString, Map.class);
@@ -116,17 +113,17 @@ public class OAuth2AuthorizationTests {
 
     private void assertRequestResource(String accessToken) throws Exception {
         // unauthorized if request has no access token
-//        mockMvc.perform(get(PROTECTED_RESOURCE_URI)
-//                        .contentType(APPLICATION_JSON_VALUE)
-//                        .accept(APPLICATION_JSON_VALUE))
-//                // Note: this is not a bug, it's a feature!
-//                .andExpect(status().isUnauthorized());
+        // mockMvc.perform(get(PROTECTED_RESOURCE_URI)
+        // .contentType(APPLICATION_JSON_VALUE)
+        // .accept(APPLICATION_JSON_VALUE))
+        // // Note: this is not a bug, it's a feature!
+        // .andExpect(status().isUnauthorized());
 
         // authorized if request has an access token in header
         mockMvc.perform(get(PROTECTED_RESOURCE_URI)
-                        .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_BEARER + accessToken)
-                        .contentType(APPLICATION_JSON_VALUE)
-                        .accept(APPLICATION_JSON_VALUE))
+                .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_BEARER + accessToken)
+                .contentType(APPLICATION_JSON_VALUE)
+                .accept(APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk());
     }
 
@@ -164,9 +161,9 @@ public class OAuth2AuthorizationTests {
         String accessToken = resultMap.get("access_token").toString();
 
         ResultActions result = mockMvc.perform(post(INTROSPECT_TOKEN_URI)
-                        .header(HttpHeaders.AUTHORIZATION, getBasicHeader(AUTH_CODE_CLIENT_ID, AUTH_CODE_CLIENT_SECRET))
-                        .param(OAuth2ParameterNames.TOKEN, accessToken)
-                        .accept(APPLICATION_JSON_VALUE))
+                .header(HttpHeaders.AUTHORIZATION, getBasicHeader(AUTH_CODE_CLIENT_ID, AUTH_CODE_CLIENT_SECRET))
+                .param(OAuth2ParameterNames.TOKEN, accessToken)
+                .accept(APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk());
 
         String resultString = result.andReturn().getResponse().getContentAsString();
@@ -178,7 +175,7 @@ public class OAuth2AuthorizationTests {
     @DisplayName("view JWK(JSON Web Key)")
     public void viewJwk() throws Exception {
         ResultActions result = mockMvc.perform(get(VIEW_JWK_URI)
-                        .accept(APPLICATION_JSON_VALUE))
+                .accept(APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk());
 
         String resultString = result.andReturn().getResponse().getContentAsString();
@@ -222,11 +219,11 @@ public class OAuth2AuthorizationTests {
         // Inactive token still works
         // https://devforum.okta.com/t/inactive-token-still-works/13460
 
-//        mockMvc.perform(get(PROTECTED_RESOURCE_URI)
-//                .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_BEARER + accessToken1)
-//                .contentType(APPLICATION_JSON_VALUE)
-//                .accept(APPLICATION_JSON_VALUE))
-//        .andExpect(status().isUnauthorized());
+        // mockMvc.perform(get(PROTECTED_RESOURCE_URI)
+        // .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_BEARER + accessToken1)
+        // .contentType(APPLICATION_JSON_VALUE)
+        // .accept(APPLICATION_JSON_VALUE))
+        // .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -243,9 +240,9 @@ public class OAuth2AuthorizationTests {
 
         // Introspect access token
         ResultActions result1 = mockMvc.perform(post(INTROSPECT_TOKEN_URI)
-                        .header(HttpHeaders.AUTHORIZATION, getBasicHeader(AUTH_CODE_CLIENT_ID, AUTH_CODE_CLIENT_SECRET))
-                        .param(OAuth2ParameterNames.TOKEN, accessToken)
-                        .accept(APPLICATION_JSON_VALUE))
+                .header(HttpHeaders.AUTHORIZATION, getBasicHeader(AUTH_CODE_CLIENT_ID, AUTH_CODE_CLIENT_SECRET))
+                .param(OAuth2ParameterNames.TOKEN, accessToken)
+                .accept(APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk());
 
         String resultString1 = result1.andReturn().getResponse().getContentAsString();
@@ -254,16 +251,16 @@ public class OAuth2AuthorizationTests {
 
         // Revoke access token
         mockMvc.perform(post(REVOKE_TOKEN_URI)
-                        .header(HttpHeaders.AUTHORIZATION, getBasicHeader(AUTH_CODE_CLIENT_ID, AUTH_CODE_CLIENT_SECRET))
-                        .param(OAuth2ParameterNames.TOKEN, accessToken)
-                        .accept(APPLICATION_JSON_VALUE))
+                .header(HttpHeaders.AUTHORIZATION, getBasicHeader(AUTH_CODE_CLIENT_ID, AUTH_CODE_CLIENT_SECRET))
+                .param(OAuth2ParameterNames.TOKEN, accessToken)
+                .accept(APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk());
 
         // Introspect access token
         ResultActions result2 = mockMvc.perform(post(INTROSPECT_TOKEN_URI)
-                        .header(HttpHeaders.AUTHORIZATION, getBasicHeader(AUTH_CODE_CLIENT_ID, AUTH_CODE_CLIENT_SECRET))
-                        .param(OAuth2ParameterNames.TOKEN, accessToken)
-                        .accept(APPLICATION_JSON_VALUE))
+                .header(HttpHeaders.AUTHORIZATION, getBasicHeader(AUTH_CODE_CLIENT_ID, AUTH_CODE_CLIENT_SECRET))
+                .param(OAuth2ParameterNames.TOKEN, accessToken)
+                .accept(APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk());
 
         String resultString2 = result2.andReturn().getResponse().getContentAsString();
@@ -276,11 +273,11 @@ public class OAuth2AuthorizationTests {
         // Inactive token still works
         // https://devforum.okta.com/t/inactive-token-still-works/13460
 
-//        mockMvc.perform(get(PROTECTED_RESOURCE_URI)
-//                        .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_BEARER + accessToken)
-//                        .contentType(APPLICATION_JSON_VALUE)
-//                        .accept(APPLICATION_JSON_VALUE))
-//                .andExpect(status().isUnauthorized());
+        // mockMvc.perform(get(PROTECTED_RESOURCE_URI)
+        // .header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_BEARER + accessToken)
+        // .contentType(APPLICATION_JSON_VALUE)
+        // .accept(APPLICATION_JSON_VALUE))
+        // .andExpect(status().isUnauthorized());
     }
 
     private String getAuthCode() throws IOException, URISyntaxException {
@@ -288,8 +285,7 @@ public class OAuth2AuthorizationTests {
         signIn(loginPage, "user", "user");
         final org.htmlunit.html.HtmlPage consentPage = this.webClient.getPage(AUTHORIZATION_REQUEST_URI);
         List<HtmlCheckBoxInput> scopes = new ArrayList<>();
-        consentPage.querySelectorAll("input[name='scope']").forEach(scope ->
-                scopes.add((HtmlCheckBoxInput) scope));
+        consentPage.querySelectorAll("input[name='scope']").forEach(scope -> scopes.add((HtmlCheckBoxInput) scope));
         for (HtmlCheckBoxInput scope : scopes) {
             scope.click();
         }
@@ -316,7 +312,8 @@ public class OAuth2AuthorizationTests {
         return code.get().getValue();
     }
 
-    private static org.htmlunit.html.HtmlPage signIn(org.htmlunit.html.HtmlPage page, String username, String password) throws IOException {
+    private static org.htmlunit.html.HtmlPage signIn(org.htmlunit.html.HtmlPage page, String username, String password)
+            throws IOException {
         org.htmlunit.html.HtmlInput usernameInput = page.querySelector("input[name='username']");
         org.htmlunit.html.HtmlInput passwordInput = page.querySelector("input[name='password']");
         org.htmlunit.html.HtmlButton signInButton = page.querySelector("button");
