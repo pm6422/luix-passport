@@ -7,7 +7,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import com.luixtech.springbootframework.idgenerator.TsidGenerator;
 
 @Data
 @Entity
@@ -16,15 +15,9 @@ import com.luixtech.springbootframework.idgenerator.TsidGenerator;
 public class UserProfilePic {
 
     @Id
-    @GeneratedValue
-    @TsidGenerator
-    @Column(length = 17)
-    private String id;
-
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotEmpty(message = "username:{Validation.NotEmpty}")
-    @Column(nullable = false)
-    private String username;
+    @NotEmpty(message = "id:{Validation.NotEmpty}")
+    private String id;
 
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull

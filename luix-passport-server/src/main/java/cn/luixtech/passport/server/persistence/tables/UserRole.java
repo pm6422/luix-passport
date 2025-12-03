@@ -143,34 +143,6 @@ public class UserRole extends TableImpl<UserRoleRecord> {
     }
 
     @Override
-    public List<ForeignKey<UserRoleRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.USER_ROLE__FK_USER_ROLE_USERNAME, Keys.USER_ROLE__FK_USER_ROLE_ROLE_ID);
-    }
-
-    private transient User _user;
-    private transient Role _role;
-
-    /**
-     * Get the implicit join path to the <code>public.user</code> table.
-     */
-    public User user() {
-        if (_user == null)
-            _user = new User(this, Keys.USER_ROLE__FK_USER_ROLE_USERNAME);
-
-        return _user;
-    }
-
-    /**
-     * Get the implicit join path to the <code>public.role</code> table.
-     */
-    public Role role() {
-        if (_role == null)
-            _role = new Role(this, Keys.USER_ROLE__FK_USER_ROLE_ROLE_ID);
-
-        return _role;
-    }
-
-    @Override
     public UserRole as(String alias) {
         return new UserRole(DSL.name(alias), this);
     }

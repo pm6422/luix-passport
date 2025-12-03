@@ -233,24 +233,6 @@ public class User extends TableImpl<UserRecord> {
     }
 
     @Override
-    public List<ForeignKey<UserRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.USER__FK_USER_DATE_TIME_FORMAT_SUPPORTED_DATE_TIME_FORMAT_ID);
-    }
-
-    private transient SupportedDateTimeFormat _supportedDateTimeFormat;
-
-    /**
-     * Get the implicit join path to the
-     * <code>public.supported_date_time_format</code> table.
-     */
-    public SupportedDateTimeFormat supportedDateTimeFormat() {
-        if (_supportedDateTimeFormat == null)
-            _supportedDateTimeFormat = new SupportedDateTimeFormat(this, Keys.USER__FK_USER_DATE_TIME_FORMAT_SUPPORTED_DATE_TIME_FORMAT_ID);
-
-        return _supportedDateTimeFormat;
-    }
-
-    @Override
     public User as(String alias) {
         return new User(DSL.name(alias), this);
     }

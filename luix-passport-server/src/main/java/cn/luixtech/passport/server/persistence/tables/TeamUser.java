@@ -8,8 +8,6 @@ import cn.luixtech.passport.server.persistence.Keys;
 import cn.luixtech.passport.server.persistence.Public;
 import cn.luixtech.passport.server.persistence.tables.records.TeamUserRecord;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.function.Function;
 
 import org.jooq.Field;
@@ -107,23 +105,6 @@ public class TeamUser extends TableImpl<TeamUserRecord> {
     @Override
     public UniqueKey<TeamUserRecord> getPrimaryKey() {
         return Keys.TEAM_USER_PKEY;
-    }
-
-    @Override
-    public List<ForeignKey<TeamUserRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.TEAM_USER__FK_TEAM_USER_USERNAME);
-    }
-
-    private transient User _user;
-
-    /**
-     * Get the implicit join path to the <code>public.user</code> table.
-     */
-    public User user() {
-        if (_user == null)
-            _user = new User(this, Keys.TEAM_USER__FK_TEAM_USER_USERNAME);
-
-        return _user;
     }
 
     @Override

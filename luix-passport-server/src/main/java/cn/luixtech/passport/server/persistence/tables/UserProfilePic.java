@@ -8,8 +8,6 @@ import cn.luixtech.passport.server.persistence.Keys;
 import cn.luixtech.passport.server.persistence.Public;
 import cn.luixtech.passport.server.persistence.tables.records.UserProfilePicRecord;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.function.Function;
 
 import org.jooq.Field;
@@ -102,23 +100,6 @@ public class UserProfilePic extends TableImpl<UserProfilePicRecord> {
     @Override
     public UniqueKey<UserProfilePicRecord> getPrimaryKey() {
         return Keys.USER_PROFILE_PIC_PKEY;
-    }
-
-    @Override
-    public List<ForeignKey<UserProfilePicRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.USER_PROFILE_PIC__FK_USER_PROFILE_PIC_USERNAME);
-    }
-
-    private transient User _user;
-
-    /**
-     * Get the implicit join path to the <code>public.user</code> table.
-     */
-    public User user() {
-        if (_user == null)
-            _user = new User(this, Keys.USER_PROFILE_PIC__FK_USER_PROFILE_PIC_USERNAME);
-
-        return _user;
     }
 
     @Override

@@ -138,23 +138,6 @@ public class UserLogin extends TableImpl<UserLoginRecord> {
     }
 
     @Override
-    public List<ForeignKey<UserLoginRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.USER_LOGIN__FK_USER_LOGIN_USERNAME);
-    }
-
-    private transient User _user;
-
-    /**
-     * Get the implicit join path to the <code>public.user</code> table.
-     */
-    public User user() {
-        if (_user == null)
-            _user = new User(this, Keys.USER_LOGIN__FK_USER_LOGIN_USERNAME);
-
-        return _user;
-    }
-
-    @Override
     public UserLogin as(String alias) {
         return new UserLogin(DSL.name(alias), this);
     }

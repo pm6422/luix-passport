@@ -153,34 +153,6 @@ public class UserNotification extends TableImpl<UserNotificationRecord> {
     }
 
     @Override
-    public List<ForeignKey<UserNotificationRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.USER_NOTIFICATION__FK_USER_NOTIFICATION_USER, Keys.USER_NOTIFICATION__FK_USER_NOTIFICATION_NOTIFICATION);
-    }
-
-    private transient User _user;
-    private transient Notification _notification;
-
-    /**
-     * Get the implicit join path to the <code>public.user</code> table.
-     */
-    public User user() {
-        if (_user == null)
-            _user = new User(this, Keys.USER_NOTIFICATION__FK_USER_NOTIFICATION_USER);
-
-        return _user;
-    }
-
-    /**
-     * Get the implicit join path to the <code>public.notification</code> table.
-     */
-    public Notification notification() {
-        if (_notification == null)
-            _notification = new Notification(this, Keys.USER_NOTIFICATION__FK_USER_NOTIFICATION_NOTIFICATION);
-
-        return _notification;
-    }
-
-    @Override
     public UserNotification as(String alias) {
         return new UserNotification(DSL.name(alias), this);
     }

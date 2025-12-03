@@ -143,34 +143,6 @@ public class RolePermission extends TableImpl<RolePermissionRecord> {
     }
 
     @Override
-    public List<ForeignKey<RolePermissionRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.ROLE_PERMISSION__FK_ROLE_PERMISSION_ROLE_ID, Keys.ROLE_PERMISSION__FK_ROLE_PERMISSION_PERMISSION_ID);
-    }
-
-    private transient Role _role;
-    private transient Permission _permission;
-
-    /**
-     * Get the implicit join path to the <code>public.role</code> table.
-     */
-    public Role role() {
-        if (_role == null)
-            _role = new Role(this, Keys.ROLE_PERMISSION__FK_ROLE_PERMISSION_ROLE_ID);
-
-        return _role;
-    }
-
-    /**
-     * Get the implicit join path to the <code>public.permission</code> table.
-     */
-    public Permission permission() {
-        if (_permission == null)
-            _permission = new Permission(this, Keys.ROLE_PERMISSION__FK_ROLE_PERMISSION_PERMISSION_ID);
-
-        return _permission;
-    }
-
-    @Override
     public RolePermission as(String alias) {
         return new RolePermission(DSL.name(alias), this);
     }
