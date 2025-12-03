@@ -199,7 +199,7 @@ public class AccountController {
         User currentUser = userService.getCurrentUser();
         Validate.isTrue(StringUtils.isNotEmpty(currentUser.getVerificationCode()), "Please send verification code first!");
         Validate.isTrue(verificationCode.equalsIgnoreCase(currentUser.getVerificationCode()), "Invalid verification code!");
-        Validate.isTrue(currentUser.getVerificationCodeSentAt().plus(1, ChronoUnit.DAYS).isAfter(Instant.now()), "Invalid verification exceeds one day before!");
+        Validate.isTrue(currentUser.getVerificationCodeSentAt().plus(15, ChronoUnit.MINUTES).isAfter(Instant.now()), "The verification code has expired and is valid for 15 minutes!");
         userService.changeToNewEmail(currentUser);
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1002")).build();
     }
