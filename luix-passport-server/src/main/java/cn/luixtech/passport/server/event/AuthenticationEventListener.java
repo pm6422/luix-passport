@@ -4,7 +4,7 @@ import cn.luixtech.passport.server.config.oauth.AuthUser;
 import cn.luixtech.passport.server.domain.UserAuthEvent;
 import cn.luixtech.passport.server.repository.UserAuthEventRepository;
 import cn.luixtech.passport.server.service.UserService;
-import com.luixtech.springbootframework.utils.SseEmitterUtils;
+import com.luixtech.springbootframework.component.SseNotifier;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -33,6 +33,7 @@ public class AuthenticationEventListener {
     private final UserAuthEventRepository userAuthEventRepository;
     private final UserService             userService;
     private final SessionRegistry         sessionRegistry;
+    private final SseNotifier             sseNotifier;
 
     @EventListener
     public void authenticationSuccessEvent(AuthenticationSuccessEvent event) {
@@ -71,7 +72,7 @@ public class AuthenticationEventListener {
             if (principal instanceof AuthUser authUser) {
                 if (authUser.getUsername().equals(event.getUsername())) {
                     // remove user from sse
-                    SseEmitterUtils.removeUser(authUser.getUsername());
+                    sseNotifier.removeUser(authUser.getUsername());
 
                     List<SessionInformation> sessionsInfo = sessionRegistry.getAllSessions(principal, false);
                     if (sessionsInfo != null && !sessionsInfo.isEmpty()) {

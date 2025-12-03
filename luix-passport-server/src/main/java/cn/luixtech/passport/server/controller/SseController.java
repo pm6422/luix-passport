@@ -1,7 +1,7 @@
 package cn.luixtech.passport.server.controller;
 
 import cn.luixtech.passport.server.utils.AuthUtils;
-import com.luixtech.springbootframework.utils.SseEmitterUtils;
+import com.luixtech.springbootframework.component.SseNotifier;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
@@ -14,12 +14,13 @@ import java.util.Optional;
 @RestController
 @AllArgsConstructor
 public class SseController {
+    private final SseNotifier sseNotifier;
 
     @Operation(summary = "return a SseEmitter HTTP long connection for current user")
     @GetMapping(path = "/api/sse/connect", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter connect() {
         // Return a SseEmitter HTTP long connection
-        return Optional.ofNullable(SseEmitterUtils.connect(AuthUtils.getCurrentUsername()))
+        return Optional.ofNullable(sseNotifier.connect(AuthUtils.getCurrentUsername()))
                 .orElseThrow(() -> new IllegalStateException("Failed to create SSE connection"));
     }
 }
