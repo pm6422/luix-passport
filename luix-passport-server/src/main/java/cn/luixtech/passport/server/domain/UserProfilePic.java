@@ -17,6 +17,7 @@ public class UserProfilePic {
     @Id
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     @NotEmpty(message = "id:{Validation.NotEmpty}")
+    @Column(nullable = false, length = 20)
     private String id;
 
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
