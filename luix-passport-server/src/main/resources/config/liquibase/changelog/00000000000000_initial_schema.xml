@@ -40,7 +40,7 @@
             tableName="supported_date_time_format">
         </loadData>
         <createTable tableName="oauth2_authorization">
-            <column name="id" type="VARCHAR(17)">
+            <column name="id" type="VARCHAR(18)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="registered_client_id" type="VARCHAR(100)">
