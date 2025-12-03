@@ -3,9 +3,10 @@ package cn.luixtech.passport.server.component.jobqueue;
 import cn.luixtech.passport.server.domain.JobQueue;
 import cn.luixtech.passport.server.jobconsumer.base.JobConsumerHandler;
 import cn.luixtech.passport.server.repository.JobQueueRepository;
-import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +37,7 @@ public class JobConsumer {
         this.executorService = Executors.newFixedThreadPool(WORKER_THREADS);
     }
 
-    @PostConstruct
+    @EventListener(ApplicationReadyEvent.class)
     public void start() {
         for (int i = 0; i < WORKER_THREADS; i++) {
             executorService.execute(this::processJobs);
