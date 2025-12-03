@@ -17,7 +17,7 @@ public class SupportedDateTimeFormat {
     @Id
     @GeneratedValue
     @TsidGenerator
-    @Column(length = 17)
+    @Column(length = 18)
     private String id;
 
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)

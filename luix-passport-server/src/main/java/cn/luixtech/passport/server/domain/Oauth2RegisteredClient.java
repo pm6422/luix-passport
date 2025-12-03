@@ -18,7 +18,7 @@ public class Oauth2RegisteredClient {
     @Id
     @GeneratedValue
     @TsidGenerator
-    @Column(length = 17)
+    @Column(length = 18)
     private String id;
 
     private String clientId;

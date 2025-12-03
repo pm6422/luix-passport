@@ -24,7 +24,7 @@ public class JobQueue {
     @Id
     @GeneratedValue
     @TsidGenerator
-    @Column(length = 17)
+    @Column(length = 18)
     private String  id;
     private String  channel;
     private String  payload;

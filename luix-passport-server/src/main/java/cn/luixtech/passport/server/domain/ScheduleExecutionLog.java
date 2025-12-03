@@ -21,7 +21,7 @@ public class ScheduleExecutionLog {
     @Id
     @GeneratedValue
     @TsidGenerator
-    @Column(length = 17)
+    @Column(length = 18)
     protected String id;
     private String scheduleName;
     private Instant startAt;

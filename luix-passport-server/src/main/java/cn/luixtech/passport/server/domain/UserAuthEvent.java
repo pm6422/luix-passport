@@ -15,13 +15,14 @@ import java.time.Instant;
 @AllArgsConstructor
 public class UserAuthEvent {
 
+    public static final String AUTH_SUCCESS = "AuthenticationSuccess";
+    public static final String AUTH_FAILURE = "AuthenticationFailure";
+
     @Id
     @GeneratedValue
     @TsidGenerator
-    @Column(length = 17)
+    @Column(length = 18)
     private String id;
-    public static final String AUTH_SUCCESS = "AuthenticationSuccess";
-    public static final String AUTH_FAILURE = "AuthenticationFailure";
 
     private String username;
     private String event;

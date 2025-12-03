@@ -18,7 +18,7 @@ public class UserNotification {
     @Id
     @GeneratedValue
     @TsidGenerator
-    @Column(length = 17)
+    @Column(length = 18)
     private String id;
     public static final String STATUS_READ = "READ";
     public static final String STATUS_UNREAD = "UNREAD";

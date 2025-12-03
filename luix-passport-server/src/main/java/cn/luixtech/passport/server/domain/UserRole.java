@@ -20,7 +20,7 @@ public class UserRole {
     @Id
     @GeneratedValue
     @TsidGenerator
-    @Column(length = 17)
+    @Column(length = 18)
     private String id;
 
     public static final String ROLE_ANONYMOUS = "ROLE_ANONYMOUS";
