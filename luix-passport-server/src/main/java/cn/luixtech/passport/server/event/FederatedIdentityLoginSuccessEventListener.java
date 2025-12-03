@@ -6,6 +6,7 @@ import cn.luixtech.passport.server.repository.UserRepository;
 import cn.luixtech.passport.server.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -44,7 +45,7 @@ public class FederatedIdentityLoginSuccessEventListener implements BiConsumer<OA
             // create a new user automatically
             String username = oAuth2User.getName();
             if (userRepository.findById(oAuth2User.getName()).isPresent()) {
-                username = "U" + TsidCreator.getTsid().toString();
+                username = StringUtils.EMPTY + TsidCreator.getTsid().toString();
             }
             userService.insertThirdPartyUser(username, email, clientRegistrationId);
             UserDetails newUser = this.userDetailsService.loadUserByUsername(email);

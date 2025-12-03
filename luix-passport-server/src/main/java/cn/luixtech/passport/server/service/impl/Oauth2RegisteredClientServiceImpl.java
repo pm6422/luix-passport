@@ -10,6 +10,7 @@ import com.luixtech.utilities.exception.DataNotFoundException;
 import com.luixtech.utilities.exception.DuplicationException;
 import lombok.AllArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jooq.DSLContext;
 import org.springframework.data.domain.*;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
@@ -36,7 +37,7 @@ public class Oauth2RegisteredClientServiceImpl implements Oauth2RegisteredClient
         if (CollectionUtils.isNotEmpty(oauth2RegisteredClients)) {
             throw new DuplicationException(Map.of("clientId", pojo.getClientId()));
         }
-        pojo.setId("O" + TsidCreator.getTsid().toLong());
+        pojo.setId(StringUtils.EMPTY + TsidCreator.getTsid().toLong());
         registeredClientRepository.save(pojo.toRegisteredClient());
         dslContext.update(Tables.OAUTH2_REGISTERED_CLIENT)
                 .set(OAUTH2_REGISTERED_CLIENT.ENABLED, pojo.getEnabled())
