@@ -1,78 +1,37 @@
-<div th:fragment="content" style="margin:0; padding:0; font-family:Arial,Helvetica,sans-serif;">
-
-    <!-- Mobile Responsive -->
-    <style>
-        @media only screen and (max-width: 600px) {
-            .container {
-                width: 100% !important;
-                padding: 16px !important;
-            }
-            .code-box {
-                font-size: 26px !important;
-                letter-spacing: 3px !important;
-            }
-        }
-    </style>
-
-    <table style="background:#ffffff;">
-        <tr>
-            <td style="padding:0;">
-
-                <!-- Main Card -->
-                <table class="container" style="max-width:600px;width:100%;background:#ffffff;">
-
-                    <!-- Spacer -->
-                    <tr><td style="padding-top:20px;"></td></tr>
-
-                    <!-- Greeting -->
-                    <tr>
-                        <td style="padding:0 28px 12px; font-size:20px; font-weight:700; color:#111827;">
-                            <span th:text="#{email.greeting(${user.username})}">Hello Louis,</span>
-                        </td>
-                    </tr>
-
-                    <!-- Text -->
-                    <tr>
-                        <td style="padding:0 28px 18px; font-size:16px; color:#374151;">
-                            <span th:text="#{verification.code.email.text}">
-                                Your verification code is:
-                            </span>
-                        </td>
-                    </tr>
-
-                    <!-- Code -->
-                    <tr>
-                        <td style="padding:10px 28px 28px;">
-                            <div class="code-box"
-                                 style="font-size:32px; letter-spacing:5px; font-weight:800;
-                                        color:#6d28d9; border:2px dashed #6d28d9;
-                                        padding:16px 30px; border-radius:8px; display:inline-block;">
-                                <span th:text="${user.verificationCode}">123456</span>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <!-- Expire -->
-                    <tr>
-                        <td style="padding:0 28px 25px; font-size:14px; font-weight:600; color:#dc2626;">
-                            <span th:text="#{verification.code.expires.tip}">
-                                This code will expire in 15 minutes.
-                            </span>
-                        </td>
-                    </tr>
-
-                    <!-- Footer text -->
-                    <tr>
-                        <td style="padding:0 28px 30px; font-size:13px; color:#6b7280;">
-                            If you didn't request this code, you can ignore this email.
-                        </td>
-                    </tr>
-
-                    <!-- Spacer -->
-                    <tr><td style="padding-bottom:20px;"></td></tr>
-
-                </table>
+<div th:fragment="content" style="margin:0;padding:0;font-family:Arial,Helvetica,sans-serif;color:#111827;">
+  <table cellpadding="0" cellspacing="0" border="0" style="width:100%;background:#ffffff;">
+    <tr>
+      <td>
+        <table cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;background:#ffffff;">
+          <tr>
+            <td style="padding:20px 24px 8px;font-size:20px;font-weight:700;color:#111827;">
+              <span th:text="#{email.greeting(${user.username})}">Hello Louis,</span>
             </td>
-        </tr>
-    </table>
+          </tr>
+          <tr>
+            <td style="padding:0 24px 16px;font-size:16px;color:#374151;">
+              <span th:text="#{verification.code.email.text}">Your verification code is:</span>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:8px 24px 24px;">
+              <div style="font-size:30px;letter-spacing:4px;font-weight:800;color:#6d28d9;border:2px dashed #6d28d9;padding:14px 24px;border-radius:8px;display:inline-block;">
+                <span th:text="${user.verificationCode}">123456</span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0 24px 20px;font-size:14px;font-weight:600;color:#dc2626;">
+              <span th:text="#{verification.code.expires.tip}">This code will expire in 15 minutes.</span>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0 24px 24px;font-size:13px;color:#6b7280;">
+              <span>If you didn't request this code, you can ignore this email.</span>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
 </div>
