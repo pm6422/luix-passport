@@ -25,7 +25,7 @@ public class WebServerSecurityConfiguration {
 			.authorizeHttpRequests(authorize ->
 				authorize
 					.requestMatchers("/webjars/**").permitAll()
-					.requestMatchers("favicon.ico").permitAll()
+					.requestMatchers("/favicon.ico").permitAll()
 					.requestMatchers("/assets/**").permitAll()
 					.requestMatchers("/logged-out").permitAll()
 					.requestMatchers("/management/health/**").permitAll()
