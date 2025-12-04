@@ -50,9 +50,9 @@ public class UserProfilePic extends TableImpl<UserProfilePicRecord> {
     }
 
     /**
-     * The column <code>public.user_profile_pic.username</code>.
+     * The column <code>public.user_profile_pic.id</code>.
      */
-    public final TableField<UserProfilePicRecord, String> USERNAME = createField(DSL.name("username"), SQLDataType.VARCHAR(20).nullable(false), this, "");
+    public final TableField<UserProfilePicRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(18).nullable(false), this, "");
 
     /**
      * The column <code>public.user_profile_pic.profile_pic</code>.

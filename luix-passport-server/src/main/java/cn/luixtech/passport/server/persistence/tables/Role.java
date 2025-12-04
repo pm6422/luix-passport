@@ -53,7 +53,7 @@ public class Role extends TableImpl<RoleRecord> {
     /**
      * The column <code>public.role.id</code>.
      */
-    public final TableField<RoleRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(36).nullable(false), this, "");
+    public final TableField<RoleRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(18).nullable(false), this, "");
 
     /**
      * The column <code>public.role.remark</code>.

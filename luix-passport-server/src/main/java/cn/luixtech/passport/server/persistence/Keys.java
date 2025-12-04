@@ -92,7 +92,7 @@ public class Keys {
     public static final UniqueKey<UserLoginRecord> USER_LOGIN_PKEY = Internal.createUniqueKey(UserLogin.USER_LOGIN, DSL.name("user_login_pkey"), new TableField[] { UserLogin.USER_LOGIN.ID }, true);
     public static final UniqueKey<UserNotificationRecord> UK_USER_NOTIFICATION = Internal.createUniqueKey(UserNotification.USER_NOTIFICATION, DSL.name("uk_user_notification"), new TableField[] { UserNotification.USER_NOTIFICATION.RECEIVER_ID, UserNotification.USER_NOTIFICATION.NOTIFICATION_ID }, true);
     public static final UniqueKey<UserNotificationRecord> USER_NOTIFICATION_PKEY = Internal.createUniqueKey(UserNotification.USER_NOTIFICATION, DSL.name("user_notification_pkey"), new TableField[] { UserNotification.USER_NOTIFICATION.ID }, true);
-    public static final UniqueKey<UserProfilePicRecord> USER_PROFILE_PIC_PKEY = Internal.createUniqueKey(UserProfilePic.USER_PROFILE_PIC, DSL.name("user_profile_pic_pkey"), new TableField[] { UserProfilePic.USER_PROFILE_PIC.USERNAME }, true);
+    public static final UniqueKey<UserProfilePicRecord> USER_PROFILE_PIC_PKEY = Internal.createUniqueKey(UserProfilePic.USER_PROFILE_PIC, DSL.name("user_profile_pic_pkey"), new TableField[] { UserProfilePic.USER_PROFILE_PIC.ID }, true);
     public static final UniqueKey<UserRoleRecord> UK_USER_ROLE = Internal.createUniqueKey(UserRole.USER_ROLE, DSL.name("uk_user_role"), new TableField[] { UserRole.USER_ROLE.USERNAME, UserRole.USER_ROLE.ROLE_ID }, true);
     public static final UniqueKey<UserRoleRecord> USER_ROLE_PKEY = Internal.createUniqueKey(UserRole.USER_ROLE, DSL.name("user_role_pkey"), new TableField[] { UserRole.USER_ROLE.ID }, true);
 }

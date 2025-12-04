@@ -57,7 +57,7 @@ public class UserNotification extends TableImpl<UserNotificationRecord> {
     /**
      * The column <code>public.user_notification.id</code>.
      */
-    public final TableField<UserNotificationRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(36).nullable(false), this, "");
+    public final TableField<UserNotificationRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(18).nullable(false), this, "");
 
     /**
      * The column <code>public.user_notification.receiver_id</code>.

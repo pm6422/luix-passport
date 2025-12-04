@@ -53,7 +53,7 @@ public class Oauth2RegisteredClient extends TableImpl<Oauth2RegisteredClientReco
     /**
      * The column <code>public.oauth2_registered_client.id</code>.
      */
-    public final TableField<Oauth2RegisteredClientRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(100).nullable(false), this, "");
+    public final TableField<Oauth2RegisteredClientRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(18).nullable(false), this, "");
 
     /**
      * The column <code>public.oauth2_registered_client.client_id</code>.

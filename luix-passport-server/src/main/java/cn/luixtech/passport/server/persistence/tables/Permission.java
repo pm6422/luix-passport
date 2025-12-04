@@ -53,7 +53,7 @@ public class Permission extends TableImpl<PermissionRecord> {
     /**
      * The column <code>public.permission.id</code>.
      */
-    public final TableField<PermissionRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(36).nullable(false), this, "");
+    public final TableField<PermissionRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(18).nullable(false), this, "");
 
     /**
      * The column <code>public.permission.remark</code>.

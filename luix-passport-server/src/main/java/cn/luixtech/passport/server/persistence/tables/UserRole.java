@@ -57,7 +57,7 @@ public class UserRole extends TableImpl<UserRoleRecord> {
     /**
      * The column <code>public.user_role.id</code>.
      */
-    public final TableField<UserRoleRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(36).nullable(false), this, "");
+    public final TableField<UserRoleRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(18).nullable(false), this, "");
 
     /**
      * The column <code>public.user_role.username</code>.

@@ -52,7 +52,7 @@ public class SupportedDateTimeFormat extends TableImpl<SupportedDateTimeFormatRe
     /**
      * The column <code>public.supported_date_time_format.id</code>.
      */
-    public final TableField<SupportedDateTimeFormatRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(50).nullable(false), this, "");
+    public final TableField<SupportedDateTimeFormatRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(18).nullable(false), this, "");
 
     /**
      * The column <code>public.supported_date_time_format.display_name</code>.
