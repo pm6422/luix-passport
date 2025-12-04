@@ -6,7 +6,7 @@ import reactRefresh from 'eslint-plugin-react-refresh'
 import tseslint from 'typescript-eslint'
 
 export default tseslint.config(
-  { ignores: ['dist', 'src/components/ui'] },
+  { ignores: ['dist', 'node_modules', 'target', 'target/**', 'coverage', 'public', 'src/components/ui'] },
   {
     extends: [
       js.configs.recommended,
@@ -17,6 +17,7 @@ export default tseslint.config(
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
+      parserOptions: {},
     },
     plugins: {
       'react-hooks': reactHooks,
@@ -24,11 +25,8 @@ export default tseslint.config(
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
-      'react-refresh/only-export-components': [
-        'warn',
-        { allowConstantExport: true },
-      ],
-      'no-console': 'error',
+      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
+      'no-console': ['error', { allow: ['warn', 'error'] }],
       'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': [
         'error',
@@ -42,6 +40,19 @@ export default tseslint.config(
           ignoreRestSiblings: true,
         },
       ],
+      '@typescript-eslint/no-explicit-any': 'warn',
+    },
+  },
+  {
+    files: ['**/*.config.{ts,js}', 'vite.config.ts', 'eslint.config.js', 'knip.config.ts'],
+    languageOptions: {
+      ecmaVersion: 2022,
+      globals: globals.node,
+      parserOptions: {},
+    },
+    rules: {
+      'react-refresh/only-export-components': 'off',
+      'no-console': ['warn', { allow: ['warn', 'error'] }],
     },
   }
 )
