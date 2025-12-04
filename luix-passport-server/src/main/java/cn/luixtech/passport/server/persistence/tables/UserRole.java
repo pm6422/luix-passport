@@ -7,23 +7,29 @@ package cn.luixtech.passport.server.persistence.tables;
 import cn.luixtech.passport.server.persistence.Indexes;
 import cn.luixtech.passport.server.persistence.Keys;
 import cn.luixtech.passport.server.persistence.Public;
+import cn.luixtech.passport.server.persistence.tables.Role.RolePath;
+import cn.luixtech.passport.server.persistence.tables.User.UserPath;
 import cn.luixtech.passport.server.persistence.tables.records.UserRoleRecord;
 
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
-import java.util.function.Function;
 
+import org.jooq.Condition;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function7;
 import org.jooq.Index;
+import org.jooq.InverseForeignKey;
 import org.jooq.Name;
+import org.jooq.Path;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
 import org.jooq.Record;
-import org.jooq.Records;
-import org.jooq.Row7;
+import org.jooq.SQL;
 import org.jooq.Schema;
-import org.jooq.SelectField;
+import org.jooq.Select;
+import org.jooq.Stringly;
 import org.jooq.Table;
 import org.jooq.TableField;
 import org.jooq.TableOptions;
@@ -90,11 +96,11 @@ public class UserRole extends TableImpl<UserRoleRecord> {
     public final TableField<UserRoleRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(50), this, "");
 
     private UserRole(Name alias, Table<UserRoleRecord> aliased) {
-        this(alias, aliased, null);
+        this(alias, aliased, (Field<?>[]) null, null);
     }
 
-    private UserRole(Name alias, Table<UserRoleRecord> aliased, Field<?>[] parameters) {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
+    private UserRole(Name alias, Table<UserRoleRecord> aliased, Field<?>[] parameters, Condition where) {
+        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table(), where);
     }
 
     /**
@@ -118,8 +124,37 @@ public class UserRole extends TableImpl<UserRoleRecord> {
         this(DSL.name("user_role"), null);
     }
 
-    public <O extends Record> UserRole(Table<O> child, ForeignKey<O, UserRoleRecord> key) {
-        super(child, key, USER_ROLE);
+    public <O extends Record> UserRole(Table<O> path, ForeignKey<O, UserRoleRecord> childPath, InverseForeignKey<O, UserRoleRecord> parentPath) {
+        super(path, childPath, parentPath, USER_ROLE);
+    }
+
+    /**
+     * A subtype implementing {@link Path} for simplified path-based joins.
+     */
+    public static class UserRolePath extends UserRole implements Path<UserRoleRecord> {
+
+        private static final long serialVersionUID = 1L;
+        public <O extends Record> UserRolePath(Table<O> path, ForeignKey<O, UserRoleRecord> childPath, InverseForeignKey<O, UserRoleRecord> parentPath) {
+            super(path, childPath, parentPath);
+        }
+        private UserRolePath(Name alias, Table<UserRoleRecord> aliased) {
+            super(alias, aliased);
+        }
+
+        @Override
+        public UserRolePath as(String alias) {
+            return new UserRolePath(DSL.name(alias), this);
+        }
+
+        @Override
+        public UserRolePath as(Name alias) {
+            return new UserRolePath(alias, this);
+        }
+
+        @Override
+        public UserRolePath as(Table<?> alias) {
+            return new UserRolePath(alias.getQualifiedName(), this);
+        }
     }
 
     @Override
@@ -140,6 +175,35 @@ public class UserRole extends TableImpl<UserRoleRecord> {
     @Override
     public List<UniqueKey<UserRoleRecord>> getUniqueKeys() {
         return Arrays.asList(Keys.UK_USER_ROLE);
+    }
+
+    @Override
+    public List<ForeignKey<UserRoleRecord, ?>> getReferences() {
+        return Arrays.asList(Keys.USER_ROLE__FK_USER_ROLE_ROLE_ID, Keys.USER_ROLE__FK_USER_ROLE_USERNAME);
+    }
+
+    private transient RolePath _role;
+
+    /**
+     * Get the implicit join path to the <code>public.role</code> table.
+     */
+    public RolePath role() {
+        if (_role == null)
+            _role = new RolePath(this, Keys.USER_ROLE__FK_USER_ROLE_ROLE_ID, null);
+
+        return _role;
+    }
+
+    private transient UserPath _user;
+
+    /**
+     * Get the implicit join path to the <code>public.user</code> table.
+     */
+    public UserPath user() {
+        if (_user == null)
+            _user = new UserPath(this, Keys.USER_ROLE__FK_USER_ROLE_USERNAME, null);
+
+        return _user;
     }
 
     @Override
@@ -181,27 +245,87 @@ public class UserRole extends TableImpl<UserRoleRecord> {
         return new UserRole(name.getQualifiedName(), null);
     }
 
-    // -------------------------------------------------------------------------
-    // Row7 type methods
-    // -------------------------------------------------------------------------
-
+    /**
+     * Create an inline derived table from this table
+     */
     @Override
-    public Row7<String, String, String, Instant, String, Instant, String> fieldsRow() {
-        return (Row7) super.fieldsRow();
+    public UserRole where(Condition condition) {
+        return new UserRole(getQualifiedName(), aliased() ? this : null, null, condition);
     }
 
     /**
-     * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
+     * Create an inline derived table from this table
      */
-    public <U> SelectField<U> mapping(Function7<? super String, ? super String, ? super String, ? super Instant, ? super String, ? super Instant, ? super String, ? extends U> from) {
-        return convertFrom(Records.mapping(from));
+    @Override
+    public UserRole where(Collection<? extends Condition> conditions) {
+        return where(DSL.and(conditions));
     }
 
     /**
-     * Convenience mapping calling {@link SelectField#convertFrom(Class,
-     * Function)}.
+     * Create an inline derived table from this table
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function7<? super String, ? super String, ? super String, ? super Instant, ? super String, ? super Instant, ? super String, ? extends U> from) {
-        return convertFrom(toType, Records.mapping(from));
+    @Override
+    public UserRole where(Condition... conditions) {
+        return where(DSL.and(conditions));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public UserRole where(Field<Boolean> condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public UserRole where(SQL condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public UserRole where(@Stringly.SQL String condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public UserRole where(@Stringly.SQL String condition, Object... binds) {
+        return where(DSL.condition(condition, binds));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public UserRole where(@Stringly.SQL String condition, QueryPart... parts) {
+        return where(DSL.condition(condition, parts));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public UserRole whereExists(Select<?> select) {
+        return where(DSL.exists(select));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public UserRole whereNotExists(Select<?> select) {
+        return where(DSL.notExists(select));
     }
 }

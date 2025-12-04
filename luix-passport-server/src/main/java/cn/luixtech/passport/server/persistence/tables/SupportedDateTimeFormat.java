@@ -6,19 +6,24 @@ package cn.luixtech.passport.server.persistence.tables;
 
 import cn.luixtech.passport.server.persistence.Keys;
 import cn.luixtech.passport.server.persistence.Public;
+import cn.luixtech.passport.server.persistence.tables.User.UserPath;
 import cn.luixtech.passport.server.persistence.tables.records.SupportedDateTimeFormatRecord;
 
-import java.util.function.Function;
+import java.util.Collection;
 
+import org.jooq.Condition;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function7;
+import org.jooq.InverseForeignKey;
 import org.jooq.Name;
+import org.jooq.Path;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
 import org.jooq.Record;
-import org.jooq.Records;
-import org.jooq.Row7;
+import org.jooq.SQL;
 import org.jooq.Schema;
-import org.jooq.SelectField;
+import org.jooq.Select;
+import org.jooq.Stringly;
 import org.jooq.Table;
 import org.jooq.TableField;
 import org.jooq.TableOptions;
@@ -86,11 +91,11 @@ public class SupportedDateTimeFormat extends TableImpl<SupportedDateTimeFormatRe
     public final TableField<SupportedDateTimeFormatRecord, Boolean> PRESET = createField(DSL.name("preset"), SQLDataType.BOOLEAN.nullable(false), this, "");
 
     private SupportedDateTimeFormat(Name alias, Table<SupportedDateTimeFormatRecord> aliased) {
-        this(alias, aliased, null);
+        this(alias, aliased, (Field<?>[]) null, null);
     }
 
-    private SupportedDateTimeFormat(Name alias, Table<SupportedDateTimeFormatRecord> aliased, Field<?>[] parameters) {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
+    private SupportedDateTimeFormat(Name alias, Table<SupportedDateTimeFormatRecord> aliased, Field<?>[] parameters, Condition where) {
+        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table(), where);
     }
 
     /**
@@ -116,8 +121,37 @@ public class SupportedDateTimeFormat extends TableImpl<SupportedDateTimeFormatRe
         this(DSL.name("supported_date_time_format"), null);
     }
 
-    public <O extends Record> SupportedDateTimeFormat(Table<O> child, ForeignKey<O, SupportedDateTimeFormatRecord> key) {
-        super(child, key, SUPPORTED_DATE_TIME_FORMAT);
+    public <O extends Record> SupportedDateTimeFormat(Table<O> path, ForeignKey<O, SupportedDateTimeFormatRecord> childPath, InverseForeignKey<O, SupportedDateTimeFormatRecord> parentPath) {
+        super(path, childPath, parentPath, SUPPORTED_DATE_TIME_FORMAT);
+    }
+
+    /**
+     * A subtype implementing {@link Path} for simplified path-based joins.
+     */
+    public static class SupportedDateTimeFormatPath extends SupportedDateTimeFormat implements Path<SupportedDateTimeFormatRecord> {
+
+        private static final long serialVersionUID = 1L;
+        public <O extends Record> SupportedDateTimeFormatPath(Table<O> path, ForeignKey<O, SupportedDateTimeFormatRecord> childPath, InverseForeignKey<O, SupportedDateTimeFormatRecord> parentPath) {
+            super(path, childPath, parentPath);
+        }
+        private SupportedDateTimeFormatPath(Name alias, Table<SupportedDateTimeFormatRecord> aliased) {
+            super(alias, aliased);
+        }
+
+        @Override
+        public SupportedDateTimeFormatPath as(String alias) {
+            return new SupportedDateTimeFormatPath(DSL.name(alias), this);
+        }
+
+        @Override
+        public SupportedDateTimeFormatPath as(Name alias) {
+            return new SupportedDateTimeFormatPath(alias, this);
+        }
+
+        @Override
+        public SupportedDateTimeFormatPath as(Table<?> alias) {
+            return new SupportedDateTimeFormatPath(alias.getQualifiedName(), this);
+        }
     }
 
     @Override
@@ -128,6 +162,18 @@ public class SupportedDateTimeFormat extends TableImpl<SupportedDateTimeFormatRe
     @Override
     public UniqueKey<SupportedDateTimeFormatRecord> getPrimaryKey() {
         return Keys.SUPPORTED_DATE_TIME_FORMAT_PKEY;
+    }
+
+    private transient UserPath _user;
+
+    /**
+     * Get the implicit to-many join path to the <code>public.user</code> table
+     */
+    public UserPath user() {
+        if (_user == null)
+            _user = new UserPath(this, null, Keys.USER__FK_USER_DATE_TIME_FORMAT_SUPPORTED_DATE_TIME_FORMAT_ID.getInverseKey());
+
+        return _user;
     }
 
     @Override
@@ -169,27 +215,87 @@ public class SupportedDateTimeFormat extends TableImpl<SupportedDateTimeFormatRe
         return new SupportedDateTimeFormat(name.getQualifiedName(), null);
     }
 
-    // -------------------------------------------------------------------------
-    // Row7 type methods
-    // -------------------------------------------------------------------------
-
+    /**
+     * Create an inline derived table from this table
+     */
     @Override
-    public Row7<String, String, String, String, String, String, Boolean> fieldsRow() {
-        return (Row7) super.fieldsRow();
+    public SupportedDateTimeFormat where(Condition condition) {
+        return new SupportedDateTimeFormat(getQualifiedName(), aliased() ? this : null, null, condition);
     }
 
     /**
-     * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
+     * Create an inline derived table from this table
      */
-    public <U> SelectField<U> mapping(Function7<? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super Boolean, ? extends U> from) {
-        return convertFrom(Records.mapping(from));
+    @Override
+    public SupportedDateTimeFormat where(Collection<? extends Condition> conditions) {
+        return where(DSL.and(conditions));
     }
 
     /**
-     * Convenience mapping calling {@link SelectField#convertFrom(Class,
-     * Function)}.
+     * Create an inline derived table from this table
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function7<? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super Boolean, ? extends U> from) {
-        return convertFrom(toType, Records.mapping(from));
+    @Override
+    public SupportedDateTimeFormat where(Condition... conditions) {
+        return where(DSL.and(conditions));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public SupportedDateTimeFormat where(Field<Boolean> condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public SupportedDateTimeFormat where(SQL condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public SupportedDateTimeFormat where(@Stringly.SQL String condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public SupportedDateTimeFormat where(@Stringly.SQL String condition, Object... binds) {
+        return where(DSL.condition(condition, binds));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public SupportedDateTimeFormat where(@Stringly.SQL String condition, QueryPart... parts) {
+        return where(DSL.condition(condition, parts));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public SupportedDateTimeFormat whereExists(Select<?> select) {
+        return where(DSL.exists(select));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public SupportedDateTimeFormat whereNotExists(Select<?> select) {
+        return where(DSL.notExists(select));
     }
 }

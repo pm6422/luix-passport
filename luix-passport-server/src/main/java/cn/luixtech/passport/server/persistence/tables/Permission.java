@@ -6,20 +6,26 @@ package cn.luixtech.passport.server.persistence.tables;
 
 import cn.luixtech.passport.server.persistence.Keys;
 import cn.luixtech.passport.server.persistence.Public;
+import cn.luixtech.passport.server.persistence.tables.Role.RolePath;
+import cn.luixtech.passport.server.persistence.tables.RolePermission.RolePermissionPath;
 import cn.luixtech.passport.server.persistence.tables.records.PermissionRecord;
 
 import java.time.Instant;
-import java.util.function.Function;
+import java.util.Collection;
 
+import org.jooq.Condition;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function8;
+import org.jooq.InverseForeignKey;
 import org.jooq.Name;
+import org.jooq.Path;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
 import org.jooq.Record;
-import org.jooq.Records;
-import org.jooq.Row8;
+import org.jooq.SQL;
 import org.jooq.Schema;
-import org.jooq.SelectField;
+import org.jooq.Select;
+import org.jooq.Stringly;
 import org.jooq.Table;
 import org.jooq.TableField;
 import org.jooq.TableOptions;
@@ -91,11 +97,11 @@ public class Permission extends TableImpl<PermissionRecord> {
     public final TableField<PermissionRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(50), this, "");
 
     private Permission(Name alias, Table<PermissionRecord> aliased) {
-        this(alias, aliased, null);
+        this(alias, aliased, (Field<?>[]) null, null);
     }
 
-    private Permission(Name alias, Table<PermissionRecord> aliased, Field<?>[] parameters) {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
+    private Permission(Name alias, Table<PermissionRecord> aliased, Field<?>[] parameters, Condition where) {
+        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table(), where);
     }
 
     /**
@@ -119,8 +125,37 @@ public class Permission extends TableImpl<PermissionRecord> {
         this(DSL.name("permission"), null);
     }
 
-    public <O extends Record> Permission(Table<O> child, ForeignKey<O, PermissionRecord> key) {
-        super(child, key, PERMISSION);
+    public <O extends Record> Permission(Table<O> path, ForeignKey<O, PermissionRecord> childPath, InverseForeignKey<O, PermissionRecord> parentPath) {
+        super(path, childPath, parentPath, PERMISSION);
+    }
+
+    /**
+     * A subtype implementing {@link Path} for simplified path-based joins.
+     */
+    public static class PermissionPath extends Permission implements Path<PermissionRecord> {
+
+        private static final long serialVersionUID = 1L;
+        public <O extends Record> PermissionPath(Table<O> path, ForeignKey<O, PermissionRecord> childPath, InverseForeignKey<O, PermissionRecord> parentPath) {
+            super(path, childPath, parentPath);
+        }
+        private PermissionPath(Name alias, Table<PermissionRecord> aliased) {
+            super(alias, aliased);
+        }
+
+        @Override
+        public PermissionPath as(String alias) {
+            return new PermissionPath(DSL.name(alias), this);
+        }
+
+        @Override
+        public PermissionPath as(Name alias) {
+            return new PermissionPath(alias, this);
+        }
+
+        @Override
+        public PermissionPath as(Table<?> alias) {
+            return new PermissionPath(alias.getQualifiedName(), this);
+        }
     }
 
     @Override
@@ -131,6 +166,27 @@ public class Permission extends TableImpl<PermissionRecord> {
     @Override
     public UniqueKey<PermissionRecord> getPrimaryKey() {
         return Keys.PERMISSION_PKEY;
+    }
+
+    private transient RolePermissionPath _rolePermission;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>public.role_permission</code> table
+     */
+    public RolePermissionPath rolePermission() {
+        if (_rolePermission == null)
+            _rolePermission = new RolePermissionPath(this, null, Keys.ROLE_PERMISSION__FK_ROLE_PERMISSION_PERMISSION_ID.getInverseKey());
+
+        return _rolePermission;
+    }
+
+    /**
+     * Get the implicit many-to-many join path to the <code>public.role</code>
+     * table
+     */
+    public RolePath role() {
+        return rolePermission().role();
     }
 
     @Override
@@ -172,27 +228,87 @@ public class Permission extends TableImpl<PermissionRecord> {
         return new Permission(name.getQualifiedName(), null);
     }
 
-    // -------------------------------------------------------------------------
-    // Row8 type methods
-    // -------------------------------------------------------------------------
-
+    /**
+     * Create an inline derived table from this table
+     */
     @Override
-    public Row8<String, String, String, String, Instant, String, Instant, String> fieldsRow() {
-        return (Row8) super.fieldsRow();
+    public Permission where(Condition condition) {
+        return new Permission(getQualifiedName(), aliased() ? this : null, null, condition);
     }
 
     /**
-     * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
+     * Create an inline derived table from this table
      */
-    public <U> SelectField<U> mapping(Function8<? super String, ? super String, ? super String, ? super String, ? super Instant, ? super String, ? super Instant, ? super String, ? extends U> from) {
-        return convertFrom(Records.mapping(from));
+    @Override
+    public Permission where(Collection<? extends Condition> conditions) {
+        return where(DSL.and(conditions));
     }
 
     /**
-     * Convenience mapping calling {@link SelectField#convertFrom(Class,
-     * Function)}.
+     * Create an inline derived table from this table
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function8<? super String, ? super String, ? super String, ? super String, ? super Instant, ? super String, ? super Instant, ? super String, ? extends U> from) {
-        return convertFrom(toType, Records.mapping(from));
+    @Override
+    public Permission where(Condition... conditions) {
+        return where(DSL.and(conditions));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public Permission where(Field<Boolean> condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public Permission where(SQL condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public Permission where(@Stringly.SQL String condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public Permission where(@Stringly.SQL String condition, Object... binds) {
+        return where(DSL.condition(condition, binds));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public Permission where(@Stringly.SQL String condition, QueryPart... parts) {
+        return where(DSL.condition(condition, parts));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public Permission whereExists(Select<?> select) {
+        return where(DSL.exists(select));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public Permission whereNotExists(Select<?> select) {
+        return where(DSL.notExists(select));
     }
 }

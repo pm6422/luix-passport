@@ -9,17 +9,17 @@ import cn.luixtech.passport.server.persistence.Public;
 import cn.luixtech.passport.server.persistence.tables.records.Oauth2RegisteredClientRecord;
 
 import java.time.Instant;
-import java.util.function.Function;
+import java.util.Collection;
 
+import org.jooq.Condition;
 import org.jooq.Field;
-import org.jooq.ForeignKey;
-import org.jooq.Function19;
 import org.jooq.Name;
-import org.jooq.Record;
-import org.jooq.Records;
-import org.jooq.Row19;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.SQL;
 import org.jooq.Schema;
-import org.jooq.SelectField;
+import org.jooq.Select;
+import org.jooq.Stringly;
 import org.jooq.Table;
 import org.jooq.TableField;
 import org.jooq.TableOptions;
@@ -151,11 +151,11 @@ public class Oauth2RegisteredClient extends TableImpl<Oauth2RegisteredClientReco
     public final TableField<Oauth2RegisteredClientRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(50), this, "");
 
     private Oauth2RegisteredClient(Name alias, Table<Oauth2RegisteredClientRecord> aliased) {
-        this(alias, aliased, null);
+        this(alias, aliased, (Field<?>[]) null, null);
     }
 
-    private Oauth2RegisteredClient(Name alias, Table<Oauth2RegisteredClientRecord> aliased, Field<?>[] parameters) {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
+    private Oauth2RegisteredClient(Name alias, Table<Oauth2RegisteredClientRecord> aliased, Field<?>[] parameters, Condition where) {
+        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table(), where);
     }
 
     /**
@@ -179,10 +179,6 @@ public class Oauth2RegisteredClient extends TableImpl<Oauth2RegisteredClientReco
      */
     public Oauth2RegisteredClient() {
         this(DSL.name("oauth2_registered_client"), null);
-    }
-
-    public <O extends Record> Oauth2RegisteredClient(Table<O> child, ForeignKey<O, Oauth2RegisteredClientRecord> key) {
-        super(child, key, OAUTH2_REGISTERED_CLIENT);
     }
 
     @Override
@@ -234,27 +230,87 @@ public class Oauth2RegisteredClient extends TableImpl<Oauth2RegisteredClientReco
         return new Oauth2RegisteredClient(name.getQualifiedName(), null);
     }
 
-    // -------------------------------------------------------------------------
-    // Row19 type methods
-    // -------------------------------------------------------------------------
-
+    /**
+     * Create an inline derived table from this table
+     */
     @Override
-    public Row19<String, String, Instant, String, Instant, String, String, String, String, String, String, String, String, byte[], Boolean, Instant, String, Instant, String> fieldsRow() {
-        return (Row19) super.fieldsRow();
+    public Oauth2RegisteredClient where(Condition condition) {
+        return new Oauth2RegisteredClient(getQualifiedName(), aliased() ? this : null, null, condition);
     }
 
     /**
-     * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
+     * Create an inline derived table from this table
      */
-    public <U> SelectField<U> mapping(Function19<? super String, ? super String, ? super Instant, ? super String, ? super Instant, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super byte[], ? super Boolean, ? super Instant, ? super String, ? super Instant, ? super String, ? extends U> from) {
-        return convertFrom(Records.mapping(from));
+    @Override
+    public Oauth2RegisteredClient where(Collection<? extends Condition> conditions) {
+        return where(DSL.and(conditions));
     }
 
     /**
-     * Convenience mapping calling {@link SelectField#convertFrom(Class,
-     * Function)}.
+     * Create an inline derived table from this table
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function19<? super String, ? super String, ? super Instant, ? super String, ? super Instant, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super byte[], ? super Boolean, ? super Instant, ? super String, ? super Instant, ? super String, ? extends U> from) {
-        return convertFrom(toType, Records.mapping(from));
+    @Override
+    public Oauth2RegisteredClient where(Condition... conditions) {
+        return where(DSL.and(conditions));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public Oauth2RegisteredClient where(Field<Boolean> condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public Oauth2RegisteredClient where(SQL condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public Oauth2RegisteredClient where(@Stringly.SQL String condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public Oauth2RegisteredClient where(@Stringly.SQL String condition, Object... binds) {
+        return where(DSL.condition(condition, binds));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public Oauth2RegisteredClient where(@Stringly.SQL String condition, QueryPart... parts) {
+        return where(DSL.condition(condition, parts));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public Oauth2RegisteredClient whereExists(Select<?> select) {
+        return where(DSL.exists(select));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public Oauth2RegisteredClient whereNotExists(Select<?> select) {
+        return where(DSL.notExists(select));
     }
 }

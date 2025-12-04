@@ -7,18 +7,35 @@ package cn.luixtech.passport.server.persistence.tables;
 import cn.luixtech.passport.server.persistence.Indexes;
 import cn.luixtech.passport.server.persistence.Keys;
 import cn.luixtech.passport.server.persistence.Public;
+import cn.luixtech.passport.server.persistence.tables.Notification.NotificationPath;
+import cn.luixtech.passport.server.persistence.tables.Role.RolePath;
+import cn.luixtech.passport.server.persistence.tables.SupportedDateTimeFormat.SupportedDateTimeFormatPath;
+import cn.luixtech.passport.server.persistence.tables.TeamUser.TeamUserPath;
+import cn.luixtech.passport.server.persistence.tables.UserLogin.UserLoginPath;
+import cn.luixtech.passport.server.persistence.tables.UserNotification.UserNotificationPath;
+import cn.luixtech.passport.server.persistence.tables.UserProfilePic.UserProfilePicPath;
+import cn.luixtech.passport.server.persistence.tables.UserRole.UserRolePath;
 import cn.luixtech.passport.server.persistence.tables.records.UserRecord;
 
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
+import org.jooq.Condition;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Index;
+import org.jooq.InverseForeignKey;
 import org.jooq.Name;
+import org.jooq.Path;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
 import org.jooq.Record;
+import org.jooq.SQL;
 import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
 import org.jooq.Table;
 import org.jooq.TableField;
 import org.jooq.TableOptions;
@@ -180,11 +197,11 @@ public class User extends TableImpl<UserRecord> {
     public final TableField<UserRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(50), this, "");
 
     private User(Name alias, Table<UserRecord> aliased) {
-        this(alias, aliased, null);
+        this(alias, aliased, (Field<?>[]) null, null);
     }
 
-    private User(Name alias, Table<UserRecord> aliased, Field<?>[] parameters) {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
+    private User(Name alias, Table<UserRecord> aliased, Field<?>[] parameters, Condition where) {
+        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table(), where);
     }
 
     /**
@@ -208,8 +225,37 @@ public class User extends TableImpl<UserRecord> {
         this(DSL.name("user"), null);
     }
 
-    public <O extends Record> User(Table<O> child, ForeignKey<O, UserRecord> key) {
-        super(child, key, USER);
+    public <O extends Record> User(Table<O> path, ForeignKey<O, UserRecord> childPath, InverseForeignKey<O, UserRecord> parentPath) {
+        super(path, childPath, parentPath, USER);
+    }
+
+    /**
+     * A subtype implementing {@link Path} for simplified path-based joins.
+     */
+    public static class UserPath extends User implements Path<UserRecord> {
+
+        private static final long serialVersionUID = 1L;
+        public <O extends Record> UserPath(Table<O> path, ForeignKey<O, UserRecord> childPath, InverseForeignKey<O, UserRecord> parentPath) {
+            super(path, childPath, parentPath);
+        }
+        private UserPath(Name alias, Table<UserRecord> aliased) {
+            super(alias, aliased);
+        }
+
+        @Override
+        public UserPath as(String alias) {
+            return new UserPath(DSL.name(alias), this);
+        }
+
+        @Override
+        public UserPath as(Name alias) {
+            return new UserPath(alias, this);
+        }
+
+        @Override
+        public UserPath as(Table<?> alias) {
+            return new UserPath(alias.getQualifiedName(), this);
+        }
     }
 
     @Override
@@ -230,6 +276,105 @@ public class User extends TableImpl<UserRecord> {
     @Override
     public List<UniqueKey<UserRecord>> getUniqueKeys() {
         return Arrays.asList(Keys.USER_EMAIL_KEY, Keys.USER_MOBILE_NO_KEY);
+    }
+
+    @Override
+    public List<ForeignKey<UserRecord, ?>> getReferences() {
+        return Arrays.asList(Keys.USER__FK_USER_DATE_TIME_FORMAT_SUPPORTED_DATE_TIME_FORMAT_ID);
+    }
+
+    private transient SupportedDateTimeFormatPath _supportedDateTimeFormat;
+
+    /**
+     * Get the implicit join path to the
+     * <code>public.supported_date_time_format</code> table.
+     */
+    public SupportedDateTimeFormatPath supportedDateTimeFormat() {
+        if (_supportedDateTimeFormat == null)
+            _supportedDateTimeFormat = new SupportedDateTimeFormatPath(this, Keys.USER__FK_USER_DATE_TIME_FORMAT_SUPPORTED_DATE_TIME_FORMAT_ID, null);
+
+        return _supportedDateTimeFormat;
+    }
+
+    private transient TeamUserPath _teamUser;
+
+    /**
+     * Get the implicit to-many join path to the <code>public.team_user</code>
+     * table
+     */
+    public TeamUserPath teamUser() {
+        if (_teamUser == null)
+            _teamUser = new TeamUserPath(this, null, Keys.TEAM_USER__FK_TEAM_USER_USERNAME.getInverseKey());
+
+        return _teamUser;
+    }
+
+    private transient UserLoginPath _userLogin;
+
+    /**
+     * Get the implicit to-many join path to the <code>public.user_login</code>
+     * table
+     */
+    public UserLoginPath userLogin() {
+        if (_userLogin == null)
+            _userLogin = new UserLoginPath(this, null, Keys.USER_LOGIN__FK_USER_LOGIN_USERNAME.getInverseKey());
+
+        return _userLogin;
+    }
+
+    private transient UserNotificationPath _userNotification;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>public.user_notification</code> table
+     */
+    public UserNotificationPath userNotification() {
+        if (_userNotification == null)
+            _userNotification = new UserNotificationPath(this, null, Keys.USER_NOTIFICATION__FK_USER_NOTIFICATION_USER.getInverseKey());
+
+        return _userNotification;
+    }
+
+    private transient UserProfilePicPath _userProfilePic;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>public.user_profile_pic</code> table
+     */
+    public UserProfilePicPath userProfilePic() {
+        if (_userProfilePic == null)
+            _userProfilePic = new UserProfilePicPath(this, null, Keys.USER_PROFILE_PIC__FK_USER_PROFILE_PIC_USERNAME.getInverseKey());
+
+        return _userProfilePic;
+    }
+
+    private transient UserRolePath _userRole;
+
+    /**
+     * Get the implicit to-many join path to the <code>public.user_role</code>
+     * table
+     */
+    public UserRolePath userRole() {
+        if (_userRole == null)
+            _userRole = new UserRolePath(this, null, Keys.USER_ROLE__FK_USER_ROLE_USERNAME.getInverseKey());
+
+        return _userRole;
+    }
+
+    /**
+     * Get the implicit many-to-many join path to the
+     * <code>public.notification</code> table
+     */
+    public NotificationPath notification() {
+        return userNotification().notification();
+    }
+
+    /**
+     * Get the implicit many-to-many join path to the <code>public.role</code>
+     * table
+     */
+    public RolePath role() {
+        return userRole().role();
     }
 
     @Override
@@ -269,5 +414,89 @@ public class User extends TableImpl<UserRecord> {
     @Override
     public User rename(Table<?> name) {
         return new User(name.getQualifiedName(), null);
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public User where(Condition condition) {
+        return new User(getQualifiedName(), aliased() ? this : null, null, condition);
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public User where(Collection<? extends Condition> conditions) {
+        return where(DSL.and(conditions));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public User where(Condition... conditions) {
+        return where(DSL.and(conditions));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public User where(Field<Boolean> condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public User where(SQL condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public User where(@Stringly.SQL String condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public User where(@Stringly.SQL String condition, Object... binds) {
+        return where(DSL.condition(condition, binds));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public User where(@Stringly.SQL String condition, QueryPart... parts) {
+        return where(DSL.condition(condition, parts));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public User whereExists(Select<?> select) {
+        return where(DSL.exists(select));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public User whereNotExists(Select<?> select) {
+        return where(DSL.notExists(select));
     }
 }

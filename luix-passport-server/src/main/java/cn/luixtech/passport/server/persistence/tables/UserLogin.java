@@ -7,23 +7,28 @@ package cn.luixtech.passport.server.persistence.tables;
 import cn.luixtech.passport.server.persistence.Indexes;
 import cn.luixtech.passport.server.persistence.Keys;
 import cn.luixtech.passport.server.persistence.Public;
+import cn.luixtech.passport.server.persistence.tables.User.UserPath;
 import cn.luixtech.passport.server.persistence.tables.records.UserLoginRecord;
 
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
-import java.util.function.Function;
 
+import org.jooq.Condition;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function7;
 import org.jooq.Index;
+import org.jooq.InverseForeignKey;
 import org.jooq.Name;
+import org.jooq.Path;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
 import org.jooq.Record;
-import org.jooq.Records;
-import org.jooq.Row7;
+import org.jooq.SQL;
 import org.jooq.Schema;
-import org.jooq.SelectField;
+import org.jooq.Select;
+import org.jooq.Stringly;
 import org.jooq.Table;
 import org.jooq.TableField;
 import org.jooq.TableOptions;
@@ -90,11 +95,11 @@ public class UserLogin extends TableImpl<UserLoginRecord> {
     public final TableField<UserLoginRecord, String> BROWSER = createField(DSL.name("browser"), SQLDataType.VARCHAR(20).nullable(false), this, "");
 
     private UserLogin(Name alias, Table<UserLoginRecord> aliased) {
-        this(alias, aliased, null);
+        this(alias, aliased, (Field<?>[]) null, null);
     }
 
-    private UserLogin(Name alias, Table<UserLoginRecord> aliased, Field<?>[] parameters) {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
+    private UserLogin(Name alias, Table<UserLoginRecord> aliased, Field<?>[] parameters, Condition where) {
+        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table(), where);
     }
 
     /**
@@ -118,8 +123,37 @@ public class UserLogin extends TableImpl<UserLoginRecord> {
         this(DSL.name("user_login"), null);
     }
 
-    public <O extends Record> UserLogin(Table<O> child, ForeignKey<O, UserLoginRecord> key) {
-        super(child, key, USER_LOGIN);
+    public <O extends Record> UserLogin(Table<O> path, ForeignKey<O, UserLoginRecord> childPath, InverseForeignKey<O, UserLoginRecord> parentPath) {
+        super(path, childPath, parentPath, USER_LOGIN);
+    }
+
+    /**
+     * A subtype implementing {@link Path} for simplified path-based joins.
+     */
+    public static class UserLoginPath extends UserLogin implements Path<UserLoginRecord> {
+
+        private static final long serialVersionUID = 1L;
+        public <O extends Record> UserLoginPath(Table<O> path, ForeignKey<O, UserLoginRecord> childPath, InverseForeignKey<O, UserLoginRecord> parentPath) {
+            super(path, childPath, parentPath);
+        }
+        private UserLoginPath(Name alias, Table<UserLoginRecord> aliased) {
+            super(alias, aliased);
+        }
+
+        @Override
+        public UserLoginPath as(String alias) {
+            return new UserLoginPath(DSL.name(alias), this);
+        }
+
+        @Override
+        public UserLoginPath as(Name alias) {
+            return new UserLoginPath(alias, this);
+        }
+
+        @Override
+        public UserLoginPath as(Table<?> alias) {
+            return new UserLoginPath(alias.getQualifiedName(), this);
+        }
     }
 
     @Override
@@ -135,6 +169,23 @@ public class UserLogin extends TableImpl<UserLoginRecord> {
     @Override
     public UniqueKey<UserLoginRecord> getPrimaryKey() {
         return Keys.USER_LOGIN_PKEY;
+    }
+
+    @Override
+    public List<ForeignKey<UserLoginRecord, ?>> getReferences() {
+        return Arrays.asList(Keys.USER_LOGIN__FK_USER_LOGIN_USERNAME);
+    }
+
+    private transient UserPath _user;
+
+    /**
+     * Get the implicit join path to the <code>public.user</code> table.
+     */
+    public UserPath user() {
+        if (_user == null)
+            _user = new UserPath(this, Keys.USER_LOGIN__FK_USER_LOGIN_USERNAME, null);
+
+        return _user;
     }
 
     @Override
@@ -176,27 +227,87 @@ public class UserLogin extends TableImpl<UserLoginRecord> {
         return new UserLogin(name.getQualifiedName(), null);
     }
 
-    // -------------------------------------------------------------------------
-    // Row7 type methods
-    // -------------------------------------------------------------------------
-
+    /**
+     * Create an inline derived table from this table
+     */
     @Override
-    public Row7<String, String, Instant, String, String, String, String> fieldsRow() {
-        return (Row7) super.fieldsRow();
+    public UserLogin where(Condition condition) {
+        return new UserLogin(getQualifiedName(), aliased() ? this : null, null, condition);
     }
 
     /**
-     * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
+     * Create an inline derived table from this table
      */
-    public <U> SelectField<U> mapping(Function7<? super String, ? super String, ? super Instant, ? super String, ? super String, ? super String, ? super String, ? extends U> from) {
-        return convertFrom(Records.mapping(from));
+    @Override
+    public UserLogin where(Collection<? extends Condition> conditions) {
+        return where(DSL.and(conditions));
     }
 
     /**
-     * Convenience mapping calling {@link SelectField#convertFrom(Class,
-     * Function)}.
+     * Create an inline derived table from this table
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function7<? super String, ? super String, ? super Instant, ? super String, ? super String, ? super String, ? super String, ? extends U> from) {
-        return convertFrom(toType, Records.mapping(from));
+    @Override
+    public UserLogin where(Condition... conditions) {
+        return where(DSL.and(conditions));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public UserLogin where(Field<Boolean> condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public UserLogin where(SQL condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public UserLogin where(@Stringly.SQL String condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public UserLogin where(@Stringly.SQL String condition, Object... binds) {
+        return where(DSL.condition(condition, binds));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public UserLogin where(@Stringly.SQL String condition, QueryPart... parts) {
+        return where(DSL.condition(condition, parts));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public UserLogin whereExists(Select<?> select) {
+        return where(DSL.exists(select));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public UserLogin whereNotExists(Select<?> select) {
+        return where(DSL.notExists(select));
     }
 }

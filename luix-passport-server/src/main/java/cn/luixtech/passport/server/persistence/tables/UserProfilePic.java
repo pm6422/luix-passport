@@ -6,19 +6,26 @@ package cn.luixtech.passport.server.persistence.tables;
 
 import cn.luixtech.passport.server.persistence.Keys;
 import cn.luixtech.passport.server.persistence.Public;
+import cn.luixtech.passport.server.persistence.tables.User.UserPath;
 import cn.luixtech.passport.server.persistence.tables.records.UserProfilePicRecord;
 
-import java.util.function.Function;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
+import org.jooq.Condition;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function2;
+import org.jooq.InverseForeignKey;
 import org.jooq.Name;
+import org.jooq.Path;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
 import org.jooq.Record;
-import org.jooq.Records;
-import org.jooq.Row2;
+import org.jooq.SQL;
 import org.jooq.Schema;
-import org.jooq.SelectField;
+import org.jooq.Select;
+import org.jooq.Stringly;
 import org.jooq.Table;
 import org.jooq.TableField;
 import org.jooq.TableOptions;
@@ -60,11 +67,11 @@ public class UserProfilePic extends TableImpl<UserProfilePicRecord> {
     public final TableField<UserProfilePicRecord, byte[]> PROFILE_PIC = createField(DSL.name("profile_pic"), SQLDataType.BLOB.nullable(false), this, "");
 
     private UserProfilePic(Name alias, Table<UserProfilePicRecord> aliased) {
-        this(alias, aliased, null);
+        this(alias, aliased, (Field<?>[]) null, null);
     }
 
-    private UserProfilePic(Name alias, Table<UserProfilePicRecord> aliased, Field<?>[] parameters) {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
+    private UserProfilePic(Name alias, Table<UserProfilePicRecord> aliased, Field<?>[] parameters, Condition where) {
+        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table(), where);
     }
 
     /**
@@ -88,8 +95,37 @@ public class UserProfilePic extends TableImpl<UserProfilePicRecord> {
         this(DSL.name("user_profile_pic"), null);
     }
 
-    public <O extends Record> UserProfilePic(Table<O> child, ForeignKey<O, UserProfilePicRecord> key) {
-        super(child, key, USER_PROFILE_PIC);
+    public <O extends Record> UserProfilePic(Table<O> path, ForeignKey<O, UserProfilePicRecord> childPath, InverseForeignKey<O, UserProfilePicRecord> parentPath) {
+        super(path, childPath, parentPath, USER_PROFILE_PIC);
+    }
+
+    /**
+     * A subtype implementing {@link Path} for simplified path-based joins.
+     */
+    public static class UserProfilePicPath extends UserProfilePic implements Path<UserProfilePicRecord> {
+
+        private static final long serialVersionUID = 1L;
+        public <O extends Record> UserProfilePicPath(Table<O> path, ForeignKey<O, UserProfilePicRecord> childPath, InverseForeignKey<O, UserProfilePicRecord> parentPath) {
+            super(path, childPath, parentPath);
+        }
+        private UserProfilePicPath(Name alias, Table<UserProfilePicRecord> aliased) {
+            super(alias, aliased);
+        }
+
+        @Override
+        public UserProfilePicPath as(String alias) {
+            return new UserProfilePicPath(DSL.name(alias), this);
+        }
+
+        @Override
+        public UserProfilePicPath as(Name alias) {
+            return new UserProfilePicPath(alias, this);
+        }
+
+        @Override
+        public UserProfilePicPath as(Table<?> alias) {
+            return new UserProfilePicPath(alias.getQualifiedName(), this);
+        }
     }
 
     @Override
@@ -100,6 +136,23 @@ public class UserProfilePic extends TableImpl<UserProfilePicRecord> {
     @Override
     public UniqueKey<UserProfilePicRecord> getPrimaryKey() {
         return Keys.USER_PROFILE_PIC_PKEY;
+    }
+
+    @Override
+    public List<ForeignKey<UserProfilePicRecord, ?>> getReferences() {
+        return Arrays.asList(Keys.USER_PROFILE_PIC__FK_USER_PROFILE_PIC_USERNAME);
+    }
+
+    private transient UserPath _user;
+
+    /**
+     * Get the implicit join path to the <code>public.user</code> table.
+     */
+    public UserPath user() {
+        if (_user == null)
+            _user = new UserPath(this, Keys.USER_PROFILE_PIC__FK_USER_PROFILE_PIC_USERNAME, null);
+
+        return _user;
     }
 
     @Override
@@ -141,27 +194,87 @@ public class UserProfilePic extends TableImpl<UserProfilePicRecord> {
         return new UserProfilePic(name.getQualifiedName(), null);
     }
 
-    // -------------------------------------------------------------------------
-    // Row2 type methods
-    // -------------------------------------------------------------------------
-
+    /**
+     * Create an inline derived table from this table
+     */
     @Override
-    public Row2<String, byte[]> fieldsRow() {
-        return (Row2) super.fieldsRow();
+    public UserProfilePic where(Condition condition) {
+        return new UserProfilePic(getQualifiedName(), aliased() ? this : null, null, condition);
     }
 
     /**
-     * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
+     * Create an inline derived table from this table
      */
-    public <U> SelectField<U> mapping(Function2<? super String, ? super byte[], ? extends U> from) {
-        return convertFrom(Records.mapping(from));
+    @Override
+    public UserProfilePic where(Collection<? extends Condition> conditions) {
+        return where(DSL.and(conditions));
     }
 
     /**
-     * Convenience mapping calling {@link SelectField#convertFrom(Class,
-     * Function)}.
+     * Create an inline derived table from this table
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function2<? super String, ? super byte[], ? extends U> from) {
-        return convertFrom(toType, Records.mapping(from));
+    @Override
+    public UserProfilePic where(Condition... conditions) {
+        return where(DSL.and(conditions));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public UserProfilePic where(Field<Boolean> condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public UserProfilePic where(SQL condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public UserProfilePic where(@Stringly.SQL String condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public UserProfilePic where(@Stringly.SQL String condition, Object... binds) {
+        return where(DSL.condition(condition, binds));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public UserProfilePic where(@Stringly.SQL String condition, QueryPart... parts) {
+        return where(DSL.condition(condition, parts));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public UserProfilePic whereExists(Select<?> select) {
+        return where(DSL.exists(select));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public UserProfilePic whereNotExists(Select<?> select) {
+        return where(DSL.notExists(select));
     }
 }

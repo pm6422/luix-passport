@@ -7,23 +7,29 @@ package cn.luixtech.passport.server.persistence.tables;
 import cn.luixtech.passport.server.persistence.Indexes;
 import cn.luixtech.passport.server.persistence.Keys;
 import cn.luixtech.passport.server.persistence.Public;
+import cn.luixtech.passport.server.persistence.tables.Permission.PermissionPath;
+import cn.luixtech.passport.server.persistence.tables.Role.RolePath;
 import cn.luixtech.passport.server.persistence.tables.records.RolePermissionRecord;
 
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
-import java.util.function.Function;
 
+import org.jooq.Condition;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function7;
 import org.jooq.Index;
+import org.jooq.InverseForeignKey;
 import org.jooq.Name;
+import org.jooq.Path;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
 import org.jooq.Record;
-import org.jooq.Records;
-import org.jooq.Row7;
+import org.jooq.SQL;
 import org.jooq.Schema;
-import org.jooq.SelectField;
+import org.jooq.Select;
+import org.jooq.Stringly;
 import org.jooq.Table;
 import org.jooq.TableField;
 import org.jooq.TableOptions;
@@ -90,11 +96,11 @@ public class RolePermission extends TableImpl<RolePermissionRecord> {
     public final TableField<RolePermissionRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(50), this, "");
 
     private RolePermission(Name alias, Table<RolePermissionRecord> aliased) {
-        this(alias, aliased, null);
+        this(alias, aliased, (Field<?>[]) null, null);
     }
 
-    private RolePermission(Name alias, Table<RolePermissionRecord> aliased, Field<?>[] parameters) {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
+    private RolePermission(Name alias, Table<RolePermissionRecord> aliased, Field<?>[] parameters, Condition where) {
+        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table(), where);
     }
 
     /**
@@ -118,8 +124,37 @@ public class RolePermission extends TableImpl<RolePermissionRecord> {
         this(DSL.name("role_permission"), null);
     }
 
-    public <O extends Record> RolePermission(Table<O> child, ForeignKey<O, RolePermissionRecord> key) {
-        super(child, key, ROLE_PERMISSION);
+    public <O extends Record> RolePermission(Table<O> path, ForeignKey<O, RolePermissionRecord> childPath, InverseForeignKey<O, RolePermissionRecord> parentPath) {
+        super(path, childPath, parentPath, ROLE_PERMISSION);
+    }
+
+    /**
+     * A subtype implementing {@link Path} for simplified path-based joins.
+     */
+    public static class RolePermissionPath extends RolePermission implements Path<RolePermissionRecord> {
+
+        private static final long serialVersionUID = 1L;
+        public <O extends Record> RolePermissionPath(Table<O> path, ForeignKey<O, RolePermissionRecord> childPath, InverseForeignKey<O, RolePermissionRecord> parentPath) {
+            super(path, childPath, parentPath);
+        }
+        private RolePermissionPath(Name alias, Table<RolePermissionRecord> aliased) {
+            super(alias, aliased);
+        }
+
+        @Override
+        public RolePermissionPath as(String alias) {
+            return new RolePermissionPath(DSL.name(alias), this);
+        }
+
+        @Override
+        public RolePermissionPath as(Name alias) {
+            return new RolePermissionPath(alias, this);
+        }
+
+        @Override
+        public RolePermissionPath as(Table<?> alias) {
+            return new RolePermissionPath(alias.getQualifiedName(), this);
+        }
     }
 
     @Override
@@ -140,6 +175,35 @@ public class RolePermission extends TableImpl<RolePermissionRecord> {
     @Override
     public List<UniqueKey<RolePermissionRecord>> getUniqueKeys() {
         return Arrays.asList(Keys.UK_ROLE_PERMISSION);
+    }
+
+    @Override
+    public List<ForeignKey<RolePermissionRecord, ?>> getReferences() {
+        return Arrays.asList(Keys.ROLE_PERMISSION__FK_ROLE_PERMISSION_PERMISSION_ID, Keys.ROLE_PERMISSION__FK_ROLE_PERMISSION_ROLE_ID);
+    }
+
+    private transient PermissionPath _permission;
+
+    /**
+     * Get the implicit join path to the <code>public.permission</code> table.
+     */
+    public PermissionPath permission() {
+        if (_permission == null)
+            _permission = new PermissionPath(this, Keys.ROLE_PERMISSION__FK_ROLE_PERMISSION_PERMISSION_ID, null);
+
+        return _permission;
+    }
+
+    private transient RolePath _role;
+
+    /**
+     * Get the implicit join path to the <code>public.role</code> table.
+     */
+    public RolePath role() {
+        if (_role == null)
+            _role = new RolePath(this, Keys.ROLE_PERMISSION__FK_ROLE_PERMISSION_ROLE_ID, null);
+
+        return _role;
     }
 
     @Override
@@ -181,27 +245,87 @@ public class RolePermission extends TableImpl<RolePermissionRecord> {
         return new RolePermission(name.getQualifiedName(), null);
     }
 
-    // -------------------------------------------------------------------------
-    // Row7 type methods
-    // -------------------------------------------------------------------------
-
+    /**
+     * Create an inline derived table from this table
+     */
     @Override
-    public Row7<String, String, String, Instant, String, Instant, String> fieldsRow() {
-        return (Row7) super.fieldsRow();
+    public RolePermission where(Condition condition) {
+        return new RolePermission(getQualifiedName(), aliased() ? this : null, null, condition);
     }
 
     /**
-     * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
+     * Create an inline derived table from this table
      */
-    public <U> SelectField<U> mapping(Function7<? super String, ? super String, ? super String, ? super Instant, ? super String, ? super Instant, ? super String, ? extends U> from) {
-        return convertFrom(Records.mapping(from));
+    @Override
+    public RolePermission where(Collection<? extends Condition> conditions) {
+        return where(DSL.and(conditions));
     }
 
     /**
-     * Convenience mapping calling {@link SelectField#convertFrom(Class,
-     * Function)}.
+     * Create an inline derived table from this table
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function7<? super String, ? super String, ? super String, ? super Instant, ? super String, ? super Instant, ? super String, ? extends U> from) {
-        return convertFrom(toType, Records.mapping(from));
+    @Override
+    public RolePermission where(Condition... conditions) {
+        return where(DSL.and(conditions));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public RolePermission where(Field<Boolean> condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public RolePermission where(SQL condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public RolePermission where(@Stringly.SQL String condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public RolePermission where(@Stringly.SQL String condition, Object... binds) {
+        return where(DSL.condition(condition, binds));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public RolePermission where(@Stringly.SQL String condition, QueryPart... parts) {
+        return where(DSL.condition(condition, parts));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public RolePermission whereExists(Select<?> select) {
+        return where(DSL.exists(select));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public RolePermission whereNotExists(Select<?> select) {
+        return where(DSL.notExists(select));
     }
 }

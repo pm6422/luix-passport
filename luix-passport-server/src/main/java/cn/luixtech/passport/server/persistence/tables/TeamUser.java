@@ -6,19 +6,26 @@ package cn.luixtech.passport.server.persistence.tables;
 
 import cn.luixtech.passport.server.persistence.Keys;
 import cn.luixtech.passport.server.persistence.Public;
+import cn.luixtech.passport.server.persistence.tables.User.UserPath;
 import cn.luixtech.passport.server.persistence.tables.records.TeamUserRecord;
 
-import java.util.function.Function;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
+import org.jooq.Condition;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function3;
+import org.jooq.InverseForeignKey;
 import org.jooq.Name;
+import org.jooq.Path;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
 import org.jooq.Record;
-import org.jooq.Records;
-import org.jooq.Row3;
+import org.jooq.SQL;
 import org.jooq.Schema;
-import org.jooq.SelectField;
+import org.jooq.Select;
+import org.jooq.Stringly;
 import org.jooq.Table;
 import org.jooq.TableField;
 import org.jooq.TableOptions;
@@ -65,11 +72,11 @@ public class TeamUser extends TableImpl<TeamUserRecord> {
     public final TableField<TeamUserRecord, String> USERNAME = createField(DSL.name("username"), SQLDataType.VARCHAR(20).nullable(false), this, "");
 
     private TeamUser(Name alias, Table<TeamUserRecord> aliased) {
-        this(alias, aliased, null);
+        this(alias, aliased, (Field<?>[]) null, null);
     }
 
-    private TeamUser(Name alias, Table<TeamUserRecord> aliased, Field<?>[] parameters) {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
+    private TeamUser(Name alias, Table<TeamUserRecord> aliased, Field<?>[] parameters, Condition where) {
+        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table(), where);
     }
 
     /**
@@ -93,8 +100,37 @@ public class TeamUser extends TableImpl<TeamUserRecord> {
         this(DSL.name("team_user"), null);
     }
 
-    public <O extends Record> TeamUser(Table<O> child, ForeignKey<O, TeamUserRecord> key) {
-        super(child, key, TEAM_USER);
+    public <O extends Record> TeamUser(Table<O> path, ForeignKey<O, TeamUserRecord> childPath, InverseForeignKey<O, TeamUserRecord> parentPath) {
+        super(path, childPath, parentPath, TEAM_USER);
+    }
+
+    /**
+     * A subtype implementing {@link Path} for simplified path-based joins.
+     */
+    public static class TeamUserPath extends TeamUser implements Path<TeamUserRecord> {
+
+        private static final long serialVersionUID = 1L;
+        public <O extends Record> TeamUserPath(Table<O> path, ForeignKey<O, TeamUserRecord> childPath, InverseForeignKey<O, TeamUserRecord> parentPath) {
+            super(path, childPath, parentPath);
+        }
+        private TeamUserPath(Name alias, Table<TeamUserRecord> aliased) {
+            super(alias, aliased);
+        }
+
+        @Override
+        public TeamUserPath as(String alias) {
+            return new TeamUserPath(DSL.name(alias), this);
+        }
+
+        @Override
+        public TeamUserPath as(Name alias) {
+            return new TeamUserPath(alias, this);
+        }
+
+        @Override
+        public TeamUserPath as(Table<?> alias) {
+            return new TeamUserPath(alias.getQualifiedName(), this);
+        }
     }
 
     @Override
@@ -105,6 +141,23 @@ public class TeamUser extends TableImpl<TeamUserRecord> {
     @Override
     public UniqueKey<TeamUserRecord> getPrimaryKey() {
         return Keys.TEAM_USER_PKEY;
+    }
+
+    @Override
+    public List<ForeignKey<TeamUserRecord, ?>> getReferences() {
+        return Arrays.asList(Keys.TEAM_USER__FK_TEAM_USER_USERNAME);
+    }
+
+    private transient UserPath _user;
+
+    /**
+     * Get the implicit join path to the <code>public.user</code> table.
+     */
+    public UserPath user() {
+        if (_user == null)
+            _user = new UserPath(this, Keys.TEAM_USER__FK_TEAM_USER_USERNAME, null);
+
+        return _user;
     }
 
     @Override
@@ -146,27 +199,87 @@ public class TeamUser extends TableImpl<TeamUserRecord> {
         return new TeamUser(name.getQualifiedName(), null);
     }
 
-    // -------------------------------------------------------------------------
-    // Row3 type methods
-    // -------------------------------------------------------------------------
-
+    /**
+     * Create an inline derived table from this table
+     */
     @Override
-    public Row3<String, String, String> fieldsRow() {
-        return (Row3) super.fieldsRow();
+    public TeamUser where(Condition condition) {
+        return new TeamUser(getQualifiedName(), aliased() ? this : null, null, condition);
     }
 
     /**
-     * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
+     * Create an inline derived table from this table
      */
-    public <U> SelectField<U> mapping(Function3<? super String, ? super String, ? super String, ? extends U> from) {
-        return convertFrom(Records.mapping(from));
+    @Override
+    public TeamUser where(Collection<? extends Condition> conditions) {
+        return where(DSL.and(conditions));
     }
 
     /**
-     * Convenience mapping calling {@link SelectField#convertFrom(Class,
-     * Function)}.
+     * Create an inline derived table from this table
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function3<? super String, ? super String, ? super String, ? extends U> from) {
-        return convertFrom(toType, Records.mapping(from));
+    @Override
+    public TeamUser where(Condition... conditions) {
+        return where(DSL.and(conditions));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public TeamUser where(Field<Boolean> condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public TeamUser where(SQL condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public TeamUser where(@Stringly.SQL String condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public TeamUser where(@Stringly.SQL String condition, Object... binds) {
+        return where(DSL.condition(condition, binds));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public TeamUser where(@Stringly.SQL String condition, QueryPart... parts) {
+        return where(DSL.condition(condition, parts));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public TeamUser whereExists(Select<?> select) {
+        return where(DSL.exists(select));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public TeamUser whereNotExists(Select<?> select) {
+        return where(DSL.notExists(select));
     }
 }

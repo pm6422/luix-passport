@@ -8,17 +8,17 @@ import cn.luixtech.passport.server.persistence.Keys;
 import cn.luixtech.passport.server.persistence.Public;
 import cn.luixtech.passport.server.persistence.tables.records.Oauth2AuthorizationConsentRecord;
 
-import java.util.function.Function;
+import java.util.Collection;
 
+import org.jooq.Condition;
 import org.jooq.Field;
-import org.jooq.ForeignKey;
-import org.jooq.Function3;
 import org.jooq.Name;
-import org.jooq.Record;
-import org.jooq.Records;
-import org.jooq.Row3;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.SQL;
 import org.jooq.Schema;
-import org.jooq.SelectField;
+import org.jooq.Select;
+import org.jooq.Stringly;
 import org.jooq.Table;
 import org.jooq.TableField;
 import org.jooq.TableOptions;
@@ -68,11 +68,11 @@ public class Oauth2AuthorizationConsent extends TableImpl<Oauth2AuthorizationCon
     public final TableField<Oauth2AuthorizationConsentRecord, String> AUTHORITIES = createField(DSL.name("authorities"), SQLDataType.VARCHAR(1000).nullable(false), this, "");
 
     private Oauth2AuthorizationConsent(Name alias, Table<Oauth2AuthorizationConsentRecord> aliased) {
-        this(alias, aliased, null);
+        this(alias, aliased, (Field<?>[]) null, null);
     }
 
-    private Oauth2AuthorizationConsent(Name alias, Table<Oauth2AuthorizationConsentRecord> aliased, Field<?>[] parameters) {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
+    private Oauth2AuthorizationConsent(Name alias, Table<Oauth2AuthorizationConsentRecord> aliased, Field<?>[] parameters, Condition where) {
+        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table(), where);
     }
 
     /**
@@ -96,10 +96,6 @@ public class Oauth2AuthorizationConsent extends TableImpl<Oauth2AuthorizationCon
      */
     public Oauth2AuthorizationConsent() {
         this(DSL.name("oauth2_authorization_consent"), null);
-    }
-
-    public <O extends Record> Oauth2AuthorizationConsent(Table<O> child, ForeignKey<O, Oauth2AuthorizationConsentRecord> key) {
-        super(child, key, OAUTH2_AUTHORIZATION_CONSENT);
     }
 
     @Override
@@ -151,27 +147,87 @@ public class Oauth2AuthorizationConsent extends TableImpl<Oauth2AuthorizationCon
         return new Oauth2AuthorizationConsent(name.getQualifiedName(), null);
     }
 
-    // -------------------------------------------------------------------------
-    // Row3 type methods
-    // -------------------------------------------------------------------------
-
+    /**
+     * Create an inline derived table from this table
+     */
     @Override
-    public Row3<String, String, String> fieldsRow() {
-        return (Row3) super.fieldsRow();
+    public Oauth2AuthorizationConsent where(Condition condition) {
+        return new Oauth2AuthorizationConsent(getQualifiedName(), aliased() ? this : null, null, condition);
     }
 
     /**
-     * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
+     * Create an inline derived table from this table
      */
-    public <U> SelectField<U> mapping(Function3<? super String, ? super String, ? super String, ? extends U> from) {
-        return convertFrom(Records.mapping(from));
+    @Override
+    public Oauth2AuthorizationConsent where(Collection<? extends Condition> conditions) {
+        return where(DSL.and(conditions));
     }
 
     /**
-     * Convenience mapping calling {@link SelectField#convertFrom(Class,
-     * Function)}.
+     * Create an inline derived table from this table
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function3<? super String, ? super String, ? super String, ? extends U> from) {
-        return convertFrom(toType, Records.mapping(from));
+    @Override
+    public Oauth2AuthorizationConsent where(Condition... conditions) {
+        return where(DSL.and(conditions));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public Oauth2AuthorizationConsent where(Field<Boolean> condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public Oauth2AuthorizationConsent where(SQL condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public Oauth2AuthorizationConsent where(@Stringly.SQL String condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public Oauth2AuthorizationConsent where(@Stringly.SQL String condition, Object... binds) {
+        return where(DSL.condition(condition, binds));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public Oauth2AuthorizationConsent where(@Stringly.SQL String condition, QueryPart... parts) {
+        return where(DSL.condition(condition, parts));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public Oauth2AuthorizationConsent whereExists(Select<?> select) {
+        return where(DSL.exists(select));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public Oauth2AuthorizationConsent whereNotExists(Select<?> select) {
+        return where(DSL.notExists(select));
     }
 }

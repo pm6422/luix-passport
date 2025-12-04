@@ -7,23 +7,29 @@ package cn.luixtech.passport.server.persistence.tables;
 import cn.luixtech.passport.server.persistence.Indexes;
 import cn.luixtech.passport.server.persistence.Keys;
 import cn.luixtech.passport.server.persistence.Public;
+import cn.luixtech.passport.server.persistence.tables.Notification.NotificationPath;
+import cn.luixtech.passport.server.persistence.tables.User.UserPath;
 import cn.luixtech.passport.server.persistence.tables.records.UserNotificationRecord;
 
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
-import java.util.function.Function;
 
+import org.jooq.Condition;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function9;
 import org.jooq.Index;
+import org.jooq.InverseForeignKey;
 import org.jooq.Name;
+import org.jooq.Path;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
 import org.jooq.Record;
-import org.jooq.Records;
-import org.jooq.Row9;
+import org.jooq.SQL;
 import org.jooq.Schema;
-import org.jooq.SelectField;
+import org.jooq.Select;
+import org.jooq.Stringly;
 import org.jooq.Table;
 import org.jooq.TableField;
 import org.jooq.TableOptions;
@@ -100,11 +106,11 @@ public class UserNotification extends TableImpl<UserNotificationRecord> {
     public final TableField<UserNotificationRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(50), this, "");
 
     private UserNotification(Name alias, Table<UserNotificationRecord> aliased) {
-        this(alias, aliased, null);
+        this(alias, aliased, (Field<?>[]) null, null);
     }
 
-    private UserNotification(Name alias, Table<UserNotificationRecord> aliased, Field<?>[] parameters) {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
+    private UserNotification(Name alias, Table<UserNotificationRecord> aliased, Field<?>[] parameters, Condition where) {
+        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table(), where);
     }
 
     /**
@@ -128,8 +134,37 @@ public class UserNotification extends TableImpl<UserNotificationRecord> {
         this(DSL.name("user_notification"), null);
     }
 
-    public <O extends Record> UserNotification(Table<O> child, ForeignKey<O, UserNotificationRecord> key) {
-        super(child, key, USER_NOTIFICATION);
+    public <O extends Record> UserNotification(Table<O> path, ForeignKey<O, UserNotificationRecord> childPath, InverseForeignKey<O, UserNotificationRecord> parentPath) {
+        super(path, childPath, parentPath, USER_NOTIFICATION);
+    }
+
+    /**
+     * A subtype implementing {@link Path} for simplified path-based joins.
+     */
+    public static class UserNotificationPath extends UserNotification implements Path<UserNotificationRecord> {
+
+        private static final long serialVersionUID = 1L;
+        public <O extends Record> UserNotificationPath(Table<O> path, ForeignKey<O, UserNotificationRecord> childPath, InverseForeignKey<O, UserNotificationRecord> parentPath) {
+            super(path, childPath, parentPath);
+        }
+        private UserNotificationPath(Name alias, Table<UserNotificationRecord> aliased) {
+            super(alias, aliased);
+        }
+
+        @Override
+        public UserNotificationPath as(String alias) {
+            return new UserNotificationPath(DSL.name(alias), this);
+        }
+
+        @Override
+        public UserNotificationPath as(Name alias) {
+            return new UserNotificationPath(alias, this);
+        }
+
+        @Override
+        public UserNotificationPath as(Table<?> alias) {
+            return new UserNotificationPath(alias.getQualifiedName(), this);
+        }
     }
 
     @Override
@@ -150,6 +185,35 @@ public class UserNotification extends TableImpl<UserNotificationRecord> {
     @Override
     public List<UniqueKey<UserNotificationRecord>> getUniqueKeys() {
         return Arrays.asList(Keys.UK_USER_NOTIFICATION);
+    }
+
+    @Override
+    public List<ForeignKey<UserNotificationRecord, ?>> getReferences() {
+        return Arrays.asList(Keys.USER_NOTIFICATION__FK_USER_NOTIFICATION_NOTIFICATION, Keys.USER_NOTIFICATION__FK_USER_NOTIFICATION_USER);
+    }
+
+    private transient NotificationPath _notification;
+
+    /**
+     * Get the implicit join path to the <code>public.notification</code> table.
+     */
+    public NotificationPath notification() {
+        if (_notification == null)
+            _notification = new NotificationPath(this, Keys.USER_NOTIFICATION__FK_USER_NOTIFICATION_NOTIFICATION, null);
+
+        return _notification;
+    }
+
+    private transient UserPath _user;
+
+    /**
+     * Get the implicit join path to the <code>public.user</code> table.
+     */
+    public UserPath user() {
+        if (_user == null)
+            _user = new UserPath(this, Keys.USER_NOTIFICATION__FK_USER_NOTIFICATION_USER, null);
+
+        return _user;
     }
 
     @Override
@@ -191,27 +255,87 @@ public class UserNotification extends TableImpl<UserNotificationRecord> {
         return new UserNotification(name.getQualifiedName(), null);
     }
 
-    // -------------------------------------------------------------------------
-    // Row9 type methods
-    // -------------------------------------------------------------------------
-
+    /**
+     * Create an inline derived table from this table
+     */
     @Override
-    public Row9<String, String, String, String, Boolean, Instant, String, Instant, String> fieldsRow() {
-        return (Row9) super.fieldsRow();
+    public UserNotification where(Condition condition) {
+        return new UserNotification(getQualifiedName(), aliased() ? this : null, null, condition);
     }
 
     /**
-     * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
+     * Create an inline derived table from this table
      */
-    public <U> SelectField<U> mapping(Function9<? super String, ? super String, ? super String, ? super String, ? super Boolean, ? super Instant, ? super String, ? super Instant, ? super String, ? extends U> from) {
-        return convertFrom(Records.mapping(from));
+    @Override
+    public UserNotification where(Collection<? extends Condition> conditions) {
+        return where(DSL.and(conditions));
     }
 
     /**
-     * Convenience mapping calling {@link SelectField#convertFrom(Class,
-     * Function)}.
+     * Create an inline derived table from this table
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function9<? super String, ? super String, ? super String, ? super String, ? super Boolean, ? super Instant, ? super String, ? super Instant, ? super String, ? extends U> from) {
-        return convertFrom(toType, Records.mapping(from));
+    @Override
+    public UserNotification where(Condition... conditions) {
+        return where(DSL.and(conditions));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public UserNotification where(Field<Boolean> condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public UserNotification where(SQL condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public UserNotification where(@Stringly.SQL String condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public UserNotification where(@Stringly.SQL String condition, Object... binds) {
+        return where(DSL.condition(condition, binds));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public UserNotification where(@Stringly.SQL String condition, QueryPart... parts) {
+        return where(DSL.condition(condition, parts));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public UserNotification whereExists(Select<?> select) {
+        return where(DSL.exists(select));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public UserNotification whereNotExists(Select<?> select) {
+        return where(DSL.notExists(select));
     }
 }

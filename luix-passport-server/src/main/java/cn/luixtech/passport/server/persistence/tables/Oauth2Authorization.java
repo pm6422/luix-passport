@@ -9,12 +9,17 @@ import cn.luixtech.passport.server.persistence.Public;
 import cn.luixtech.passport.server.persistence.tables.records.Oauth2AuthorizationRecord;
 
 import java.time.Instant;
+import java.util.Collection;
 
+import org.jooq.Condition;
 import org.jooq.Field;
-import org.jooq.ForeignKey;
 import org.jooq.Name;
-import org.jooq.Record;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.SQL;
 import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
 import org.jooq.Table;
 import org.jooq.TableField;
 import org.jooq.TableOptions;
@@ -227,11 +232,11 @@ public class Oauth2Authorization extends TableImpl<Oauth2AuthorizationRecord> {
     public final TableField<Oauth2AuthorizationRecord, String> DEVICE_CODE_METADATA = createField(DSL.name("device_code_metadata"), SQLDataType.CLOB, this, "");
 
     private Oauth2Authorization(Name alias, Table<Oauth2AuthorizationRecord> aliased) {
-        this(alias, aliased, null);
+        this(alias, aliased, (Field<?>[]) null, null);
     }
 
-    private Oauth2Authorization(Name alias, Table<Oauth2AuthorizationRecord> aliased, Field<?>[] parameters) {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
+    private Oauth2Authorization(Name alias, Table<Oauth2AuthorizationRecord> aliased, Field<?>[] parameters, Condition where) {
+        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table(), where);
     }
 
     /**
@@ -255,10 +260,6 @@ public class Oauth2Authorization extends TableImpl<Oauth2AuthorizationRecord> {
      */
     public Oauth2Authorization() {
         this(DSL.name("oauth2_authorization"), null);
-    }
-
-    public <O extends Record> Oauth2Authorization(Table<O> child, ForeignKey<O, Oauth2AuthorizationRecord> key) {
-        super(child, key, OAUTH2_AUTHORIZATION);
     }
 
     @Override
@@ -308,5 +309,89 @@ public class Oauth2Authorization extends TableImpl<Oauth2AuthorizationRecord> {
     @Override
     public Oauth2Authorization rename(Table<?> name) {
         return new Oauth2Authorization(name.getQualifiedName(), null);
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public Oauth2Authorization where(Condition condition) {
+        return new Oauth2Authorization(getQualifiedName(), aliased() ? this : null, null, condition);
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public Oauth2Authorization where(Collection<? extends Condition> conditions) {
+        return where(DSL.and(conditions));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public Oauth2Authorization where(Condition... conditions) {
+        return where(DSL.and(conditions));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public Oauth2Authorization where(Field<Boolean> condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public Oauth2Authorization where(SQL condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public Oauth2Authorization where(@Stringly.SQL String condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public Oauth2Authorization where(@Stringly.SQL String condition, Object... binds) {
+        return where(DSL.condition(condition, binds));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public Oauth2Authorization where(@Stringly.SQL String condition, QueryPart... parts) {
+        return where(DSL.condition(condition, parts));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public Oauth2Authorization whereExists(Select<?> select) {
+        return where(DSL.exists(select));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public Oauth2Authorization whereNotExists(Select<?> select) {
+        return where(DSL.notExists(select));
     }
 }
