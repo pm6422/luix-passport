@@ -16,19 +16,19 @@ import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.oauth2.server.authorization.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationConsentService;
 import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationConsentService;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.client.JdbcRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
-import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
@@ -37,7 +37,6 @@ import org.springframework.security.web.authentication.LoginUrlAuthenticationEnt
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 
 @Configuration(proxyBeanMethods = false)
-@EnableWebSecurity
 public class AuthorizationServerConfiguration {
     public static final String                AUTHORIZATION_BEARER            = OAuth2AccessToken.TokenType.BEARER.getValue() + " ";
     public static final String                DEFAULT_PASSWORD_ENCODER_PREFIX = "{bcrypt}";
@@ -72,13 +71,9 @@ public class AuthorizationServerConfiguration {
             HttpSecurity http,
             RegisteredClientRepository registeredClientRepository,
             AuthorizationServerSettings authorizationServerSettings) throws Exception {
-        http.securityMatcher(
-                "/oauth2/**",
-                "/.well-known/**",
-                DEVICE_VERIFICATION_URI,
-                VIEW_JWK_URI
-        );
 
+        /*
+         * 1. Device Flow 组件
         /*
          * This sample demonstrates the use of a public client that does not
          * store credentials or authenticate with the authorization server.
@@ -101,6 +96,10 @@ public class AuthorizationServerConfiguration {
         DeviceClientAuthenticationProvider deviceClientAuthenticationProvider =
                 new DeviceClientAuthenticationProvider(registeredClientRepository);
 
+        /*
+         * 2. 使用 http.with() 替换 OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
+         * 并将所有自定义配置移入 Lambda 表达式。
+         */
         http.oauth2AuthorizationServer(authorizationServer ->
                 authorizationServer
                         .deviceAuthorizationEndpoint(endpoint -> endpoint.verificationUri(DEVICE_VERIFICATION_URI))
@@ -114,16 +113,23 @@ public class AuthorizationServerConfiguration {
                         .oidc(Customizer.withDefaults())
         );
 
-        // @formatter:off
-		http
-			.exceptionHandling((exceptions) -> exceptions
-				.defaultAuthenticationEntryPointFor(
-					new LoginUrlAuthenticationEntryPoint(LOGIN_URI),
-					new MediaTypeRequestMatcher(MediaType.TEXT_HTML)
-				)
-			)
-			.oauth2ResourceServer(server -> server.jwt(Customizer.withDefaults()));
-		// @formatter:on
+        /*
+         * 3. 获取配置器，设置安全匹配器，确保只有授权服务器的端点被该 FilterChain 处理。
+         */
+        OAuth2AuthorizationServerConfigurer authorizationServerConfigurer =
+                http.getConfigurer(OAuth2AuthorizationServerConfigurer.class);
+        http.securityMatcher(authorizationServerConfigurer.getEndpointsMatcher());
+
+        // 4. 其他安全配置
+        http
+                .authorizeHttpRequests((authorize) -> authorize.anyRequest().authenticated())
+                .exceptionHandling((exceptions) -> exceptions
+                        .defaultAuthenticationEntryPointFor(
+                                new LoginUrlAuthenticationEntryPoint(LOGIN_URI),
+                                new MediaTypeRequestMatcher(MediaType.TEXT_HTML)
+                        )
+                )
+                .oauth2ResourceServer(server -> server.jwt(Customizer.withDefaults()));
         return http.build();
     }
 
