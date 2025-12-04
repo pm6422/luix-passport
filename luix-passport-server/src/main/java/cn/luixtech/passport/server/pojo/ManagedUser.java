@@ -2,7 +2,6 @@ package cn.luixtech.passport.server.pojo;
 
 
 import cn.luixtech.passport.server.domain.User;
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -25,7 +24,6 @@ public class ManagedUser extends User {
     public static final  int  RAW_PASSWORD_MIN_LENGTH = 5;
     public static final  int  RAW_PASSWORD_MAX_LENGTH = 10;
 
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     @Size(min = RAW_PASSWORD_MIN_LENGTH, max = RAW_PASSWORD_MAX_LENGTH)
     private String      password;
     private Set<String> roleIds;

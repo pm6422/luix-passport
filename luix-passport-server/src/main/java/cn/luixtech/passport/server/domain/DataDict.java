@@ -1,7 +1,6 @@
 package cn.luixtech.passport.server.domain;
 
 import cn.luixtech.passport.server.utils.AuthUtils;
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
@@ -24,12 +23,10 @@ public class DataDict {
     @Column(length = 18)
     private String id;
 
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     @NotEmpty(message = "categoryCode:{Validation.NotEmpty}")
     @Column(nullable = false)
     private String categoryCode;
 
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     @NotEmpty(message = "dictCode:{Validation.NotEmpty}")
     @Column(nullable = false)
     private String dictCode;

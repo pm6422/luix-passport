@@ -1,7 +1,6 @@
 package cn.luixtech.passport.server.domain;
 
 import cn.luixtech.passport.server.utils.AuthUtils;
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
@@ -23,12 +22,10 @@ public class Permission {
     @Column(length = 18)
     private String id;
 
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     @NotEmpty(message = "resourceType:{Validation.NotEmpty}")
     @Column(nullable = false)
     private String resourceType;
 
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     @NotEmpty(message = "action:{Validation.NotEmpty}")
     @Column(nullable = false)
     private String action;

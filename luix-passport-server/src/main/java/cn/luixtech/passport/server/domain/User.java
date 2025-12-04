@@ -16,13 +16,11 @@ import java.time.Instant;
 @AllArgsConstructor
 public class User {
 
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     @NotEmpty(message = "username:{Validation.NotEmpty}")
     @Column(nullable = false)
     @Id
     private String username;
 
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     @NotEmpty(message = "email:{Validation.NotEmpty}")
     @Column(nullable = false)
     private String email;
