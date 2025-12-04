@@ -72,34 +72,22 @@ public class AuthorizationServerConfiguration {
             RegisteredClientRepository registeredClientRepository,
             AuthorizationServerSettings authorizationServerSettings) throws Exception {
 
-        /*
-         * 1. Device Flow 组件
-        /*
-         * This sample demonstrates the use of a public client that does not
-         * store credentials or authenticate with the authorization server.
-         *
-         * The following components show how to customize the authorization
-         * server to allow for device clients to perform requests to the
-         * OAuth 2.0 Device Authorization Endpoint and Token Endpoint without
-         * a clientId/clientSecret.
-         *
-         * CAUTION: These endpoints will not require any authentication and can
-         * be accessed by any client that has a valid clientId.
-         *
-         * It is therefore RECOMMENDED to carefully monitor the use of these
-         * endpoints and employ any additional protections as needed, which is
-         * outside the scope of this sample.
-         */
+        // 1. Configure Device Authorization Grant (RFC 8628) authentication components.
+        //    - DeviceClientAuthenticationConverter: Extracts client credentials from device authorization requests.
+        //    - DeviceClientAuthenticationProvider: Authenticates public clients without client secrets.
+        //    Note: Public clients only require a valid client_id, no client_secret needed.
         DeviceClientAuthenticationConverter deviceClientAuthenticationConverter =
                 new DeviceClientAuthenticationConverter(
                         authorizationServerSettings.getDeviceAuthorizationEndpoint());
         DeviceClientAuthenticationProvider deviceClientAuthenticationProvider =
                 new DeviceClientAuthenticationProvider(registeredClientRepository);
 
-        /*
-         * 2. 使用 http.with() 替换 OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
-         * 并将所有自定义配置移入 Lambda 表达式。
-         */
+        // 2. Configure OAuth2 Authorization Server with custom endpoint settings:
+        //    - deviceAuthorizationEndpoint: Sets device verification URI for user code entry.
+        //    - deviceVerificationEndpoint: Sets consent page for device authorization.
+        //    - clientAuthentication: Registers custom converter/provider for device clients.
+        //    - authorizationEndpoint: Sets consent page for authorization code flow.
+        //    - oidc: Enables OpenID Connect 1.0 protocol support.
         http.oauth2AuthorizationServer(authorizationServer ->
                 authorizationServer
                         .deviceAuthorizationEndpoint(endpoint -> endpoint.verificationUri(DEVICE_VERIFICATION_URI))
@@ -113,14 +101,16 @@ public class AuthorizationServerConfiguration {
                         .oidc(Customizer.withDefaults())
         );
 
-        /*
-         * 3. 获取配置器，设置安全匹配器，确保只有授权服务器的端点被该 FilterChain 处理。
-         */
+        // 3. Apply security matcher to restrict this filter chain to OAuth2 Authorization Server endpoints only.
+        //    This prevents request routing conflicts with defaultSecurityFilterChain.
         OAuth2AuthorizationServerConfigurer authorizationServerConfigurer =
                 http.getConfigurer(OAuth2AuthorizationServerConfigurer.class);
         http.securityMatcher(authorizationServerConfigurer.getEndpointsMatcher());
 
-        // 4. 其他安全配置
+        // 4. Additional security configuration:
+        //    - Require authentication for all matched requests.
+        //    - Redirect to login page for unauthenticated browser requests.
+        //    - Enable JWT-based resource server for token validation.
         http
                 .authorizeHttpRequests((authorize) -> authorize.anyRequest().authenticated())
                 .exceptionHandling((exceptions) -> exceptions
