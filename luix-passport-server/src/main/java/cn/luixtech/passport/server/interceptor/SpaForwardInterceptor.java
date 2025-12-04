@@ -40,8 +40,7 @@ public class SpaForwardInterceptor implements HandlerInterceptor {
         // Forward non-static, non-AJAX GET requests to index.html (except for critical server endpoints)
         if (!path.equals("/")
                 && !path.equals("/index.html")
-                && !path.startsWith("/oauth2/")
-                && !path.startsWith("/.well-known/")) {
+                && !path.startsWith("/oauth2/")) {
             request.getRequestDispatcher("/index.html").forward(request, response);
             return false;
         }
