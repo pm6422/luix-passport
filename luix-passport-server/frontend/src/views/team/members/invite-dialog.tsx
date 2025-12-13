@@ -7,13 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form"
+import { Form } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import {
   Select,
@@ -92,50 +86,56 @@ export function InviteMembersDialog({ open, onOpenChange, teamId, onSuccess }: I
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <div className="space-y-3 max-h-[60vh] overflow-y-auto p-1">
               {fields.map((field, index) => (
-                <div key={field.id} className="flex gap-2 items-start">
-                  <FormField
-                    control={form.control}
-                    name={`invitations.${index}.email`}
-                    render={({ field }) => (
-                      <FormItem className="flex-1">
-                        <FormControl>
-                          <Input placeholder="Email address" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
+                <div
+                  key={field.id}
+                  className="grid grid-cols-[1fr_120px_40px] items-center gap-2"
+                >
+                  <div className="flex flex-col">
+                    <Input
+                      placeholder="Email address"
+                      {...form.register(`invitations.${index}.email`)}
+                    />
+                    {form.formState.errors.invitations?.[index]?.email?.message && (
+                      <span className="mt-1 text-xs text-destructive">
+                        {form.formState.errors.invitations?.[index]?.email?.message as string}
+                      </span>
                     )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name={`invitations.${index}.role`}
-                    render={({ field }) => (
-                      <FormItem className="w-[120px]">
-                        <Select onValueChange={field.onChange} value={field.value ?? "MEMBER"}>
-                          <FormControl>
-                            <SelectTrigger className="h-10 w-full">
-                              <SelectValue placeholder="Role" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <SelectItem value="OWNER">Owner</SelectItem>
-                            <SelectItem value="MEMBER">Member</SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  {fields.length > 1 && (
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="icon"
-                      onClick={() => remove(index)}
-                      tabIndex={-1}
+                  </div>
+
+                  <div>
+                    <Select
+                      onValueChange={(val) =>
+                        form.setValue(`invitations.${index}.role`, val, {
+                          shouldValidate: true,
+                          shouldDirty: true,
+                        })
+                      }
+                      value={form.getValues(`invitations.${index}.role`) ?? "MEMBER"}
                     >
-                      <IconMinus className="size-4" />
-                    </Button>
-                  )}
+                      <SelectTrigger className="h-10 w-full">
+                        <SelectValue placeholder="Role" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="OWNER">Owner</SelectItem>
+                        <SelectItem value="MEMBER">Member</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="flex justify-end">
+                    {fields.length > 1 && (
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="icon"
+                        onClick={() => remove(index)}
+                        tabIndex={-1}
+                        className="h-10 w-10"
+                      >
+                        <IconMinus className="size-4" />
+                      </Button>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>

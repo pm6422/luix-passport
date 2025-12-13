@@ -144,7 +144,7 @@ public class TeamServiceImpl implements TeamService {
 
       // Check for existing pending invitation
       Optional<TeamInvitation> existingInvite = teamInvitationRepository.findByTeamIdAndEmailAndStatus(teamId,
-          invitation.getEmail(), "PENDING");
+          invitation.getEmail(), TeamInvitation.STATUS_PENDING);
       if (existingInvite.isPresent()) {
         // Update role if needed or just skip
         continue;
@@ -155,7 +155,7 @@ public class TeamServiceImpl implements TeamService {
       invite.setEmail(invitation.getEmail());
       invite.setRole(invitation.getRole());
       invite.setInviterId(inviterId);
-      invite.setStatus("PENDING");
+      invite.setStatus(TeamInvitation.STATUS_PENDING);
       invite.setCreatedAt(Instant.now());
       invite.setExpiresAt(Instant.now().plus(7, ChronoUnit.DAYS));
       teamInvitationRepository.save(invite);
@@ -181,7 +181,7 @@ public class TeamServiceImpl implements TeamService {
 
   @Override
   public List<TeamInvitation> findPendingInvitations(String teamId) {
-    List<TeamInvitation> invites = teamInvitationRepository.findByTeamId(teamId);
+    List<TeamInvitation> invites = teamInvitationRepository.findByTeamIdAndStatusNot(teamId, TeamInvitation.STATUS_ACCEPTED);
     invites.forEach(inv -> inv.setRegistered(userRepository.findOneByEmail(inv.getEmail()).isPresent()));
     return invites;
   }
@@ -204,7 +204,7 @@ public class TeamServiceImpl implements TeamService {
 
   @Override
   public List<TeamInvitation> findUserInvitations(String email) {
-    return teamInvitationRepository.findByEmailAndStatusAndExpiresAtAfter(email, "PENDING", Instant.now());
+    return teamInvitationRepository.findByEmailAndStatusAndExpiresAtAfter(email, TeamInvitation.STATUS_PENDING, Instant.now());
   }
 
   @Override
@@ -213,7 +213,7 @@ public class TeamServiceImpl implements TeamService {
     TeamInvitation invitation = teamInvitationRepository.findById(invitationId)
         .orElseThrow(() -> new IllegalArgumentException("Invitation not found"));
 
-    if (!"PENDING".equals(invitation.getStatus())) {
+    if (!TeamInvitation.STATUS_PENDING.equals(invitation.getStatus())) {
       throw new IllegalArgumentException("Invitation is not pending");
     }
 
@@ -229,7 +229,7 @@ public class TeamServiceImpl implements TeamService {
     teamUserRepository.save(teamUser);
 
     // Update invitation status
-    invitation.setStatus("ACCEPTED");
+    invitation.setStatus(TeamInvitation.STATUS_ACCEPTED);
     teamInvitationRepository.save(invitation);
 
     log.info("User {} accepted invitation {} to join team {}", userId, invitationId, invitation.getTeamId());
@@ -241,11 +241,11 @@ public class TeamServiceImpl implements TeamService {
     TeamInvitation invitation = teamInvitationRepository.findById(invitationId)
         .orElseThrow(() -> new IllegalArgumentException("Invitation not found"));
 
-    if (!"PENDING".equals(invitation.getStatus())) {
+    if (!TeamInvitation.STATUS_PENDING.equals(invitation.getStatus())) {
       throw new IllegalArgumentException("Invitation is not pending");
     }
 
-    invitation.setStatus("REJECTED");
+    invitation.setStatus(TeamInvitation.STATUS_REJECTED);
     teamInvitationRepository.save(invitation);
 
     log.info("Invitation {} was rejected", invitationId);

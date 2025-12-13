@@ -15,6 +15,10 @@ import jakarta.persistence.Transient;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TeamInvitation {
+  public static final String STATUS_PENDING = "PENDING";
+  public static final String STATUS_ACCEPTED = "ACCEPTED";
+  public static final String STATUS_REJECTED = "REJECTED";
+
   @Id
   @GeneratedValue
   @TsidGenerator
