@@ -101,8 +101,8 @@ export function TeamSwitcher() {
             ))}
             <DropdownMenuSeparator />
             <DropdownMenuItem className="gap-2 p-2" onClick={() => setCreateTeamOpen(true)}>
-              <div className="bg-background flex size-6 items-center justify-center rounded-md border">
-                <IconPlus className="size-4" />
+              <div className="flex size-6 items-center justify-center">
+                <IconPlus className="size-4"/>
               </div>
               <div className="text-muted-foreground font-medium">Create Team</div>
             </DropdownMenuItem>
