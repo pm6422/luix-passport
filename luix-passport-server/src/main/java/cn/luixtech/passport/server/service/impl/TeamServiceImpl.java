@@ -30,6 +30,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static cn.luixtech.passport.server.domain.TeamUser.ROLE_OWNER;
+import static cn.luixtech.passport.server.domain.TeamUser.ROLE_MEMBER;
 import static com.luixtech.springbootframework.utils.NetworkUtils.getRequestUrl;
 
 @Service
@@ -416,5 +417,25 @@ public class TeamServiceImpl implements TeamService {
         log.warn("Skip deleting invitation {} due to {}", id, e.getMessage());
       }
     }
+  }
+
+  @Override
+  @Transactional(rollbackFor = Exception.class)
+  public void updateMemberRole(String teamId, String userId, String role, String operatorId) {
+    if (!ROLE_OWNER.equals(role) && !ROLE_MEMBER.equals(role)) {
+      throw new IllegalArgumentException("Invalid role");
+    }
+    TeamUser operator = teamUserRepository.findByTeamIdAndUserId(teamId, operatorId)
+        .orElseThrow(() -> new IllegalArgumentException("Operator is not a member of the team"));
+    if (!ROLE_OWNER.equals(operator.getRole())) {
+      throw new IllegalArgumentException("Only team owners can edit member roles");
+    }
+    if (operatorId.equals(userId) && !ROLE_OWNER.equals(role)) {
+      throw new IllegalArgumentException("Owners cannot change their own role");
+    }
+    TeamUser target = teamUserRepository.findByTeamIdAndUserId(teamId, userId)
+        .orElseThrow(() -> new IllegalArgumentException("Target user is not a member of the team"));
+    target.setRole(role);
+    teamUserRepository.save(target);
   }
 }

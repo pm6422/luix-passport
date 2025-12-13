@@ -35,4 +35,6 @@ public interface TeamService {
   void resendInvitations(HttpServletRequest request, java.util.List<String> invitationIds, String inviterId);
 
   void deleteInvitations(List<String> invitationIds, String inviterId);
+
+  void updateMemberRole(String teamId, String userId, String role, String operatorId);
 }

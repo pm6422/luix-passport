@@ -17,6 +17,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { TeamService, TeamMember, TeamInvitation } from "@/services/team-service"
 import { loginUserStore } from "@/stores/login-user-store"
 import { useStore } from "exome/react"
@@ -63,6 +64,11 @@ export default function TeamMembers() {
         })
       : members
   }, [members, memberQuery])
+
+  const isOwner = useMemo(() => {
+    const me = members.find(m => m.userId === loginUser.username)
+    return me?.role === "OWNER"
+  }, [members, loginUser.username])
 
   const getInviteProgress = (i: TeamInvitation) => {
     if (i.status === "ACCEPTED") return "Accepted"
@@ -207,10 +213,36 @@ export default function TeamMembers() {
                   </TableCell>
                   <TableCell>{member.email}</TableCell>
                   <TableCell>
-                    <div className="flex gap-2">
-                      <Badge variant="outline" className="capitalize">{member.role}</Badge>
-                      {/* Placeholder for Primary Owner if logic exists */}
-                    </div>
+                    {isOwner ? (
+                      <div className="flex items-center gap-2">
+                        <Select
+                          value={member.role}
+                          onValueChange={async (value) => {
+                            if (!teamId) return
+                            try {
+                              await TeamService.updateMemberRole(teamId, member.userId, value)
+                              toast.success("角色已更新")
+                              await loadMembers()
+                            } catch (error) {
+                              toast.error("角色更新失败")
+                              console.error(error)
+                            }
+                          }}
+                        >
+                          <SelectTrigger size="sm" aria-label="编辑角色" disabled={member.userId === loginUser.username}>
+                            <SelectValue placeholder="选择角色" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="OWNER">OWNER</SelectItem>
+                            <SelectItem value="MEMBER">MEMBER</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    ) : (
+                      <div className="flex gap-2">
+                        <Badge variant="outline" className="capitalize">{member.role}</Badge>
+                      </div>
+                    )}
                   </TableCell>
                   <TableCell className="text-right">
                     {member.joinedAt && <DateTime value={member.joinedAt} />}

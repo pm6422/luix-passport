@@ -141,4 +141,11 @@ public class TeamController {
         teamService.deleteInvitations(invitationIds, AuthUtils.getCurrentUsername());
         return ResponseEntity.ok().build();
     }
+
+    @Operation(summary = "update team member role")
+    @PutMapping("/api/teams/{teamId}/members/{userId}/role")
+    public ResponseEntity<Void> updateMemberRole(@PathVariable String teamId, @PathVariable String userId, @RequestParam String role) {
+        teamService.updateMemberRole(teamId, userId, role, AuthUtils.getCurrentUsername());
+        return ResponseEntity.ok().build();
+    }
 }

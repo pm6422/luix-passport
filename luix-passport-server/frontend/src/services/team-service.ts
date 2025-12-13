@@ -75,6 +75,10 @@ export class TeamService {
   public static deleteInvitations(invitationIds: string[]): Promise<AxiosResponse<void>> {
     return http.post(`/api/invitations/batch-delete`, invitationIds)
   }
+
+  public static updateMemberRole(teamId: string, userId: string, role: string): Promise<AxiosResponse<void>> {
+    return http.put(`/api/teams/${teamId}/members/${userId}/role`, null, { params: { role } })
+  }
 }
 
 export interface Team {
