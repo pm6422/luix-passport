@@ -205,7 +205,7 @@ export default function TeamMembers() {
                             if (!teamId) return
                             try {
                               await TeamService.updateMemberRole(teamId, member.userId, value)
-                              toast.success("角色已更新")
+                              toast.success("Role updated")
                               await loadMembers()
                             } catch (error) {
                               toast.error("角色更新失败")
