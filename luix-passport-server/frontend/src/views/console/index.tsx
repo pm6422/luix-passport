@@ -140,9 +140,8 @@ export default function ConsolePage() {
             </Card>
           </div>
 
-          {/* Quick Actions */}
+          {/* Team Invitations */}
           <div className="space-y-4">
-            {/* Team Invitations */}
             {!loadingInvitations && invitations.length > 0 && (
               <Card>
                 <CardHeader>
@@ -187,34 +186,6 @@ export default function ConsolePage() {
                 </CardContent>
               </Card>
             )}
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Quick Actions</CardTitle>
-              </CardHeader>
-              <CardContent className="grid gap-4">
-                <Button variant="outline" className="w-full justify-start">
-                  <Lock className="mr-2 h-4 w-4" />
-                  Change Password
-                </Button>
-                <Button variant="outline" className="w-full justify-start">
-                  <Key className="mr-2 h-4 w-4" />
-                  Two-Factor Authentication
-                </Button>
-                {isAdmin && (
-                  <>
-                    <Button variant="outline" className="w-full justify-start">
-                      <Users className="mr-2 h-4 w-4" />
-                      Manage Users
-                    </Button>
-                    <Button variant="outline" className="w-full justify-start">
-                      <Shield className="mr-2 h-4 w-4" />
-                      Security Settings
-                    </Button>
-                  </>
-                )}
-              </CardContent>
-            </Card>
 
             {/* Security Status */}
             <Card>
