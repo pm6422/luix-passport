@@ -60,56 +60,63 @@ export default function ConsolePage() {
           <h1 className="text-3xl font-bold">Console</h1>
         </div>
 
-        {/* Stats Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Logins</CardTitle>
-              <Key className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">1,234</div>
-              <p className="text-xs text-muted-foreground">+12% from last month</p>
-            </CardContent>
-          </Card>
+        {/* Admin Only Section */}
+        {isAdmin && (
+          <div className="mb-8">
+            <Card>
+              <CardHeader>
+                <CardTitle>Admin Console</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <Card>
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                      <CardTitle className="text-sm font-medium">Pending Approvals</CardTitle>
+                      <CreditCard className="h-4 w-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-2xl font-bold">3</div>
+                      <Button variant="link" size="sm" className="p-0 h-auto">View requests</Button>
+                    </CardContent>
+                  </Card>
 
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Active Sessions</CardTitle>
-              <Activity className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">42</div>
-              <p className="text-xs text-muted-foreground">Currently active</p>
-            </CardContent>
-          </Card>
+                  <Card>
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                      <CardTitle className="text-sm font-medium">Recent Signups</CardTitle>
+                      <User className="h-4 w-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-2xl font-bold">12</div>
+                      <p className="text-xs text-muted-foreground">Last 7 days</p>
+                    </CardContent>
+                  </Card>
 
-          {isAdmin && (
-            <>
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Total Users</CardTitle>
-                  <Users className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">568</div>
-                  <p className="text-xs text-muted-foreground">+5 new this week</p>
-                </CardContent>
-              </Card>
+                  <Card>
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                      <CardTitle className="text-sm font-medium">Failed Logins</CardTitle>
+                      <Lock className="h-4 w-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-2xl font-bold">7</div>
+                      <p className="text-xs text-muted-foreground">Today</p>
+                    </CardContent>
+                  </Card>
 
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Security Events</CardTitle>
-                  <Shield className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">8</div>
-                  <p className="text-xs text-muted-foreground">Today</p>
-                </CardContent>
-              </Card>
-            </>
-          )}
-        </div>
+                  <Card>
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                      <CardTitle className="text-sm font-medium">System Status</CardTitle>
+                      <Activity className="h-4 w-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-2xl font-bold text-green-500">Normal</div>
+                      <p className="text-xs text-muted-foreground">All systems operational</p>
+                    </CardContent>
+                  </Card>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
 
         {/* Main Content */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -217,64 +224,6 @@ export default function ConsolePage() {
             </Card>
           </div>
         </div>
-
-        {/* Admin Only Section */}
-        {isAdmin && (
-          <div className="mt-8">
-            <Card>
-              <CardHeader>
-                <CardTitle>Admin Console</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                  <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                      <CardTitle className="text-sm font-medium">Pending Approvals</CardTitle>
-                      <CreditCard className="h-4 w-4 text-muted-foreground" />
-                    </CardHeader>
-                    <CardContent>
-                      <div className="text-2xl font-bold">3</div>
-                      <Button variant="link" size="sm" className="p-0 h-auto">View requests</Button>
-                    </CardContent>
-                  </Card>
-
-                  <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                      <CardTitle className="text-sm font-medium">Recent Signups</CardTitle>
-                      <User className="h-4 w-4 text-muted-foreground" />
-                    </CardHeader>
-                    <CardContent>
-                      <div className="text-2xl font-bold">12</div>
-                      <p className="text-xs text-muted-foreground">Last 7 days</p>
-                    </CardContent>
-                  </Card>
-
-                  <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                      <CardTitle className="text-sm font-medium">Failed Logins</CardTitle>
-                      <Lock className="h-4 w-4 text-muted-foreground" />
-                    </CardHeader>
-                    <CardContent>
-                      <div className="text-2xl font-bold">7</div>
-                      <p className="text-xs text-muted-foreground">Today</p>
-                    </CardContent>
-                  </Card>
-
-                  <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                      <CardTitle className="text-sm font-medium">System Status</CardTitle>
-                      <Activity className="h-4 w-4 text-muted-foreground" />
-                    </CardHeader>
-                    <CardContent>
-                      <div className="text-2xl font-bold text-green-500">Normal</div>
-                      <p className="text-xs text-muted-foreground">All systems operational</p>
-                    </CardContent>
-                  </Card>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        )}
       </div>
     </LayoutBody>
   );
