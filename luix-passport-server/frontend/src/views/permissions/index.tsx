@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useCallback } from "react"
 import { LayoutBody } from "@/layouts/layout-definitions"
 import { DataTableToolbar } from "./table/table-toolbar"
 import { DataTable } from "@/components/custom/data-table/server-pagination-data-table"
@@ -14,7 +14,12 @@ export default function Permissions() {
   const [totalPages, setTotalPages] = useState(0)
   const [currentPageNo, setCurrentPageNo] = useState(0)
 
-  function loadPage(pageNo: number = 0, pageSize: number = 10, sorts: Array<string> = ["updatedAt,desc"], criteria: PermissionCriteriaSchema = {}): void {
+  const loadPage = useCallback((
+    pageNo: number = 0,
+    pageSize: number = 10,
+    sorts: Array<string> = ["updatedAt,desc"],
+    criteria: PermissionCriteriaSchema = {}
+  ): void => {
     setCurrentPageNo(pageNo)
     PermissionService.find({
       page: pageNo,
@@ -28,7 +33,7 @@ export default function Permissions() {
       setTotalCount(total)
       setTotalPages(Math.ceil(total / pageSize))
     })
-  }
+  }, [])
 
   function save(formData: Permission): Promise<void> {
     return PermissionService.save(formData).then(() => {

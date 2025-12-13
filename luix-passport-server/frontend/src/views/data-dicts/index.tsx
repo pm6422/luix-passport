@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useCallback } from "react"
 import { LayoutBody } from "@/layouts/layout-definitions"
 import { DataTableToolbar } from "./table/table-toolbar"
 import { DataTable } from "@/components/custom/data-table/server-pagination-data-table"
@@ -15,7 +15,12 @@ export default function DataDict() {
   const [totalPages, setTotalPages] = useState(0)
   const [currentPageNo, setCurrentPageNo] = useState(0)
 
-  function loadPage(pageNo: number = 0, pageSize: number = 10, sorts: Array<string> = ["updatedAt,desc"], criteria: DataDictCriteria = {}): void {
+  const loadPage = useCallback((
+    pageNo: number = 0,
+    pageSize: number = 10,
+    sorts: Array<string> = ["updatedAt,desc"],
+    criteria: DataDictCriteria = {}
+  ): void => {
     setCurrentPageNo(pageNo)
     DataDictService.find({
       page: pageNo,
@@ -30,7 +35,7 @@ export default function DataDict() {
       setTotalCount(total)
       setTotalPages(Math.ceil(total / pageSize))
     })
-  }
+  }, [])
 
   function save(formData: DataDict): Promise<void> {
     return DataDictService.save(formData).then(() => {

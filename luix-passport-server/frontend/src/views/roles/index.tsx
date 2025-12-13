@@ -13,14 +13,14 @@ export default function Role() {
   const [tableData, setTableData] = useState([] as Array<Role>)
 
   const loadPage = useCallback((criteria: RoleCriteriaSchema = {}) => {
-    if(criteria.keyword && tableData.length) {
-      setTableData(filterTable(tableData, criteria.keyword))
+    if (criteria.keyword) {
+      setTableData(prev => filterTable(prev, criteria.keyword!))
       return
     }
     RoleService.find({ page: 0, size: 2000, sort: ["updatedAt,desc"]}).then(r => {
       setTableData(r.data)
     })
-  }, [tableData])
+  }, [])
 
   useEffect(() => {
     loadPage()

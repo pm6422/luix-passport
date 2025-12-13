@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useCallback } from "react"
 import { LayoutBody } from "@/layouts/layout-definitions"
 import { DataTableToolbar } from "./table/table-toolbar"
 import { DataTable } from "@/components/custom/data-table/server-pagination-data-table"
@@ -13,7 +13,12 @@ export default function ScheduleExecutionLogs() {
   const [totalCount, setTotalCount] = useState(0)
   const [totalPages, setTotalPages] = useState(0)
 
-  function loadPage(pageNo: number = 0, pageSize: number = 10, sorts: Array<string> = ["startAt,desc"], criteria: ScheduleExecutionLogCriteriaSchema = {}): void {
+  const loadPage = useCallback((
+    pageNo: number = 0,
+    pageSize: number = 10,
+    sorts: Array<string> = ["startAt,desc"],
+    criteria: ScheduleExecutionLogCriteriaSchema = {}
+  ): void => {
     ScheduleExecutionLogService.find({
       page: pageNo,
       size: pageSize,
@@ -26,7 +31,7 @@ export default function ScheduleExecutionLogs() {
       setTotalCount(total)
       setTotalPages(Math.ceil(total / pageSize))
     })
-  }
+  }, [])
 
   function deleteRow(row: ScheduleExecutionLog): Promise<void> {
     if(!row.id) {
