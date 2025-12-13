@@ -46,53 +46,56 @@ const InputFormField = <TFieldValues extends FieldValues>({
   inputClassName,
   formItemClassName,
   hide = false
-}: Props<TFieldValues>) => ( !hide &&
-  <FormField
-    control={disabled ? undefined : control}
-    name={name as Path<TFieldValues>}
-    key={key}
-    render={({ field: { value: formFieldValue, ...rest } }) => (
-      <FormItem className={formItemClassName}>
-        {label && <RequiredFormLabel
-                    htmlFor={name.toString()}
-                    required={required}>{label}
-        </RequiredFormLabel>}
-        <FormControl>
-          <div className="relative flex w-full items-center gap-2">
-            {type === "textarea" ? (
-              <Textarea
-                id={name.toString()}
-                className={inputClassName}
-                placeholder={placeholder}
-                onFocus={onFocus}
-                defaultValue={defaultValue}
-                value={value || formFieldValue || ""}
-                disabled={disabled}
-                {...rest}
-              />
-            ) : (
-              <Input
-                id={name.toString()}
-                className={inputClassName}
-                type={type}
-                onFocus={onFocus}
-                onKeyDown={onKeyDown}
-                placeholder={placeholder}
-                defaultValue={defaultValue}
-                value={value || formFieldValue || ""}
-                disabled={disabled}
-                {...rest}
-              />
-            )}
-            {icon && (icon)}
-            {subComponent}
-          </div>
-        </FormControl>
-        {description && <FormDescription>{description}</FormDescription>}
-        <FormMessage />
-      </FormItem>
-    )}
-  />
-)
+}: Props<TFieldValues>) => {
+  if (hide) return null
+  return (
+    <FormField
+      control={disabled ? undefined : control}
+      name={name as Path<TFieldValues>}
+      key={key}
+      render={({ field: { value: formFieldValue, ...rest } }) => (
+        <FormItem className={formItemClassName}>
+          {label && <RequiredFormLabel
+                      htmlFor={name.toString()}
+                      required={required}>{label}
+          </RequiredFormLabel>}
+          <FormControl>
+            <div className="relative flex w-full items-center gap-2">
+              {type === "textarea" ? (
+                <Textarea
+                  id={name.toString()}
+                  className={inputClassName}
+                  placeholder={placeholder}
+                  onFocus={onFocus}
+                  defaultValue={defaultValue}
+                  value={value || formFieldValue || ""}
+                  disabled={disabled}
+                  {...rest}
+                />
+              ) : (
+                <Input
+                  id={name.toString()}
+                  className={inputClassName}
+                  type={type}
+                  onFocus={onFocus}
+                  onKeyDown={onKeyDown}
+                  placeholder={placeholder}
+                  defaultValue={defaultValue}
+                  value={value || formFieldValue || ""}
+                  disabled={disabled}
+                  {...rest}
+                />
+              )}
+              {icon && (icon)}
+              {subComponent}
+            </div>
+          </FormControl>
+          {description && <FormDescription>{description}</FormDescription>}
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+  )
+}
 
 export default InputFormField

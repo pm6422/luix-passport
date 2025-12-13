@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 import { DateTime } from "@/components/custom/date-time"
 import { InviteMembersDialog } from "./invite-dialog"
 import { LayoutBody } from "@/layouts/layout-definitions"
-import { IconPlus } from "@tabler/icons-react"
+import { IconPlus, IconTrash, IconRefresh } from "@tabler/icons-react"
 import { useParams } from "react-router-dom"
 import { Input } from "@/components/ui/input"
 import {
@@ -14,6 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { Checkbox } from "@/components/ui/checkbox"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { TeamService, TeamMember, TeamInvitation } from "@/services/team-service"
@@ -28,6 +29,7 @@ export default function TeamMembers() {
   const [invitations, setInvitations] = useState<TeamInvitation[]>([])
   const [memberQuery, setMemberQuery] = useState("")
   const [inviteQuery, setInviteQuery] = useState("")
+  const [selectedInvitationIds, setSelectedInvitationIds] = useState<string[]>([])
   const { loginUser } = useStore(loginUserStore)
 
   
@@ -86,6 +88,65 @@ export default function TeamMembers() {
       loadPendingInvitations()
     }
   }, [teamId, loadMembers, loadPendingInvitations])
+
+  const allSelected = useMemo(() => {
+    const ids = filteredInvitations.map(i => i.id)
+    return ids.length > 0 && ids.every(id => selectedInvitationIds.includes(id))
+  }, [filteredInvitations, selectedInvitationIds])
+
+  const toggleSelectAll = (checked: boolean) => {
+    if (checked) {
+      setSelectedInvitationIds(filteredInvitations.map(i => i.id))
+    } else {
+      setSelectedInvitationIds([])
+    }
+  }
+
+  const toggleSelectOne = (id: string, checked: boolean) => {
+    setSelectedInvitationIds(prev => {
+      if (checked) {
+        return Array.from(new Set([...prev, id]))
+      } else {
+        return prev.filter(v => v !== id)
+      }
+    })
+  }
+
+  const handleBatchResend = async () => {
+    const expiredIds = selectedInvitationIds.filter(id => {
+      const inv = invitations.find(i => i.id === id)
+      return inv?.status === "EXPIRED"
+    })
+    if (expiredIds.length === 0) {
+      toast.info("请选择状态为 Expired 的邀请进行重发")
+      return
+    }
+    try {
+      await TeamService.resendInvitations(expiredIds)
+      toast.success(`已重发 ${expiredIds.length} 条邀请`)
+      setSelectedInvitationIds([])
+      await loadPendingInvitations()
+    } catch (error) {
+      toast.error("批量重发失败")
+      console.error(error)
+    }
+  }
+
+  const handleBatchDelete = async () => {
+    if (selectedInvitationIds.length === 0) {
+      toast.info("请先选择要删除的邀请")
+      return
+    }
+    try {
+      await TeamService.deleteInvitations(selectedInvitationIds)
+      toast.success(`已删除 ${selectedInvitationIds.length} 条邀请`)
+      setSelectedInvitationIds([])
+      await loadPendingInvitations()
+    } catch (error) {
+      toast.error("批量删除失败")
+      console.error(error)
+    }
+  }
 
   return (
     <LayoutBody className="flex flex-col space-y-8 p-8" fixedHeight>
@@ -180,9 +241,33 @@ export default function TeamMembers() {
         </div>
 
         <div className="rounded-md border">
+          {selectedInvitationIds.length > 0 && (
+            <div className="flex items-center justify-between p-2">
+              <div className="text-sm text-muted-foreground">
+                已选择 {selectedInvitationIds.length} 条邀请
+              </div>
+              <div className="flex items-center gap-2">
+                <Button variant="outline" size="sm" onClick={handleBatchResend}>
+                  <IconRefresh className="size-4" />
+                  重发邀请
+                </Button>
+                <Button variant="destructive" size="sm" onClick={handleBatchDelete}>
+                  <IconTrash className="size-4" />
+                  删除邀请
+                </Button>
+              </div>
+            </div>
+          )}
           <Table>
             <TableHeader>
               <TableRow>
+                <TableHead className="w-8">
+                  <Checkbox
+                    checked={allSelected}
+                    onCheckedChange={(v) => toggleSelectAll(Boolean(v))}
+                    aria-label="Select all"
+                  />
+                </TableHead>
                 <TableHead>Email</TableHead>
                 <TableHead>Role</TableHead>
                 <TableHead>Invited at</TableHead>
@@ -194,13 +279,20 @@ export default function TeamMembers() {
             <TableBody>
               {filteredInvitations.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={6} className="h-24 text-center">
+                  <TableCell colSpan={7} className="h-24 text-center">
                     No data available
                   </TableCell>
                 </TableRow>
               ) : (
                 filteredInvitations.map((invite) => (
                   <TableRow key={invite.id}>
+                    <TableCell>
+                      <Checkbox
+                        checked={selectedInvitationIds.includes(invite.id)}
+                        onCheckedChange={(v) => toggleSelectOne(invite.id, Boolean(v))}
+                        aria-label="Select row"
+                      />
+                    </TableCell>
                     <TableCell>{invite.email}</TableCell>
                     <TableCell>
                       <Badge variant="outline" className="capitalize">{invite.role}</Badge>

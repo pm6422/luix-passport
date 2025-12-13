@@ -28,29 +28,32 @@ const SwitchFormField = <TFieldValues extends FieldValues>({
   switchClassName,
   formItemClassName,
   hide = false
-}: Props<TFieldValues>) => ( !hide &&
-  <FormField
-    control={disabled ? undefined : control}
-    name={name as Path<TFieldValues>}
-    key={key}
-    render={({ field }) => (
-      <FormItem className={formItemClassName}>
-        {label && <RequiredFormLabel required={required}>{label}</RequiredFormLabel>}
-        <div className="flex items-center space-x-2">
-          <FormControl>
-            <Switch
-              checked={field.value}
-              onCheckedChange={field.onChange}
-              className={switchClassName}
-              aria-readonly
-            />
-          </FormControl>
-          {description && <FormDescription>{description}</FormDescription>}
-        </div>
-        <FormMessage />
-      </FormItem>
-    )}
-  />
-)
+}: Props<TFieldValues>) => {
+  if (hide) return null
+  return (
+    <FormField
+      control={disabled ? undefined : control}
+      name={name as Path<TFieldValues>}
+      key={key}
+      render={({ field }) => (
+        <FormItem className={formItemClassName}>
+          {label && <RequiredFormLabel required={required}>{label}</RequiredFormLabel>}
+          <div className="flex items-center space-x-2">
+            <FormControl>
+              <Switch
+                checked={field.value}
+                onCheckedChange={field.onChange}
+                className={switchClassName}
+                aria-readonly
+              />
+            </FormControl>
+            {description && <FormDescription>{description}</FormDescription>}
+          </div>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+  )
+}
 
 export default SwitchFormField

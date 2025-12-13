@@ -38,30 +38,33 @@ const MultiSelectFormField = <TFieldValues extends FieldValues>({
   multiSelectClassName,
   formItemClassName,
   hide = false
-}: Props<TFieldValues>) => ( !hide &&
-  <FormField
-    control={disabled ? undefined : control}
-    name={name as Path<TFieldValues>}
-    key={key}
-    render={({ field }) => (
-      <FormItem className={formItemClassName}>
-        {label && <RequiredFormLabel required={required}>{label}</RequiredFormLabel>}
-        <FormControl>
-          <MultiSelect
-            options={options}
-            defaultValue={field.value}
-            onValueChange={field.onChange}
-            creatable={creatable}
-            multiple={multiple}
-            placeholder={placeholder}
-            className={multiSelectClassName}
-          />
-        </FormControl>
-        {description && <FormDescription>{description}</FormDescription>}
-        <FormMessage />
-      </FormItem>
-    )}
-  />
-)
+}: Props<TFieldValues>) => {
+  if (hide) return null
+  return (
+    <FormField
+      control={disabled ? undefined : control}
+      name={name as Path<TFieldValues>}
+      key={key}
+      render={({ field }) => (
+        <FormItem className={formItemClassName}>
+          {label && <RequiredFormLabel required={required}>{label}</RequiredFormLabel>}
+          <FormControl>
+            <MultiSelect
+              options={options}
+              defaultValue={field.value}
+              onValueChange={field.onChange}
+              creatable={creatable}
+              multiple={multiple}
+              placeholder={placeholder}
+              className={multiSelectClassName}
+            />
+          </FormControl>
+          {description && <FormDescription>{description}</FormDescription>}
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+  )
+}
 
 export default MultiSelectFormField

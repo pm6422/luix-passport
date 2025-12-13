@@ -56,6 +56,10 @@ export class TeamService {
     return http.get("/api/user/invitations")
   }
 
+  public static resendInvitation(invitationId: string): Promise<AxiosResponse<void>> {
+    return http.post(`/api/invitations/${invitationId}/resend`)
+  }
+
   public static acceptInvitation(invitationId: string): Promise<AxiosResponse<void>> {
     return http.post(`/api/invitations/${invitationId}/accept`)
   }
@@ -64,8 +68,12 @@ export class TeamService {
     return http.post(`/api/invitations/${invitationId}/reject`)
   }
 
-  public static resendInvitation(invitationId: string): Promise<AxiosResponse<void>> {
-    return http.post(`/api/invitations/${invitationId}/resend`)
+  public static resendInvitations(invitationIds: string[]): Promise<AxiosResponse<void>> {
+    return http.post(`/api/invitations/batch-resend`, invitationIds)
+  }
+
+  public static deleteInvitations(invitationIds: string[]): Promise<AxiosResponse<void>> {
+    return http.post(`/api/invitations/batch-delete`, invitationIds)
   }
 }
 

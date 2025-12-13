@@ -36,7 +36,8 @@ const CheckboxFormField = <TFieldValues extends FieldValues>({
                                                                hide = false,
                                                                requiredOptionValues = []
                                                              }: Props<TFieldValues>) => {
-  return !hide && (
+  if (hide) return null
+  return (
     <FormField
       control={disabled ? undefined : control}
       name={name}

@@ -339,4 +339,82 @@ public class TeamServiceImpl implements TeamService {
       }
     }
   }
+
+  @Override
+  @Transactional(rollbackFor = Exception.class)
+  public void resendInvitations(HttpServletRequest request, List<String> invitationIds, String inviterId) {
+    if (invitationIds == null || invitationIds.isEmpty()) {
+      return;
+    }
+    for (String id : invitationIds) {
+      try {
+        TeamInvitation invitation = teamInvitationRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Invitation not found"));
+        if (!TeamInvitation.STATUS_EXPIRED.equals(invitation.getStatus())) {
+          continue;
+        }
+        TeamUser inviter = teamUserRepository.findByTeamIdAndUserId(invitation.getTeamId(), inviterId)
+            .orElseThrow(() -> new IllegalArgumentException("Inviter is not a member of the team"));
+        if (!ROLE_OWNER.equals(inviter.getRole())) {
+          throw new IllegalArgumentException("Only team owners can resend invitations");
+        }
+        User inviterUser = userRepository.findById(inviterId)
+            .orElseThrow(() -> new IllegalArgumentException("Inviter user not found"));
+        String inviterName = inviterUser.getFirstName() != null && inviterUser.getLastName() != null
+            ? inviterUser.getFirstName() + " " + inviterUser.getLastName()
+            : inviterUser.getUsername();
+
+        boolean hasAccount = userRepository.findOneByEmail(invitation.getEmail()).isPresent();
+        invitation.setStatus(hasAccount ? TeamInvitation.STATUS_REGISTERED : TeamInvitation.STATUS_UNREGISTERED);
+        invitation.setCreatedAt(Instant.now());
+        invitation.setExpiresAt(Instant.now().plus(7, ChronoUnit.DAYS));
+        teamInvitationRepository.save(invitation);
+
+        if (!hasAccount) {
+          try {
+            mailService.sendTeamInvitationEmail(
+                invitation.getEmail(),
+                teamRepository.findById(invitation.getTeamId()).map(Team::getName).orElse(""),
+                inviterName,
+                invitation.getRole(),
+                getRequestUrl(request),
+                invitation.getExpiresAt(),
+                inviterUser.getLocale());
+            log.info("Resent invitation email to {}", invitation.getEmail());
+          } catch (Exception e) {
+            log.error("Failed to resend team invitation email to {}: {}", invitation.getEmail(), e.getMessage());
+          }
+        }
+      } catch (Exception e) {
+        log.warn("Skip resending invitation {} due to {}", id, e.getMessage());
+      }
+    }
+  }
+
+  @Override
+  @Transactional(rollbackFor = Exception.class)
+  public void deleteInvitations(List<String> invitationIds, String inviterId) {
+    if (invitationIds == null || invitationIds.isEmpty()) {
+      return;
+    }
+    for (String id : invitationIds) {
+      try {
+        TeamInvitation invitation = teamInvitationRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Invitation not found"));
+        // Only team owner can delete invitations
+        TeamUser inviter = teamUserRepository.findByTeamIdAndUserId(invitation.getTeamId(), inviterId)
+            .orElseThrow(() -> new IllegalArgumentException("Inviter is not a member of the team"));
+        if (!ROLE_OWNER.equals(inviter.getRole())) {
+          throw new IllegalArgumentException("Only team owners can delete invitations");
+        }
+        // Do not allow deleting accepted invitations (not in pending list, but be safe)
+        if (!TeamInvitation.STATUS_ACCEPTED.equals(invitation.getStatus())) {
+          teamInvitationRepository.deleteById(id);
+          log.info("Deleted invitation {}", id);
+        }
+      } catch (Exception e) {
+        log.warn("Skip deleting invitation {} due to {}", id, e.getMessage());
+      }
+    }
+  }
 }

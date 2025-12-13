@@ -45,35 +45,38 @@ const SelectFormField = <TFieldValues extends FieldValues>({
   selectContentClassName,
   formItemClassName,
   hide = false
-}: Props<TFieldValues>) => ( !hide &&
-  <FormField
-    control={disabled ? undefined : control}
-    name={name as Path<TFieldValues>}
-    key={key}
-    render={({ field }) => (
-      <FormItem className={formItemClassName}>
-        {label && <RequiredFormLabel required={required}>{label}</RequiredFormLabel>}
-        <Select onValueChange={field.onChange} value={field.value}>
-          <FormControl>
-            <SelectTrigger
-              className={cn(
-              "w-full",
-              inputClassName
-            )}>
-              <SelectValue placeholder={placeholder}/>
-            </SelectTrigger>
-          </FormControl>
-          <SelectContent className={selectContentClassName}>
-            {options.map(option => (
-              <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        {description && <FormDescription>{description}</FormDescription>}
-        <FormMessage />
-      </FormItem>
-    )}
-  />
-)
+}: Props<TFieldValues>) => {
+  if (hide) return null
+  return (
+    <FormField
+      control={disabled ? undefined : control}
+      name={name as Path<TFieldValues>}
+      key={key}
+      render={({ field }) => (
+        <FormItem className={formItemClassName}>
+          {label && <RequiredFormLabel required={required}>{label}</RequiredFormLabel>}
+          <Select onValueChange={field.onChange} value={field.value}>
+            <FormControl>
+              <SelectTrigger
+                className={cn(
+                "w-full",
+                inputClassName
+              )}>
+                <SelectValue placeholder={placeholder}/>
+              </SelectTrigger>
+            </FormControl>
+            <SelectContent className={selectContentClassName}>
+              {options.map(option => (
+                <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {description && <FormDescription>{description}</FormDescription>}
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+  )
+}
 
 export default SelectFormField

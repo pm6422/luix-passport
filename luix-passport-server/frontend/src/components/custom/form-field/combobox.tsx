@@ -46,13 +46,14 @@ const ComboboxFormField = <TFieldValues extends FieldValues>({
                                                                placeholder,
                                                                required,
                                                                disabled,
-                                                               inputClassName,
-                                                               formItemClassName,
-                                                               hide = false
-                                                             }: Props<TFieldValues>) => {
+  inputClassName,
+  formItemClassName,
+  hide = false
+}: Props<TFieldValues>) => {
   const [open, setOpen] = React.useState(false)
 
-  return ( !hide &&
+  if (hide) return null
+  return (
     <FormField
       control={disabled ? undefined : control}
       name={name as Path<TFieldValues>}

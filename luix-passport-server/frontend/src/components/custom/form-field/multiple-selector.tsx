@@ -58,43 +58,45 @@ const MultipleSelectorFormField = <TFieldValues extends FieldValues>({
                                                                        onSearchSync,
                                                                        triggerSearchOnFocus,
                                                                        hideClearAllButton,
-                                                                     }: Props<TFieldValues>) => (
-  !hide &&
-  <FormField
-    control={disabled ? undefined : control}
-    name={name as Path<TFieldValues>}
-    key={key}
-    render={({ field }) => (
-      <FormItem className={className}>
-        {label && <RequiredFormLabel required={required}>{label}</RequiredFormLabel>}
-        <FormControl>
-          <MultipleSelector
-            value={field.value}
-            onChange={field.onChange}
-            options={options}
-            defaultOptions={defaultOptions}
-            creatable={creatable}
-            placeholder={placeholder}
-            disabled={disabled}
-            maxSelected={maxSelected}
-            onMaxSelected={onMaxSelected}
-            hidePlaceholderWhenSelected={hidePlaceholderWhenSelected}
-            groupBy={groupBy}
-            badgeClassName={badgeClassName}
-            loadingIndicator={loadingIndicator}
-            emptyIndicator={emptyIndicator}
-            delay={delay}
-            onSearch={onSearch}
-            onSearchSync={onSearchSync}
-            triggerSearchOnFocus={triggerSearchOnFocus}
-            hideClearAllButton={hideClearAllButton}
-          />
-        </FormControl>
-        {description && <FormDescription>{description}</FormDescription>}
-        <FormMessage />
-      </FormItem>
-    )}
-  />
-)
+                                                                     }: Props<TFieldValues>) => {
+  if (hide) return null
+  return (
+    <FormField
+      control={disabled ? undefined : control}
+      name={name as Path<TFieldValues>}
+      key={key}
+      render={({ field }) => (
+        <FormItem className={className}>
+          {label && <RequiredFormLabel required={required}>{label}</RequiredFormLabel>}
+          <FormControl>
+            <MultipleSelector
+              value={field.value}
+              onChange={field.onChange}
+              options={options}
+              defaultOptions={defaultOptions}
+              creatable={creatable}
+              placeholder={placeholder}
+              disabled={disabled}
+              maxSelected={maxSelected}
+              onMaxSelected={onMaxSelected}
+              hidePlaceholderWhenSelected={hidePlaceholderWhenSelected}
+              groupBy={groupBy}
+              badgeClassName={badgeClassName}
+              loadingIndicator={loadingIndicator}
+              emptyIndicator={emptyIndicator}
+              delay={delay}
+              onSearch={onSearch}
+              onSearchSync={onSearchSync}
+              triggerSearchOnFocus={triggerSearchOnFocus}
+              hideClearAllButton={hideClearAllButton}
+            />
+          </FormControl>
+          {description && <FormDescription>{description}</FormDescription>}
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+  )
+}
 
 export default MultipleSelectorFormField
