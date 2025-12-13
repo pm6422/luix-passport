@@ -19,5 +19,5 @@ public interface MailService {
 
     void sendVerificationCodeMail(User user, String emailTo, String baseUrl);
 
-    void sendTeamInvitationEmail(String email, String teamName, String inviterName, String role, String baseUrl);
+    void sendTeamInvitationEmail(String email, String teamName, String inviterName, String role, String baseUrl, String inviterLocale);
 }

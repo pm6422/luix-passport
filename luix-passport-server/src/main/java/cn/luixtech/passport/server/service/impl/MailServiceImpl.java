@@ -112,8 +112,8 @@ public class MailServiceImpl implements MailService {
 
     @Override
     public void sendTeamInvitationEmail(String email, String teamName, String inviterName, String role,
-            String baseUrl) {
-        Locale locale = Locale.ENGLISH; // Default locale for invitation emails
+            String baseUrl, String inviterLocale) {
+        Locale locale = LocaleUtils.toLocale(inviterLocale);
         Context context = new Context(locale);
         context.setVariable("email", email);
         context.setVariable("teamName", teamName);

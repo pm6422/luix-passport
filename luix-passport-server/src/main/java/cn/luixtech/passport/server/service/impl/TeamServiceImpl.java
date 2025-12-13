@@ -168,7 +168,8 @@ public class TeamServiceImpl implements TeamService {
               team.getName(),
               inviterName,
               invitation.getRole(),
-              getRequestUrl(request));
+              getRequestUrl(request),
+              inviterUser.getLocale());
           log.info("Sent team invitation email to {} for team {}", invitation.getEmail(), team.getName());
         } catch (Exception e) {
           log.error("Failed to send team invitation email to {}: {}", invitation.getEmail(), e.getMessage());
