@@ -64,7 +64,8 @@ export default function TeamMembers() {
   const getInviteProgress = (i: TeamInvitation) => {
     if (i.status === "ACCEPTED") return "Accepted"
     if (i.status === "REJECTED") return "Rejected"
-    if (i.status === "PENDING" && i.registered) return "Registered"
+    if (i.status === "EXPIRED") return "Expired"
+    if (i.status === "REGISTERED") return "Registered"
     return "Unregistered"
   }
 

@@ -8,16 +8,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
-import jakarta.persistence.Transient;
 
 @Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 public class TeamInvitation {
-  public static final String STATUS_PENDING = "PENDING";
+  public static final String STATUS_UNREGISTERED = "UNREGISTERED";
+  public static final String STATUS_REGISTERED = "REGISTERED";
   public static final String STATUS_ACCEPTED = "ACCEPTED";
   public static final String STATUS_REJECTED = "REJECTED";
+  public static final String STATUS_EXPIRED = "EXPIRED";
 
   @Id
   @GeneratedValue
@@ -51,9 +52,4 @@ public class TeamInvitation {
   @Column(nullable = false)
   private Instant expiresAt;
 
-  @Transient
-  private Boolean registered;
-
-  @Transient
-  private Instant registeredAt;
 }

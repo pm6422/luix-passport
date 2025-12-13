@@ -142,10 +142,12 @@ public class TeamServiceImpl implements TeamService {
         }
       }
 
-      // Check for existing pending invitation
-      Optional<TeamInvitation> existingInvite = teamInvitationRepository.findByTeamIdAndEmailAndStatus(teamId,
-          invitation.getEmail(), TeamInvitation.STATUS_PENDING);
-      if (existingInvite.isPresent()) {
+      // Check for existing invitation (unregistered or registered and not finalized)
+      Optional<TeamInvitation> existingUnregistered = teamInvitationRepository.findByTeamIdAndEmailAndStatus(teamId,
+          invitation.getEmail(), TeamInvitation.STATUS_UNREGISTERED);
+      Optional<TeamInvitation> existingRegistered = teamInvitationRepository.findByTeamIdAndEmailAndStatus(teamId,
+          invitation.getEmail(), TeamInvitation.STATUS_REGISTERED);
+      if (existingUnregistered.isPresent() || existingRegistered.isPresent()) {
         // Update role if needed or just skip
         continue;
       }
@@ -155,7 +157,7 @@ public class TeamServiceImpl implements TeamService {
       invite.setEmail(invitation.getEmail());
       invite.setRole(invitation.getRole());
       invite.setInviterId(inviterId);
-      invite.setStatus(TeamInvitation.STATUS_PENDING);
+      invite.setStatus(existingUser.isPresent() ? TeamInvitation.STATUS_REGISTERED : TeamInvitation.STATUS_UNREGISTERED);
       invite.setCreatedAt(Instant.now());
       invite.setExpiresAt(Instant.now().plus(7, ChronoUnit.DAYS));
       teamInvitationRepository.save(invite);
@@ -181,9 +183,28 @@ public class TeamServiceImpl implements TeamService {
 
   @Override
   public List<TeamInvitation> findPendingInvitations(String teamId) {
-    List<TeamInvitation> invites = teamInvitationRepository.findByTeamIdAndStatusNot(teamId, TeamInvitation.STATUS_ACCEPTED);
-    invites.forEach(inv -> inv.setRegistered(userRepository.findOneByEmail(inv.getEmail()).isPresent()));
-    return invites;
+    List<TeamInvitation> invites = teamInvitationRepository.findByTeamId(teamId);
+    Instant now = Instant.now();
+    for (TeamInvitation inv : invites) {
+      if (!TeamInvitation.STATUS_ACCEPTED.equals(inv.getStatus())
+          && !TeamInvitation.STATUS_REJECTED.equals(inv.getStatus())) {
+        if (inv.getExpiresAt().isBefore(now)) {
+          if (!TeamInvitation.STATUS_EXPIRED.equals(inv.getStatus())) {
+            inv.setStatus(TeamInvitation.STATUS_EXPIRED);
+            teamInvitationRepository.save(inv);
+          }
+        } else {
+          boolean hasAccount = userRepository.findOneByEmail(inv.getEmail()).isPresent();
+          if (hasAccount && TeamInvitation.STATUS_UNREGISTERED.equals(inv.getStatus())) {
+            inv.setStatus(TeamInvitation.STATUS_REGISTERED);
+            teamInvitationRepository.save(inv);
+          }
+        }
+      }
+    }
+    return invites.stream()
+        .filter(inv -> !TeamInvitation.STATUS_ACCEPTED.equals(inv.getStatus()))
+        .collect(Collectors.toList());
   }
 
   @Override
@@ -204,7 +225,7 @@ public class TeamServiceImpl implements TeamService {
 
   @Override
   public List<TeamInvitation> findUserInvitations(String email) {
-    return teamInvitationRepository.findByEmailAndStatusAndExpiresAtAfter(email, TeamInvitation.STATUS_PENDING, Instant.now());
+    return teamInvitationRepository.findByEmailAndStatusAndExpiresAtAfter(email, TeamInvitation.STATUS_REGISTERED, Instant.now());
   }
 
   @Override
@@ -213,8 +234,8 @@ public class TeamServiceImpl implements TeamService {
     TeamInvitation invitation = teamInvitationRepository.findById(invitationId)
         .orElseThrow(() -> new IllegalArgumentException("Invitation not found"));
 
-    if (!TeamInvitation.STATUS_PENDING.equals(invitation.getStatus())) {
-      throw new IllegalArgumentException("Invitation is not pending");
+    if (!TeamInvitation.STATUS_REGISTERED.equals(invitation.getStatus())) {
+      throw new IllegalArgumentException("Invitation is not available for acceptance");
     }
 
     if (invitation.getExpiresAt().isBefore(Instant.now())) {
@@ -241,8 +262,8 @@ public class TeamServiceImpl implements TeamService {
     TeamInvitation invitation = teamInvitationRepository.findById(invitationId)
         .orElseThrow(() -> new IllegalArgumentException("Invitation not found"));
 
-    if (!TeamInvitation.STATUS_PENDING.equals(invitation.getStatus())) {
-      throw new IllegalArgumentException("Invitation is not pending");
+    if (!TeamInvitation.STATUS_REGISTERED.equals(invitation.getStatus())) {
+      throw new IllegalArgumentException("Invitation is not available for rejection");
     }
 
     invitation.setStatus(TeamInvitation.STATUS_REJECTED);
