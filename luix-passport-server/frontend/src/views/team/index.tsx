@@ -1,5 +1,5 @@
 import { useParams, Link } from "react-router-dom"
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import { LayoutBody } from "@/layouts/layout-definitions"
 import { IconUsers, IconCamera } from "@tabler/icons-react"
@@ -13,13 +13,7 @@ export default function TeamDashboard() {
   const [avatarUrl, setAvatarUrl] = useState<string>("")
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  useEffect(() => {
-    if (teamId) {
-      loadTeam()
-    }
-  }, [teamId])
-
-  const loadTeam = async () => {
+  const loadTeam = useCallback(async () => {
     if (!teamId) return
     try {
       const { data } = await TeamService.findUserTeams()
@@ -31,8 +25,13 @@ export default function TeamDashboard() {
     } catch (error) {
       console.error(error)
     }
-  }
+  }, [teamId])
 
+  useEffect(() => {
+    if (teamId) {
+      loadTeam()
+    }
+  }, [loadTeam, teamId])
   const handleAvatarClick = () => {
     fileInputRef.current?.click()
   }

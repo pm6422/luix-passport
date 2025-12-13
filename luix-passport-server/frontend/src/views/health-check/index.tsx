@@ -1,5 +1,5 @@
 import { LayoutBody } from "@/layouts/layout-definitions"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table"
@@ -23,12 +23,90 @@ interface HealthComponent {
   [key: string]: unknown
 }
 
+const isHealthObject = (healthObject: HealthComponent): boolean => {
+  return healthObject.status !== undefined
+}
+
+const hasSubSystem = (healthObject: HealthComponent): boolean => {
+  if (!healthObject.components) return false
+  return Object.values(healthObject.components).some(
+    component => component.status !== undefined
+  )
+}
+
+const getModuleName = (path: string | null, name: string): string => {
+  return path ? `${path}.${name}` : name
+}
+
+const addHealthObject = (
+  result: HealthData[],
+  isLeaf: boolean,
+  healthObject: HealthComponent,
+  name: string
+): HealthData => {
+  const healthData: HealthData = {
+    name,
+    status: healthObject.status || "UNKNOWN",
+    details: {},
+    error: healthObject.error
+  }
+
+  const details: Record<string, unknown> = {}
+  let hasDetails = false
+
+  for (const key in healthObject) {
+    if (
+      Object.prototype.hasOwnProperty.call(healthObject, key) &&
+      !["status", "error", "components"].includes(key)
+    ) {
+      details[key] = healthObject[key]
+      hasDetails = true
+    }
+  }
+
+  if (hasDetails) {
+    healthData.details = details
+  }
+
+  if (isLeaf || hasDetails || healthData.error) {
+    result.push(healthData)
+  }
+
+  return healthData
+}
+
+const flattenHealthData = (
+  result: HealthData[],
+  path: string | null,
+  data: Record<string, HealthComponent>
+): void => {
+  for (const key in data) {
+    if (Object.prototype.hasOwnProperty.call(data, key)) {
+      const value = data[key]
+      if (isHealthObject(value)) {
+        if (hasSubSystem(value)) {
+          addHealthObject(result, false, value, getModuleName(path, key))
+          flattenHealthData(result, getModuleName(path, key), value.components || {})
+        } else {
+          addHealthObject(result, true, value, getModuleName(path, key))
+        }
+      }
+    }
+  }
+}
+
+const transformHealthData = (data: { components: Record<string, HealthComponent> }): HealthData[] => {
+  const response: HealthData[] = []
+  flattenHealthData(response, null, data.components)
+  return response
+}
+
 export default function HealthChecksPage() {
   const [healthList, setHealthList] = useState<HealthData[]>([])
   const [modalData, setModalData] = useState<Record<string, unknown>>({})
   const [showDrawer, setShowDrawer] = useState(false)
 
-  const refresh = async () => {
+  const refresh = useCallback(async () => {
     ManagementService.getHealth()
       .then(res => {
         setHealthList(transformHealthData(res.data))
@@ -44,7 +122,7 @@ export default function HealthChecksPage() {
           }])
         }
       })
-  }
+  }, [])
 
   const showDetails = (data: HealthData) => {
     setModalData({
@@ -54,88 +132,11 @@ export default function HealthChecksPage() {
     setShowDrawer(true)
   }
 
-  const transformHealthData = (data: { components: Record<string, HealthComponent> }): HealthData[] => {
-    const response: HealthData[] = []
-    flattenHealthData(response, null, data.components)
-    return response
-  }
-
-  const flattenHealthData = (
-    result: HealthData[],
-    path: string | null,
-    data: Record<string, HealthComponent>
-  ): void => {
-    for (const key in data) {
-      if (Object.prototype.hasOwnProperty.call(data, key)) {
-        const value = data[key]
-        if (isHealthObject(value)) {
-          if (hasSubSystem(value)) {
-            addHealthObject(result, false, value, getModuleName(path, key))
-            flattenHealthData(result, getModuleName(path, key), value.components || {})
-          } else {
-            addHealthObject(result, true, value, getModuleName(path, key))
-          }
-        }
-      }
-    }
-  }
-
-  const isHealthObject = (healthObject: HealthComponent): boolean => {
-    return healthObject.status !== undefined
-  }
-
-  const hasSubSystem = (healthObject: HealthComponent): boolean => {
-    if (!healthObject.components) return false
-    return Object.values(healthObject.components).some(
-      component => component.status !== undefined
-    )
-  }
-
-  const getModuleName = (path: string | null, name: string): string => {
-    return path ? `${path}.${name}` : name
-  }
-
-  const addHealthObject = (
-    result: HealthData[],
-    isLeaf: boolean,
-    healthObject: HealthComponent,
-    name: string
-  ): HealthData => {
-    const healthData: HealthData = {
-      name,
-      status: healthObject.status || "UNKNOWN",
-      details: {},
-      error: healthObject.error
-    }
-
-    const details: Record<string, unknown> = {}
-    let hasDetails = false
-
-    for (const key in healthObject) {
-      if (
-        Object.prototype.hasOwnProperty.call(healthObject, key) &&
-        !["status", "error", "components"].includes(key)
-      ) {
-        details[key] = healthObject[key]
-        hasDetails = true
-      }
-    }
-
-    if (hasDetails) {
-      healthData.details = details
-    }
-
-    if (isLeaf || hasDetails || healthData.error) {
-      result.push(healthData)
-    }
-
-    return healthData
-  }
 
   // Initial load
   useEffect(() => {
     refresh()
-  }, [])
+  }, [refresh])
 
   return (
     <LayoutBody className="flex flex-col" fixedHeight>

@@ -35,7 +35,7 @@ instance.interceptors.response.use(
       window.location.href = "/403"
     } else if (error.response.status === 401) {
       // Handle 401 unauthorized error
-      console.log("Redirecting to login")
+      console.warn("Redirecting to login")
       window.location.href = "/sign-in"
     } else {
       // Handle other errors

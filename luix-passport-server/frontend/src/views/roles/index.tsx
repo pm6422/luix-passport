@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { LayoutBody } from "@/layouts/layout-definitions"
 import { DataTableToolbar } from "./table/table-toolbar"
 import { DataTable } from "@/components/custom/data-table/client-pagination-data-table"
@@ -12,11 +12,7 @@ export default function Role() {
   const entityName = "role"
   const [tableData, setTableData] = useState([] as Array<Role>)
 
-  useEffect(() => {
-    loadPage()
-  }, [])
-
-  function loadPage(criteria: RoleCriteriaSchema = {}): void {
+  const loadPage = useCallback((criteria: RoleCriteriaSchema = {}) => {
     if(criteria.keyword && tableData.length) {
       setTableData(filterTable(tableData, criteria.keyword))
       return
@@ -24,7 +20,13 @@ export default function Role() {
     RoleService.find({ page: 0, size: 2000, sort: ["updatedAt,desc"]}).then(r => {
       setTableData(r.data)
     })
-  }
+  }, [tableData])
+
+  useEffect(() => {
+    loadPage()
+  }, [loadPage])
+
+  
 
   function save(formData: Role): Promise<void> {
     return RoleService.save(formData).then(() => {

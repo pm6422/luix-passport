@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { LayoutBody } from "@/layouts/layout-definitions"
 import { DataTableToolbar } from "./table/table-toolbar"
 import { DataTable } from "@/components/custom/data-table/client-pagination-data-table"
@@ -12,27 +12,27 @@ export default function Auth2Client() {
   const entityName = "oauth2 client"
   const [tableData, setTableData] = useState([] as Array<Auth2Client>)
 
-  useEffect(() => {
-    loadPage()
-  }, [])
-
-  function loadPage(criteria: Auth2ClientCriteriaSchema = {}): void {
-    if(criteria.keyword && tableData.length) {
-      setTableData(filterTable(tableData, criteria.keyword))
+  const loadPage = useCallback((criteria: Auth2ClientCriteriaSchema = {}) => {
+    if (criteria.keyword) {
+      setTableData(prev => filterTable(prev, criteria.keyword!))
       return
     }
     Oauth2ClientService.find({ page: 0, size: 2000, sort: ["updatedAt,desc"]}).then(r => {
       setTableData(r.data)
     })
-  }
+  }, [])
 
-  function save(formData: Auth2Client): Promise<void> {
+  useEffect(() => {
+    loadPage()
+  }, [loadPage])
+
+  const save = (formData: Auth2Client): Promise<void> => {
     return Oauth2ClientService.save(formData).then(() => {
       loadPage()
     })
   }
 
-  function deleteRow(row: Auth2Client): Promise<void> {
+  const deleteRow = (row: Auth2Client): Promise<void> => {
     if(!row.id) {
       return Promise.reject("Invalid empty id")
     }

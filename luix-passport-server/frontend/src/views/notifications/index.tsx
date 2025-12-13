@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useCallback } from "react"
 import { cn } from "@/lib/utils"
 import { LayoutBody } from "@/layouts/layout-definitions"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -21,11 +21,7 @@ export default function Notifications() {
   const [totalCount, setTotalCount] = useState(0)
   const [keyword, setKeyword] = useState("")
 
-  useEffect(() => {
-    loadNotifications(currentPage)
-  }, [currentPage])
-
-  function loadNotifications(pageNo: number = 0, sorts: Array<string> = ["createdAt,desc"]): void {
+  const loadNotifications = useCallback((pageNo: number = 0, sorts: Array<string> = ["createdAt,desc"]) => {
     setIsLoading(true)
     UserNotificationService.find({
       page: pageNo - 1,
@@ -42,7 +38,11 @@ export default function Notifications() {
       }
       setIsLoading(false)
     })
-  }
+  }, [keyword, selectedNotification])
+
+  useEffect(() => {
+    loadNotifications(currentPage)
+  }, [loadNotifications, currentPage])
 
   function markAsRead(id: string): void {
     UserNotificationService.markAsRead(id).then(() => {
