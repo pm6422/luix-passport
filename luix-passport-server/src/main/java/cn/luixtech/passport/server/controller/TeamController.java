@@ -2,6 +2,7 @@ package cn.luixtech.passport.server.controller;
 
 import cn.luixtech.passport.server.repository.TeamRepository;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -56,8 +57,7 @@ public class TeamController {
 
     @Operation(summary = "get team members")
     @GetMapping("/api/teams/{teamId}/members")
-    public ResponseEntity<List<TeamMember>> getMembers(
-            @PathVariable String teamId) {
-        return ResponseEntity.ok(teamService.findTeamMembers(teamId));
+    public ResponseEntity<List<TeamMember>> getMembers(HttpServletRequest request, @PathVariable String teamId) {
+        return ResponseEntity.ok(teamService.findTeamMembers(request, teamId));
     }
 }

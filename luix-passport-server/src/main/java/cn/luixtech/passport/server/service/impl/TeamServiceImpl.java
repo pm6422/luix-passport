@@ -10,12 +10,15 @@ import cn.luixtech.passport.server.repository.TeamUserRepository;
 import cn.luixtech.passport.server.repository.UserProfilePicRepository;
 import cn.luixtech.passport.server.repository.UserRepository;
 import cn.luixtech.passport.server.service.TeamService;
+import cn.luixtech.passport.server.service.UserProfilePicService;
 import cn.luixtech.passport.server.utils.AuthUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +37,7 @@ public class TeamServiceImpl implements TeamService {
   private final TeamUserRepository teamUserRepository;
   private final UserRepository userRepository;
   private final UserProfilePicRepository userProfilePicRepository;
+  private final UserProfilePicService    userProfilePicService;
 
   @Override
   @Transactional(rollbackFor = Exception.class)
@@ -66,7 +70,7 @@ public class TeamServiceImpl implements TeamService {
   }
 
   @Override
-  public List<TeamMember> findTeamMembers(String teamId) {
+  public List<TeamMember> findTeamMembers(HttpServletRequest request, String teamId) {
     List<TeamUser> teamUsers = teamUserRepository.findByTeamId(teamId);
     if (teamUsers.isEmpty()) {
       return Collections.emptyList();
@@ -99,11 +103,12 @@ public class TeamServiceImpl implements TeamService {
       member.setRole(teamUser.getRole());
       member.setJoinedAt(user.getCreatedAt());
 
-      UserProfilePic pic = userProfilePicMap.get(user.getUsername());
-      if (pic != null) {
-        member.setProfilePic(pic.getProfilePic());
-      }
-      return member;
+        try {
+            member.setProfilePic(userProfilePicService.getProfilePic(user.getUsername(), request));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return member;
     }).filter(Objects::nonNull).collect(Collectors.toList());
   }
 }
