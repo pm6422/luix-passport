@@ -120,4 +120,11 @@ public class TeamController {
         teamService.rejectInvitation(invitationId);
         return ResponseEntity.ok().build();
     }
+
+    @Operation(summary = "resend team invitation")
+    @PostMapping("/api/invitations/{invitationId}/resend")
+    public ResponseEntity<Void> resendInvitation(HttpServletRequest request, @PathVariable String invitationId) {
+        teamService.resendInvitation(request, invitationId, AuthUtils.getCurrentUsername());
+        return ResponseEntity.ok().build();
+    }
 }

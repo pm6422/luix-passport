@@ -19,6 +19,7 @@ import { Badge } from "@/components/ui/badge"
 import { TeamService, TeamMember, TeamInvitation } from "@/services/team-service"
 import { loginUserStore } from "@/stores/login-user-store"
 import { useStore } from "exome/react"
+import { toast } from "sonner"
 
 export default function TeamMembers() {
   const [openInvite, setOpenInvite] = useState(false)
@@ -186,13 +187,14 @@ export default function TeamMembers() {
                 <TableHead>Role</TableHead>
                 <TableHead>Invited at</TableHead>
                 <TableHead>Expires at</TableHead>
-                <TableHead className="text-right">Progress</TableHead>
+                <TableHead>Progress</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {filteredInvitations.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={5} className="h-24 text-center">
+                  <TableCell colSpan={6} className="h-24 text-center">
                     No data available
                   </TableCell>
                 </TableRow>
@@ -209,8 +211,38 @@ export default function TeamMembers() {
                     <TableCell>
                       <DateTime value={invite.expiresAt} />
                     </TableCell>
+                    <TableCell>
+                      <Badge
+                        className={`capitalize ${
+                          invite.status === "EXPIRED"
+                            ? "bg-red-600/10 text-red-600 shadow-none"
+                            : ""
+                        }`}
+                      >
+                        {getInviteProgress(invite)}
+                      </Badge>
+                    </TableCell>
                     <TableCell className="text-right">
-                      <Badge className="capitalize">{getInviteProgress(invite)}</Badge>
+                      {invite.status === "EXPIRED" ? (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={async () => {
+                            try {
+                              await TeamService.resendInvitation(invite.id)
+                              toast.success("Invitation resent")
+                              loadPendingInvitations()
+                            } catch (error) {
+                              toast.error("Failed to resend invitation")
+                              console.error(error)
+                            }
+                          }}
+                        >
+                          Resend
+                        </Button>
+                      ) : (
+                        <span className="text-muted-foreground">—</span>
+                      )}
                     </TableCell>
                   </TableRow>
                 ))

@@ -63,6 +63,10 @@ export class TeamService {
   public static rejectInvitation(invitationId: string): Promise<AxiosResponse<void>> {
     return http.post(`/api/invitations/${invitationId}/reject`)
   }
+
+  public static resendInvitation(invitationId: string): Promise<AxiosResponse<void>> {
+    return http.post(`/api/invitations/${invitationId}/resend`)
+  }
 }
 
 export interface Team {

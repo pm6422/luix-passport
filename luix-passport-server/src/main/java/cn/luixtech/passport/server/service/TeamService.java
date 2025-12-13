@@ -29,4 +29,6 @@ public interface TeamService {
   void acceptInvitation(String invitationId, String userId);
 
   void rejectInvitation(String invitationId);
+
+  void resendInvitation(HttpServletRequest request, String invitationId, String inviterId);
 }

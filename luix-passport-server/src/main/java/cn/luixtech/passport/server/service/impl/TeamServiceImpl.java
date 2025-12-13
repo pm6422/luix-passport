@@ -19,6 +19,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.scheduling.annotation.Scheduled;
+import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 
 import java.io.IOException;
 import java.time.Instant;
@@ -270,5 +272,71 @@ public class TeamServiceImpl implements TeamService {
     teamInvitationRepository.save(invitation);
 
     log.info("Invitation {} was rejected", invitationId);
+  }
+
+  @Scheduled(cron = "0 0 0 * * ?")
+  @SchedulerLock(name = "expireTeamInvitations")
+  @Transactional(rollbackFor = Exception.class)
+  public void expireTeamInvitationsJob() {
+    Instant now = Instant.now();
+    List<String> exclude = Arrays.asList(
+        TeamInvitation.STATUS_ACCEPTED,
+        TeamInvitation.STATUS_REJECTED,
+        TeamInvitation.STATUS_EXPIRED
+    );
+    List<TeamInvitation> toExpire = teamInvitationRepository.findByExpiresAtBeforeAndStatusNotIn(now, exclude);
+    if (toExpire.isEmpty()) {
+      return;
+    }
+    for (TeamInvitation inv : toExpire) {
+      inv.setStatus(TeamInvitation.STATUS_EXPIRED);
+    }
+    teamInvitationRepository.saveAll(toExpire);
+    log.info("Expired {} team invitations", toExpire.size());
+  }
+
+  @Transactional(rollbackFor = Exception.class)
+  public void resendInvitation(HttpServletRequest request, String invitationId, String inviterId) {
+    TeamInvitation invitation = teamInvitationRepository.findById(invitationId)
+        .orElseThrow(() -> new IllegalArgumentException("Invitation not found"));
+
+    if (!TeamInvitation.STATUS_EXPIRED.equals(invitation.getStatus())) {
+      throw new IllegalArgumentException("Only expired invitations can be resent");
+    }
+
+    TeamUser inviter = teamUserRepository.findByTeamIdAndUserId(invitation.getTeamId(), inviterId)
+        .orElseThrow(() -> new IllegalArgumentException("Inviter is not a member of the team"));
+    if (!ROLE_OWNER.equals(inviter.getRole())) {
+      throw new IllegalArgumentException("Only team owners can resend invitations");
+    }
+
+    User inviterUser = userRepository.findById(inviterId)
+        .orElseThrow(() -> new IllegalArgumentException("Inviter user not found"));
+    String inviterName = inviterUser.getFirstName() != null && inviterUser.getLastName() != null
+        ? inviterUser.getFirstName() + " " + inviterUser.getLastName()
+        : inviterUser.getUsername();
+
+    boolean hasAccount = userRepository.findOneByEmail(invitation.getEmail()).isPresent();
+    invitation.setStatus(hasAccount ? TeamInvitation.STATUS_REGISTERED : TeamInvitation.STATUS_UNREGISTERED);
+    invitation.setCreatedAt(Instant.now());
+    invitation.setExpiresAt(Instant.now().plus(7, ChronoUnit.DAYS));
+    teamInvitationRepository.save(invitation);
+
+    if (!hasAccount) {
+      try {
+        mailService.sendTeamInvitationEmail(
+            invitation.getEmail(),
+            teamRepository.findById(invitation.getTeamId()).map(Team::getName)
+                .orElse(""),
+            inviterName,
+            invitation.getRole(),
+            getRequestUrl(request),
+            invitation.getExpiresAt(),
+            inviterUser.getLocale());
+        log.info("Resent invitation email to {}", invitation.getEmail());
+      } catch (Exception e) {
+        log.error("Failed to resend team invitation email to {}: {}", invitation.getEmail(), e.getMessage());
+      }
+    }
   }
 }
