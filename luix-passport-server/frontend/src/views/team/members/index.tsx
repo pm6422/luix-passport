@@ -1,27 +1,151 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { InviteMembersDialog } from "./invite-dialog"
 import { LayoutBody } from "@/layouts/layout-definitions"
-import { IconUserPlus } from "@tabler/icons-react"
+import { IconPlus } from "@tabler/icons-react"
 import { useParams } from "react-router-dom"
+import { Input } from "@/components/ui/input"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Badge } from "@/components/ui/badge"
+import { TeamService, TeamMember } from "@/services/team-service"
+import { loginUserStore } from "@/stores/login-user-store"
+import { useStore } from "exome/react"
 
 export default function TeamMembers() {
   const [openInvite, setOpenInvite] = useState(false)
   const { teamId } = useParams()
+  const [members, setMembers] = useState<TeamMember[]>([])
+  const { loginUser } = useStore(loginUserStore)
+
+  useEffect(() => {
+    if (teamId) {
+      loadMembers()
+    }
+  }, [teamId])
+
+  const loadMembers = async () => {
+    if (!teamId) return
+    try {
+      const { data } = await TeamService.getMembers(teamId)
+      setMembers(data)
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   return (
-    <LayoutBody className="flex flex-col" fixedHeight>
-      <div className="flex items-center justify-between p-4 border-b bg-background">
-        <h1 className="text-2xl font-bold tracking-tight">Team Members</h1>
-        <Button onClick={() => setOpenInvite(true)}>
-          <IconUserPlus className="mr-2 size-4" />
-          Invite Members
-        </Button>
+    <LayoutBody className="flex flex-col space-y-8 p-8" fixedHeight>
+      {/* Team Members Section */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <div className="space-y-1">
+            <h2 className="text-xl font-semibold tracking-tight">Team Members</h2>
+            <p className="text-sm text-muted-foreground">
+              Here you can manage the members of your team.
+            </p>
+          </div>
+          <Button onClick={() => setOpenInvite(true)}>
+            <IconPlus className="mr-2 size-4" />
+            Invite Members
+          </Button>
+        </div>
+
+        <div className="flex items-center space-x-2">
+          <Input
+            placeholder="Search members"
+            className="h-9 w-full"
+          />
+        </div>
+
+        <div className="rounded-md border">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-[300px]">Name</TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead>Role</TableHead>
+                <TableHead className="text-right">Joined at</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {members.map((member) => (
+                <TableRow key={member.userId}>
+                  <TableCell className="font-medium">
+                    <div className="flex items-center space-x-3">
+                      <Avatar className="size-8">
+                        {member.profilePic && (
+                          <AvatarImage src={`data:image/png;base64,${member.profilePic}`} />
+                        )}
+                        <AvatarFallback>{member.firstName?.[0]}{member.lastName?.[0]}</AvatarFallback>
+                      </Avatar>
+                      <div className="flex items-center gap-2">
+                        <span>{member.userId}</span>
+                        {member.userId === loginUser.username && (
+                          <Badge variant="secondary" className="text-[10px] h-5 px-1.5">You</Badge>
+                        )}
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell>{member.email}</TableCell>
+                  <TableCell>
+                    <div className="flex gap-2">
+                      <Badge variant="outline" className="capitalize">{member.role}</Badge>
+                      {/* Placeholder for Primary Owner if logic exists */}
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    {member.joinedAt ? new Date(member.joinedAt).toLocaleDateString() : "-"}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       </div>
 
-      <div className="flex-1 p-4">
-        <div className="border rounded-lg p-16 text-center text-muted-foreground bg-muted/10 border-dashed">
-          <p>Member list will be displayed here.</p>
+      {/* Pending Invites Section */}
+      <div className="space-y-4">
+        <div className="space-y-1">
+          <h2 className="text-xl font-semibold tracking-tight">Pending Invites</h2>
+          <p className="text-sm text-muted-foreground">
+            Here you can manage the pending invitations to your team.
+          </p>
+        </div>
+
+        <div className="flex items-center space-x-2">
+          <Input
+            placeholder="Search Invitations"
+            className="h-9 w-full"
+          />
+        </div>
+
+        <div className="rounded-md border">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Email</TableHead>
+                <TableHead>Role</TableHead>
+                <TableHead>Invited at</TableHead>
+                <TableHead>Expires at</TableHead>
+                <TableHead className="text-right">Status</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              <TableRow>
+                <TableCell colSpan={5} className="h-24 text-center">
+                  No data available
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
         </div>
       </div>
 

@@ -29,6 +29,10 @@ export class TeamService {
   public static findUserTeams(): Promise<AxiosResponse<Team[]>> {
     return http.get("/api/teams")
   }
+
+  public static getMembers(teamId: string): Promise<AxiosResponse<TeamMember[]>> {
+    return http.get(`/api/teams/${teamId}/members`)
+  }
 }
 
 export interface Team {
@@ -36,4 +40,14 @@ export interface Team {
   name: string
   photo?: string
   enabled: boolean
+}
+
+export interface TeamMember {
+  userId: string
+  email: string
+  firstName: string
+  lastName: string
+  profilePic?: string
+  role: string
+  joinedAt?: string
 }

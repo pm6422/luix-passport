@@ -9,13 +9,18 @@ import org.springframework.http.ResponseEntity;
 /**
  * REST controller for managing teams.
  */
+import cn.luixtech.passport.server.domain.Team;
+import cn.luixtech.passport.server.domain.TeamMember;
 import cn.luixtech.passport.server.service.TeamService;
+import cn.luixtech.passport.server.utils.AuthUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -44,8 +49,15 @@ public class TeamController {
 
     @Operation(summary = "get user teams")
     @GetMapping("/api/teams")
-    public ResponseEntity<java.util.List<cn.luixtech.passport.server.domain.Team>> findUserTeams() {
+    public ResponseEntity<List<Team>> findUserTeams() {
         return ResponseEntity
-                .ok(teamService.findUserTeams(cn.luixtech.passport.server.utils.AuthUtils.getCurrentUsername()));
+                .ok(teamService.findUserTeams(AuthUtils.getCurrentUsername()));
+    }
+
+    @Operation(summary = "get team members")
+    @GetMapping("/api/teams/{teamId}/members")
+    public ResponseEntity<List<TeamMember>> getMembers(
+            @PathVariable String teamId) {
+        return ResponseEntity.ok(teamService.findTeamMembers(teamId));
     }
 }
