@@ -5,7 +5,7 @@ import { DataTable } from "@/components/custom/data-table/server-pagination-data
 import { tableColumns } from "./table/table-columns"
 import { type DataDict, type DataDictCriteria } from "@/domains/data-dict"
 import { DataDictService } from "@/services/data-dict-service"
-import { type UploadFormSchema } from "@/components/custom/uploader/upload-dialog"
+type UploadFormSchema = { files: File[] }
 
 export default function DataDict() {
   // State to hold the fetched data

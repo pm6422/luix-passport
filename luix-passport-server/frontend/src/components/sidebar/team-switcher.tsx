@@ -20,15 +20,15 @@ import {
 } from "@/components/ui/sidebar"
 
 import { CreateTeamDialog } from "@/views/team/create-dialog"
-import { TeamService } from "@/services/team-service";
+import { TeamService, type Team } from "@/services/team-service";
 import { useNavigate } from "react-router-dom";
 
 export function TeamSwitcher() {
   const { isMobile } = useSidebar()
   const navigate = useNavigate()
   const [createTeamOpen, setCreateTeamOpen] = React.useState(false)
-  const [teams, setTeams] = React.useState<any[]>([])
-  const [activeTeam, setActiveTeam] = React.useState<any>(null)
+  const [teams, setTeams] = React.useState<Team[]>([])
+  const [activeTeam, setActiveTeam] = React.useState<Team | null>(null)
 
   const fetchTeams = React.useCallback(async () => {
     try {

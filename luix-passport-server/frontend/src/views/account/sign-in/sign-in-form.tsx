@@ -47,7 +47,7 @@ export function SignInForm() {
     if (loginUser.isAuthenticated) {
       navigate("/")
     }
-  }, [])
+  }, [loginUser.isAuthenticated, navigate])
 
   const onSubmit = async (data: SignInFormSchema) => {
     setIsLoading(true);

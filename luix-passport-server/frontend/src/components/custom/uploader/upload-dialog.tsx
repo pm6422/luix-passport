@@ -16,12 +16,7 @@ import {
   DialogTrigger,
   DialogDescription
 } from "@/components/ui/dialog"
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormDescription
-} from "@/components/ui/form"
+import { Form, FormField, FormItem, FormDescription } from "@/components/ui/form"
 import {
   FileUploader,
   FileInput,
@@ -34,11 +29,11 @@ import { getErrorMessage } from "@/lib/handle-error"
 import { z } from "zod"
 import { cn } from "@/lib/utils"
 
-export const formSchema = z.object({
+const formSchema = z.object({
   files: z.array(z.instanceof(File)).min(1, { message: "Upload file(s) are required" })
 })
 
-export type UploadFormSchema = z.infer<typeof formSchema>
+type UploadFormSchema = z.infer<typeof formSchema>
 
 interface Props {
   children: React.ReactNode,
@@ -49,7 +44,7 @@ interface Props {
   maxSize?: number,
   accept?: Accept,
   templateUrl?: string,
-  upload: (formData: UploadFormSchema) => Promise<any>,
+  upload: (formData: { files: File[] }) => Promise<unknown>,
   afterUpload?: (success: boolean) => void
 }
 

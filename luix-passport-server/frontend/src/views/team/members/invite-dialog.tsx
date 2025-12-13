@@ -84,7 +84,7 @@ export function InviteMembersDialog({ open, onOpenChange, teamId, onSuccess }: I
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <div className="space-y-4 max-h-[60vh] overflow-y-auto">
+            <div className="space-y-3 max-h-[60vh] overflow-y-auto">
               {fields.map((field, index) => (
                 <div key={field.id} className="flex items-center gap-2">
                   <Input
@@ -97,7 +97,7 @@ export function InviteMembersDialog({ open, onOpenChange, teamId, onSuccess }: I
                     {...form.register(`invitations.${index}.role`)}
                     value={form.watch(`invitations.${index}.role`) || "MEMBER"}
                   />
-                  <div className="w-[120px]">
+                  <div className="w-[150px]">
                     <Select
                       onValueChange={(v) =>
                         form.setValue(`invitations.${index}.role`, v, { shouldValidate: true })

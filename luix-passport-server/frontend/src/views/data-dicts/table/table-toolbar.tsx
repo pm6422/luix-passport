@@ -6,7 +6,7 @@ import InputFormField from "@/components/custom/form-field/input"
 import { IconPlus, IconUpload, IconFilterSearch } from "@tabler/icons-react"
 import { EditDialog } from "../dialog/edit-dialog"
 import { type DataDict, type DataDictCriteria, dataDictCriteriaSchema, initialDataDictCriteriaState } from "@/domains/data-dict"
-import { type UploadFormSchema } from "@/components/custom/uploader/upload-dialog"
+type UploadFormSchema = { files: File[] }
 import { UploadDialog } from "@/components/custom/uploader/upload-dialog"
 import { Form } from "@/components/ui/form"
 import {

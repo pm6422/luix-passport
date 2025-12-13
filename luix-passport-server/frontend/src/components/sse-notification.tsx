@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { useStore } from "exome/react";
 import { IconBellBolt } from "@tabler/icons-react";
 import { toast } from "sonner";
@@ -13,24 +13,7 @@ export function SseNotification() {
   const { appInfo } = useStore(appInfoStore);
   const { loginUser } = useStore(loginUserStore);
 
-  useEffect(() => {
-    if (!loginUser.isAuthenticated) {
-      return;
-    }
-    if (appInfo.ribbonProfile === "dev") {
-      return;
-    }
-
-    const eventSource = setupSse();
-
-    return () => {
-      if (eventSource) {
-        eventSource.close();
-      }
-    };
-  }, [loginUser]);
-
-  function setupSse(): EventSource | undefined {
+  const setupSse = useCallback((): EventSource | undefined => {
     if (!window.EventSource) {
       toast.error("Your browser does NOT support Server-Sent Event!");
       return;
@@ -77,7 +60,24 @@ export function SseNotification() {
     };
 
     return eventSource;
-  }
+  }, []);
+
+  useEffect(() => {
+    if (!loginUser.isAuthenticated) {
+      return;
+    }
+    if (appInfo.ribbonProfile === "dev") {
+      return;
+    }
+
+    const eventSource = setupSse();
+
+    return () => {
+      if (eventSource) {
+        eventSource.close();
+      }
+    };
+  }, [loginUser, appInfo.ribbonProfile, setupSse]);
 
   return null;
 }

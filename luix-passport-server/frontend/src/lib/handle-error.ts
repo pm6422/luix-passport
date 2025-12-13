@@ -1,4 +1,5 @@
 import { z } from "zod"
+import type { AxiosError } from "axios"
 
 export function getErrorMessage(err: unknown) {
   const unknownError = "Something went wrong, please try again later."
@@ -9,11 +10,11 @@ export function getErrorMessage(err: unknown) {
     })
     return errors.join("\n")
   } else if (err instanceof Error) {
-    if("response" in err) {
-      return (err as any).response.data.message;
-    } else {
-      return err.message
+    const axiosErr = err as AxiosError<{ message?: string }>
+    if (axiosErr.response?.data) {
+      return axiosErr.response.data.message ?? err.message
     }
+    return err.message
   } 
   // else if (isRedirectError(err)) {
   //   throw err
