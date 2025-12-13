@@ -2,13 +2,11 @@ package cn.luixtech.passport.server.service.impl;
 
 import cn.luixtech.passport.server.annotation.SchedulerExecutionLog;
 import cn.luixtech.passport.server.domain.DataDict;
-import cn.luixtech.passport.server.persistence.Tables;
 import cn.luixtech.passport.server.repository.DataDictRepository;
 import cn.luixtech.passport.server.service.DataDictService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
-import org.jooq.DSLContext;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
@@ -23,13 +21,11 @@ import java.util.Comparator;
 import java.util.List;
 
 import static cn.luixtech.passport.server.domain.DataDict.CATEGORY_CODE_TIMEZONE;
-import static cn.luixtech.passport.server.persistence.tables.DataDict.DATA_DICT;
 
 @Service
 @AllArgsConstructor
 @Slf4j
 public class DataDictServiceImpl implements DataDictService {
-    private final DSLContext         dslContext;
     private final DataDictRepository dataDictRepository;
 
     @Override
@@ -53,7 +49,7 @@ public class DataDictServiceImpl implements DataDictService {
     /**
      * Execute every day at 2:00 AM
      */
-//    @Scheduled(initialDelay = 0, fixedRate = 300000)
+    // @Scheduled(initialDelay = 0, fixedRate = 300000)
     @Scheduled(cron = "0 0 2 * * *")
     @SchedulerLock(name = "updateTimezoneUtcOffset")
     @SchedulerExecutionLog(name = "updateTimezoneUtcOffset")
@@ -79,10 +75,7 @@ public class DataDictServiceImpl implements DataDictService {
 
     @Override
     public void batchUpdateCategoryCode(List<String> ids, String targetCategoryCode) {
-        dslContext.update(Tables.DATA_DICT)
-                .set(DATA_DICT.CATEGORY_CODE, targetCategoryCode)
-                .where(DATA_DICT.ID.in(ids))
-                .execute();
+        dataDictRepository.updateCategoryCodeByIdIn(ids, targetCategoryCode);
     }
 
     @Override

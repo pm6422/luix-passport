@@ -9,38 +9,32 @@ import cn.luixtech.passport.server.service.MailService;
 import cn.luixtech.passport.server.service.UserService;
 import org.springframework.context.annotation.Lazy;
 import org.apache.commons.collections4.CollectionUtils;
-import org.jooq.DSLContext;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
-
-import static cn.luixtech.passport.server.persistence.Tables.TEAM_USER;
+import java.util.stream.Collectors;
 
 @Service
 public class TeamUserServiceImpl implements TeamUserService {
 
     private final TeamUserRepository teamUserRepository;
-    private final DSLContext dslContext;
     private final UserService userService;
     private final MailService mailService;
 
     public TeamUserServiceImpl(TeamUserRepository teamUserRepository,
-            DSLContext dslContext,
             @Lazy UserService userService,
             MailService mailService) {
         this.teamUserRepository = teamUserRepository;
-        this.dslContext = dslContext;
         this.userService = userService;
         this.mailService = mailService;
     }
 
     @Override
     public Set<String> findTeamIdsByUsername(String username) {
-        return dslContext.select(TEAM_USER.TEAM_ID)
-                .from(TEAM_USER)
-                .where(TEAM_USER.USERNAME.eq(username))
-                .fetchSet(TEAM_USER.TEAM_ID);
+        return teamUserRepository.findByUserId(username).stream()
+                .map(TeamUser::getTeamId)
+                .collect(Collectors.toSet());
     }
 
     @Override

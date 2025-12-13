@@ -12,7 +12,6 @@ import com.luixtech.utilities.exception.DuplicationException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
-import org.jooq.DSLContext;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
@@ -24,16 +23,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static cn.luixtech.passport.server.persistence.Tables.ROLE;
-
 @Service
 @AllArgsConstructor
 @Slf4j
 public class RoleServiceImpl implements RoleService {
-    private final RoleRepository           roleRepository;
+    private final RoleRepository roleRepository;
     private final RolePermissionRepository rolePermissionRepository;
-    private final RolePermissionService    rolePermissionService;
-    private final DSLContext               dslContext;
+    private final RolePermissionService rolePermissionService;
 
     @Override
     public Page<Role> find(Pageable pageable, String id) {
@@ -47,7 +43,9 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Set<String> findAllIds() {
-        return dslContext.select(ROLE.ID).from(ROLE).fetchSet(ROLE.ID);
+        return roleRepository.findAll().stream()
+                .map(Role::getId)
+                .collect(java.util.stream.Collectors.toSet());
     }
 
     @Override
@@ -76,7 +74,8 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Role update(ManagedRole managedRole) {
-        Role existingOne = roleRepository.findById(managedRole.getId()).orElseThrow(() -> new DataNotFoundException(managedRole.getId()));
+        Role existingOne = roleRepository.findById(managedRole.getId())
+                .orElseThrow(() -> new DataNotFoundException(managedRole.getId()));
         existingOne.setRemark(managedRole.getRemark());
 
         if (CollectionUtils.isNotEmpty(managedRole.getPermissionIds())) {

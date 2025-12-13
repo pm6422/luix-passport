@@ -5,7 +5,6 @@ import cn.luixtech.passport.server.repository.UserRoleRepository;
 import cn.luixtech.passport.server.service.UserRoleService;
 import lombok.AllArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
-import org.jooq.DSLContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,21 +15,18 @@ import java.util.stream.Collectors;
 
 import static cn.luixtech.passport.server.domain.UserRole.ROLE_ANONYMOUS;
 import static cn.luixtech.passport.server.domain.UserRole.ROLE_USER;
-import static cn.luixtech.passport.server.persistence.Tables.USER_ROLE;
 
 @Service
 @AllArgsConstructor
 public class UserRoleServiceImpl implements UserRoleService {
 
     private final UserRoleRepository userRoleRepository;
-    private final DSLContext         dslContext;
 
     @Override
     public Set<String> findRoleIds(String username) {
-        return dslContext.select(USER_ROLE.ROLE_ID)
-                .from(USER_ROLE)
-                .where(USER_ROLE.USERNAME.eq(username))
-                .fetchSet(USER_ROLE.ROLE_ID);
+        return userRoleRepository.findByUsername(username).stream()
+                .map(UserRole::getRoleId)
+                .collect(Collectors.toSet());
     }
 
     @Override

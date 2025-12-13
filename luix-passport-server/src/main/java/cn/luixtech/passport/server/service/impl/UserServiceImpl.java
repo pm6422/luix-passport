@@ -25,7 +25,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
-import org.jooq.DSLContext;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Example;
@@ -54,7 +53,6 @@ import java.util.stream.Collectors;
 
 import static cn.luixtech.passport.server.config.AuthorizationServerConfiguration.BCRYPT_PASSWORD_ENCODER;
 import static cn.luixtech.passport.server.config.AuthorizationServerConfiguration.DEFAULT_PASSWORD_ENCODER_PREFIX;
-import static cn.luixtech.passport.server.persistence.Tables.USER;
 import static org.apache.commons.lang3.time.DateFormatUtils.ISO_8601_EXTENDED_DATETIME_TIME_ZONE_FORMAT;
 
 /**
@@ -69,7 +67,6 @@ import static org.apache.commons.lang3.time.DateFormatUtils.ISO_8601_EXTENDED_DA
 public class UserServiceImpl implements UserService, UserDetailsService {
     private final ApplicationProperties applicationProperties;
     private final PasswordEncoder passwordEncoder;
-    private final DSLContext dslContext;
     private final SupportedDateTimeFormatRepository supportedDateTimeFormatRepository;
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
@@ -422,44 +419,37 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Transactional(rollbackFor = Exception.class)
     public void extendValidityPeriod(String username, long amountToAdd, TemporalUnit unit) {
         User user = userRepository.findById(username).orElseThrow(() -> new DataNotFoundException(username));
-        Instant expiresAt = null;
+        Instant expiresAt;
         if (user.getAccountExpiresAt().isBefore(Instant.now())) {
             expiresAt = Instant.now().plus(amountToAdd, unit);
         } else {
             expiresAt = user.getAccountExpiresAt().plus(amountToAdd, unit);
         }
-        dslContext
-                .update(USER)
-                .set(USER.ACCOUNT_EXPIRES_AT, expiresAt)
-                .set(USER.UPDATED_AT, Instant.now())
-                .set(USER.UPDATED_BY, AuthUtils.getCurrentUsername())
-                .where(USER.USERNAME.eq(username))
-                .execute();
+        user.setAccountExpiresAt(expiresAt);
+        user.setUpdatedAt(Instant.now());
+        user.setUpdatedBy(AuthUtils.getCurrentUsername());
+        userRepository.save(user);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateLastLoginTime(String username) {
-        dslContext
-                .update(USER)
-                .set(USER.LAST_SIGN_IN_AT, Instant.now())
-                .set(USER.UPDATED_AT, Instant.now())
-                .set(USER.UPDATED_BY, AuthUtils.getCurrentUsername())
-                .where(USER.USERNAME.eq(username))
-                .execute();
+        User user = userRepository.findById(username).orElseThrow(() -> new DataNotFoundException(username));
+        user.setLastSignInAt(Instant.now());
+        user.setUpdatedAt(Instant.now());
+        user.setUpdatedBy(AuthUtils.getCurrentUsername());
+        userRepository.save(user);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void cascadeUpdateUsername(String oldUsername, String newUsername) {
         // cascade update username of the user and the foreign key constraints entities
-        dslContext
-                .update(USER)
-                .set(USER.USERNAME, newUsername)
-                .set(USER.UPDATED_AT, Instant.now())
-                .set(USER.UPDATED_BY, AuthUtils.getCurrentUsername())
-                .where(USER.USERNAME.eq(oldUsername))
-                .execute();
+        User user = userRepository.findById(oldUsername).orElseThrow(() -> new DataNotFoundException(oldUsername));
+        user.setUsername(newUsername);
+        user.setUpdatedAt(Instant.now());
+        user.setUpdatedBy(AuthUtils.getCurrentUsername());
+        userRepository.save(user);
     }
 
     private ManagedUser buildManagedUser(User user, String username) {
