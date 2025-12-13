@@ -435,6 +435,14 @@ public class TeamServiceImpl implements TeamService {
     }
     TeamUser target = teamUserRepository.findByTeamIdAndUserId(teamId, userId)
         .orElseThrow(() -> new IllegalArgumentException("Target user is not a member of the team"));
+    if (ROLE_OWNER.equals(target.getRole()) && !ROLE_OWNER.equals(role)) {
+      long ownerCount = teamUserRepository.findByTeamId(teamId).stream()
+          .filter(tu -> ROLE_OWNER.equals(tu.getRole()))
+          .count();
+      if (ownerCount <= 1) {
+        throw new IllegalArgumentException("At least one team owner must remain");
+      }
+    }
     target.setRole(role);
     teamUserRepository.save(target);
   }
