@@ -53,7 +53,8 @@ export default function TeamDashboard() {
 
   return (
     <LayoutBody className="flex flex-col" fixedHeight>
-      <div className="flex items-center justify-between p-4 border-b bg-background">
+      {/* Header with Team Info */}
+      <div className="flex items-center justify-between px-6 py-4 border-b bg-background">
         <div className="flex items-center gap-4">
           <div className="relative group cursor-pointer" onClick={handleAvatarClick}>
             <Avatar className="size-16">
@@ -78,19 +79,21 @@ export default function TeamDashboard() {
         />
       </div>
 
-      <div className="flex-1 p-4">
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          <div className="rounded-xl border bg-card text-card-foreground shadow">
-            <div className="p-6 flex flex-row items-center justify-between space-y-0 pb-2">
-              <h3 className="tracking-tight text-sm font-medium">Team Members</h3>
-              <IconUsers className="size-4 text-muted-foreground" />
-            </div>
-            <div className="p-6 pt-0">
-              <div className="text-2xl font-bold">Manage</div>
-              <p className="text-xs text-muted-foreground">
-                View and manage team members
-              </p>
-              <div className="mt-4">
+      {/* Main Content */}
+      <div className="flex-1 overflow-auto">
+        <div className="p-6">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {/* Team Members Card */}
+            <div className="rounded-lg border bg-card text-card-foreground shadow-sm hover:shadow-md transition-shadow">
+              <div className="p-6 flex flex-row items-center justify-between space-y-0 pb-3">
+                <h3 className="tracking-tight text-sm font-medium">Team Members</h3>
+                <IconUsers className="size-4 text-muted-foreground" />
+              </div>
+              <div className="px-6 pb-6">
+                <div className="text-2xl font-bold mb-1">Manage</div>
+                <p className="text-xs text-muted-foreground mb-4">
+                  View and manage team members
+                </p>
                 <Link to={`/teams/${teamId}/members`}>
                   <Button variant="outline" className="w-full">
                     Go to Members
