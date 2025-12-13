@@ -3,7 +3,7 @@ package cn.luixtech.passport.server.jobconsumer;
 import cn.luixtech.passport.server.component.jobqueue.JobConsumer;
 import cn.luixtech.passport.server.domain.JobQueue;
 import cn.luixtech.passport.server.jobconsumer.base.JobConsumerHandler;
-import cn.luixtech.passport.server.pojo.SseMessage;
+import cn.luixtech.passport.server.dto.SseMessage;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.luixtech.springbootframework.component.SseNotifier;

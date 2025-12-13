@@ -6,7 +6,7 @@ import cn.luixtech.passport.server.domain.SupportedDateTimeFormat;
 import cn.luixtech.passport.server.domain.User;
 import cn.luixtech.passport.server.domain.UserRole;
 import cn.luixtech.passport.server.exception.UserNotActivatedException;
-import cn.luixtech.passport.server.pojo.ManagedUser;
+import cn.luixtech.passport.server.dto.ManagedUser;
 import cn.luixtech.passport.server.repository.SupportedDateTimeFormatRepository;
 import cn.luixtech.passport.server.repository.UserRepository;
 import cn.luixtech.passport.server.repository.UserRoleRepository;

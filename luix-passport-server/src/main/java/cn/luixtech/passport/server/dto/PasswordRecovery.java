@@ -1,4 +1,4 @@
-package cn.luixtech.passport.server.pojo;
+package cn.luixtech.passport.server.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;

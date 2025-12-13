@@ -1,4 +1,4 @@
-package cn.luixtech.passport.server.domain;
+package cn.luixtech.passport.server.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

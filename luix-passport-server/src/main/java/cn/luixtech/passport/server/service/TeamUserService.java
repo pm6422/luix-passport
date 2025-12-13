@@ -1,6 +1,6 @@
 package cn.luixtech.passport.server.service;
 
-import cn.luixtech.passport.server.pojo.TeamMemberInvitation;
+import cn.luixtech.passport.server.dto.TeamMemberInvitation;
 import java.util.List;
 import java.util.Set;
 

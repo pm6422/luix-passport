@@ -1,4 +1,4 @@
-package cn.luixtech.passport.server.pojo;
+package cn.luixtech.passport.server.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,15 +27,12 @@ public class LoginUser {
     private Set<String> permissionIds;
     private Instant     signInAt;
 
-    /* <<<<<<<<<<<<<<  ✨ Windsurf Command ⭐ >>>>>>>>>>>>>>>> */
-
     /**
      * Copies properties from the given ManagedUser to this AuthUser.
      *
      * @param managedUser the source object
      * @return the target object
      */
-    /* <<<<<<<<<<  ce56b8f8-f0a9-4335-bf9e-87b1b2520cc9  >>>>>>>>>>> */
     public static LoginUser of(ManagedUser managedUser) {
         LoginUser loginUser = new LoginUser();
         BeanUtils.copyProperties(managedUser, loginUser);

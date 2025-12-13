@@ -1,7 +1,7 @@
 package cn.luixtech.passport.server.controller;
 
 import cn.luixtech.passport.server.domain.Oauth2RegisteredClient;
-import cn.luixtech.passport.server.pojo.Oauth2Client;
+import cn.luixtech.passport.server.dto.Oauth2Client;
 import cn.luixtech.passport.server.repository.Oauth2RegisteredClientRepository;
 import cn.luixtech.passport.server.service.Oauth2RegisteredClientService;
 import com.luixtech.springbootframework.component.HttpHeaderCreator;

@@ -1,4 +1,4 @@
-package cn.luixtech.passport.server.pojo;
+package cn.luixtech.passport.server.dto;
 
 import cn.luixtech.passport.server.domain.Role;
 import lombok.Data;
@@ -19,15 +19,12 @@ public class ManagedRole {
     private   String      remark;
     private   Set<String> permissionIds;
 
-    /* <<<<<<<<<<<<<<  ✨ Windsurf Command ⭐ >>>>>>>>>>>>>>>> */
-
     /**
      * Copies properties from the given Role to this ManagedRole.
      *
      * @param role the source object
      * @return the target object
      */
-    /* <<<<<<<<<<  ce56b8f8-f0a9-4335-bf9e-87b1b2520cc9  >>>>>>>>>>> */
     public static ManagedRole of(Role role, Set<String> permissionIds) {
         ManagedRole managedRole = new ManagedRole();
         BeanUtils.copyProperties(role, managedRole);

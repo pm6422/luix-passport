@@ -12,8 +12,8 @@ import org.springframework.http.ResponseEntity;
  */
 import cn.luixtech.passport.server.domain.Team;
 import cn.luixtech.passport.server.domain.TeamInvitation;
-import cn.luixtech.passport.server.domain.TeamMember;
-import cn.luixtech.passport.server.pojo.TeamMemberInvitation;
+import cn.luixtech.passport.server.dto.TeamMember;
+import cn.luixtech.passport.server.dto.TeamMemberInvitation;
 import cn.luixtech.passport.server.service.TeamService;
 import cn.luixtech.passport.server.utils.AuthUtils;
 import org.springframework.web.bind.annotation.GetMapping;

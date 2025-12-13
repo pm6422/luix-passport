@@ -2,7 +2,7 @@ package cn.luixtech.passport.server.controller;
 
 import cn.luixtech.passport.server.domain.Notification;
 import cn.luixtech.passport.server.domain.UserNotification;
-import cn.luixtech.passport.server.pojo.MyNotification;
+import cn.luixtech.passport.server.dto.MyNotification;
 import cn.luixtech.passport.server.service.UserNotificationService;
 import cn.luixtech.passport.server.utils.AuthUtils;
 import com.luixtech.springbootframework.component.HttpHeaderCreator;

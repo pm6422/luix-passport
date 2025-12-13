@@ -1,7 +1,7 @@
 package cn.luixtech.passport.server.controller;
 
 import cn.luixtech.passport.server.domain.Role;
-import cn.luixtech.passport.server.pojo.ManagedRole;
+import cn.luixtech.passport.server.dto.ManagedRole;
 import cn.luixtech.passport.server.repository.RoleRepository;
 import cn.luixtech.passport.server.service.RolePermissionService;
 import cn.luixtech.passport.server.service.RoleService;

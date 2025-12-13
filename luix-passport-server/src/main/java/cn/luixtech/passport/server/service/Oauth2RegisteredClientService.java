@@ -1,6 +1,6 @@
 package cn.luixtech.passport.server.service;
 
-import cn.luixtech.passport.server.pojo.Oauth2Client;
+import cn.luixtech.passport.server.dto.Oauth2Client;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

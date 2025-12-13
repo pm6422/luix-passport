@@ -2,10 +2,10 @@ package cn.luixtech.passport.server.service.impl;
 
 import cn.luixtech.passport.server.domain.Team;
 import cn.luixtech.passport.server.domain.TeamInvitation;
-import cn.luixtech.passport.server.domain.TeamMember;
+import cn.luixtech.passport.server.dto.TeamMember;
 import cn.luixtech.passport.server.domain.TeamUser;
 import cn.luixtech.passport.server.domain.User;
-import cn.luixtech.passport.server.pojo.TeamMemberInvitation;
+import cn.luixtech.passport.server.dto.TeamMemberInvitation;
 import cn.luixtech.passport.server.repository.TeamInvitationRepository;
 import cn.luixtech.passport.server.repository.TeamRepository;
 import cn.luixtech.passport.server.repository.TeamUserRepository;

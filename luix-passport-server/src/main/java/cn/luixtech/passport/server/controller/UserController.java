@@ -3,7 +3,7 @@ package cn.luixtech.passport.server.controller;
 import cn.luixtech.passport.server.config.ApplicationProperties;
 import cn.luixtech.passport.server.domain.User;
 import cn.luixtech.passport.server.event.LogoutEvent;
-import cn.luixtech.passport.server.pojo.ManagedUser;
+import cn.luixtech.passport.server.dto.ManagedUser;
 import cn.luixtech.passport.server.repository.UserRepository;
 import cn.luixtech.passport.server.service.MailService;
 import cn.luixtech.passport.server.service.UserRoleService;

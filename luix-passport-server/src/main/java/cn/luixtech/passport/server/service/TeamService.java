@@ -2,8 +2,8 @@ package cn.luixtech.passport.server.service;
 
 import cn.luixtech.passport.server.domain.Team;
 import cn.luixtech.passport.server.domain.TeamInvitation;
-import cn.luixtech.passport.server.domain.TeamMember;
-import cn.luixtech.passport.server.pojo.TeamMemberInvitation;
+import cn.luixtech.passport.server.dto.TeamMember;
+import cn.luixtech.passport.server.dto.TeamMemberInvitation;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;

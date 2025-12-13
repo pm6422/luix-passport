@@ -1,7 +1,7 @@
 package cn.luixtech.passport.server.controller;
 
 import cn.luixtech.passport.server.domain.DataDict;
-import cn.luixtech.passport.server.pojo.BatchUpdateDataDict;
+import cn.luixtech.passport.server.dto.BatchUpdateDataDict;
 import cn.luixtech.passport.server.repository.DataDictRepository;
 import cn.luixtech.passport.server.service.DataDictService;
 import com.alibaba.fastjson2.JSON;

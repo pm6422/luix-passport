@@ -1,4 +1,4 @@
-package cn.luixtech.passport.server.pojo;
+package cn.luixtech.passport.server.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;

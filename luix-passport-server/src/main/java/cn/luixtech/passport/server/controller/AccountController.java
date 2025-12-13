@@ -6,7 +6,7 @@ import cn.luixtech.passport.server.domain.TeamInvitation;
 import cn.luixtech.passport.server.domain.User;
 import cn.luixtech.passport.server.domain.UserAvatar;
 import cn.luixtech.passport.server.event.LogoutEvent;
-import cn.luixtech.passport.server.pojo.*;
+import cn.luixtech.passport.server.dto.*;
 import cn.luixtech.passport.server.repository.SupportedDateTimeFormatRepository;
 import cn.luixtech.passport.server.repository.UserAvatarRepository;
 import cn.luixtech.passport.server.repository.UserRepository;

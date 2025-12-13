@@ -2,7 +2,7 @@ package cn.luixtech.passport.server.service;
 
 
 import cn.luixtech.passport.server.domain.User;
-import cn.luixtech.passport.server.pojo.ManagedUser;
+import cn.luixtech.passport.server.dto.ManagedUser;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

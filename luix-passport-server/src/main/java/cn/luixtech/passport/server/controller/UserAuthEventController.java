@@ -2,8 +2,8 @@ package cn.luixtech.passport.server.controller;
 
 import cn.luixtech.passport.server.domain.User;
 import cn.luixtech.passport.server.domain.UserAuthEvent;
-import cn.luixtech.passport.server.pojo.LoginUser;
-import cn.luixtech.passport.server.pojo.UserLoginCount;
+import cn.luixtech.passport.server.dto.LoginUser;
+import cn.luixtech.passport.server.dto.UserLoginCount;
 import cn.luixtech.passport.server.repository.UserAuthEventRepository;
 import cn.luixtech.passport.server.repository.UserRepository;
 import cn.luixtech.passport.server.service.UserAuthEventService;

@@ -24,7 +24,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
-import static cn.luixtech.passport.server.pojo.Oauth2Client.SCOPE_MESSAGE_READ;
+import static cn.luixtech.passport.server.dto.Oauth2Client.SCOPE_MESSAGE_READ;
 
 /**
  * Use org.springframework.security.crypto.password.DelegatingPasswordEncoder as default
