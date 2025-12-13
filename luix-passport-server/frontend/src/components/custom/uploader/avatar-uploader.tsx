@@ -47,7 +47,7 @@ export function AvatarUploader({
         className="absolute bottom-1 right-0 rounded-full p-1 bg-secondary-foreground/90 hover:bg-secondary-foreground"
         onClick={() => fileInputRef.current?.click()}
       >
-        <IconPencil className="size-5 text-gray-400" />
+        <IconPencil className="size-5 text-gray-700" />
       </Button>
 
       <Input
