@@ -1,13 +1,13 @@
 package cn.luixtech.passport.server.service;
 
-
 import cn.luixtech.passport.server.domain.User;
 
 public interface MailService {
 
     void sendEmail(String[] sendTo, String subject, String content);
 
-    void sendEmailFromTemplate(User user, String[] emailsTo, String templateName, String subjectKey, String titleKey, String baseUrl);
+    void sendEmailFromTemplate(User user, String[] emailsTo, String templateName, String subjectKey, String titleKey,
+            String baseUrl);
 
     void sendAccountActivationEmail(User user, String baseUrl);
 
@@ -18,4 +18,6 @@ public interface MailService {
     void sendPasswordChangedMail(User user, String baseUrl);
 
     void sendVerificationCodeMail(User user, String emailTo, String baseUrl);
+
+    void sendTeamInvitationEmail(String email, String teamName, String inviterName, String role, String baseUrl);
 }

@@ -10,6 +10,7 @@ import cn.luixtech.passport.server.repository.TeamInvitationRepository;
 import cn.luixtech.passport.server.repository.TeamRepository;
 import cn.luixtech.passport.server.repository.TeamUserRepository;
 import cn.luixtech.passport.server.repository.UserRepository;
+import cn.luixtech.passport.server.service.MailService;
 import cn.luixtech.passport.server.service.TeamService;
 import cn.luixtech.passport.server.service.UserAvatarService;
 import cn.luixtech.passport.server.utils.AuthUtils;
@@ -27,6 +28,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static cn.luixtech.passport.server.domain.TeamUser.ROLE_OWNER;
+import static com.luixtech.springbootframework.utils.NetworkUtils.getRequestUrl;
 
 @Service
 @AllArgsConstructor
@@ -38,6 +40,7 @@ public class TeamServiceImpl implements TeamService {
   private final UserRepository userRepository;
   private final TeamInvitationRepository teamInvitationRepository;
   private final UserAvatarService userAvatarService;
+  private final MailService mailService;
 
   @Override
   @Transactional(rollbackFor = Exception.class)
@@ -109,7 +112,8 @@ public class TeamServiceImpl implements TeamService {
 
   @Override
   @Transactional(rollbackFor = Exception.class)
-  public void inviteMembers(String teamId, List<TeamMemberInvitation> invitations, String inviterId) {
+  public void inviteMembers(HttpServletRequest request, String teamId, List<TeamMemberInvitation> invitations,
+      String inviterId) {
     TeamUser inviter = teamUserRepository.findByTeamIdAndUserId(teamId, inviterId)
         .orElseThrow(() -> new IllegalArgumentException("Inviter is not a member of the team"));
 
@@ -117,10 +121,22 @@ public class TeamServiceImpl implements TeamService {
       throw new IllegalArgumentException("Only team owners can invite new members");
     }
 
+    Team team = teamRepository.findById(teamId)
+        .orElseThrow(() -> new IllegalArgumentException("Team not found"));
+
+    User inviterUser = userRepository.findById(inviterId)
+        .orElseThrow(() -> new IllegalArgumentException("Inviter user not found"));
+
+    String inviterName = inviterUser.getFirstName() != null && inviterUser.getLastName() != null
+        ? inviterUser.getFirstName() + " " + inviterUser.getLastName()
+        : inviterUser.getUsername();
+
     for (TeamMemberInvitation invitation : invitations) {
+      Optional<User> existingUser = userRepository.findOneByEmail(invitation.getEmail());
+
       // Check if user is already a member
-      if (userRepository.findOneByEmail(invitation.getEmail()).isPresent()) {
-        String userId = userRepository.findOneByEmail(invitation.getEmail()).get().getUsername();
+      if (existingUser.isPresent()) {
+        String userId = existingUser.get().getUsername();
         if (teamUserRepository.findByTeamIdAndUserId(teamId, userId).isPresent()) {
           continue; // Already a member
         }
@@ -143,11 +159,91 @@ public class TeamServiceImpl implements TeamService {
       invite.setCreatedAt(Instant.now());
       invite.setExpiresAt(Instant.now().plus(7, ChronoUnit.DAYS));
       teamInvitationRepository.save(invite);
+
+      // Send invitation email if user doesn't have an account
+      if (existingUser.isEmpty()) {
+        try {
+          mailService.sendTeamInvitationEmail(
+              invitation.getEmail(),
+              team.getName(),
+              inviterName,
+              invitation.getRole(),
+              getRequestUrl(request));
+          log.info("Sent team invitation email to {} for team {}", invitation.getEmail(), team.getName());
+        } catch (Exception e) {
+          log.error("Failed to send team invitation email to {}: {}", invitation.getEmail(), e.getMessage());
+        }
+      }
     }
   }
 
   @Override
   public List<TeamInvitation> findPendingInvitations(String teamId) {
     return teamInvitationRepository.findByTeamIdAndStatus(teamId, "PENDING");
+  }
+
+  @Override
+  public byte[] getTeamPhoto(String teamId) {
+    return teamRepository.findById(teamId)
+        .map(Team::getPhoto)
+        .orElse(null);
+  }
+
+  @Override
+  @Transactional(rollbackFor = Exception.class)
+  public void updateTeamPhoto(String teamId, byte[] photo) {
+    Team team = teamRepository.findById(teamId)
+        .orElseThrow(() -> new RuntimeException("Team not found"));
+    team.setPhoto(photo);
+    teamRepository.save(team);
+  }
+
+  @Override
+  public List<TeamInvitation> findUserInvitations(String email) {
+    return teamInvitationRepository.findByEmailAndStatusAndExpiresAtAfter(email, "PENDING", Instant.now());
+  }
+
+  @Override
+  @Transactional(rollbackFor = Exception.class)
+  public void acceptInvitation(String invitationId, String userId) {
+    TeamInvitation invitation = teamInvitationRepository.findById(invitationId)
+        .orElseThrow(() -> new IllegalArgumentException("Invitation not found"));
+
+    if (!"PENDING".equals(invitation.getStatus())) {
+      throw new IllegalArgumentException("Invitation is not pending");
+    }
+
+    if (invitation.getExpiresAt().isBefore(Instant.now())) {
+      throw new IllegalArgumentException("Invitation has expired");
+    }
+
+    // Add user to team
+    TeamUser teamUser = new TeamUser();
+    teamUser.setTeamId(invitation.getTeamId());
+    teamUser.setUserId(userId);
+    teamUser.setRole(invitation.getRole());
+    teamUserRepository.save(teamUser);
+
+    // Update invitation status
+    invitation.setStatus("ACCEPTED");
+    teamInvitationRepository.save(invitation);
+
+    log.info("User {} accepted invitation {} to join team {}", userId, invitationId, invitation.getTeamId());
+  }
+
+  @Override
+  @Transactional(rollbackFor = Exception.class)
+  public void rejectInvitation(String invitationId) {
+    TeamInvitation invitation = teamInvitationRepository.findById(invitationId)
+        .orElseThrow(() -> new IllegalArgumentException("Invitation not found"));
+
+    if (!"PENDING".equals(invitation.getStatus())) {
+      throw new IllegalArgumentException("Invitation is not pending");
+    }
+
+    invitation.setStatus("REJECTED");
+    teamInvitationRepository.save(invitation);
+
+    log.info("Invitation {} was rejected", invitationId);
   }
 }

@@ -15,7 +15,6 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 
 import java.util.List;
 
-
 /**
  * Utility class for Spring Security.
  */
@@ -51,6 +50,14 @@ public abstract class AuthUtils {
     public static String getCurrentUsername(Authentication authentication) {
         AuthUser currentUser = getCurrentUser(authentication);
         return currentUser != null ? currentUser.getUsername() : null;
+    }
+
+    /**
+     * Get the email of the current logged user.
+     */
+    public static String getCurrentUserEmail() {
+        AuthUser currentUser = getCurrentUser();
+        return currentUser != null ? currentUser.getEmail() : null;
     }
 
     /**
@@ -94,7 +101,8 @@ public abstract class AuthUtils {
      */
     public static String getAccessToken(HttpServletRequest request) {
         String token = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (StringUtils.isNotEmpty(token) && token.toLowerCase().startsWith(OAuth2AccessToken.TokenType.BEARER.getValue().toLowerCase())) {
+        if (StringUtils.isNotEmpty(token)
+                && token.toLowerCase().startsWith(OAuth2AccessToken.TokenType.BEARER.getValue().toLowerCase())) {
             return StringUtils.substringAfter(token, OAuth2AccessToken.TokenType.BEARER.getValue()).trim();
         }
         log.warn("Couldn't find access token in request headers!");

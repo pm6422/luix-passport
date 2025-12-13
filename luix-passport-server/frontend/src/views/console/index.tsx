@@ -1,13 +1,56 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Activity, CreditCard, Key, Lock, Shield, User, Users } from "lucide-react"
+import { Activity, CreditCard, Key, Lock, Shield, User, Users, Mail } from "lucide-react"
 import { useStore } from "exome/react"
 import { loginUserStore } from "@/stores/login-user-store"
 import { LayoutBody } from "@/layouts/layout-definitions"
+import { useEffect, useState } from "react"
+import { TeamService, TeamInvitation } from "@/services/team-service"
+import { toast } from "sonner"
+import { Badge } from "@/components/ui/badge"
 
 export default function ConsolePage() {
   const { loginUser } = useStore(loginUserStore)
   const isAdmin = loginUser?.isAdmin;
+  const [invitations, setInvitations] = useState<TeamInvitation[]>([])
+  const [loadingInvitations, setLoadingInvitations] = useState(true)
+
+  useEffect(() => {
+    loadInvitations()
+  }, [])
+
+  const loadInvitations = async () => {
+    try {
+      const { data } = await TeamService.getUserInvitations()
+      setInvitations(data)
+    } catch (error) {
+      console.error("Failed to load invitations:", error)
+    } finally {
+      setLoadingInvitations(false)
+    }
+  }
+
+  const handleAcceptInvitation = async (invitationId: string) => {
+    try {
+      await TeamService.acceptInvitation(invitationId)
+      toast.success("Invitation accepted successfully")
+      loadInvitations()
+    } catch (error) {
+      toast.error("Failed to accept invitation")
+      console.error(error)
+    }
+  }
+
+  const handleRejectInvitation = async (invitationId: string) => {
+    try {
+      await TeamService.rejectInvitation(invitationId)
+      toast.success("Invitation rejected")
+      loadInvitations()
+    } catch (error) {
+      toast.error("Failed to reject invitation")
+      console.error(error)
+    }
+  }
 
   return (
     <LayoutBody className="flex flex-col" fixedHeight>
@@ -99,6 +142,52 @@ export default function ConsolePage() {
 
           {/* Quick Actions */}
           <div className="space-y-4">
+            {/* Team Invitations */}
+            {!loadingInvitations && invitations.length > 0 && (
+              <Card>
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <CardTitle>Team Invitations</CardTitle>
+                    <Badge variant="secondary">{invitations.length}</Badge>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {invitations.map((invitation) => (
+                    <div key={invitation.id} className="border rounded-lg p-3 space-y-2">
+                      <div className="flex items-start space-x-2">
+                        <div className="bg-blue-500/10 p-1.5 rounded-full">
+                          <Mail className="h-4 w-4 text-blue-500" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium">Team Invitation</p>
+                          <p className="text-xs text-muted-foreground truncate">
+                            Role: {invitation.role}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex gap-2">
+                        <Button
+                          size="sm"
+                          className="flex-1"
+                          onClick={() => handleAcceptInvitation(invitation.id)}
+                        >
+                          Accept
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="flex-1"
+                          onClick={() => handleRejectInvitation(invitation.id)}
+                        >
+                          Reject
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
+            )}
+
             <Card>
               <CardHeader>
                 <CardTitle>Quick Actions</CardTitle>

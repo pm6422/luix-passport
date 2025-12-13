@@ -37,6 +37,32 @@ export class TeamService {
   public static getPendingInvitations(teamId: string): Promise<AxiosResponse<TeamInvitation[]>> {
     return http.get(`/api/teams/${teamId}/invitations`)
   }
+
+  public static getTeamPhoto(teamId: string): string {
+    return `/api/teams/${teamId}/photo`
+  }
+
+  public static updateTeamPhoto(teamId: string, photo: File): Promise<AxiosResponse<void>> {
+    const formData = new FormData()
+    formData.append("photo", photo)
+    return http.put(`/api/teams/${teamId}/photo`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data"
+      }
+    })
+  }
+
+  public static getUserInvitations(): Promise<AxiosResponse<TeamInvitation[]>> {
+    return http.get("/api/user/invitations")
+  }
+
+  public static acceptInvitation(invitationId: string): Promise<AxiosResponse<void>> {
+    return http.post(`/api/invitations/${invitationId}/accept`)
+  }
+
+  public static rejectInvitation(invitationId: string): Promise<AxiosResponse<void>> {
+    return http.post(`/api/invitations/${invitationId}/reject`)
+  }
 }
 
 export interface Team {

@@ -19,6 +19,7 @@ import cn.luixtech.passport.server.utils.AuthUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -66,9 +67,9 @@ public class TeamController {
 
     @Operation(summary = "invite team members")
     @PostMapping("/api/teams/{teamId}/members")
-    public ResponseEntity<Void> inviteMembers(@PathVariable String teamId,
+    public ResponseEntity<Void> inviteMembers(HttpServletRequest request, @PathVariable String teamId,
             @RequestBody List<TeamMemberInvitation> invitations) {
-        teamService.inviteMembers(teamId, invitations, AuthUtils.getCurrentUsername());
+        teamService.inviteMembers(request, teamId, invitations, AuthUtils.getCurrentUsername());
         return ResponseEntity.ok().build();
     }
 
@@ -76,5 +77,47 @@ public class TeamController {
     @GetMapping("/api/teams/{teamId}/invitations")
     public ResponseEntity<List<TeamInvitation>> getPendingInvitations(@PathVariable String teamId) {
         return ResponseEntity.ok(teamService.findPendingInvitations(teamId));
+    }
+
+    @Operation(summary = "get team photo")
+    @GetMapping("/api/teams/{teamId}/photo")
+    public ResponseEntity<byte[]> getTeamPhoto(@PathVariable String teamId) {
+        byte[] photo = teamService.getTeamPhoto(teamId);
+        if (photo == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok()
+                .header("Content-Type", "image/png")
+                .body(photo);
+    }
+
+    @Operation(summary = "update team photo")
+    @PutMapping("/api/teams/{teamId}/photo")
+    public ResponseEntity<Void> updateTeamPhoto(@PathVariable String teamId,
+            @RequestParam MultipartFile photo) throws IOException {
+        teamService.updateTeamPhoto(teamId, photo.getBytes());
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "get user invitations")
+    @GetMapping("/api/user/invitations")
+    public ResponseEntity<List<TeamInvitation>> getUserInvitations() {
+        String email = AuthUtils.getCurrentUserEmail();
+        return ResponseEntity.ok(teamService.findUserInvitations(email));
+    }
+
+    @Operation(summary = "accept team invitation")
+    @PostMapping("/api/invitations/{invitationId}/accept")
+    public ResponseEntity<Void> acceptInvitation(@PathVariable String invitationId) {
+        String userId = AuthUtils.getCurrentUsername();
+        teamService.acceptInvitation(invitationId, userId);
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "reject team invitation")
+    @PostMapping("/api/invitations/{invitationId}/reject")
+    public ResponseEntity<Void> rejectInvitation(@PathVariable String invitationId) {
+        teamService.rejectInvitation(invitationId);
+        return ResponseEntity.ok().build();
     }
 }

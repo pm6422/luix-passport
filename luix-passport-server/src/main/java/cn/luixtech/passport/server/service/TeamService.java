@@ -15,7 +15,18 @@ public interface TeamService {
 
   List<TeamMember> findTeamMembers(HttpServletRequest request, String teamId);
 
-  void inviteMembers(String teamId, List<TeamMemberInvitation> invitations, String inviterId);
+  void inviteMembers(HttpServletRequest request, String teamId, List<TeamMemberInvitation> invitations,
+      String inviterId);
 
   List<TeamInvitation> findPendingInvitations(String teamId);
+
+  byte[] getTeamPhoto(String teamId);
+
+  void updateTeamPhoto(String teamId, byte[] photo);
+
+  List<TeamInvitation> findUserInvitations(String email);
+
+  void acceptInvitation(String invitationId, String userId);
+
+  void rejectInvitation(String invitationId);
 }
