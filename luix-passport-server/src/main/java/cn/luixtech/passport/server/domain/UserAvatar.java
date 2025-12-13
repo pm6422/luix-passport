@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserProfilePic {
+public class UserAvatar {
 
     @Id
     @NotEmpty(message = "id:{Validation.NotEmpty}")
@@ -21,5 +21,5 @@ public class UserProfilePic {
     @NotNull
     @Basic(fetch = FetchType.LAZY)
     @Column(columnDefinition = "bytea", nullable = false)
-    private byte[] profilePic;
+    private byte[] avatar;
 }

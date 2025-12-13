@@ -71,6 +71,11 @@ public class TeamUser extends TableImpl<TeamUserRecord> {
      */
     public final TableField<TeamUserRecord, String> USERNAME = createField(DSL.name("username"), SQLDataType.VARCHAR(20).nullable(false), this, "");
 
+    /**
+     * The column <code>public.team_user.role</code>.
+     */
+    public final TableField<TeamUserRecord, String> ROLE = createField(DSL.name("role"), SQLDataType.VARCHAR(20).nullable(false).defaultValue(DSL.field(DSL.raw("'MEMBER'::character varying"), SQLDataType.VARCHAR)), this, "");
+
     private TeamUser(Name alias, Table<TeamUserRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
     }

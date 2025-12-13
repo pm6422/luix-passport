@@ -11,12 +11,15 @@ import org.springframework.http.ResponseEntity;
  * REST controller for managing teams.
  */
 import cn.luixtech.passport.server.domain.Team;
+import cn.luixtech.passport.server.domain.TeamInvitation;
 import cn.luixtech.passport.server.domain.TeamMember;
+import cn.luixtech.passport.server.pojo.TeamMemberInvitation;
 import cn.luixtech.passport.server.service.TeamService;
 import cn.luixtech.passport.server.utils.AuthUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -59,5 +62,19 @@ public class TeamController {
     @GetMapping("/api/teams/{teamId}/members")
     public ResponseEntity<List<TeamMember>> getMembers(HttpServletRequest request, @PathVariable String teamId) {
         return ResponseEntity.ok(teamService.findTeamMembers(request, teamId));
+    }
+
+    @Operation(summary = "invite team members")
+    @PostMapping("/api/teams/{teamId}/members")
+    public ResponseEntity<Void> inviteMembers(@PathVariable String teamId,
+            @RequestBody List<TeamMemberInvitation> invitations) {
+        teamService.inviteMembers(teamId, invitations, AuthUtils.getCurrentUsername());
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "get pending invitations")
+    @GetMapping("/api/teams/{teamId}/invitations")
+    public ResponseEntity<List<TeamInvitation>> getPendingInvitations(@PathVariable String teamId) {
+        return ResponseEntity.ok(teamService.findPendingInvitations(teamId));
     }
 }

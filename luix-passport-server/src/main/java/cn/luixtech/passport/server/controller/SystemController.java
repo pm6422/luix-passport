@@ -24,16 +24,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.security.Principal;
 import java.util.*;
 
-import static cn.luixtech.passport.server.service.impl.UserProfilePicServiceImpl.CURRENT_USER_PHOTO_URL;
+import static cn.luixtech.passport.server.service.impl.UserAvatarServiceImpl.CURRENT_USER_PHOTO_URL;
 import static com.luixtech.springbootframework.utils.NetworkUtils.getRequestUrl;
 
 @Controller
 @AllArgsConstructor
 @Slf4j
 public class SystemController {
-    private final RegisteredClientRepository        registeredClientRepository;
+    private final RegisteredClientRepository registeredClientRepository;
     private final OAuth2AuthorizationConsentService authorizationConsentService;
-    private final UserRepository                    userRepository;
+    private final UserRepository userRepository;
 
     @RequestMapping("/system/error")
     public String handleError(Model model, HttpServletRequest request) {
@@ -65,18 +65,18 @@ public class SystemController {
 
     @GetMapping(value = "/oauth2/consent")
     public String consent(Principal principal, Model model,
-                          HttpServletRequest request,
-                          @RequestParam(OAuth2ParameterNames.CLIENT_ID) String clientId,
-                          @RequestParam(OAuth2ParameterNames.SCOPE) String scope,
-                          @RequestParam(OAuth2ParameterNames.STATE) String state,
-                          @RequestParam(name = OAuth2ParameterNames.USER_CODE, required = false) String userCode) {
+            HttpServletRequest request,
+            @RequestParam(OAuth2ParameterNames.CLIENT_ID) String clientId,
+            @RequestParam(OAuth2ParameterNames.SCOPE) String scope,
+            @RequestParam(OAuth2ParameterNames.STATE) String state,
+            @RequestParam(name = OAuth2ParameterNames.USER_CODE, required = false) String userCode) {
 
         // Remove scopes that were already approved
         Set<String> scopesToApprove = new HashSet<>();
         Set<String> previouslyApprovedScopes = new HashSet<>();
         RegisteredClient registeredClient = this.registeredClientRepository.findByClientId(clientId);
-        OAuth2AuthorizationConsent currentAuthorizationConsent =
-                this.authorizationConsentService.findById(Objects.requireNonNull(registeredClient).getId(), principal.getName());
+        OAuth2AuthorizationConsent currentAuthorizationConsent = this.authorizationConsentService
+                .findById(Objects.requireNonNull(registeredClient).getId(), principal.getName());
         Optional<User> user = userRepository.findById(principal.getName());
         Set<String> authorizedScopes;
         if (currentAuthorizationConsent != null) {
@@ -101,7 +101,7 @@ public class SystemController {
         model.addAttribute("previouslyApprovedScopes", withDescription(previouslyApprovedScopes));
         model.addAttribute("principalName", user.isPresent() ? user.get().getEmail() : principal.getName());
         model.addAttribute("userCode", userCode);
-        model.addAttribute("userProfilePic", getRequestUrl(request) + CURRENT_USER_PHOTO_URL);
+        model.addAttribute("userAvatar", getRequestUrl(request) + CURRENT_USER_PHOTO_URL);
         if (StringUtils.hasText(userCode)) {
             model.addAttribute("requestURI", "/oauth2/device_verification");
         } else {

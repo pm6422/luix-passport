@@ -60,6 +60,20 @@ public class TeamUserRecord extends UpdatableRecordImpl<TeamUserRecord> {
         return (String) get(2);
     }
 
+    /**
+     * Setter for <code>public.team_user.role</code>.
+     */
+    public void setRole(String value) {
+        set(3, value);
+    }
+
+    /**
+     * Getter for <code>public.team_user.role</code>.
+     */
+    public String getRole() {
+        return (String) get(3);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -83,12 +97,13 @@ public class TeamUserRecord extends UpdatableRecordImpl<TeamUserRecord> {
     /**
      * Create a detached, initialised TeamUserRecord
      */
-    public TeamUserRecord(String id, String teamId, String username) {
+    public TeamUserRecord(String id, String teamId, String username, String role) {
         super(TeamUser.TEAM_USER);
 
         setId(id);
         setTeamId(teamId);
         setUsername(username);
+        setRole(role);
         resetChangedOnNotNull();
     }
 }

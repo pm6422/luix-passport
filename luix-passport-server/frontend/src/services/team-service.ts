@@ -33,6 +33,10 @@ export class TeamService {
   public static getMembers(teamId: string): Promise<AxiosResponse<TeamMember[]>> {
     return http.get(`/api/teams/${teamId}/members`)
   }
+
+  public static getPendingInvitations(teamId: string): Promise<AxiosResponse<TeamInvitation[]>> {
+    return http.get(`/api/teams/${teamId}/invitations`)
+  }
 }
 
 export interface Team {
@@ -47,7 +51,18 @@ export interface TeamMember {
   email: string
   firstName: string
   lastName: string
-  profilePic?: string
+  avatar?: string
   role: string
   joinedAt?: string
+}
+
+export interface TeamInvitation {
+  id: string
+  teamId: string
+  email: string
+  role: string
+  inviterId: string
+  status: string
+  createdAt: string
+  expiresAt: string
 }

@@ -19,12 +19,13 @@ import cn.luixtech.passport.server.persistence.tables.SpringSession;
 import cn.luixtech.passport.server.persistence.tables.SpringSessionAttributes;
 import cn.luixtech.passport.server.persistence.tables.SupportedDateTimeFormat;
 import cn.luixtech.passport.server.persistence.tables.Team;
+import cn.luixtech.passport.server.persistence.tables.TeamInvitation;
 import cn.luixtech.passport.server.persistence.tables.TeamUser;
 import cn.luixtech.passport.server.persistence.tables.User;
 import cn.luixtech.passport.server.persistence.tables.UserAuthEvent;
+import cn.luixtech.passport.server.persistence.tables.UserAvatar;
 import cn.luixtech.passport.server.persistence.tables.UserLogin;
 import cn.luixtech.passport.server.persistence.tables.UserNotification;
-import cn.luixtech.passport.server.persistence.tables.UserProfilePic;
 import cn.luixtech.passport.server.persistence.tables.UserRole;
 
 import java.util.Arrays;
@@ -124,6 +125,11 @@ public class Public extends SchemaImpl {
     public final Team TEAM = Team.TEAM;
 
     /**
+     * The table <code>public.team_invitation</code>.
+     */
+    public final TeamInvitation TEAM_INVITATION = TeamInvitation.TEAM_INVITATION;
+
+    /**
      * The table <code>public.team_user</code>.
      */
     public final TeamUser TEAM_USER = TeamUser.TEAM_USER;
@@ -139,6 +145,11 @@ public class Public extends SchemaImpl {
     public final UserAuthEvent USER_AUTH_EVENT = UserAuthEvent.USER_AUTH_EVENT;
 
     /**
+     * The table <code>public.user_avatar</code>.
+     */
+    public final UserAvatar USER_AVATAR = UserAvatar.USER_AVATAR;
+
+    /**
      * The table <code>public.user_login</code>.
      */
     public final UserLogin USER_LOGIN = UserLogin.USER_LOGIN;
@@ -147,11 +158,6 @@ public class Public extends SchemaImpl {
      * The table <code>public.user_notification</code>.
      */
     public final UserNotification USER_NOTIFICATION = UserNotification.USER_NOTIFICATION;
-
-    /**
-     * The table <code>public.user_profile_pic</code>.
-     */
-    public final UserProfilePic USER_PROFILE_PIC = UserProfilePic.USER_PROFILE_PIC;
 
     /**
      * The table <code>public.user_role</code>.
@@ -189,12 +195,13 @@ public class Public extends SchemaImpl {
             SpringSessionAttributes.SPRING_SESSION_ATTRIBUTES,
             SupportedDateTimeFormat.SUPPORTED_DATE_TIME_FORMAT,
             Team.TEAM,
+            TeamInvitation.TEAM_INVITATION,
             TeamUser.TEAM_USER,
             User.USER,
             UserAuthEvent.USER_AUTH_EVENT,
+            UserAvatar.USER_AVATAR,
             UserLogin.USER_LOGIN,
             UserNotification.USER_NOTIFICATION,
-            UserProfilePic.USER_PROFILE_PIC,
             UserRole.USER_ROLE
         );
     }

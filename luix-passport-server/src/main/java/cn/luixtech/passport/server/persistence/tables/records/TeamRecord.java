@@ -6,6 +6,8 @@ package cn.luixtech.passport.server.persistence.tables.records;
 
 import cn.luixtech.passport.server.persistence.tables.Team;
 
+import java.time.Instant;
+
 import org.jooq.Record1;
 import org.jooq.impl.UpdatableRecordImpl;
 
@@ -74,6 +76,76 @@ public class TeamRecord extends UpdatableRecordImpl<TeamRecord> {
         return (byte[]) get(3);
     }
 
+    /**
+     * Setter for <code>public.team.name</code>.
+     */
+    public void setName(String value) {
+        set(4, value);
+    }
+
+    /**
+     * Getter for <code>public.team.name</code>.
+     */
+    public String getName() {
+        return (String) get(4);
+    }
+
+    /**
+     * Setter for <code>public.team.created_at</code>.
+     */
+    public void setCreatedAt(Instant value) {
+        set(5, value);
+    }
+
+    /**
+     * Getter for <code>public.team.created_at</code>.
+     */
+    public Instant getCreatedAt() {
+        return (Instant) get(5);
+    }
+
+    /**
+     * Setter for <code>public.team.updated_at</code>.
+     */
+    public void setUpdatedAt(Instant value) {
+        set(6, value);
+    }
+
+    /**
+     * Getter for <code>public.team.updated_at</code>.
+     */
+    public Instant getUpdatedAt() {
+        return (Instant) get(6);
+    }
+
+    /**
+     * Setter for <code>public.team.created_by</code>.
+     */
+    public void setCreatedBy(String value) {
+        set(7, value);
+    }
+
+    /**
+     * Getter for <code>public.team.created_by</code>.
+     */
+    public String getCreatedBy() {
+        return (String) get(7);
+    }
+
+    /**
+     * Setter for <code>public.team.updated_by</code>.
+     */
+    public void setUpdatedBy(String value) {
+        set(8, value);
+    }
+
+    /**
+     * Getter for <code>public.team.updated_by</code>.
+     */
+    public String getUpdatedBy() {
+        return (String) get(8);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -97,13 +169,18 @@ public class TeamRecord extends UpdatableRecordImpl<TeamRecord> {
     /**
      * Create a detached, initialised TeamRecord
      */
-    public TeamRecord(String id, String remark, Boolean enabled, byte[] photo) {
+    public TeamRecord(String id, String remark, Boolean enabled, byte[] photo, String name, Instant createdAt, Instant updatedAt, String createdBy, String updatedBy) {
         super(Team.TEAM);
 
         setId(id);
         setRemark(remark);
         setEnabled(enabled);
         setPhoto(photo);
+        setName(name);
+        setCreatedAt(createdAt);
+        setUpdatedAt(updatedAt);
+        setCreatedBy(createdBy);
+        setUpdatedBy(updatedBy);
         resetChangedOnNotNull();
     }
 }

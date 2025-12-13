@@ -11,9 +11,9 @@ import cn.luixtech.passport.server.persistence.tables.Notification.NotificationP
 import cn.luixtech.passport.server.persistence.tables.Role.RolePath;
 import cn.luixtech.passport.server.persistence.tables.SupportedDateTimeFormat.SupportedDateTimeFormatPath;
 import cn.luixtech.passport.server.persistence.tables.TeamUser.TeamUserPath;
+import cn.luixtech.passport.server.persistence.tables.UserAvatar.UserAvatarPath;
 import cn.luixtech.passport.server.persistence.tables.UserLogin.UserLoginPath;
 import cn.luixtech.passport.server.persistence.tables.UserNotification.UserNotificationPath;
-import cn.luixtech.passport.server.persistence.tables.UserProfilePic.UserProfilePicPath;
 import cn.luixtech.passport.server.persistence.tables.UserRole.UserRolePath;
 import cn.luixtech.passport.server.persistence.tables.records.UserRecord;
 
@@ -309,6 +309,19 @@ public class User extends TableImpl<UserRecord> {
         return _teamUser;
     }
 
+    private transient UserAvatarPath _userAvatar;
+
+    /**
+     * Get the implicit to-many join path to the <code>public.user_avatar</code>
+     * table
+     */
+    public UserAvatarPath userAvatar() {
+        if (_userAvatar == null)
+            _userAvatar = new UserAvatarPath(this, null, Keys.USER_AVATAR__FK_USER_AVATAR_USERNAME.getInverseKey());
+
+        return _userAvatar;
+    }
+
     private transient UserLoginPath _userLogin;
 
     /**
@@ -333,19 +346,6 @@ public class User extends TableImpl<UserRecord> {
             _userNotification = new UserNotificationPath(this, null, Keys.USER_NOTIFICATION__FK_USER_NOTIFICATION_USER.getInverseKey());
 
         return _userNotification;
-    }
-
-    private transient UserProfilePicPath _userProfilePic;
-
-    /**
-     * Get the implicit to-many join path to the
-     * <code>public.user_profile_pic</code> table
-     */
-    public UserProfilePicPath userProfilePic() {
-        if (_userProfilePic == null)
-            _userProfilePic = new UserProfilePicPath(this, null, Keys.USER_PROFILE_PIC__FK_USER_PROFILE_PIC_USERNAME.getInverseKey());
-
-        return _userProfilePic;
     }
 
     private transient UserRolePath _userRole;

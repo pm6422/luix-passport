@@ -58,11 +58,11 @@ export function EditDialog({
       AccountService.findSupportedDateTimeFormats()
     ]).then(results => {
       // load options
-      setEnabledRoles(results[0].data.map((item: string) => ({label: item, value: item})));
+      setEnabledRoles(results[0].data.map((item: string) => ({ label: item, value: item })));
       setSupportedTimezones(results[1].data.map((item: DataDict) =>
-        ({label: "(UTC" + item.dictName + ") " + item.dictCode , value: item.dictCode})));
+        ({ label: "(UTC" + item.dictName + ") " + item.dictCode, value: item.dictCode })));
       setSupportedDateTimeFormats(results[2].data.map((item: SupportedDateTimeFormat) =>
-        ({label: item.displayName + " (" + item.example + ")", value: item.id})));
+        ({ label: item.displayName + " (" + item.example + ")", value: item.id })));
 
       if (id) {
         UserService.findById(id).then(r => {
@@ -84,17 +84,17 @@ export function EditDialog({
         {children}
       </DialogTrigger>
       <SaveDialogContent<User> entityName={entityName} id={id} form={form} save={save} afterSave={afterSave} setOpen={setOpen}>
-        { loginUser.username === id && <Notice message="After modifying the current logged-in user information, you will be automatically logged out." /> }
+        {loginUser.username === id && <Notice message="After modifying the current logged-in user information, you will be automatically logged out." />}
         <div className="flex flex-col md:flex-row items-center justify-between gap-5">
           <div className="flex items-center gap-2">
             <div className="relative">
               <Avatar className="size-20">
-                <AvatarImage src={"/api/user-profile-pics/" + id} alt="profile" />
+                <AvatarImage src={"/api/user-avatars/" + id} alt="profile" />
                 <AvatarFallback><Skeleton className="w-full" /></AvatarFallback>
               </Avatar>
-              { loginUser?.username === id && <span className="animate-pulse border-background absolute -end-0.5 -bottom-0.5 size-6 rounded-full border-4 bg-emerald-500">
+              {loginUser?.username === id && <span className="animate-pulse border-background absolute -end-0.5 -bottom-0.5 size-6 rounded-full border-4 bg-emerald-500">
                 <span className="sr-only">Online</span>
-              </span> }
+              </span>}
             </div>
           </div>
 

@@ -14,7 +14,7 @@ public class TeamMember {
   private String email;
   private String firstName;
   private String lastName;
-  private byte[] profilePic;
+  private byte[] avatar;
   private String role;
   private Instant joinedAt;
 }

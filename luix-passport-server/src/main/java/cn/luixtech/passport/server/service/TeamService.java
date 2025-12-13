@@ -1,7 +1,9 @@
 package cn.luixtech.passport.server.service;
 
 import cn.luixtech.passport.server.domain.Team;
+import cn.luixtech.passport.server.domain.TeamInvitation;
 import cn.luixtech.passport.server.domain.TeamMember;
+import cn.luixtech.passport.server.pojo.TeamMemberInvitation;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;
@@ -12,4 +14,8 @@ public interface TeamService {
   List<Team> findUserTeams(String username);
 
   List<TeamMember> findTeamMembers(HttpServletRequest request, String teamId);
+
+  void inviteMembers(String teamId, List<TeamMemberInvitation> invitations, String inviterId);
+
+  List<TeamInvitation> findPendingInvitations(String teamId);
 }

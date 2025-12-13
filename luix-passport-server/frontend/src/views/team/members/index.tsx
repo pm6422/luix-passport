@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/table"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
-import { TeamService, TeamMember } from "@/services/team-service"
+import { TeamService, TeamMember, TeamInvitation } from "@/services/team-service"
 import { loginUserStore } from "@/stores/login-user-store"
 import { useStore } from "exome/react"
 
@@ -24,11 +24,13 @@ export default function TeamMembers() {
   const [openInvite, setOpenInvite] = useState(false)
   const { teamId } = useParams()
   const [members, setMembers] = useState<TeamMember[]>([])
+  const [invitations, setInvitations] = useState<TeamInvitation[]>([])
   const { loginUser } = useStore(loginUserStore)
 
   useEffect(() => {
     if (teamId) {
       loadMembers()
+      loadPendingInvitations()
     }
   }, [teamId])
 
@@ -37,6 +39,16 @@ export default function TeamMembers() {
     try {
       const { data } = await TeamService.getMembers(teamId)
       setMembers(data)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const loadPendingInvitations = async () => {
+    if (!teamId) return
+    try {
+      const { data } = await TeamService.getPendingInvitations(teamId);
+      setInvitations(data);
     } catch (error) {
       console.error(error)
     }
@@ -82,8 +94,8 @@ export default function TeamMembers() {
                   <TableCell className="font-medium">
                     <div className="flex items-center space-x-3">
                       <Avatar className="size-8">
-                        {member.profilePic && (
-                          <AvatarImage src={`data:image/png;base64,${member.profilePic}`} />
+                        {member.avatar && (
+                          <AvatarImage src={`data:image/png;base64,${member.avatar}`} />
                         )}
                         <AvatarFallback>{member.firstName?.[0]}{member.lastName?.[0]}</AvatarFallback>
                       </Avatar>
@@ -140,11 +152,31 @@ export default function TeamMembers() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              <TableRow>
-                <TableCell colSpan={5} className="h-24 text-center">
-                  No data available
-                </TableCell>
-              </TableRow>
+              {invitations.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={5} className="h-24 text-center">
+                    No data available
+                  </TableCell>
+                </TableRow>
+              ) : (
+                invitations.map((invite) => (
+                  <TableRow key={invite.id}>
+                    <TableCell>{invite.email}</TableCell>
+                    <TableCell>
+                      <Badge variant="outline" className="capitalize">{invite.role}</Badge>
+                    </TableCell>
+                    <TableCell>
+                      <DateTime value={invite.createdAt} />
+                    </TableCell>
+                    <TableCell>
+                      <DateTime value={invite.expiresAt} />
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Badge className="capitalize">{invite.status.toLowerCase()}</Badge>
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
             </TableBody>
           </Table>
         </div>

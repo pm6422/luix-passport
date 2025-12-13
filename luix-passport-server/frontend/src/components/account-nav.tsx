@@ -30,7 +30,7 @@ export function AccountNav() {
   useEffect(() => {
     setIsLoading(true);
 
-    AccountService.getProfilePic().then((res) => {
+    AccountService.getAvatar().then((res) => {
       setIsLoading(false);
       const blob = new Blob([res.data], { type: res.headers["content-type"] });
       setImageUrl(URL.createObjectURL(blob));
@@ -73,19 +73,19 @@ export function AccountNav() {
         <DropdownMenuGroup>
           <Link to="/account">
             <DropdownMenuItem className="cursor-pointer">
-              <IconUser className="size-4 mr-2"/>Account Settings
+              <IconUser className="size-4 mr-2" />Account Settings
               {/*<DropdownMenuShortcut>⌘S</DropdownMenuShortcut>*/}
             </DropdownMenuItem>
           </Link>
           <Link to="/notifications">
             <DropdownMenuItem className="cursor-pointer">
-              <IconBellRinging className="size-4 mr-2"/>Notifications
+              <IconBellRinging className="size-4 mr-2" />Notifications
             </DropdownMenuItem>
           </Link>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem className="cursor-pointer" onClick={() => AccountService.signOut()}>
-          <IconLogout className="size-4 mr-2"/>Sign out
+          <IconLogout className="size-4 mr-2" />Sign out
           {/*<DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>*/}
         </DropdownMenuItem>
       </DropdownMenuContent>

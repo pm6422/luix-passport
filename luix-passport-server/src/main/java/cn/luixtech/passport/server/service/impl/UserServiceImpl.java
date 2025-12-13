@@ -11,6 +11,7 @@ import cn.luixtech.passport.server.repository.SupportedDateTimeFormatRepository;
 import cn.luixtech.passport.server.repository.UserRepository;
 import cn.luixtech.passport.server.repository.UserRoleRepository;
 import cn.luixtech.passport.server.service.*;
+import cn.luixtech.passport.server.service.UserAvatarService;
 import cn.luixtech.passport.server.statemachine.UserEvent;
 import cn.luixtech.passport.server.statemachine.UserState;
 import cn.luixtech.passport.server.utils.AuthUtils;
@@ -75,7 +76,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRoleService userRoleService;
     private final UserNotificationService userNotificationService;
     private final RolePermissionService rolePermissionService;
-    private final UserProfilePicService userProfilePicService;
+    private final UserAvatarService userAvatarService;
     private final TeamUserService teamUserService;
     private final MessageCreator messageCreator;
     private final HttpServletRequest httpServletRequest;
@@ -120,13 +121,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         String modifiedTime = ISO_8601_EXTENDED_DATETIME_TIME_ZONE_FORMAT
                 .format(user.getUpdatedAt().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
 
-        String profilePicUrl = null;
+        String avatarUrl = null;
         if (httpServletRequest != null) {
-            profilePicUrl = userProfilePicService.buildProfilePicUrl(user.getUsername(), httpServletRequest);
+            avatarUrl = userAvatarService.buildAvatarUrl(user.getUsername(), httpServletRequest);
         }
         return new AuthUser(user.getUsername(), user.getEmail(), user.getMobileNo(), user.getFirstName(),
                 user.getLastName(), user.getPasswordHash(), user.getEnabled(), accountNonExpired, passwordNonExpired,
-                true, profilePicUrl, user.getLocale(), modifiedTime, authorities, roleIds, permissionIds, orgIds);
+                true, avatarUrl, user.getLocale(), modifiedTime, authorities, roleIds, permissionIds, orgIds);
     }
 
     @Override

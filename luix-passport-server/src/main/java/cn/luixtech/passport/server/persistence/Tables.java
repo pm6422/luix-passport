@@ -19,12 +19,13 @@ import cn.luixtech.passport.server.persistence.tables.SpringSession;
 import cn.luixtech.passport.server.persistence.tables.SpringSessionAttributes;
 import cn.luixtech.passport.server.persistence.tables.SupportedDateTimeFormat;
 import cn.luixtech.passport.server.persistence.tables.Team;
+import cn.luixtech.passport.server.persistence.tables.TeamInvitation;
 import cn.luixtech.passport.server.persistence.tables.TeamUser;
 import cn.luixtech.passport.server.persistence.tables.User;
 import cn.luixtech.passport.server.persistence.tables.UserAuthEvent;
+import cn.luixtech.passport.server.persistence.tables.UserAvatar;
 import cn.luixtech.passport.server.persistence.tables.UserLogin;
 import cn.luixtech.passport.server.persistence.tables.UserNotification;
-import cn.luixtech.passport.server.persistence.tables.UserProfilePic;
 import cn.luixtech.passport.server.persistence.tables.UserRole;
 
 
@@ -110,6 +111,11 @@ public class Tables {
     public static final Team TEAM = Team.TEAM;
 
     /**
+     * The table <code>public.team_invitation</code>.
+     */
+    public static final TeamInvitation TEAM_INVITATION = TeamInvitation.TEAM_INVITATION;
+
+    /**
      * The table <code>public.team_user</code>.
      */
     public static final TeamUser TEAM_USER = TeamUser.TEAM_USER;
@@ -125,6 +131,11 @@ public class Tables {
     public static final UserAuthEvent USER_AUTH_EVENT = UserAuthEvent.USER_AUTH_EVENT;
 
     /**
+     * The table <code>public.user_avatar</code>.
+     */
+    public static final UserAvatar USER_AVATAR = UserAvatar.USER_AVATAR;
+
+    /**
      * The table <code>public.user_login</code>.
      */
     public static final UserLogin USER_LOGIN = UserLogin.USER_LOGIN;
@@ -133,11 +144,6 @@ public class Tables {
      * The table <code>public.user_notification</code>.
      */
     public static final UserNotification USER_NOTIFICATION = UserNotification.USER_NOTIFICATION;
-
-    /**
-     * The table <code>public.user_profile_pic</code>.
-     */
-    public static final UserProfilePic USER_PROFILE_PIC = UserProfilePic.USER_PROFILE_PIC;
 
     /**
      * The table <code>public.user_role</code>.

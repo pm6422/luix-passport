@@ -23,19 +23,19 @@ export class AccountService {
   }
 
   public static async login(formData: FormData): Promise<void> {
-      return axios.post("/login", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data", // Important for form data
-        }
-      })
+    return axios.post("/login", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data", // Important for form data
+      }
+    })
   }
 
   public static async signIn(model: SignInFormSchema): Promise<void> {
     return http.post("/open-api/accounts/sign-in", model)
   }
 
-  public static async getProfilePic(): Promise<AxiosResponse<Blob>> {
-    return axios.get("/api/accounts/profile-pic", {
+  public static async getAvatar(): Promise<AxiosResponse<Blob>> {
+    return axios.get("/api/accounts/avatar", {
       responseType: "blob",
       withCredentials: true,
       timeout: 5000
@@ -71,8 +71,8 @@ export class AccountService {
     return http.post("/api/accounts/change-email?verificationCode=" + verificationCode)
   }
 
-  public static uploadProfilePicture(formData: FormData): Promise<void> {
-    return http.post("/api/accounts/profile-pic/upload", formData)
+  public static uploadAvatar(formData: FormData): Promise<void> {
+    return http.post("/api/accounts/avatar", formData)
   }
 
   public static activate(code: string): Promise<void> {

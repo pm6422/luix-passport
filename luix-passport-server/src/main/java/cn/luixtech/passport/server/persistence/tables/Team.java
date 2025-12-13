@@ -6,15 +6,21 @@ package cn.luixtech.passport.server.persistence.tables;
 
 import cn.luixtech.passport.server.persistence.Keys;
 import cn.luixtech.passport.server.persistence.Public;
+import cn.luixtech.passport.server.persistence.tables.TeamInvitation.TeamInvitationPath;
 import cn.luixtech.passport.server.persistence.tables.records.TeamRecord;
 
+import java.time.Instant;
 import java.util.Collection;
 
 import org.jooq.Condition;
 import org.jooq.Field;
+import org.jooq.ForeignKey;
+import org.jooq.InverseForeignKey;
 import org.jooq.Name;
+import org.jooq.Path;
 import org.jooq.PlainSQL;
 import org.jooq.QueryPart;
+import org.jooq.Record;
 import org.jooq.SQL;
 import org.jooq.Schema;
 import org.jooq.Select;
@@ -69,6 +75,31 @@ public class Team extends TableImpl<TeamRecord> {
      */
     public final TableField<TeamRecord, byte[]> PHOTO = createField(DSL.name("photo"), SQLDataType.BLOB, this, "");
 
+    /**
+     * The column <code>public.team.name</code>.
+     */
+    public final TableField<TeamRecord, String> NAME = createField(DSL.name("name"), SQLDataType.VARCHAR(50).nullable(false).defaultValue(DSL.field(DSL.raw("'Unnamed Team'::character varying"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>public.team.created_at</code>.
+     */
+    public final TableField<TeamRecord, Instant> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.INSTANT.nullable(false).defaultValue(DSL.field(DSL.raw("now()"), SQLDataType.INSTANT)), this, "");
+
+    /**
+     * The column <code>public.team.updated_at</code>.
+     */
+    public final TableField<TeamRecord, Instant> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.INSTANT.nullable(false).defaultValue(DSL.field(DSL.raw("now()"), SQLDataType.INSTANT)), this, "");
+
+    /**
+     * The column <code>public.team.created_by</code>.
+     */
+    public final TableField<TeamRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(50), this, "");
+
+    /**
+     * The column <code>public.team.updated_by</code>.
+     */
+    public final TableField<TeamRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(50), this, "");
+
     private Team(Name alias, Table<TeamRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
     }
@@ -98,6 +129,39 @@ public class Team extends TableImpl<TeamRecord> {
         this(DSL.name("team"), null);
     }
 
+    public <O extends Record> Team(Table<O> path, ForeignKey<O, TeamRecord> childPath, InverseForeignKey<O, TeamRecord> parentPath) {
+        super(path, childPath, parentPath, TEAM);
+    }
+
+    /**
+     * A subtype implementing {@link Path} for simplified path-based joins.
+     */
+    public static class TeamPath extends Team implements Path<TeamRecord> {
+
+        private static final long serialVersionUID = 1L;
+        public <O extends Record> TeamPath(Table<O> path, ForeignKey<O, TeamRecord> childPath, InverseForeignKey<O, TeamRecord> parentPath) {
+            super(path, childPath, parentPath);
+        }
+        private TeamPath(Name alias, Table<TeamRecord> aliased) {
+            super(alias, aliased);
+        }
+
+        @Override
+        public TeamPath as(String alias) {
+            return new TeamPath(DSL.name(alias), this);
+        }
+
+        @Override
+        public TeamPath as(Name alias) {
+            return new TeamPath(alias, this);
+        }
+
+        @Override
+        public TeamPath as(Table<?> alias) {
+            return new TeamPath(alias.getQualifiedName(), this);
+        }
+    }
+
     @Override
     public Schema getSchema() {
         return aliased() ? null : Public.PUBLIC;
@@ -106,6 +170,19 @@ public class Team extends TableImpl<TeamRecord> {
     @Override
     public UniqueKey<TeamRecord> getPrimaryKey() {
         return Keys.TEAM_PKEY;
+    }
+
+    private transient TeamInvitationPath _teamInvitation;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>public.team_invitation</code> table
+     */
+    public TeamInvitationPath teamInvitation() {
+        if (_teamInvitation == null)
+            _teamInvitation = new TeamInvitationPath(this, null, Keys.TEAM_INVITATION__FK_TEAM_INVITATION_TEAM_ID.getInverseKey());
+
+        return _teamInvitation;
     }
 
     @Override

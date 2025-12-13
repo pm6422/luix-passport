@@ -27,7 +27,7 @@ export default function ProfileForm() {
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      file: "/api/accounts/profile-pic",
+      file: "/api/accounts/avatar",
       description: "user avatar"
     },
     mode: "onChange",
@@ -54,7 +54,7 @@ export default function ProfileForm() {
     const formData = new FormData()
     // parse base64 to file
     formData.append("file", form.file)
-    return AccountService.uploadProfilePicture(formData)
+    return AccountService.uploadAvatar(formData)
   }
 
   return (

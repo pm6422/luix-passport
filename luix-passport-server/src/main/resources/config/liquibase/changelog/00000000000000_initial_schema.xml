@@ -209,6 +209,32 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+        <createTable tableName="team_invitation">
+            <column name="id" type="VARCHAR(18)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="team_id" type="VARCHAR(18)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="inviter_id" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="expires_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
         <createTable tableName="user">
             <column name="username" type="VARCHAR(20)">
                 <constraints primaryKey="true" nullable="false"/>
@@ -401,11 +427,11 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <createTable tableName="user_profile_pic">
+        <createTable tableName="user_avatar">
             <column name="id" type="varchar(18)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="profile_pic" type="BYTEA">
+            <column name="avatar" type="BYTEA">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -607,6 +633,14 @@
                 onDelete="CASCADE"
                 onUpdate="CASCADE"/>
         <addForeignKeyConstraint
+                baseTableName="team_invitation"
+                baseColumnNames="team_id"
+                constraintName="fk_team_invitation_team_id"
+                referencedTableName="team"
+                referencedColumnNames="id"
+                onDelete="CASCADE"
+                onUpdate="CASCADE"/>
+        <addForeignKeyConstraint
                 baseTableName="user_role"
                 baseColumnNames="username"
                 constraintName="fk_user_role_username"
@@ -647,9 +681,9 @@
                 onDelete="CASCADE"
                 onUpdate="CASCADE"/>
         <addForeignKeyConstraint
-                baseTableName="user_profile_pic"
+                baseTableName="user_avatar"
                 baseColumnNames="id"
-                constraintName="fk_user_profile_pic_username"
+                constraintName="fk_user_avatar_username"
                 referencedTableName="user"
                 referencedColumnNames="username"
                 onDelete="CASCADE"
