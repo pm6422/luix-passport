@@ -8,7 +8,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useSearchParams } from "react-router-dom"
 import { PasswordInput } from "@/components/custom/password-input";
 import { AccountService } from "@/services/account-service"
 import { PASSWORD_MIN_LENGTH, type UserRegistrationFormSchema, userRegistrationFormSchema } from "@/domains/user-registration"
@@ -26,6 +26,8 @@ import { Label } from "@/components/ui/label"
 export function SignUpForm() {
   const id = useId()
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const emailParam = searchParams.get("email") || ""
   const [isLoading, setIsLoading] = useState(false)
   const [password, setPassword] = useState("")
   const [isPasswordStrongEnough, setIsPasswordStrongEnough] = useState(false)
@@ -34,7 +36,7 @@ export function SignUpForm() {
   const form = useForm<UserRegistrationFormSchema>({
     resolver: zodResolver(userRegistrationFormSchema),
     defaultValues: {
-      email: "",
+      email: emailParam,
       username: "",
       password: "",
       confirmPassword: "",
@@ -71,6 +73,7 @@ export function SignUpForm() {
               label="Email"
               formItemClassName="text-left"
               inputClassName="w-full h-14 px-5 py-4 rounded-2xl"
+              disabled
             />
 
             <InputFormField
