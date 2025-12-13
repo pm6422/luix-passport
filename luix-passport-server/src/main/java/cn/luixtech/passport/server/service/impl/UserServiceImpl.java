@@ -100,7 +100,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         // }
 
         if (!Boolean.TRUE.equals(user.getActivated())) {
-            throw new UserNotActivatedException(loginName);
+            throw new UserNotActivatedException(loginName + " is not activated.");
         }
 
         boolean accountNonExpired = user.getAccountExpiresAt() == null
