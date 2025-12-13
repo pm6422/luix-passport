@@ -75,11 +75,11 @@ export function InviteMembersDialog({ open, onOpenChange, teamId, onSuccess }: I
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[600px]">
+      <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle>Invite Members</DialogTitle>
           <DialogDescription>
-            Invite new members to your team. You can add multiple members at once.
+            Invite members to your team by entering their email and role.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -140,9 +140,6 @@ export function InviteMembersDialog({ open, onOpenChange, teamId, onSuccess }: I
             </Button>
 
             <DialogFooter>
-              <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-                Cancel
-              </Button>
               <Button type="submit">Send Invitations</Button>
             </DialogFooter>
           </form>
