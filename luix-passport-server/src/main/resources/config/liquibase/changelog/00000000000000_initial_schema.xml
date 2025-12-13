@@ -183,6 +183,17 @@
                 <constraints nullable="false"/>
             </column>
             <column name="photo" type="BYTEA"/>
+            <column name="name" type="VARCHAR(50)" defaultValue="Unnamed Team">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(50)"/>
+            <column name="updated_by" type="VARCHAR(50)"/>
         </createTable>
         <createTable tableName="team_user">
             <column name="id" type="VARCHAR(18)">
@@ -192,6 +203,9 @@
                 <constraints nullable="false"/>
             </column>
             <column name="username" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role" type="VARCHAR(20)" defaultValue="MEMBER">
                 <constraints nullable="false"/>
             </column>
         </createTable>

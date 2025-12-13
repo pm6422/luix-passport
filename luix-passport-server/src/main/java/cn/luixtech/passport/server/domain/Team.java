@@ -21,11 +21,14 @@ public class Team {
     @Column(length = 18)
     private String id;
 
+    @Column(nullable = false, length = 50)
+    private String name;
+
     private String remark;
     private Boolean enabled;
 
     @Basic(fetch = FetchType.LAZY)
-    @Column(columnDefinition = "bytea", nullable = false)
+    @Column(columnDefinition = "bytea")
     private byte[] photo;
 
     @Column(nullable = false, updatable = false)

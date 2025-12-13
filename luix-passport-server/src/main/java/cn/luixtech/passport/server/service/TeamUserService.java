@@ -1,5 +1,7 @@
 package cn.luixtech.passport.server.service;
 
+import cn.luixtech.passport.server.pojo.TeamMemberInvitation;
+import java.util.List;
 import java.util.Set;
 
 public interface TeamUserService {
@@ -9,4 +11,6 @@ public interface TeamUserService {
     void save(String teamId, String username);
 
     void save(String teamId, Set<String> usernames);
+
+    void invite(String teamId, List<TeamMemberInvitation> invitations);
 }

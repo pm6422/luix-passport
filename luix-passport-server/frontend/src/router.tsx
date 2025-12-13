@@ -183,6 +183,12 @@ const router = createBrowserRouter([
         }),
       },
       {
+        path: "teams/:teamId/members",
+        lazy: async () => ({
+          Component: (await import("@/views/team/members")).default
+        }),
+      },
+      {
         path: "tech-docs",
         lazy: async () => ({
           Component: (await import("@/views/site/docs")).default

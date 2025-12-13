@@ -9,13 +9,15 @@ type Props = {
   defaultValue?: string
   onValueChange?: (value?: File) => void
   avatarClassName?: string
+  className?: string
 }
 
-export function ProfilePicUploader({
-                                     defaultValue,
-                                     onValueChange,
-                                     avatarClassName
-                                   }: Props) {
+export function AvatarUploader({
+  defaultValue,
+  onValueChange,
+  avatarClassName,
+  className
+}: Props) {
   const [imageSrc, setImageSrc] = useState<string | undefined>(defaultValue)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -30,11 +32,11 @@ export function ProfilePicUploader({
   }
 
   return (
-    <div className="relative size-40">
+    <div className={`relative ${className ?? "size-40"}`}>
       <Avatar className={`w-full h-full ${avatarClassName}`}>
-        <AvatarImage src={imageSrc} className="object-cover"/>
+        <AvatarImage src={imageSrc} className="object-cover" />
         <AvatarFallback className="bg-secondary">
-          <IconUserScan className="size-16"/>
+          <IconUserScan className="size-16" />
         </AvatarFallback>
       </Avatar>
 
@@ -45,7 +47,7 @@ export function ProfilePicUploader({
         className="absolute bottom-1 right-0 rounded-full p-1 bg-secondary-foreground/90 hover:bg-secondary-foreground"
         onClick={() => fileInputRef.current?.click()}
       >
-        <IconPencil className="size-5 text-gray-400"/>
+        <IconPencil className="size-5 text-gray-400" />
       </Button>
 
       <Input

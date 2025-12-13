@@ -7,7 +7,7 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form"
-import { ProfilePicUploader } from "@/components/custom/uploader/profile-pic-uploader"
+import { AvatarUploader } from "@/components/custom/uploader/avatar-uploader"
 import { toast } from "sonner"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -17,7 +17,7 @@ import { LoadingButton } from "@/components/custom/loading-button"
 
 const formSchema = z.object({
   file: z.any(),
-  description: z.string().min(1, { message: "Required"})
+  description: z.string().min(1, { message: "Required" })
 })
 
 type FormSchema = z.infer<typeof formSchema>
@@ -64,10 +64,10 @@ export default function ProfileForm() {
           control={form.control}
           name="file"
           render={({ field }) => (
-            <FormItem  className="flex flex-col items-center">
-              <ProfilePicUploader defaultValue={field.value} onValueChange={field.onChange}/>
+            <FormItem className="flex flex-col items-center">
+              <AvatarUploader defaultValue={field.value} onValueChange={field.onChange} />
               <FormDescription>The size of profile picture should be smaller than 15MB.</FormDescription>
-              <FormMessage/>
+              <FormMessage />
             </FormItem>
           )}
         />

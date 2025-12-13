@@ -12,4 +12,8 @@ public interface TeamUserRepository extends JpaRepository<TeamUser, String> {
     List<TeamUser> findByTeamId(String teamId);
 
     void deleteByTeamId(String teamId);
+
+    java.util.Optional<TeamUser> findByTeamIdAndUserId(String teamId, String userId);
+
+    List<TeamUser> findByUserId(String userId);
 }

@@ -1,7 +1,6 @@
 import * as React from "react"
 import {
   IconUsersGroup,
-  IconDroplets,
   IconPlus,
   IconSelector
 } from "@tabler/icons-react"
@@ -11,7 +10,6 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import {
@@ -21,21 +19,30 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 
+import { CreateTeamDialog } from "@/views/team/create-dialog"
+import { TeamService } from "@/services/team-service";
+
 export function TeamSwitcher() {
   const { isMobile } = useSidebar()
-  const teams =  [
-    {
-      name: "Team 1",
-      logo: IconUsersGroup,
-      plan: "Premium",
-    },
-    {
-      name: "Team 2",
-      logo: IconDroplets,
-      plan: "Enterprise",
+  const [createTeamOpen, setCreateTeamOpen] = React.useState(false)
+  const [teams, setTeams] = React.useState<any[]>([])
+  const [activeTeam, setActiveTeam] = React.useState<any>(null)
+
+  const fetchTeams = React.useCallback(async () => {
+    try {
+      const { data } = await TeamService.findUserTeams()
+      setTeams(data)
+      if (data.length > 0 && !activeTeam) {
+        setActiveTeam(data[0])
+      }
+    } catch (e) {
+      console.error(e)
     }
-  ]
-  const [activeTeam, setActiveTeam] = React.useState(teams[0])
+  }, [activeTeam])
+
+  React.useEffect(() => {
+    fetchTeams()
+  }, [fetchTeams])
 
   return (
     <SidebarMenu>
@@ -47,19 +54,23 @@ export function TeamSwitcher() {
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-                <activeTeam.logo className="size-4" />
+                {activeTeam?.photo ? (
+                  <img src={`data:image/png;base64,${activeTeam.photo}`} className="size-full rounded-lg object-cover" alt={activeTeam.name} />
+                ) : (
+                  <IconUsersGroup className="size-4" />
+                )}
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">
-                  {activeTeam.name}
+                  {activeTeam?.name || "Select Team"}
                 </span>
-                <span className="truncate text-xs">{activeTeam.plan}</span>
+                <span className="truncate text-xs">Free</span>
               </div>
               <IconSelector className="ml-auto" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
+            className="min-w-48 rounded-lg"
             align="start"
             side={isMobile ? "bottom" : "right"}
             sideOffset={4}
@@ -67,29 +78,33 @@ export function TeamSwitcher() {
             <DropdownMenuLabel className="text-muted-foreground text-xs">
               Teams
             </DropdownMenuLabel>
-            {teams.map((team, index) => (
+            {teams.map((team) => (
               <DropdownMenuItem
-                key={team.name}
+                key={team.id}
                 onClick={() => setActiveTeam(team)}
                 className="gap-2 p-2"
               >
                 <div className="flex size-6 items-center justify-center rounded-sm border">
-                  <team.logo className="size-4 shrink-0" />
+                  {team.photo ? (
+                    <img src={`data:image/png;base64,${team.photo}`} className="size-full rounded-sm object-cover" alt={team.name} />
+                  ) : (
+                    <IconUsersGroup className="size-4 shrink-0" />
+                  )}
                 </div>
                 {team.name}
-                <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
               </DropdownMenuItem>
             ))}
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="gap-2 p-2">
+            <DropdownMenuItem className="gap-2 p-2" onClick={() => setCreateTeamOpen(true)}>
               <div className="bg-background flex size-6 items-center justify-center rounded-md border">
                 <IconPlus className="size-4" />
               </div>
-              <div className="text-muted-foreground font-medium">Add team</div>
+              <div className="text-muted-foreground font-medium">Create Team</div>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+        <CreateTeamDialog open={createTeamOpen} onOpenChange={setCreateTeamOpen} onSuccess={fetchTeams} />
       </SidebarMenuItem>
-    </SidebarMenu>
+    </SidebarMenu >
   )
 }
