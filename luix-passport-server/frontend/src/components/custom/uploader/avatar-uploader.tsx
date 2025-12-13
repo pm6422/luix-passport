@@ -3,7 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { toBase64 } from "@/lib/file-utils"
-import { IconPencil, IconUserScan } from "@tabler/icons-react"
+import { IconPencil, IconCamera } from "@tabler/icons-react"
 
 type Props = {
   defaultValue?: string
@@ -36,7 +36,7 @@ export function AvatarUploader({
       <Avatar className={`w-full h-full ${avatarClassName}`}>
         <AvatarImage src={imageSrc} className="object-cover" />
         <AvatarFallback className="bg-secondary">
-          <IconUserScan className="size-16" />
+          <IconCamera className="size-16" />
         </AvatarFallback>
       </Avatar>
 
