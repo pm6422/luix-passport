@@ -4,7 +4,6 @@ import cn.luixtech.passport.server.domain.Team;
 import cn.luixtech.passport.server.domain.TeamMember;
 import cn.luixtech.passport.server.domain.TeamUser;
 import cn.luixtech.passport.server.domain.User;
-import cn.luixtech.passport.server.domain.UserProfilePic;
 import cn.luixtech.passport.server.repository.TeamRepository;
 import cn.luixtech.passport.server.repository.TeamUserRepository;
 import cn.luixtech.passport.server.repository.UserProfilePicRepository;
@@ -83,11 +82,6 @@ public class TeamServiceImpl implements TeamService {
     Map<String, User> userMap = userRepository.findAllById(userIds)
         .stream()
         .collect(Collectors.toMap(User::getUsername,
-            Function.identity()));
-
-    Map<String, UserProfilePic> userProfilePicMap = userProfilePicRepository
-        .findAllById(userIds).stream()
-        .collect(Collectors.toMap(UserProfilePic::getId,
             Function.identity()));
 
     return teamUsers.stream().map(teamUser -> {
