@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static cn.luixtech.passport.server.domain.UserRole.ROLE_DEVELOPER;
+import static cn.luixtech.passport.server.domain.Role.ROLE_DEVELOPER;
 import static com.luixtech.springbootframework.utils.HttpHeaderUtils.generatePageHeaders;
 
 @RestController

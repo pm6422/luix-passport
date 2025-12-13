@@ -22,11 +22,6 @@ public class UserRole {
     @Column(length = 18)
     private String id;
 
-    public static final String ROLE_ANONYMOUS = "ROLE_ANONYMOUS";
-    public static final String ROLE_USER = "ROLE_USER";
-    public static final String ROLE_ADMIN = "ROLE_ADMIN";
-    public static final String ROLE_DEVELOPER = "ROLE_DEVELOPER";
-
     @NotEmpty(message = "username:{Validation.NotEmpty}")
     @Column(nullable = false)
     private String username;

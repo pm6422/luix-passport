@@ -27,7 +27,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-import static cn.luixtech.passport.server.domain.UserRole.ROLE_ADMIN;
+import static cn.luixtech.passport.server.domain.Role.ROLE_ADMIN;
 import static com.luixtech.springbootframework.utils.HttpHeaderUtils.generatePageHeaders;
 
 @RestController

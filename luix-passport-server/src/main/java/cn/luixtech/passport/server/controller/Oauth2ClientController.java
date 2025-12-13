@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import static cn.luixtech.passport.server.domain.UserRole.ROLE_ADMIN;
+import static cn.luixtech.passport.server.domain.Role.ROLE_ADMIN;
 import static com.luixtech.springbootframework.utils.HttpHeaderUtils.generatePageHeaders;
 import static org.springframework.security.oauth2.core.AuthorizationGrantType.*;
 import static org.springframework.security.oauth2.core.ClientAuthenticationMethod.*;

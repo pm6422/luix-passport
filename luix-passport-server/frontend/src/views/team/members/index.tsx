@@ -23,6 +23,7 @@ import { AccountService } from "@/services/account-service"
 import { loginUserStore } from "@/stores/login-user-store"
 import { useStore } from "exome/react"
 import { toast } from "sonner"
+import { RoleAny } from "@/components/custom/role/role-any"
 
 export default function TeamMembers() {
   const [openInvite, setOpenInvite] = useState(false)
@@ -33,8 +34,6 @@ export default function TeamMembers() {
   const [inviteQuery, setInviteQuery] = useState("")
   const { loginUser } = useStore(loginUserStore)
   const avatarFileInputRef = useRef<HTMLInputElement>(null)
-
-  
 
   const loadMembers = useCallback(async () => {
     if (!teamId) return
@@ -65,11 +64,7 @@ export default function TeamMembers() {
         })
       : members
   }, [members, memberQuery])
-
-  const isOwner = useMemo(() => {
-    const me = members.find(m => m.userId === loginUser.username)
-    return me?.role === "OWNER"
-  }, [members, loginUser.username])
+  
 
   const handleSelfAvatarClick = () => {
     avatarFileInputRef.current?.click()
@@ -82,10 +77,10 @@ export default function TeamMembers() {
     formData.append("file", file)
     try {
       await AccountService.uploadAvatar(formData)
-      toast.success("头像已更新")
+      toast.success("Avatar updated")
       await loadMembers()
     } catch (error) {
-      toast.error("头像更新失败")
+      toast.error("Avatar update failed")
       console.error(error)
     } finally {
       e.target.value = ""
@@ -104,7 +99,7 @@ export default function TeamMembers() {
     const q = inviteQuery.trim().toLowerCase()
     return q
       ? invitations.filter((i) => {
-          const values = [i.email, i.role, getInviteProgress(i)]
+          const values = [i.memberEmail, i.memberRole, getInviteProgress(i)]
           return values.filter(Boolean).some((v) => String(v).toLowerCase().includes(q))
         })
       : invitations
@@ -117,10 +112,10 @@ export default function TeamMembers() {
   }, [teamId, loadMembers, loadPendingInvitations])
 
   useEffect(() => {
-    if (teamId && isOwner) {
+    if (teamId && loginUserStore.hasRole("TEAM_OWNER")) {
       loadPendingInvitations()
     }
-  }, [teamId, isOwner, loadPendingInvitations])
+  }, [teamId, loadPendingInvitations])
 
   // batch operations removed
 
@@ -135,12 +130,12 @@ export default function TeamMembers() {
               Here you can manage the members of your team.
             </p>
           </div>
-          {isOwner && (
+          <RoleAny roleIds={["TEAM_OWNER"]}>
             <Button onClick={() => setOpenInvite(true)}>
               <IconPlus className="mr-2 size-4" />
               Invite Members
             </Button>
-          )}
+          </RoleAny>
         </div>
 
         <div className="flex items-center space-x-2">
@@ -197,7 +192,7 @@ export default function TeamMembers() {
                   </TableCell>
                   <TableCell>{member.email}</TableCell>
                   <TableCell>
-                    {isOwner ? (
+                    <RoleAny roleIds={["TEAM_OWNER"]}>
                       <div className="flex items-center gap-2">
                         <Select
                           value={member.role}
@@ -208,21 +203,22 @@ export default function TeamMembers() {
                               toast.success("Role updated")
                               await loadMembers()
                             } catch (error) {
-                              toast.error("角色更新失败")
+                              toast.error("Role update failed")
                               console.error(error)
                             }
                           }}
                         >
-                          <SelectTrigger size="sm" aria-label="编辑角色" disabled={member.userId === loginUser.username}>
-                            <SelectValue placeholder="选择角色" />
+                          <SelectTrigger size="sm" aria-label="Edit role" disabled={member.userId === loginUser.username}>
+                            <SelectValue placeholder="Select role" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="OWNER">OWNER</SelectItem>
-                            <SelectItem value="MEMBER">MEMBER</SelectItem>
+                            <SelectItem value="TEAM_OWNER">TEAM_OWNER</SelectItem>
+                            <SelectItem value="TEAM_MEMBER">TEAM_MEMBER</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
-                    ) : (
+                    </RoleAny>
+                    {!loginUserStore.hasRole("TEAM_OWNER") && (
                       <div className="flex gap-2">
                         <Badge variant="outline" className="capitalize">{member.role}</Badge>
                       </div>
@@ -239,7 +235,7 @@ export default function TeamMembers() {
       </div>
 
       {/* Pending Invites Section */}
-      {isOwner && (
+      <RoleAny roleIds={["TEAM_OWNER"]}>
         <div className="space-y-4">
           <div className="space-y-1">
             <h2 className="text-xl font-semibold tracking-tight">Pending Invites</h2>
@@ -279,9 +275,9 @@ export default function TeamMembers() {
                 ) : (
                   filteredInvitations.map((invite) => (
                     <TableRow key={invite.id}>
-                      <TableCell>{invite.email}</TableCell>
+                      <TableCell>{invite.memberEmail}</TableCell>
                       <TableCell>
-                        <Badge variant="outline" className="capitalize">{invite.role}</Badge>
+                        <Badge variant="outline" className="capitalize">{invite.memberRole}</Badge>
                       </TableCell>
                       <TableCell>
                         <DateTime value={invite.createdAt} />
@@ -329,17 +325,19 @@ export default function TeamMembers() {
             </Table>
           </div>
         </div>
-      )}
+      </RoleAny>
 
-      {teamId && isOwner && (
-        <InviteMembersDialog
-          open={openInvite}
-          onOpenChange={setOpenInvite}
-          teamId={teamId}
-          onSuccess={() => {
-            loadPendingInvitations()
-          }}
-        />
+      {teamId && (
+        <RoleAny roleIds={["TEAM_OWNER"]}>
+          <InviteMembersDialog
+            open={openInvite}
+            onOpenChange={setOpenInvite}
+            teamId={teamId}
+            onSuccess={() => {
+              loadPendingInvitations()
+            }}
+          />
+        </RoleAny>
       )}
     </LayoutBody>
   )

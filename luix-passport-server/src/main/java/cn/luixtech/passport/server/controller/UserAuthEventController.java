@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static cn.luixtech.passport.server.domain.UserAuthEvent.AUTH_SUCCESS;
-import static cn.luixtech.passport.server.domain.UserRole.ROLE_ADMIN;
+import static cn.luixtech.passport.server.domain.Role.ROLE_ADMIN;
 import static com.luixtech.springbootframework.utils.HttpHeaderUtils.generatePageHeaders;
 
 /**

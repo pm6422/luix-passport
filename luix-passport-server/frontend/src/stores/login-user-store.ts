@@ -37,6 +37,11 @@ class LoginUserStore extends Exome {
                 && loginUser.roleIds.includes("ROLE_USER") && loginUser.roleIds.includes("ROLE_ANONYMOUS")
         }
     }
+
+    public hasRole(roleId: string): boolean {
+        const roleIds = this.loginUser?.roleIds
+        return Array.isArray(roleIds) && roleIds.includes(roleId)
+    }
 }
 
 export const loginUserStore = new LoginUserStore()

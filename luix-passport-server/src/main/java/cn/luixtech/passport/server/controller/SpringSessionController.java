@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static cn.luixtech.passport.server.domain.UserRole.ROLE_ADMIN;
+import static cn.luixtech.passport.server.domain.Role.ROLE_ADMIN;
 
 /**
  * REST controller for managing spring sessions.

@@ -13,9 +13,6 @@ import com.luixtech.springbootframework.idgenerator.TsidGenerator;
 @AllArgsConstructor
 public class TeamUser {
 
-    public static final String ROLE_OWNER = "OWNER";
-    public static final String ROLE_MEMBER = "MEMBER";
-
     @Id
     @GeneratedValue
     @TsidGenerator
@@ -30,19 +27,9 @@ public class TeamUser {
     @Column(nullable = false, name = "username")
     private String userId;
 
-    @NotEmpty(message = "role:{Validation.NotEmpty}")
-    @Column(nullable = false, length = 20)
-    private String role;
-
     public TeamUser(String teamId, String userId) {
         this.teamId = teamId;
         this.userId = userId;
-        this.role = ROLE_MEMBER;
     }
 
-    public TeamUser(String teamId, String userId, String role) {
-        this.teamId = teamId;
-        this.userId = userId;
-        this.role = role;
-    }
 }

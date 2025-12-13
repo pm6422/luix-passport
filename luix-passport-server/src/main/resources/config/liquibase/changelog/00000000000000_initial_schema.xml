@@ -205,9 +205,6 @@
             <column name="username" type="VARCHAR(20)">
                 <constraints nullable="false"/>
             </column>
-            <column name="role" type="VARCHAR(20)" defaultValue="MEMBER">
-                <constraints nullable="false"/>
-            </column>
         </createTable>
         <createTable tableName="team_invitation">
             <column name="id" type="VARCHAR(18)">
@@ -216,10 +213,10 @@
             <column name="team_id" type="VARCHAR(18)">
                 <constraints nullable="false"/>
             </column>
-            <column name="email" type="VARCHAR(30)">
+            <column name="member_email" type="VARCHAR(30)">
                 <constraints nullable="false"/>
             </column>
-            <column name="role" type="VARCHAR(20)">
+            <column name="member_role" type="VARCHAR(20)">
                 <constraints nullable="false"/>
             </column>
             <column name="inviter_id" type="VARCHAR(50)">

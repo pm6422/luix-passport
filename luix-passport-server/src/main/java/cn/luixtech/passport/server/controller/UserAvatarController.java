@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 
-import static cn.luixtech.passport.server.domain.UserRole.ROLE_ADMIN;
+import static cn.luixtech.passport.server.domain.Role.ROLE_ADMIN;
 import static cn.luixtech.passport.server.service.impl.UserAvatarServiceImpl.USER_PHOTO_URL;
 
 /**

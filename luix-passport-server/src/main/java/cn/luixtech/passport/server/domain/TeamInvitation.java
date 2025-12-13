@@ -32,11 +32,11 @@ public class TeamInvitation {
 
   @NotNull
   @Column(nullable = false)
-  private String email;
+  private String memberEmail;
 
   @NotNull
   @Column(nullable = false, length = 20)
-  private String role;
+  private String memberRole;
 
   @NotNull
   @Column(nullable = false, length = 50)

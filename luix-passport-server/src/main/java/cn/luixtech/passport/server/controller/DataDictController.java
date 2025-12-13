@@ -31,8 +31,8 @@ import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.*;
 
-import static cn.luixtech.passport.server.domain.UserRole.ROLE_ADMIN;
-import static cn.luixtech.passport.server.domain.UserRole.ROLE_DEVELOPER;
+import static cn.luixtech.passport.server.domain.Role.ROLE_ADMIN;
+import static cn.luixtech.passport.server.domain.Role.ROLE_DEVELOPER;
 import static com.luixtech.springbootframework.utils.HttpHeaderUtils.generatePageHeaders;
 
 @RestController

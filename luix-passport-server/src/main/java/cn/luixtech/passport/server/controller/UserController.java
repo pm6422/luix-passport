@@ -33,8 +33,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static cn.luixtech.passport.server.domain.UserRole.ROLE_ADMIN;
-import static cn.luixtech.passport.server.domain.UserRole.ROLE_DEVELOPER;
+import static cn.luixtech.passport.server.domain.Role.ROLE_ADMIN;
+import static cn.luixtech.passport.server.domain.Role.ROLE_DEVELOPER;
 import static com.luixtech.springbootframework.utils.HttpHeaderUtils.generatePageHeaders;
 import static com.luixtech.springbootframework.utils.NetworkUtils.getRequestUrl;
 

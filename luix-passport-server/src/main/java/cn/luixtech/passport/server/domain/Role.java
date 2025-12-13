@@ -14,6 +14,12 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Role {
+    public static final String ROLE_ANONYMOUS = "ROLE_ANONYMOUS";
+    public static final String ROLE_USER = "ROLE_USER";
+    public static final String ROLE_ADMIN = "ROLE_ADMIN";
+    public static final String ROLE_DEVELOPER = "ROLE_DEVELOPER";
+    public static final String TEAM_OWNER = "TEAM_OWNER";
+    public static final String TEAM_MEMBER = "TEAM_MEMBER";
 
     @Id
     @GeneratedValue

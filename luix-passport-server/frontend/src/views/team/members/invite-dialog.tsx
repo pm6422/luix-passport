@@ -42,7 +42,7 @@ export function InviteMembersDialog({ open, onOpenChange, teamId, onSuccess }: I
   const form = useForm<z.infer<typeof inviteSchema>>({
     resolver: zodResolver(inviteSchema),
     defaultValues: {
-      invitations: [{ email: "", role: "MEMBER" }]
+      invitations: [{ email: "", role: "TEAM_MEMBER" }]
     }
   })
 
@@ -53,7 +53,7 @@ export function InviteMembersDialog({ open, onOpenChange, teamId, onSuccess }: I
 
   useEffect(() => {
     if (open) {
-      form.reset({ invitations: [{ email: "", role: "MEMBER" }] })
+      form.reset({ invitations: [{ email: "", role: "TEAM_MEMBER" }] })
     }
   }, [open, form])
 
@@ -110,14 +110,14 @@ export function InviteMembersDialog({ open, onOpenChange, teamId, onSuccess }: I
                           shouldDirty: true,
                         })
                       }
-                      value={form.getValues(`invitations.${index}.role`) ?? "MEMBER"}
+                      value={form.getValues(`invitations.${index}.role`) ?? "TEAM_MEMBER"}
                     >
                       <SelectTrigger className="h-10 w-full">
                         <SelectValue placeholder="Role" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="OWNER">Owner</SelectItem>
-                        <SelectItem value="MEMBER">Member</SelectItem>
+                        <SelectItem value="TEAM_OWNER">Owner</SelectItem>
+                        <SelectItem value="TEAM_MEMBER">Member</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -145,7 +145,7 @@ export function InviteMembersDialog({ open, onOpenChange, teamId, onSuccess }: I
               variant="outline"
               size="sm"
               className="mt-1 ml-1"
-              onClick={() => append({ email: "", role: "MEMBER" })}
+              onClick={() => append({ email: "", role: "TEAM_MEMBER" })}
             >
               <IconPlus className="mr-2 size-4" />
               Add another

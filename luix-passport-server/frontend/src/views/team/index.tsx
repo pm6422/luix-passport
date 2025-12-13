@@ -8,14 +8,14 @@ import { TeamService, Team } from "@/services/team-service"
 import { toast } from "sonner"
 import { useStore } from "exome/react"
 import { loginUserStore } from "@/stores/login-user-store"
+import { RoleAny } from "@/components/custom/role/role-any"
 
 export default function TeamDashboard() {
   const { teamId } = useParams()
   const [team, setTeam] = useState<Team | null>(null)
   const [avatarUrl, setAvatarUrl] = useState<string>("")
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const { loginUser } = useStore(loginUserStore)
-  const [isOwner, setIsOwner] = useState<boolean>(false)
+  useStore(loginUserStore)
 
   const loadTeam = useCallback(async () => {
     if (!teamId) return
@@ -37,24 +37,8 @@ export default function TeamDashboard() {
     }
   }, [loadTeam, teamId])
 
-  const loadRole = useCallback(async () => {
-    if (!teamId || !loginUser?.username) return
-    try {
-      const { data } = await TeamService.getMembers(teamId)
-      const me = data.find(m => m.userId === loginUser.username)
-      setIsOwner(me?.role === "OWNER")
-    } catch (error) {
-      console.error(error)
-    }
-  }, [teamId, loginUser?.username])
-
-  useEffect(() => {
-    if (teamId) {
-      loadRole()
-    }
-  }, [teamId, loadRole])
   const handleAvatarClick = () => {
-    if (!isOwner) return
+    if (!loginUserStore.hasRole("TEAM_OWNER")) return
     fileInputRef.current?.click()
   }
 
@@ -77,20 +61,22 @@ export default function TeamDashboard() {
       {/* Header with Team Info */}
       <div className="flex items-center justify-between px-6 py-4 border-b bg-background">
         <div className="flex items-center gap-4">
-          <div className={`relative group ${isOwner ? "cursor-pointer" : "cursor-default"}`} onClick={handleAvatarClick}>
+          <div className={`relative group ${loginUserStore.hasRole("TEAM_OWNER") ? "cursor-pointer" : "cursor-default"}`} onClick={handleAvatarClick}>
             <Avatar className="size-16">
               <AvatarImage src={avatarUrl} alt={team?.name || "Team"} />
               <AvatarFallback>{team?.name?.[0]?.toUpperCase() || "T"}</AvatarFallback>
             </Avatar>
-            {isOwner && (
+            <RoleAny roleIds={["TEAM_OWNER"]}>
               <div className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
                 <IconCamera className="size-6 text-white" />
               </div>
-            )}
+            </RoleAny>
           </div>
           <div>
             <h1 className="text-2xl font-bold tracking-tight">{team?.name || ""}</h1>
-            {isOwner && <p className="text-sm text-muted-foreground">Click avatar to change</p>}
+            <RoleAny roleIds={["TEAM_OWNER"]}>
+              <p className="text-sm text-muted-foreground">Click avatar to change</p>
+            </RoleAny>
           </div>
         </div>
         <input

@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static cn.luixtech.passport.server.domain.UserRole.ROLE_ANONYMOUS;
-import static cn.luixtech.passport.server.domain.UserRole.ROLE_USER;
+import static cn.luixtech.passport.server.domain.Role.ROLE_ANONYMOUS;
+import static cn.luixtech.passport.server.domain.Role.ROLE_USER;
 
 @Service
 @AllArgsConstructor
