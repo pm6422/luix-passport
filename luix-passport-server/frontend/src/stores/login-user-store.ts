@@ -19,8 +19,6 @@ export type LoginUser = {
     permissionIds: Array<string>
 
     isAuthenticated: boolean
-    isAdmin: boolean
-    isDeveloper: boolean
     isOnlyUser: boolean
 }
 
@@ -31,8 +29,6 @@ class LoginUserStore extends Exome {
         this.loginUser = loginUser
         if (!isEmpty(loginUser)) {
             this.loginUser.isAuthenticated = true
-            this.loginUser.isAdmin = loginUser.roleIds && loginUser.roleIds.includes("ROLE_ADMIN")
-            this.loginUser.isDeveloper = loginUser.roleIds && loginUser.roleIds.includes("ROLE_DEVELOPER")
             this.loginUser.isOnlyUser = loginUser.roleIds && loginUser.roleIds.length === 2
                 && loginUser.roleIds.includes("ROLE_USER") && loginUser.roleIds.includes("ROLE_ANONYMOUS")
         }
