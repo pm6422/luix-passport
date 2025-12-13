@@ -128,19 +128,19 @@ public class TeamController {
         return ResponseEntity.ok().build();
     }
 
-    @Operation(summary = "batch resend team invitations")
-    @PostMapping("/api/invitations/batch-resend")
-    public ResponseEntity<Void> batchResendInvitations(HttpServletRequest request, @RequestBody java.util.List<String> invitationIds) {
-        teamService.resendInvitations(request, invitationIds, AuthUtils.getCurrentUsername());
-        return ResponseEntity.ok().build();
-    }
-
-    @Operation(summary = "batch delete team invitations")
-    @PostMapping("/api/invitations/batch-delete")
-    public ResponseEntity<Void> batchDeleteInvitations(@RequestBody java.util.List<String> invitationIds) {
-        teamService.deleteInvitations(invitationIds, AuthUtils.getCurrentUsername());
-        return ResponseEntity.ok().build();
-    }
+//    @Operation(summary = "batch resend team invitations")
+//    @PostMapping("/api/invitations/batch-resend")
+//    public ResponseEntity<Void> batchResendInvitations(HttpServletRequest request, @RequestBody java.util.List<String> invitationIds) {
+//        teamService.resendInvitations(request, invitationIds, AuthUtils.getCurrentUsername());
+//        return ResponseEntity.ok().build();
+//    }
+//
+//    @Operation(summary = "batch delete team invitations")
+//    @PostMapping("/api/invitations/batch-delete")
+//    public ResponseEntity<Void> batchDeleteInvitations(@RequestBody java.util.List<String> invitationIds) {
+//        teamService.deleteInvitations(invitationIds, AuthUtils.getCurrentUsername());
+//        return ResponseEntity.ok().build();
+//    }
 
     @Operation(summary = "update team member role")
     @PutMapping("/api/teams/{teamId}/members/{userId}/role")

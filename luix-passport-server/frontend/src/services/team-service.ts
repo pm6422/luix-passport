@@ -68,13 +68,7 @@ export class TeamService {
     return http.post(`/api/invitations/${invitationId}/reject`)
   }
 
-  public static resendInvitations(invitationIds: string[]): Promise<AxiosResponse<void>> {
-    return http.post(`/api/invitations/batch-resend`, invitationIds)
-  }
-
-  public static deleteInvitations(invitationIds: string[]): Promise<AxiosResponse<void>> {
-    return http.post(`/api/invitations/batch-delete`, invitationIds)
-  }
+  // batch operations removed
 
   public static updateMemberRole(teamId: string, userId: string, role: string): Promise<AxiosResponse<void>> {
     return http.put(`/api/teams/${teamId}/members/${userId}/role`, null, { params: { role } })
