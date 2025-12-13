@@ -27,7 +27,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { TeamService } from "@/services/team-service"
 import { toast } from "sonner"
-import { IconPlus, IconTrash } from "@tabler/icons-react"
+import { IconPlus, IconMinus } from "@tabler/icons-react"
 import { useEffect } from "react"
 
 const inviteSchema = z.object({
@@ -81,7 +81,7 @@ export function InviteMembersDialog({ open, onOpenChange, teamId, onSuccess }: I
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[550px]">
+      <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle>Invite Members</DialogTitle>
           <DialogDescription>
@@ -128,13 +128,12 @@ export function InviteMembersDialog({ open, onOpenChange, teamId, onSuccess }: I
                   {fields.length > 1 && (
                     <Button
                       type="button"
-                      variant="ghost"
+                      variant="outline"
                       size="icon"
                       onClick={() => remove(index)}
-                      className="mt-[2px]"
                       tabIndex={-1}
                     >
-                      <IconTrash className="size-4 text-destructive" />
+                      <IconMinus className="size-4" />
                     </Button>
                   )}
                 </div>
@@ -153,9 +152,6 @@ export function InviteMembersDialog({ open, onOpenChange, teamId, onSuccess }: I
             </Button>
 
             <DialogFooter>
-              <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-                Cancel
-              </Button>
               <Button type="submit">Send Invitations</Button>
             </DialogFooter>
           </form>
