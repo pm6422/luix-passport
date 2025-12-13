@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
+import { DateTime } from "@/components/custom/date-time"
 import { InviteMembersDialog } from "./invite-dialog"
 import { LayoutBody } from "@/layouts/layout-definitions"
 import { IconPlus } from "@tabler/icons-react"
@@ -102,7 +103,7 @@ export default function TeamMembers() {
                     </div>
                   </TableCell>
                   <TableCell className="text-right">
-                    {member.joinedAt ? new Date(member.joinedAt).toLocaleDateString() : "-"}
+                    {member.joinedAt && <DateTime value={member.joinedAt} />}
                   </TableCell>
                 </TableRow>
               ))}

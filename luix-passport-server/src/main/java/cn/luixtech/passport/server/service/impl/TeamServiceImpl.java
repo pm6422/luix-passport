@@ -97,9 +97,7 @@ public class TeamServiceImpl implements TeamService {
       member.setFirstName(user.getFirstName());
       member.setLastName(user.getLastName());
       member.setRole(teamUser.getRole());
-      // team_user table doesn't have created_at mapped in entity yet but database has
-      // it.
-      // For now we can skip joinedAt or add it to TeamUser entity if needed.
+      member.setJoinedAt(user.getCreatedAt());
 
       UserProfilePic pic = userProfilePicMap.get(user.getUsername());
       if (pic != null) {
