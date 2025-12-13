@@ -92,7 +92,7 @@ export function InviteMembersDialog({ open, onOpenChange, teamId, onSuccess }: I
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <div className="space-y-4 max-h-[60vh] overflow-y-auto p-1">
               {fields.map((field, index) => (
-                <div key={field.id} className="flex gap-1 items-start">
+                <div key={field.id} className="flex gap-4 items-start">
                   <FormField
                     control={form.control}
                     name={`invitations.${index}.email`}
