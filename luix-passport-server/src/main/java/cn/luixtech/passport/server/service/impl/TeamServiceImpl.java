@@ -169,6 +169,7 @@ public class TeamServiceImpl implements TeamService {
               inviterName,
               invitation.getRole(),
               getRequestUrl(request),
+              invite.getExpiresAt(),
               inviterUser.getLocale());
           log.info("Sent team invitation email to {} for team {}", invitation.getEmail(), team.getName());
         } catch (Exception e) {
@@ -181,7 +182,7 @@ public class TeamServiceImpl implements TeamService {
   @Override
   public List<TeamInvitation> findPendingInvitations(String teamId) {
     List<TeamInvitation> invites = teamInvitationRepository.findByTeamId(teamId);
-    invites.forEach(inv -> inv.setRegistered(inv.getRegisteredAt() != null));
+    invites.forEach(inv -> inv.setRegistered(userRepository.findOneByEmail(inv.getEmail()).isPresent()));
     return invites;
   }
 

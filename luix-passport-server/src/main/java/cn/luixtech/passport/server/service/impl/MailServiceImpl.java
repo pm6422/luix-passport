@@ -112,13 +112,14 @@ public class MailServiceImpl implements MailService {
 
     @Override
     public void sendTeamInvitationEmail(String email, String teamName, String inviterName, String role,
-            String baseUrl, String inviterLocale) {
+            String baseUrl, java.time.Instant expiresAt, String inviterLocale) {
         Locale locale = LocaleUtils.toLocale(inviterLocale);
         Context context = new Context(locale);
         context.setVariable("email", email);
         context.setVariable("teamName", teamName);
         context.setVariable("inviterName", inviterName);
         context.setVariable("role", role);
+        context.setVariable("expiresAt", expiresAt);
         context.setVariable(BASE_URL, baseUrl);
         context.setVariable(DOMAIN, applicationProperties.getCompany().getDomain());
         context.setVariable(CONTENT_FRAGMENT, "emails/team-invitation-email");

@@ -50,6 +50,6 @@ public class TeamInvitation {
   @Transient
   private Boolean registered;
 
-  @Column
+  @Transient
   private Instant registeredAt;
 }
