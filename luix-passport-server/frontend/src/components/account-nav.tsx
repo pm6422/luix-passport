@@ -51,7 +51,7 @@ export function AccountNav() {
                 <Avatar className="size-12">
                   <img
                     src={imageUrl}
-                    alt="Profile"
+                    alt="Avatar"
                     className="w-full h-full object-cover"
                   />
                 </Avatar>

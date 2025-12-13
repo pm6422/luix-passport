@@ -230,27 +230,27 @@ public class AccountController {
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("NM1003")).build();
     }
 
-    @Operation(summary = "get profile picture of the current user")
+    @Operation(summary = "get avatar of the current user")
     @GetMapping(CURRENT_USER_PHOTO_URL)
-    public ResponseEntity<byte[]> getProfilePicture(HttpServletRequest request) throws IOException {
+    public ResponseEntity<byte[]> getAvatar(HttpServletRequest request) throws IOException {
         return ResponseEntity.ok(userAvatarService.getAvatar(AuthUtils.getCurrentUsername(), request));
     }
 
-    @Operation(summary = "upload profile picture of the current user")
+    @Operation(summary = "upload avatar picture of the current user")
     @PostMapping(value = "/api/accounts/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public void uploadProfilePicture(
-            @Parameter(description = "user profile photo", required = true) @RequestPart MultipartFile file)
+    public void uploadAvatarPicture(
+            @Parameter(description = "user avatar", required = true) @RequestPart MultipartFile file)
             throws IOException {
         log.info("Original file size: {} bytes ({} KB)", file.getSize(), file.getSize() / 1024);
         byte[] compressedImage = compressImage(file);
         log.info("Compressed file size: {} bytes ({} KB)", compressedImage.length, compressedImage.length / 1024);
         userAvatarService.save(userService.getCurrentUser().getUsername(), compressedImage);
-        log.info("Uploaded profile picture with file name {}", file.getOriginalFilename());
+        log.info("Uploaded avatar with file name {}", file.getOriginalFilename());
     }
 
-    @Operation(summary = "download profile picture of the current user")
+    @Operation(summary = "download avatar of the current user")
     @GetMapping("/api/accounts/avatar/download")
-    public ResponseEntity<Resource> downloadProfilePicture() {
+    public ResponseEntity<Resource> downloadAvatar() {
         Optional<UserAvatar> existingOne = userAvatarRepository.findById(AuthUtils.getCurrentUsername());
         if (existingOne.isEmpty()) {
             return ResponseEntity.ok().body(null);

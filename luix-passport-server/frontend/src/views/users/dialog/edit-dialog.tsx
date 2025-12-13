@@ -89,7 +89,7 @@ export function EditDialog({
           <div className="flex items-center gap-2">
             <div className="relative">
               <Avatar className="size-20">
-                <AvatarImage src={"/api/user-avatars/" + id} alt="profile" />
+                <AvatarImage src={"/api/user-avatars/" + id} alt="avatar" />
                 <AvatarFallback><Skeleton className="w-full" /></AvatarFallback>
               </Avatar>
               {loginUser?.username === id && <span className="animate-pulse border-background absolute -end-0.5 -bottom-0.5 size-6 rounded-full border-4 bg-emerald-500">

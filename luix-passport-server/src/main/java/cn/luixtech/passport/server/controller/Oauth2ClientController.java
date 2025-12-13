@@ -88,7 +88,7 @@ public class Oauth2ClientController {
 
     @Operation(summary = "upload photo of the oauth2 registered client")
     @PutMapping("/api/oauth2-clients/photo/upload")
-    public void uploadProfilePhoto(@Parameter(description = "id", required = true) @RequestPart String id,
+    public void uploadPhoto(@Parameter(description = "id", required = true) @RequestPart String id,
                                    @Parameter(description = "photo", required = true) @RequestPart MultipartFile file) throws IOException {
         Oauth2RegisteredClient oauth2RegisteredClient = oauth2RegisteredClientRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
         oauth2RegisteredClient.setPhoto(file.getBytes());
