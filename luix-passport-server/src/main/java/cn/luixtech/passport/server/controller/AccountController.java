@@ -138,7 +138,7 @@ public class AccountController {
 
         User newUser = userService.insert(managedUser.toUser(), managedUser.getRoleIds(), managedUser.getPassword(),
                 false);
-        teamInvitationRepository.findByEmailAndStatusAndExpiresAtAfter(newUser.getEmail(), TeamInvitation.STATUS_UNREGISTERED, Instant.now())
+        teamInvitationRepository.findByMemberEmailAndStatusAndExpiresAtAfter(newUser.getEmail(), TeamInvitation.STATUS_UNREGISTERED, Instant.now())
                 .forEach(inv -> {
                     inv.setStatus(TeamInvitation.STATUS_REGISTERED);
                     teamInvitationRepository.save(inv);
