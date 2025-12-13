@@ -154,7 +154,9 @@ export default function ConsolePage() {
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <CardTitle>Team Invitations</CardTitle>
-                    <Badge variant="secondary">{invitations.length}</Badge>
+                    <Badge className="bg-green-600/10 dark:bg-green-600/20 hover:bg-green-600/10 text-green-500 shadow-none rounded-full mx-1 animate-pulse">
+                      {invitations.length}
+                    </Badge>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
