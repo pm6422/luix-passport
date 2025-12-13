@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import { DateTime } from "@/components/custom/date-time"
 import { InviteMembersDialog } from "./invite-dialog"
@@ -25,16 +25,13 @@ export default function TeamMembers() {
   const { teamId } = useParams()
   const [members, setMembers] = useState<TeamMember[]>([])
   const [invitations, setInvitations] = useState<TeamInvitation[]>([])
+  const [memberQuery, setMemberQuery] = useState("")
+  const [inviteQuery, setInviteQuery] = useState("")
   const { loginUser } = useStore(loginUserStore)
 
-  useEffect(() => {
-    if (teamId) {
-      loadMembers()
-      loadPendingInvitations()
-    }
-  }, [teamId])
+  
 
-  const loadMembers = async () => {
+  const loadMembers = useCallback(async () => {
     if (!teamId) return
     try {
       const { data } = await TeamService.getMembers(teamId)
@@ -42,9 +39,9 @@ export default function TeamMembers() {
     } catch (error) {
       console.error(error)
     }
-  }
+  }, [teamId])
 
-  const loadPendingInvitations = async () => {
+  const loadPendingInvitations = useCallback(async () => {
     if (!teamId) return
     try {
       const { data } = await TeamService.getPendingInvitations(teamId);
@@ -52,7 +49,34 @@ export default function TeamMembers() {
     } catch (error) {
       console.error(error)
     }
-  }
+  }, [teamId])
+
+  const filteredMembers = useMemo(() => {
+    const q = memberQuery.trim().toLowerCase()
+    return q
+      ? members.filter((m) => {
+          const values = [m.userId, m.email, m.firstName, m.lastName, m.role]
+          return values.filter(Boolean).some((v) => String(v).toLowerCase().includes(q))
+        })
+      : members
+  }, [members, memberQuery])
+
+  const filteredInvitations = useMemo(() => {
+    const q = inviteQuery.trim().toLowerCase()
+    return q
+      ? invitations.filter((i) => {
+          const values = [i.email, i.role, i.status]
+          return values.filter(Boolean).some((v) => String(v).toLowerCase().includes(q))
+        })
+      : invitations
+  }, [invitations, inviteQuery])
+  
+  useEffect(() => {
+    if (teamId) {
+      loadMembers()
+      loadPendingInvitations()
+    }
+  }, [teamId, loadMembers, loadPendingInvitations])
 
   return (
     <LayoutBody className="flex flex-col space-y-8 p-8" fixedHeight>
@@ -75,6 +99,8 @@ export default function TeamMembers() {
           <Input
             placeholder="Search members"
             className="h-9 w-full"
+            value={memberQuery}
+            onChange={(e) => setMemberQuery(e.target.value)}
           />
         </div>
 
@@ -89,7 +115,7 @@ export default function TeamMembers() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {members.map((member) => (
+              {filteredMembers.map((member) => (
                 <TableRow key={member.userId}>
                   <TableCell className="font-medium">
                     <div className="flex items-center space-x-3">
@@ -139,6 +165,8 @@ export default function TeamMembers() {
           <Input
             placeholder="Search Invitations"
             className="h-9 w-full"
+            value={inviteQuery}
+            onChange={(e) => setInviteQuery(e.target.value)}
           />
         </div>
 
@@ -154,14 +182,14 @@ export default function TeamMembers() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {invitations.length === 0 ? (
+              {filteredInvitations.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={5} className="h-24 text-center">
                     No data available
                   </TableCell>
                 </TableRow>
               ) : (
-                invitations.map((invite) => (
+                filteredInvitations.map((invite) => (
                   <TableRow key={invite.id}>
                     <TableCell>{invite.email}</TableCell>
                     <TableCell>
