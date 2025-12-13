@@ -77,6 +77,10 @@ public class TeamServiceImpl implements TeamService {
 
   @Override
   public List<TeamMember> findTeamMembers(HttpServletRequest request, String teamId) {
+    String currentUser = AuthUtils.getCurrentUsername();
+    if (teamUserRepository.findByTeamIdAndUserId(teamId, currentUser).isEmpty()) {
+      throw new IllegalArgumentException("Not a team member");
+    }
     List<TeamUser> teamUsers = teamUserRepository.findByTeamId(teamId);
     if (teamUsers.isEmpty()) {
       return Collections.emptyList();
@@ -186,6 +190,12 @@ public class TeamServiceImpl implements TeamService {
 
   @Override
   public List<TeamInvitation> findPendingInvitations(String teamId) {
+    String currentUser = AuthUtils.getCurrentUsername();
+    TeamUser operator = teamUserRepository.findByTeamIdAndUserId(teamId, currentUser)
+        .orElseThrow(() -> new IllegalArgumentException("Operator is not a member of the team"));
+    if (!ROLE_OWNER.equals(operator.getRole())) {
+      throw new IllegalArgumentException("Only team owners can view pending invitations");
+    }
     List<TeamInvitation> invites = teamInvitationRepository.findByTeamId(teamId);
     Instant now = Instant.now();
     for (TeamInvitation inv : invites) {
@@ -220,6 +230,12 @@ public class TeamServiceImpl implements TeamService {
   @Override
   @Transactional(rollbackFor = Exception.class)
   public void updateTeamPhoto(String teamId, byte[] photo) {
+    String currentUser = AuthUtils.getCurrentUsername();
+    TeamUser operator = teamUserRepository.findByTeamIdAndUserId(teamId, currentUser)
+        .orElseThrow(() -> new RuntimeException("Operator is not a member of the team"));
+    if (!ROLE_OWNER.equals(operator.getRole())) {
+      throw new RuntimeException("Only team owners can update team photo");
+    }
     Team team = teamRepository.findById(teamId)
         .orElseThrow(() -> new RuntimeException("Team not found"));
     team.setPhoto(photo);

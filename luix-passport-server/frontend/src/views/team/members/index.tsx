@@ -90,9 +90,14 @@ export default function TeamMembers() {
   useEffect(() => {
     if (teamId) {
       loadMembers()
-      loadPendingInvitations()
     }
   }, [teamId, loadMembers, loadPendingInvitations])
+
+  useEffect(() => {
+    if (teamId && isOwner) {
+      loadPendingInvitations()
+    }
+  }, [teamId, isOwner, loadPendingInvitations])
 
   // batch operations removed
 
@@ -197,95 +202,97 @@ export default function TeamMembers() {
       </div>
 
       {/* Pending Invites Section */}
-      <div className="space-y-4">
-        <div className="space-y-1">
-          <h2 className="text-xl font-semibold tracking-tight">Pending Invites</h2>
-          <p className="text-sm text-muted-foreground">
-            Here you can manage the pending invitations to your team.
-          </p>
-        </div>
-
-        <div className="flex items-center space-x-2">
-          <Input
-            placeholder="Search Invitations"
-            className="h-9 w-full"
-            value={inviteQuery}
-            onChange={(e) => setInviteQuery(e.target.value)}
-          />
-        </div>
-
-        <div className="rounded-md border">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Email</TableHead>
-                <TableHead>Role</TableHead>
-                <TableHead>Invited at</TableHead>
-                <TableHead>Expires at</TableHead>
-                <TableHead>Progress</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredInvitations.length === 0 ? (
+      {isOwner && (
+        <div className="space-y-4">
+          <div className="space-y-1">
+            <h2 className="text-xl font-semibold tracking-tight">Pending Invites</h2>
+            <p className="text-sm text-muted-foreground">
+              Here you can manage the pending invitations to your team.
+            </p>
+          </div>
+ 
+          <div className="flex items-center space-x-2">
+            <Input
+              placeholder="Search Invitations"
+              className="h-9 w-full"
+              value={inviteQuery}
+              onChange={(e) => setInviteQuery(e.target.value)}
+            />
+          </div>
+ 
+          <div className="rounded-md border">
+            <Table>
+              <TableHeader>
                 <TableRow>
-                  <TableCell colSpan={6} className="h-24 text-center">
-                    No data available
-                  </TableCell>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Role</TableHead>
+                  <TableHead>Invited at</TableHead>
+                  <TableHead>Expires at</TableHead>
+                  <TableHead>Progress</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
-              ) : (
-                filteredInvitations.map((invite) => (
-                  <TableRow key={invite.id}>
-                    <TableCell>{invite.email}</TableCell>
-                    <TableCell>
-                      <Badge variant="outline" className="capitalize">{invite.role}</Badge>
-                    </TableCell>
-                    <TableCell>
-                      <DateTime value={invite.createdAt} />
-                    </TableCell>
-                    <TableCell>
-                      <DateTime value={invite.expiresAt} />
-                    </TableCell>
-                    <TableCell>
-                      <Badge
-                        className={`capitalize ${
-                          invite.status === "EXPIRED"
-                            ? "bg-red-600/10 text-red-600 shadow-none"
-                            : ""
-                        }`}
-                      >
-                        {getInviteProgress(invite)}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      {invite.status === "EXPIRED" ? (
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={async () => {
-                            try {
-                              await TeamService.resendInvitation(invite.id)
-                              toast.success("Invitation resent")
-                              loadPendingInvitations()
-                            } catch (error) {
-                              toast.error("Failed to resend invitation")
-                              console.error(error)
-                            }
-                          }}
-                        >
-                          Resend
-                        </Button>
-                      ) : (
-                        <span className="text-muted-foreground">—</span>
-                      )}
+              </TableHeader>
+              <TableBody>
+                {filteredInvitations.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={6} className="h-24 text-center">
+                      No data available
                     </TableCell>
                   </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
+                ) : (
+                  filteredInvitations.map((invite) => (
+                    <TableRow key={invite.id}>
+                      <TableCell>{invite.email}</TableCell>
+                      <TableCell>
+                        <Badge variant="outline" className="capitalize">{invite.role}</Badge>
+                      </TableCell>
+                      <TableCell>
+                        <DateTime value={invite.createdAt} />
+                      </TableCell>
+                      <TableCell>
+                        <DateTime value={invite.expiresAt} />
+                      </TableCell>
+                      <TableCell>
+                        <Badge
+                          className={`capitalize ${
+                            invite.status === "EXPIRED"
+                              ? "bg-red-600/10 text-red-600 shadow-none"
+                              : ""
+                          }`}
+                        >
+                          {getInviteProgress(invite)}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {invite.status === "EXPIRED" ? (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={async () => {
+                              try {
+                                await TeamService.resendInvitation(invite.id)
+                                toast.success("Invitation resent")
+                                loadPendingInvitations()
+                              } catch (error) {
+                                toast.error("Failed to resend invitation")
+                                console.error(error)
+                              }
+                            }}
+                          >
+                            Resend
+                          </Button>
+                        ) : (
+                          <span className="text-muted-foreground">—</span>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
+              </TableBody>
+            </Table>
+          </div>
         </div>
-      </div>
+      )}
 
       {teamId && (
         <InviteMembersDialog
