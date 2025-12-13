@@ -189,6 +189,9 @@ export default function TeamMembers() {
           open={openInvite}
           onOpenChange={setOpenInvite}
           teamId={teamId}
+          onSuccess={() => {
+            loadPendingInvitations()
+          }}
         />
       )}
     </LayoutBody>
