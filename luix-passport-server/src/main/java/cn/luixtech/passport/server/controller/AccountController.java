@@ -9,6 +9,7 @@ import cn.luixtech.passport.server.pojo.*;
 import cn.luixtech.passport.server.repository.SupportedDateTimeFormatRepository;
 import cn.luixtech.passport.server.repository.UserAvatarRepository;
 import cn.luixtech.passport.server.repository.UserRepository;
+import cn.luixtech.passport.server.repository.TeamInvitationRepository;
 import cn.luixtech.passport.server.service.DataDictService;
 import cn.luixtech.passport.server.service.MailService;
 import cn.luixtech.passport.server.service.UserAvatarService;
@@ -66,6 +67,7 @@ public class AccountController {
     private final MessageCreator messageCreator;
     private final MailService mailService;
     private final UserRepository userRepository;
+    private final TeamInvitationRepository teamInvitationRepository;
     private final UserAvatarRepository userAvatarRepository;
     private final SupportedDateTimeFormatRepository supportedDateTimeFormatRepository;
     private final UserService userService;
@@ -135,6 +137,11 @@ public class AccountController {
 
         User newUser = userService.insert(managedUser.toUser(), managedUser.getRoleIds(), managedUser.getPassword(),
                 false);
+        teamInvitationRepository.findByEmailAndStatusAndExpiresAtAfter(newUser.getEmail(), "PENDING", Instant.now())
+                .forEach(inv -> {
+                    inv.setRegisteredAt(Instant.now());
+                    teamInvitationRepository.save(inv);
+                });
         mailService.sendAccountActivationEmail(newUser, getRequestUrl(request));
         return ResponseEntity.ok().build();
     }

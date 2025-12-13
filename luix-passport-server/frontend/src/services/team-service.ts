@@ -91,4 +91,5 @@ export interface TeamInvitation {
   status: string
   createdAt: string
   expiresAt: string
+  registered?: boolean
 }

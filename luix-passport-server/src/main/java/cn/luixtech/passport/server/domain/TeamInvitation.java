@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
+import jakarta.persistence.Transient;
 
 @Data
 @Entity
@@ -45,4 +46,10 @@ public class TeamInvitation {
 
   @Column(nullable = false)
   private Instant expiresAt;
+
+  @Transient
+  private Boolean registered;
+
+  @Column
+  private Instant registeredAt;
 }

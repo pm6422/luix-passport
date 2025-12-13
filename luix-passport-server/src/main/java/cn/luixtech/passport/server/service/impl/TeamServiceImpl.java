@@ -180,7 +180,9 @@ public class TeamServiceImpl implements TeamService {
 
   @Override
   public List<TeamInvitation> findPendingInvitations(String teamId) {
-    return teamInvitationRepository.findByTeamIdAndStatus(teamId, "PENDING");
+    List<TeamInvitation> invites = teamInvitationRepository.findByTeamId(teamId);
+    invites.forEach(inv -> inv.setRegistered(inv.getRegisteredAt() != null));
+    return invites;
   }
 
   @Override

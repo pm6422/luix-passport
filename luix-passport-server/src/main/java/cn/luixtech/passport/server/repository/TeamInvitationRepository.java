@@ -15,4 +15,6 @@ public interface TeamInvitationRepository extends JpaRepository<TeamInvitation, 
   Optional<TeamInvitation> findByTeamIdAndEmailAndStatus(String teamId, String email, String status);
 
   List<TeamInvitation> findByEmailAndStatusAndExpiresAtAfter(String email, String status, Instant now);
+
+  List<TeamInvitation> findByTeamId(String teamId);
 }

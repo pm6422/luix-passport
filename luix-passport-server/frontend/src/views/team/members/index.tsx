@@ -61,11 +61,18 @@ export default function TeamMembers() {
       : members
   }, [members, memberQuery])
 
+  const getInviteProgress = (i: TeamInvitation) => {
+    if (i.status === "ACCEPTED") return "Accepted"
+    if (i.status === "REJECTED") return "Rejected"
+    if (i.status === "PENDING" && i.registered) return "Registered"
+    return "Unregistered"
+  }
+
   const filteredInvitations = useMemo(() => {
     const q = inviteQuery.trim().toLowerCase()
     return q
       ? invitations.filter((i) => {
-          const values = [i.email, i.role, i.status]
+          const values = [i.email, i.role, getInviteProgress(i)]
           return values.filter(Boolean).some((v) => String(v).toLowerCase().includes(q))
         })
       : invitations
@@ -178,7 +185,7 @@ export default function TeamMembers() {
                 <TableHead>Role</TableHead>
                 <TableHead>Invited at</TableHead>
                 <TableHead>Expires at</TableHead>
-                <TableHead className="text-right">Status</TableHead>
+                <TableHead className="text-right">Progress</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -202,7 +209,7 @@ export default function TeamMembers() {
                       <DateTime value={invite.expiresAt} />
                     </TableCell>
                     <TableCell className="text-right">
-                      <Badge className="capitalize">{invite.status.toLowerCase()}</Badge>
+                      <Badge className="capitalize">{getInviteProgress(invite)}</Badge>
                     </TableCell>
                   </TableRow>
                 ))
