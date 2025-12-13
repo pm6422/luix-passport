@@ -21,9 +21,11 @@ import {
 
 import { CreateTeamDialog } from "@/views/team/create-dialog"
 import { TeamService } from "@/services/team-service";
+import { useNavigate } from "react-router-dom";
 
 export function TeamSwitcher() {
   const { isMobile } = useSidebar()
+  const navigate = useNavigate()
   const [createTeamOpen, setCreateTeamOpen] = React.useState(false)
   const [teams, setTeams] = React.useState<any[]>([])
   const [activeTeam, setActiveTeam] = React.useState<any>(null)
@@ -81,7 +83,10 @@ export function TeamSwitcher() {
             {teams.map((team) => (
               <DropdownMenuItem
                 key={team.id}
-                onClick={() => setActiveTeam(team)}
+                onClick={() => {
+                  setActiveTeam(team)
+                  navigate(`/teams/${team.id}`)
+                }}
                 className="gap-2 p-2"
               >
                 <div className="flex size-6 items-center justify-center rounded-sm border">
