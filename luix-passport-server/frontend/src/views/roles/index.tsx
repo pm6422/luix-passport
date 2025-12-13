@@ -6,6 +6,7 @@ import { tableColumns } from "./table/table-columns"
 import { type Role, type RoleCriteriaSchema } from "@/domains/role"
 import { RoleService } from "@/services/role-service"
 import { filterTable } from "@/lib/table-utils"
+import { RoleAny } from "@/components/custom/role/role-any"
 
 export default function Role() {
   // State to hold the fetched data
@@ -25,8 +26,6 @@ export default function Role() {
   useEffect(() => {
     loadPage()
   }, [loadPage])
-
-  
 
   function save(formData: Role): Promise<void> {
     return RoleService.save(formData).then(() => {
@@ -48,17 +47,19 @@ export default function Role() {
   }
 
   return (
-    <LayoutBody className="flex flex-col" fixedHeight>
-      <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-y-0">
-        <DataTable 
-          columns={tableColumns(entityName, save, deleteRow)} 
-          data={tableData} 
-          loadPage={loadPage} 
-          deleteRows={deleteRows}
-        >
-          <DataTableToolbar entityName={entityName} loadPage={loadPage} save={save} />
-        </DataTable>
-      </div>
-    </LayoutBody>
+    <RoleAny roleIds={["ROLE_ADMIN"]}>
+      <LayoutBody className="flex flex-col" fixedHeight>
+        <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-y-0">
+          <DataTable 
+            columns={tableColumns(entityName, save, deleteRow)} 
+            data={tableData} 
+            loadPage={loadPage} 
+            deleteRows={deleteRows}
+          >
+            <DataTableToolbar entityName={entityName} loadPage={loadPage} save={save} />
+          </DataTable>
+        </div>
+      </LayoutBody>
+    </RoleAny>
   )
 }

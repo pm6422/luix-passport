@@ -5,6 +5,7 @@ import { DataTable } from "@/components/custom/data-table/server-pagination-data
 import { tableColumns } from "./table/table-columns"
 import { type User, type UserCriteriaSchema } from "@/domains/user"
 import { UserService } from "@/services/user-service"
+import { RoleAny } from "@/components/custom/role/role-any"
 
 export default function DataDict() {
   // State to hold the fetched data
@@ -64,19 +65,21 @@ export default function DataDict() {
   }
 
   return (
-    <LayoutBody className="flex flex-col" fixedHeight>
-      <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-y-0">
-        <DataTable 
-          columns={tableColumns(entityName, save, deleteRow, resetPassword)} 
-          data={tableData} 
-          totalCount={totalCount} 
-          totalPages={totalPages} 
-          loadPage={loadPage} 
-          deleteRows={deleteRows}
-        >
-          <DataTableToolbar entityName={entityName} loadPage={loadPage} save={save} />
-        </DataTable>
-      </div>
-    </LayoutBody>
+    <RoleAny roleIds={["ROLE_ADMIN"]}>
+      <LayoutBody className="flex flex-col" fixedHeight>
+        <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-y-0">
+          <DataTable 
+            columns={tableColumns(entityName, save, deleteRow, resetPassword)} 
+            data={tableData} 
+            totalCount={totalCount} 
+            totalPages={totalPages} 
+            loadPage={loadPage} 
+            deleteRows={deleteRows}
+          >
+            <DataTableToolbar entityName={entityName} loadPage={loadPage} save={save} />
+          </DataTable>
+        </div>
+      </LayoutBody>
+    </RoleAny>
   )
 }

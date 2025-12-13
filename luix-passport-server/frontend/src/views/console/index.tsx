@@ -1,8 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Activity, CreditCard, Lock, Shield, User, Mail } from "lucide-react"
-import { useStore } from "exome/react"
-import { loginUserStore } from "@/stores/login-user-store"
+import { RoleAny } from "@/components/custom/role/role-any"
 import { LayoutBody } from "@/layouts/layout-definitions"
 import { useEffect, useState } from "react"
 import { TeamService, TeamInvitation } from "@/services/team-service"
@@ -10,8 +9,6 @@ import { toast } from "sonner"
 import { Badge } from "@/components/ui/badge"
 
 export default function ConsolePage() {
-  const { loginUser } = useStore(loginUserStore)
-  const isAdmin = loginUser?.isAdmin;
   const [invitations, setInvitations] = useState<TeamInvitation[]>([])
   const [loadingInvitations, setLoadingInvitations] = useState(true)
 
@@ -61,7 +58,7 @@ export default function ConsolePage() {
         </div>
 
         {/* Admin Only Section */}
-        {isAdmin && (
+        <RoleAny roleIds={["ROLE_ADMIN"]}>
           <div className="mb-8">
             <Card>
               <CardHeader>
@@ -116,7 +113,7 @@ export default function ConsolePage() {
               </CardContent>
             </Card>
           </div>
-        )}
+        </RoleAny>
 
         {/* Main Content */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

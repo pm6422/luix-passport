@@ -5,6 +5,7 @@ import { DataTable } from "@/components/custom/data-table/server-pagination-data
 import { tableColumns } from "./table/table-columns"
 import { type ScheduleExecutionLog, type ScheduleExecutionLogCriteriaSchema } from "@/domains/schedule-execution-log"
 import { ScheduleExecutionLogService } from "@/services/schedule-execution-log-service"
+import { RoleAny } from "@/components/custom/role/role-any"
 
 export default function ScheduleExecutionLogs() {
   // State to hold the fetched data
@@ -47,19 +48,21 @@ export default function ScheduleExecutionLogs() {
   }
 
   return (
-    <LayoutBody className="flex flex-col" fixedHeight>
-      <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-y-0">
-        <DataTable 
-          columns={tableColumns(entityName, deleteRow)}
-          data={tableData} 
-          totalCount={totalCount} 
-          totalPages={totalPages} 
-          loadPage={loadPage} 
-          deleteRows={deleteRows}
-        >
-          <DataTableToolbar loadPage={loadPage} />
-        </DataTable>
-      </div>
-    </LayoutBody>
+    <RoleAny roleIds={["ROLE_DEVELOPER"]}>
+      <LayoutBody className="flex flex-col" fixedHeight>
+        <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-y-0">
+          <DataTable 
+            columns={tableColumns(entityName, deleteRow)}
+            data={tableData} 
+            totalCount={totalCount} 
+            totalPages={totalPages} 
+            loadPage={loadPage} 
+            deleteRows={deleteRows}
+          >
+            <DataTableToolbar loadPage={loadPage} />
+          </DataTable>
+        </div>
+      </LayoutBody>
+    </RoleAny>
   )
 }

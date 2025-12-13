@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { IconRefresh, IconEye } from "@tabler/icons-react"
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
 import { ManagementService } from "@/services/management-service"
+import { RoleAny } from "@/components/custom/role/role-any"
 
 interface HealthData {
   name: string
@@ -139,73 +140,74 @@ export default function HealthChecksPage() {
   }, [refresh])
 
   return (
-    <LayoutBody className="flex flex-col" fixedHeight>
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between gap-4">
-          <CardTitle>Health Checks</CardTitle>
-          <Button variant="outline" className="gap-2" onClick={refresh}>
-            <IconRefresh className="size-4" />
-            Refresh
-          </Button>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[50px]">Details</TableHead>
-                <TableHead className="w-[400px]">Service name</TableHead>
-                <TableHead className="w-[100px]">Status</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {healthList.map((row) => (
-                <TableRow key={row.name}>
-                  <TableCell>
-                    {(row.details || row.error) && (
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => showDetails(row)}
-                        className="size-8 p-0"
-                      >
-                        <IconEye className="size-5 text-muted-foreground" />
-                      </Button>
-                    )}
-                  </TableCell>
-                  <TableCell className="font-medium">{row.name}</TableCell>
-                  <TableCell>
-                    <Badge
-                      className={
-                        row.status === "DOWN" ? "bg-red-600/10 dark:bg-red-600/20 hover:bg-red-600/10 text-red-500 shadow-none" :
-                          row.status === "UNKNOWN" ? "bg-yellow-600/10 dark:bg-yellow-600/20 hover:bg-yellow-600/10 text-yellow-500 shadow-none" :
-                            "bg-green-600/10 dark:bg-green-600/20 hover:bg-green-600/10 text-green-500 shadow-none"
-                      }
-                    >
-                      {row.status}
-                    </Badge>
-                  </TableCell>
+    <RoleAny roleIds={["ROLE_DEVELOPER"]}>
+      <LayoutBody className="flex flex-col" fixedHeight>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between gap-4">
+            <CardTitle>Health Checks</CardTitle>
+            <Button variant="outline" className="gap-2" onClick={refresh}>
+              <IconRefresh className="size-4" />
+              Refresh
+            </Button>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[50px]">Details</TableHead>
+                  <TableHead className="w-[400px]">Service name</TableHead>
+                  <TableHead className="w-[100px]">Status</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
+              </TableHeader>
+              <TableBody>
+                {healthList.map((row) => (
+                  <TableRow key={row.name}>
+                    <TableCell>
+                      {(row.details || row.error) && (
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => showDetails(row)}
+                          className="size-8 p-0"
+                        >
+                          <IconEye className="size-5 text-muted-foreground" />
+                        </Button>
+                      )}
+                    </TableCell>
+                    <TableCell className="font-medium">{row.name}</TableCell>
+                    <TableCell>
+                      <Badge
+                        className={
+                          row.status === "DOWN" ? "bg-red-600/10 dark:bg-red-600/20 hover:bg-red-600/10 text-red-500 shadow-none" :
+                            row.status === "UNKNOWN" ? "bg-yellow-600/10 dark:bg-yellow-600/20 hover:bg-yellow-600/10 text-yellow-500 shadow-none" :
+                              "bg-green-600/10 dark:bg-green-600/20 hover:bg-green-600/10 text-green-500 shadow-none"
+                        }
+                      >
+                        {row.status}
+                      </Badge>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
 
-      {/* Drawer for details */}
-      <Drawer open={showDrawer} onOpenChange={setShowDrawer}>
-        <div className="mx-auto w-full max-w-sm">
-          <DrawerContent>
-            <DrawerHeader>
-              <DrawerTitle>Health Check Details</DrawerTitle>
-            </DrawerHeader>
-            <div className="p-4 overflow-auto">
-              <pre className="rounded-md bg-muted p-4 overflow-auto text-xs">
-                <code>{JSON.stringify(modalData, null, 2)}</code>
-              </pre>
-            </div>
-          </DrawerContent>
-        </div>
-      </Drawer>
-    </LayoutBody>
+        <Drawer open={showDrawer} onOpenChange={setShowDrawer}>
+          <div className="mx-auto w-full max-w-sm">
+            <DrawerContent>
+              <DrawerHeader>
+                <DrawerTitle>Health Check Details</DrawerTitle>
+              </DrawerHeader>
+              <div className="p-4 overflow-auto">
+                <pre className="rounded-md bg-muted p-4 overflow-auto text-xs">
+                  <code>{JSON.stringify(modalData, null, 2)}</code>
+                </pre>
+              </div>
+            </DrawerContent>
+          </div>
+        </Drawer>
+      </LayoutBody>
+    </RoleAny>
   )
 }

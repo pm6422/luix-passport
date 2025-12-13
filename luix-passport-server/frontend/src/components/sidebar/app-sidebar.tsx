@@ -32,7 +32,7 @@ import { appInfoStore } from "@/stores/app-info-store"
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { appInfo } = useStore(appInfoStore)
-  const { loginUser } = useStore(loginUserStore)
+  useStore(loginUserStore)
   const navGroups  = [
     {
       title: "General",
@@ -42,7 +42,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           url: "/console",
           icon: IconDashboard,
         },
-        ...(loginUser.isOnlyUser ? [
+        ...((loginUserStore.hasRole("ROLE_USER")
+          && !loginUserStore.hasRole("ROLE_ADMIN")
+          && !loginUserStore.hasRole("ROLE_DEVELOPER")) ? [
           {
             title: "Account",
             url: "/account",
@@ -54,7 +56,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             icon: IconBellRinging,
           }
         ] : []),
-        ...(loginUser.isAdmin ? [
+        ...(loginUserStore.hasRole("ROLE_ADMIN") ? [
           {
             title: "User",
             icon: IconUsers,
@@ -90,7 +92,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         ] : []),
       ],
     },
-    ...(loginUser.isDeveloper ? [
+    ...(loginUserStore.hasRole("ROLE_DEVELOPER") ? [
       {
         title: "Developer Tools",
         items: [

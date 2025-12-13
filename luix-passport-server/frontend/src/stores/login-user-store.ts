@@ -17,9 +17,7 @@ export type LoginUser = {
     enabled: boolean
     roleIds: Array<string>
     permissionIds: Array<string>
-
     isAuthenticated: boolean
-    isOnlyUser: boolean
 }
 
 class LoginUserStore extends Exome {
@@ -29,14 +27,22 @@ class LoginUserStore extends Exome {
         this.loginUser = loginUser
         if (!isEmpty(loginUser)) {
             this.loginUser.isAuthenticated = true
-            this.loginUser.isOnlyUser = loginUser.roleIds && loginUser.roleIds.length === 2
-                && loginUser.roleIds.includes("ROLE_USER") && loginUser.roleIds.includes("ROLE_ANONYMOUS")
         }
     }
 
     public hasRole(roleId: string): boolean {
         const roleIds = this.loginUser?.roleIds
         return Array.isArray(roleIds) && roleIds.includes(roleId)
+    }
+
+    public hasRoles(roleIds: string[], matchAll = false): boolean {
+        const userRoleIds = this.loginUser?.roleIds
+        if (!Array.isArray(userRoleIds) || !Array.isArray(roleIds) || roleIds.length === 0) {
+            return false
+        }
+        return matchAll
+            ? roleIds.every(id => userRoleIds.includes(id))
+            : roleIds.some(id => userRoleIds.includes(id))
     }
 }
 

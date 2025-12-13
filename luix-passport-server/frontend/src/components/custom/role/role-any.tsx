@@ -10,11 +10,8 @@ export const RoleAny = ({
   children,
   roleIds
 }: Props) => {
-  const { loginUser } = useStore(loginUserStore)
-  const ok = Array.isArray(loginUser.roleIds)
-    && Array.isArray(roleIds)
-    && roleIds.length > 0
-    && roleIds.some(id => loginUser.roleIds.includes(id))
+  useStore(loginUserStore)
+  const ok = loginUserStore.hasRoles(roleIds, false)
 
   return (
     ok && children
