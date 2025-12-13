@@ -93,18 +93,20 @@ export default function TeamMembers() {
                 <TableRow key={member.userId}>
                   <TableCell className="font-medium">
                     <div className="flex items-center space-x-3">
-                      <Avatar className="size-8">
-                        {member.avatar && (
-                          <AvatarImage src={`data:image/png;base64,${member.avatar}`} />
-                        )}
-                        <AvatarFallback>{member.firstName?.[0]}{member.lastName?.[0]}</AvatarFallback>
-                      </Avatar>
-                      <div className="flex items-center gap-2">
-                        <span>{member.userId}</span>
+                      <div className="relative">
+                        <Avatar className="size-8">
+                          {member.avatar && (
+                            <AvatarImage src={`data:image/png;base64,${member.avatar}`} />
+                          )}
+                          <AvatarFallback>{member.firstName?.[0]}{member.lastName?.[0]}</AvatarFallback>
+                        </Avatar>
                         {member.userId === loginUser.username && (
-                          <Badge variant="secondary" className="text-[10px] h-5 px-1.5">You</Badge>
+                          <span className="animate-pulse border-background absolute -end-0.5 -bottom-0.5 size-3 rounded-full border-2 bg-emerald-500">
+                            <span className="sr-only">You</span>
+                          </span>
                         )}
                       </div>
+                      <span>{member.userId}</span>
                     </div>
                   </TableCell>
                   <TableCell>{member.email}</TableCell>
