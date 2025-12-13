@@ -98,7 +98,7 @@ export function DataTable<TData, TValue>({
     if (loadPage) {
       loadPage(pagination.pageIndex, pagination.pageSize, parseSorts(sorting));
     }
-  }, [pagination, sorting]);
+  }, [pagination, sorting, loadPage]);
 
   return (
     <div className="space-y-4">

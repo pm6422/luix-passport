@@ -3,7 +3,7 @@ import React from "react";
 import { motion } from "motion/react";
 
 export default function ColourfulText({ text }: { text: string }) {
-  const colors = [
+  const colors = React.useMemo(() => [
     "rgb(210, 248, 210)",  // #D2F8D2
     "rgb(160, 231, 160)",  // #A0E7A0
     "rgb(107, 203, 119)",  // #6BCB77
@@ -14,7 +14,7 @@ export default function ColourfulText({ text }: { text: string }) {
     "rgb(107, 203, 119)",  // #6BCB77
     "rgb(63, 163, 77)",    // #3FA34D
     "rgb(45, 106, 79)"     // #2D6A4F
-  ];
+  ], []);
 
   const [currentColors, setCurrentColors] = React.useState(colors);
   const [count, setCount] = React.useState(0);
@@ -27,7 +27,7 @@ export default function ColourfulText({ text }: { text: string }) {
     }, 5000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [colors]);
 
   return text.split("").map((char, index) => (
     <motion.span
