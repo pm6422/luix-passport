@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from "react"
+import { useState, useEffect, useMemo, useCallback, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { DateTime } from "@/components/custom/date-time"
 import { InviteMembersDialog } from "./invite-dialog"
@@ -19,6 +19,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { TeamService, TeamMember, TeamInvitation } from "@/services/team-service"
+import { AccountService } from "@/services/account-service"
 import { loginUserStore } from "@/stores/login-user-store"
 import { useStore } from "exome/react"
 import { toast } from "sonner"
@@ -31,6 +32,7 @@ export default function TeamMembers() {
   const [memberQuery, setMemberQuery] = useState("")
   const [inviteQuery, setInviteQuery] = useState("")
   const { loginUser } = useStore(loginUserStore)
+  const avatarFileInputRef = useRef<HTMLInputElement>(null)
 
   
 
@@ -68,6 +70,27 @@ export default function TeamMembers() {
     const me = members.find(m => m.userId === loginUser.username)
     return me?.role === "OWNER"
   }, [members, loginUser.username])
+
+  const handleSelfAvatarClick = () => {
+    avatarFileInputRef.current?.click()
+  }
+
+  const handleSelfAvatarFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) return
+    const file = e.target.files[0]
+    const formData = new FormData()
+    formData.append("file", file)
+    try {
+      await AccountService.uploadAvatar(formData)
+      toast.success("头像已更新")
+      await loadMembers()
+    } catch (error) {
+      toast.error("头像更新失败")
+      console.error(error)
+    } finally {
+      e.target.value = ""
+    }
+  }
 
   const getInviteProgress = (i: TeamInvitation) => {
     if (i.status === "ACCEPTED") return "Accepted"
@@ -112,10 +135,12 @@ export default function TeamMembers() {
               Here you can manage the members of your team.
             </p>
           </div>
-          <Button onClick={() => setOpenInvite(true)}>
-            <IconPlus className="mr-2 size-4" />
-            Invite Members
-          </Button>
+          {isOwner && (
+            <Button onClick={() => setOpenInvite(true)}>
+              <IconPlus className="mr-2 size-4" />
+              Invite Members
+            </Button>
+          )}
         </div>
 
         <div className="flex items-center space-x-2">
@@ -143,12 +168,24 @@ export default function TeamMembers() {
                   <TableCell className="font-medium">
                     <div className="flex items-center space-x-3">
                       <div className="relative">
-                        <Avatar className="size-8">
+                        <Avatar
+                          className={`size-8 ${member.userId === loginUser.username ? "cursor-pointer group" : ""}`}
+                          onClick={member.userId === loginUser.username ? handleSelfAvatarClick : undefined}
+                        >
                           {member.avatar && (
                             <AvatarImage src={`data:image/png;base64,${member.avatar}`} />
                           )}
                           <AvatarFallback>{member.firstName?.[0]}{member.lastName?.[0]}</AvatarFallback>
                         </Avatar>
+                        {member.userId === loginUser.username && (
+                          <input
+                            ref={avatarFileInputRef}
+                            type="file"
+                            accept="image/*"
+                            className="hidden"
+                            onChange={handleSelfAvatarFileChange}
+                          />
+                        )}
                         {member.userId === loginUser.username && (
                           <span className="animate-pulse border-background absolute -end-0.5 -bottom-0.5 size-3 rounded-full border-2 bg-emerald-500">
                             <span className="sr-only">You</span>
@@ -294,7 +331,7 @@ export default function TeamMembers() {
         </div>
       )}
 
-      {teamId && (
+      {teamId && isOwner && (
         <InviteMembersDialog
           open={openInvite}
           onOpenChange={setOpenInvite}
