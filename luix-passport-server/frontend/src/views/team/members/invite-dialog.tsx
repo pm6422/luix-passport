@@ -144,7 +144,7 @@ export function InviteMembersDialog({ open, onOpenChange, teamId, onSuccess }: I
               type="button"
               variant="outline"
               size="sm"
-              className="mt-2"
+              className="mt-1 ml-1"
               onClick={() => append({ email: "", role: "MEMBER" })}
             >
               <IconPlus className="mr-2 size-4" />
