@@ -2,6 +2,7 @@ package cn.luixtech.passport.server.controller;
 
 import cn.luixtech.passport.server.domain.DataDict;
 import cn.luixtech.passport.server.domain.SupportedDateTimeFormat;
+import cn.luixtech.passport.server.domain.TeamInvitation;
 import cn.luixtech.passport.server.domain.User;
 import cn.luixtech.passport.server.domain.UserAvatar;
 import cn.luixtech.passport.server.event.LogoutEvent;
@@ -137,9 +138,9 @@ public class AccountController {
 
         User newUser = userService.insert(managedUser.toUser(), managedUser.getRoleIds(), managedUser.getPassword(),
                 false);
-        teamInvitationRepository.findByEmailAndStatusAndExpiresAtAfter(newUser.getEmail(), "PENDING", Instant.now())
+        teamInvitationRepository.findByEmailAndStatusAndExpiresAtAfter(newUser.getEmail(), TeamInvitation.STATUS_UNREGISTERED, Instant.now())
                 .forEach(inv -> {
-                    inv.setRegisteredAt(Instant.now());
+                    inv.setStatus(TeamInvitation.STATUS_REGISTERED);
                     teamInvitationRepository.save(inv);
                 });
         mailService.sendAccountActivationEmail(newUser, getRequestUrl(request));
