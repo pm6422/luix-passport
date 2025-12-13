@@ -151,7 +151,7 @@ luix:
     contact-email: louis@luixtech.cn
     license: Unlicensed
     license-url:
-  aop-logging:i
+  aop-logging:
     enabled: true
     method-blacklist-mode: true
     method-blacklist:

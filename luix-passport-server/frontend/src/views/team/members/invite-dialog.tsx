@@ -81,11 +81,11 @@ export function InviteMembersDialog({ open, onOpenChange, teamId, onSuccess }: I
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[600px]">
+      <DialogContent className="sm:max-w-[550px]">
         <DialogHeader>
           <DialogTitle>Invite Members</DialogTitle>
           <DialogDescription>
-            Invite new members to your team. You can add multiple members at once.
+            Invite members to your team by entering their email and role.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -110,9 +110,9 @@ export function InviteMembersDialog({ open, onOpenChange, teamId, onSuccess }: I
                     name={`invitations.${index}.role`}
                     render={({ field }) => (
                       <FormItem className="w-[120px]">
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <Select onValueChange={field.onChange} value={field.value ?? "MEMBER"}>
                           <FormControl>
-                            <SelectTrigger>
+                            <SelectTrigger className="h-10 w-full">
                               <SelectValue placeholder="Role" />
                             </SelectTrigger>
                           </FormControl>
