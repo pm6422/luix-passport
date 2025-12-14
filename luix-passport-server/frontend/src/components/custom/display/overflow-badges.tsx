@@ -30,7 +30,7 @@ export function OverflowBadges({
           <Badge
             key={index}
             variant="secondary"
-            className={cn("px-1.5 py-0.5 text-[10px] max-w-[80px] truncate", badgeClassName)}
+            className={cn("px-1.5 py-0.5 text-[10px]", badgeClassName)}
           >
             {item}
           </Badge>
