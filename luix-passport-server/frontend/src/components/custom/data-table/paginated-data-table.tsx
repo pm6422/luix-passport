@@ -33,7 +33,6 @@ import {
 } from "@/components/ui/table"
 import { BaseCriteria } from "@/domains/base/base-criteria"
 
-// Server pagination props
 interface ServerPaginationProps<TData> {
   paginationMode: "server"
   totalCount: number
@@ -47,25 +46,22 @@ interface ServerPaginationProps<TData> {
   deleteRows?: (rows: TData[]) => Promise<void[]>
 }
 
-// Client pagination props
 interface ClientPaginationProps<TData> {
   paginationMode: "client"
   loadPage: (criteria?: BaseCriteria) => void
   deleteRows?: (rows: TData[]) => Promise<void[]>
 }
 
-// Common props
 interface BaseDataTableProps<TData, TValue> {
   children: React.ReactNode
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
 }
 
-// Union type for all props
 type DataTableProps<TData, TValue> = BaseDataTableProps<TData, TValue> &
   (ServerPaginationProps<TData> | ClientPaginationProps<TData>)
 
-export function DataTable<TData, TValue>(
+export function PaginatedDataTable<TData, TValue>(
   props: DataTableProps<TData, TValue>
 ) {
   const { children, columns, data, paginationMode, deleteRows } = props
@@ -76,13 +72,15 @@ export function DataTable<TData, TValue>(
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [delConfirmPopoverOpen, setDelConfirmPopoverOpen] = useState(false)
 
-  // Server pagination state
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10
   })
 
   const isServerPagination = paginationMode === "server"
+  const serverLoadPage = isServerPagination
+    ? (props as ServerPaginationProps<TData>).loadPage
+    : undefined
 
   const table = useReactTable({
     data,
@@ -94,7 +92,6 @@ export function DataTable<TData, TValue>(
       columnFilters,
       ...(isServerPagination && { pagination }),
     },
-    // Server pagination configuration
     ...(isServerPagination && {
       manualPagination: true,
       manualSorting: true,
@@ -102,11 +99,9 @@ export function DataTable<TData, TValue>(
       pageCount: (props as ServerPaginationProps<TData>).totalPages,
       onPaginationChange: setPagination,
     }),
-    // Client pagination configuration
     ...(!isServerPagination && {
       getPaginationRowModel: getPaginationRowModel(),
     }),
-    // Common configuration
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
@@ -119,20 +114,15 @@ export function DataTable<TData, TValue>(
     getFacetedUniqueValues: getFacetedUniqueValues(),
   })
 
-  // Server pagination effect
   useEffect(() => {
-    if (isServerPagination) {
-      const serverProps = props as ServerPaginationProps<TData>
-      if (serverProps.loadPage) {
-        serverProps.loadPage(
-          pagination.pageIndex,
-          pagination.pageSize,
-          parseSorts(sorting)
-        )
-      }
+    if (isServerPagination && serverLoadPage) {
+      serverLoadPage(
+        pagination.pageIndex,
+        pagination.pageSize,
+        parseSorts(sorting)
+      )
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pagination, sorting, isServerPagination])
+  }, [pagination, sorting, isServerPagination, serverLoadPage])
 
   const handleDelete = () => {
     const selectedRows = Object.keys(rowSelection).map(rowIndex =>
@@ -144,12 +134,10 @@ export function DataTable<TData, TValue>(
         loading: "Deleting rows...",
         success: () => {
           setRowSelection({})
-          // Reload data after deletion
           if (!isServerPagination) {
             const clientProps = props as ClientPaginationProps<TData>
             clientProps.loadPage()
           }
-          // Server pagination will auto-reload via useEffect
           return "Deleted selected rows"
         },
         error: (error) => {

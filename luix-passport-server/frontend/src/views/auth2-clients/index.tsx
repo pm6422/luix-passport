@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react"
 import { LayoutBody } from "@/layouts/layout-definitions"
 import { DataTableToolbar } from "./table/table-toolbar"
-import { DataTable } from "@/components/custom/data-table/data-table"
+import { PaginatedDataTable } from "@/components/custom/data-table/paginated-data-table"
 import { tableColumns } from "./table/table-columns"
 import { type Auth2Client, type Auth2ClientCriteriaSchema } from "@/domains/auth2-client"
 import { Oauth2ClientService } from "@/services/oauth2-client-service"
@@ -50,7 +50,7 @@ export default function Auth2Client() {
     <RoleAdmin>
       <LayoutBody className="flex flex-col" fixedHeight>
         <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-y-0">
-          <DataTable
+          <PaginatedDataTable
             paginationMode="client"
             columns={tableColumns(entityName, save, deleteRow)}
             data={tableData}
@@ -58,7 +58,7 @@ export default function Auth2Client() {
             deleteRows={deleteRows}
           >
             <DataTableToolbar entityName={entityName} loadPage={loadPage} save={save} />
-          </DataTable>
+          </PaginatedDataTable>
         </div>
       </LayoutBody>
     </RoleAdmin>
