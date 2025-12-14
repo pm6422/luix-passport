@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { DateTime } from "@/components/custom/display/date-time"
-import { InviteMembersDialog } from "./invite-dialog"
+import { InviteMembersDialog } from "./dialog/invite-dialog"
 import { LayoutBody } from "@/layouts/layout-definitions"
 import { IconPlus } from "@tabler/icons-react"
 import { useParams } from "react-router-dom"
