@@ -24,9 +24,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import Notice from "@/components/custom/notice"
 import { useLoginUserStore } from "@/stores/login-user-store"
 
-import { TeamRoleSelector } from "@/components/custom/team-role-selector"
-import { RequiredFormLabel } from "@/components/custom/required-form-label"
-import { FormField, FormItem, FormControl, FormMessage } from "@/components/ui/form"
+import TeamRoleSelectorFormField from "@/components/custom/form-field/team-role-selector"
 
 interface EditDialogProps {
   children: ReactNode,
@@ -181,23 +179,12 @@ export function EditDialog({
           label="Remark"
         />
 
-        <FormField
+        <TeamRoleSelectorFormField
           control={form.control}
           name="roleIds"
-          render={({ field }) => (
-            <FormItem>
-              <RequiredFormLabel required>Roles</RequiredFormLabel>
-              <FormControl>
-                <TeamRoleSelector
-                  value={field.value || []}
-                  onChange={field.onChange}
-                  allRoles={enabledRoles.map(r => r.value)}
-                  className="w-full"
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+          label="Roles"
+          required
+          allRoles={enabledRoles.map(r => r.value)}
         />
 
         <SwitchFormField
