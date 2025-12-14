@@ -1,13 +1,11 @@
 import { useState, ReactNode } from "react"
 import { FormDialog } from "@/components/custom/dialog/form-dialog"
-// Form & Custom Components
-import InputFormField from "@/components/custom/form-field/input"
-import MultiSelectorFormField, { Option } from "@/components/custom/form-field/multi-selector"
-// Domain
+import { Option } from "@/components/custom/form-field/multi-selector"
 import { type Role, roleSchema, initialRoleState } from "@/domains/role"
 import { type Permission } from "@/domains/permission"
 import { RoleService } from "@/services/role-service"
 import { PermissionService } from "@/services/permission-service"
+import { RoleFormFields } from "./role-form-fields"
 
 interface EditDialogProps {
   children: ReactNode,
@@ -41,31 +39,10 @@ export function EditDialog({
         return { options: { permissions: options }, entity: initialRoleState }
       }}
       renderFields={(form) => (
-        <>
-          <InputFormField
-            control={form.control}
-            name="id"
-            label="ID"
-            required
-          />
-          <InputFormField
-            control={form.control}
-            name="remark"
-            label="Remark"
-          />
-          <MultiSelectorFormField
-            control={form.control}
-            name="permissionIds"
-            label="Permissions"
-            options={permissions}
-            multiple={true}
-            required
-          />
-        </>
+        <RoleFormFields form={form} permissions={permissions} />
       )}
     >
       {children}
     </FormDialog>
   )
 }
-
