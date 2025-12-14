@@ -8,6 +8,7 @@ import { TeamService, Team } from "@/services/team-service"
 import { toast } from "sonner"
 import { useLoginUserStore } from "@/stores/login-user-store"
 import { RoleTeamOwner } from "@/permission/role-control"
+import { TEAM_OWNER } from "@/permission/roles"
 
 
 export default function TeamDashboard() {
@@ -38,7 +39,7 @@ export default function TeamDashboard() {
   }, [loadTeam, teamId])
 
   const handleAvatarClick = () => {
-    if (!hasRole("TEAM_OWNER")) return
+    if (!hasRole(TEAM_OWNER)) return
     fileInputRef.current?.click()
   }
 
@@ -61,7 +62,7 @@ export default function TeamDashboard() {
       {/* Header with Team Info */}
       <div className="flex items-center justify-between px-6 py-4 border-b bg-background">
         <div className="flex items-center gap-4">
-          <div className={`relative group ${hasRole("TEAM_OWNER") ? "cursor-pointer" : "cursor-default"}`} onClick={handleAvatarClick}>
+          <div className={`relative group ${hasRole(TEAM_OWNER) ? "cursor-pointer" : "cursor-default"}`} onClick={handleAvatarClick}>
             <Avatar className="size-16">
               <AvatarImage src={avatarUrl} alt={team?.name || "Team"} />
               <AvatarFallback>{team?.name?.[0]?.toUpperCase() || "T"}</AvatarFallback>

@@ -28,6 +28,7 @@ import {
 } from "@tabler/icons-react"
 import { useLoginUserStore } from "@/stores/login-user-store"
 import { useAppInfoStore } from "@/stores/app-info-store"
+import { ROLE_USER, ROLE_ADMIN, ROLE_DEVELOPER } from "@/permission/roles"
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { appInfo } = useAppInfoStore()
@@ -41,9 +42,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           url: "/console",
           icon: IconDashboard,
         },
-        ...((hasRole("ROLE_USER")
-          && !hasRole("ROLE_ADMIN")
-          && !hasRole("ROLE_DEVELOPER")) ? [
+        ...((hasRole(ROLE_USER)
+          && !hasRole(ROLE_ADMIN)
+          && !hasRole(ROLE_DEVELOPER)) ? [
           {
             title: "Account",
             url: "/account",
@@ -55,7 +56,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             icon: IconBellRinging,
           }
         ] : []),
-        ...(hasRole("ROLE_ADMIN") ? [
+        ...(hasRole(ROLE_ADMIN) ? [
           {
             title: "User",
             icon: IconUsers,
@@ -91,7 +92,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         ] : []),
       ],
     },
-    ...(hasRole("ROLE_DEVELOPER") ? [
+    ...(hasRole(ROLE_DEVELOPER) ? [
       {
         title: "Developer Tools",
         items: [
