@@ -1,5 +1,5 @@
 import { useState, ReactNode } from "react"
-import { SaveDialog } from "@/components/custom/dialog/save-dialog"
+import { FormDialog } from "@/components/custom/dialog/form-dialog"
 // Form & Custom Components
 import InputFormField from "@/components/custom/form-field/input"
 import MultiSelectorFormField, { Option } from "@/components/custom/form-field/multi-selector"
@@ -24,7 +24,7 @@ export function EditDialog({
 }: EditDialogProps) {
   const [permissions, setPermissions] = useState<Option[]>([])
   return (
-    <SaveDialog<Role, { permissions: Option[] }>
+    <FormDialog<Role, { permissions: Option[] }>
       entityName={entityName}
       id={id}
       schema={roleSchema}
@@ -65,6 +65,6 @@ export function EditDialog({
       )}
     >
       {children}
-    </SaveDialog>
+    </FormDialog>
   )
 }

@@ -1,5 +1,5 @@
 import { useState, ReactNode } from "react"
-import { SaveDialog } from "@/components/custom/dialog/save-dialog"
+import { FormDialog } from "@/components/custom/dialog/form-dialog"
 import { Option } from "@/components/custom/form-field/multi-selector"
 import { DataDictFormFields } from "./data-dict-form-fields"
 import { type DataDict, dataDictSchema, initialDataDictState } from "@/domains/data-dict"
@@ -32,7 +32,7 @@ export function EditDialog({
   }
 
   return (
-    <SaveDialog<DataDict, { categoryCodeOptions: Option[] }>
+    <FormDialog<DataDict, { categoryCodeOptions: Option[] }>
       entityName={entityName}
       id={id}
       schema={dataDictSchema}
@@ -44,6 +44,6 @@ export function EditDialog({
       )}
     >
       {children}
-    </SaveDialog>
+    </FormDialog>
   )
 }
