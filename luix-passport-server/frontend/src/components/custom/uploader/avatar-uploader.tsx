@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input"
 import { toBase64 } from "@/lib/file-utils"
 import { IconPencil, IconCamera } from "@tabler/icons-react"
 
-type Props = {
+interface Props {
   defaultValue?: string
   onValueChange?: (value?: File) => void
   avatarClassName?: string

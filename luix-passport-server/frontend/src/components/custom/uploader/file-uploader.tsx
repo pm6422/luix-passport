@@ -1,5 +1,5 @@
-import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
+import { Input } from "@/components/ui/input"
+import { cn } from "@/lib/utils"
 import {
   Dispatch,
   SetStateAction,
@@ -10,47 +10,46 @@ import {
   useEffect,
   useRef,
   useState,
-} from "react";
+} from "react"
 import {
   useDropzone,
   DropzoneState,
   FileRejection,
   DropzoneOptions,
-} from "react-dropzone";
-import { toast } from "sonner";
-import { IconTrash } from "@tabler/icons-react";
-import { buttonVariants } from "@/components/ui/button";
+} from "react-dropzone"
+import { toast } from "sonner"
+import { IconTrash } from "@tabler/icons-react"
+import { buttonVariants } from "@/components/ui/button"
 
-type DirectionOptions = "rtl" | "ltr" | undefined;
-
+type DirectionOptions = "rtl" | "ltr" | undefined
 type FileUploaderContextType = {
-  dropzoneState: DropzoneState;
-  isLOF: boolean;
-  isFileTooBig: boolean;
-  removeFileFromSet: (index: number) => void;
-  activeIndex: number;
-  setActiveIndex: Dispatch<SetStateAction<number>>;
-  orientation: "horizontal" | "vertical";
-  direction: DirectionOptions;
-};
+  dropzoneState: DropzoneState
+  isLOF: boolean
+  isFileTooBig: boolean
+  removeFileFromSet: (index: number) => void
+  activeIndex: number
+  setActiveIndex: Dispatch<SetStateAction<number>>
+  orientation: "horizontal" | "vertical"
+  direction: DirectionOptions
+}
 
-const FileUploaderContext = createContext<FileUploaderContextType | null>(null);
+const FileUploaderContext = createContext<FileUploaderContextType | null>(null)
 
 const useFileUpload = () => {
-  const context = useContext(FileUploaderContext);
+  const context = useContext(FileUploaderContext)
   if (!context) {
-    throw new Error("useFileUpload must be used within a FileUploaderProvider");
+    throw new Error("useFileUpload must be used within a FileUploaderProvider")
   }
-  return context;
-};
+  return context
+}
 
 type Props = {
-  value: File[] | null;
-  reSelect?: boolean;
-  onValueChange: (value: File[] | null) => void;
-  dropzoneOptions: DropzoneOptions;
-  orientation?: "horizontal" | "vertical";
-};
+  value: File[] | null
+  reSelect?: boolean
+  onValueChange: (value: File[] | null) => void
+  dropzoneOptions: DropzoneOptions
+  orientation?: "horizontal" | "vertical"
+}
 
 export const FileUploader = forwardRef<
   HTMLDivElement,
@@ -240,9 +239,9 @@ export const FileUploader = forwardRef<
           {children}
         </div>
       </FileUploaderContext.Provider>
-    );
+    )
   }
-);
+)
 
 FileUploader.displayName = "FileUploader";
 
@@ -271,8 +270,8 @@ export const FileUploaderContent = forwardRef<
         {children}
       </div>
     </div>
-  );
-});
+  )
+})
 
 FileUploaderContent.displayName = "FileUploaderContent";
 
@@ -304,8 +303,8 @@ export const FileUploaderItem = forwardRef<
         <IconTrash className="w-5 h-5 hover:stroke-destructive duration-200 ease-in-out" />
       </button>
     </div>
-  );
-});
+  )
+})
 
 FileUploaderItem.displayName = "FileUploaderItem";
 
@@ -319,20 +318,18 @@ export const FileInput = forwardRef<
     <div
       ref={ref}
       {...props}
-      className={`relative w-full ${
-        isLOF ? "opacity-50 cursor-not-allowed " : "cursor-pointer "
-      }`}
+      className={`relative w-full ${isLOF ? "opacity-50 cursor-not-allowed " : "cursor-pointer "
+        }`}
     >
       <div
         className={cn(
           `w-full rounded-lg duration-300 ease-in-out
-         ${
-           dropzoneState.isDragAccept
-             ? "border-green-500"
-             : dropzoneState.isDragReject || isFileTooBig
-             ? "border-red-500"
-             : "border-gray-300"
-         }`,
+         ${dropzoneState.isDragAccept
+            ? "border-green-500"
+            : dropzoneState.isDragReject || isFileTooBig
+              ? "border-red-500"
+              : "border-gray-300"
+          }`,
           className
         )}
         {...rootProps}
@@ -346,7 +343,7 @@ export const FileInput = forwardRef<
         className={`${isLOF ? "cursor-not-allowed" : ""}`}
       />
     </div>
-  );
-});
+  )
+})
 
 FileInput.displayName = "FileInput";
