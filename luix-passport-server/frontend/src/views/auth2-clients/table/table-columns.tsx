@@ -4,7 +4,7 @@ import { IconEdit } from "@tabler/icons-react"
 import { DataTableColumnHeader } from "@/components/custom/data-table/data-table-column-header"
 import { DataTableRowActions } from "@/components/custom/data-table/data-table-row-actions"
 import { Button } from "@/components/ui/button"
-import { StatusBadge } from "@/components/custom/status-badge"
+import { YesNoBadge } from "@/components/custom/yes-no-badge"
 import { Auth2Client } from "@/domains/auth2-client"
 import { EditDialog } from "../dialog/edit-dialog"
 
@@ -109,7 +109,7 @@ export function tableColumns(
       cell: ({ row }) => {
         return (
           <div className="flex w-[50px] items-center justify-center">
-            <StatusBadge value={row.original.enabled} />
+            <YesNoBadge value={row.original.enabled} />
           </div>
         )
       },

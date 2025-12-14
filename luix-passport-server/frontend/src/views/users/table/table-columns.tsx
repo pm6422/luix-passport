@@ -3,7 +3,7 @@ import { IconEdit, IconDots } from "@tabler/icons-react";
 import { User } from "@/domains/user";
 import { toast } from "sonner";
 import { getErrorMessage } from "@/lib/handle-error";
-import { StatusBadge } from "@/components/custom/status-badge";
+import { YesNoBadge } from "@/components/custom/yes-no-badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -125,7 +125,7 @@ export function tableColumns(
       cell: ({ row }) => {
         return (
           <div className="flex w-[75px] items-center justify-center">
-            <StatusBadge value={row.original.activated} />
+            <YesNoBadge value={row.original.activated} />
           </div>
         )
       },
@@ -138,7 +138,7 @@ export function tableColumns(
       cell: ({ row }) => {
         return (
           <div className="flex w-[50px] items-center justify-center">
-            <StatusBadge value={row.original.enabled} />
+            <YesNoBadge value={row.original.enabled} />
           </div>
         )
       },

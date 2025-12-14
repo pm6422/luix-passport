@@ -2,12 +2,12 @@ import { Badge } from "@/components/ui/badge";
 import { IconCircleCheckFilled, IconCircleXFilled } from "@tabler/icons-react";
 import { cn } from '@/lib/utils.ts'
 
-interface StatusBadgeProps {
+interface YesNoBadgeProps {
   value?: boolean | null;
   className?: string;
 }
 
-export function StatusBadge({ value, className }: StatusBadgeProps) {
+export function YesNoBadge({ value, className }: YesNoBadgeProps) {
   return (
     <Badge
       variant="outline"
