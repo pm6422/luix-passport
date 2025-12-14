@@ -8,14 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { ChevronDown } from "lucide-react"
-import {
-  ROLE_ANONYMOUS,
-  ROLE_USER,
-  TEAM_MEMBER,
-  TEAM_OWNER,
-  SYSTEM_ROLES,
-  TEAM_ROLES
-} from "@/permission/role-control"
+import { ROLE_ANONYMOUS, ROLE_USER, TEAM_MEMBER, TEAM_OWNER, SYSTEM_ROLES, TEAM_ROLES } from "@/permission/roles"
 import type { Control, FieldValues, Path } from "react-hook-form"
 import { FormControl, FormDescription, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { RequiredFormLabel } from "@/components/custom/form-element/required-form-label"
