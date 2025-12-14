@@ -25,6 +25,13 @@ import { RoleTeamOwner } from "@/components/custom/role"
 import { RoleService } from "@/services/role-service"
 import { ConfirmDialog } from "@/components/custom/confirm-dialog"
 import { TeamRoleSelector } from "@/components/custom/team-role-selector"
+import { TEAM_OWNER } from "@/constants/role-constants"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 export default function TeamMembers() {
   const [openInvite, setOpenInvite] = useState(false)
@@ -133,7 +140,7 @@ export default function TeamMembers() {
   }, [teamId, loadMembers, loadPendingInvitations])
 
   useEffect(() => {
-    if (teamId && hasRole("TEAM_OWNER")) {
+    if (teamId && hasRole(TEAM_OWNER)) {
       loadPendingInvitations()
       RoleService.findAllIds().then(({ data }) => setAllRoles(data))
     }
@@ -232,7 +239,7 @@ export default function TeamMembers() {
                         </div>
                       </div>
                     </RoleTeamOwner>
-                    {!hasRole("TEAM_OWNER") && (
+                    {!hasRole(TEAM_OWNER) && (
                       <div className="flex gap-2">
                         <Badge variant="outline" className="capitalize">{member.role}</Badge>
                       </div>
@@ -291,10 +298,37 @@ export default function TeamMembers() {
                     <TableRow key={invite.id}>
                       <TableCell>{invite.memberEmail}</TableCell>
                       <TableCell>
-                        <div className="flex gap-1 flex-wrap">
-                          {(invite.memberRoles || "").split(",").map((role) => (
-                            <Badge key={role} variant="outline" className="capitalize">{role}</Badge>
-                          ))}
+                        <div className="flex gap-1 flex-wrap items-center">
+                          {(() => {
+                            const roles = (invite.memberRoles || "").split(",").filter(Boolean)
+                            const MAX_VISIBLE = 2
+                            const visibleRoles = roles.slice(0, MAX_VISIBLE)
+                            const remainingCount = roles.length - MAX_VISIBLE
+
+                            return (
+                              <>
+                                {visibleRoles.map((role) => (
+                                  <Badge key={role} variant="outline" className="capitalize">
+                                    {role}
+                                  </Badge>
+                                ))}
+                                {remainingCount > 0 && (
+                                  <TooltipProvider>
+                                    <Tooltip>
+                                      <TooltipTrigger asChild>
+                                        <Badge variant="outline">+{remainingCount}</Badge>
+                                      </TooltipTrigger>
+                                      <TooltipContent>
+                                        <p className="max-w-[200px] break-words">
+                                          {roles.slice(MAX_VISIBLE).join(", ")}
+                                        </p>
+                                      </TooltipContent>
+                                    </Tooltip>
+                                  </TooltipProvider>
+                                )}
+                              </>
+                            )
+                          })()}
                         </div>
                       </TableCell>
                       <TableCell>

@@ -1,6 +1,7 @@
 import { z } from "zod"
 import { isValidPhoneNumber } from "react-phone-number-input"
 import { BaseCriteria } from "./base/base-criteria"
+import { ROLE_ANONYMOUS, ROLE_USER } from "@/constants/role-constants"
 
 export const userSchema = z.object({
   username: z.string().trim().min(1, { message: "Required" }),
@@ -40,7 +41,7 @@ export const initialUserState: User = {
   dateTimeFormatId: "1",
   activated: false,
   enabled: true,
-  roleIds: ["ROLE_ANONYMOUS", "ROLE_USER"],
+  roleIds: [ROLE_ANONYMOUS, ROLE_USER],
   createdAt: "",
   updatedAt: ""
 }

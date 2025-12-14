@@ -8,6 +8,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { ChevronDown } from "lucide-react"
+import {
+  ROLE_ANONYMOUS,
+  ROLE_USER,
+  TEAM_MEMBER,
+  TEAM_OWNER,
+  SYSTEM_ROLES,
+  TEAM_ROLES
+} from "@/constants/role-constants"
 
 interface TeamRoleSelectorProps {
   value: string[]
@@ -35,36 +43,35 @@ export function TeamRoleSelector({
     }
 
     // Ensure mandatory roles
-    if (!newRoles.includes("ROLE_ANONYMOUS")) newRoles.push("ROLE_ANONYMOUS")
-    if (!newRoles.includes("ROLE_USER")) newRoles.push("ROLE_USER")
+    if (!newRoles.includes(ROLE_ANONYMOUS)) newRoles.push(ROLE_ANONYMOUS)
+    if (!newRoles.includes(ROLE_USER)) newRoles.push(ROLE_USER)
 
     // Mutual exclusion logic
-    const hasMember = newRoles.includes("TEAM_MEMBER")
-    const hasOwner = newRoles.includes("TEAM_OWNER")
+    const hasMember = newRoles.includes(TEAM_MEMBER)
+    const hasOwner = newRoles.includes(TEAM_OWNER)
 
     if (hasMember && hasOwner) {
-      const wasOwner = value.includes("TEAM_OWNER")
+      const wasOwner = value.includes(TEAM_OWNER)
       if (wasOwner) {
         // Was owner, now both -> Remove OWNER (Switch to Member)
-        const index = newRoles.indexOf("TEAM_OWNER")
+        const index = newRoles.indexOf(TEAM_OWNER)
         if (index > -1) newRoles.splice(index, 1)
       } else {
         // Was member (or neither), now both -> Remove MEMBER (Switch to Owner)
-        const index = newRoles.indexOf("TEAM_MEMBER")
+        const index = newRoles.indexOf(TEAM_MEMBER)
         if (index > -1) newRoles.splice(index, 1)
       }
     } else if (!hasMember && !hasOwner) {
       // Neither selected -> Re-add the one that was there
-      const wasOwner = value.includes("TEAM_OWNER")
-      if (wasOwner) newRoles.push("TEAM_OWNER")
-      else newRoles.push("TEAM_MEMBER")
+      const wasOwner = value.includes(TEAM_OWNER)
+      if (wasOwner) newRoles.push(TEAM_OWNER)
+      else newRoles.push(TEAM_MEMBER)
     }
 
     onChange(newRoles)
   }
 
-  const SYSTEM_ROLES = ["ROLE_USER", "ROLE_ANONYMOUS"]
-  const TEAM_ROLES = ["TEAM_OWNER", "TEAM_MEMBER"]
+
 
   const systemRoles = allRoles.filter(r => SYSTEM_ROLES.includes(r))
   const teamRoles = allRoles.filter(r => TEAM_ROLES.includes(r))

@@ -18,6 +18,7 @@ import { IconPlus, IconMinus } from "@tabler/icons-react"
 import { useEffect, useState } from "react"
 import { RoleService } from "@/services/role-service"
 import { TeamRoleSelector } from "@/components/custom/team-role-selector"
+import { ROLE_ANONYMOUS, ROLE_USER, TEAM_MEMBER } from "@/constants/role-constants"
 
 const inviteSchema = z.object({
   invitations: z.array(z.object({
@@ -45,7 +46,7 @@ export function InviteMembersDialog({ open, onOpenChange, teamId, onSuccess }: I
   const form = useForm<z.infer<typeof inviteSchema>>({
     resolver: zodResolver(inviteSchema),
     defaultValues: {
-      invitations: [{ email: "", roles: ["ROLE_ANONYMOUS", "ROLE_USER", "TEAM_MEMBER"] }]
+      invitations: [{ email: "", roles: [ROLE_ANONYMOUS, ROLE_USER, TEAM_MEMBER] }]
     }
   })
 
@@ -56,7 +57,7 @@ export function InviteMembersDialog({ open, onOpenChange, teamId, onSuccess }: I
 
   useEffect(() => {
     if (open) {
-      form.reset({ invitations: [{ email: "", roles: ["ROLE_ANONYMOUS", "ROLE_USER", "TEAM_MEMBER"] }] })
+      form.reset({ invitations: [{ email: "", roles: [ROLE_ANONYMOUS, ROLE_USER, TEAM_MEMBER] }] })
     }
   }, [open, form])
 
@@ -148,7 +149,7 @@ export function InviteMembersDialog({ open, onOpenChange, teamId, onSuccess }: I
               variant="outline"
               size="sm"
               className="mt-1 ml-1"
-              onClick={() => append({ email: "", roles: ["ROLE_ANONYMOUS", "ROLE_USER", "TEAM_MEMBER"] })}
+              onClick={() => append({ email: "", roles: [ROLE_ANONYMOUS, ROLE_USER, TEAM_MEMBER] })}
             >
               <IconPlus className="mr-2 size-4" />
               Add another

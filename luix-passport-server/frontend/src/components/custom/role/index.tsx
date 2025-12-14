@@ -1,4 +1,5 @@
 import { useLoginUserStore } from "@/stores/login-user-store"
+import { ROLE_ADMIN, ROLE_DEVELOPER, ROLE_USER, TEAM_OWNER } from "@/constants/role-constants"
 
 type Props = {
   children: React.ReactNode
@@ -18,17 +19,17 @@ export const RoleAny = ({
 }
 
 export const RoleAdmin = ({ children }: { children: React.ReactNode }) => (
-  <RoleAny roleIds={["ROLE_ADMIN"]}>{children}</RoleAny>
+  <RoleAny roleIds={[ROLE_ADMIN]}>{children}</RoleAny>
 )
 
 export const RoleDeveloper = ({ children }: { children: React.ReactNode }) => (
-  <RoleAny roleIds={["ROLE_DEVELOPER"]}>{children}</RoleAny>
+  <RoleAny roleIds={[ROLE_DEVELOPER]}>{children}</RoleAny>
 )
 
 export const RoleUser = ({ children }: { children: React.ReactNode }) => (
-  <RoleAny roleIds={["ROLE_USER"]}>{children}</RoleAny>
+  <RoleAny roleIds={[ROLE_USER]}>{children}</RoleAny>
 )
 
 export const RoleTeamOwner = ({ children }: { children: React.ReactNode }) => (
-  <RoleAny roleIds={["TEAM_OWNER"]}>{children}</RoleAny>
+  <RoleAny roleIds={[TEAM_OWNER]}>{children}</RoleAny>
 )

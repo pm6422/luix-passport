@@ -23,6 +23,7 @@ import type { SupportedDateTimeFormat } from "@/domains/supported-date-time-form
 import { Skeleton } from "@/components/ui/skeleton"
 import Notice from "@/components/custom/notice"
 import { useLoginUserStore } from "@/stores/login-user-store"
+import { SYSTEM_ROLES } from "@/constants/role-constants"
 
 interface EditDialogProps {
   children: ReactNode,
@@ -183,7 +184,7 @@ export function EditDialog({
           label="Roles"
           required
           options={enabledRoles}
-          requiredOptionValues={["ROLE_ANONYMOUS", "ROLE_USER"]}
+          requiredOptionValues={SYSTEM_ROLES}
           description="Select multiple roles for this user"
         />
 
