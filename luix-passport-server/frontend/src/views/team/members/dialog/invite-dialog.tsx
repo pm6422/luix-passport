@@ -6,11 +6,36 @@ import { RoleService } from "@/services/role-service"
 import { ROLE_ANONYMOUS, ROLE_USER, TEAM_MEMBER } from "@/permission/roles"
 import { InviteMembersFormFields } from "./invite-members-form-fields"
 
+const invitationSchema = z.object({
+  email: z.string().trim().min(1, { message: "Required" }).email({ message: "Invalid email address" }),
+  roles: z.array(z.string()).min(1, { message: "Required" })
+})
+
 const inviteSchema = z.object({
-  invitations: z.array(z.object({
-    email: z.string().trim().min(1, { message: "Required" }).email({ message: "Invalid email address" }),
-    roles: z.array(z.string()).min(1, { message: "Required" })
-  })).min(1)
+  invitations: z
+    .array(invitationSchema)
+    .min(1)
+    .superRefine((invitations, ctx) => {
+      const seen = new Map<string, number[]>()
+      invitations.forEach((inv, index) => {
+        const email = (inv.email || "").trim().toLowerCase()
+        if (!email) return
+        const indices = seen.get(email) || []
+        indices.push(index)
+        seen.set(email, indices)
+      })
+      for (const [, indices] of seen) {
+        if (indices.length > 1) {
+          indices.forEach((i) => {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              path: [i, "email"],
+              message: "Duplicate email"
+            })
+          })
+        }
+      }
+    })
 })
 
 interface InviteMembersDialogProps {
