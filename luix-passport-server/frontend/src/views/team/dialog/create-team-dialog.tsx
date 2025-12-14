@@ -23,7 +23,7 @@ interface CreateTeamDialogProps {
 export function CreateTeamDialog({ children, onSuccess, open, onOpenChange }: CreateTeamDialogProps) {
   async function save(model: CreateTeam): Promise<void> {
     await TeamService.create(model.name, model.photo)
-    onSuccess?.()
+    window.location.reload()
   }
 
   return (
