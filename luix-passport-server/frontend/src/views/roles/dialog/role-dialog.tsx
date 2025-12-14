@@ -1,4 +1,4 @@
-import { useState, ReactNode } from "react"
+import { ReactNode } from "react"
 import { FormDialog } from "@/components/custom/dialog/form-dialog"
 import { Option } from "@/components/custom/form-field/multi-selector"
 import { type Role, roleSchema, initialRoleState } from "@/domains/role"
@@ -20,7 +20,15 @@ export function EditDialog({
   id,
   save
 }: EditDialogProps) {
-  const [permissions, setPermissions] = useState<Option[]>([])
+  const loadRole = async (entityId?: string | null) => {
+    const { data: permissionList } = await PermissionService.find({ page: 0, size: 2000, sort: ["updatedAt,desc"] })
+    const options = permissionList.map((item: Permission) => ({ label: item.id, value: item.id }))
+    if (entityId) {
+      const { data } = await RoleService.findById(entityId)
+      return { options: { permissions: options }, entity: data }
+    }
+    return { options: { permissions: options }, entity: initialRoleState }
+  }
   return (
     <FormDialog<Role, { permissions: Option[] }>
       entityName={entityName}
@@ -28,18 +36,9 @@ export function EditDialog({
       schema={roleSchema}
       defaultValues={initialRoleState}
       save={save}
-      onLoad={async (entityId) => {
-        const { data: permissionList } = await PermissionService.find({ page: 0, size: 2000, sort: ["updatedAt,desc"] })
-        const options = permissionList.map((item: Permission) => ({ label: item.id, value: item.id }))
-        setPermissions(options)
-        if (entityId) {
-          const { data } = await RoleService.findById(entityId)
-          return { options: { permissions: options }, entity: data }
-        }
-        return { options: { permissions: options }, entity: initialRoleState }
-      }}
-      renderFields={(form) => (
-        <RoleFormFields form={form} permissions={permissions} />
+      onLoad={loadRole}
+      renderFields={(form, options) => (
+        <RoleFormFields form={form} permissions={options.permissions} />
       )}
     >
       {children}
