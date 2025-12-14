@@ -166,7 +166,7 @@ export default function ConsolePage() {
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-medium">Team Invitation</p>
                           <p className="text-xs text-muted-foreground truncate">
-                            Role: {invitation.memberRole}
+                            Role: {invitation.memberRoles}
                           </p>
                         </div>
                       </div>
