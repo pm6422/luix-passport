@@ -9,7 +9,7 @@ export class TeamService {
     return http.get("/api/teams/count")
   }
 
-  public static inviteMembers(teamId: string, invitations: { email: string, role: string }[]): Promise<AxiosResponse<void>> {
+  public static inviteMembers(teamId: string, invitations: { email: string, roles: string[] }[]): Promise<AxiosResponse<void>> {
     return http.post(`/api/teams/${teamId}/members`, invitations)
   }
 
@@ -70,8 +70,8 @@ export class TeamService {
 
   // batch operations removed
 
-  public static updateMemberRole(teamId: string, userId: string, role: string): Promise<AxiosResponse<void>> {
-    return http.put(`/api/teams/${teamId}/members/${userId}/role`, null, { params: { role } })
+  public static updateMemberRole(teamId: string, userId: string, roles: string[]): Promise<AxiosResponse<void>> {
+    return http.put(`/api/teams/${teamId}/members/${userId}/role`, roles)
   }
 }
 
@@ -89,6 +89,7 @@ export interface TeamMember {
   lastName: string
   avatar?: string
   role: string
+  roles: string[]
   joinedAt?: string
 }
 

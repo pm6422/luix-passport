@@ -17,12 +17,21 @@ import {
 // batch selection removed
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { TeamService, TeamMember, TeamInvitation } from "@/services/team-service"
 import { AccountService } from "@/services/account-service"
 import { useLoginUserStore } from "@/stores/login-user-store"
 import { toast } from "sonner"
 import { RoleTeamOwner } from "@/components/custom/role"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuCheckboxItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { ChevronDown } from "lucide-react"
+import { RoleService } from "@/services/role-service"
 import { ConfirmDialog } from "@/components/custom/confirm-dialog"
 
 export default function TeamMembers() {
@@ -35,13 +44,15 @@ export default function TeamMembers() {
   const { loginUser, hasRole } = useLoginUserStore()
   const avatarFileInputRef = useRef<HTMLInputElement>(null)
 
+  const [allRoles, setAllRoles] = useState<string[]>([])
+
   const [roleConfirmOpen, setRoleConfirmOpen] = useState(false)
-  const [pendingRoleChange, setPendingRoleChange] = useState<{ userId: string, newRole: string } | null>(null)
+  const [pendingRoleChange, setPendingRoleChange] = useState<{ userId: string, newRoles: string[] } | null>(null)
 
   const confirmRoleChange = async () => {
     if (!pendingRoleChange || !teamId) return
     try {
-      await TeamService.updateMemberRole(teamId, pendingRoleChange.userId, pendingRoleChange.newRole)
+      await TeamService.updateMemberRole(teamId, pendingRoleChange.userId, pendingRoleChange.newRoles)
       toast.success("Role updated")
       await loadMembers()
     } catch (error) {
@@ -132,6 +143,7 @@ export default function TeamMembers() {
   useEffect(() => {
     if (teamId && hasRole("TEAM_OWNER")) {
       loadPendingInvitations()
+      RoleService.findAllIds().then(({ data }) => setAllRoles(data))
     }
   }, [teamId, loadPendingInvitations, hasRole])
 
@@ -212,21 +224,74 @@ export default function TeamMembers() {
                   <TableCell>
                     <RoleTeamOwner>
                       <div className="flex items-center gap-2">
-                        <Select
-                          value={member.role}
-                          onValueChange={(value) => {
-                            setPendingRoleChange({ userId: member.userId, newRole: value })
-                            setRoleConfirmOpen(true)
-                          }}
-                        >
-                          <SelectTrigger size="sm" className="w-40" aria-label="Edit role" disabled={member.userId === loginUser.username}>
-                            <SelectValue placeholder="Select role" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="TEAM_OWNER">TEAM_OWNER</SelectItem>
-                            <SelectItem value="TEAM_MEMBER">TEAM_MEMBER</SelectItem>
-                          </SelectContent>
-                        </Select>
+                        <div className="flex items-center gap-2">
+                          <div>
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button variant="outline" size="sm" className="h-8 max-w-[200px] justify-between" disabled={member.userId === loginUser.username}>
+                                  <span className="truncate">
+                                    {(member.roles || [member.role]).join(", ")}
+                                  </span>
+                                  <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent className="w-56" align="start">
+                                <DropdownMenuLabel>Roles</DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                {allRoles.map((role) => {
+                                  const currentRoles = member.roles || [member.role]
+                                  const isChecked = currentRoles.includes(role)
+                                  return (
+                                    <DropdownMenuCheckboxItem
+                                      key={role}
+                                      checked={isChecked}
+                                      onSelect={(e) => e.preventDefault()}
+                                      onCheckedChange={(checked) => {
+                                        let newRoles = [...currentRoles]
+                                        if (checked) {
+                                          if (!newRoles.includes(role)) newRoles.push(role)
+                                        } else {
+                                          newRoles = newRoles.filter(r => r !== role)
+                                        }
+
+                                        // Ensure mandatory roles
+                                        if (!newRoles.includes("ROLE_ANONYMOUS")) newRoles.push("ROLE_ANONYMOUS")
+                                        if (!newRoles.includes("ROLE_USER")) newRoles.push("ROLE_USER")
+
+                                        // Mutual exclusion logic
+                                        const hasMember = newRoles.includes("TEAM_MEMBER")
+                                        const hasOwner = newRoles.includes("TEAM_OWNER")
+
+                                        if (hasMember && hasOwner) {
+                                          const wasOwner = currentRoles.includes("TEAM_OWNER")
+                                          if (wasOwner) {
+                                            // Was owner, now both -> Remove OWNER (Switch to Member)
+                                            const index = newRoles.indexOf("TEAM_OWNER")
+                                            if (index > -1) newRoles.splice(index, 1)
+                                          } else {
+                                            // Was member (or neither), now both -> Remove MEMBER (Switch to Owner)
+                                            const index = newRoles.indexOf("TEAM_MEMBER")
+                                            if (index > -1) newRoles.splice(index, 1)
+                                          }
+                                        } else if (!hasMember && !hasOwner) {
+                                          // Neither selected -> Re-add the one that was there
+                                          const wasOwner = currentRoles.includes("TEAM_OWNER")
+                                          if (wasOwner) newRoles.push("TEAM_OWNER")
+                                          else newRoles.push("TEAM_MEMBER")
+                                        }
+
+                                        setPendingRoleChange({ userId: member.userId, newRoles })
+                                        setRoleConfirmOpen(true)
+                                      }}
+                                    >
+                                      {role}
+                                    </DropdownMenuCheckboxItem>
+                                  )
+                                })}
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </div>
+                        </div>
                       </div>
                     </RoleTeamOwner>
                     {!hasRole("TEAM_OWNER") && (
@@ -349,7 +414,6 @@ export default function TeamMembers() {
           />
         </RoleTeamOwner>
       )}
-
       <ConfirmDialog
         open={roleConfirmOpen}
         onOpenChange={setRoleConfirmOpen}

@@ -7,7 +7,7 @@ import cn.luixtech.passport.server.dto.ManagedUser;
 import cn.luixtech.passport.server.dto.TeamMemberInvitation;
 import cn.luixtech.passport.server.service.MailService;
 import cn.luixtech.passport.server.service.UserRoleService;
-import cn.luixtech.passport.server.domain.Role;
+
 import cn.luixtech.passport.server.service.UserService;
 import org.springframework.context.annotation.Lazy;
 import org.apache.commons.collections4.CollectionUtils;
@@ -71,7 +71,7 @@ public class TeamUserServiceImpl implements TeamUserService {
     public void invite(String teamId, List<TeamMemberInvitation> invitations) {
         for (TeamMemberInvitation invitation : invitations) {
             String email = invitation.getEmail();
-            String role = invitation.getRole();
+            Set<String> roles = invitation.getRoles();
             ManagedUser user = userService.findByEmail(email);
             if (user != null) {
                 if (teamUserRepository.findByTeamIdAndUserId(teamId, user.getUsername()).isEmpty()) {
@@ -79,7 +79,7 @@ public class TeamUserServiceImpl implements TeamUserService {
                     teamUserRepository.save(teamUser);
                     java.util.Set<String> currentRoles = userRoleService.findRoleIds(user.getUsername());
                     java.util.Set<String> updatedRoles = new java.util.HashSet<>(currentRoles);
-                    updatedRoles.add(Role.TEAM_MEMBER.equals(role) ? Role.TEAM_MEMBER : role);
+                    updatedRoles.addAll(roles);
                     userRoleService.update(user.getUsername(), updatedRoles);
                 }
             }

@@ -128,24 +128,28 @@ public class TeamController {
         return ResponseEntity.ok().build();
     }
 
-//    @Operation(summary = "batch resend team invitations")
-//    @PostMapping("/api/invitations/batch-resend")
-//    public ResponseEntity<Void> batchResendInvitations(HttpServletRequest request, @RequestBody java.util.List<String> invitationIds) {
-//        teamService.resendInvitations(request, invitationIds, AuthUtils.getCurrentUsername());
-//        return ResponseEntity.ok().build();
-//    }
-//
-//    @Operation(summary = "batch delete team invitations")
-//    @PostMapping("/api/invitations/batch-delete")
-//    public ResponseEntity<Void> batchDeleteInvitations(@RequestBody java.util.List<String> invitationIds) {
-//        teamService.deleteInvitations(invitationIds, AuthUtils.getCurrentUsername());
-//        return ResponseEntity.ok().build();
-//    }
+    // @Operation(summary = "batch resend team invitations")
+    // @PostMapping("/api/invitations/batch-resend")
+    // public ResponseEntity<Void> batchResendInvitations(HttpServletRequest
+    // request, @RequestBody java.util.List<String> invitationIds) {
+    // teamService.resendInvitations(request, invitationIds,
+    // AuthUtils.getCurrentUsername());
+    // return ResponseEntity.ok().build();
+    // }
+    //
+    // @Operation(summary = "batch delete team invitations")
+    // @PostMapping("/api/invitations/batch-delete")
+    // public ResponseEntity<Void> batchDeleteInvitations(@RequestBody
+    // java.util.List<String> invitationIds) {
+    // teamService.deleteInvitations(invitationIds, AuthUtils.getCurrentUsername());
+    // return ResponseEntity.ok().build();
+    // }
 
-    @Operation(summary = "update team member role")
+    @Operation(summary = "update team member roles")
     @PutMapping("/api/teams/{teamId}/members/{userId}/role")
-    public ResponseEntity<Void> updateMemberRole(@PathVariable String teamId, @PathVariable String userId, @RequestParam String role) {
-        teamService.updateMemberRole(teamId, userId, role, AuthUtils.getCurrentUsername());
+    public ResponseEntity<Void> updateMemberRole(@PathVariable String teamId, @PathVariable String userId,
+            @RequestBody java.util.Set<String> roles) {
+        teamService.updateMemberRoles(teamId, userId, roles, AuthUtils.getCurrentUsername());
         return ResponseEntity.ok().build();
     }
 }

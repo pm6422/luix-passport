@@ -35,8 +35,8 @@ public class TeamInvitation {
   private String memberEmail;
 
   @NotNull
-  @Column(nullable = false, length = 20)
-  private String memberRole;
+  @Column(nullable = false, length = 1000)
+  private String memberRoles;
 
   @NotNull
   @Column(nullable = false, length = 50)

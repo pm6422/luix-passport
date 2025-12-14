@@ -111,6 +111,7 @@ public class TeamServiceImpl implements TeamService {
       member.setFirstName(user.getFirstName());
       member.setLastName(user.getLastName());
       Set<String> roleIds = userRoleService.findRoleIds(user.getUsername());
+      member.setRoles(roleIds);
       member.setRole(roleIds.contains(Role.TEAM_OWNER) ? Role.TEAM_OWNER : Role.TEAM_MEMBER);
       member.setJoinedAt(user.getCreatedAt());
 
@@ -157,7 +158,8 @@ public class TeamServiceImpl implements TeamService {
       }
 
       // Check for existing invitation (unregistered or registered and not finalized)
-      Optional<TeamInvitation> existingUnregistered = teamInvitationRepository.findByTeamIdAndMemberEmailAndStatus(teamId,
+      Optional<TeamInvitation> existingUnregistered = teamInvitationRepository.findByTeamIdAndMemberEmailAndStatus(
+          teamId,
           invitation.getEmail(), TeamInvitation.STATUS_UNREGISTERED);
       Optional<TeamInvitation> existingRegistered = teamInvitationRepository.findByTeamIdAndMemberEmailAndStatus(teamId,
           invitation.getEmail(), TeamInvitation.STATUS_REGISTERED);
@@ -169,9 +171,10 @@ public class TeamServiceImpl implements TeamService {
       TeamInvitation invite = new TeamInvitation();
       invite.setTeamId(teamId);
       invite.setMemberEmail(invitation.getEmail());
-      invite.setMemberRole(invitation.getRole());
+      invite.setMemberRoles(String.join(",", invitation.getRoles()));
       invite.setInviterId(inviterId);
-      invite.setStatus(existingUser.isPresent() ? TeamInvitation.STATUS_REGISTERED : TeamInvitation.STATUS_UNREGISTERED);
+      invite
+          .setStatus(existingUser.isPresent() ? TeamInvitation.STATUS_REGISTERED : TeamInvitation.STATUS_UNREGISTERED);
       invite.setCreatedAt(Instant.now());
       invite.setExpiresAt(Instant.now().plus(7, ChronoUnit.DAYS));
       teamInvitationRepository.save(invite);
@@ -183,7 +186,7 @@ public class TeamServiceImpl implements TeamService {
               invitation.getEmail(),
               team.getName(),
               inviterName,
-              invitation.getRole(),
+              String.join(",", invitation.getRoles()),
               getRequestUrl(request),
               invite.getExpiresAt(),
               inviterUser.getLocale());
@@ -253,7 +256,8 @@ public class TeamServiceImpl implements TeamService {
 
   @Override
   public List<TeamInvitation> findUserInvitations(String email) {
-    return teamInvitationRepository.findByMemberEmailAndStatusAndExpiresAtAfter(email, TeamInvitation.STATUS_REGISTERED, Instant.now());
+    return teamInvitationRepository.findByMemberEmailAndStatusAndExpiresAtAfter(email, TeamInvitation.STATUS_REGISTERED,
+        Instant.now());
   }
 
   @Override
@@ -278,7 +282,9 @@ public class TeamServiceImpl implements TeamService {
 
     Set<String> currentRoles = userRoleService.findRoleIds(userId);
     Set<String> updatedRoles = new java.util.HashSet<>(currentRoles);
-    updatedRoles.add(invitation.getMemberRole());
+    if (invitation.getMemberRoles() != null) {
+        updatedRoles.addAll(Arrays.asList(invitation.getMemberRoles().split(",")));
+    }
     userRoleService.update(userId, updatedRoles);
 
     // Update invitation status
@@ -312,8 +318,7 @@ public class TeamServiceImpl implements TeamService {
     List<String> exclude = Arrays.asList(
         TeamInvitation.STATUS_ACCEPTED,
         TeamInvitation.STATUS_REJECTED,
-        TeamInvitation.STATUS_EXPIRED
-    );
+        TeamInvitation.STATUS_EXPIRED);
     List<TeamInvitation> toExpire = teamInvitationRepository.findByExpiresAtBeforeAndStatusNotIn(now, exclude);
     if (toExpire.isEmpty()) {
       return;
@@ -360,7 +365,7 @@ public class TeamServiceImpl implements TeamService {
             teamRepository.findById(invitation.getTeamId()).map(Team::getName)
                 .orElse(""),
             inviterName,
-            invitation.getMemberRole(),
+            invitation.getMemberRoles(),
             getRequestUrl(request),
             invitation.getExpiresAt(),
             inviterUser.getLocale());
@@ -375,24 +380,40 @@ public class TeamServiceImpl implements TeamService {
 
   @Override
   @Transactional(rollbackFor = Exception.class)
-  public void updateMemberRole(String teamId, String userId, String role, String operatorId) {
-    if (!Role.TEAM_OWNER.equals(role) && !Role.TEAM_MEMBER.equals(role)) {
-      throw new IllegalArgumentException("Invalid role");
+  public void updateMemberRoles(String teamId, String userId, Set<String> roles, String operatorId) {
+    // Ensure mutually exclusive roles logic (frontend should handle this, but
+    // backend must validate)
+    // Actually, user said only one of TEAM_OWNER / TEAM_MEMBER can be selected.
+    if (roles.contains(Role.TEAM_OWNER) && roles.contains(Role.TEAM_MEMBER)) {
+      throw new IllegalArgumentException("Cannot be both Team Owner and Team Member");
     }
+    if (!roles.contains(Role.TEAM_OWNER) && !roles.contains(Role.TEAM_MEMBER)) {
+      // Must have one
+      throw new IllegalArgumentException("Must have either Team Owner or Team Member role");
+    }
+
     teamUserRepository.findByTeamIdAndUserId(teamId, operatorId)
         .orElseThrow(() -> new IllegalArgumentException("Operator is not a member of the team"));
     Set<String> operatorRoleIds = userRoleService.findRoleIds(operatorId);
     if (!operatorRoleIds.contains(Role.TEAM_OWNER)) {
       throw new IllegalArgumentException("Only team owners can edit member roles");
     }
-    if (operatorId.equals(userId) && !Role.TEAM_OWNER.equals(role)) {
-      throw new IllegalArgumentException("Owners cannot change their own role");
+
+    // Check if operator is modifying themselves
+    if (operatorId.equals(userId)) {
+      // If operator is removing their own owner role
+      if (!roles.contains(Role.TEAM_OWNER)) {
+        throw new IllegalArgumentException("Owners cannot remove their own owner role");
+      }
     }
+
     teamUserRepository.findByTeamIdAndUserId(teamId, userId)
         .orElseThrow(() -> new IllegalArgumentException("Target user is not a member of the team"));
     Set<String> targetRoleIds = userRoleService.findRoleIds(userId);
-    boolean targetIsOwner = targetRoleIds.contains(Role.TEAM_OWNER);
-    if (targetIsOwner && !Role.TEAM_OWNER.equals(role)) {
+    boolean targetWasOwner = targetRoleIds.contains(Role.TEAM_OWNER);
+    boolean targetIsOwner = roles.contains(Role.TEAM_OWNER);
+
+    if (targetWasOwner && !targetIsOwner) {
       long ownerCount = teamUserRepository.findByTeamId(teamId).stream().map(TeamUser::getUserId)
           .filter(uid -> userRoleService.findRoleIds(uid).contains(Role.TEAM_OWNER))
           .count();
@@ -400,14 +421,7 @@ public class TeamServiceImpl implements TeamService {
         throw new IllegalArgumentException("At least one team owner must remain");
       }
     }
-    Set<String> newRoles = new java.util.HashSet<>(targetRoleIds);
-    if (Role.TEAM_OWNER.equals(role)) {
-      newRoles.add(Role.TEAM_OWNER);
-      newRoles.remove(Role.TEAM_MEMBER);
-    } else {
-      newRoles.remove(Role.TEAM_OWNER);
-      newRoles.add(Role.TEAM_MEMBER);
-    }
-    userRoleService.update(userId, newRoles);
+
+    userRoleService.update(userId, roles);
   }
 }
