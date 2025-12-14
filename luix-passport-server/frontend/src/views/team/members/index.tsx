@@ -22,7 +22,7 @@ import { TeamService, TeamMember, TeamInvitation } from "@/services/team-service
 import { AccountService } from "@/services/account-service"
 import { useLoginUserStore } from "@/stores/login-user-store"
 import { toast } from "sonner"
-import { RoleAny } from "@/components/custom/role/role-any"
+import { RoleTeamOwner } from "@/components/custom/role"
 
 export default function TeamMembers() {
   const [openInvite, setOpenInvite] = useState(false)
@@ -129,12 +129,12 @@ export default function TeamMembers() {
               Here you can manage the members of your team.
             </p>
           </div>
-          <RoleAny roleIds={["TEAM_OWNER"]}>
+          <RoleTeamOwner>
             <Button onClick={() => setOpenInvite(true)}>
               <IconPlus className="mr-2 size-4" />
               Invite Members
             </Button>
-          </RoleAny>
+          </RoleTeamOwner>
         </div>
 
         <div className="flex items-center space-x-2">
@@ -191,7 +191,7 @@ export default function TeamMembers() {
                   </TableCell>
                   <TableCell>{member.email}</TableCell>
                   <TableCell>
-                    <RoleAny roleIds={["TEAM_OWNER"]}>
+                    <RoleTeamOwner>
                       <div className="flex items-center gap-2">
                         <Select
                           value={member.role}
@@ -216,7 +216,7 @@ export default function TeamMembers() {
                           </SelectContent>
                         </Select>
                       </div>
-                    </RoleAny>
+                    </RoleTeamOwner>
                     {!hasRole("TEAM_OWNER") && (
                       <div className="flex gap-2">
                         <Badge variant="outline" className="capitalize">{member.role}</Badge>
@@ -234,7 +234,7 @@ export default function TeamMembers() {
       </div>
 
       {/* Pending Invites Section */}
-      <RoleAny roleIds={["TEAM_OWNER"]}>
+      <RoleTeamOwner>
         <div className="space-y-4">
           <div className="space-y-1">
             <h2 className="text-xl font-semibold tracking-tight">Pending Invites</h2>
@@ -323,10 +323,10 @@ export default function TeamMembers() {
             </Table>
           </div>
         </div>
-      </RoleAny>
+      </RoleTeamOwner>
 
       {teamId && (
-        <RoleAny roleIds={["TEAM_OWNER"]}>
+        <RoleTeamOwner>
           <InviteMembersDialog
             open={openInvite}
             onOpenChange={setOpenInvite}
@@ -335,7 +335,7 @@ export default function TeamMembers() {
               loadPendingInvitations()
             }}
           />
-        </RoleAny>
+        </RoleTeamOwner>
       )}
     </LayoutBody>
   )

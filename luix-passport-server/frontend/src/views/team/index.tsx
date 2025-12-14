@@ -7,7 +7,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { TeamService, Team } from "@/services/team-service"
 import { toast } from "sonner"
 import { useLoginUserStore } from "@/stores/login-user-store"
-import { RoleAny } from "@/components/custom/role/role-any"
+import { RoleTeamOwner } from "@/components/custom/role"
+
 
 export default function TeamDashboard() {
   const { teamId } = useParams()
@@ -65,17 +66,17 @@ export default function TeamDashboard() {
               <AvatarImage src={avatarUrl} alt={team?.name || "Team"} />
               <AvatarFallback>{team?.name?.[0]?.toUpperCase() || "T"}</AvatarFallback>
             </Avatar>
-            <RoleAny roleIds={["TEAM_OWNER"]}>
+            <RoleTeamOwner>
               <div className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
                 <IconCamera className="size-6 text-white" />
               </div>
-            </RoleAny>
+            </RoleTeamOwner>
           </div>
           <div>
             <h1 className="text-2xl font-bold tracking-tight">{team?.name || ""}</h1>
-            <RoleAny roleIds={["TEAM_OWNER"]}>
+            <RoleTeamOwner>
               <p className="text-sm text-muted-foreground">Click avatar to change</p>
-            </RoleAny>
+            </RoleTeamOwner>
           </div>
         </div>
         <input

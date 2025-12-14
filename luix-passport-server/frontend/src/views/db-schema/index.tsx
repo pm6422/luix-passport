@@ -1,10 +1,10 @@
 import { LayoutBody } from "@/layouts/layout-definitions"
 import { Card } from "@/components/ui/card"
-import { RoleAny } from "@/components/custom/role/role-any"
+import { RoleDeveloper } from "@/components/custom/role"
 
 export default function DbSchema() {
   return (
-    <RoleAny roleIds={["ROLE_DEVELOPER"]}>
+    <RoleDeveloper>
       <LayoutBody className="flex flex-col" fixedHeight>
         <Card className="py-0">
           <iframe
@@ -15,6 +15,6 @@ export default function DbSchema() {
           </iframe>
         </Card>
       </LayoutBody>
-    </RoleAny>
+    </RoleDeveloper>
   )
 }

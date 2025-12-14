@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Activity, CreditCard, Lock, Shield, User, Mail } from "lucide-react"
-import { RoleAny } from "@/components/custom/role/role-any"
+import { RoleAdmin } from "@/components/custom/role"
 import { LayoutBody } from "@/layouts/layout-definitions"
 import { useEffect, useState } from "react"
 import { TeamService, TeamInvitation } from "@/services/team-service"
@@ -58,7 +58,7 @@ export default function ConsolePage() {
         </div>
 
         {/* Admin Only Section */}
-        <RoleAny roleIds={["ROLE_ADMIN"]}>
+        <RoleAdmin>
           <div className="mb-8">
             <Card>
               <CardHeader>
@@ -113,7 +113,7 @@ export default function ConsolePage() {
               </CardContent>
             </Card>
           </div>
-        </RoleAny>
+        </RoleAdmin>
 
         {/* Main Content */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

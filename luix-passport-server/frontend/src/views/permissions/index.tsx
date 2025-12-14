@@ -5,7 +5,7 @@ import { DataTable } from "@/components/custom/data-table/server-pagination-data
 import { tableColumns } from "./table/table-columns"
 import { type Permission, type PermissionCriteriaSchema } from "@/domains/permission"
 import { PermissionService } from "@/services/permission-service"
-import { RoleAny } from "@/components/custom/role/role-any"
+import { RoleAdmin } from "@/components/custom/role"
 
 export default function Permissions() {
   // State to hold the fetched data
@@ -43,7 +43,7 @@ export default function Permissions() {
   }
 
   function deleteRow(row: Permission): Promise<void> {
-    if(!row.id) {
+    if (!row.id) {
       return Promise.reject("Invalid empty id")
     }
     return PermissionService.deleteById(row.id).then(() => {
@@ -56,21 +56,21 @@ export default function Permissions() {
   }
 
   return (
-    <RoleAny roleIds={["ROLE_ADMIN"]}>
+    <RoleAdmin>
       <LayoutBody className="flex flex-col" fixedHeight>
         <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-y-0">
-          <DataTable 
+          <DataTable
             columns={tableColumns(entityName, save, deleteRow)}
-            data={tableData} 
-            totalCount={totalCount} 
-            totalPages={totalPages} 
-            loadPage={loadPage} 
+            data={tableData}
+            totalCount={totalCount}
+            totalPages={totalPages}
+            loadPage={loadPage}
             deleteRows={deleteRows}
           >
             <DataTableToolbar entityName={entityName} loadPage={loadPage} save={save} />
           </DataTable>
         </div>
       </LayoutBody>
-    </RoleAny>
+    </RoleAdmin>
   )
 }

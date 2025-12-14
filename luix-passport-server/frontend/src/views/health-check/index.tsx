@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { IconRefresh, IconEye } from "@tabler/icons-react"
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
 import { ManagementService } from "@/services/management-service"
-import { RoleAny } from "@/components/custom/role/role-any"
+import { RoleDeveloper } from "@/components/custom/role"
 
 interface HealthData {
   name: string
@@ -140,7 +140,7 @@ export default function HealthChecksPage() {
   }, [refresh])
 
   return (
-    <RoleAny roleIds={["ROLE_DEVELOPER"]}>
+    <RoleDeveloper>
       <LayoutBody className="flex flex-col" fixedHeight>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between gap-4">
@@ -208,6 +208,6 @@ export default function HealthChecksPage() {
           </div>
         </Drawer>
       </LayoutBody>
-    </RoleAny>
+    </RoleDeveloper>
   )
 }
