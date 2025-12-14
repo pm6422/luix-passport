@@ -63,6 +63,13 @@ export function TeamRoleSelector({
     onChange(newRoles)
   }
 
+  const SYSTEM_ROLES = ["ROLE_USER", "ROLE_ANONYMOUS"]
+  const TEAM_ROLES = ["TEAM_OWNER", "TEAM_MEMBER"]
+
+  const systemRoles = allRoles.filter(r => SYSTEM_ROLES.includes(r))
+  const teamRoles = allRoles.filter(r => TEAM_ROLES.includes(r))
+  const customRoles = allRoles.filter(r => !SYSTEM_ROLES.includes(r) && !TEAM_ROLES.includes(r))
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -73,27 +80,63 @@ export function TeamRoleSelector({
           disabled={disabled}
         >
           <span className="truncate">
-            {value.join(", ")}
+            {/* Show meaningful roles first? Or just all joined.  */}
+            {value.length > 0 ? value.join(", ") : "Select roles"}
           </span>
           <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align={align}>
-        <DropdownMenuLabel>Roles</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        {allRoles.map((role) => {
-          const isChecked = value.includes(role)
-          return (
-            <DropdownMenuCheckboxItem
-              key={role}
-              checked={isChecked}
-              onSelect={(e) => e.preventDefault()}
-              onCheckedChange={(checked) => handleRoleChange(role, checked)}
-            >
-              {role}
-            </DropdownMenuCheckboxItem>
-          )
-        })}
+
+        {systemRoles.length > 0 && (
+          <>
+            <DropdownMenuLabel>System Roles (Mandatory)</DropdownMenuLabel>
+            {systemRoles.map((role) => (
+              <DropdownMenuCheckboxItem
+                key={role}
+                checked={value.includes(role)}
+                disabled
+                onSelect={(e) => e.preventDefault()}
+              >
+                {role}
+              </DropdownMenuCheckboxItem>
+            ))}
+            <DropdownMenuSeparator />
+          </>
+        )}
+
+        {teamRoles.length > 0 && (
+          <>
+            <DropdownMenuLabel>Team Access (One Required)</DropdownMenuLabel>
+            {teamRoles.map((role) => (
+              <DropdownMenuCheckboxItem
+                key={role}
+                checked={value.includes(role)}
+                onSelect={(e) => e.preventDefault()}
+                onCheckedChange={(checked) => handleRoleChange(role, checked)}
+              >
+                {role}
+              </DropdownMenuCheckboxItem>
+            ))}
+            <DropdownMenuSeparator />
+          </>
+        )}
+
+        {customRoles.length > 0 && (
+          <>
+            <DropdownMenuLabel>Custom Roles</DropdownMenuLabel>
+            {customRoles.map((role) => (
+              <DropdownMenuCheckboxItem
+                key={role}
+                checked={value.includes(role)}
+                onSelect={(e) => e.preventDefault()}
+                onCheckedChange={(checked) => handleRoleChange(role, checked)}
+              >
+                {role}
+              </DropdownMenuCheckboxItem>
+            ))}
+          </>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   )
