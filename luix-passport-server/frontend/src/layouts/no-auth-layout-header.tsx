@@ -1,5 +1,5 @@
-import { TopNav } from "@/components/top-nav.tsx"
-import { AccountNav } from "@/components/account-nav"
+import { TopNav } from "@/components/site/top-nav.tsx"
+import { AccountNav } from "@/components/site/account-nav"
 import { useLoginUserStore } from "@/stores/login-user-store"
 import { Button } from "@/components/ui/button"
 import { Link } from "react-router-dom"
