@@ -2,6 +2,7 @@ import http from "@/axios"
 import type { AxiosResponse } from "axios"
 import axios from "axios"
 import type { AppInfo } from "@/stores/app-info-store"
+import appInfoData from "@/data/app-info.json"
 
 export type HealthComponent = {
   status?: "UP" | "DOWN" | "UNKNOWN"
@@ -20,7 +21,7 @@ export class ManagementService {
       const res = await axios.get<AppInfo>("/management/info")
       return res.data
     } catch (_error) {
-      return {} as AppInfo
+      return appInfoData as AppInfo
     }
   }
 
