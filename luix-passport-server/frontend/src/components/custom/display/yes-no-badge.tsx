@@ -27,7 +27,11 @@ export function YesNoBadge({ value, className }: YesNoBadgeProps) {
       </TooltipTrigger>
       <TooltipContent
         side="top"
-        className="bg-secondary text-secondary-foreground [&_svg]:!bg-secondary [&_svg]:!fill-secondary"
+        className={
+          value
+            ? "bg-green-600 text-white [&_svg]:!bg-green-600 [&_svg]:!fill-green-600"
+            : "bg-red-600 text-white [&_svg]:!bg-red-600 [&_svg]:!fill-red-600"
+        }
       >
         {value ? "Yes" : "No"}
       </TooltipContent>
