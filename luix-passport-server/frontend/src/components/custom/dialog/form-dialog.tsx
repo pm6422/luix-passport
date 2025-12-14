@@ -21,24 +21,26 @@ import { getErrorMessage } from "@/lib/handle-error"
 import { cn } from "@/lib/utils"
 import type { z } from "zod"
 
-interface LoadResult<TOptions = any> {
+interface LoadResult<TFV extends FieldValues, TOptions = unknown> {
   options?: TOptions
-  entity?: any
+  entity?: TFV
 }
+
+// Type helper removed to avoid generic identity issues
 
 interface FormDialogProps<
   TFieldValues extends FieldValues,
-  TOptions = any
+  TOptions = unknown
 > {
   children: ReactNode
   entityName: string
   id?: string | null
-  schema: z.ZodType<TFieldValues, z.ZodTypeDef, any>
+  schema: z.ZodType<TFieldValues, z.ZodTypeDef, unknown>
   defaultValues: DefaultValues<TFieldValues>
   save?: (formData: TFieldValues) => Promise<void>
   afterSave?: (success: boolean) => void
-  onLoad?: (id?: string | null) => Promise<LoadResult<TOptions>>
-  renderFields: (form: UseFormReturn<TFieldValues>, options: TOptions) => ReactNode
+  onLoad?: (id?: string | null) => Promise<LoadResult<TFieldValues, TOptions>>
+  renderFields: (form: UseFormReturn<TFieldValues, unknown, TFieldValues>, options: TOptions) => ReactNode
   size?: "sm" | "md" | "lg"
   readonly?: boolean
   debug?: boolean
@@ -48,7 +50,7 @@ interface Props<T extends FieldValues> {
   children: ReactNode
   entityName: string
   id?: string | null
-  form: UseFormReturn<T>
+  form: UseFormReturn<T, unknown, T>
   size?: "sm" | "md" | "lg"
   save?: (formData: T) => Promise<void>
   afterSave?: (success: boolean) => void
@@ -57,7 +59,7 @@ interface Props<T extends FieldValues> {
   debug?: boolean
 }
 
-const FormDialogContent = <T extends FieldValues>({
+function FormDialogContent<T extends FieldValues>({
   children,
   entityName,
   id,
@@ -68,7 +70,7 @@ const FormDialogContent = <T extends FieldValues>({
   setOpen,
   readonly = false,
   debug = false
-}: Props<T>) => {
+}: Props<T>) {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<FieldErrors>({})
 
@@ -144,7 +146,7 @@ const FormDialogContent = <T extends FieldValues>({
 
 export function FormDialog<
   TFieldValues extends FieldValues,
-  TOptions = any
+  TOptions = unknown
 >({
   children,
   entityName,
@@ -168,7 +170,7 @@ export function FormDialog<
     onLoadRef.current = onLoad
   }, [onLoad])
 
-  const form = useForm<TFieldValues>({
+  const form = useForm<TFieldValues, unknown, TFieldValues>({
     // @ts-expect-error - zodResolver has complex type constraints that are difficult to satisfy with generic schemas
     resolver: zodResolver(schema),
     defaultValues,
