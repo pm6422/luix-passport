@@ -127,11 +127,11 @@ export function tableColumns(
                   <PopoverTrigger asChild>
                     <Badge variant="outline" className="px-1.5 py-0.5 text-[10px] cursor-pointer">+{hiddenCount}</Badge>
                   </PopoverTrigger>
-                  <PopoverContent align="start" className="w-52 p-2">
-                    <ScrollArea className="h-40">
-                      <div className="flex flex-wrap gap-1">
+                  <PopoverContent align="start" className="w-fit p-2">
+                    <ScrollArea>
+                      <div className="flex flex-col gap-1">
                         {roles.map((item, index) => (
-                          <Badge key={index} variant="secondary" className="px-1.5 py-0.5 text-[10px]">
+                          <Badge key={index} variant="secondary" className="px-1.5 py-0.5 text-[10px] w-fit justify-start">
                             {item}
                           </Badge>
                         ))}
