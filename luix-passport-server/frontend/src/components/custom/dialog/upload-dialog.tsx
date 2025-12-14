@@ -36,15 +36,15 @@ const formSchema = z.object({
 type UploadFormSchema = z.infer<typeof formSchema>
 
 interface Props {
-  children: React.ReactNode,
-  entityName: string,
-  description?: string,
-  multiple?: boolean,
-  maxFiles?: number,
-  maxSize?: number,
-  accept?: Accept,
-  templateUrl?: string,
-  upload: (formData: { files: File[] }) => Promise<unknown>,
+  children: React.ReactNode
+  entityName: string
+  description?: string
+  multiple?: boolean
+  maxFiles?: number
+  maxSize?: number
+  accept?: Accept
+  templateUrl?: string
+  upload: (formData: { files: File[] }) => Promise<unknown>
   afterUpload?: (success: boolean) => void
 }
 
@@ -74,10 +74,10 @@ export function UploadDialog({
 
   // refer to https://react-dropzone.js.org/#src
   const dropzoneOptions = {
-    multiple: multiple,
-    maxFiles: maxFiles,
-    maxSize: maxSize,
-    accept: accept
+    multiple,
+    maxFiles,
+    maxSize,
+    accept
   } satisfies DropzoneOptions
 
   function onSubmit(formData: UploadFormSchema): void {
@@ -114,7 +114,7 @@ export function UploadDialog({
           <DialogTitle className="capitalize">Upload file</DialogTitle>
           <DialogDescription></DialogDescription>
         </DialogHeader>
-        <Separator/>
+        <Separator />
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -149,9 +149,8 @@ export function UploadDialog({
                           <FileUploaderItem
                             key={i}
                             index={i}
-                            aria-roledescription={`file ${i + 1} containing ${
-                              file.name
-                            }`}
+                            aria-roledescription={`file ${i + 1} containing ${file.name
+                              }`}
                             className="p-5"
                           >
                             {file.name}
@@ -171,10 +170,10 @@ export function UploadDialog({
               </div>
             )}
             <DialogFooter className="gap-2 pt-2 sm:space-x-0">
-              {templateUrl && 
+              {templateUrl &&
                 <a href={templateUrl} download="template" target="_blank">
-                  <Button 
-                    type="button" 
+                  <Button
+                    type="button"
                     variant={"secondary"}
                     className="w-full"
                   >
@@ -182,9 +181,9 @@ export function UploadDialog({
                   </Button>
                 </a>
               }
-              {!templateUrl && 
+              {!templateUrl &&
                 <DialogClose asChild>
-                  <Button type="button" variant="outline" onClick={() => { if (afterUpload) afterUpload(true) }}>
+                  <Button type="button" variant="outline" onClick={() => { if (afterUpload) afterUpload(false) }}>
                     Cancel
                   </Button>
                 </DialogClose>

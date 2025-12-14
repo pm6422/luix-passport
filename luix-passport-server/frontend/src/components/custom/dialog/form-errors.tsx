@@ -16,14 +16,14 @@ interface ErrorItem {
 interface Props<T extends FieldValues> {
   children?: React.ReactNode
   form: UseFormReturn<T>
-  variant?: 'default' | 'destructive'
+  variant?: "default" | "destructive"
   error?: FieldErrors
 }
 
 const FormErrors = <T extends FieldValues>({
   children,
   form,
-  variant = 'destructive',
+  variant = "destructive",
   error,
 }: Props<T>) => {
   const [errors, setErrors] = useState<ErrorItem[]>([])
@@ -57,22 +57,22 @@ const FormErrors = <T extends FieldValues>({
   return (
     Object.values(form.formState.errors).length > 0 && (
       <Alert variant={variant}>
-        <AlertTitle className='mb-3 flex items-center'>
-          <IconAlertSquareRoundedFilled className='me-1 size-5' />
+        <AlertTitle className="mb-3 flex items-center">
+          <IconAlertSquareRoundedFilled className="me-1 size-5" />
           There were errors in your form, please check inputs and retry.
         </AlertTitle>
-        <div className='space-y-1'>
+        <div className="space-y-1">
           {errors.map((err, index) => (
             <div
               key={`${err.field}-${index}`}
-              className='ms-1 whitespace-nowrap'
+              className="ms-1 whitespace-nowrap"
             >
               - {err.field}: {err.message}
             </div>
           ))}
         </div>
         {children && (
-          <AlertDescription className='mt-3 pr-8 font-light'>
+          <AlertDescription className="mt-3 pr-8 font-light">
             {children}
           </AlertDescription>
         )}
@@ -81,8 +81,8 @@ const FormErrors = <T extends FieldValues>({
   )
 }
 
-function isFieldError(error: unknown): error is FieldError {
-  return typeof error === 'object' && error !== null && 'message' in error
+const isFieldError = (error: unknown): error is FieldError => {
+  return typeof error === "object" && error !== null && "message" in error
 }
 
 export default FormErrors
