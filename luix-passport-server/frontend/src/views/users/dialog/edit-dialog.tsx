@@ -25,7 +25,8 @@ import Notice from "@/components/custom/notice"
 import { useLoginUserStore } from "@/stores/login-user-store"
 
 import { TeamRoleSelector } from "@/components/custom/team-role-selector"
-import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form"
+import { RequiredFormLabel } from "@/components/custom/required-form-label"
+import { FormField, FormItem, FormControl, FormMessage } from "@/components/ui/form"
 
 interface EditDialogProps {
   children: ReactNode,
@@ -185,7 +186,7 @@ export function EditDialog({
           name="roleIds"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Roles <span className="text-destructive">*</span></FormLabel>
+              <RequiredFormLabel required>Roles</RequiredFormLabel>
               <FormControl>
                 <TeamRoleSelector
                   value={field.value || []}
