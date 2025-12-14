@@ -56,7 +56,7 @@ export function InviteMembersFormFields({
               )}
             </div>
 
-            <div className="flex flex-col">
+            <div className="flex flex-col pl-1">
               <TeamRoleSelector
                 value={form.watch(`invitations.${index}.roles`) || []}
                 allRoles={allRoles}
