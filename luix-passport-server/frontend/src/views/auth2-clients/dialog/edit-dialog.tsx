@@ -9,7 +9,7 @@ import { Option } from "@/components/custom/form-field/multi-select"
 import SwitchFormField from "@/components/custom/form-field/switch"
 import { type Auth2Client, auth2ClientSchema, initialAuth2ClientState } from "@/domains/auth2-client"
 import { Oauth2ClientService } from "@/services/oauth2-client-service"
-import { MultiTextInput } from "@/components/custom/multi-text-input"
+import MultiTextInputFormField from "@/components/custom/form-field/multi-text-input"
 
 interface EditDialogProps {
   children: ReactNode,
@@ -62,32 +62,32 @@ export function EditDialog({
         {children}
       </DialogTrigger>
       <SaveDialogContent<Auth2Client> entityName={entityName} id={id} form={form} save={save} setOpen={setOpen} debug={false}>
-        <InputFormField 
-          control={form.control} 
-          name="clientId" 
-          label="Client ID" 
-          required 
+        <InputFormField
+          control={form.control}
+          name="clientId"
+          label="Client ID"
+          required
           disabled={!!id}
         />
 
-        <InputFormField 
-          control={form.control} 
-          name="clientName" 
-          label="Client Name" 
+        <InputFormField
+          control={form.control}
+          name="clientName"
+          label="Client Name"
           required
         />
 
-        <InputFormField 
-          control={form.control} 
-          name="rawClientSecret" 
-          label="Raw Client Secret" 
-          required 
-          description="Do not forget the secret." 
+        <InputFormField
+          control={form.control}
+          name="rawClientSecret"
+          label="Raw Client Secret"
+          required
+          description="Do not forget the secret."
           hide={!!id}
         />
 
         <MultiSelectFormField
-          control={form.control} 
+          control={form.control}
           name="clientAuthenticationMethods"
           label="Authentication Methods"
           required
@@ -96,7 +96,7 @@ export function EditDialog({
         />
 
         <MultiSelectFormField
-          control={form.control} 
+          control={form.control}
           name="authorizationGrantTypes"
           label="Authentication Grant Types"
           required
@@ -104,7 +104,8 @@ export function EditDialog({
           multiple={true}
         />
 
-        <MultiTextInput
+        <MultiTextInputFormField
+          control={form.control}
           name="redirectUris"
           label="Redirect URIs"
           required
@@ -113,7 +114,8 @@ export function EditDialog({
           addButtonText="Add URI"
         />
 
-        <MultiTextInput
+        <MultiTextInputFormField
+          control={form.control}
           name="postLogoutRedirectUris"
           label="Post Logout Redirect URIs"
           required
@@ -122,7 +124,7 @@ export function EditDialog({
         />
 
         <MultiSelectFormField
-          control={form.control} 
+          control={form.control}
           name="scopes"
           label="Scopes"
           required
@@ -130,9 +132,9 @@ export function EditDialog({
           multiple={true}
         />
 
-        <SwitchFormField 
-          control={form.control} 
-          name="enabled" 
+        <SwitchFormField
+          control={form.control}
+          name="enabled"
           label="Enabled"
           description="Prevent login accesswhen disabled."
         />
