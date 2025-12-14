@@ -5,7 +5,7 @@ import { DataTable } from "@/components/custom/data-table/server-pagination-data
 import { tableColumns } from "./table/table-columns"
 import { type User, type UserCriteriaSchema } from "@/domains/user"
 import { UserService } from "@/services/user-service"
-import { RoleAdmin } from "@/components/custom/role"
+import { RoleAdmin } from "@/permission/role-control"
 
 export default function DataDict() {
   // State to hold the fetched data

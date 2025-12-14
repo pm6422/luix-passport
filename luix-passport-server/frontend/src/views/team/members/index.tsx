@@ -21,11 +21,11 @@ import { TeamService, TeamMember, TeamInvitation } from "@/services/team-service
 import { AccountService } from "@/services/account-service"
 import { useLoginUserStore } from "@/stores/login-user-store"
 import { toast } from "sonner"
-import { RoleTeamOwner } from "@/components/custom/role"
+import { RoleTeamOwner } from "@/permission/role-control"
 import { RoleService } from "@/services/role-service"
 import { ConfirmDialog } from "@/components/custom/confirm-dialog"
 import { TeamRoleSelector } from "@/components/custom/form-field/team-role-selector"
-import { TEAM_OWNER } from "@/constants/role-constants"
+import { TEAM_OWNER } from "@/permission/role-control"
 import {
   Tooltip,
   TooltipContent,

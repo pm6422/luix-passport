@@ -5,7 +5,7 @@ import { DataTable } from "@/components/custom/data-table/server-pagination-data
 import { tableColumns } from "./table/table-columns"
 import { type Permission, type PermissionCriteriaSchema } from "@/domains/permission"
 import { PermissionService } from "@/services/permission-service"
-import { RoleAdmin } from "@/components/custom/role"
+import { RoleAdmin } from "@/permission/role-control"
 
 export default function Permissions() {
   // State to hold the fetched data

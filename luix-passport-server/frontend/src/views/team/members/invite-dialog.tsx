@@ -18,7 +18,7 @@ import { IconPlus, IconMinus } from "@tabler/icons-react"
 import { useEffect, useState } from "react"
 import { RoleService } from "@/services/role-service"
 import { TeamRoleSelector } from "@/components/custom/form-field/team-role-selector"
-import { ROLE_ANONYMOUS, ROLE_USER, TEAM_MEMBER } from "@/constants/role-constants"
+import { ROLE_ANONYMOUS, ROLE_USER, TEAM_MEMBER } from "@/permission/role-control"
 
 const inviteSchema = z.object({
   invitations: z.array(z.object({

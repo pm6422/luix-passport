@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Activity, CreditCard, Lock, Shield, User, Mail } from "lucide-react"
-import { RoleAdmin } from "@/components/custom/role"
+import { RoleAdmin } from "@/permission/role-control"
 import { LayoutBody } from "@/layouts/layout-definitions"
 import { useEffect, useState } from "react"
 import { TeamService, TeamInvitation } from "@/services/team-service"

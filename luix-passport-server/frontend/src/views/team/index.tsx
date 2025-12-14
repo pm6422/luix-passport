@@ -7,7 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { TeamService, Team } from "@/services/team-service"
 import { toast } from "sonner"
 import { useLoginUserStore } from "@/stores/login-user-store"
-import { RoleTeamOwner } from "@/components/custom/role"
+import { RoleTeamOwner } from "@/permission/role-control"
 
 
 export default function TeamDashboard() {

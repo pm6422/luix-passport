@@ -5,7 +5,7 @@ import { DataTable } from "@/components/custom/data-table/server-pagination-data
 import { tableColumns } from "./table/table-columns"
 import { type ScheduleExecutionLog, type ScheduleExecutionLogCriteriaSchema } from "@/domains/schedule-execution-log"
 import { ScheduleExecutionLogService } from "@/services/schedule-execution-log-service"
-import { RoleDeveloper } from "@/components/custom/role"
+import { RoleDeveloper } from "@/permission/role-control"
 
 export default function ScheduleExecutionLogs() {
   // State to hold the fetched data

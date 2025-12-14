@@ -1,6 +1,6 @@
 import { LayoutBody } from "@/layouts/layout-definitions"
 import { Card } from "@/components/ui/card"
-import { RoleDeveloper } from "@/components/custom/role"
+import { RoleDeveloper } from "@/permission/role-control"
 
 export default function DbSchema() {
   return (
