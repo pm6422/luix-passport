@@ -36,6 +36,7 @@ export function CreateTeamDialog({ children, onSuccess, open, onOpenChange }: Cr
       afterSave={() => onSuccess?.()}
       open={open}
       onOpenChange={onOpenChange}
+      showFormErrors={false}
       renderFields={(form) => (
         <>
           <div className="flex justify-center">

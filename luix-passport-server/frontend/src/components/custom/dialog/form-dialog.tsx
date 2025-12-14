@@ -47,6 +47,7 @@ interface FormDialogProps<
   open?: boolean
   onOpenChange?: (open: boolean) => void
   contentClassName?: string
+  showFormErrors?: boolean
 }
 
 interface Props<T extends FieldValues> {
@@ -61,6 +62,7 @@ interface Props<T extends FieldValues> {
   readonly?: boolean
   debug?: boolean
   contentClassName?: string
+  showFormErrors?: boolean
 }
 
 function FormDialogContent<T extends FieldValues>({
@@ -74,7 +76,8 @@ function FormDialogContent<T extends FieldValues>({
   setOpen,
   readonly = false,
   debug = false,
-  contentClassName
+  contentClassName,
+  showFormErrors = true,
 }: Props<T>) {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<FieldErrors>({})
@@ -121,7 +124,7 @@ function FormDialogContent<T extends FieldValues>({
           onSubmit={form.handleSubmit(onSubmit, onFormError)}
           className="flex flex-col gap-4"
         >
-          <FormErrors form={form} error={error} />
+          {showFormErrors && <FormErrors form={form} error={error} />}
 
           {children}
 
@@ -168,6 +171,7 @@ export function FormDialog<
   open: controlledOpen,
   onOpenChange: controlledOnOpenChange,
   contentClassName,
+  showFormErrors = true,
 }: FormDialogProps<TFieldValues, TOptions>) {
   const [internalOpen, setInternalOpen] = useState(false)
   const isControlled = typeof controlledOpen === "boolean" && typeof controlledOnOpenChange === "function"
@@ -233,6 +237,7 @@ export function FormDialog<
         readonly={readonly}
         debug={debug}
         contentClassName={contentClassName}
+        showFormErrors={showFormErrors}
       >
         {loading ? (
           <div className="flex items-center justify-center py-8">

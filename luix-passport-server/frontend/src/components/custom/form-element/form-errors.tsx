@@ -60,7 +60,7 @@ const FormErrors = <T extends FieldValues>({
       <Alert variant={variant} className="p-3 bg-destructive/10 border border-red-500">
         <AlertTitle className="flex items-center gap-2 text-sm">
           <IconAlertSquareRoundedFilled className="size-4" />
-          Please resolve the following issues
+          Please resolve the following issues.
         </AlertTitle>
         <div className="mt-2 space-y-1 text-xs">
           {errors.map((err, index) => (
