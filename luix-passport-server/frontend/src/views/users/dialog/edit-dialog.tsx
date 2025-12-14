@@ -4,8 +4,6 @@ import { useForm } from "react-hook-form"
 import { Dialog, DialogTrigger } from "@/components/ui/dialog"
 import SaveDialogContent from "@/components/custom/dialog/save-dialog-content"
 import InputFormField from "@/components/custom/form-field/input"
-
-import { type CheckboxOption } from "@/components/custom/form-field/checkbox"
 import SwitchFormField from "@/components/custom/form-field/switch"
 import SelectFormField from "@/components/custom/form-field/select"
 import ComboboxFormField from "@/components/custom/form-field/combobox"
@@ -41,7 +39,7 @@ export function EditDialog({
 }: EditDialogProps) {
   const { loginUser } = useLoginUserStore()
   const [open, setOpen] = useState(false)
-  const [enabledRoles, setEnabledRoles] = useState(Array<CheckboxOption>)
+  const [enabledRoles, setEnabledRoles] = useState<string[]>([])
   const [supportedTimezones, setSupportedTimezones] = useState(Array<Option>)
   const [supportedDateTimeFormats, setSupportedDateTimeFormats] = useState(Array<Option>)
   const form = useForm<User>({
@@ -59,7 +57,7 @@ export function EditDialog({
       AccountService.findSupportedDateTimeFormats()
     ]).then(results => {
       // load options
-      setEnabledRoles(results[0].data.map((item: string) => ({ label: item, value: item })));
+      setEnabledRoles(results[0].data)
       setSupportedTimezones(results[1].data.map((item: DataDict) =>
         ({ label: "(UTC" + item.dictName + ") " + item.dictCode, value: item.dictCode })));
       setSupportedDateTimeFormats(results[2].data.map((item: SupportedDateTimeFormat) =>
@@ -184,7 +182,7 @@ export function EditDialog({
           name="roleIds"
           label="Roles"
           required
-          allRoles={enabledRoles.map(r => r.value)}
+          allRoles={enabledRoles}
         />
 
         <SwitchFormField
