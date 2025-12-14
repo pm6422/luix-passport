@@ -125,7 +125,7 @@ export function tableColumns(
       ),
       cell: ({ row }) => {
         return (
-          <div className="flex w-[75px] items-center justify-center">
+          <div className="flex w-[50px] items-center justify-center">
             <YesNoBadge value={row.original.activated} />
           </div>
         )
