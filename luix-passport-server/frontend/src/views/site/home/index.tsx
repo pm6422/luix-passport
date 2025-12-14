@@ -1,5 +1,5 @@
 import { LayoutBody } from "@/layouts/layout-definitions"
-import { SiteFooter } from "@/components/site/site-footer"
+import { SiteFooter } from "@/components/custom/site/site-footer"
 import { Link } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { useLoginUserStore } from "@/stores/login-user-store"

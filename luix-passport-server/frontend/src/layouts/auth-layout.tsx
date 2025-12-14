@@ -7,9 +7,9 @@ import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useLoginUserStore } from "@/stores/login-user-store";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/sidebar/app-sidebar";
+import { AppSidebar } from "@/components/custom/sidebar/app-sidebar";
 import { AuthLayoutHeader } from "./auth-layout-header";
-import { SseNotification } from "@/components/site/sse-notification";
+import { SseNotification } from "@/components/custom/site/sse-notification";
 
 export default function AuthLayout() {
   const navigate = useNavigate()
