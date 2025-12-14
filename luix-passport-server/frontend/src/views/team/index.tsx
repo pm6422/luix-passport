@@ -110,17 +110,17 @@ export default function TeamDashboard() {
         <div className="p-6">
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {/* Team Members Card */}
-            <div className="rounded-lg border bg-card text-card-foreground shadow-sm hover:shadow-md transition-shadow">
+            <div className="rounded-lg border bg-card text-card-foreground shadow-sm hover:shadow-md transition-shadow h-full flex flex-col">
               <div className="p-6 flex flex-row items-center justify-between space-y-0 pb-3">
                 <h3 className="tracking-tight text-sm font-medium">Team Members</h3>
                 <IconUsers className="size-4 text-muted-foreground" />
               </div>
-              <div className="px-6 pb-6">
+              <div className="px-6 pb-6 flex-1 flex flex-col">
                 <div className="text-2xl font-bold mb-1">Manage</div>
                 <p className="text-xs text-muted-foreground mb-4">
                   View and manage team members
                 </p>
-                <Link to={`/teams/${teamId}/members`}>
+                <Link to={`/teams/${teamId}/members`} className="mt-auto block">
                   <Button variant="outline" className="w-full">
                     Go to Members
                   </Button>
@@ -128,15 +128,16 @@ export default function TeamDashboard() {
               </div>
             </div>
             <RoleTeamOwner>
-              <div className="rounded-lg border bg-card text-card-foreground shadow-sm hover:shadow-md transition-shadow">
+              {/* Delete Team Card */}
+              <div className="rounded-lg border bg-card text-card-foreground shadow-sm hover:shadow-md transition-shadow h-full flex flex-col">
                 <div className="p-6 flex flex-row items-center justify-between space-y-0 pb-3">
                   <h3 className="tracking-tight text-sm font-medium">Danger Zone</h3>
                 </div>
-                <div className="px-6 pb-6">
+                <div className="px-6 pb-6 flex-1 flex flex-col">
                   <p className="text-xs text-muted-foreground mb-4">
                     Delete this team and all related data
                   </p>
-                  <Button variant="destructive" className="w-full" onClick={() => setDeleteOpen(true)}>
+                  <Button variant="destructive" className="w-full mt-auto" onClick={() => setDeleteOpen(true)}>
                     Delete Team
                   </Button>
                 </div>
