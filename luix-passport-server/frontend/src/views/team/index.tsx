@@ -11,8 +11,6 @@ import { RoleTeamOwner } from "@/permission/role-control"
 import { TEAM_OWNER } from "@/permission/roles"
 import { ConfirmDialog } from "@/components/custom/dialog/confirm-dialog"
 import { useNavigate } from "react-router-dom"
-
-
 export default function TeamDashboard() {
   const { teamId } = useParams()
   const [team, setTeam] = useState<Team | null>(null)
@@ -66,7 +64,8 @@ export default function TeamDashboard() {
     try {
       await TeamService.delete(teamId)
       toast.success("Team deleted")
-      navigate("/")
+      navigate("/console")
+      setTimeout(() => window.location.reload(), 0)
     } catch (error) {
       toast.error("Failed to delete team")
       console.error(error)
