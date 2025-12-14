@@ -6,7 +6,7 @@ import { IconCheck, IconSelector } from "@tabler/icons-react"
 import { Key } from "react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { Option } from "@/components/custom/multi-select"
+import { Option } from "@/components/custom/form-field/multi-select"
 import {
   Command,
   CommandEmpty,

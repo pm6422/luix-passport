@@ -8,7 +8,7 @@ import SelectFormField from "@/components/custom/form-field/select"
 import { type Permission, permissionSchema, initialPermissionState } from "@/domains/permission"
 import { PermissionService } from "@/services/permission-service"
 import { DataDictService } from "@/services/data-dict-service"
-import { Option } from "@/components/custom/multi-select"
+import { Option } from "@/components/custom/form-field/multi-select"
 import type { DataDict } from "@/domains/data-dict"
 
 interface EditDialogProps {
