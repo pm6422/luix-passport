@@ -97,7 +97,7 @@ export interface TeamInvitation {
   id: string
   teamId: string
   memberEmail: string
-  memberRole: string
+  memberRoles: string
   inviterId: string
   status: string
   createdAt: string

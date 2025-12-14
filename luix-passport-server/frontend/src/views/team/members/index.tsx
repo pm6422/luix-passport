@@ -22,17 +22,9 @@ import { AccountService } from "@/services/account-service"
 import { useLoginUserStore } from "@/stores/login-user-store"
 import { toast } from "sonner"
 import { RoleTeamOwner } from "@/components/custom/role"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuCheckboxItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { ChevronDown } from "lucide-react"
 import { RoleService } from "@/services/role-service"
 import { ConfirmDialog } from "@/components/custom/confirm-dialog"
+import { TeamRoleSelector } from "@/components/custom/team-role-selector"
 
 export default function TeamMembers() {
   const [openInvite, setOpenInvite] = useState(false)
@@ -128,7 +120,7 @@ export default function TeamMembers() {
     const q = inviteQuery.trim().toLowerCase()
     return q
       ? invitations.filter((i) => {
-        const values = [i.memberEmail, i.memberRole, getInviteProgress(i)]
+        const values = [i.memberEmail, i.memberRoles, getInviteProgress(i)]
         return values.filter(Boolean).some((v) => String(v).toLowerCase().includes(q))
       })
       : invitations
@@ -183,7 +175,7 @@ export default function TeamMembers() {
               <TableRow>
                 <TableHead className="w-[300px]">Name</TableHead>
                 <TableHead>Email</TableHead>
-                <TableHead>Role</TableHead>
+                <TableHead>Roles</TableHead>
                 <TableHead className="text-right">Joined at</TableHead>
               </TableRow>
             </TableHeader>
@@ -226,70 +218,16 @@ export default function TeamMembers() {
                       <div className="flex items-center gap-2">
                         <div className="flex items-center gap-2">
                           <div>
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button variant="outline" size="sm" className="h-8 max-w-[200px] justify-between" disabled={member.userId === loginUser.username}>
-                                  <span className="truncate">
-                                    {(member.roles || [member.role]).join(", ")}
-                                  </span>
-                                  <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                                </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent className="w-56" align="start">
-                                <DropdownMenuLabel>Roles</DropdownMenuLabel>
-                                <DropdownMenuSeparator />
-                                {allRoles.map((role) => {
-                                  const currentRoles = member.roles || [member.role]
-                                  const isChecked = currentRoles.includes(role)
-                                  return (
-                                    <DropdownMenuCheckboxItem
-                                      key={role}
-                                      checked={isChecked}
-                                      onSelect={(e) => e.preventDefault()}
-                                      onCheckedChange={(checked) => {
-                                        let newRoles = [...currentRoles]
-                                        if (checked) {
-                                          if (!newRoles.includes(role)) newRoles.push(role)
-                                        } else {
-                                          newRoles = newRoles.filter(r => r !== role)
-                                        }
-
-                                        // Ensure mandatory roles
-                                        if (!newRoles.includes("ROLE_ANONYMOUS")) newRoles.push("ROLE_ANONYMOUS")
-                                        if (!newRoles.includes("ROLE_USER")) newRoles.push("ROLE_USER")
-
-                                        // Mutual exclusion logic
-                                        const hasMember = newRoles.includes("TEAM_MEMBER")
-                                        const hasOwner = newRoles.includes("TEAM_OWNER")
-
-                                        if (hasMember && hasOwner) {
-                                          const wasOwner = currentRoles.includes("TEAM_OWNER")
-                                          if (wasOwner) {
-                                            // Was owner, now both -> Remove OWNER (Switch to Member)
-                                            const index = newRoles.indexOf("TEAM_OWNER")
-                                            if (index > -1) newRoles.splice(index, 1)
-                                          } else {
-                                            // Was member (or neither), now both -> Remove MEMBER (Switch to Owner)
-                                            const index = newRoles.indexOf("TEAM_MEMBER")
-                                            if (index > -1) newRoles.splice(index, 1)
-                                          }
-                                        } else if (!hasMember && !hasOwner) {
-                                          // Neither selected -> Re-add the one that was there
-                                          const wasOwner = currentRoles.includes("TEAM_OWNER")
-                                          if (wasOwner) newRoles.push("TEAM_OWNER")
-                                          else newRoles.push("TEAM_MEMBER")
-                                        }
-
-                                        setPendingRoleChange({ userId: member.userId, newRoles })
-                                        setRoleConfirmOpen(true)
-                                      }}
-                                    >
-                                      {role}
-                                    </DropdownMenuCheckboxItem>
-                                  )
-                                })}
-                              </DropdownMenuContent>
-                            </DropdownMenu>
+                            <TeamRoleSelector
+                              value={member.roles || [member.role]}
+                              allRoles={allRoles}
+                              disabled={member.userId === loginUser.username}
+                              onChange={(newRoles) => {
+                                setPendingRoleChange({ userId: member.userId, newRoles })
+                                setRoleConfirmOpen(true)
+                              }}
+                              className="h-8 max-w-[200px]"
+                            />
                           </div>
                         </div>
                       </div>
@@ -334,7 +272,7 @@ export default function TeamMembers() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Email</TableHead>
-                  <TableHead>Role</TableHead>
+                  <TableHead>Roles</TableHead>
                   <TableHead>Invited at</TableHead>
                   <TableHead>Expires at</TableHead>
                   <TableHead>Progress</TableHead>
@@ -353,7 +291,11 @@ export default function TeamMembers() {
                     <TableRow key={invite.id}>
                       <TableCell>{invite.memberEmail}</TableCell>
                       <TableCell>
-                        <Badge variant="outline" className="capitalize">{invite.memberRole}</Badge>
+                        <div className="flex gap-1 flex-wrap">
+                          {(invite.memberRoles || "").split(",").map((role) => (
+                            <Badge key={role} variant="outline" className="capitalize">{role}</Badge>
+                          ))}
+                        </div>
                       </TableCell>
                       <TableCell>
                         <DateTime value={invite.createdAt} />

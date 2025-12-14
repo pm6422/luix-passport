@@ -16,16 +16,8 @@ import { TeamService } from "@/services/team-service"
 import { toast } from "sonner"
 import { IconPlus, IconMinus } from "@tabler/icons-react"
 import { useEffect, useState } from "react"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-  DropdownMenuCheckboxItem,
-} from "@/components/ui/dropdown-menu"
-import { ChevronDown } from "lucide-react"
 import { RoleService } from "@/services/role-service"
+import { TeamRoleSelector } from "@/components/custom/team-role-selector"
 
 const inviteSchema = z.object({
   invitations: z.array(z.object({
@@ -115,72 +107,17 @@ export function InviteMembersDialog({ open, onOpenChange, teamId, onSuccess }: I
                   </div>
 
                   <div className="flex flex-col">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="outline" className="h-9 w-full justify-between font-normal">
-                          <span className="truncate">
-                            {(form.watch(`invitations.${index}.roles`) || []).join(", ")}
-                          </span>
-                          <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent className="w-[250px]" align="start">
-                        <DropdownMenuLabel>Roles</DropdownMenuLabel>
-                        <DropdownMenuSeparator />
-                        {allRoles.map((role) => {
-                          const currentRoles = form.getValues(`invitations.${index}.roles`) || []
-                          const isChecked = currentRoles.includes(role)
-                          return (
-                            <DropdownMenuCheckboxItem
-                              key={role}
-                              checked={isChecked}
-                              onSelect={(e) => e.preventDefault()}
-                              onCheckedChange={(checked) => {
-                                let newRoles = [...currentRoles]
-                                if (checked) {
-                                  if (!newRoles.includes(role)) newRoles.push(role)
-                                } else {
-                                  newRoles = newRoles.filter(r => r !== role)
-                                }
-
-                                // Ensure mandatory roles
-                                if (!newRoles.includes("ROLE_ANONYMOUS")) newRoles.push("ROLE_ANONYMOUS")
-                                if (!newRoles.includes("ROLE_USER")) newRoles.push("ROLE_USER")
-
-                                // Mutual exclusion logic
-                                const hasMember = newRoles.includes("TEAM_MEMBER")
-                                const hasOwner = newRoles.includes("TEAM_OWNER")
-
-                                if (hasMember && hasOwner) {
-                                  const wasOwner = currentRoles.includes("TEAM_OWNER")
-                                  if (wasOwner) {
-                                    // Was owner, now both -> Remove OWNER
-                                    const i = newRoles.indexOf("TEAM_OWNER")
-                                    if (i > -1) newRoles.splice(i, 1)
-                                  } else {
-                                    // Was member (or neither), now both -> Remove MEMBER
-                                    const i = newRoles.indexOf("TEAM_MEMBER")
-                                    if (i > -1) newRoles.splice(i, 1)
-                                  }
-                                } else if (!hasMember && !hasOwner) {
-                                  // Must have one
-                                  const wasOwner = currentRoles.includes("TEAM_OWNER")
-                                  if (wasOwner) newRoles.push("TEAM_OWNER")
-                                  else newRoles.push("TEAM_MEMBER")
-                                }
-
-                                form.setValue(`invitations.${index}.roles`, newRoles, {
-                                  shouldValidate: true,
-                                  shouldDirty: true,
-                                })
-                              }}
-                            >
-                              {role}
-                            </DropdownMenuCheckboxItem>
-                          )
-                        })}
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                    <TeamRoleSelector
+                      value={form.watch(`invitations.${index}.roles`) || []}
+                      allRoles={allRoles}
+                      onChange={(newRoles) => {
+                        form.setValue(`invitations.${index}.roles`, newRoles, {
+                          shouldValidate: true,
+                          shouldDirty: true,
+                        })
+                      }}
+                      className="w-full h-9"
+                    />
                     {form.formState.errors.invitations?.[index]?.roles?.message && (
                       <span className="mt-1 text-xs text-destructive">
                         {form.formState.errors.invitations?.[index]?.roles?.message as string}
