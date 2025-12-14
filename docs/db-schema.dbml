@@ -1,5 +1,29 @@
+Table "databasechangelog" {
+  "id" varchar(255) [not null]
+  "author" varchar(255) [not null]
+  "filename" varchar(255) [not null]
+  "dateexecuted" timestamp [not null]
+  "orderexecuted" int4 [not null]
+  "exectype" varchar(10) [not null]
+  "md5sum" varchar(35)
+  "description" varchar(255)
+  "comments" varchar(255)
+  "tag" varchar(255)
+  "liquibase" varchar(20)
+  "contexts" varchar(255)
+  "labels" varchar(255)
+  "deployment_id" varchar(10)
+}
+
+Table "databasechangeloglock" {
+  "id" int4 [pk, not null]
+  "locked" bool [not null]
+  "lockgranted" timestamp
+  "lockedby" varchar(255)
+}
+
 Table "supported_date_time_format" {
-  "id" varchar(50) [pk, not null]
+  "id" varchar(18) [pk, not null]
   "display_name" varchar(100) [not null]
   "date_time_format" varchar(50) [not null]
   "date_format" varchar(50) [not null]
@@ -55,7 +79,7 @@ Table "oauth2_authorization_consent" {
 }
 
 Table "oauth2_registered_client" {
-  "id" varchar(100) [pk, not null]
+  "id" varchar(18) [pk, not null]
   "client_id" varchar(100) [not null]
   "client_id_issued_at" timestamp [not null, default: `now()`]
   "client_secret" varchar(200)
@@ -72,8 +96,8 @@ Table "oauth2_registered_client" {
   "enabled" bool
   "created_at" timestamp [not null]
   "created_by" varchar(50)
-  "modified_at" timestamp [not null]
-  "modified_by" varchar(50)
+  "updated_at" timestamp [not null]
+  "updated_by" varchar(50)
 }
 
 Table "spring_session" {
@@ -97,16 +121,32 @@ Table "spring_session_attributes" {
 }
 
 Table "team" {
-  "id" varchar(20) [pk, not null]
-  "remark" varchar(36)
-  "enabled" bool [not null]
+  "id" varchar(18) [pk, not null]
+  "name" varchar(50) [not null, default: 'Unnamed Team']
   "photo" bytea
+  "enabled" bool [not null]
+  "remark" varchar(36)
+  "created_at" timestamp [not null, default: `now()`]
+  "updated_at" timestamp [not null, default: `now()`]
+  "created_by" varchar(50)
+  "updated_by" varchar(50)
 }
 
 Table "team_user" {
-  "id" varchar(20) [pk, not null]
-  "team_id" varchar(20) [not null]
+  "id" varchar(18) [pk, not null]
+  "team_id" varchar(18) [not null]
   "username" varchar(20) [not null]
+}
+
+Table "team_invitation" {
+  "id" varchar(18) [pk, not null]
+  "team_id" varchar(18) [not null]
+  "member_email" varchar(30) [not null]
+  "member_role" varchar(20) [not null]
+  "inviter_id" varchar(50) [not null]
+  "status" varchar(20) [not null]
+  "created_at" timestamp [not null]
+  "expires_at" timestamp [not null]
 }
 
 Table "user" {
@@ -131,10 +171,11 @@ Table "user" {
   "locale" varchar(10) [not null]
   "time_zone_id" varchar(30) [not null]
   "date_time_format_id" varchar(20) [not null]
+  "source" varchar(20)
   "created_at" timestamp [not null]
   "created_by" varchar(50)
-  "modified_at" timestamp [not null]
-  "modified_by" varchar(50)
+  "updated_at" timestamp [not null]
+  "updated_by" varchar(50)
 
   Indexes {
     date_time_format_id [type: btree, name: "idx_user_date_time_format_id"]
@@ -143,22 +184,22 @@ Table "user" {
 }
 
 Table "role" {
-  "id" varchar(20) [pk, not null]
+  "id" varchar(18) [pk, not null]
   "remark" varchar(255)
   "created_at" timestamp [not null]
   "created_by" varchar(50)
-  "modified_at" timestamp [not null]
-  "modified_by" varchar(50)
+  "updated_at" timestamp [not null]
+  "updated_by" varchar(50)
 }
 
 Table "user_role" {
-  "id" varchar(20) [pk, not null]
+  "id" varchar(18) [pk, not null]
   "username" varchar(20) [not null]
-  "role_id" varchar(20) [not null]
+  "role_id" varchar(18) [not null]
   "created_at" timestamp [not null]
   "created_by" varchar(50)
-  "modified_at" timestamp [not null]
-  "modified_by" varchar(50)
+  "updated_at" timestamp [not null]
+  "updated_by" varchar(50)
 
   Indexes {
     (username, role_id) [type: btree, name: "uk_user_role"]
@@ -168,24 +209,24 @@ Table "user_role" {
 }
 
 Table "permission" {
-  "id" varchar(25) [pk, not null]
+  "id" varchar(18) [pk, not null]
   "remark" varchar(255)
   "resource_type" varchar(50) [not null]
   "action" varchar(20) [not null]
   "created_at" timestamp [not null]
   "created_by" varchar(50)
-  "modified_at" timestamp [not null]
-  "modified_by" varchar(50)
+  "updated_at" timestamp [not null]
+  "updated_by" varchar(50)
 }
 
 Table "role_permission" {
-  "id" varchar(20) [pk, not null]
-  "role_id" varchar(20) [not null]
+  "id" varchar(18) [pk, not null]
+  "role_id" varchar(18) [not null]
   "permission_id" varchar(25) [not null]
   "created_at" timestamp [not null]
   "created_by" varchar(50)
-  "modified_at" timestamp [not null]
-  "modified_by" varchar(50)
+  "updated_at" timestamp [not null]
+  "updated_by" varchar(50)
 
   Indexes {
     (role_id, permission_id) [type: btree, name: "uk_role_permission"]
@@ -195,7 +236,7 @@ Table "role_permission" {
 }
 
 Table "user_auth_event" {
-  "id" varchar(20) [pk, not null]
+  "id" varchar(18) [pk, not null]
   "username" varchar(20) [not null]
   "event" varchar(36) [not null]
   "remark" varchar(64)
@@ -204,7 +245,7 @@ Table "user_auth_event" {
 }
 
 Table "user_login" {
-  "id" varchar(20) [pk, not null]
+  "id" varchar(18) [pk, not null]
   "username" varchar(20) [not null]
   "logged_at" timestamp [not null]
   "location" varchar(20) [not null]
@@ -217,14 +258,13 @@ Table "user_login" {
   }
 }
 
-Table "user_profile_pic" {
-  "username" varchar(20) [pk, not null]
-  "profile_pic" bytea [not null]
+Table "user_avatar" {
+  "id" varchar(18) [pk, not null]
+  "avatar" bytea [not null]
 }
 
 Table "data_dict" {
-  "id" varchar(20) [pk, not null]
-  "num" varchar(20) [not null]
+  "id" varchar(18) [pk, not null]
   "category_code" varchar(25) [not null]
   "dict_code" varchar(40) [not null]
   "dict_name" varchar(20)
@@ -232,22 +272,16 @@ Table "data_dict" {
   "enabled" bool [not null]
   "created_at" timestamp [not null]
   "created_by" varchar(50)
-  "modified_at" timestamp [not null]
-  "modified_by" varchar(50)
+  "updated_at" timestamp [not null]
+  "updated_by" varchar(50)
 
   Indexes {
     (category_code, dict_code) [type: btree, name: "uk_data_dict_category_code_dict_code"]
   }
 }
 
-Table "table_seq_number" {
-  "id" varchar(20) [pk, not null]
-  "table_name" varchar(36) [not null]
-  "max_seq_num" int8 [not null]
-}
-
 Table "notification" {
-  "id" varchar(20) [pk, not null]
+  "id" varchar(18) [pk, not null]
   "title" varchar(20) [not null]
   "content" varchar(1000) [not null]
   "type" varchar(8) [not null]
@@ -255,20 +289,20 @@ Table "notification" {
   "sender_email" varchar(20)
   "created_at" timestamp [not null]
   "created_by" varchar(50)
-  "modified_at" timestamp [not null]
-  "modified_by" varchar(50)
+  "updated_at" timestamp [not null]
+  "updated_by" varchar(50)
 }
 
 Table "user_notification" {
-  "id" varchar(20) [pk, not null]
+  "id" varchar(18) [pk, not null]
   "receiver_id" varchar(20) [not null]
   "notification_id" varchar(20) [not null]
   "status" varchar(7) [not null, default: 'UNREAD']
   "active" bool [not null, default: true]
   "created_at" timestamp [not null]
   "created_by" varchar(50)
-  "modified_at" timestamp [not null]
-  "modified_by" varchar(50)
+  "updated_at" timestamp [not null]
+  "updated_by" varchar(50)
 
   Indexes {
     (receiver_id, notification_id) [type: btree, name: "uk_user_notification"]
@@ -277,21 +311,53 @@ Table "user_notification" {
   }
 }
 
+Table "scheduler_lock" {
+  "id" varchar(128) [pk, not null]
+  "locked_at" timestamp [not null]
+  "lock_until" timestamp [not null]
+  "locked_by" varchar(50) [not null]
+}
+
+Table "schedule_execution_log" {
+  "id" varchar(18) [pk, not null]
+  "schedule_name" varchar(100) [not null]
+  "start_at" timestamp [not null]
+  "end_at" timestamp
+  "duration_ms" int8
+  "status" varchar(20) [not null, note: '(RUNNING/SUCCESS/FAILURE)']
+  "node" varchar(45) [not null]
+  "parameters" text
+  "error" text
+}
+
+Table "job_queue" {
+  "id" varchar(18) [pk, not null]
+  "channel" varchar(30)
+  "payload" jsonb
+  "priority" int4
+  "status" varchar(20)
+  "error" text
+  "created_at" timestamp
+  "processed_at" timestamp
+}
+
 Ref "fk_role_permission_permission_id":"permission"."id" < "role_permission"."permission_id" [update: cascade, delete: cascade]
 
 Ref "fk_role_permission_role_id":"role"."id" < "role_permission"."role_id" [update: cascade, delete: cascade]
+
+Ref "fk_team_invitation_team_id":"team"."id" < "team_invitation"."team_id" [update: cascade, delete: cascade]
 
 Ref "fk_team_user_username":"user"."username" < "team_user"."username" [update: cascade, delete: cascade]
 
 Ref "fk_user_date_time_format_supported_date_time_format_id":"supported_date_time_format"."id" < "user"."date_time_format_id" [update: cascade, delete: cascade]
 
+Ref "fk_user_avatar_username":"user"."username" < "user_avatar"."id" [update: cascade, delete: cascade]
+
 Ref "fk_user_login_username":"user"."username" < "user_login"."username" [update: cascade, delete: cascade]
 
 Ref "fk_user_notification_notification":"notification"."id" < "user_notification"."notification_id" [update: cascade, delete: cascade]
 
-Ref "fk_user_notification_user":"user"."username" < "user_notification"."receiver_id" [update: cascade, delete: set null]
-
-Ref "fk_user_profile_pic_username":"user"."username" < "user_profile_pic"."username" [update: cascade, delete: cascade]
+Ref "fk_user_notification_user":"user"."username" < "user_notification"."receiver_id" [update: cascade, delete: cascade]
 
 Ref "fk_user_role_role_id":"role"."id" < "user_role"."role_id" [update: cascade, delete: cascade]
 
