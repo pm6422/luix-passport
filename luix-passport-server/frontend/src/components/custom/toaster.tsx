@@ -1,11 +1,11 @@
-import { useTheme } from "@/stores/theme-provider"
+import { useThemeStore } from "@/stores/theme-store"
 import { Toaster as Sonner } from "sonner"
 import React from "react"
 
 type ToasterProps = React.ComponentProps<typeof Sonner>
 
 function Toaster({ ...props }: ToasterProps) {
-  const { theme = "system" } = useTheme()
+  const { theme } = useThemeStore()
 
   return (
     <Sonner

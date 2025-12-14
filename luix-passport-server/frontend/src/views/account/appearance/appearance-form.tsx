@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/form"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { toast } from "sonner"
-import { useTheme } from "@/stores/theme-provider"
+import { useThemeStore } from "@/stores/theme-store"
 
 const formSchema = z.object({
   theme: z.enum(["light", "dark", "system"], {
@@ -24,18 +24,18 @@ const formSchema = z.object({
 type FormSchema = z.infer<typeof formSchema>
 
 export function AppearanceForm() {
-  const themeProvider = useTheme()
+  const { theme, setTheme } = useThemeStore()
 
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      theme: themeProvider.theme,
+      theme: theme,
     },
   })
 
   function onSubmit(formData: FormSchema) {
     toast.info("Applied appearance")
-    themeProvider.setTheme(formData.theme)
+    setTheme(formData.theme)
   }
 
   return (
