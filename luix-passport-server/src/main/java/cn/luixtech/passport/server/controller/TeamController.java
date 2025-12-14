@@ -18,6 +18,7 @@ import cn.luixtech.passport.server.service.TeamService;
 import cn.luixtech.passport.server.utils.AuthUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -70,6 +71,13 @@ public class TeamController {
     public ResponseEntity<Void> inviteMembers(HttpServletRequest request, @PathVariable String teamId,
             @RequestBody List<TeamMemberInvitation> invitations) {
         teamService.inviteMembers(request, teamId, invitations, AuthUtils.getCurrentUsername());
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "delete team")
+    @DeleteMapping("/api/teams/{teamId}")
+    public ResponseEntity<Void> delete(@PathVariable String teamId) {
+        teamService.deleteTeam(teamId);
         return ResponseEntity.ok().build();
     }
 

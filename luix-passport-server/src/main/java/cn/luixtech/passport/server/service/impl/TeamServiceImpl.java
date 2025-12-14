@@ -424,4 +424,23 @@ public class TeamServiceImpl implements TeamService {
 
     userRoleService.update(userId, roles);
   }
+
+  @Override
+  @Transactional(rollbackFor = Exception.class)
+  public void deleteTeam(String teamId) {
+    String operatorId = AuthUtils.getCurrentUsername();
+    teamUserRepository.findByTeamIdAndUserId(teamId, operatorId)
+        .orElseThrow(() -> new IllegalArgumentException("Operator is not a member of the team"));
+    Set<String> operatorRoleIds = userRoleService.findRoleIds(operatorId);
+    if (!operatorRoleIds.contains(Role.TEAM_OWNER)) {
+      throw new IllegalArgumentException("Only team owners can delete team");
+    }
+    List<TeamInvitation> invites = teamInvitationRepository.findByTeamId(teamId);
+    if (!invites.isEmpty()) {
+      teamInvitationRepository.deleteAll(invites);
+    }
+    teamUserRepository.deleteByTeamId(teamId);
+    teamRepository.deleteById(teamId);
+    log.info("Team {} deleted by {}", teamId, operatorId);
+  }
 }

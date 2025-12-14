@@ -9,6 +9,8 @@ import { toast } from "sonner"
 import { useLoginUserStore } from "@/stores/login-user-store"
 import { RoleTeamOwner } from "@/permission/role-control"
 import { TEAM_OWNER } from "@/permission/roles"
+import { ConfirmDialog } from "@/components/custom/dialog/confirm-dialog"
+import { useNavigate } from "react-router-dom"
 
 
 export default function TeamDashboard() {
@@ -17,6 +19,8 @@ export default function TeamDashboard() {
   const [avatarUrl, setAvatarUrl] = useState<string>("")
   const fileInputRef = useRef<HTMLInputElement>(null)
   const { hasRole } = useLoginUserStore()
+  const navigate = useNavigate()
+  const [deleteOpen, setDeleteOpen] = useState(false)
 
   const loadTeam = useCallback(async () => {
     if (!teamId) return
@@ -53,6 +57,18 @@ export default function TeamDashboard() {
       setAvatarUrl(TeamService.getTeamPhoto(teamId) + `?t=${Date.now()}`)
     } catch (error) {
       toast.error("Failed to update team avatar")
+      console.error(error)
+    }
+  }
+
+  const handleDeleteTeam = async () => {
+    if (!teamId) return
+    try {
+      await TeamService.delete(teamId)
+      toast.success("Team deleted")
+      navigate("/")
+    } catch (error) {
+      toast.error("Failed to delete team")
       console.error(error)
     }
   }
@@ -111,9 +127,31 @@ export default function TeamDashboard() {
                 </Link>
               </div>
             </div>
+            <RoleTeamOwner>
+              <div className="rounded-lg border bg-card text-card-foreground shadow-sm hover:shadow-md transition-shadow">
+                <div className="p-6 flex flex-row items-center justify-between space-y-0 pb-3">
+                  <h3 className="tracking-tight text-sm font-medium">Danger Zone</h3>
+                </div>
+                <div className="px-6 pb-6">
+                  <p className="text-xs text-muted-foreground mb-4">
+                    Delete this team and all related data
+                  </p>
+                  <Button variant="destructive" className="w-full" onClick={() => setDeleteOpen(true)}>
+                    Delete Team
+                  </Button>
+                </div>
+              </div>
+            </RoleTeamOwner>
           </div>
         </div>
       </div>
+      <ConfirmDialog
+        open={deleteOpen}
+        onOpenChange={setDeleteOpen}
+        title="Delete Team"
+        description="This action cannot be undone. Do you want to proceed?"
+        onConfirm={handleDeleteTeam}
+      />
     </LayoutBody>
   )
 }

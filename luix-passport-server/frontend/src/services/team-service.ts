@@ -73,6 +73,10 @@ export class TeamService {
   public static updateMemberRole(teamId: string, userId: string, roles: string[]): Promise<AxiosResponse<void>> {
     return http.put(`/api/teams/${teamId}/members/${userId}/role`, roles)
   }
+
+  public static delete(teamId: string): Promise<AxiosResponse<void>> {
+    return http.delete(`/api/teams/${teamId}`)
+  }
 }
 
 export interface Team {
