@@ -135,11 +135,6 @@ export default function TeamDashboard() {
           </div>
 
           <div className="flex gap-3 mt-4 md:mt-0">
-            <RoleTeamOwner>
-              <Button onClick={() => setInviteOpen(true)} className="shadow-sm">
-                Invite Members
-              </Button>
-            </RoleTeamOwner>
             <Link to={`/teams/${teamId}/members`}>
               <Button variant="outline">Manage Members</Button>
             </Link>
@@ -242,7 +237,7 @@ export default function TeamDashboard() {
 
             {/* Danger Zone */}
             <RoleTeamOwner>
-              <Card className="border-destructive/20 shadow-none">
+              <Card className="shadow-none">
                 <CardHeader>
                   <CardTitle className="text-lg text-destructive flex items-center gap-2">
                     <IconAlertCircle className="size-5" />
