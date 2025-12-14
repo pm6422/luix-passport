@@ -7,7 +7,7 @@ import { IconPlus, IconUpload, IconFilterSearch } from "@tabler/icons-react"
 import { EditDialog } from "../dialog/edit-dialog"
 import { type DataDict, type DataDictCriteria, dataDictCriteriaSchema, initialDataDictCriteriaState } from "@/domains/data-dict"
 type UploadFormSchema = { files: File[] }
-import { UploadDialog } from "@/components/custom/uploader/upload-dialog"
+import { UploadDialog } from "@/components/custom/dialog/upload-dialog"
 import { Form } from "@/components/ui/form"
 import {
   Popover,
@@ -17,14 +17,14 @@ import {
 import { yesNoOptions } from "@/data/yes-no-options"
 import SelectFormField from "@/components/custom/form-field/select"
 
-interface DataTableToolbarProps{
+interface DataTableToolbarProps {
   entityName: string,
   loadPage: (pageNo: number | undefined, pageSize: number | undefined, sorts: Array<string> | undefined, criteria: DataDictCriteria) => void,
   save: (formData: DataDict) => Promise<void>,
   upload: (formData: UploadFormSchema) => Promise<Array<void>>
 }
 
-export function DataTableToolbar ({
+export function DataTableToolbar({
   entityName,
   loadPage,
   save,
@@ -46,7 +46,7 @@ export function DataTableToolbar ({
       <Popover open={isFilterPopoverOpen} onOpenChange={setIsFilterPopoverOpen}>
         <PopoverTrigger asChild>
           <Button variant="outline" size="icon">
-            <IconFilterSearch className="size-4"/>
+            <IconFilterSearch className="size-4" />
           </Button>
         </PopoverTrigger>
         <PopoverContent className="max-w-[500px] w-auto p-3" align="start">
@@ -57,17 +57,17 @@ export function DataTableToolbar ({
                 className="flex flex-col gap-4"
               >
                 <div className="flex flex-col sm:flex-row gap-2">
-                  <InputFormField 
-                    control={form.control} 
+                  <InputFormField
+                    control={form.control}
                     name="id"
                     label="ID"
                     formItemClassName="w-full"
                   />
 
-                  <InputFormField 
-                    control={form.control} 
-                    name="categoryCode" 
-                    label="Category Code" 
+                  <InputFormField
+                    control={form.control}
+                    name="categoryCode"
+                    label="Category Code"
                     formItemClassName="w-full"
                   />
 
