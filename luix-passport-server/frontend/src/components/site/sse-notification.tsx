@@ -1,28 +1,28 @@
-import { useEffect, useCallback } from "react";
-import { IconBellBolt } from "@tabler/icons-react";
-import { toast } from "sonner";
-import { useAppInfoStore } from "@/stores/app-info-store";
-import { useLoginUserStore } from "@/stores/login-user-store";
+import { useEffect, useCallback } from "react"
+import { IconBellBolt } from "@tabler/icons-react"
+import { toast } from "sonner"
+import { useAppInfoStore } from "@/stores/app-info-store"
+import { useLoginUserStore } from "@/stores/login-user-store"
 
-let reconnectAttempts = 0;
-const maxReconnectAttempts = 5;
-const initialReconnectDelay = 1000;
+let reconnectAttempts = 0
+const maxReconnectAttempts = 5
+const initialReconnectDelay = 1000
 
 export function SseNotification() {
-  const { appInfo } = useAppInfoStore();
-  const { loginUser } = useLoginUserStore();
+  const { appInfo } = useAppInfoStore()
+  const { loginUser } = useLoginUserStore()
 
   const setupSse = useCallback((): EventSource | undefined => {
     if (!window.EventSource) {
-      toast.error("Your browser does NOT support Server-Sent Event!");
-      return;
+      toast.error("Your browser does NOT support Server-Sent Event!")
+      return
     }
 
-    const eventSource = new EventSource("/api/sse/connect");
+    const eventSource = new EventSource("/api/sse/connect")
 
     eventSource.onopen = () => {
-      reconnectAttempts = 0;
-    };
+      reconnectAttempts = 0
+    }
 
     eventSource.onmessage = (event) => {
       setTimeout(() => {
@@ -44,39 +44,39 @@ export function SseNotification() {
             </div>
           </div>,
           { duration: 5000 }
-        );
-      }, 2000);
-    };
+        )
+      }, 2000)
+    }
 
     eventSource.onerror = () => {
-      eventSource.close();
+      eventSource.close()
 
       if (reconnectAttempts < maxReconnectAttempts) {
-        const delay = initialReconnectDelay * Math.pow(2, reconnectAttempts);
-        reconnectAttempts++;
-        setTimeout(setupSse, delay);
+        const delay = initialReconnectDelay * Math.pow(2, reconnectAttempts)
+        reconnectAttempts++
+        setTimeout(setupSse, delay)
       }
-    };
+    }
 
-    return eventSource;
-  }, []);
+    return eventSource
+  }, [])
 
   useEffect(() => {
     if (!loginUser.isAuthenticated) {
-      return;
+      return
     }
     if (appInfo.ribbonProfile === "dev") {
-      return;
+      return
     }
 
-    const eventSource = setupSse();
+    const eventSource = setupSse()
 
     return () => {
       if (eventSource) {
-        eventSource.close();
+        eventSource.close()
       }
-    };
-  }, [loginUser, appInfo.ribbonProfile, setupSse]);
+    }
+  }, [loginUser, appInfo.ribbonProfile, setupSse])
 
-  return null;
+  return null
 }

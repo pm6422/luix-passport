@@ -23,18 +23,18 @@ import { MinusIntroY } from "@/components/custom/intro-animation"
 
 export function AccountNav() {
   const { loginUser } = useLoginUserStore()
-  const [imageUrl, setImageUrl] = useState<string | undefined>(undefined);
-  const [isLoading, setIsLoading] = useState(false);
+  const [imageUrl, setImageUrl] = useState<string | undefined>(undefined)
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
-    setIsLoading(true);
+    setIsLoading(true)
 
     AccountService.getAvatar().then((res) => {
-      setIsLoading(false);
-      const blob = new Blob([res.data], { type: res.headers["content-type"] });
-      setImageUrl(URL.createObjectURL(blob));
+      setIsLoading(false)
+      const blob = new Blob([res.data], { type: res.headers["content-type"] })
+      setImageUrl(URL.createObjectURL(blob))
     })
-  }, []);
+  }, [])
 
   return (
     <DropdownMenu>
