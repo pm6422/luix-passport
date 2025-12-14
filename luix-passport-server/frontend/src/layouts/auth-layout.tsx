@@ -7,7 +7,7 @@ import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useLoginUserStore } from "@/stores/login-user-store";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/custom/sidebar/app-sidebar";
+import { AppSidebar } from "@/layouts/sidebar/app-sidebar";
 import { AuthLayoutHeader } from "./auth-layout-header";
 import { SseNotification } from "@/layouts/sse-notification";
 

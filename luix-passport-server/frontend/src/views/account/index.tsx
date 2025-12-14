@@ -7,7 +7,7 @@ import {
 } from "@tabler/icons-react"
 import { Separator } from "@/components/ui/separator"
 import { LayoutBody } from "@/layouts/layout-definitions"
-import OneLevelSidebar from "@/components/custom/sidebar/one-level-sidebar"
+import OneLevelSidebar from "@/layouts/sidebar/one-level-sidebar"
 
 export default function Account() {
   const sidebarNavItems = [
