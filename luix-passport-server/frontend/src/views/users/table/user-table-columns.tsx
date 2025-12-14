@@ -12,9 +12,7 @@ import { DataTableColumnHeader } from "@/components/custom/data-table/data-table
 import { DataTableRowActions } from "@/components/custom/data-table/data-table-row-actions";
 import { DateTime } from "@/components/custom/display/date-time";
 import { EditDialog } from "../dialog/user-dialog";
-import { Badge } from "@/components/ui/badge";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { OverflowBadges } from "@/components/custom/display/overflow-badges";
 
 export function tableColumns(
   entityName: string,
@@ -110,40 +108,13 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Roles" />
       ),
-      cell: ({ row }) => {
-        const roles = (row.original.roleIds || []) as string[];
-        const visible = roles.slice(0, 1);
-        const hiddenCount = roles.length - visible.length;
-        return (
-          <div className="w-[115px] text-xs">
-            <div className="flex items-center gap-1 whitespace-nowrap overflow-hidden">
-              {visible.map((item, index) => (
-                <Badge key={index} variant="secondary" className="px-1.5 py-0.5 text-[10px] max-w-[80px] truncate">
-                  {item}
-                </Badge>
-              ))}
-              {hiddenCount > 0 && (
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Badge variant="outline" className="px-1.5 py-0.5 text-[10px] cursor-pointer">+{hiddenCount}</Badge>
-                  </PopoverTrigger>
-                  <PopoverContent align="start" className="w-fit p-2">
-                    <ScrollArea>
-                      <div className="flex flex-col gap-1">
-                        {roles.map((item, index) => (
-                          <Badge key={index} variant="secondary" className="px-1.5 py-0.5 text-[10px] w-fit justify-start">
-                            {item}
-                          </Badge>
-                        ))}
-                      </div>
-                    </ScrollArea>
-                  </PopoverContent>
-                </Popover>
-              )}
-            </div>
-          </div>
-        );
-      },
+      cell: ({ row }) => (
+        <OverflowBadges
+          items={(row.original.roleIds || []) as string[]}
+          visibleCount={1}
+          className="w-[115px] text-xs"
+        />
+      ),
       enableSorting: false,
       enableHiding: true,
     },
