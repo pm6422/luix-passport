@@ -1,5 +1,4 @@
 import { LayoutBody } from "@/layouts/layout-definitions"
-import { SiteFooter } from "@/layouts/site-footer"
 import { Link } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { useLoginUserStore } from "@/stores/login-user-store"
@@ -9,6 +8,38 @@ import { Badge } from "@/components/ui/badge.tsx"
 import { AccountService } from "@/services/account-service"
 import AnimatedPathsBackground from "@/components/custom/background/animated-paths-background"
 import ColourfulText from "@/components/custom/display/colourful-text"
+
+function SiteFooter() {
+  return (
+    <footer className="mt-auto pt-2">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+        {/* Links section - hidden on small screens */}
+        <div className="hidden sm:flex space-x-6">
+          <Link
+            to="/terms-of-service"
+            className="text-xs text-muted-foreground hover:text-primary"
+          >
+            Terms
+          </Link>
+          <Link
+            to="/privacy-policy"
+            className="text-xs text-muted-foreground hover:text-primary"
+          >
+            Privacy
+          </Link>
+        </div>
+
+        {/* Copyright info - always centered, single row on small screens */}
+        <p className="text-xs text-muted-foreground text-center sm:text-left">
+          © 2025 LUIX Universe
+        </p>
+
+        {/* Placeholder on small screens to keep layout balanced */}
+        <div className="sm:hidden flex-1"></div>
+      </div>
+    </footer>
+  )
+}
 
 export default function SiteHome() {
   const { loginUser } = useLoginUserStore()
