@@ -57,7 +57,7 @@ const FormErrors = <T extends FieldValues>({
 
   return (
     Object.values(form.formState.errors).length > 0 && (
-      <Alert variant={variant} className="p-3">
+      <Alert variant={variant} className="p-3 bg-transparent">
         <AlertTitle className="flex items-center gap-2 text-sm">
           <IconAlertSquareRoundedFilled className="size-4" />
           Please resolve the following issues
