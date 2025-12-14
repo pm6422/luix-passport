@@ -4,7 +4,7 @@ import { DateTime } from "@/components/custom/display/date-time"
 import { InviteMembersDialog } from "./dialog/invite-dialog"
 import { LayoutBody } from "@/layouts/layout-definitions"
 import { IconPlus } from "@tabler/icons-react"
-import { useParams } from "react-router-dom"
+import { useParams, Link } from "react-router-dom"
 import { Input } from "@/components/ui/input"
 import {
   Table,
@@ -159,12 +159,19 @@ export default function TeamMembers() {
               Here you can manage the members of your team.
             </p>
           </div>
-          <RoleTeamOwner>
-            <Button onClick={() => setOpenInvite(true)}>
-              <IconPlus className="mr-2 size-4" />
-              Invite Members
-            </Button>
-          </RoleTeamOwner>
+          <div className="flex items-center gap-2">
+            {teamId && (
+              <Link to={`/teams/${teamId}`}>
+                <Button variant="outline">Back to Team</Button>
+              </Link>
+            )}
+            <RoleTeamOwner>
+              <Button onClick={() => setOpenInvite(true)}>
+                <IconPlus className="mr-2 size-4" />
+                Invite Members
+              </Button>
+            </RoleTeamOwner>
+          </div>
         </div>
 
         <div className="flex items-center space-x-2">
