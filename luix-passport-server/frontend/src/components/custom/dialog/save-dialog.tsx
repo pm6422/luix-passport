@@ -1,4 +1,4 @@
-import { useState, useEffect, ReactNode } from "react"
+import { useState, useEffect, ReactNode, useRef } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm, FieldValues, UseFormReturn, DefaultValues } from "react-hook-form"
 import { Dialog, DialogTrigger } from "@/components/ui/dialog"
@@ -97,6 +97,11 @@ export function SaveDialog<
   const [open, setOpen] = useState(false)
   const [options, setOptions] = useState<TOptions>({} as TOptions)
   const [loading, setLoading] = useState(false)
+  const onLoadRef = useRef(onLoad)
+
+  useEffect(() => {
+    onLoadRef.current = onLoad
+  }, [onLoad])
 
   const form = useForm<TFieldValues>({
     // @ts-expect-error - zodResolver has complex type constraints that are difficult to satisfy with generic schemas
@@ -112,8 +117,9 @@ export function SaveDialog<
     const loadData = async () => {
       setLoading(true)
       try {
-        if (onLoad) {
-          const result = await onLoad(id)
+        const loader = onLoadRef.current
+        if (loader) {
+          const result = await loader(id)
 
           if (result.options) {
             setOptions(result.options)
@@ -131,8 +137,7 @@ export function SaveDialog<
     }
 
     loadData()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open, id, onLoad])
+  }, [open, id, form])
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

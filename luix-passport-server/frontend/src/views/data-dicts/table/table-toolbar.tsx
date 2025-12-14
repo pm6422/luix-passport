@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form"
 import { Button } from "@/components/ui/button"
 import InputFormField from "@/components/custom/form-field/input"
 import { IconPlus, IconUpload, IconFilterSearch } from "@tabler/icons-react"
-import { EditDialog } from "../dialog/edit-dialog"
+import { EditDialog } from "../dialog/data-dict-dialog"
 import { type DataDict, type DataDictCriteria, dataDictCriteriaSchema, initialDataDictCriteriaState } from "@/domains/data-dict"
 type UploadFormSchema = { files: File[] }
 import { UploadDialog } from "@/components/custom/dialog/upload-dialog"

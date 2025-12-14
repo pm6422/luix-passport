@@ -6,7 +6,7 @@ import { DataTableRowActions } from "@/components/custom/data-table/data-table-r
 import { Button } from "@/components/ui/button"
 import { YesNoBadge } from "@/components/custom/display/yes-no-badge"
 import { DataDict } from "@/domains/data-dict"
-import { EditDialog } from "../dialog/edit-dialog"
+import { EditDialog } from "../dialog/data-dict-dialog"
 import { DateTime } from "@/components/custom/display/date-time"
 
 export function tableColumns(
