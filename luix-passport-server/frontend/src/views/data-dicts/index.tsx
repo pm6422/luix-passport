@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react"
 import { LayoutBody } from "@/layouts/layout-definitions"
 import { DataTableToolbar } from "./table/table-toolbar"
-import { DataTable } from "@/components/custom/data-table/server-pagination-data-table"
+import { DataTable } from "@/components/custom/data-table/data-table"
 import { tableColumns } from "./table/table-columns"
 import { type DataDict, type DataDictCriteria } from "@/domains/data-dict"
 import { DataDictService } from "@/services/data-dict-service"
@@ -71,6 +71,7 @@ export default function DataDict() {
       <LayoutBody className="flex flex-col" fixedHeight>
         <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-y-0">
           <DataTable
+            paginationMode="server"
             columns={tableColumns(entityName, save, deleteRow)}
             data={tableData}
             totalCount={totalCount}

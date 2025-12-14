@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react"
 import { LayoutBody } from "@/layouts/layout-definitions"
 import { DataTableToolbar } from "./table/table-toolbar"
-import { DataTable } from "@/components/custom/data-table/server-pagination-data-table"
+import { DataTable } from "@/components/custom/data-table/data-table"
 import { tableColumns } from "./table/table-columns"
 import { type ScheduleExecutionLog, type ScheduleExecutionLogCriteriaSchema } from "@/domains/schedule-execution-log"
 import { ScheduleExecutionLogService } from "@/services/schedule-execution-log-service"
@@ -52,6 +52,7 @@ export default function ScheduleExecutionLogs() {
       <LayoutBody className="flex flex-col" fixedHeight>
         <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-y-0">
           <DataTable
+            paginationMode="server"
             columns={tableColumns(entityName, deleteRow)}
             data={tableData}
             totalCount={totalCount}

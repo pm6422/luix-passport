@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react"
 import { LayoutBody } from "@/layouts/layout-definitions"
 import { DataTableToolbar } from "./table/table-toolbar"
-import { DataTable } from "@/components/custom/data-table/client-pagination-data-table"
+import { DataTable } from "@/components/custom/data-table/data-table"
 import { tableColumns } from "./table/table-columns"
 import { type Role, type RoleCriteriaSchema } from "@/domains/role"
 import { RoleService } from "@/services/role-service"
@@ -51,6 +51,7 @@ export default function Role() {
       <LayoutBody className="flex flex-col" fixedHeight>
         <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-y-0">
           <DataTable
+            paginationMode="client"
             columns={tableColumns(entityName, save, deleteRow)}
             data={tableData}
             loadPage={loadPage}
