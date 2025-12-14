@@ -4,8 +4,8 @@ import { useForm } from "react-hook-form"
 import { Dialog, DialogTrigger } from "@/components/ui/dialog"
 import SaveDialogContent from "@/components/custom/dialog/save-dialog-content"
 import InputFormField from "@/components/custom/form-field/input"
-import MultiSelectFormField from "@/components/custom/form-field/multi-select"
-import { Option } from "@/components/custom/form-field/multi-select"
+import MultiSelectorFormField from "@/components/custom/form-field/multi-selector"
+import { Option } from "@/components/custom/form-field/multi-selector"
 import SwitchFormField from "@/components/custom/form-field/switch"
 import { type DataDict, dataDictSchema, initialDataDictState } from "@/domains/data-dict"
 import { DataDictService } from "@/services/data-dict-service"
@@ -51,8 +51,8 @@ export function EditDialog({
         {children}
       </DialogTrigger>
       <SaveDialogContent<DataDict> entityName={entityName} id={id} form={form} save={save} setOpen={setOpen} debug={false}>
-        <MultiSelectFormField
-          control={form.control} 
+        <MultiSelectorFormField
+          control={form.control}
           name="categoryCode"
           label="Category Code"
           options={categoryCodeOptions}
@@ -61,28 +61,28 @@ export function EditDialog({
           required
         />
 
-        <InputFormField 
-          control={form.control} 
-          name="dictCode" 
-          label="Dictionary Code" 
+        <InputFormField
+          control={form.control}
+          name="dictCode"
+          label="Dictionary Code"
           required
         />
 
-        <InputFormField 
-          control={form.control} 
-          name="dictName" 
+        <InputFormField
+          control={form.control}
+          name="dictName"
           label="Dictionary Name"
         />
 
-        <InputFormField 
-          control={form.control} 
-          name="remark" 
+        <InputFormField
+          control={form.control}
+          name="remark"
           label="Remark"
         />
 
-        <SwitchFormField 
-          control={form.control} 
-          name="enabled" 
+        <SwitchFormField
+          control={form.control}
+          name="enabled"
           label="Enabled"
           description="After disabling, existing data can still reference the object, but new data cannot."
         />

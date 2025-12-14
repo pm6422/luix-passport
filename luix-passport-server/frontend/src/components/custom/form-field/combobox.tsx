@@ -6,7 +6,7 @@ import { IconCheck, IconSelector } from "@tabler/icons-react"
 import { Key } from "react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { Option } from "@/components/custom/form-field/multi-select"
+import { Option } from "@/components/custom/form-field/multi-selector"
 import {
   Command,
   CommandEmpty,
@@ -37,15 +37,15 @@ interface Props<TFieldValues extends FieldValues> {
 }
 
 const ComboboxFormField = <TFieldValues extends FieldValues>({
-                                                               control,
-                                                               name,
-                                                               key,
-                                                               label,
-                                                               options,
-                                                               description,
-                                                               placeholder,
-                                                               required,
-                                                               disabled,
+  control,
+  name,
+  key,
+  label,
+  options,
+  description,
+  placeholder,
+  required,
+  disabled,
   inputClassName,
   formItemClassName,
   hide = false

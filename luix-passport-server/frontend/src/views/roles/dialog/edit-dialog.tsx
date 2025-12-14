@@ -4,8 +4,8 @@ import { useForm } from "react-hook-form"
 import { Dialog, DialogTrigger } from "@/components/ui/dialog"
 import SaveDialogContent from "@/components/custom/dialog/save-dialog-content"
 import InputFormField from "@/components/custom/form-field/input"
-import MultiSelectFormField from "@/components/custom/form-field/multi-select"
-import { Option } from "@/components/custom/form-field/multi-select"
+import MultiSelectorFormField from "@/components/custom/form-field/multi-selector"
+import { Option } from "@/components/custom/form-field/multi-selector"
 import { type Role, roleSchema, initialRoleState } from "@/domains/role"
 import { type Permission } from "@/domains/permission"
 import { RoleService } from "@/services/role-service"
@@ -36,10 +36,10 @@ export function EditDialog({
       return
     }
     Promise.all([
-      PermissionService.find({ page: 0, size: 2000, sort: ["updatedAt,desc"]}),
+      PermissionService.find({ page: 0, size: 2000, sort: ["updatedAt,desc"] }),
     ]).then(results => {
       // load options
-      setPermissions(results[0].data.map((item: Permission) => ({label: item.id, value: item.id})));
+      setPermissions(results[0].data.map((item: Permission) => ({ label: item.id, value: item.id })));
 
       if (id) {
         RoleService.findById(id).then(r => {
@@ -56,7 +56,7 @@ export function EditDialog({
       </DialogTrigger>
       <SaveDialogContent<Role> entityName={entityName} id={id} form={form} save={save} setOpen={setOpen} debug={false}>
         <InputFormField
-          control={form.control} 
+          control={form.control}
           name="id"
           label="ID"
           required
@@ -68,7 +68,7 @@ export function EditDialog({
           label="Remark"
         />
 
-        <MultiSelectFormField
+        <MultiSelectorFormField
           control={form.control}
           name="permissionIds"
           label="Permissions"

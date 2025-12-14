@@ -8,7 +8,7 @@ import SelectFormField from "@/components/custom/form-field/select"
 import { type Permission, permissionSchema, initialPermissionState } from "@/domains/permission"
 import { PermissionService } from "@/services/permission-service"
 import { DataDictService } from "@/services/data-dict-service"
-import { Option } from "@/components/custom/form-field/multi-select"
+import { Option } from "@/components/custom/form-field/multi-selector"
 import type { DataDict } from "@/domains/data-dict"
 
 interface EditDialogProps {
@@ -41,8 +41,8 @@ export function EditDialog({
       DataDictService.lookup("PermissionAction", true),
     ]).then(results => {
       // load options
-      setResourceTypes(results[0].data.map((item: DataDict) => ({label: item.dictCode , value: item.dictCode})));
-      setActions(results[1].data.map((item: DataDict) => ({label: item.dictCode , value: item.dictCode})));
+      setResourceTypes(results[0].data.map((item: DataDict) => ({ label: item.dictCode, value: item.dictCode })));
+      setActions(results[1].data.map((item: DataDict) => ({ label: item.dictCode, value: item.dictCode })));
 
       if (id) {
         PermissionService.findById(id).then(r => {

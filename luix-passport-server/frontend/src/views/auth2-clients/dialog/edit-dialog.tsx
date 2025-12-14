@@ -4,8 +4,8 @@ import { useForm } from "react-hook-form"
 import { Dialog, DialogTrigger } from "@/components/ui/dialog"
 import SaveDialogContent from "@/components/custom/dialog/save-dialog-content"
 import InputFormField from "@/components/custom/form-field/input"
-import MultiSelectFormField from "@/components/custom/form-field/multi-select"
-import { Option } from "@/components/custom/form-field/multi-select"
+import MultiSelectorFormField from "@/components/custom/form-field/multi-selector"
+import { Option } from "@/components/custom/form-field/multi-selector"
 import SwitchFormField from "@/components/custom/form-field/switch"
 import { type Auth2Client, auth2ClientSchema, initialAuth2ClientState } from "@/domains/auth2-client"
 import { Oauth2ClientService } from "@/services/oauth2-client-service"
@@ -86,7 +86,7 @@ export function EditDialog({
           hide={!!id}
         />
 
-        <MultiSelectFormField
+        <MultiSelectorFormField
           control={form.control}
           name="clientAuthenticationMethods"
           label="Authentication Methods"
@@ -95,7 +95,7 @@ export function EditDialog({
           multiple={true}
         />
 
-        <MultiSelectFormField
+        <MultiSelectorFormField
           control={form.control}
           name="authorizationGrantTypes"
           label="Authentication Grant Types"
@@ -123,7 +123,7 @@ export function EditDialog({
           addButtonText="Add URI"
         />
 
-        <MultiSelectFormField
+        <MultiSelectorFormField
           control={form.control}
           name="scopes"
           label="Scopes"

@@ -24,9 +24,9 @@ import { FormControl, FormDescription, FormField, FormItem, FormMessage } from "
 import { RequiredFormLabel } from "../required-form-label"
 import { Key } from "react"
 
-// ----- MultiSelect Component -----
+// ----- MultiSelector Component -----
 
-const multiSelectVariants = cva(
+const multiSelectorVariants = cva(
   "m-1 transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 shadow-xs font-normal",
   {
     variants: {
@@ -49,7 +49,7 @@ export type Option = {
   icon?: React.ComponentType<{ className?: string }>
 }
 
-interface MultiSelectProps extends React.ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof multiSelectVariants> {
+interface MultiSelectorProps extends React.ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof multiSelectorVariants> {
   options: { label: string; value: string; icon?: React.ComponentType<{ className?: string }> }[];
   defaultValue?: string | string[]
   disabled?: boolean
@@ -59,7 +59,7 @@ interface MultiSelectProps extends React.ButtonHTMLAttributes<HTMLButtonElement>
   multiple?: boolean
 }
 
-const MultiSelectInner: React.ForwardRefRenderFunction<HTMLButtonElement, MultiSelectProps> = (
+const MultiSelectorInner: React.ForwardRefRenderFunction<HTMLButtonElement, MultiSelectorProps> = (
   {
     className,
     variant,
@@ -162,7 +162,7 @@ const MultiSelectInner: React.ForwardRefRenderFunction<HTMLButtonElement, MultiS
                   return (
                     <Badge
                       key={value}
-                      className={cn(multiSelectVariants({ variant, className }))}
+                      className={cn(multiSelectorVariants({ variant, className }))}
                     >
                       {IconComponent && <IconComponent className="size-4 mr-1" />}
                       {creatable ? (option ? option.label : value) : option?.label}
@@ -300,8 +300,8 @@ const MultiSelectInner: React.ForwardRefRenderFunction<HTMLButtonElement, MultiS
   )
 }
 
-MultiSelectInner.displayName = "MultiSelect"
-export const MultiSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(MultiSelectInner)
+MultiSelectorInner.displayName = "MultiSelector"
+export const MultiSelector = forwardRef<HTMLButtonElement, MultiSelectorProps>(MultiSelectorInner)
 
 // ----- FormField Wrapper -----
 
@@ -317,12 +317,12 @@ interface Props<TFieldValues extends FieldValues> {
   placeholder?: string
   required?: boolean
   disabled?: boolean
-  multiSelectClassName?: string
+  multiSelectorClassName?: string
   formItemClassName?: string
   hide?: boolean
 }
 
-const MultiSelectFormField = <TFieldValues extends FieldValues>({
+const MultiSelectorFormField = <TFieldValues extends FieldValues>({
   control,
   name,
   key,
@@ -334,7 +334,7 @@ const MultiSelectFormField = <TFieldValues extends FieldValues>({
   placeholder,
   required,
   disabled,
-  multiSelectClassName,
+  multiSelectorClassName,
   formItemClassName,
   hide = false
 }: Props<TFieldValues>) => {
@@ -348,14 +348,14 @@ const MultiSelectFormField = <TFieldValues extends FieldValues>({
         <FormItem className={formItemClassName}>
           {label && <RequiredFormLabel required={required}>{label}</RequiredFormLabel>}
           <FormControl>
-            <MultiSelect
+            <MultiSelector
               options={options}
               defaultValue={field.value}
               onValueChange={field.onChange}
               creatable={creatable}
               multiple={multiple}
               placeholder={placeholder}
-              className={multiSelectClassName}
+              className={multiSelectorClassName}
             />
           </FormControl>
           {description && <FormDescription>{description}</FormDescription>}
@@ -366,4 +366,4 @@ const MultiSelectFormField = <TFieldValues extends FieldValues>({
   )
 }
 
-export default MultiSelectFormField
+export default MultiSelectorFormField

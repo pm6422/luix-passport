@@ -18,7 +18,7 @@ import { isValidPhoneNumber } from "react-phone-number-input"
 import { type SupportedDateTimeFormat } from "@/domains/supported-date-time-format"
 import { type DataDict } from "@/domains/data-dict"
 import { Link } from "react-router-dom"
-import { Option } from "@/components/custom/form-field/multi-select"
+import { Option } from "@/components/custom/form-field/multi-selector"
 import PhoneInputFormField from "@/components/custom/form-field/phone-input"
 
 const settingsFormSchema = z.object({
