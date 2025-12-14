@@ -5,6 +5,12 @@ import { AccountService } from "./src/services/account-service"
 import Main from "./src/main"
 import { useAppInfoStore } from "./src/stores/app-info-store"
 import { useLoginUserStore } from "./src/stores/login-user-store"
+import dayjs from "dayjs"
+import utc from "dayjs/plugin/utc"
+import timezone from "dayjs/plugin/timezone"
+
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 Promise.all([ManagementService.getAppInfo(), AccountService.getCurrentUser()]).then(results => {
   useAppInfoStore.getState().setAppInfo(results[0])
