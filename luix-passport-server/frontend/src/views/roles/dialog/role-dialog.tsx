@@ -22,12 +22,12 @@ export function EditDialog({
 }: EditDialogProps) {
   const loadEntity = async (entityId?: string | null) => {
     const { data: permissionList } = await PermissionService.find({ page: 0, size: 2000, sort: ["updatedAt,desc"] })
-    const options = permissionList.map((item: Permission) => ({ label: item.id, value: item.id }))
+    const permissionOptions = permissionList.map((item: Permission) => ({ label: item.id, value: item.id }))
     if (entityId) {
       const { data } = await RoleService.findById(entityId)
-      return { options: { permissions: options }, entity: data }
+      return { options: { permissions: permissionOptions }, entity: data }
     }
-    return { options: { permissions: options }, entity: initialRoleState }
+    return { options: { permissions: permissionOptions }, entity: initialRoleState }
   }
   return (
     <FormDialog<Role, { permissions: Option[] }>
