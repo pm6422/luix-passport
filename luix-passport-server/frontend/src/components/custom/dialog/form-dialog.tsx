@@ -44,6 +44,9 @@ interface FormDialogProps<
   size?: "sm" | "md" | "lg"
   readonly?: boolean
   debug?: boolean
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
+  contentClassName?: string
 }
 
 interface Props<T extends FieldValues> {
@@ -57,6 +60,7 @@ interface Props<T extends FieldValues> {
   setOpen: (open: boolean) => void
   readonly?: boolean
   debug?: boolean
+  contentClassName?: string
 }
 
 function FormDialogContent<T extends FieldValues>({
@@ -69,7 +73,8 @@ function FormDialogContent<T extends FieldValues>({
   afterSave,
   setOpen,
   readonly = false,
-  debug = false
+  debug = false,
+  contentClassName
 }: Props<T>) {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<FieldErrors>({})
@@ -105,7 +110,7 @@ function FormDialogContent<T extends FieldValues>({
   }
 
   return (
-    <DialogContent className={cn("max-h-screen overflow-y-auto lg:max-w-screen-md", `lg:max-w-screen-${size}`)}>
+    <DialogContent className={cn("max-h-screen overflow-y-auto lg:max-w-screen-md", `lg:max-w-screen-${size}`, contentClassName)}>
       <DialogHeader>
         <DialogTitle className="capitalize">{readonly ? "View" : id ? "Update" : "Create"} {entityName}</DialogTitle>
         <DialogDescription></DialogDescription>
@@ -160,8 +165,14 @@ export function FormDialog<
   size = "md",
   readonly = false,
   debug = false,
+  open: controlledOpen,
+  onOpenChange: controlledOnOpenChange,
+  contentClassName,
 }: FormDialogProps<TFieldValues, TOptions>) {
-  const [open, setOpen] = useState(false)
+  const [internalOpen, setInternalOpen] = useState(false)
+  const isControlled = typeof controlledOpen === "boolean" && typeof controlledOnOpenChange === "function"
+  const open = isControlled ? controlledOpen : internalOpen
+  const setOpen = isControlled ? controlledOnOpenChange! : setInternalOpen
   const [options, setOptions] = useState<TOptions>({} as TOptions)
   const [loading, setLoading] = useState(false)
   const onLoadRef = useRef(onLoad)
@@ -221,10 +232,11 @@ export function FormDialog<
         size={size}
         readonly={readonly}
         debug={debug}
+        contentClassName={contentClassName}
       >
         {loading ? (
           <div className="flex items-center justify-center py-8">
-            <div className="text-sm text-muted-foreground">Loading...</div>
+          <div className="text-sm text-muted-foreground">Loading...</div>
           </div>
         ) : (
           renderFields(form, options)

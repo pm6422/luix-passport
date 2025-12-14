@@ -19,7 +19,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 
-import { CreateTeamDialog } from "@/views/team/dialog/create-dialog"
+import { CreateTeamDialog } from "@/views/team/dialog/create-team-dialog"
 import { TeamService, type Team } from "@/services/team-service";
 import { useNavigate } from "react-router-dom";
 
