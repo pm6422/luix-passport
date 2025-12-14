@@ -4,12 +4,10 @@ import { FormControl, FormDescription, FormField, FormItem, FormMessage } from "
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { RequiredFormLabel } from "../required-form-label"
-import { Key } from "react"
 
 interface Props<TFieldValues extends FieldValues> {
   control: Control<TFieldValues>
   name: Path<TFieldValues>
-  key?: Key
   label?: string
   value?: string
   defaultValue?: string
@@ -30,7 +28,6 @@ interface Props<TFieldValues extends FieldValues> {
 const InputFormField = <TFieldValues extends FieldValues>({
   control,
   name,
-  key,
   label,
   value,
   defaultValue,
@@ -51,13 +48,12 @@ const InputFormField = <TFieldValues extends FieldValues>({
   return (
     <FormField
       control={disabled ? undefined : control}
-      name={name as Path<TFieldValues>}
-      key={key}
+      name={name}
       render={({ field: { value: formFieldValue, ...rest } }) => (
         <FormItem className={formItemClassName}>
           {label && <RequiredFormLabel
-                      htmlFor={name.toString()}
-                      required={required}>{label}
+            htmlFor={name.toString()}
+            required={required}>{label}
           </RequiredFormLabel>}
           <FormControl>
             <div className="relative flex w-full items-center gap-2">

@@ -3,7 +3,7 @@ import { FormControl, FormDescription, FormField, FormItem, FormMessage } from "
 import { RequiredFormLabel } from "../required-form-label"
 import * as React from "react"
 import { IconCheck, IconSelector } from "@tabler/icons-react"
-import { Key } from "react"
+
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Option } from "@/components/custom/form-field/multi-selector"
@@ -23,8 +23,7 @@ import {
 
 interface Props<TFieldValues extends FieldValues> {
   control: Control<TFieldValues>
-  name: keyof TFieldValues
-  key?: Key
+  name: Path<TFieldValues>
   label?: string
   options: Array<Option>
   description?: string
@@ -39,7 +38,6 @@ interface Props<TFieldValues extends FieldValues> {
 const ComboboxFormField = <TFieldValues extends FieldValues>({
   control,
   name,
-  key,
   label,
   options,
   description,
@@ -57,7 +55,7 @@ const ComboboxFormField = <TFieldValues extends FieldValues>({
     <FormField
       control={disabled ? undefined : control}
       name={name as Path<TFieldValues>}
-      key={key}
+
       render={({ field }) => (
         <FormItem className={formItemClassName}>
           {label && <RequiredFormLabel required={required}>{label}</RequiredFormLabel>}
@@ -68,6 +66,7 @@ const ComboboxFormField = <TFieldValues extends FieldValues>({
                   variant="outline"
                   role="combobox"
                   aria-expanded={open}
+                  disabled={disabled}
                   className={cn(
                     "w-full justify-between font-normal",
                     inputClassName

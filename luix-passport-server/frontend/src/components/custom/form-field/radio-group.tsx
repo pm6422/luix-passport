@@ -2,7 +2,7 @@ import type { Control, FieldValues, Path } from "react-hook-form"
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { RequiredFormLabel } from "../required-form-label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Key } from "react"
+
 
 export type RadioOption = {
   label: string
@@ -12,7 +12,6 @@ export type RadioOption = {
 interface Props<TFieldValues extends FieldValues> {
   control: Control<TFieldValues>
   name: Path<TFieldValues>
-  key?: Key
   label?: string
   options: Array<RadioOption>
   description?: string
@@ -24,23 +23,22 @@ interface Props<TFieldValues extends FieldValues> {
 }
 
 const RadioGroupFormField = <TFieldValues extends FieldValues>({
-                                                                 control,
-                                                                 name,
-                                                                 key,
-                                                                 label,
-                                                                 options,
-                                                                 description,
-                                                                 required,
-                                                                 disabled,
-                                                                 formItemClassName,
-                                                                 hide = false,
-                                                                 direction = "vertical"
-                                                               }: Props<TFieldValues>) => {
-  return !hide && (
+  control,
+  name,
+  label,
+  options,
+  description,
+  required,
+  disabled,
+  formItemClassName,
+  hide = false,
+  direction = "vertical"
+}: Props<TFieldValues>) => {
+  if (hide) return null
+  return (
     <FormField
       control={disabled ? undefined : control}
       name={name}
-      key={key}
       render={({ field }) => (
         <FormItem className={formItemClassName}>
           {label && (

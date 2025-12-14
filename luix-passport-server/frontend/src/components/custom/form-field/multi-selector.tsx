@@ -22,7 +22,7 @@ import {
 import type { Control, FieldValues, Path } from "react-hook-form"
 import { FormControl, FormDescription, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { RequiredFormLabel } from "../required-form-label"
-import { Key } from "react"
+
 
 // ----- MultiSelector Component -----
 
@@ -307,8 +307,7 @@ export const MultiSelector = forwardRef<HTMLButtonElement, MultiSelectorProps>(M
 
 interface Props<TFieldValues extends FieldValues> {
   control: Control<TFieldValues>
-  name: keyof TFieldValues
-  key?: Key
+  name: Path<TFieldValues>
   label?: string
   options: Array<Option>
   creatable?: boolean
@@ -325,7 +324,6 @@ interface Props<TFieldValues extends FieldValues> {
 const MultiSelectorFormField = <TFieldValues extends FieldValues>({
   control,
   name,
-  key,
   label,
   options,
   creatable,
@@ -342,8 +340,7 @@ const MultiSelectorFormField = <TFieldValues extends FieldValues>({
   return (
     <FormField
       control={disabled ? undefined : control}
-      name={name as Path<TFieldValues>}
-      key={key}
+      name={name}
       render={({ field }) => (
         <FormItem className={formItemClassName}>
           {label && <RequiredFormLabel required={required}>{label}</RequiredFormLabel>}

@@ -9,17 +9,16 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select"
-import { Key } from "react"
+
 
 interface Props<TFieldValues extends FieldValues> {
   control: Control<TFieldValues>
-  name: keyof TFieldValues
-  key?: Key
+  name: Path<TFieldValues>
   label?: string
-  options: { 
-    label: string 
-    value: string 
-    icon?: React.ComponentType<{ className?: string }> 
+  options: {
+    label: string
+    value: string
+    icon?: React.ComponentType<{ className?: string }>
   }[]
   description?: string
   placeholder?: string
@@ -34,7 +33,6 @@ interface Props<TFieldValues extends FieldValues> {
 const SelectFormField = <TFieldValues extends FieldValues>({
   control,
   name,
-  key,
   label,
   options,
   description,
@@ -50,8 +48,7 @@ const SelectFormField = <TFieldValues extends FieldValues>({
   return (
     <FormField
       control={disabled ? undefined : control}
-      name={name as Path<TFieldValues>}
-      key={key}
+      name={name}
       render={({ field }) => (
         <FormItem className={formItemClassName}>
           {label && <RequiredFormLabel required={required}>{label}</RequiredFormLabel>}
@@ -59,10 +56,10 @@ const SelectFormField = <TFieldValues extends FieldValues>({
             <FormControl>
               <SelectTrigger
                 className={cn(
-                "w-full",
-                inputClassName
-              )}>
-                <SelectValue placeholder={placeholder}/>
+                  "w-full",
+                  inputClassName
+                )}>
+                <SelectValue placeholder={placeholder} />
               </SelectTrigger>
             </FormControl>
             <SelectContent className={selectContentClassName}>

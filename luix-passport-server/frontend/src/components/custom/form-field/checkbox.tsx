@@ -2,7 +2,7 @@ import type { Control, FieldValues, Path } from "react-hook-form"
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { RequiredFormLabel } from "../required-form-label"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Key } from "react"
+
 
 export type CheckboxOption = {
   label: string
@@ -12,7 +12,6 @@ export type CheckboxOption = {
 interface Props<TFieldValues extends FieldValues> {
   control: Control<TFieldValues>
   name: Path<TFieldValues>
-  key?: Key
   label?: string
   options: Array<CheckboxOption>
   description?: string
@@ -24,24 +23,22 @@ interface Props<TFieldValues extends FieldValues> {
 }
 
 const CheckboxFormField = <TFieldValues extends FieldValues>({
-                                                               control,
-                                                               name,
-                                                               key,
-                                                               label,
-                                                               options,
-                                                               description,
-                                                               required,
-                                                               disabled,
-                                                               formItemClassName,
-                                                               hide = false,
-                                                               requiredOptionValues = []
-                                                             }: Props<TFieldValues>) => {
+  control,
+  name,
+  label,
+  options,
+  description,
+  required,
+  disabled,
+  formItemClassName,
+  hide = false,
+  requiredOptionValues = []
+}: Props<TFieldValues>) => {
   if (hide) return null
   return (
     <FormField
       control={disabled ? undefined : control}
       name={name}
-      key={key}
       render={({ field }) => (
         <FormItem className={formItemClassName}>
           {label && (
@@ -54,30 +51,30 @@ const CheckboxFormField = <TFieldValues extends FieldValues>({
           {(() => {
             const selectedValues = Array.isArray(field.value) ? (field.value as string[]) : []
             return options.map((item) => (
-            <FormItem
-              key={item.value}
-              className="flex flex-row items-start space-x-3 space-y-0"
-            >
-              <FormControl>
-                <Checkbox
-                  checked={selectedValues.includes(item.value)}
-                  disabled={disabled || requiredOptionValues.includes(item.value)}
-                  onCheckedChange={(checked) => {
-                    const current = Array.isArray(field.value) ? (field.value as string[]) : []
-                    const next = checked
-                      ? [...current, item.value]
-                      : current.filter((value) => value !== item.value)
-                    field.onChange(next)
-                  }}
-                />
-              </FormControl>
-              <FormLabel className="flex items-center gap-1">
-                {item.label}
-                {requiredOptionValues.includes(item.value) && (
-                  <span className="text-destructive font-bold">*</span>
-                )}
-              </FormLabel>
-            </FormItem>
+              <FormItem
+                key={item.value}
+                className="flex flex-row items-start space-x-3 space-y-0"
+              >
+                <FormControl>
+                  <Checkbox
+                    checked={selectedValues.includes(item.value)}
+                    disabled={disabled || requiredOptionValues.includes(item.value)}
+                    onCheckedChange={(checked) => {
+                      const current = Array.isArray(field.value) ? (field.value as string[]) : []
+                      const next = checked
+                        ? [...current, item.value]
+                        : current.filter((value) => value !== item.value)
+                      field.onChange(next)
+                    }}
+                  />
+                </FormControl>
+                <FormLabel className="flex items-center gap-1">
+                  {item.label}
+                  {requiredOptionValues.includes(item.value) && (
+                    <span className="text-destructive font-bold">*</span>
+                  )}
+                </FormLabel>
+              </FormItem>
             ))
           })()}
           <FormMessage />

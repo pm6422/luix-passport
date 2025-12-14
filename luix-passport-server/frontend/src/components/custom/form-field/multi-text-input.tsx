@@ -98,7 +98,7 @@ const MultiTextInputFormField = <TFieldValues extends FieldValues>({
 
   return (
     <FormField
-      control={control}
+      control={disabled ? undefined : control}
       name={name}
       render={() => (
         <FormItem className={className}>

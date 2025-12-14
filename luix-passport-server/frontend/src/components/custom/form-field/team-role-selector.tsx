@@ -163,6 +163,7 @@ interface Props<TFieldValues extends FieldValues> {
   disabled?: boolean
   description?: string
   className?: string
+  hide?: boolean
 }
 
 const TeamRoleSelectorFormField = <TFieldValues extends FieldValues>({
@@ -173,11 +174,13 @@ const TeamRoleSelectorFormField = <TFieldValues extends FieldValues>({
   required,
   disabled,
   description,
-  className
+  className,
+  hide = false
 }: Props<TFieldValues>) => {
+  if (hide) return null
   return (
     <FormField
-      control={control}
+      control={disabled ? undefined : control}
       name={name}
       render={({ field }) => (
         <FormItem className={className}>

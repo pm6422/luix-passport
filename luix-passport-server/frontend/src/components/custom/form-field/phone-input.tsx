@@ -25,7 +25,7 @@ import type { Control, FieldValues, Path } from "react-hook-form"
 import { FormControl, FormDescription, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { RequiredFormLabel } from "../required-form-label"
 import { CountryCode } from "libphonenumber-js"
-import { Key } from "react"
+
 
 // ----- PhoneInput Component -----
 
@@ -208,8 +208,7 @@ export { PhoneInput };
 
 interface Props<TFieldValues extends FieldValues> {
   control: Control<TFieldValues>
-  name: keyof TFieldValues
-  key?: Key
+  name: Path<TFieldValues>
   label?: string
   defaultCountry?: CountryCode
   description?: string
@@ -224,7 +223,6 @@ interface Props<TFieldValues extends FieldValues> {
 const PhoneInputFormField = <TFieldValues extends FieldValues>({
   control,
   name,
-  key,
   label,
   defaultCountry = "CN",
   description,
@@ -234,22 +232,24 @@ const PhoneInputFormField = <TFieldValues extends FieldValues>({
   phoneInputClassName,
   formItemClassName,
   hide = false
-}: Props<TFieldValues>) => (!hide &&
-  <FormField
-    control={disabled ? undefined : control}
-    name={name as Path<TFieldValues>}
-    key={key}
-    render={({ field }) => (
-      <FormItem className={formItemClassName}>
-        {label && <RequiredFormLabel required={required}>{label}</RequiredFormLabel>}
-        <FormControl>
-          <PhoneInput defaultCountry={defaultCountry} international placeholder={placeholder} className={phoneInputClassName} {...field} />
-        </FormControl>
-        {description && <FormDescription>{description}</FormDescription>}
-        <FormMessage />
-      </FormItem>
-    )}
-  />
-)
+}: Props<TFieldValues>) => {
+  if (hide) return null
+  return (
+    <FormField
+      control={disabled ? undefined : control}
+      name={name}
+      render={({ field }) => (
+        <FormItem className={formItemClassName}>
+          {label && <RequiredFormLabel required={required}>{label}</RequiredFormLabel>}
+          <FormControl>
+            <PhoneInput defaultCountry={defaultCountry} international placeholder={placeholder} className={phoneInputClassName} {...field} />
+          </FormControl>
+          {description && <FormDescription>{description}</FormDescription>}
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+  )
+}
 
 export default PhoneInputFormField
