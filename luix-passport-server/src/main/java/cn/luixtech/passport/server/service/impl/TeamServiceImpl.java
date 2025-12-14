@@ -127,7 +127,7 @@ public class TeamServiceImpl implements TeamService {
   @Transactional(rollbackFor = Exception.class)
   public void inviteMembers(HttpServletRequest request, String teamId, List<TeamMemberInvitation> invitations,
       String inviterId) {
-    TeamUser inviter = teamUserRepository.findByTeamIdAndUserId(teamId, inviterId)
+    teamUserRepository.findByTeamIdAndUserId(teamId, inviterId)
         .orElseThrow(() -> new IllegalArgumentException("Inviter is not a member of the team"));
 
     Set<String> inviterRoleIds = userRoleService.findRoleIds(inviterId);
@@ -198,7 +198,7 @@ public class TeamServiceImpl implements TeamService {
   @Override
   public List<TeamInvitation> findPendingInvitations(String teamId) {
     String currentUser = AuthUtils.getCurrentUsername();
-    TeamUser operator = teamUserRepository.findByTeamIdAndUserId(teamId, currentUser)
+    teamUserRepository.findByTeamIdAndUserId(teamId, currentUser)
         .orElseThrow(() -> new IllegalArgumentException("Operator is not a member of the team"));
     Set<String> operatorRoleIds = userRoleService.findRoleIds(currentUser);
     if (!operatorRoleIds.contains(Role.TEAM_OWNER)) {
@@ -239,7 +239,7 @@ public class TeamServiceImpl implements TeamService {
   @Transactional(rollbackFor = Exception.class)
   public void updateTeamPhoto(String teamId, byte[] photo) {
     String currentUser = AuthUtils.getCurrentUsername();
-    TeamUser operator = teamUserRepository.findByTeamIdAndUserId(teamId, currentUser)
+    teamUserRepository.findByTeamIdAndUserId(teamId, currentUser)
         .orElseThrow(() -> new RuntimeException("Operator is not a member of the team"));
     Set<String> operatorRoleIds = userRoleService.findRoleIds(currentUser);
     if (!operatorRoleIds.contains(Role.TEAM_OWNER)) {
@@ -334,7 +334,7 @@ public class TeamServiceImpl implements TeamService {
       throw new IllegalArgumentException("Only expired invitations can be resent");
     }
 
-    TeamUser inviter = teamUserRepository.findByTeamIdAndUserId(invitation.getTeamId(), inviterId)
+    teamUserRepository.findByTeamIdAndUserId(invitation.getTeamId(), inviterId)
         .orElseThrow(() -> new IllegalArgumentException("Inviter is not a member of the team"));
     Set<String> inviterRoleIds = userRoleService.findRoleIds(inviterId);
     if (!inviterRoleIds.contains(Role.TEAM_OWNER)) {
@@ -379,7 +379,7 @@ public class TeamServiceImpl implements TeamService {
     if (!Role.TEAM_OWNER.equals(role) && !Role.TEAM_MEMBER.equals(role)) {
       throw new IllegalArgumentException("Invalid role");
     }
-    TeamUser operator = teamUserRepository.findByTeamIdAndUserId(teamId, operatorId)
+    teamUserRepository.findByTeamIdAndUserId(teamId, operatorId)
         .orElseThrow(() -> new IllegalArgumentException("Operator is not a member of the team"));
     Set<String> operatorRoleIds = userRoleService.findRoleIds(operatorId);
     if (!operatorRoleIds.contains(Role.TEAM_OWNER)) {
