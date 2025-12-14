@@ -1,8 +1,8 @@
-import { AccountNav } from "@/components/custom/site/account-nav";
-import { TopNav } from "@/components/custom/site/top-nav";
+import { AccountNav } from "@/layouts/nav/account-nav";
+import { TopNav } from "@/layouts/nav/top-nav";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 // import { Search } from "@/components/custom/form-element/search"
-// import { NotificationNav } from "@/components/custom/site/notification-nav"
+// import { NotificationNav } from "@/layouts/nav/notification-nav"
 
 export function AuthLayoutHeader() {
   const topNavLinks = [
