@@ -1,4 +1,4 @@
-import { useState, ReactNode } from 'react'
+import { ReactNode } from 'react'
 import { FormDialog } from "@/components/custom/dialog/form-dialog"
 import { type Permission, permissionSchema, initialPermissionState } from "@/domains/permission"
 import { PermissionService } from "@/services/permission-service"
@@ -20,8 +20,6 @@ export function EditDialog({
   id,
   save
 }: EditDialogProps) {
-  const [resourceTypes, setResourceTypes] = useState(Array<Option>)
-  const [actions, setActions] = useState(Array<Option>)
 
   return (
     <FormDialog<Permission, { resourceTypes: Option[], actions: Option[] }>
@@ -37,20 +35,17 @@ export function EditDialog({
         ])
         const resourceTypeOptions = resourceTypesRes.data.map((item: DataDict) => ({ label: item.dictCode, value: item.dictCode }))
         const actionOptions = actionsRes.data.map((item: DataDict) => ({ label: item.dictCode, value: item.dictCode }))
-        setResourceTypes(resourceTypeOptions)
-        setActions(actionOptions)
         if (entityId) {
           const { data } = await PermissionService.findById(entityId)
           return { options: { resourceTypes: resourceTypeOptions, actions: actionOptions }, entity: data }
         }
         return { options: { resourceTypes: resourceTypeOptions, actions: actionOptions }, entity: initialPermissionState }
       }}
-      renderFields={(form) => (
-        <PermissionFormFields form={form} resourceTypes={resourceTypes} actions={actions} />
+      renderFields={(form, options) => (
+        <PermissionFormFields form={form} resourceTypes={options.resourceTypes} actions={options.actions} />
       )}
     >
       {children}
     </FormDialog>
   )
 }
-

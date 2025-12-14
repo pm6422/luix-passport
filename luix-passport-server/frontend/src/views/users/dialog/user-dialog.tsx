@@ -1,4 +1,4 @@
-import { useState, ReactNode } from "react"
+import { ReactNode } from "react"
 import { FormDialog } from "@/components/custom/dialog/form-dialog"
 import { type User, userSchema, initialUserState } from "@/domains/user"
 import { AccountService } from "@/services/account-service"
@@ -24,9 +24,6 @@ export function EditDialog({
   save
 }: EditDialogProps) {
   const { loginUser } = useLoginUserStore()
-  const [enabledRoles, setEnabledRoles] = useState<string[]>([])
-  const [supportedTimezones, setSupportedTimezones] = useState(Array<Option>)
-  const [supportedDateTimeFormats, setSupportedDateTimeFormats] = useState(Array<Option>)
 
   function afterSave(): void {
     if (loginUser.username === id) {
@@ -48,27 +45,24 @@ export function EditDialog({
           AccountService.findSupportedTimezones(),
           AccountService.findSupportedDateTimeFormats()
         ])
-        setEnabledRoles(roleIdsRes.data)
         const tzOptions = timezonesRes.data.map((item: DataDict) =>
           ({ label: "(UTC" + item.dictName + ") " + item.dictCode, value: item.dictCode }))
-        setSupportedTimezones(tzOptions)
         const dtfOptions = dateTimeFormatsRes.data.map((item: SupportedDateTimeFormat) =>
           ({ label: item.displayName + " (" + item.example + ")", value: item.id }))
-        setSupportedDateTimeFormats(dtfOptions)
         if (entityId) {
           const { data } = await UserService.findById(entityId)
           return { options: { enabledRoles: roleIdsRes.data, supportedTimezones: tzOptions, supportedDateTimeFormats: dtfOptions }, entity: data }
         }
         return { options: { enabledRoles: roleIdsRes.data, supportedTimezones: tzOptions, supportedDateTimeFormats: dtfOptions }, entity: initialUserState }
       }}
-      renderFields={(form) => (
+      renderFields={(form, options) => (
         <UserFormFields
           form={form}
           id={id}
           loginUsername={loginUser.username}
-          enabledRoles={enabledRoles}
-          supportedTimezones={supportedTimezones}
-          supportedDateTimeFormats={supportedDateTimeFormats}
+          enabledRoles={options.enabledRoles}
+          supportedTimezones={options.supportedTimezones}
+          supportedDateTimeFormats={options.supportedDateTimeFormats}
         />
       )}
     >
@@ -76,4 +70,3 @@ export function EditDialog({
     </FormDialog>
   )
 }
-

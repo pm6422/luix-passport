@@ -1,4 +1,4 @@
-import { useState, ReactNode } from "react"
+import { ReactNode } from "react"
 import { FormDialog } from "@/components/custom/dialog/form-dialog"
 import { Option } from "@/components/custom/form-field/multi-selector"
 import { type Auth2Client, auth2ClientSchema, initialAuth2ClientState } from "@/domains/auth2-client"
@@ -18,9 +18,6 @@ export function EditDialog({
   id,
   save
 }: EditDialogProps) {
-  const [authenticationMethodOptions, setAuthenticationMethodOptions] = useState(Array<Option>)
-  const [grantTypeOptions, setGrantTypeOptions] = useState(Array<Option>)
-  const [scopeOptions, setScopeOptions] = useState(Array<Option>)
 
   return (
     <FormDialog<Auth2Client, { authenticationMethodOptions: Option[], grantTypeOptions: Option[], scopeOptions: Option[] }>
@@ -32,26 +29,23 @@ export function EditDialog({
       onLoad={async (entityId) => {
         const methodsRes = await Oauth2ClientService.findClientAuthenticationMethods()
         const authenticationMethodOptions = methodsRes.data.map((item: string) => ({ label: item, value: item }))
-        setAuthenticationMethodOptions(authenticationMethodOptions)
         const grantTypesRes = await Oauth2ClientService.findAuthorizationGrantTypes()
         const grantTypeOptions = grantTypesRes.data.map((item: string) => ({ label: item, value: item }))
-        setGrantTypeOptions(grantTypeOptions)
         const scopesRes = await Oauth2ClientService.findScopes()
         const scopeOptions = scopesRes.data.map((item: string) => ({ label: item, value: item }))
-        setScopeOptions(scopeOptions)
         if (entityId) {
           const { data } = await Oauth2ClientService.findById(entityId)
           return { options: { authenticationMethodOptions, grantTypeOptions, scopeOptions }, entity: data }
         }
         return { options: { authenticationMethodOptions, grantTypeOptions, scopeOptions }, entity: initialAuth2ClientState }
       }}
-      renderFields={(form) => (
+      renderFields={(form, options) => (
         <Auth2ClientFormFields
           form={form}
           id={id}
-          authenticationMethodOptions={authenticationMethodOptions}
-          grantTypeOptions={grantTypeOptions}
-          scopeOptions={scopeOptions}
+          authenticationMethodOptions={options.authenticationMethodOptions}
+          grantTypeOptions={options.grantTypeOptions}
+          scopeOptions={options.scopeOptions}
         />
       )}
     >
@@ -59,4 +53,3 @@ export function EditDialog({
     </FormDialog>
   )
 }
-
