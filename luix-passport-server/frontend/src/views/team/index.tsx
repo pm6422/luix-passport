@@ -2,7 +2,7 @@ import { useParams, Link } from "react-router-dom"
 import { useState, useEffect, useRef, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import { LayoutBody } from "@/layouts/layout-definitions"
-import { IconUsers, IconCamera } from "@tabler/icons-react"
+import { IconUsers, IconCamera, IconAlertCircle } from "@tabler/icons-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { TeamService, Team } from "@/services/team-service"
 import { toast } from "sonner"
@@ -111,11 +111,10 @@ export default function TeamDashboard() {
             {/* Team Members Card */}
             <div className="rounded-lg border bg-card text-card-foreground shadow-sm hover:shadow-md transition-shadow h-full flex flex-col">
               <div className="p-6 flex flex-row items-center justify-between space-y-0 pb-3">
-                <h3 className="tracking-tight text-sm font-medium">Team Members</h3>
+                <h3 className="tracking-tight text-sm font-medium">Manage Team Members</h3>
                 <IconUsers className="size-4 text-muted-foreground" />
               </div>
               <div className="px-6 pb-6 flex-1 flex flex-col">
-                <div className="text-2xl font-bold mb-1">Manage</div>
                 <p className="text-xs text-muted-foreground mb-4">
                   View and manage team members
                 </p>
@@ -131,6 +130,7 @@ export default function TeamDashboard() {
               <div className="rounded-lg border bg-card text-card-foreground shadow-sm hover:shadow-md transition-shadow h-full flex flex-col">
                 <div className="p-6 flex flex-row items-center justify-between space-y-0 pb-3">
                   <h3 className="tracking-tight text-sm font-medium">Danger Zone</h3>
+                  <IconAlertCircle className="size-4 text-muted-foreground" />
                 </div>
                 <div className="px-6 pb-6 flex-1 flex flex-col">
                   <p className="text-xs text-muted-foreground mb-4">
