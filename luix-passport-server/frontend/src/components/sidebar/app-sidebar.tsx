@@ -66,15 +66,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 icon: IconUserPlus,
               },
               {
-                title: "Permissions",
-                url: "/permissions",
-                icon: IconParkingCircle,
-              },
-              {
                 title: "Roles",
                 url: "/roles",
                 icon: IconUserCircle,
               },
+              {
+                title: "Permissions",
+                url: "/permissions",
+                icon: IconParkingCircle,
+              }
             ],
           },
           {
