@@ -1,5 +1,5 @@
-import React, { ReactNode } from "react";
-import { motion } from "framer-motion";
+import React, { ReactNode } from "react"
+import { motion } from "framer-motion"
 
 // Component props interface
 interface IntroComponentProps {
@@ -40,12 +40,12 @@ const animationConfig = {
  * @param zIndexOffset - Controls z-index (50 - offset)
  */
 export const IntroX: React.FC<IntroComponentProps> = ({
-                                                        children,
-                                                        delay = 0.1,
-                                                        className,
-                                                        style,
-                                                        zIndexOffset = 0
-                                                      }) => (
+  children,
+  delay = 0.1,
+  className,
+  style,
+  zIndexOffset = 0
+}) => (
   <motion.div
     // Initial hidden state (translated right and transparent)
     initial={{ opacity: 0, x: 50 }}
@@ -79,12 +79,12 @@ export const IntroX: React.FC<IntroComponentProps> = ({
  * @param zIndexOffset - Controls z-index (50 - offset)
  */
 export const MinusIntroX: React.FC<IntroComponentProps> = ({
-                                                             children,
-                                                             delay = 0.1,
-                                                             className,
-                                                             style,
-                                                             zIndexOffset = 0
-                                                           }) => (
+  children,
+  delay = 0.1,
+  className,
+  style,
+  zIndexOffset = 0
+}) => (
   <motion.div
     initial={{ opacity: 0, x: -50 }}
     animate={{
@@ -116,12 +116,12 @@ export const MinusIntroX: React.FC<IntroComponentProps> = ({
  * @param zIndexOffset - Controls z-index (50 - offset)
  */
 export const IntroY: React.FC<IntroComponentProps> = ({
-                                                        children,
-                                                        delay = 0.1,
-                                                        className,
-                                                        style,
-                                                        zIndexOffset = 0
-                                                      }) => (
+  children,
+  delay = 0.1,
+  className,
+  style,
+  zIndexOffset = 0
+}) => (
   <motion.div
     initial={{ opacity: 0, y: 50 }}
     animate={{
@@ -153,12 +153,12 @@ export const IntroY: React.FC<IntroComponentProps> = ({
  * @param zIndexOffset - Controls z-index (50 - offset)
  */
 export const MinusIntroY: React.FC<IntroComponentProps> = ({
-                                                             children,
-                                                             delay = 0.1,
-                                                             className,
-                                                             style,
-                                                             zIndexOffset = 0
-                                                           }) => (
+  children,
+  delay = 0.1,
+  className,
+  style,
+  zIndexOffset = 0
+}) => (
   <motion.div
     initial={{ opacity: 0, y: -50 }}
     animate={{

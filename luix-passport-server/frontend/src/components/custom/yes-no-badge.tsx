@@ -1,10 +1,10 @@
-import { Badge } from "@/components/ui/badge";
-import { IconCircleCheckFilled, IconCircleXFilled } from "@tabler/icons-react";
-import { cn } from '@/lib/utils.ts'
+import { Badge } from "@/components/ui/badge"
+import { IconCircleCheckFilled, IconCircleXFilled } from "@tabler/icons-react"
+import { cn } from "@/lib/utils"
 
 interface YesNoBadgeProps {
-  value?: boolean | null;
-  className?: string;
+  value?: boolean | null
+  className?: string
 }
 
 export function YesNoBadge({ value, className }: YesNoBadgeProps) {
@@ -23,5 +23,5 @@ export function YesNoBadge({ value, className }: YesNoBadgeProps) {
       )}
       {value ? "Yes" : "No"}
     </Badge>
-  );
+  )
 }

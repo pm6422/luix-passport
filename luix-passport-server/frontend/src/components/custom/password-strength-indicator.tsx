@@ -10,10 +10,10 @@ interface Props {
 }
 
 export function PasswordStrengthIndicator({
-                                   password,
-                                   minLength = 5,  // default minimum length is 5
-                                   onStrengthChange,
-                                 }: Props) {
+  password,
+  minLength = 5,  // default minimum length is 5
+  onStrengthChange,
+}: Props) {
   // Password requirements
   const requirements = useMemo(() => [
     {
@@ -49,8 +49,8 @@ export function PasswordStrengthIndicator({
   // Progress bar color
   const strengthColor = useMemo(() => {
     if (strengthScore === 0) return "bg-gray-300"
-    if (strengthScore <= Math.floor(requirements.length/2)) return "bg-red-500"
-    if (strengthScore === requirements.length-1) return "bg-yellow-500"
+    if (strengthScore <= Math.floor(requirements.length / 2)) return "bg-red-500"
+    if (strengthScore === requirements.length - 1) return "bg-yellow-500"
     return "bg-green-500"
   }, [strengthScore, requirements.length])
 

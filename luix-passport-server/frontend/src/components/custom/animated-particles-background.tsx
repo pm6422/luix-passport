@@ -4,12 +4,12 @@ import { useEffect, useRef, ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 interface ParticlesBackgroundProps {
-  children?: ReactNode;
-  particleCount?: number;
-  noiseIntensity?: number;
-  particleSize?: { min: number; max: number };
-  className?: string;
-  canvasClassName?: string;
+  children?: ReactNode
+  particleCount?: number
+  noiseIntensity?: number
+  particleSize?: { min: number; max: number }
+  className?: string
+  canvasClassName?: string
 }
 
 function createNoise() {
@@ -111,11 +111,11 @@ interface Particle {
 }
 
 function ParticlesCanvas({
-                           particleCount = 2000,
-                           noiseIntensity = 0.003,
-                           particleSize = { min: 0.5, max: 2 },
-                           className = "",
-                         }: Omit<ParticlesBackgroundProps, 'children' | 'canvasClassName'> & { className?: string }) {
+  particleCount = 2000,
+  noiseIntensity = 0.003,
+  particleSize = { min: 0.5, max: 2 },
+  className = "",
+}: Omit<ParticlesBackgroundProps, 'children' | 'canvasClassName'> & { className?: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const noise = createNoise();
 
@@ -224,13 +224,13 @@ function ParticlesCanvas({
 }
 
 export default function AnimatedParticlesBackground({
-                                              children,
-                                              particleCount = 2000,
-                                              noiseIntensity = 0.003,
-                                              particleSize = { min: 0.5, max: 2 },
-                                              className = "",
-                                              canvasClassName = "",
-                                            }: ParticlesBackgroundProps) {
+  children,
+  particleCount = 2000,
+  noiseIntensity = 0.003,
+  particleSize = { min: 0.5, max: 2 },
+  className = "",
+  canvasClassName = "",
+}: ParticlesBackgroundProps) {
   return (
     <div
       className={cn(

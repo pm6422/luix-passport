@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import React from 'react'
+import React from "react"
 
 type Props = {
   children: React.ReactNode
@@ -13,14 +13,14 @@ type Props = {
 }
 
 export const ConfirmPopover = ({
-                                 children,
-                                 message,
-                                 onClickYes,
-                                 onClickNo,
-                                 showNoButton = true,
-                                 open,
-                                 onOpenChange,
-                               }: Props) => {
+  children,
+  message,
+  onClickYes,
+  onClickNo,
+  showNoButton = true,
+  open,
+  onOpenChange,
+}: Props) => {
   return (
     <Popover open={open} onOpenChange={onOpenChange}>
       <PopoverTrigger asChild>{children}</PopoverTrigger>
