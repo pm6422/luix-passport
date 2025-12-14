@@ -26,12 +26,7 @@ import { RoleService } from "@/services/role-service"
 import { ConfirmDialog } from "@/components/custom/dialog/confirm-dialog"
 import { TeamRoleSelector } from "@/components/custom/form-field/team-role-selector"
 import { TEAM_OWNER } from "@/permission/roles"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
+import { OverflowBadges } from "@/components/custom/display/overflow-badges"
 
 export default function TeamMembers() {
   const [openInvite, setOpenInvite] = useState(false)
@@ -305,38 +300,13 @@ export default function TeamMembers() {
                     <TableRow key={invite.id}>
                       <TableCell>{invite.memberEmail}</TableCell>
                       <TableCell>
-                        <div className="flex gap-1 flex-wrap items-center">
-                          {(() => {
-                            const roles = (invite.memberRoles || "").split(",").filter(Boolean)
-                            const MAX_VISIBLE = 2
-                            const visibleRoles = roles.slice(0, MAX_VISIBLE)
-                            const remainingCount = roles.length - MAX_VISIBLE
-
-                            return (
-                              <>
-                                {visibleRoles.map((role) => (
-                                  <Badge key={role} variant="outline" className="capitalize">
-                                    {role}
-                                  </Badge>
-                                ))}
-                                {remainingCount > 0 && (
-                                  <TooltipProvider>
-                                    <Tooltip>
-                                      <TooltipTrigger asChild>
-                                        <Badge variant="outline">+{remainingCount}</Badge>
-                                      </TooltipTrigger>
-                                      <TooltipContent>
-                                        <p className="max-w-[200px] break-words">
-                                          {roles.slice(MAX_VISIBLE).join(", ")}
-                                        </p>
-                                      </TooltipContent>
-                                    </Tooltip>
-                                  </TooltipProvider>
-                                )}
-                              </>
-                            )
-                          })()}
-                        </div>
+                        <OverflowBadges
+                          items={(invite.memberRoles || "").split(",").filter(Boolean)}
+                          visibleCount={2}
+                          className=""
+                          badgeClassName="capitalize"
+                          popoverBadgeClassName="capitalize"
+                        />
                       </TableCell>
                       <TableCell>
                         <DateTime value={invite.createdAt} />
