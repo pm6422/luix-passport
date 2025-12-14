@@ -97,7 +97,7 @@ export function InviteMembersFormFields({
         type="button"
         variant="outline"
         size="sm"
-        className="mt-1 ml-1"
+        className="mt-1 ml-1 w-[185px]"
         onClick={append}
       >
         <IconPlus className="mr-2 size-4" />
