@@ -40,27 +40,21 @@ type PhoneInputProps = Omit<
 const PhoneInput: React.ForwardRefExoticComponent<PhoneInputProps> =
   React.forwardRef<React.ElementRef<typeof RPNInput.default>, PhoneInputProps>(
     ({ className, onChange, value, ...props }, ref) => {
+      const { ["aria-invalid"]: ariaInvalid, ...restProps } = props as Record<string, unknown>
       return (
-        <RPNInput.default
-          ref={ref}
-          className={cn("flex", className)}
-          flagComponent={FlagComponent}
-          countrySelectComponent={CountrySelect}
-          inputComponent={InputComponent}
-          smartCaret={false}
-          value={value || undefined}
-          /**
-           * Handles the onChange event.
-           *
-           * react-phone-number-input might trigger the onChange event as undefined
-           * when a valid phone number is not entered. To prevent this,
-           * the value is coerced to an empty string.
-           *
-           * @param {E164Number | undefined} value - The entered value
-           */
-          onChange={(value) => onChange?.(value || ("" as RPNInput.Value))}
-          {...props}
-        />
+        <div className={cn("group", className)} aria-invalid={ariaInvalid ? true : undefined}>
+          <RPNInput.default
+            ref={ref}
+            className="flex w-full min-w-0"
+            flagComponent={FlagComponent}
+            countrySelectComponent={CountrySelect}
+            inputComponent={InputComponent}
+            smartCaret={false}
+            value={value || undefined}
+            onChange={(value) => onChange?.(value || ("" as RPNInput.Value))}
+            {...(restProps as any)}
+          />
+        </div>
       );
     },
   );
@@ -103,7 +97,7 @@ const CountrySelect = ({
         <Button
           type="button"
           variant="outline"
-          className="flex gap-1 rounded-e-none rounded-s-lg border-r-0 px-3 focus:z-10"
+          className="flex gap-1 rounded-e-none rounded-s-lg border-r-0 px-3 focus:z-10 group-aria-[invalid=true]:border-destructive"
           disabled={disabled}
         >
           <FlagComponent
