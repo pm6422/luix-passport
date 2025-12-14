@@ -37,7 +37,7 @@ export function InviteMembersFormFields({
 
   return (
     <>
-      <div className="space-y-3 max-h-[60vh] overflow-y-auto p-1">
+      <div className="space-y-3 max-h-[60vh] overflow-y-auto">
         {invitations.map((_, index) => (
           <div
             key={index}
@@ -97,7 +97,7 @@ export function InviteMembersFormFields({
         type="button"
         variant="outline"
         size="sm"
-        className="mt-1 ml-1 w-[185px]"
+        className="mt-1 w-[185px]"
         onClick={append}
       >
         <IconPlus className="mr-2 size-4" />
