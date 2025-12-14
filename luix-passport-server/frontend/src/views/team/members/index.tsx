@@ -24,6 +24,17 @@ import { useLoginUserStore } from "@/stores/login-user-store"
 import { toast } from "sonner"
 import { RoleTeamOwner } from "@/components/custom/role"
 
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
+
 export default function TeamMembers() {
   const [openInvite, setOpenInvite] = useState(false)
   const { teamId } = useParams()
@@ -33,6 +44,24 @@ export default function TeamMembers() {
   const [inviteQuery, setInviteQuery] = useState("")
   const { loginUser, hasRole } = useLoginUserStore()
   const avatarFileInputRef = useRef<HTMLInputElement>(null)
+
+  const [roleConfirmOpen, setRoleConfirmOpen] = useState(false)
+  const [pendingRoleChange, setPendingRoleChange] = useState<{ userId: string, newRole: string } | null>(null)
+
+  const confirmRoleChange = async () => {
+    if (!pendingRoleChange || !teamId) return
+    try {
+      await TeamService.updateMemberRole(teamId, pendingRoleChange.userId, pendingRoleChange.newRole)
+      toast.success("Role updated")
+      await loadMembers()
+    } catch (error) {
+      toast.error("Role update failed")
+      console.error(error)
+    } finally {
+      setRoleConfirmOpen(false)
+      setPendingRoleChange(null)
+    }
+  }
 
   const loadMembers = useCallback(async () => {
     if (!teamId) return
@@ -195,19 +224,12 @@ export default function TeamMembers() {
                       <div className="flex items-center gap-2">
                         <Select
                           value={member.role}
-                          onValueChange={async (value) => {
-                            if (!teamId) return
-                            try {
-                              await TeamService.updateMemberRole(teamId, member.userId, value)
-                              toast.success("Role updated")
-                              await loadMembers()
-                            } catch (error) {
-                              toast.error("Role update failed")
-                              console.error(error)
-                            }
+                          onValueChange={(value) => {
+                            setPendingRoleChange({ userId: member.userId, newRole: value })
+                            setRoleConfirmOpen(true)
                           }}
                         >
-                          <SelectTrigger size="sm" aria-label="Edit role" disabled={member.userId === loginUser.username}>
+                          <SelectTrigger size="sm" className="w-40" aria-label="Edit role" disabled={member.userId === loginUser.username}>
                             <SelectValue placeholder="Select role" />
                           </SelectTrigger>
                           <SelectContent>
@@ -337,6 +359,21 @@ export default function TeamMembers() {
           />
         </RoleTeamOwner>
       )}
+
+      <AlertDialog open={roleConfirmOpen} onOpenChange={setRoleConfirmOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Change Role</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to change the role for this member?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setPendingRoleChange(null)}>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmRoleChange}>Confirm</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </LayoutBody>
   )
 }
