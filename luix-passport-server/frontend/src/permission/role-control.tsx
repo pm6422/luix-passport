@@ -1,15 +1,5 @@
 import { useLoginUserStore } from "@/stores/login-user-store"
-
-export const ROLE_USER = "ROLE_USER"
-export const ROLE_ADMIN = "ROLE_ADMIN"
-export const ROLE_DEVELOPER = "ROLE_DEVELOPER"
-export const ROLE_ANONYMOUS = "ROLE_ANONYMOUS"
-
-export const TEAM_OWNER = "TEAM_OWNER"
-export const TEAM_MEMBER = "TEAM_MEMBER"
-
-export const SYSTEM_ROLES = [ROLE_USER, ROLE_ANONYMOUS]
-export const TEAM_ROLES = [TEAM_OWNER, TEAM_MEMBER]
+import { ROLE_ADMIN, ROLE_DEVELOPER, ROLE_USER, TEAM_OWNER } from "./roles"
 
 type Props = {
   children: React.ReactNode
