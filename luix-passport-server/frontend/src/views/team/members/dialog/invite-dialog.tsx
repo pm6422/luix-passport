@@ -45,6 +45,7 @@ export function InviteMembersDialog({ open, onOpenChange, teamId, onSuccess }: I
       onOpenChange={onOpenChange}
       size="md"
       contentClassName="sm:max-w-[700px]"
+      showFormErrors={false}
       renderFields={(form) => (
         <InviteMembersFormFields form={form} allRoles={allRoles} />
       )}
