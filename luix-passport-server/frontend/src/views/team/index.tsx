@@ -168,8 +168,8 @@ export default function TeamDashboard() {
                 </div>
               </CardHeader>
               <Separator />
-              <CardContent className="pt-6">
-                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <CardContent>
+                <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
                   {members.slice(0, 6).map((member) => (
                     <div key={member.userId} className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/50 transition-colors">
                       <Avatar className="size-10 border">
