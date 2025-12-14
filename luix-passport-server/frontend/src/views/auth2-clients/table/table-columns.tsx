@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { YesNoBadge } from "@/components/custom/display/yes-no-badge"
 import { Auth2Client } from "@/domains/auth2-client"
 import { EditDialog } from "../dialog/auth2-client-dialog"
+import { OverflowBadges } from "@/components/custom/display/overflow-badges"
 
 export function tableColumns(
   entityName: string,
@@ -77,11 +78,11 @@ export function tableColumns(
         <DataTableColumnHeader column={column} title="Authentication Grant Types" />
       ),
       cell: ({ row }) => (
-        <div className="w-[130px] text-xs">
-          {(row.original.authorizationGrantTypes as string[]).map((item, index) => (
-            <div key={index}>{item}</div>
-          ))}
-        </div>
+        <OverflowBadges
+          items={(row.original.authorizationGrantTypes || []) as string[]}
+          visibleCount={1}
+          className="w-[130px] text-xs"
+        />
       ),
       enableSorting: false,
       enableHiding: true,
@@ -92,11 +93,11 @@ export function tableColumns(
         <DataTableColumnHeader column={column} title="Scopes" />
       ),
       cell: ({ row }) => (
-        <div className="w-[75px] text-xs">
-          {(row.original.scopes as string[]).map((item, index) => (
-            <div key={index}>{item}</div>
-          ))}
-        </div>
+        <OverflowBadges
+          items={(row.original.scopes || []) as string[]}
+          visibleCount={1}
+          className="w-[75px] text-xs"
+        />
       ),
       enableSorting: false,
       enableHiding: true,
