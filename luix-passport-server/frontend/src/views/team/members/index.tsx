@@ -24,16 +24,7 @@ import { useLoginUserStore } from "@/stores/login-user-store"
 import { toast } from "sonner"
 import { RoleTeamOwner } from "@/components/custom/role"
 
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog"
+import { ConfirmDialog } from "@/components/custom/confirm-dialog"
 
 export default function TeamMembers() {
   const [openInvite, setOpenInvite] = useState(false)
@@ -360,20 +351,14 @@ export default function TeamMembers() {
         </RoleTeamOwner>
       )}
 
-      <AlertDialog open={roleConfirmOpen} onOpenChange={setRoleConfirmOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Change Role</AlertDialogTitle>
-            <AlertDialogDescription>
-              Are you sure you want to change the role for this member?
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel onClick={() => setPendingRoleChange(null)}>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={confirmRoleChange}>Confirm</AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <ConfirmDialog
+        open={roleConfirmOpen}
+        onOpenChange={setRoleConfirmOpen}
+        title="Change Role"
+        description="Are you sure you want to change the role for this member?"
+        onConfirm={confirmRoleChange}
+        onCancel={() => setPendingRoleChange(null)}
+      />
     </LayoutBody>
   )
 }

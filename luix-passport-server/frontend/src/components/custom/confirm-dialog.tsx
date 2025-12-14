@@ -12,30 +12,42 @@ import {
 import React from "react"
 
 type Props = {
-  children: React.ReactNode
+  children?: React.ReactNode
   title: string
   description: string
   onConfirm: () => void
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
+  cancelText?: string
+  confirmText?: string
+  onCancel?: () => void
 }
 
 export const ConfirmDialog = ({
   children,
   title,
   description,
-  onConfirm
+  onConfirm,
+  open,
+  onOpenChange,
+  cancelText = "Cancel",
+  confirmText = "Confirm",
+  onCancel
 }: Props) => (
-  <AlertDialog>
-    <AlertDialogTrigger asChild>
-      {children}
-    </AlertDialogTrigger>
+  <AlertDialog open={open} onOpenChange={onOpenChange}>
+    {children && (
+      <AlertDialogTrigger asChild>
+        {children}
+      </AlertDialogTrigger>
+    )}
     <AlertDialogContent>
       <AlertDialogHeader>
         <AlertDialogTitle>{title}</AlertDialogTitle>
         <AlertDialogDescription>{description}</AlertDialogDescription>
       </AlertDialogHeader>
       <AlertDialogFooter>
-        <AlertDialogCancel>Cancel</AlertDialogCancel>
-        <AlertDialogAction onClick={onConfirm}>Confirm</AlertDialogAction>
+        <AlertDialogCancel onClick={onCancel}>{cancelText}</AlertDialogCancel>
+        <AlertDialogAction onClick={onConfirm}>{confirmText}</AlertDialogAction>
       </AlertDialogFooter>
     </AlertDialogContent>
   </AlertDialog>
