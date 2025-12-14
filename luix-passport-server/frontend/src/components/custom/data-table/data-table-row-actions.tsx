@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { IconTrash } from "@tabler/icons-react"
 import { Row } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
-import { ConfirmPopover } from "@/components/custom/confirm-popover"
+import { ConfirmPopover } from "@/components/custom/dialog/confirm-popover"
 import { toast } from "sonner"
 import { getErrorMessage } from "@/lib/handle-error"
 

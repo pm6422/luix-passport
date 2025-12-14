@@ -1,5 +1,5 @@
 import { useSidebar } from "@/components/ui/sidebar"
-import { IntroY, MinusIntroY } from "@/components/custom/intro-animation"
+import { IntroY, MinusIntroY } from "@/components/custom/display/intro-animation"
 import { useNavigate } from "react-router-dom"
 import { useAppInfoStore } from "@/stores/app-info-store"
 

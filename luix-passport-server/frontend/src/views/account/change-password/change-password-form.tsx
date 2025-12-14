@@ -3,10 +3,10 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Button } from "@/components/ui/button"
-import { LoadingButton } from "@/components/custom/loading-button"
+import { LoadingButton } from "@/components/custom/form-element/loading-button"
 import InputFormField from "@/components/custom/form-field/input"
-import { PasswordInput } from "@/components/custom/password-input"
-import { PasswordStrengthIndicator } from "@/components/custom/password-strength-indicator"
+import { PasswordInput } from "@/components/custom/form-element/password-input"
+import { PasswordStrengthIndicator } from "@/components/custom/form-element/password-strength-indicator"
 import { IconReload, IconSend } from "@tabler/icons-react"
 import {
   Form,
@@ -22,7 +22,7 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp"
-import { RequiredFormLabel } from "@/components/custom/required-form-label"
+import { RequiredFormLabel } from "@/components/custom/form-element/required-form-label"
 import { useLoginUserStore } from "@/stores/login-user-store"
 import { AccountService } from "@/services/account-service"
 import { getErrorMessage } from "@/lib/handle-error"

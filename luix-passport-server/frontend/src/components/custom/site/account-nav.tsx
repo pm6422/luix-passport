@@ -19,7 +19,7 @@ import {
 } from "@tabler/icons-react"
 import { AccountService } from "@/services/account-service"
 import { useLoginUserStore } from "@/stores/login-user-store"
-import { MinusIntroY } from "@/components/custom/intro-animation"
+import { MinusIntroY } from "@/components/custom/display/intro-animation"
 
 export function AccountNav() {
   const { loginUser } = useLoginUserStore()

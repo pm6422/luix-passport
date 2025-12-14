@@ -5,7 +5,7 @@ import { Dialog, DialogTrigger } from "@/components/ui/dialog"
 import SaveDialogContent from "@/components/custom/dialog/save-dialog-content"
 import { type ScheduleExecutionLog, scheduleExecutionLogSchema, initialScheduleExecutionLogState } from "@/domains/schedule-execution-log"
 import { ScheduleExecutionLogService } from "@/services/schedule-execution-log-service.ts"
-import { DateTime } from "@/components/custom/date-time"
+import { DateTime } from "@/components/custom/display/date-time"
 
 interface EditDialogProps {
   children: ReactNode,

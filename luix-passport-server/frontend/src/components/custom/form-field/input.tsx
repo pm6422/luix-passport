@@ -3,7 +3,7 @@ import type { Control, FieldValues, Path } from "react-hook-form"
 import { FormControl, FormDescription, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { RequiredFormLabel } from "../required-form-label"
+import { RequiredFormLabel } from "@/components/custom/form-element/required-form-label"
 
 interface Props<TFieldValues extends FieldValues> {
   control: Control<TFieldValues>

@@ -1,7 +1,7 @@
 import { AccountNav } from "@/components/custom/site/account-nav";
 import { TopNav } from "@/components/custom/site/top-nav";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-// import { Search } from "@/components/custom/search"
+// import { Search } from "@/components/custom/form-element/search"
 // import { NotificationNav } from "@/components/custom/site/notification-nav"
 
 export function AuthLayoutHeader() {

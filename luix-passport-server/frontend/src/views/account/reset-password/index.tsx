@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useNavigate } from "react-router-dom"
-import { LoadingButton } from "@/components/custom/loading-button";
+import { LoadingButton } from "@/components/custom/form-element/loading-button";
 import { Link, useSearchParams } from "react-router-dom"
 import {
   Form,
@@ -16,8 +16,8 @@ import {
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { AccountService } from "@/services/account-service";
-import { PasswordInput } from "@/components/custom/password-input";
-import { PasswordStrengthIndicator } from "@/components/custom/password-strength-indicator";
+import { PasswordInput } from "@/components/custom/form-element/password-input";
+import { PasswordStrengthIndicator } from "@/components/custom/form-element/password-strength-indicator";
 import { PASSWORD_MIN_LENGTH } from "@/domains/user-registration";
 import { getErrorMessage } from "@/lib/handle-error";
 

@@ -7,8 +7,8 @@ import { useEffect, useState } from "react"
 import { UserNotificationService } from "@/services/user-notification-service"
 import { Badge } from "@/components/ui/badge.tsx"
 import { AccountService } from "@/services/account-service"
-import AnimatedPathsBackground from "@/components/custom/animated-paths-background"
-import ColourfulText from "@/components/custom/colourful-text"
+import AnimatedPathsBackground from "@/components/custom/background/animated-paths-background"
+import ColourfulText from "@/components/custom/display/colourful-text"
 
 export default function SiteHome() {
   const { loginUser } = useLoginUserStore()

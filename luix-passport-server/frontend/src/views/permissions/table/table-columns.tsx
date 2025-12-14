@@ -6,7 +6,7 @@ import { DataTableRowActions } from "@/components/custom/data-table/data-table-r
 import { Button } from "@/components/ui/button"
 import { Permission } from "@/domains/permission"
 import { EditDialog } from "../dialog/edit-dialog"
-import { DateTime } from "@/components/custom/date-time"
+import { DateTime } from "@/components/custom/display/date-time"
 
 export function tableColumns(
   entityName: string,

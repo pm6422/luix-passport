@@ -3,14 +3,14 @@ import { IconEdit, IconDots } from "@tabler/icons-react";
 import { User } from "@/domains/user";
 import { toast } from "sonner";
 import { getErrorMessage } from "@/lib/handle-error";
-import { YesNoBadge } from "@/components/custom/yes-no-badge";
+import { YesNoBadge } from "@/components/custom/display/yes-no-badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { ConfirmPopover } from "@/components/custom/confirm-popover";
+import { ConfirmPopover } from "@/components/custom/dialog/confirm-popover";
 import { DataTableColumnHeader } from "@/components/custom/data-table/data-table-column-header";
 import { DataTableRowActions } from "@/components/custom/data-table/data-table-row-actions";
-import { DateTime } from "@/components/custom/date-time";
+import { DateTime } from "@/components/custom/display/date-time";
 import { EditDialog } from "../dialog/edit-dialog";
 
 export function tableColumns(

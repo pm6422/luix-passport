@@ -19,7 +19,7 @@ import { Option } from "@/components/custom/form-field/multi-selector"
 import { type DataDict } from "@/domains/data-dict"
 import type { SupportedDateTimeFormat } from "@/domains/supported-date-time-format"
 import { Skeleton } from "@/components/ui/skeleton"
-import Notice from "@/components/custom/notice"
+import Notice from "@/components/custom/display/notice"
 import { useLoginUserStore } from "@/stores/login-user-store"
 
 import TeamRoleSelectorFormField from "@/components/custom/form-field/team-role-selector"

@@ -9,16 +9,16 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useNavigate, useSearchParams } from "react-router-dom"
-import { PasswordInput } from "@/components/custom/password-input";
+import { PasswordInput } from "@/components/custom/form-element/password-input";
 import { AccountService } from "@/services/account-service"
 import { PASSWORD_MIN_LENGTH, type UserRegistrationFormSchema, userRegistrationFormSchema } from "@/domains/user-registration"
 import { toast } from "sonner";
 import { useState } from "react"
 import { getErrorMessage } from "@/lib/handle-error"
-import { LoadingButton } from "@/components/custom/loading-button"
+import { LoadingButton } from "@/components/custom/form-element/loading-button"
 import InputFormField from "@/components/custom/form-field/input"
 import { Link } from "react-router-dom"
-import { PasswordStrengthIndicator } from "@/components/custom/password-strength-indicator"
+import { PasswordStrengthIndicator } from "@/components/custom/form-element/password-strength-indicator"
 import { useId } from "react"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"

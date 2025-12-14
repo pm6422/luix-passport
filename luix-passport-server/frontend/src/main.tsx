@@ -1,5 +1,5 @@
 import { RouterProvider } from "react-router-dom"
-import { Toaster } from "@/components/custom/toaster"
+import { Toaster } from "@/components/custom/feedback/toaster"
 import router from "@/router"
 import "@/main.css"
 

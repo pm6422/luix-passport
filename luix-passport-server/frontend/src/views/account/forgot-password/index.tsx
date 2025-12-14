@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { LoadingButton } from "@/components/custom/loading-button";
+import { LoadingButton } from "@/components/custom/form-element/loading-button";
 import { Form } from "@/components/ui/form";
 import { toast } from "sonner";
 import InputFormField from "@/components/custom/form-field/input";
@@ -11,7 +11,7 @@ import { AccountService } from "@/services/account-service";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom"
 import { getErrorMessage } from "@/lib/handle-error";
-import AnimatedParticlesBackground from "@/components/custom/animated-particles-background"
+import AnimatedParticlesBackground from "@/components/custom/background/animated-particles-background"
 
 const formSchema = z.object({
   email: z

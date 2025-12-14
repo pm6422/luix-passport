@@ -1,6 +1,6 @@
 import type { Control, FieldValues, Path } from "react-hook-form"
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { RequiredFormLabel } from "../required-form-label"
+import { RequiredFormLabel } from "@/components/custom/form-element/required-form-label"
 import { Checkbox } from "@/components/ui/checkbox"
 
 

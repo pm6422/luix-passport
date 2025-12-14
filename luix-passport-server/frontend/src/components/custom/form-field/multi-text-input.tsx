@@ -4,7 +4,7 @@ import { IconMinus, IconPlus } from "@tabler/icons-react"
 import type { Control, FieldValues, Path } from "react-hook-form"
 import { useFieldArray } from "react-hook-form"
 import { FormControl, FormDescription, FormField, FormItem, FormMessage } from "@/components/ui/form"
-import { RequiredFormLabel } from "../required-form-label"
+import { RequiredFormLabel } from "@/components/custom/form-element/required-form-label"
 
 // ----- MultiTextInput Component -----
 

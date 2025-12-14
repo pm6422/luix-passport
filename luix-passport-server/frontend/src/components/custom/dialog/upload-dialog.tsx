@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { Button, buttonVariants } from "@/components/ui/button"
-import { LoadingButton } from "@/components/custom/loading-button"
+import { LoadingButton } from "@/components/custom/form-element/loading-button"
 import { IconPaperclip } from "@tabler/icons-react"
 import { Separator } from "@/components/ui/separator"
 import {

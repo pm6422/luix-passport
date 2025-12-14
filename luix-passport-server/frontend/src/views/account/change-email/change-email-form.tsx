@@ -19,13 +19,13 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp"
-import { RequiredFormLabel } from "@/components/custom/required-form-label"
+import { RequiredFormLabel } from "@/components/custom/form-element/required-form-label"
 import { useLoginUserStore } from "@/stores/login-user-store"
 import { AccountService } from "@/services/account-service"
 import { getErrorMessage } from "@/lib/handle-error"
 import { Link } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
-import { LoadingButton } from "@/components/custom/loading-button"
+import { LoadingButton } from "@/components/custom/form-element/loading-button"
 
 const formSchema = z.object({
   currentEmail: z.string().trim().min(1, { message: "Required" }).email("Invalid email format"),

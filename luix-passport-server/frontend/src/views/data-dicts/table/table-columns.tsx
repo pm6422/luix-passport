@@ -4,10 +4,10 @@ import { IconEdit } from "@tabler/icons-react"
 import { DataTableColumnHeader } from "@/components/custom/data-table/data-table-column-header"
 import { DataTableRowActions } from "@/components/custom/data-table/data-table-row-actions"
 import { Button } from "@/components/ui/button"
-import { YesNoBadge } from "@/components/custom/yes-no-badge"
+import { YesNoBadge } from "@/components/custom/display/yes-no-badge"
 import { DataDict } from "@/domains/data-dict"
 import { EditDialog } from "../dialog/edit-dialog"
-import { DateTime } from "@/components/custom/date-time"
+import { DateTime } from "@/components/custom/display/date-time"
 
 export function tableColumns(
   entityName: string,

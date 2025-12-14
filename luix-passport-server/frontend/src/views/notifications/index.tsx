@@ -6,7 +6,7 @@ import { Pagination, PaginationContent, PaginationItem, PaginationLink, Paginati
 import { Skeleton } from "@/components/ui/skeleton"
 import { type UserNotification } from "@/domains/user-notification"
 import { UserNotificationService } from "@/services/user-notification-service"
-import { DateTime } from "@/components/custom/date-time"
+import { DateTime } from "@/components/custom/display/date-time"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { IconBellRinging, IconSearch } from "@tabler/icons-react"

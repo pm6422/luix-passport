@@ -12,8 +12,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { PasswordInput } from "@/components/custom/password-input";
-import { LoadingButton } from "@/components/custom/loading-button"
+import { PasswordInput } from "@/components/custom/form-element/password-input";
+import { LoadingButton } from "@/components/custom/form-element/loading-button"
 import { Link } from "react-router-dom"
 import { AccountService } from "@/services/account-service"
 import { toast } from "sonner"

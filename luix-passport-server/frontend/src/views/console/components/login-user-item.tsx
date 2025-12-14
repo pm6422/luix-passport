@@ -1,6 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import type { LoginUser } from "@/domains/login-user"
-import { DateTime } from "@/components/custom/date-time"
+import { DateTime } from "@/components/custom/display/date-time"
 import { Skeleton } from "@/components/ui/skeleton"
 
 export function LoginUserItem(loginUser: LoginUser) {

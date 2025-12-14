@@ -13,7 +13,7 @@ import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { getErrorMessage } from "@/lib/handle-error"
 import { AccountService } from "@/services/account-service"
-import { LoadingButton } from "@/components/custom/loading-button"
+import { LoadingButton } from "@/components/custom/form-element/loading-button"
 
 const formSchema = z.object({
   file: z.any(),
