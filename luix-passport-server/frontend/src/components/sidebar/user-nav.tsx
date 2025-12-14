@@ -23,13 +23,12 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import { Skeleton } from "@/components/ui/skeleton"
-import { useStore } from "exome/react"
-import { loginUserStore } from "@/stores/login-user-store"
+import { useLoginUserStore } from "@/stores/login-user-store"
 import { AccountService } from "@/services/account-service"
 
 export function UserNav() {
   const { isMobile } = useSidebar()
-  const { loginUser } = useStore(loginUserStore)
+  const { loginUser } = useLoginUserStore()
 
   return (
     <SidebarMenu>

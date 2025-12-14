@@ -1,5 +1,4 @@
-import { useStore } from 'exome/react'
-import { loginUserStore } from '@/stores/login-user-store'
+import { useLoginUserStore } from '@/stores/login-user-store'
 import { formatDate } from '@/lib/time-utils'
 import { cn } from '@/lib/utils'
 
@@ -9,7 +8,7 @@ type Props = {
 }
 
 export const Date = ({ value, className }: Props) => {
-  const { loginUser } = useStore(loginUserStore)
+  const { loginUser } = useLoginUserStore()
 
   return (
     <span className={cn(className)}>

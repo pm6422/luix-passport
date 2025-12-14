@@ -2,11 +2,10 @@ import { useEffect } from "react";
 import { cn } from "@/lib/utils";
 import Cookies from "js-cookie";
 import { Layout, LayoutHeader } from "@/layouts/layout-definitions";
-import { useStore } from "exome/react";
 import { Outlet } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { loginUserStore } from "@/stores/login-user-store";
+import { useLoginUserStore } from "@/stores/login-user-store";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
 import { AuthLayoutHeader } from "./auth-layout-header";
@@ -14,12 +13,12 @@ import { SseNotification } from "@/components/sse-notification";
 
 export default function AuthLayout() {
   const navigate = useNavigate()
-  const { loginUser } = useStore(loginUserStore)
+  const { loginUser } = useLoginUserStore()
   const defaultOpen = Cookies.get("sidebar_state") !== "false"
   const location = useLocation()
 
   useEffect(() => {
-    if(!loginUser.isAuthenticated) {
+    if (!loginUser.isAuthenticated) {
       navigate("/sign-in")
     }
   }, [location, loginUser, navigate]);
@@ -43,11 +42,11 @@ export default function AuthLayout() {
         >
           <Layout>
             <LayoutHeader>
-              <AuthLayoutHeader/>
+              <AuthLayoutHeader />
             </LayoutHeader>
             {/* View Content */}
             <div className="lg:pr-2 pr-0">
-              <Outlet/>
+              <Outlet />
             </div>
           </Layout>
         </main>

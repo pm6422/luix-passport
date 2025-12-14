@@ -1,17 +1,16 @@
 import { useEffect, useCallback } from "react";
-import { useStore } from "exome/react";
 import { IconBellBolt } from "@tabler/icons-react";
 import { toast } from "sonner";
-import { appInfoStore } from "@/stores/app-info-store";
-import { loginUserStore } from "@/stores/login-user-store";
+import { useAppInfoStore } from "@/stores/app-info-store";
+import { useLoginUserStore } from "@/stores/login-user-store";
 
 let reconnectAttempts = 0;
 const maxReconnectAttempts = 5;
 const initialReconnectDelay = 1000;
 
 export function SseNotification() {
-  const { appInfo } = useStore(appInfoStore);
-  const { loginUser } = useStore(loginUserStore);
+  const { appInfo } = useAppInfoStore();
+  const { loginUser } = useLoginUserStore();
 
   const setupSse = useCallback((): EventSource | undefined => {
     if (!window.EventSource) {

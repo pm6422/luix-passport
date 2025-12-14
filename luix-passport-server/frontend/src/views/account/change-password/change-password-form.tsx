@@ -23,8 +23,7 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp"
 import { RequiredFormLabel } from "@/components/custom/required-form-label"
-import { useStore } from "exome/react"
-import { loginUserStore } from "@/stores/login-user-store"
+import { useLoginUserStore } from "@/stores/login-user-store"
 import { AccountService } from "@/services/account-service"
 import { getErrorMessage } from "@/lib/handle-error"
 import { PASSWORD_MIN_LENGTH } from "@/domains/user-registration"
@@ -41,7 +40,7 @@ const changePasswordFormSchema = z.object({
 export type ChangePasswordFormSchema = z.infer<typeof changePasswordFormSchema>
 
 export function ChangePasswordForm() {
-  const { loginUser } = useStore(loginUserStore)
+  const { loginUser } = useLoginUserStore()
   const [saving, setSaving] = useState(false)
   const [countdown, setCountdown] = useState(0)
   const lastSentTime = useRef<number>(0)
@@ -117,7 +116,7 @@ export function ChangePasswordForm() {
             <FormItem className="space-y-1">
               <RequiredFormLabel required={true}>Current Password</RequiredFormLabel>
               <FormControl>
-                <PasswordInput {...field} placeholder=""/>
+                <PasswordInput {...field} placeholder="" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -148,21 +147,21 @@ export function ChangePasswordForm() {
             </FormItem>
           )}
         />
-        <InputFormField 
-          control={form.control} 
-          name="email" 
+        <InputFormField
+          control={form.control}
+          name="email"
           label="Email"
           value={loginUser?.email}
           disabled
           description="Click right button to send a verification code to your email."
           icon={
-            <Button 
+            <Button
               type="button"
               variant="outline"
               onClick={() => sendVerificationCode()}>
-                <IconSend className="size-4 mr-1" />
-                {saving ? "Sending..." : "Send"}
-                {saving && (<IconReload className="ml-1 size-4 animate-spin"/>)}
+              <IconSend className="size-4 mr-1" />
+              {saving ? "Sending..." : "Send"}
+              {saving && (<IconReload className="ml-1 size-4 animate-spin" />)}
             </Button>
           }
         />
@@ -180,7 +179,7 @@ export function ChangePasswordForm() {
                 >
                   <InputOTPGroup>
                     {Array.from({ length: 6 }, (_, i) => (
-                      <InputOTPSlot index={i} className="capitalize"/>
+                      <InputOTPSlot index={i} className="capitalize" />
                     ))}
                   </InputOTPGroup>
                 </InputOTP>

@@ -1,4 +1,4 @@
-import { Exome } from "exome"
+import { create } from "zustand"
 
 export type AppInfo = {
     apiDocsEnabled: boolean
@@ -12,12 +12,12 @@ export type AppInfo = {
     }
 }
 
-class AppInfoStore extends Exome {
-    public appInfo = {} as AppInfo
-
-    public setAppInfo(appInfo: AppInfo) {
-        this.appInfo = appInfo
-    }
+interface AppInfoState {
+    appInfo: AppInfo
+    setAppInfo: (appInfo: AppInfo) => void
 }
 
-export const appInfoStore = new AppInfoStore()
+export const useAppInfoStore = create<AppInfoState>((set) => ({
+    appInfo: {} as AppInfo,
+    setAppInfo: (appInfo) => set({ appInfo }),
+}))

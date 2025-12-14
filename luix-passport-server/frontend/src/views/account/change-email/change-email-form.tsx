@@ -20,8 +20,7 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp"
 import { RequiredFormLabel } from "@/components/custom/required-form-label"
-import { useStore } from "exome/react"
-import { loginUserStore } from "@/stores/login-user-store"
+import { useLoginUserStore } from "@/stores/login-user-store"
 import { AccountService } from "@/services/account-service"
 import { getErrorMessage } from "@/lib/handle-error"
 import { Link } from "react-router-dom"
@@ -38,7 +37,7 @@ type FormSchema = z.infer<typeof formSchema>
 
 export function ChangeEmailForm() {
   const navigate = useNavigate()
-  const { loginUser } = useStore(loginUserStore)
+  const { loginUser } = useLoginUserStore()
   const [verificationCodeInputDisabled, setVerificationCodeInputDisabled] = useState(true)
   const [saving, setSaving] = useState(false)
   const [countdown, setCountdown] = useState(0)
@@ -60,16 +59,16 @@ export function ChangeEmailForm() {
     })
   }, [form])
 
- function sendVerificationCode(email: string): void {
-   const now = Date.now()
-   // If the time since the last send is less than 60 seconds, and the countdown has not ended.
-   if (now - lastSentTime.current < 60000 && countdown > 0) {
-     toast.error("You can only send a verification code once every one minute.")
-     return
-   }
+  function sendVerificationCode(email: string): void {
+    const now = Date.now()
+    // If the time since the last send is less than 60 seconds, and the countdown has not ended.
+    if (now - lastSentTime.current < 60000 && countdown > 0) {
+      toast.error("You can only send a verification code once every one minute.")
+      return
+    }
 
     setSaving(true)
-   lastSentTime.current = now
+    lastSentTime.current = now
 
     toast.promise(AccountService.sendEmailChangeVerificationCode(email), {
       loading: "Sending verification code...",
@@ -121,22 +120,22 @@ export function ChangeEmailForm() {
           </p>
         </div>
 
-        <InputFormField 
-          control={form.control} 
-          name="newEmail" 
-          label="New Email" 
+        <InputFormField
+          control={form.control}
+          name="newEmail"
+          label="New Email"
           required
           formItemClassName="mt-2"
           description="Click right button to send a verification code to your new email."
           icon={
-            <Button 
+            <Button
               type="button"
-              variant="outline" 
+              variant="outline"
               disabled={form.formState.errors.newEmail != null || saving || !form.getValues("newEmail") || form.getValues("currentEmail") == form.getValues("newEmail")}
               onClick={() => sendVerificationCode(form.getValues("newEmail"))}>
-                <IconSend className="size-4 mr-1" />
-                {saving ? "Sending..." : "Send"}
-                {saving && (<IconReload className="ml-1 size-4 animate-spin"/>)}
+              <IconSend className="size-4 mr-1" />
+              {saving ? "Sending..." : "Send"}
+              {saving && (<IconReload className="ml-1 size-4 animate-spin" />)}
             </Button>
           }
         />
@@ -156,7 +155,7 @@ export function ChangeEmailForm() {
                 >
                   <InputOTPGroup>
                     {Array.from({ length: 6 }, (_, i) => (
-                      <InputOTPSlot index={i} className="capitalize"/>
+                      <InputOTPSlot index={i} className="capitalize" />
                     ))}
                   </InputOTPGroup>
                 </InputOTP>
@@ -177,8 +176,8 @@ export function ChangeEmailForm() {
               Back
             </Button>
           </Link>
-          <LoadingButton 
-            type="submit" 
+          <LoadingButton
+            type="submit"
             loading={saving}
             disabled={Object.values(form.formState.errors).length > 0 || saving}
             className="w-full sm:w-auto">

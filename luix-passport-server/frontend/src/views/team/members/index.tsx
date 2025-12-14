@@ -20,8 +20,7 @@ import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { TeamService, TeamMember, TeamInvitation } from "@/services/team-service"
 import { AccountService } from "@/services/account-service"
-import { loginUserStore } from "@/stores/login-user-store"
-import { useStore } from "exome/react"
+import { useLoginUserStore } from "@/stores/login-user-store"
 import { toast } from "sonner"
 import { RoleAny } from "@/components/custom/role/role-any"
 
@@ -32,7 +31,7 @@ export default function TeamMembers() {
   const [invitations, setInvitations] = useState<TeamInvitation[]>([])
   const [memberQuery, setMemberQuery] = useState("")
   const [inviteQuery, setInviteQuery] = useState("")
-  const { loginUser } = useStore(loginUserStore)
+  const { loginUser, hasRole } = useLoginUserStore()
   const avatarFileInputRef = useRef<HTMLInputElement>(null)
 
   const loadMembers = useCallback(async () => {
@@ -59,12 +58,12 @@ export default function TeamMembers() {
     const q = memberQuery.trim().toLowerCase()
     return q
       ? members.filter((m) => {
-          const values = [m.userId, m.email, m.firstName, m.lastName, m.role]
-          return values.filter(Boolean).some((v) => String(v).toLowerCase().includes(q))
-        })
+        const values = [m.userId, m.email, m.firstName, m.lastName, m.role]
+        return values.filter(Boolean).some((v) => String(v).toLowerCase().includes(q))
+      })
       : members
   }, [members, memberQuery])
-  
+
 
   const handleSelfAvatarClick = () => {
     avatarFileInputRef.current?.click()
@@ -99,12 +98,12 @@ export default function TeamMembers() {
     const q = inviteQuery.trim().toLowerCase()
     return q
       ? invitations.filter((i) => {
-          const values = [i.memberEmail, i.memberRole, getInviteProgress(i)]
-          return values.filter(Boolean).some((v) => String(v).toLowerCase().includes(q))
-        })
+        const values = [i.memberEmail, i.memberRole, getInviteProgress(i)]
+        return values.filter(Boolean).some((v) => String(v).toLowerCase().includes(q))
+      })
       : invitations
   }, [invitations, inviteQuery])
-  
+
   useEffect(() => {
     if (teamId) {
       loadMembers()
@@ -112,10 +111,10 @@ export default function TeamMembers() {
   }, [teamId, loadMembers, loadPendingInvitations])
 
   useEffect(() => {
-    if (teamId && loginUserStore.hasRole("TEAM_OWNER")) {
+    if (teamId && hasRole("TEAM_OWNER")) {
       loadPendingInvitations()
     }
-  }, [teamId, loadPendingInvitations])
+  }, [teamId, loadPendingInvitations, hasRole])
 
   // batch operations removed
 
@@ -218,7 +217,7 @@ export default function TeamMembers() {
                         </Select>
                       </div>
                     </RoleAny>
-                    {!loginUserStore.hasRole("TEAM_OWNER") && (
+                    {!hasRole("TEAM_OWNER") && (
                       <div className="flex gap-2">
                         <Badge variant="outline" className="capitalize">{member.role}</Badge>
                       </div>
@@ -243,7 +242,7 @@ export default function TeamMembers() {
               Here you can manage the pending invitations to your team.
             </p>
           </div>
- 
+
           <div className="flex items-center space-x-2">
             <Input
               placeholder="Search Invitations"
@@ -252,7 +251,7 @@ export default function TeamMembers() {
               onChange={(e) => setInviteQuery(e.target.value)}
             />
           </div>
- 
+
           <div className="rounded-md border">
             <Table>
               <TableHeader>
@@ -287,11 +286,10 @@ export default function TeamMembers() {
                       </TableCell>
                       <TableCell>
                         <Badge
-                          className={`capitalize ${
-                            invite.status === "EXPIRED"
-                              ? "bg-red-600/10 text-red-600 shadow-none"
-                              : ""
-                          }`}
+                          className={`capitalize ${invite.status === "EXPIRED"
+                            ? "bg-red-600/10 text-red-600 shadow-none"
+                            : ""
+                            }`}
                         >
                           {getInviteProgress(invite)}
                         </Badge>

@@ -2,8 +2,7 @@ import { LayoutBody } from "@/layouts/layout-definitions"
 import { SiteFooter } from "@/components/site-footer"
 import { Link } from "react-router-dom"
 import { Button } from "@/components/ui/button"
-import { useStore } from "exome/react"
-import { loginUserStore } from "@/stores/login-user-store"
+import { useLoginUserStore } from "@/stores/login-user-store"
 import { useEffect, useState } from "react"
 import { UserNotificationService } from "@/services/user-notification-service"
 import { Badge } from "@/components/ui/badge.tsx"
@@ -12,11 +11,11 @@ import AnimatedPathsBackground from "@/components/custom/animated-paths-backgrou
 import ColourfulText from "@/components/custom/colourful-text"
 
 export default function SiteHome() {
-  const { loginUser } = useStore(loginUserStore)
+  const { loginUser } = useLoginUserStore()
   const [unreadNotifications, setUnreadNotifications] = useState(0)
 
   useEffect(() => {
-    if(loginUser.isAuthenticated) {
+    if (loginUser.isAuthenticated) {
       UserNotificationService.countUnread().then((r) => {
         setUnreadNotifications(r.data)
       })
@@ -73,7 +72,7 @@ export default function SiteHome() {
                         {unreadNotifications}
                       </Badge>
                     </span>{" "}
-                        new notifications.
+                    new notifications.
                   </div>
                   <div className="w-full max-w-sm space-y-6">
                     <Button asChild variant="link" className="w-full px-5 py-4 h-14 text-base font-medium rounded-2xl">
@@ -83,7 +82,7 @@ export default function SiteHome() {
                       <Link to="/console">Go to console</Link>
                     </Button>
                     <Button variant="secondary" className="w-full px-5 py-4 h-14 text-base font-medium rounded-2xl"
-                            onClick={() => AccountService.signOut()}>
+                      onClick={() => AccountService.signOut()}>
                       Sign out
                     </Button>
                   </div>

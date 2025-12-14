@@ -22,8 +22,7 @@ import { type DataDict } from "@/domains/data-dict"
 import type { SupportedDateTimeFormat } from "@/domains/supported-date-time-format"
 import { Skeleton } from "@/components/ui/skeleton"
 import Notice from "@/components/custom/notice"
-import { loginUserStore } from "@/stores/login-user-store"
-import { useStore } from "exome/react"
+import { useLoginUserStore } from "@/stores/login-user-store"
 
 interface EditDialogProps {
   children: ReactNode,
@@ -38,7 +37,7 @@ export function EditDialog({
   id,
   save
 }: EditDialogProps) {
-  const { loginUser } = useStore(loginUserStore)
+  const { loginUser } = useLoginUserStore()
   const [open, setOpen] = useState(false)
   const [enabledRoles, setEnabledRoles] = useState(Array<CheckboxOption>)
   const [supportedTimezones, setSupportedTimezones] = useState(Array<Option>)

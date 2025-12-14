@@ -6,8 +6,7 @@ import { IconUsers, IconCamera } from "@tabler/icons-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { TeamService, Team } from "@/services/team-service"
 import { toast } from "sonner"
-import { useStore } from "exome/react"
-import { loginUserStore } from "@/stores/login-user-store"
+import { useLoginUserStore } from "@/stores/login-user-store"
 import { RoleAny } from "@/components/custom/role/role-any"
 
 export default function TeamDashboard() {
@@ -15,7 +14,7 @@ export default function TeamDashboard() {
   const [team, setTeam] = useState<Team | null>(null)
   const [avatarUrl, setAvatarUrl] = useState<string>("")
   const fileInputRef = useRef<HTMLInputElement>(null)
-  useStore(loginUserStore)
+  const { hasRole } = useLoginUserStore()
 
   const loadTeam = useCallback(async () => {
     if (!teamId) return
@@ -38,7 +37,7 @@ export default function TeamDashboard() {
   }, [loadTeam, teamId])
 
   const handleAvatarClick = () => {
-    if (!loginUserStore.hasRole("TEAM_OWNER")) return
+    if (!hasRole("TEAM_OWNER")) return
     fileInputRef.current?.click()
   }
 
@@ -61,7 +60,7 @@ export default function TeamDashboard() {
       {/* Header with Team Info */}
       <div className="flex items-center justify-between px-6 py-4 border-b bg-background">
         <div className="flex items-center gap-4">
-          <div className={`relative group ${loginUserStore.hasRole("TEAM_OWNER") ? "cursor-pointer" : "cursor-default"}`} onClick={handleAvatarClick}>
+          <div className={`relative group ${hasRole("TEAM_OWNER") ? "cursor-pointer" : "cursor-default"}`} onClick={handleAvatarClick}>
             <Avatar className="size-16">
               <AvatarImage src={avatarUrl} alt={team?.name || "Team"} />
               <AvatarFallback>{team?.name?.[0]?.toUpperCase() || "T"}</AvatarFallback>

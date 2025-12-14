@@ -1,4 +1,4 @@
-import { Exome } from "exome"
+import { create } from "zustand"
 import { isEmpty } from "lodash"
 
 export type LoginUser = {
@@ -20,23 +20,30 @@ export type LoginUser = {
     isAuthenticated: boolean
 }
 
-class LoginUserStore extends Exome {
-    public loginUser = {} as LoginUser
+interface LoginUserState {
+    loginUser: LoginUser
+    setLoginUser: (loginUser: LoginUser) => void
+    hasRole: (roleId: string) => boolean
+    hasRoles: (roleIds: string[], matchAll?: boolean) => boolean
+}
 
-    public setLoginUser(loginUser: LoginUser) {
-        this.loginUser = loginUser
+export const useLoginUserStore = create<LoginUserState>((set, get) => ({
+    loginUser: {} as LoginUser,
+
+    setLoginUser: (loginUser: LoginUser) => {
         if (!isEmpty(loginUser)) {
-            this.loginUser.isAuthenticated = true
+            loginUser.isAuthenticated = true
         }
-    }
+        set({ loginUser })
+    },
 
-    public hasRole(roleId: string): boolean {
-        const roleIds = this.loginUser?.roleIds
+    hasRole: (roleId: string): boolean => {
+        const roleIds = get().loginUser?.roleIds
         return Array.isArray(roleIds) && roleIds.includes(roleId)
-    }
+    },
 
-    public hasRoles(roleIds: string[], matchAll = false): boolean {
-        const userRoleIds = this.loginUser?.roleIds
+    hasRoles: (roleIds: string[], matchAll = false): boolean => {
+        const userRoleIds = get().loginUser?.roleIds
         if (!Array.isArray(userRoleIds) || !Array.isArray(roleIds) || roleIds.length === 0) {
             return false
         }
@@ -44,6 +51,4 @@ class LoginUserStore extends Exome {
             ? roleIds.every(id => userRoleIds.includes(id))
             : roleIds.some(id => userRoleIds.includes(id))
     }
-}
-
-export const loginUserStore = new LoginUserStore()
+}))

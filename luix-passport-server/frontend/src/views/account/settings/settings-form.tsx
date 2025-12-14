@@ -11,8 +11,7 @@ import ComboboxFormField from "@/components/custom/form-field/combobox"
 import { IconMailForward } from "@tabler/icons-react"
 import { locales } from "@/data/locales"
 import { toast } from "sonner"
-import { useStore } from "exome/react"
-import { loginUserStore } from "@/stores/login-user-store"
+import { useLoginUserStore } from "@/stores/login-user-store"
 import { AccountService } from "@/services/account-service"
 import { getErrorMessage } from "@/lib/handle-error"
 import { isValidPhoneNumber } from "react-phone-number-input"
@@ -36,7 +35,7 @@ const settingsFormSchema = z.object({
 export type SettingsFormSchema = z.infer<typeof settingsFormSchema>
 
 export function SettingsForm() {
-  const { loginUser } = useStore(loginUserStore)
+  const { loginUser } = useLoginUserStore()
   const [saving, setSaving] = useState(false)
   const [supportedTimezones, setSupportedTimezones] = useState(Array<Option>)
   const [supportedDateTimeFormats, setSupportedDateTimeFormats] = useState(Array<Option>)
@@ -53,9 +52,9 @@ export function SettingsForm() {
     ]).then(results => {
       // load options
       setSupportedTimezones(results[0].data.map((item: DataDict) =>
-        ({label: "(UTC" + item.dictName + ") " + item.dictCode , value: item.dictCode})));
+        ({ label: "(UTC" + item.dictName + ") " + item.dictCode, value: item.dictCode })));
       setSupportedDateTimeFormats(results[1].data.map((item: SupportedDateTimeFormat) =>
-        ({label: item.displayName + " (" + item.example + ")", value: item.id})));
+        ({ label: item.displayName + " (" + item.example + ")", value: item.id })));
 
       AccountService.getCurrentUser().then(user => {
         form.reset(user)

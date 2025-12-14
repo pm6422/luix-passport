@@ -26,14 +26,13 @@ import {
   IconCalendarStats,
   IconHeartbeat
 } from "@tabler/icons-react"
-import { loginUserStore } from "@/stores/login-user-store"
-import { useStore } from "exome/react"
-import { appInfoStore } from "@/stores/app-info-store"
+import { useLoginUserStore } from "@/stores/login-user-store"
+import { useAppInfoStore } from "@/stores/app-info-store"
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { appInfo } = useStore(appInfoStore)
-  useStore(loginUserStore)
-  const navGroups  = [
+  const { appInfo } = useAppInfoStore()
+  const { hasRole } = useLoginUserStore()
+  const navGroups = [
     {
       title: "General",
       items: [
@@ -42,9 +41,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           url: "/console",
           icon: IconDashboard,
         },
-        ...((loginUserStore.hasRole("ROLE_USER")
-          && !loginUserStore.hasRole("ROLE_ADMIN")
-          && !loginUserStore.hasRole("ROLE_DEVELOPER")) ? [
+        ...((hasRole("ROLE_USER")
+          && !hasRole("ROLE_ADMIN")
+          && !hasRole("ROLE_DEVELOPER")) ? [
           {
             title: "Account",
             url: "/account",
@@ -56,7 +55,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             icon: IconBellRinging,
           }
         ] : []),
-        ...(loginUserStore.hasRole("ROLE_ADMIN") ? [
+        ...(hasRole("ROLE_ADMIN") ? [
           {
             title: "User",
             icon: IconUsers,
@@ -92,7 +91,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         ] : []),
       ],
     },
-    ...(loginUserStore.hasRole("ROLE_DEVELOPER") ? [
+    ...(hasRole("ROLE_DEVELOPER") ? [
       {
         title: "Developer Tools",
         items: [
@@ -141,7 +140,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" variant="floating" {...props}>
       <SidebarHeader>
-        <AppSidebarHeader/>
+        <AppSidebarHeader />
       </SidebarHeader>
       <SidebarContent>
         {navGroups.map((props) => (

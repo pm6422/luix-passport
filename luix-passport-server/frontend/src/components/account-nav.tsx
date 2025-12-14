@@ -18,12 +18,11 @@ import {
   IconBellRinging,
 } from "@tabler/icons-react"
 import { AccountService } from "@/services/account-service"
-import { useStore } from "exome/react"
-import { loginUserStore } from "@/stores/login-user-store"
+import { useLoginUserStore } from "@/stores/login-user-store"
 import { MinusIntroY } from "@/components/custom/intro-animation"
 
 export function AccountNav() {
-  const { loginUser } = useStore(loginUserStore)
+  const { loginUser } = useLoginUserStore()
   const [imageUrl, setImageUrl] = useState<string | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(false);
 
