@@ -49,12 +49,14 @@ function FloatingPaths({ position }: { position: number }) {
 export default function AnimatedPathsBackground({
   children,
   className = "",
+  fullScreen = true,
 }: {
   children?: ReactNode;
   className?: string;
+  fullScreen?: boolean;
 }) {
   return (
-    <div className={`relative min-h-screen w-full overflow-hidden bg-white dark:bg-neutral-950 ${className}`}>
+    <div className={`relative ${fullScreen ? "min-h-screen" : "h-full"} w-full overflow-hidden bg-white dark:bg-neutral-950 ${className}`}>
       <div className="absolute inset-0">
         <FloatingPaths position={1} />
         <FloatingPaths position={-1} />

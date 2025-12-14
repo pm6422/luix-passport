@@ -14,6 +14,7 @@ import { InviteMembersDialog } from "./members/dialog/invite-dialog"
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { Badge } from "@/components/ui/badge"
+import AnimatedPathsBackground from "@/components/custom/background/animated-paths-background"
 
 export default function TeamDashboard() {
   const { teamId } = useParams()
@@ -101,46 +102,48 @@ export default function TeamDashboard() {
   return (
     <LayoutBody className="flex flex-col bg-muted/5" fixedHeight>
       {/* Premium Header */}
-      <div className="relative overflow-hidden bg-background border-b pb-6 pt-8 px-4 md:px-6 shadow-sm">
-        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary/50 to-primary/10" />
-        <div className="flex flex-col md:flex-row items-center md:items-start gap-6 max-w-screen-2xl mx-auto">
-          <div className={`relative group shrink-0 ${hasRole(TEAM_OWNER) ? "cursor-pointer" : "cursor-default"}`} onClick={handleAvatarClick}>
-            <Avatar className="size-24 border-4 border-background shadow-xl">
-              <AvatarImage src={avatarUrl} alt={team?.name || "Team"} />
-              <AvatarFallback className="text-2xl bg-primary/10 text-primary">{team?.name?.[0]?.toUpperCase() || "T"}</AvatarFallback>
-            </Avatar>
-            <RoleTeamOwner>
-              <div className="absolute inset-0 flex items-center justify-center bg-black/40 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-200">
-                <IconCamera className="size-8 text-white drop-shadow-md" />
-              </div>
-            </RoleTeamOwner>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={handleFileChange}
-            />
-          </div>
+      <AnimatedPathsBackground className="bg-background border-b" fullScreen={false}>
+        <div className="relative pb-6 pt-8 px-4 md:px-6 shadow-sm">
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary/50 to-primary/10" />
+          <div className="flex flex-col md:flex-row items-center md:items-start gap-6 max-w-screen-2xl mx-auto">
+            <div className={`relative group shrink-0 ${hasRole(TEAM_OWNER) ? "cursor-pointer" : "cursor-default"}`} onClick={handleAvatarClick}>
+              <Avatar className="size-24 border-4 border-background shadow-xl">
+                <AvatarImage src={avatarUrl} alt={team?.name || "Team"} />
+                <AvatarFallback className="text-2xl bg-primary/10 text-primary">{team?.name?.[0]?.toUpperCase() || "T"}</AvatarFallback>
+              </Avatar>
+              <RoleTeamOwner>
+                <div className="absolute inset-0 flex items-center justify-center bg-black/40 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-200">
+                  <IconCamera className="size-8 text-white drop-shadow-md" />
+                </div>
+              </RoleTeamOwner>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleFileChange}
+              />
+            </div>
 
-          <div className="flex-1 text-center md:text-left space-y-2">
-            <h1 className="text-3xl font-bold tracking-tight text-foreground">{team?.name}</h1>
-            <div className="flex items-center justify-center md:justify-start gap-2 text-muted-foreground">
-              <span className="text-sm">Team ID:</span>
-              <code className="bg-muted px-1.5 py-0.5 rounded text-xs font-mono">{teamId}</code>
-              <Button variant="ghost" size="icon" className="h-6 w-6" onClick={copyTeamId}>
-                {copiedId ? <IconCheck className="size-3 text-green-500" /> : <IconCopy className="size-3" />}
-              </Button>
+            <div className="flex-1 text-center md:text-left space-y-2">
+              <h1 className="text-3xl font-bold tracking-tight text-foreground">{team?.name}</h1>
+              <div className="flex items-center justify-center md:justify-start gap-2 text-muted-foreground">
+                <span className="text-sm">Team ID:</span>
+                <code className="bg-muted px-1.5 py-0.5 rounded text-xs font-mono">{teamId}</code>
+                <Button variant="ghost" size="icon" className="h-6 w-6" onClick={copyTeamId}>
+                  {copiedId ? <IconCheck className="size-3 text-green-500" /> : <IconCopy className="size-3" />}
+                </Button>
+              </div>
+            </div>
+
+            <div className="flex gap-3 mt-4 md:mt-0">
+              <Link to={`/teams/${teamId}/members`}>
+                <Button variant="outline">Manage Members</Button>
+              </Link>
             </div>
           </div>
-
-          <div className="flex gap-3 mt-4 md:mt-0">
-            <Link to={`/teams/${teamId}/members`}>
-              <Button variant="outline">Manage Members</Button>
-            </Link>
-          </div>
         </div>
-      </div>
+      </AnimatedPathsBackground>
 
       {/* Main Dashboard Grid */}
       <div className="flex-1 overflow-auto p-4 md:p-6">
@@ -151,7 +154,7 @@ export default function TeamDashboard() {
 
             {/* Members Preview Card */}
             <Card>
-              <CardHeader className="pb-3">
+              <CardHeader className="pb-3 px-4">
                 <div className="flex items-center justify-between">
                   <div className="space-y-1">
                     <CardTitle className="text-lg flex items-center gap-2">
@@ -168,7 +171,7 @@ export default function TeamDashboard() {
                 </div>
               </CardHeader>
               <Separator />
-              <CardContent>
+              <CardContent className="px-4">
                 <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
                   {members.slice(0, 6).map((member) => (
                     <div key={member.userId} className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/50 transition-colors">
@@ -213,13 +216,13 @@ export default function TeamDashboard() {
 
             {/* Team Settings Card */}
             <Card>
-              <CardHeader>
+              <CardHeader className="px-4">
                 <CardTitle className="text-lg flex items-center gap-2">
                   <IconSettings className="size-5" />
                   Settings
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-4 px-4">
                 <div className="space-y-3">
                   <div className="text-sm space-y-1">
                     <p className="font-medium">Visibility</p>
