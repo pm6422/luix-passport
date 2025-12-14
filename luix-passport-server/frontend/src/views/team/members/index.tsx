@@ -24,7 +24,7 @@ import { toast } from "sonner"
 import { RoleTeamOwner } from "@/components/custom/role"
 import { RoleService } from "@/services/role-service"
 import { ConfirmDialog } from "@/components/custom/confirm-dialog"
-import { TeamRoleSelector } from "@/components/custom/team-role-selector"
+import { TeamRoleSelector } from "@/components/custom/form-field/team-role-selector"
 import { TEAM_OWNER } from "@/constants/role-constants"
 import {
   Tooltip,

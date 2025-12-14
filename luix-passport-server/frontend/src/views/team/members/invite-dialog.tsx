@@ -17,7 +17,7 @@ import { toast } from "sonner"
 import { IconPlus, IconMinus } from "@tabler/icons-react"
 import { useEffect, useState } from "react"
 import { RoleService } from "@/services/role-service"
-import { TeamRoleSelector } from "@/components/custom/team-role-selector"
+import { TeamRoleSelector } from "@/components/custom/form-field/team-role-selector"
 import { ROLE_ANONYMOUS, ROLE_USER, TEAM_MEMBER } from "@/constants/role-constants"
 
 const inviteSchema = z.object({
