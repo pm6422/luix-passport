@@ -68,7 +68,7 @@ const FormErrors = <T extends FieldValues>({
               key={`${err.field}-${index}`}
               className="flex items-start gap-2"
             >
-              <Badge variant="outline" className="capitalize text-[10px] px-1.5 py-0.5 leading-none">{err.field}</Badge>
+              <Badge variant="outline" className="capitalize text-[10px] px-1.5 py-0.5 leading-none border-destructive">{err.field}</Badge>
               <span className="text-muted-foreground text-xs">{err.message}</span>
             </div>
           ))}
