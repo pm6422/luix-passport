@@ -256,6 +256,14 @@ const router = createBrowserRouter([
 
   // Fallback 404 route
   { path: "*", Component: NotFoundError },
-])
+], {
+  future: {
+    v7_startTransition: true,
+    v7_relativeSplatPath: true,
+    v7_fetcherPersist: true,
+    v7_normalizeFormMethod: true,
+    v7_skipActionErrorRevalidation: true,
+  },
+} as any)
 
 export default router

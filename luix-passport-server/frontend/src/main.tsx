@@ -12,7 +12,7 @@ dayjs.extend(timezone)
 
 export default function Main() {
     return <ThemeProvider>
-        <RouterProvider router={router} />
-        <Toaster />
-    </ThemeProvider>;
+                <RouterProvider router={router} future={{ v7_startTransition: true }} />
+                <Toaster />
+            </ThemeProvider>;
 }
