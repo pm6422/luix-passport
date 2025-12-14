@@ -11,7 +11,7 @@ const invitationSchema = z.object({
   roles: z.array(z.string()).min(1, { message: "Required" })
 })
 
-const inviteSchema = z.object({
+const baseInviteSchema = z.object({
   invitations: z
     .array(invitationSchema)
     .min(1)
@@ -24,7 +24,7 @@ const inviteSchema = z.object({
         indices.push(index)
         seen.set(email, indices)
       })
-      for (const [, indices] of seen) {
+      seen.forEach((indices) => {
         if (indices.length > 1) {
           indices.forEach((i) => {
             ctx.addIssue({
@@ -34,7 +34,7 @@ const inviteSchema = z.object({
             })
           })
         }
-      }
+      })
     })
 })
 
@@ -47,12 +47,39 @@ interface InviteMembersDialogProps {
 
 export function InviteMembersDialog({ open, onOpenChange, teamId, onSuccess }: InviteMembersDialogProps) {
   const [allRoles, setAllRoles] = useState<string[]>([])
+  const [blockedEmails, setBlockedEmails] = useState<Set<string>>(new Set())
 
   useEffect(() => {
     if (open) {
       RoleService.findAllIds().then(({ data }) => setAllRoles(data))
+      TeamService.getPendingInvitations(teamId).then(({ data }) => {
+        const s = new Set<string>()
+        data.forEach((i) => {
+          const status = (i.status || "").toUpperCase()
+          if (status !== "EXPIRED" && status !== "ACCEPTED" && status !== "REJECTED") {
+            const email = (i.memberEmail || "").trim().toLowerCase()
+            if (email) s.add(email)
+          }
+        })
+        setBlockedEmails(s)
+      }).catch(() => {
+        setBlockedEmails(new Set())
+      })
     }
-  }, [open])
+  }, [open, teamId])
+
+  const inviteSchema = baseInviteSchema.superRefine((values, ctx) => {
+    values.invitations.forEach((inv, index) => {
+      const email = (inv.email || "").trim().toLowerCase()
+      if (email && blockedEmails.has(email)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["invitations", index, "email"],
+          message: "Email already invited and pending"
+        })
+      }
+    })
+  })
 
   return (
     <FormDialog<z.infer<typeof inviteSchema>>
