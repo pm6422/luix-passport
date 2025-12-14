@@ -136,12 +136,12 @@ function FormDialogContent<T extends FieldValues>({
 
           <DialogFooter className="gap-2 pt-2 sm:space-x-0">
             <DialogClose asChild>
-              <Button type="button" variant="outline">
+              <Button type="button" variant="outline" className="w-full sm:w-auto sm:min-w-[80px]">
                 Cancel
               </Button>
             </DialogClose>
             {!readonly &&
-              <LoadingButton type="submit" loading={saving}>
+              <LoadingButton type="submit" loading={saving} className="w-full sm:w-auto sm:min-w-[80px]">
                 {saving ? "Saving" : "Save"}
               </LoadingButton>
             }
