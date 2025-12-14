@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form"
 import { Dialog, DialogTrigger } from "@/components/ui/dialog"
 import SaveDialogContent from "@/components/custom/dialog/save-dialog-content"
 import InputFormField from "@/components/custom/form-field/input"
-import CheckboxFormField from "@/components/custom/form-field/checkbox"
+
 import { type CheckboxOption } from "@/components/custom/form-field/checkbox"
 import SwitchFormField from "@/components/custom/form-field/switch"
 import SelectFormField from "@/components/custom/form-field/select"
@@ -23,7 +23,9 @@ import type { SupportedDateTimeFormat } from "@/domains/supported-date-time-form
 import { Skeleton } from "@/components/ui/skeleton"
 import Notice from "@/components/custom/notice"
 import { useLoginUserStore } from "@/stores/login-user-store"
-import { SYSTEM_ROLES } from "@/constants/role-constants"
+
+import { TeamRoleSelector } from "@/components/custom/team-role-selector"
+import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form"
 
 interface EditDialogProps {
   children: ReactNode,
@@ -178,14 +180,23 @@ export function EditDialog({
           label="Remark"
         />
 
-        <CheckboxFormField
+        <FormField
           control={form.control}
           name="roleIds"
-          label="Roles"
-          required
-          options={enabledRoles}
-          requiredOptionValues={SYSTEM_ROLES}
-          description="Select multiple roles for this user"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Roles <span className="text-destructive">*</span></FormLabel>
+              <FormControl>
+                <TeamRoleSelector
+                  value={field.value || []}
+                  onChange={field.onChange}
+                  allRoles={enabledRoles.map(r => r.value)}
+                  className="w-full"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
 
         <SwitchFormField
