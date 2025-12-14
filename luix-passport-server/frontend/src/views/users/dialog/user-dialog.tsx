@@ -31,6 +31,22 @@ export function EditDialog({
     }
   }
 
+  const loadEntity = async (entityId?: string | null) => {
+    const [roleIdsRes, timezonesRes, dateTimeFormatsRes] = await Promise.all([
+      RoleService.findAllIds(),
+      AccountService.findSupportedTimezones(),
+      AccountService.findSupportedDateTimeFormats()
+    ])
+    const tzOptions = timezonesRes.data.map((item: DataDict) =>
+      ({ label: "(UTC" + item.dictName + ") " + item.dictCode, value: item.dictCode }))
+    const dtfOptions = dateTimeFormatsRes.data.map((item: SupportedDateTimeFormat) =>
+      ({ label: item.displayName + " (" + item.example + ")", value: item.id }))
+    if (entityId) {
+      const { data } = await UserService.findById(entityId)
+      return { options: { enabledRoles: roleIdsRes.data, supportedTimezones: tzOptions, supportedDateTimeFormats: dtfOptions }, entity: data }
+    }
+    return { options: { enabledRoles: roleIdsRes.data, supportedTimezones: tzOptions, supportedDateTimeFormats: dtfOptions }, entity: initialUserState }
+  }
   return (
     <FormDialog<User, { enabledRoles: string[], supportedTimezones: Option[], supportedDateTimeFormats: Option[] }>
       entityName={entityName}
@@ -39,22 +55,7 @@ export function EditDialog({
       defaultValues={initialUserState}
       save={save}
       afterSave={afterSave}
-      onLoad={async (entityId) => {
-        const [roleIdsRes, timezonesRes, dateTimeFormatsRes] = await Promise.all([
-          RoleService.findAllIds(),
-          AccountService.findSupportedTimezones(),
-          AccountService.findSupportedDateTimeFormats()
-        ])
-        const tzOptions = timezonesRes.data.map((item: DataDict) =>
-          ({ label: "(UTC" + item.dictName + ") " + item.dictCode, value: item.dictCode }))
-        const dtfOptions = dateTimeFormatsRes.data.map((item: SupportedDateTimeFormat) =>
-          ({ label: item.displayName + " (" + item.example + ")", value: item.id }))
-        if (entityId) {
-          const { data } = await UserService.findById(entityId)
-          return { options: { enabledRoles: roleIdsRes.data, supportedTimezones: tzOptions, supportedDateTimeFormats: dtfOptions }, entity: data }
-        }
-        return { options: { enabledRoles: roleIdsRes.data, supportedTimezones: tzOptions, supportedDateTimeFormats: dtfOptions }, entity: initialUserState }
-      }}
+      onLoad={loadEntity}
       renderFields={(form, options) => (
         <UserFormFields
           form={form}

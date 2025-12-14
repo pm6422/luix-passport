@@ -20,6 +20,19 @@ export function EditDialog({
   id,
   save
 }: EditDialogProps) {
+  const loadEntity = async (entityId?: string | null) => {
+    const [resourceTypesRes, actionsRes] = await Promise.all([
+      DataDictService.lookup("PermissionResourceType", true),
+      DataDictService.lookup("PermissionAction", true),
+    ])
+    const resourceTypeOptions = resourceTypesRes.data.map((item: DataDict) => ({ label: item.dictCode, value: item.dictCode }))
+    const actionOptions = actionsRes.data.map((item: DataDict) => ({ label: item.dictCode, value: item.dictCode }))
+    if (entityId) {
+      const { data } = await PermissionService.findById(entityId)
+      return { options: { resourceTypes: resourceTypeOptions, actions: actionOptions }, entity: data }
+    }
+    return { options: { resourceTypes: resourceTypeOptions, actions: actionOptions }, entity: initialPermissionState }
+  }
 
   return (
     <FormDialog<Permission, { resourceTypes: Option[], actions: Option[] }>
@@ -28,19 +41,7 @@ export function EditDialog({
       schema={permissionSchema}
       defaultValues={initialPermissionState}
       save={save}
-      onLoad={async (entityId) => {
-        const [resourceTypesRes, actionsRes] = await Promise.all([
-          DataDictService.lookup("PermissionResourceType", true),
-          DataDictService.lookup("PermissionAction", true),
-        ])
-        const resourceTypeOptions = resourceTypesRes.data.map((item: DataDict) => ({ label: item.dictCode, value: item.dictCode }))
-        const actionOptions = actionsRes.data.map((item: DataDict) => ({ label: item.dictCode, value: item.dictCode }))
-        if (entityId) {
-          const { data } = await PermissionService.findById(entityId)
-          return { options: { resourceTypes: resourceTypeOptions, actions: actionOptions }, entity: data }
-        }
-        return { options: { resourceTypes: resourceTypeOptions, actions: actionOptions }, entity: initialPermissionState }
-      }}
+      onLoad={loadEntity}
       renderFields={(form, options) => (
         <PermissionFormFields form={form} resourceTypes={options.resourceTypes} actions={options.actions} />
       )}

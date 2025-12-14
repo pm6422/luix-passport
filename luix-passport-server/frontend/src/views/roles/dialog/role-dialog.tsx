@@ -20,7 +20,7 @@ export function EditDialog({
   id,
   save
 }: EditDialogProps) {
-  const loadRole = async (entityId?: string | null) => {
+  const loadEntity = async (entityId?: string | null) => {
     const { data: permissionList } = await PermissionService.find({ page: 0, size: 2000, sort: ["updatedAt,desc"] })
     const options = permissionList.map((item: Permission) => ({ label: item.id, value: item.id }))
     if (entityId) {
@@ -36,7 +36,7 @@ export function EditDialog({
       schema={roleSchema}
       defaultValues={initialRoleState}
       save={save}
-      onLoad={loadRole}
+      onLoad={loadEntity}
       renderFields={(form, options) => (
         <RoleFormFields form={form} permissions={options.permissions} />
       )}

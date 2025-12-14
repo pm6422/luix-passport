@@ -18,6 +18,19 @@ export function EditDialog({
   id,
   save
 }: EditDialogProps) {
+  const loadEntity = async (entityId?: string | null) => {
+    const methodsRes = await Oauth2ClientService.findClientAuthenticationMethods()
+    const authenticationMethodOptions = methodsRes.data.map((item: string) => ({ label: item, value: item }))
+    const grantTypesRes = await Oauth2ClientService.findAuthorizationGrantTypes()
+    const grantTypeOptions = grantTypesRes.data.map((item: string) => ({ label: item, value: item }))
+    const scopesRes = await Oauth2ClientService.findScopes()
+    const scopeOptions = scopesRes.data.map((item: string) => ({ label: item, value: item }))
+    if (entityId) {
+      const { data } = await Oauth2ClientService.findById(entityId)
+      return { options: { authenticationMethodOptions, grantTypeOptions, scopeOptions }, entity: data }
+    }
+    return { options: { authenticationMethodOptions, grantTypeOptions, scopeOptions }, entity: initialAuth2ClientState }
+  }
 
   return (
     <FormDialog<Auth2Client, { authenticationMethodOptions: Option[], grantTypeOptions: Option[], scopeOptions: Option[] }>
@@ -26,19 +39,7 @@ export function EditDialog({
       schema={auth2ClientSchema}
       defaultValues={initialAuth2ClientState}
       save={save}
-      onLoad={async (entityId) => {
-        const methodsRes = await Oauth2ClientService.findClientAuthenticationMethods()
-        const authenticationMethodOptions = methodsRes.data.map((item: string) => ({ label: item, value: item }))
-        const grantTypesRes = await Oauth2ClientService.findAuthorizationGrantTypes()
-        const grantTypeOptions = grantTypesRes.data.map((item: string) => ({ label: item, value: item }))
-        const scopesRes = await Oauth2ClientService.findScopes()
-        const scopeOptions = scopesRes.data.map((item: string) => ({ label: item, value: item }))
-        if (entityId) {
-          const { data } = await Oauth2ClientService.findById(entityId)
-          return { options: { authenticationMethodOptions, grantTypeOptions, scopeOptions }, entity: data }
-        }
-        return { options: { authenticationMethodOptions, grantTypeOptions, scopeOptions }, entity: initialAuth2ClientState }
-      }}
+      onLoad={loadEntity}
       renderFields={(form, options) => (
         <Auth2ClientFormFields
           form={form}

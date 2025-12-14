@@ -15,6 +15,13 @@ export function EditDialog({
   entityName,
   id
 }: EditDialogProps) {
+  const loadEntity = async (entityId?: string | null) => {
+    if (entityId) {
+      const { data } = await ScheduleExecutionLogService.findById(entityId)
+      return { entity: data }
+    }
+    return { entity: initialScheduleExecutionLogState }
+  }
   return (
     <FormDialog<ScheduleExecutionLog>
       entityName={entityName}
@@ -22,13 +29,7 @@ export function EditDialog({
       schema={scheduleExecutionLogSchema}
       defaultValues={initialScheduleExecutionLogState}
       readonly={true}
-      onLoad={async (entityId) => {
-        if (entityId) {
-          const { data } = await ScheduleExecutionLogService.findById(entityId)
-          return { entity: data }
-        }
-        return { entity: initialScheduleExecutionLogState }
-      }}
+      onLoad={loadEntity}
       renderFields={(form) => (
         <ScheduleExecutionLogFormFields form={form} />
       )}
@@ -37,4 +38,3 @@ export function EditDialog({
     </FormDialog>
   )
 }
-
