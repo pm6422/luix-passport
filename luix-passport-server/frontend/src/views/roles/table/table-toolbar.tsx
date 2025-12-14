@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form"
 import InputFormField from "@/components/custom/form-field/input"
 import { Button } from "@/components/ui/button"
 import { IconPlus } from "@tabler/icons-react"
-import { EditDialog } from "../dialog/edit-dialog"
+import { EditDialog } from "../dialog/role-dialog"
 import { type Role, type RoleCriteriaSchema, roleCriteriaSchema, initialRoleCriteriaState } from "@/domains/role"
 import { Form } from "@/components/ui/form"
 

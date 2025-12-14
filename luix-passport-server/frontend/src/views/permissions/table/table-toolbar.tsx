@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form"
 import InputFormField from "@/components/custom/form-field/input"
 import { Button } from "@/components/ui/button"
 import { IconPlus, IconFilterSearch } from "@tabler/icons-react"
-import { EditDialog } from "../dialog/edit-dialog"
+import { EditDialog } from "../dialog/permission-dialog"
 import { type Permission, type PermissionCriteriaSchema, permissionCriteriaSchema, initialPermissionCriteriaState } from "@/domains/permission"
 import { Form } from "@/components/ui/form"
 import {

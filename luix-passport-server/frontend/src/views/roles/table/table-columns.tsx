@@ -5,7 +5,7 @@ import { DataTableColumnHeader } from "@/components/custom/data-table/data-table
 import { DataTableRowActions } from "@/components/custom/data-table/data-table-row-actions"
 import { Button } from "@/components/ui/button"
 import { Role } from "@/domains/role"
-import { EditDialog } from "../dialog/edit-dialog"
+import { EditDialog } from "../dialog/role-dialog"
 import { DateTime } from '@/components/custom/display/date-time.tsx'
 
 export function tableColumns(

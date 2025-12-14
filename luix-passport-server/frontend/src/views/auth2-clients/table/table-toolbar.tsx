@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form"
 import InputFormField from "@/components/custom/form-field/input"
 import { Button } from "@/components/ui/button"
 import { IconPlus } from "@tabler/icons-react"
-import { EditDialog } from "../dialog/edit-dialog"
+import { EditDialog } from "../dialog/auth2-client-dialog"
 import { type Auth2Client, type Auth2ClientCriteriaSchema, auth2ClientCriteriaSchema, initialAuth2ClientCriteriaState } from "@/domains/auth2-client"
 import { Form } from "@/components/ui/form"
 

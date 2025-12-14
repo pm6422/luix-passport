@@ -2,7 +2,7 @@ import { useState, useEffect, ReactNode, useRef } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm, FieldValues, UseFormReturn, DefaultValues } from "react-hook-form"
 import { Dialog, DialogTrigger } from "@/components/ui/dialog"
-import SaveDialogContent from "@/components/custom/dialog/save-dialog-content"
+import FormDialogContent from "@/components/custom/dialog/form-dialog-content"
 import type { z } from "zod"
 
 interface LoadResult<TOptions = any> {
@@ -19,7 +19,7 @@ interface FormDialogProps<
   id?: string | null
   schema: z.ZodType<TFieldValues, z.ZodTypeDef, any>
   defaultValues: DefaultValues<TFieldValues>
-  save: (formData: TFieldValues) => Promise<void>
+  save?: (formData: TFieldValues) => Promise<void>
   afterSave?: (success: boolean) => void
   onLoad?: (id?: string | null) => Promise<LoadResult<TOptions>>
   renderFields: (form: UseFormReturn<TFieldValues>, options: TOptions) => ReactNode
@@ -95,7 +95,7 @@ export function FormDialog<
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <SaveDialogContent<TFieldValues>
+      <FormDialogContent<TFieldValues>
         entityName={entityName}
         id={id}
         form={form}
@@ -113,7 +113,7 @@ export function FormDialog<
         ) : (
           renderFields(form, options)
         )}
-      </SaveDialogContent>
+      </FormDialogContent>
     </Dialog>
   )
 }

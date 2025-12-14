@@ -11,7 +11,7 @@ import { ConfirmPopover } from "@/components/custom/dialog/confirm-popover";
 import { DataTableColumnHeader } from "@/components/custom/data-table/data-table-column-header";
 import { DataTableRowActions } from "@/components/custom/data-table/data-table-row-actions";
 import { DateTime } from "@/components/custom/display/date-time";
-import { EditDialog } from "../dialog/edit-dialog";
+import { EditDialog } from "../dialog/user-dialog";
 
 export function tableColumns(
   entityName: string,

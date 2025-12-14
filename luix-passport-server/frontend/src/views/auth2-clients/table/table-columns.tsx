@@ -6,7 +6,7 @@ import { DataTableRowActions } from "@/components/custom/data-table/data-table-r
 import { Button } from "@/components/ui/button"
 import { YesNoBadge } from "@/components/custom/display/yes-no-badge"
 import { Auth2Client } from "@/domains/auth2-client"
-import { EditDialog } from "../dialog/edit-dialog"
+import { EditDialog } from "../dialog/auth2-client-dialog"
 
 export function tableColumns(
   entityName: string,

@@ -30,7 +30,7 @@ interface Props<T extends FieldValues> {
   debug?: boolean
 }
 
-const SaveDialogContent = <T extends FieldValues>({
+const FormDialogContent = <T extends FieldValues>({
   children,
   entityName,
   id,
@@ -115,4 +115,4 @@ const SaveDialogContent = <T extends FieldValues>({
   )
 }
 
-export default SaveDialogContent
+export default FormDialogContent
