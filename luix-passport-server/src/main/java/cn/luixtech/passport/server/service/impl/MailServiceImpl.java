@@ -17,6 +17,7 @@ import org.springframework.util.StringUtils;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
+import java.time.Instant;
 import java.util.Locale;
 
 /**
@@ -86,6 +87,18 @@ public class MailServiceImpl implements MailService {
     }
 
     @Override
+    public void sendTeamInvitationEmail(String email, String teamName, String inviterName, String role,
+            String baseUrl, Instant expiresAt, String inviterLocale) {
+        User user = new User();
+        user.setEmail(email);
+        user.setLocale(inviterLocale);
+        sendEmailFromTemplate(user, null, "emails/team-invitation-email",
+                "team.invitation.email.subject", "team.invitation.email.title", baseUrl,
+                teamName, email, inviterName, role, expiresAt);
+        log.info("Requested sending team invitation email to [{}] for team [{}]", email, teamName);
+    }
+
+    @Override
     public void sendAccountActivationEmail(User user, String baseUrl) {
         sendEmailFromTemplate(user, null, "emails/activate-account-email",
                 "activate.account.email.subject", "activate.account.email.title", baseUrl);
@@ -111,17 +124,5 @@ public class MailServiceImpl implements MailService {
         sendEmailFromTemplate(user, null, "emails/changed-password-email",
                 "changed.password.email.subject", "changed.password.email.title", baseUrl);
         log.info("Requested sending password changed email to [{}]", user.getEmail());
-    }
-
-    @Override
-    public void sendTeamInvitationEmail(String email, String teamName, String inviterName, String role,
-            String baseUrl, java.time.Instant expiresAt, String inviterLocale) {
-        User user = new User();
-        user.setEmail(email);
-        user.setLocale(inviterLocale);
-        sendEmailFromTemplate(user, null, "emails/team-invitation-email",
-                "team.invitation.email.subject", "team.invitation.email.title", baseUrl,
-                teamName, email, inviterName, role, expiresAt);
-        log.info("Requested sending team invitation email to [{}] for team [{}]", email, teamName);
     }
 }
