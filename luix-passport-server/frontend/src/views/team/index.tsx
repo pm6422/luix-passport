@@ -230,35 +230,34 @@ export default function TeamDashboard() {
           {/* Left Column (Main Content) */}
           <div className="md:col-span-2 space-y-8">
 
-            {/* Team Members Section */}
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="space-y-1">
-                  <h2 className="text-xl font-semibold tracking-tight">Team Members</h2>
-                  <p className="text-sm text-muted-foreground">
-                    Manage the members of your team.
-                  </p>
+            <Card>
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <div className="space-y-1">
+                    <CardTitle>Team Members</CardTitle>
+                    <p className="text-sm text-muted-foreground">
+                      Manage the members of your team.
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <RoleTeamOwner>
+                      <Button onClick={() => setInviteOpen(true)} size="sm">
+                        <IconPlus className="mr-2 size-4" />
+                        Invite Members
+                      </Button>
+                    </RoleTeamOwner>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <RoleTeamOwner>
-                    <Button onClick={() => setInviteOpen(true)} size="sm">
-                      <IconPlus className="mr-2 size-4" />
-                      Invite Members
-                    </Button>
-                  </RoleTeamOwner>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-center space-x-2">
+                  <Input
+                    placeholder="Search members"
+                    className="h-9 w-full"
+                    value={memberQuery}
+                    onChange={(e) => setMemberQuery(e.target.value)}
+                  />
                 </div>
-              </div>
-
-              <div className="flex items-center space-x-2">
-                <Input
-                  placeholder="Search members"
-                  className="h-9 w-full"
-                  value={memberQuery}
-                  onChange={(e) => setMemberQuery(e.target.value)}
-                />
-              </div>
-
-              <div className="rounded-md border bg-card">
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -274,9 +273,7 @@ export default function TeamDashboard() {
                         <TableCell className="font-medium">
                           <div className="flex items-center space-x-3">
                             <div className="relative">
-                              <Avatar
-                                className="size-8"
-                              >
+                              <Avatar className="size-8">
                                 {member.avatar && (
                                   <AvatarImage src={`data:image/png;base64,${member.avatar}`} />
                                 )}
@@ -327,29 +324,28 @@ export default function TeamDashboard() {
                     )}
                   </TableBody>
                 </Table>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
 
-            {/* Pending Invites Section */}
             <RoleTeamOwner>
-              <div className="space-y-4">
-                <div className="space-y-1">
-                  <h2 className="text-xl font-semibold tracking-tight">Pending Invites</h2>
-                  <p className="text-sm text-muted-foreground">
-                    Manage pending invitations.
-                  </p>
-                </div>
-
-                <div className="flex items-center space-x-2">
-                  <Input
-                    placeholder="Search Invitations"
-                    className="h-9 w-full"
-                    value={inviteQuery}
-                    onChange={(e) => setInviteQuery(e.target.value)}
-                  />
-                </div>
-
-                <div className="rounded-md border bg-card">
+              <Card>
+                <CardHeader>
+                  <div className="space-y-1">
+                    <CardTitle>Pending Invites</CardTitle>
+                    <p className="text-sm text-muted-foreground">
+                      Manage pending invitations.
+                    </p>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center space-x-2">
+                    <Input
+                      placeholder="Search Invitations"
+                      className="h-9 w-full"
+                      value={inviteQuery}
+                      onChange={(e) => setInviteQuery(e.target.value)}
+                    />
+                  </div>
                   <Table>
                     <TableHeader>
                       <TableRow>
@@ -424,8 +420,8 @@ export default function TeamDashboard() {
                       )}
                     </TableBody>
                   </Table>
-                </div>
-              </div>
+                </CardContent>
+              </Card>
             </RoleTeamOwner>
 
           </div>
