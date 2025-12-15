@@ -29,21 +29,19 @@
     <p
       style="margin: 0 0 8px 0; font-size: 14px; color: #52525b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
       Invitation Details</p>
-    <table border="0" cellpadding="0" cellspacing="0" width="100%">
-      <tr>
-        <td style="padding: 4px 0; font-size: 14px; color: #71717a; width: 80px;">Team:</td>
-        <td style="padding: 4px 0; font-size: 14px; color: #18181b; font-weight: 500;">[[${args[0]}]]</td>
-      </tr>
-      <tr>
-        <td style="padding: 4px 0; font-size: 14px; color: #71717a;">Inviter:</td>
-        <td style="padding: 4px 0; font-size: 14px; color: #18181b; font-weight: 500;">[[${args[1]}]]</td>
-      </tr>
-    </table>
+    <div style="margin-bottom: 16px;">
+      <div style="font-size: 14px; color: #71717a; margin-bottom: 4px;">Team:</div>
+      <div style="font-size: 14px; color: #18181b; font-weight: 500;">[[${args[0]}]]</div>
+    </div>
+    <div>
+      <div style="font-size: 14px; color: #71717a; margin-bottom: 4px;">Inviter:</div>
+      <div style="font-size: 14px; color: #18181b; font-weight: 500;">[[${args[2]}]]</div>
+    </div>
   </div>
 
   <!-- Expiration Note -->
   <p style="margin: 0 0 30px 0; font-size: 14px; line-height: 20px; color: #71717a; text-align: center;">
-    <span th:text="#{team.invitation.expires.tip(${args[2]})}">This invitation will expire in 7 days</span>
+    <span th:text="#{team.invitation.expires.tip(${args[3]})}">This invitation will expire in 7 days</span>
   </p>
 
   <!-- Divider -->
