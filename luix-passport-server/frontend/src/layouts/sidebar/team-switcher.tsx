@@ -66,7 +66,7 @@ export function TeamSwitcher() {
                 <span className="truncate font-semibold">
                   {activeTeam?.name || "Select Team"}
                 </span>
-                <span className="truncate text-xs">Free</span>
+                <span className="truncate text-xs">Personal</span>
               </div>
               <IconSelector className="ml-auto" />
             </SidebarMenuButton>
