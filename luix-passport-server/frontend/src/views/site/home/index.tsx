@@ -30,7 +30,7 @@ function SiteFooter() {
         </div>
 
         {/* Copyright info - always centered, single row on small screens */}
-        <p className="text-xs text-muted-foreground text-center sm:text-left">
+        <p className="text-xs text-muted-foreground text-center sm:text-start">
           © 2025 LUIX Universe
         </p>
 
