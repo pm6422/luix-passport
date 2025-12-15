@@ -148,7 +148,7 @@ public class TeamController {
     @PutMapping("/api/teams/{teamId}/members/{userId}/role")
     public ResponseEntity<Void> updateMemberRole(@PathVariable String teamId, @PathVariable String userId,
             @RequestBody java.util.Set<String> roles) {
-        teamService.updateMemberRoles(teamId, userId, roles, AuthUtils.getCurrentUsername());
+        teamService.updateInviteeRoles(teamId, userId, roles, AuthUtils.getCurrentUsername());
         return ResponseEntity.ok().build();
     }
 }

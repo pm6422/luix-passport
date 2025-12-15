@@ -375,11 +375,9 @@ public class TeamServiceImpl implements TeamService {
     }
   }
 
-  // batch operations removed
-
   @Override
   @Transactional(rollbackFor = Exception.class)
-  public void updateMemberRoles(String teamId, String userId, Set<String> roles, String operatorId) {
+  public void updateInviteeRoles(String teamId, String userId, Set<String> roles, String operatorId) {
     // Ensure mutually exclusive roles logic (frontend should handle this, but
     // backend must validate)
     // Actually, user said only one of TEAM_OWNER / TEAM_MEMBER can be selected.
