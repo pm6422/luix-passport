@@ -213,10 +213,10 @@
             <column name="team_id" type="VARCHAR(18)">
                 <constraints nullable="false"/>
             </column>
-            <column name="member_email" type="VARCHAR(30)">
+            <column name="invitee_email" type="VARCHAR(30)">
                 <constraints nullable="false"/>
             </column>
-            <column name="member_roles" type="VARCHAR(1000)">
+            <column name="invitee_roles" type="VARCHAR(1000)">
                 <constraints nullable="false"/>
             </column>
             <column name="inviter_id" type="VARCHAR(50)">

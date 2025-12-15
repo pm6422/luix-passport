@@ -12,5 +12,4 @@ public interface TeamUserService {
 
     void save(String teamId, Set<String> usernames);
 
-    void invite(String teamId, List<TeamMemberInvitation> invitations);
 }
