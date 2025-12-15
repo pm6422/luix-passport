@@ -149,12 +149,9 @@ public class TeamServiceImpl implements TeamService {
     for (TeamMemberInvitation invitation : invitations) {
       Optional<User> existingUser = userRepository.findOneByEmail(invitation.getEmail());
 
-      // Check if user is already a member
+      // Check if user is already registered
       if (existingUser.isPresent()) {
-        String userId = existingUser.get().getUsername();
-        if (teamUserRepository.findByTeamIdAndUserId(teamId, userId).isPresent()) {
-          continue; // Already a member
-        }
+        throw new IllegalArgumentException("The email " + invitation.getEmail() + " is already registered.");
       }
 
       // Check for existing invitation (unregistered or registered and not finalized)
@@ -283,7 +280,7 @@ public class TeamServiceImpl implements TeamService {
     Set<String> currentRoles = userRoleService.findRoleIds(userId);
     Set<String> updatedRoles = new java.util.HashSet<>(currentRoles);
     if (invitation.getMemberRoles() != null) {
-        updatedRoles.addAll(Arrays.asList(invitation.getMemberRoles().split(",")));
+      updatedRoles.addAll(Arrays.asList(invitation.getMemberRoles().split(",")));
     }
     userRoleService.update(userId, updatedRoles);
 
