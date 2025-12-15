@@ -61,13 +61,16 @@ public class MailServiceImpl implements MailService {
 
     @Override
     public void sendEmailFromTemplate(User user, String[] emailsTo, String contentFragment, String emailSubjectKey,
-            String titleKey, String baseUrl) {
+            String titleKey, String baseUrl, Object... args) {
         Locale locale = LocaleUtils.toLocale(user.getLocale());
         Context context = new Context(locale);
         context.setVariable(USER, user);
         context.setVariable(BASE_URL, baseUrl);
         context.setVariable(DOMAIN, applicationProperties.getCompany().getDomain());
         context.setVariable(CONTENT_FRAGMENT, contentFragment);
+        if (args != null && args.length > 0) {
+            context.setVariable("args", args);
+        }
         String title = messageSource.getMessage(titleKey, null, locale);
         context.setVariable(TITLE, title);
         String content = springTemplateEngine.process(EMAIL_LAYOUT, context);
@@ -106,7 +109,7 @@ public class MailServiceImpl implements MailService {
     @Override
     public void sendVerificationCodeMail(User user, String emailTo, String baseUrl) {
         sendEmailFromTemplate(user, new String[] { emailTo }, "emails/verification-code-email",
-                "verification.code.email.subject", "verification.code.email.title", baseUrl);
+                "verification.code.email.subject", "verification.code.email.title", baseUrl, 15);
         log.info("Requested sending verification code email to [{}]", user.getEmail());
     }
 
