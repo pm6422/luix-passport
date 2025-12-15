@@ -53,6 +53,7 @@ import java.util.stream.Collectors;
 
 import static cn.luixtech.passport.server.config.AuthorizationServerConfiguration.BCRYPT_PASSWORD_ENCODER;
 import static cn.luixtech.passport.server.config.AuthorizationServerConfiguration.DEFAULT_PASSWORD_ENCODER_PREFIX;
+import static cn.luixtech.passport.server.domain.User.RESET_CODE_EXPIRATION_MINUTES;
 import static org.apache.commons.lang3.time.DateFormatUtils.ISO_8601_EXTENDED_DATETIME_TIME_ZONE_FORMAT;
 
 /**
@@ -353,7 +354,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User user = userRepository.findOneByResetCode(resetCode)
                 .orElseThrow(() -> new RuntimeException("Invalid or expired reset code"));
 
-        Validate.isTrue(Instant.now().isBefore(user.getResetAt().plus(30, ChronoUnit.DAYS)),
+        Validate.isTrue(Instant.now().isBefore(user.getResetAt().plus(RESET_CODE_EXPIRATION_MINUTES, ChronoUnit.MINUTES)),
                 messageCreator.getMessage("UE1023"));
 
         user.setPasswordHash(DEFAULT_PASSWORD_ENCODER_PREFIX + BCRYPT_PASSWORD_ENCODER.encode(newRawPassword));

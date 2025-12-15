@@ -111,7 +111,8 @@ public class MailServiceImpl implements MailService {
     @Override
     public void sendPasswordRecoveryMail(User user, String baseUrl) {
         sendEmailFromTemplate(user, null, "emails/recover-password-email",
-                "reset.password.email.subject", "reset.password.email.title", baseUrl);
+                "reset.password.email.subject", "reset.password.email.title", baseUrl,
+                User.RESET_CODE_EXPIRATION_MINUTES);
         log.info("Requested sending password recovery email to [{}]", user.getEmail());
     }
 
