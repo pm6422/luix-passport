@@ -112,7 +112,7 @@ export function tableColumns(
         <OverflowBadges
           items={(row.original.roleIds || []) as string[]}
           visibleCount={1}
-          className="w-[115px] text-xs"
+          className="w-[140px] text-xs"
         />
       ),
       enableSorting: false,
