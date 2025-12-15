@@ -7,7 +7,7 @@ import {
 } from "@tabler/icons-react"
 import { Separator } from "@/components/ui/separator"
 import { LayoutBody } from "@/layouts/layout-definitions"
-import OneLevelSidebar from "@/layouts/sidebar/one-level-sidebar"
+import ContentSidebar from "@/layouts/sidebar/content-sidebar"
 
 export default function Account() {
   const sidebarNavItems = [
@@ -46,7 +46,7 @@ export default function Account() {
       <Separator className="my-6" />
       <div className="flex flex-1 flex-col gap-y-8 overflow-auto lg:flex-row lg:gap-y-0">
         <aside className="sticky top-0 lg:w-1/5">
-          <OneLevelSidebar items={sidebarNavItems} />
+          <ContentSidebar items={sidebarNavItems} />
         </aside>
         <div className="w-full p-1 lg:max-w-xl">
           <div className="pb-16">

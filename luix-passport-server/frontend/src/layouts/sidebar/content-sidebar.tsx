@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/select"
 import { cn } from "@/lib/utils"
 
-interface SidebarNavProps extends HTMLAttributes<HTMLElement> {
+interface ContentSidebarProps extends HTMLAttributes<HTMLElement> {
   items: {
     href: string
     title: string
@@ -18,11 +18,11 @@ interface SidebarNavProps extends HTMLAttributes<HTMLElement> {
   }[]
 }
 
-export default function OneLevelSidebar({
+export default function ContentSidebar({
   className,
   items,
   ...props
-}: SidebarNavProps) {
+}: ContentSidebarProps) {
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const [val, setVal] = useState(pathname ?? "/settings")
