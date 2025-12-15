@@ -100,7 +100,7 @@ export function SettingsForm() {
               variant={"link"}
               className="underline decoration-dashed underline-offset-4 hover:decoration-solid"
             >
-              <IconMailForward className="mr-2 size-4" />
+              <IconMailForward className="me-2 size-4" />
               Change Email
             </Button>
           </Link>
