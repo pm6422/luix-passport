@@ -120,7 +120,7 @@ export default function TeamDashboard() {
       await TeamService.delete(teamId)
       toast.success("Team deleted")
       navigate("/console")
-      setTimeout(() => window.location.reload(), 0)
+      setTimeout(() => window.location.reload(), 100)
     } catch (error) {
       toast.error("Failed to delete team")
       console.error(error)
