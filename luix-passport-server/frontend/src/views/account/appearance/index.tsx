@@ -1,15 +1,15 @@
-import { AppearanceForm } from './appearance-form'
-import { Separator } from '@/components/ui/separator'
+import { AppearanceForm } from "./appearance-form"
+import { Separator } from "@/components/ui/separator"
 
 export default function SettingsAppearance() {
   return (
-    <div className='gap-y-6'>
+    <div className="flex flex-col gap-y-6">
       <div>
-        <h3 className='text-lg font-medium'>Appearance</h3>
-        {/* <p className='text-sm text-muted-foreground'>
+        <h3 className="text-lg font-medium">Appearance</h3>
+        {/* <p className="text-sm text-muted-foreground">
           Customize the appearance of the app. Automatically switch between day and night themes.
         </p> */}
-        <p className='text-sm text-muted-foreground'>
+        <p className="text-sm text-muted-foreground">
           Customize the appearance of the application.
         </p>
       </div>

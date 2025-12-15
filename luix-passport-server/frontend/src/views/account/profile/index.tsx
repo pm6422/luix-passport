@@ -3,7 +3,7 @@ import ProfileForm from "./profile-form"
 
 export default function SettingsProfile() {
   return (
-    <div className="gap-y-6">
+    <div className="flex flex-col gap-y-6">
       <div>
         <h3 className="text-lg font-medium">Profile Picture</h3>
         <p className="text-sm text-muted-foreground">
