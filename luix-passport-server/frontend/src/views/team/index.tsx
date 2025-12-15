@@ -96,7 +96,7 @@ export default function TeamDashboard() {
 
   const handleAvatarClick = () => {
     if (!hasRole(TEAM_OWNER)) return
-    avatarFileInputRef.current?.click()
+    fileInputRef.current?.click()
   }
 
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
