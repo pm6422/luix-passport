@@ -13,6 +13,10 @@ export class TeamService {
     return http.post(`/api/teams/${teamId}/members`, invitations)
   }
 
+  public static findAllRoleIds(): Promise<AxiosResponse<string[]>> {
+    return http.get("/api/teams/roles/ids")
+  }
+
   public static create(name: string, photo?: File): Promise<AxiosResponse<Team>> {
     const formData = new FormData()
     formData.append("name", name)

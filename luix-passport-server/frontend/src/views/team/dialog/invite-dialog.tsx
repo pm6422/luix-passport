@@ -2,7 +2,6 @@ import { FormDialog } from "@/components/custom/dialog/form-dialog"
 import { z } from "zod"
 import { TeamService } from "@/services/team-service"
 import { useEffect, useState } from "react"
-import { RoleService } from "@/services/role-service"
 import { ROLE_ANONYMOUS, ROLE_USER, TEAM_MEMBER } from "@/domains/role"
 import { InviteMembersFormFields } from "./invite-members-form-fields"
 
@@ -51,7 +50,7 @@ export function InviteMembersDialog({ open, onOpenChange, teamId, onSuccess }: I
 
   useEffect(() => {
     if (open) {
-      RoleService.findAllIds().then(({ data }) => setAllRoles(data))
+      TeamService.findAllRoleIds().then(({ data }) => setAllRoles(data))
       TeamService.getPendingInvitations(teamId).then(({ data }) => {
         const s = new Set<string>()
         data.forEach((i) => {

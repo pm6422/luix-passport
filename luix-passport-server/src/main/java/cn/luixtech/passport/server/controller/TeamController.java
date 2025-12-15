@@ -11,6 +11,7 @@ import cn.luixtech.passport.server.domain.TeamInvitation;
 import cn.luixtech.passport.server.dto.TeamMember;
 import cn.luixtech.passport.server.dto.TeamMemberInvitation;
 import cn.luixtech.passport.server.service.TeamService;
+import cn.luixtech.passport.server.service.RoleService;
 import cn.luixtech.passport.server.utils.AuthUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 /**
  * REST controller for managing teams.
@@ -33,11 +35,18 @@ import java.util.List;
 public class TeamController {
     private final TeamRepository teamRepository;
     private final TeamService teamService;
+    private final RoleService roleService;
 
     @Operation(summary = "count enabled teams")
     @GetMapping("/api/teams/count")
     public ResponseEntity<Long> count() {
         return ResponseEntity.ok(teamRepository.count());
+    }
+
+    @Operation(summary = "find all role IDs")
+    @GetMapping("/api/teams/roles/ids")
+    public ResponseEntity<Set<String>> findAllRoleIds() {
+        return ResponseEntity.ok(roleService.findAllIds());
     }
 
     @Operation(summary = "create team")

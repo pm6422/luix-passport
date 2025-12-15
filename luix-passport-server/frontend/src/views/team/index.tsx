@@ -26,7 +26,6 @@ import {
 } from "@/components/ui/table"
 import { AccountService } from "@/services/account-service"
 import { TeamInvitation } from "@/services/team-service"
-import { RoleService } from "@/services/role-service"
 import { TeamRoleSelector } from "@/components/custom/form-field/team-role-selector"
 import { OverflowBadges } from "@/components/custom/display/overflow-badges"
 import { IconPlus } from "@tabler/icons-react"
@@ -91,7 +90,7 @@ export default function TeamDashboard() {
     }
     if (teamId && hasRole(TEAM_OWNER)) {
       loadPendingInvitations()
-      RoleService.findAllIds().then(({ data }) => setAllRoles(data))
+      TeamService.findAllRoleIds().then(({ data }) => setAllRoles(data))
     }
   }, [loadTeamData, teamId, loadPendingInvitations, hasRole])
 
