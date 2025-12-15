@@ -8,19 +8,19 @@ export default function ApiReferencePage() {
       title: "Installation",
       description: "Set up the SDK in your project.",
       link: "/docs/installation",
-      icon: <IconCode className="h-5 w-5 text-primary mr-2" />,
+      icon: <IconCode className="size-5 text-primary me-2" />,
     },
     {
       title: "Authentication",
       description: "Implement secure authentication flows.",
       link: "/docs/authentication",
-      icon: <IconKey className="h-5 w-5 text-primary mr-2" />,
+      icon: <IconKey className="size-5 text-primary me-2" />,
     },
     {
       title: "API Reference",
       description: "Explore our API endpoints.",
       link: "/docs/api-reference",
-      icon: <IconBook className="h-5 w-5 text-primary mr-2" />,
+      icon: <IconBook className="size-5 text-primary me-2" />,
     },
   ];
 
@@ -83,7 +83,7 @@ export default function ApiReferencePage() {
             {/* User Management */}
             <div className="border rounded-2xl p-6 hover:shadow-md transition-shadow">
               <h3 className="text-xl font-semibold mb-3 flex items-center">
-                <IconApi className="h-5 w-5 text-primary mr-2" />
+                <IconApi className="size-5 text-primary me-2" />
                 User Management
               </h3>
               <p className="text-muted-foreground mb-4">
@@ -115,7 +115,7 @@ export default function ApiReferencePage() {
             {/* Authentication */}
             <div className="border rounded-2xl p-6 hover:shadow-md transition-shadow">
               <h3 className="text-xl font-semibold mb-3 flex items-center">
-                <IconApi className="h-5 w-5 text-primary mr-2" />
+                <IconApi className="size-5 text-primary me-2" />
                 Authentication
               </h3>
               <p className="text-muted-foreground mb-4">
@@ -147,7 +147,7 @@ export default function ApiReferencePage() {
             {/* Data Retrieval */}
             <div className="border rounded-2xl p-6 hover:shadow-md transition-shadow">
               <h3 className="text-xl font-semibold mb-3 flex items-center">
-                <IconApi className="h-5 w-5 text-primary mr-2" />
+                <IconApi className="size-5 text-primary me-2" />
                 Data Retrieval
               </h3>
               <p className="text-muted-foreground mb-4">

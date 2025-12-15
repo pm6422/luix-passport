@@ -14,7 +14,7 @@ function SiteFooter() {
     <footer className="mt-auto pt-2">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
         {/* Links section - hidden on small screens */}
-        <div className="hidden sm:flex space-x-6">
+        <div className="hidden sm:flex gap-6">
           <Link
             to="/terms-of-service"
             className="text-xs text-muted-foreground hover:text-primary"

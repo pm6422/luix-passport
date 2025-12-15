@@ -27,7 +27,7 @@ export default function TermsOfService() {
       </div>
 
       {/* Right side - content */}
-      <div className="flex flex-col items-center w-full h-full xl:px-48 lg:px-18 px-5 text-left rounded-3xl overflow-y-auto py-10">
+      <div className="flex flex-col items-center w-full h-full xl:px-48 lg:px-18 px-5 text-start rounded-3xl overflow-y-auto py-10">
         <img
           src="/assets/images/logos/logo-round.svg"
           alt="Logo"

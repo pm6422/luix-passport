@@ -71,7 +71,7 @@ export function SignUpForm() {
               control={form.control}
               name="email"
               label="Email"
-              formItemClassName="text-left"
+              formItemClassName="text-start"
               inputClassName="w-full h-14 px-5 py-4 rounded-2xl"
               disabled={!!emailParam}
             />
@@ -80,7 +80,7 @@ export function SignUpForm() {
               control={form.control}
               name="username"
               label="Username"
-              formItemClassName="text-left"
+              formItemClassName="text-start"
               inputClassName="w-full h-14 px-5 py-4 rounded-2xl"
             />
 
@@ -88,7 +88,7 @@ export function SignUpForm() {
               control={form.control}
               name="password"
               render={({ field }) => (
-                <FormItem className="text-left">
+                <FormItem className="text-start">
                   <FormLabel className="mb-2 text-sm">Password</FormLabel>
                   <FormControl>
                     <PasswordInput
@@ -115,7 +115,7 @@ export function SignUpForm() {
               control={form.control}
               name="confirmPassword"
               render={({ field }) => (
-                <FormItem className="text-left">
+                <FormItem className="text-start">
                   <FormLabel className="mb-2 text-sm">Confirm Password</FormLabel>
                   <FormControl>
                     <PasswordInput

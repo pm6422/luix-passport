@@ -354,7 +354,7 @@ export default function TeamDashboard() {
                         <TableHead>Invited at</TableHead>
                         <TableHead>Expires at</TableHead>
                         <TableHead>Progress</TableHead>
-                        <TableHead className="text-right">Actions</TableHead>
+                        <TableHead className="text-end">Actions</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>

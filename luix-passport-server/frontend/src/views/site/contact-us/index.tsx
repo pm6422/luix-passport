@@ -109,7 +109,7 @@ export default function ContactUs() {
                 control={form.control}
                 name="sender"
                 label="Full Name"
-                formItemClassName="text-left"
+                formItemClassName="text-start"
                 inputClassName="w-full h-14 px-5 py-4 rounded-2xl"
                 placeholder="Your name"
                 required={true}
@@ -119,7 +119,7 @@ export default function ContactUs() {
                 control={form.control}
                 name="senderEmail"
                 label="Email Address"
-                formItemClassName="text-left"
+                formItemClassName="text-start"
                 inputClassName="w-full h-14 px-5 py-4 rounded-2xl"
                 placeholder="your@email.com"
                 required={true}
@@ -140,7 +140,7 @@ export default function ContactUs() {
                 name="content"
                 label="Message"
                 type="textarea"
-                formItemClassName="text-left"
+                formItemClassName="text-start"
                 inputClassName="w-full h-36 px-5 py-4 rounded-2xl"
                 placeholder="How can we help you?"
                 required={true}
@@ -163,7 +163,7 @@ export default function ContactUs() {
             <div className="space-y-3">
               <div className="flex items-center">
                 <svg
-                  className="mr-3 h-5 w-5"
+                  className="me-3 size-5"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -179,7 +179,7 @@ export default function ContactUs() {
               </div>
               <div className="flex items-center">
                 <svg
-                  className="mr-3 h-5 w-5"
+                  className="me-3 size-5"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -195,7 +195,7 @@ export default function ContactUs() {
               </div>
               <div className="flex items-center">
                 <svg
-                  className="mr-3 h-5 w-5"
+                  className="me-3 size-5"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"

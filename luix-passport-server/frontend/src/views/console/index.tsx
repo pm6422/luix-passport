@@ -69,9 +69,9 @@ export default function ConsolePage() {
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                   <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardHeader className="flex flex-row items-center justify-between pb-2">
                       <CardTitle className="text-sm font-medium">Pending Approvals</CardTitle>
-                      <CreditCard className="h-4 w-4 text-muted-foreground" />
+                      <CreditCard className="size-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
                       <div className="text-2xl font-bold">3</div>
@@ -80,9 +80,9 @@ export default function ConsolePage() {
                   </Card>
 
                   <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardHeader className="flex flex-row items-center justify-between pb-2">
                       <CardTitle className="text-sm font-medium">Recent Signups</CardTitle>
-                      <User className="h-4 w-4 text-muted-foreground" />
+                      <User className="size-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
                       <div className="text-2xl font-bold">12</div>
@@ -91,9 +91,9 @@ export default function ConsolePage() {
                   </Card>
 
                   <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardHeader className="flex flex-row items-center justify-between pb-2">
                       <CardTitle className="text-sm font-medium">Failed Logins</CardTitle>
-                      <Lock className="h-4 w-4 text-muted-foreground" />
+                      <Lock className="size-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
                       <div className="text-2xl font-bold">7</div>
@@ -102,9 +102,9 @@ export default function ConsolePage() {
                   </Card>
 
                   <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardHeader className="flex flex-row items-center justify-between pb-2">
                       <CardTitle className="text-sm font-medium">System Status</CardTitle>
-                      <Activity className="h-4 w-4 text-muted-foreground" />
+                      <Activity className="size-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
                       <div className="text-2xl font-bold text-green-500">Normal</div>
@@ -128,9 +128,9 @@ export default function ConsolePage() {
               <CardContent>
                 <div className="space-y-4">
                   {[1, 2, 3, 4].map((item) => (
-                    <div key={item} className="flex items-center space-x-4 p-2 hover:bg-muted/50 rounded">
+                    <div key={item} className="flex items-center gap-4 p-2 hover:bg-muted/50 rounded">
                       <div className="bg-primary/10 p-2 rounded-full">
-                        <Activity className="h-4 w-4 text-primary" />
+                        <Activity className="size-4 text-primary" />
                       </div>
                       <div className="flex-1">
                         <p className="text-sm font-medium">Login from {item === 1 ? "your current device" : "new device"}</p>
@@ -161,9 +161,9 @@ export default function ConsolePage() {
                 <CardContent className="space-y-4">
                   {invitations.map((invitation) => (
                     <div key={invitation.id} className="border rounded-lg p-3 space-y-2">
-                      <div className="flex items-start space-x-2">
+                      <div className="flex items-start gap-2">
                         <div className="bg-blue-500/10 p-1.5 rounded-full">
-                          <Mail className="h-4 w-4 text-blue-500" />
+                          <Mail className="size-4 text-blue-500" />
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-medium">Team Invitation</p>
@@ -203,18 +203,18 @@ export default function ConsolePage() {
               <CardContent>
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center gap-2">
                       <div className="bg-green-500/10 p-1 rounded-full">
-                        <Shield className="h-4 w-4 text-green-500" />
+                        <Shield className="size-4 text-green-500" />
                       </div>
                       <span>Password Strength</span>
                     </div>
                     <span className="text-sm font-medium text-green-500">Strong</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center gap-2">
                       <div className="bg-blue-500/10 p-1 rounded-full">
-                        <Lock className="h-4 w-4 text-blue-500" />
+                        <Lock className="size-4 text-blue-500" />
                       </div>
                       <span>2FA Status</span>
                     </div>
