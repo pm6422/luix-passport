@@ -6,7 +6,7 @@ import { tableColumns } from "./table/data-dict-table-columns"
 import { type DataDict, type DataDictCriteria } from "@/domains/data-dict"
 import { DataDictService } from "@/services/data-dict-service"
 type UploadFormSchema = { files: File[] }
-import { RoleDeveloper } from "@/permission/role-control"
+import { RoleDeveloper } from "@/layouts/permission/role-control"
 
 export default function DataDict() {
   // State to hold the fetched data

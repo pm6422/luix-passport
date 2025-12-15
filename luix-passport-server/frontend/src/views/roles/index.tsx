@@ -6,7 +6,7 @@ import { tableColumns } from "./table/role-table-columns"
 import { type Role, type RoleCriteriaSchema } from "@/domains/role"
 import { RoleService } from "@/services/role-service"
 import { filterTable } from "@/lib/table-utils"
-import { RoleAdmin } from "@/permission/role-control"
+import { RoleAdmin } from "@/layouts/permission/role-control"
 
 export default function Role() {
   // State to hold the fetched data

@@ -21,7 +21,7 @@ import { TeamService, TeamMember, TeamInvitation } from "@/services/team-service
 import { AccountService } from "@/services/account-service"
 import { useLoginUserStore } from "@/stores/login-user-store"
 import { toast } from "sonner"
-import { RoleTeamOwner } from "@/permission/role-control"
+import { RoleTeamOwner } from "@/layouts/permission/role-control"
 import { RoleService } from "@/services/role-service"
 import { ConfirmDialog } from "@/components/custom/dialog/confirm-dialog"
 import { TeamRoleSelector } from "@/components/custom/form-field/team-role-selector"

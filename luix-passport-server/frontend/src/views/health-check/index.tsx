@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { IconRefresh, IconEye } from "@tabler/icons-react"
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
 import { ManagementService } from "@/services/management-service"
-import { RoleDeveloper } from "@/permission/role-control"
+import { RoleDeveloper } from "@/layouts/permission/role-control"
 
 interface HealthData {
   name: string

@@ -6,7 +6,7 @@ import { tableColumns } from "./table/auth2-client-table-columns"
 import { type Auth2Client, type Auth2ClientCriteriaSchema } from "@/domains/auth2-client"
 import { Oauth2ClientService } from "@/services/oauth2-client-service"
 import { filterTable } from "@/lib/table-utils"
-import { RoleAdmin } from "@/permission/role-control"
+import { RoleAdmin } from "@/layouts/permission/role-control"
 
 export default function Auth2Client() {
   // State to hold the fetched data

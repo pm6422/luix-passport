@@ -1,6 +1,6 @@
 import { LayoutBody } from "@/layouts/layout-definitions"
 import { Card } from "@/components/ui/card"
-import { RoleDeveloper } from "@/permission/role-control"
+import { RoleDeveloper } from "@/layouts/permission/role-control"
 
 export default function ApiDocs() {
   return (
