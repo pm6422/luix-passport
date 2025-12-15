@@ -222,8 +222,7 @@ export default function TeamDashboard() {
         <div className="max-w-[1800px] mx-auto grid gap-6 md:grid-cols-3">
 
           {/* Left Column (Main Content) */}
-          <div className="md:col-span-2 gap-y-6">
-
+          <div className="md:col-span-2 flex flex-col gap-y-6">
             <Card>
               <CardHeader>
                 <div className="flex items-center justify-between">
@@ -427,7 +426,7 @@ export default function TeamDashboard() {
           </div>
 
           {/* Right Column (Sidebar) */}
-          <div className="gap-y-6">
+          <div className="flex flex-col gap-y-6">
 
             {/* Team Settings Card */}
             <Card>
