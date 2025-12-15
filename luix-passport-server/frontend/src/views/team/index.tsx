@@ -181,9 +181,9 @@ export default function TeamDashboard() {
     <LayoutBody className="flex flex-col bg-muted/5" fixedHeight>
       {/* Premium Header */}
       <AnimatedPathsBackground className="bg-background border-b" fullScreen={false}>
-        <div className="relative pb-6 pt-8 px-4 md:px-6 shadow-sm">
+        <div className="relative pb-6 pt-8 px-3 md:px-4 shadow-sm">
           <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary/50 to-primary/10" />
-          <div className="flex flex-col md:flex-row items-center md:items-start gap-6 max-w-screen-2xl mx-auto">
+          <div className="flex flex-col md:flex-row items-center md:items-start gap-6 max-w-[1800px] mx-auto">
             <div className={`relative group shrink-0 ${hasRole(TEAM_OWNER) ? "cursor-pointer" : "cursor-default"}`} onClick={handleAvatarClick}>
               <Avatar className="size-24 border-4 border-background shadow-xl">
                 <AvatarImage src={avatarUrl} alt={team?.name || "Team"} />
@@ -224,8 +224,8 @@ export default function TeamDashboard() {
       </AnimatedPathsBackground>
 
       {/* Main Dashboard Grid */}
-      <div className="flex-1 overflow-auto p-4 md:p-6">
-        <div className="max-w-screen-2xl mx-auto grid gap-6 md:grid-cols-3">
+      <div className="flex-1 overflow-auto py-4 md:py-6 px-3 md:px-4">
+        <div className="max-w-[1800px] mx-auto grid gap-6 md:grid-cols-3">
 
           {/* Left Column (Main Content) */}
           <div className="md:col-span-2 space-y-8">
