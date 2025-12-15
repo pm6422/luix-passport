@@ -147,19 +147,20 @@ public class TeamServiceImpl implements TeamService {
         : inviterUser.getUsername();
 
     for (TeamMemberInvitation invitation : invitations) {
-      Optional<User> existingUser = userRepository.findOneByEmail(invitation.getEmail());
+      Optional<User> existingUser = userRepository.findOneByEmail(invitation.getInviteeEmail());
 
       // Check if user is already registered
       if (existingUser.isPresent()) {
-        throw new IllegalArgumentException("The email " + invitation.getEmail() + " is already registered");
+        throw new IllegalArgumentException("The email " + invitation.getInviteeEmail() + " is already registered");
       }
 
       // Check for existing invitation (unregistered or registered and not finalized)
-      Optional<TeamInvitation> existingUnregistered = teamInvitationRepository.findByTeamIdAndMemberEmailAndStatus(
+      Optional<TeamInvitation> existingUnregistered = teamInvitationRepository.findByTeamIdAndInviteeEmailAndStatus(
           teamId,
-          invitation.getEmail(), TeamInvitation.STATUS_UNREGISTERED);
-      Optional<TeamInvitation> existingRegistered = teamInvitationRepository.findByTeamIdAndMemberEmailAndStatus(teamId,
-          invitation.getEmail(), TeamInvitation.STATUS_REGISTERED);
+          invitation.getInviteeEmail(), TeamInvitation.STATUS_UNREGISTERED);
+      Optional<TeamInvitation> existingRegistered = teamInvitationRepository.findByTeamIdAndInviteeEmailAndStatus(
+          teamId,
+          invitation.getInviteeEmail(), TeamInvitation.STATUS_REGISTERED);
       if (existingUnregistered.isPresent() || existingRegistered.isPresent()) {
         // Update role if needed or just skip
         continue;
@@ -167,8 +168,8 @@ public class TeamServiceImpl implements TeamService {
 
       TeamInvitation invite = new TeamInvitation();
       invite.setTeamId(teamId);
-      invite.setMemberEmail(invitation.getEmail());
-      invite.setMemberRoles(String.join(",", invitation.getRoles()));
+      invite.setInviteeEmail(invitation.getInviteeEmail());
+      invite.setInviteeRoles(String.join(",", invitation.getInviteeRoles()));
       invite.setInviterId(inviterId);
       invite
           .setStatus(existingUser.isPresent() ? TeamInvitation.STATUS_REGISTERED : TeamInvitation.STATUS_UNREGISTERED);
@@ -180,16 +181,19 @@ public class TeamServiceImpl implements TeamService {
       if (existingUser.isEmpty()) {
         try {
           User invitee = new User();
-          invitee.setEmail(invitation.getEmail());
+          invitee.setEmail(invitation.getInviteeEmail());
+          // Set the locale of the invitee to the same as the inviter, so the email is
+          // sent in the correct language
+          invitee.setLocale(inviterUser.getLocale());
           mailService.sendTeamInvitationEmail(
               invitee,
               getRequestUrl(request),
               team.getName(),
               inviterName,
               TeamInvitation.INVITATION_EXPIRATION_DAYS);
-          log.info("Sent team invitation email to {} for team {}", invitation.getEmail(), team.getName());
+          log.info("Sent team invitation email to {} for team {}", invitation.getInviteeEmail(), team.getName());
         } catch (Exception e) {
-          log.error("Failed to send team invitation email to {}: {}", invitation.getEmail(), e.getMessage());
+          log.error("Failed to send team invitation email to {}: {}", invitation.getInviteeEmail(), e.getMessage());
         }
       }
     }
@@ -215,7 +219,7 @@ public class TeamServiceImpl implements TeamService {
             teamInvitationRepository.save(inv);
           }
         } else {
-          boolean hasAccount = userRepository.findOneByEmail(inv.getMemberEmail()).isPresent();
+          boolean hasAccount = userRepository.findOneByEmail(inv.getInviteeEmail()).isPresent();
           if (hasAccount && TeamInvitation.STATUS_UNREGISTERED.equals(inv.getStatus())) {
             inv.setStatus(TeamInvitation.STATUS_REGISTERED);
             teamInvitationRepository.save(inv);
@@ -253,7 +257,8 @@ public class TeamServiceImpl implements TeamService {
 
   @Override
   public List<TeamInvitation> findUserInvitations(String email) {
-    return teamInvitationRepository.findByMemberEmailAndStatusAndExpiresAtAfter(email, TeamInvitation.STATUS_REGISTERED,
+    return teamInvitationRepository.findByInviteeEmailAndStatusAndExpiresAtAfter(email,
+        TeamInvitation.STATUS_REGISTERED,
         Instant.now());
   }
 
@@ -279,8 +284,8 @@ public class TeamServiceImpl implements TeamService {
 
     Set<String> currentRoles = userRoleService.findRoleIds(userId);
     Set<String> updatedRoles = new java.util.HashSet<>(currentRoles);
-    if (invitation.getMemberRoles() != null) {
-      updatedRoles.addAll(Arrays.asList(invitation.getMemberRoles().split(",")));
+    if (invitation.getInviteeRoles() != null) {
+      updatedRoles.addAll(Arrays.asList(invitation.getInviteeRoles().split(",")));
     }
     userRoleService.update(userId, updatedRoles);
 
@@ -349,7 +354,7 @@ public class TeamServiceImpl implements TeamService {
         ? inviterUser.getFirstName() + " " + inviterUser.getLastName()
         : inviterUser.getUsername();
 
-    boolean hasAccount = userRepository.findOneByEmail(invitation.getMemberEmail()).isPresent();
+    boolean hasAccount = userRepository.findOneByEmail(invitation.getInviteeEmail()).isPresent();
     invitation.setStatus(hasAccount ? TeamInvitation.STATUS_REGISTERED : TeamInvitation.STATUS_UNREGISTERED);
     invitation.setCreatedAt(Instant.now());
     invitation.setExpiresAt(Instant.now().plus(TeamInvitation.INVITATION_EXPIRATION_DAYS, ChronoUnit.DAYS));
@@ -358,16 +363,16 @@ public class TeamServiceImpl implements TeamService {
     if (!hasAccount) {
       try {
         User invitee = new User();
-        invitee.setEmail(invitation.getMemberEmail());
+        invitee.setEmail(invitation.getInviteeEmail());
         mailService.sendTeamInvitationEmail(
             invitee,
             getRequestUrl(request),
             teamRepository.findById(invitation.getTeamId()).map(Team::getName).orElse(""),
             inviterName,
             TeamInvitation.INVITATION_EXPIRATION_DAYS);
-        log.info("Resent invitation email to {}", invitation.getMemberEmail());
+        log.info("Resent invitation email to {}", invitation.getInviteeEmail());
       } catch (Exception e) {
-        log.error("Failed to resend team invitation email to {}: {}", invitation.getMemberEmail(), e.getMessage());
+        log.error("Failed to resend team invitation email to {}: {}", invitation.getInviteeEmail(), e.getMessage());
       }
     }
   }

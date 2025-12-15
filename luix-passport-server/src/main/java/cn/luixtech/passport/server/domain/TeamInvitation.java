@@ -36,16 +36,16 @@ public class TeamInvitation {
   private String teamId;
 
   @NotNull
+  @Column(nullable = false, length = 50)
+  private String inviterId;
+  
+  @NotNull
   @Column(nullable = false)
-  private String memberEmail;
+  private String inviteeEmail;
 
   @NotNull
   @Column(nullable = false, length = 1000)
-  private String memberRoles;
-
-  @NotNull
-  @Column(nullable = false, length = 50)
-  private String inviterId;
+  private String inviteeRoles;
 
   @NotNull
   @Column(nullable = false, length = 20)

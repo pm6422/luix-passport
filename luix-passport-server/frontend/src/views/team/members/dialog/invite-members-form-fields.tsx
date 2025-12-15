@@ -5,7 +5,7 @@ import { TeamRoleSelector } from "@/components/custom/form-field/team-role-selec
 import { IconPlus, IconMinus } from "@tabler/icons-react"
 import { ROLE_ANONYMOUS, ROLE_USER, TEAM_MEMBER } from "@/domains/role"
 
-type Invitation = { email: string; roles: string[] }
+type Invitation = { inviteeEmail: string; inviteeRoles: string[] }
 type InviteForm = { invitations: Invitation[] }
 
 interface InviteMembersFormFieldsProps {
@@ -20,7 +20,7 @@ export function InviteMembersFormFields({
   const invitations = form.watch("invitations") || []
 
   const append = () => {
-    form.setValue("invitations", [...invitations, { email: "", roles: [ROLE_ANONYMOUS, ROLE_USER, TEAM_MEMBER] }], {
+    form.setValue("invitations", [...invitations, { inviteeEmail: "", inviteeRoles: [ROLE_ANONYMOUS, ROLE_USER, TEAM_MEMBER] }], {
       shouldDirty: true,
       shouldValidate: true
     })
@@ -46,31 +46,31 @@ export function InviteMembersFormFields({
             <div className="flex flex-col">
               <Input
                 placeholder="Email address"
-                {...form.register(`invitations.${index}.email`)}
+                {...form.register(`invitations.${index}.inviteeEmail`)}
                 className="h-9"
               />
-              {form.formState.errors.invitations?.[index]?.email?.message && (
+              {form.formState.errors.invitations?.[index]?.inviteeEmail?.message && (
                 <span className="mt-1 text-xs text-destructive">
-                  {form.formState.errors.invitations?.[index]?.email?.message as string}
+                  {form.formState.errors.invitations?.[index]?.inviteeEmail?.message as string}
                 </span>
               )}
             </div>
 
             <div className="flex flex-col pl-1">
               <TeamRoleSelector
-                value={form.watch(`invitations.${index}.roles`) || []}
+                value={form.watch(`invitations.${index}.inviteeRoles`) || []}
                 allRoles={allRoles}
                 onChange={(newRoles) => {
-                  form.setValue(`invitations.${index}.roles`, newRoles, {
+                  form.setValue(`invitations.${index}.inviteeRoles`, newRoles, {
                     shouldValidate: true,
                     shouldDirty: true,
                   })
                 }}
                 className="w-full h-9"
               />
-              {form.formState.errors.invitations?.[index]?.roles?.message && (
+              {form.formState.errors.invitations?.[index]?.inviteeRoles?.message && (
                 <span className="mt-1 text-xs text-destructive">
-                  {form.formState.errors.invitations?.[index]?.roles?.message as string}
+                  {form.formState.errors.invitations?.[index]?.inviteeRoles?.message as string}
                 </span>
               )}
             </div>

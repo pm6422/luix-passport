@@ -12,9 +12,9 @@ import java.util.Optional;
 public interface TeamInvitationRepository extends JpaRepository<TeamInvitation, String> {
   List<TeamInvitation> findByTeamIdAndStatus(String teamId, String status);
 
-  Optional<TeamInvitation> findByTeamIdAndMemberEmailAndStatus(String teamId, String memberEmail, String status);
+  Optional<TeamInvitation> findByTeamIdAndInviteeEmailAndStatus(String teamId, String inviteeEmail, String status);
 
-  List<TeamInvitation> findByMemberEmailAndStatusAndExpiresAtAfter(String memberEmail, String status, Instant now);
+  List<TeamInvitation> findByInviteeEmailAndStatusAndExpiresAtAfter(String inviteeEmail, String status, Instant now);
 
   List<TeamInvitation> findByTeamId(String teamId);
 

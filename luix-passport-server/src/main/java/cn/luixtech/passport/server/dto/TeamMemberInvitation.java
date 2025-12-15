@@ -9,7 +9,7 @@ import lombok.Data;
 public class TeamMemberInvitation {
 
   @NotEmpty
-  private String email;
+  private String inviteeEmail;
   @NotEmpty
-  private Set<String> roles;
+  private Set<String> inviteeRoles;
 }

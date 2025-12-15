@@ -7,8 +7,8 @@ import { ROLE_ANONYMOUS, ROLE_USER, TEAM_MEMBER } from "@/domains/role"
 import { InviteMembersFormFields } from "./invite-members-form-fields"
 
 const invitationSchema = z.object({
-  email: z.string().trim().min(1, { message: "Required" }).email({ message: "Invalid email address" }),
-  roles: z.array(z.string()).min(1, { message: "Required" })
+  inviteeEmail: z.string().trim().min(1, { message: "Required" }).email({ message: "Invalid email address" }),
+  inviteeRoles: z.array(z.string()).min(1, { message: "Required" })
 })
 
 const baseInviteSchema = z.object({
@@ -18,7 +18,7 @@ const baseInviteSchema = z.object({
     .superRefine((invitations, ctx) => {
       const seen = new Map<string, number[]>()
       invitations.forEach((inv, index) => {
-        const email = (inv.email || "").trim().toLowerCase()
+        const email = (inv.inviteeEmail || "").trim().toLowerCase()
         if (!email) return
         const indices = seen.get(email) || []
         indices.push(index)
@@ -29,7 +29,7 @@ const baseInviteSchema = z.object({
           indices.forEach((i) => {
             ctx.addIssue({
               code: z.ZodIssueCode.custom,
-              path: [i, "email"],
+              path: [i, "inviteeEmail"],
               message: "Duplicate email"
             })
           })
@@ -57,7 +57,8 @@ export function InviteMembersDialog({ open, onOpenChange, teamId, onSuccess }: I
         data.forEach((i) => {
           const status = (i.status || "").toUpperCase()
           if (status !== "EXPIRED" && status !== "ACCEPTED" && status !== "REJECTED") {
-            const email = (i.memberEmail || "").trim().toLowerCase()
+            // Check inviteeEmail if available, otherwise fallback (though backend should return consistent fields)
+            const email = (i.inviteeEmail || "").trim().toLowerCase()
             if (email) s.add(email)
           }
         })
@@ -70,11 +71,11 @@ export function InviteMembersDialog({ open, onOpenChange, teamId, onSuccess }: I
 
   const inviteSchema = baseInviteSchema.superRefine((values, ctx) => {
     values.invitations.forEach((inv, index) => {
-      const email = (inv.email || "").trim().toLowerCase()
+      const email = (inv.inviteeEmail || "").trim().toLowerCase()
       if (email && blockedEmails.has(email)) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          path: ["invitations", index, "email"],
+          path: ["invitations", index, "inviteeEmail"],
           message: "Email already invited and pending"
         })
       }
@@ -85,7 +86,7 @@ export function InviteMembersDialog({ open, onOpenChange, teamId, onSuccess }: I
     <FormDialog<z.infer<typeof inviteSchema>>
       entityName="invitation"
       schema={inviteSchema}
-      defaultValues={{ invitations: [{ email: "", roles: [ROLE_ANONYMOUS, ROLE_USER, TEAM_MEMBER] }] }}
+      defaultValues={{ invitations: [{ inviteeEmail: "", inviteeRoles: [ROLE_ANONYMOUS, ROLE_USER, TEAM_MEMBER] }] }}
       save={async (values) => {
         await TeamService.inviteMembers(teamId, values.invitations)
       }}

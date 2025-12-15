@@ -70,8 +70,8 @@ public class TeamUserServiceImpl implements TeamUserService {
     @Override
     public void invite(String teamId, List<TeamMemberInvitation> invitations) {
         for (TeamMemberInvitation invitation : invitations) {
-            String email = invitation.getEmail();
-            Set<String> roles = invitation.getRoles();
+            String email = invitation.getInviteeEmail();
+            Set<String> roles = invitation.getInviteeRoles();
             ManagedUser user = userService.findByEmail(email);
             if (user != null) {
                 if (teamUserRepository.findByTeamIdAndUserId(teamId, user.getUsername()).isEmpty()) {
@@ -83,8 +83,6 @@ public class TeamUserServiceImpl implements TeamUserService {
                     userRoleService.update(user.getUsername(), updatedRoles);
                 }
             }
-            // Send email
-            mailService.sendEmail(new String[] { email }, "Invitation", "You have been invited to join the team.");
         }
     }
 }

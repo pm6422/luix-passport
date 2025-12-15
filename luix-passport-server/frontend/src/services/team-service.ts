@@ -9,7 +9,7 @@ export class TeamService {
     return http.get("/api/teams/count")
   }
 
-  public static inviteMembers(teamId: string, invitations: { email: string, roles: string[] }[]): Promise<AxiosResponse<void>> {
+  public static inviteMembers(teamId: string, invitations: { inviteeEmail: string, inviteeRoles: string[] }[]): Promise<AxiosResponse<void>> {
     return http.post(`/api/teams/${teamId}/members`, invitations)
   }
 
@@ -100,8 +100,8 @@ export interface TeamMember {
 export interface TeamInvitation {
   id: string
   teamId: string
-  memberEmail: string
-  memberRoles: string
+  inviteeEmail: string
+  inviteeRoles: string
   inviterId: string
   status: string
   createdAt: string
