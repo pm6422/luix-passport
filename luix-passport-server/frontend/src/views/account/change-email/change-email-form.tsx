@@ -155,7 +155,7 @@ export function ChangeEmailForm() {
                 >
                   <InputOTPGroup>
                     {Array.from({ length: 6 }, (_, i) => (
-                      <InputOTPSlot index={i} className="capitalize" />
+                      <InputOTPSlot key={i} index={i} className="capitalize" />
                     ))}
                   </InputOTPGroup>
                 </InputOTP>
