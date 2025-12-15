@@ -22,7 +22,7 @@ public class ManagedUser extends User {
     @Serial
     private static final long serialVersionUID        = -8095593058946091229L;
     public static final  int  RAW_PASSWORD_MIN_LENGTH = 5;
-    public static final  int  RAW_PASSWORD_MAX_LENGTH = 10;
+    public static final  int  RAW_PASSWORD_MAX_LENGTH = 15;
 
     @Size(min = RAW_PASSWORD_MIN_LENGTH, max = RAW_PASSWORD_MAX_LENGTH)
     private String      password;
