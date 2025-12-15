@@ -39,17 +39,17 @@ export function UserNav() {
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <Avatar className="h-8 w-8 rounded-lg">
+              <Avatar className="size-8 rounded-lg">
                 <AvatarImage src="/api/accounts/avatar" alt={loginUser.username} />
                 <AvatarFallback className="rounded-lg">
                   <Skeleton className="w-full h-full" />
                 </AvatarFallback>
               </Avatar>
-              <div className="grid flex-1 text-left text-sm leading-tight">
+              <div className="grid flex-1 text-start text-sm leading-tight">
                 <span className="truncate font-semibold">{loginUser.username}</span>
                 <span className="truncate text-xs">{loginUser.email}</span>
               </div>
-              <IconSelector className="ml-auto size-4" />
+              <IconSelector className="ms-auto size-4" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
@@ -59,14 +59,14 @@ export function UserNav() {
             sideOffset={4}
           >
             <DropdownMenuLabel className="p-0 font-normal">
-              <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                <Avatar className="h-8 w-8 rounded-lg">
+              <div className="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
+                <Avatar className="size-8 rounded-lg">
                   <AvatarImage src="/api/accounts/avatar" alt={loginUser.username} />
                   <AvatarFallback className="rounded-lg">
                     <Skeleton className="w-full h-full" />
                   </AvatarFallback>
                 </Avatar>
-                <div className="grid flex-1 text-left text-sm leading-tight">
+                <div className="grid flex-1 text-start text-sm leading-tight">
                   <span className="truncate font-semibold">{loginUser.username}</span>
                   <span className="truncate text-xs">{loginUser.email}</span>
                 </div>

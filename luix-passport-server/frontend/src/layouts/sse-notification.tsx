@@ -28,7 +28,7 @@ export function SseNotification() {
       setTimeout(() => {
         toast(
           <div className="flex items-start gap-2">
-            <IconBellBolt className="size-8 shrink-0 self-center mr-2 text-primary" />
+            <IconBellBolt className="size-8 shrink-0 self-center me-2 text-primary" />
             <div className="flex flex-col gap-1">
               <span className="font-bold">{event.data}</span>
               <span>

@@ -143,7 +143,7 @@ export function NotificationNav() {
             <div className="relative flex items-start pe-3">
               <div className="flex-1 space-y-1">
                 <button
-                  className="text-foreground/80 text-left after:absolute after:inset-0"
+                  className="text-foreground/80 text-start after:absolute after:inset-0"
                   onClick={() => handleNotificationClick(notification.id)}
                 >
                   <span className="text-foreground font-medium hover:underline">

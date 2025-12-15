@@ -48,7 +48,7 @@ export function TopNav({ className, links, ...props }: Props) {
 
       <nav
         className={cn(
-          "hidden items-center space-x-4 md:flex lg:space-x-6",
+          "hidden items-center gap-4 md:flex lg:gap-6",
           className
         )}
         {...props}

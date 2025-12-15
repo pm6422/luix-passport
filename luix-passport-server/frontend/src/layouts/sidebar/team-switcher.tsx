@@ -62,13 +62,13 @@ export function TeamSwitcher() {
                   <IconUsersGroup className="size-4" />
                 )}
               </div>
-              <div className="grid flex-1 text-left text-sm leading-tight">
+              <div className="grid flex-1 text-start text-sm leading-tight">
                 <span className="truncate font-semibold">
                   {activeTeam?.name || "Select Team"}
                 </span>
                 <span className="truncate text-xs">Personal</span>
               </div>
-              <IconSelector className="ml-auto" />
+              <IconSelector className="ms-auto" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent

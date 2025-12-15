@@ -35,7 +35,7 @@ export function NoAuthLayoutHeader() {
   ]
 
   return (
-    <div className="ml-auto flex items-center space-x-4 lg:pr-2 pr-0">
+    <div className="ms-auto flex items-center gap-4 lg:pr-2 pr-0">
       <TopNav links={topNav} />
       {loginUser.isAuthenticated ? (
         <AccountNav />

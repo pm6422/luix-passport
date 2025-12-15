@@ -55,7 +55,7 @@ export default function OneLevelSidebar({
       <div className="hidden w-full overflow-x-auto bg-background px-1 py-2 md:block">
         <nav
           className={cn(
-            "flex space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1",
+            "flex gap-2 lg:flex-col lg:gap-y-1",
             className
           )}
           {...props}
@@ -72,7 +72,7 @@ export default function OneLevelSidebar({
                 "justify-start"
               )}
             >
-              <span className="mr-2">{item.icon}</span>
+              <span className="me-2">{item.icon}</span>
               {item.title}
             </Link>
           ))}
