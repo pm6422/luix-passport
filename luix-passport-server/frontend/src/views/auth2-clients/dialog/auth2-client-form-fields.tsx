@@ -72,7 +72,7 @@ export function Auth2ClientFormFields({
         required
         placeholder="Enter an URI"
         description="Valid redirect URIs after login successfully."
-        addButtonText="Add URI"
+        addButtonText="Add another"
       />
 
       <MultiTextInputFormField
@@ -81,7 +81,7 @@ export function Auth2ClientFormFields({
         label="Post Logout Redirect URIs"
         required
         placeholder="Enter an URI"
-        addButtonText="Add URI"
+        addButtonText="Add another"
       />
 
       <MultiSelectorFormField

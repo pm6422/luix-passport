@@ -54,7 +54,7 @@ export function MultiTextInput<TFieldValues extends FieldValues>({
       <Button
         type="button"
         variant="outline"
-        className="mt-1"
+        className="mt-1 w-[185px]"
         disabled={disabled}
         onClick={() => append("" as unknown as FieldArray<TFieldValues, ArrayPath<TFieldValues>>)}
       >

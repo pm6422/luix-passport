@@ -96,11 +96,10 @@ export function InviteMembersFormFields({
       <Button
         type="button"
         variant="outline"
-        size="sm"
         className="mt-1 w-[185px]"
         onClick={append}
       >
-        <IconPlus className="me-2 size-4" />
+        <IconPlus className="size-4" />
         Add another
       </Button>
     </>
