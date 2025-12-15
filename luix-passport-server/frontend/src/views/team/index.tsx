@@ -1,8 +1,8 @@
-import { useParams, Link, useNavigate } from "react-router-dom"
-import { useState, useEffect, useRef, useCallback } from "react"
+import { useParams, useNavigate } from "react-router-dom"
+import { useState, useEffect, useRef, useCallback, useMemo } from "react"
 import { Button } from "@/components/ui/button"
 import { LayoutBody } from "@/layouts/layout-definitions"
-import { IconUsers, IconCamera, IconAlertCircle, IconCopy, IconCheck, IconTrash, IconSettings } from "@tabler/icons-react"
+import { IconCamera, IconAlertCircle, IconCopy, IconCheck, IconTrash, IconSettings } from "@tabler/icons-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { TeamService, Team, TeamMember } from "@/services/team-service"
 import { toast } from "sonner"
@@ -11,10 +11,25 @@ import { RoleTeamOwner } from "@/layouts/permission/role-control"
 import { TEAM_OWNER } from "@/domains/role"
 import { ConfirmDialog } from "@/components/custom/dialog/confirm-dialog"
 import { InviteMembersDialog } from "./members/dialog/invite-dialog"
-import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import AnimatedPathsBackground from "@/components/custom/background/animated-paths-background"
+import { UserDateTime } from "@/components/custom/display/user-date-time"
+import { Input } from "@/components/ui/input"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
+import { AccountService } from "@/services/account-service"
+import { TeamInvitation } from "@/services/team-service"
+import { RoleService } from "@/services/role-service"
+import { TeamRoleSelector } from "@/components/custom/form-field/team-role-selector"
+import { OverflowBadges } from "@/components/custom/display/overflow-badges"
+import { IconPlus } from "@tabler/icons-react"
 
 export default function TeamDashboard() {
   const { teamId } = useParams()
@@ -22,14 +37,23 @@ export default function TeamDashboard() {
   const navigate = useNavigate()
   const [avatarUrl, setAvatarUrl] = useState<string>("")
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const { hasRole } = useLoginUserStore()
+  const { loginUser, hasRole } = useLoginUserStore()
 
   const [deleteOpen, setDeleteOpen] = useState(false)
   const [inviteOpen, setInviteOpen] = useState(false)
   const [members, setMembers] = useState<TeamMember[]>([])
-  const [memberCount, setMemberCount] = useState(0)
+
+  // Members & Invitations State
+  const [invitations, setInvitations] = useState<TeamInvitation[]>([])
+  const [memberQuery, setMemberQuery] = useState("")
+  const [inviteQuery, setInviteQuery] = useState("")
+  const [allRoles, setAllRoles] = useState<string[]>([])
+  const [roleConfirmOpen, setRoleConfirmOpen] = useState(false)
+  const [pendingRoleChange, setPendingRoleChange] = useState<{ userId: string, newRoles: string[] } | null>(null)
 
   const [copiedId, setCopiedId] = useState(false)
+
+  const avatarFileInputRef = useRef<HTMLInputElement>(null)
 
   const loadTeamData = useCallback(async () => {
     if (!teamId) return
@@ -42,14 +66,22 @@ export default function TeamDashboard() {
         setAvatarUrl(TeamService.getTeamPhoto(teamId) + `?t=${Date.now()}`)
       }
 
-      // Load Members Preview
+      // Load Members
       const { data: teamMembers } = await TeamService.getMembers(teamId)
       setMembers(teamMembers)
-      setMemberCount(teamMembers.length)
 
     } catch (error) {
       console.error(error)
-      // toast.error("Failed to load team data")
+    }
+  }, [teamId])
+
+  const loadPendingInvitations = useCallback(async () => {
+    if (!teamId) return
+    try {
+      const { data } = await TeamService.getPendingInvitations(teamId);
+      setInvitations(data);
+    } catch (error) {
+      console.error(error)
     }
   }, [teamId])
 
@@ -57,11 +89,15 @@ export default function TeamDashboard() {
     if (teamId) {
       loadTeamData()
     }
-  }, [loadTeamData, teamId])
+    if (teamId && hasRole(TEAM_OWNER)) {
+      loadPendingInvitations()
+      RoleService.findAllIds().then(({ data }) => setAllRoles(data))
+    }
+  }, [loadTeamData, teamId, loadPendingInvitations, hasRole])
 
   const handleAvatarClick = () => {
     if (!hasRole(TEAM_OWNER)) return
-    fileInputRef.current?.click()
+    avatarFileInputRef.current?.click()
   }
 
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -98,6 +134,72 @@ export default function TeamDashboard() {
     setTimeout(() => setCopiedId(false), 2000)
     toast.success("Team ID copied to clipboard")
   }
+
+  // Members Logic
+  const filteredMembers = useMemo(() => {
+    const q = memberQuery.trim().toLowerCase()
+    return q
+      ? members.filter((m) => {
+        const values = [m.userId, m.email, m.firstName, m.lastName, m.role]
+        return values.filter(Boolean).some((v) => String(v).toLowerCase().includes(q))
+      })
+      : members
+  }, [members, memberQuery])
+
+  const handleSelfAvatarClick = () => {
+    avatarFileInputRef.current?.click()
+  }
+
+  const handleSelfAvatarFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) return
+    const file = e.target.files[0]
+    const formData = new FormData()
+    formData.append("file", file)
+    try {
+      await AccountService.uploadAvatar(formData)
+      toast.success("Avatar updated")
+      loadTeamData() // Reload members to refresh avatar
+    } catch (error) {
+      toast.error("Avatar update failed")
+      console.error(error)
+    } finally {
+      e.target.value = ""
+    }
+  }
+
+  const confirmRoleChange = async () => {
+    if (!pendingRoleChange || !teamId) return
+    try {
+      await TeamService.updateMemberRole(teamId, pendingRoleChange.userId, pendingRoleChange.newRoles)
+      toast.success("Role updated")
+      loadTeamData()
+    } catch (error) {
+      toast.error("Role update failed")
+      console.error(error)
+    } finally {
+      setRoleConfirmOpen(false)
+      setPendingRoleChange(null)
+    }
+  }
+
+  // Invitation Logic
+  const getInviteProgress = (i: TeamInvitation) => {
+    if (i.status === "ACCEPTED") return "Accepted"
+    if (i.status === "REJECTED") return "Rejected"
+    if (i.status === "EXPIRED") return "Expired"
+    if (i.status === "REGISTERED") return "Registered"
+    return "Unregistered"
+  }
+
+  const filteredInvitations = useMemo(() => {
+    const q = inviteQuery.trim().toLowerCase()
+    return q
+      ? invitations.filter((i) => {
+        const values = [i.inviteeEmail, i.inviteeRoles, getInviteProgress(i)]
+        return values.filter(Boolean).some((v) => String(v).toLowerCase().includes(q))
+      })
+      : invitations
+  }, [invitations, inviteQuery])
 
   return (
     <LayoutBody className="flex flex-col bg-muted/5" fixedHeight>
@@ -136,11 +238,11 @@ export default function TeamDashboard() {
               </div>
             </div>
 
-            <div className="flex gap-3 mt-4 md:mt-0">
+            {/* <div className="flex gap-3 mt-4 md:mt-0">
               <Link to={`/teams/${teamId}/members`}>
                 <Button variant="outline">Manage Members</Button>
               </Link>
-            </div>
+            </div> */}
           </div>
         </div>
       </AnimatedPathsBackground>
@@ -150,64 +252,215 @@ export default function TeamDashboard() {
         <div className="max-w-screen-2xl mx-auto grid gap-6 md:grid-cols-3">
 
           {/* Left Column (Main Content) */}
-          <div className="md:col-span-2 space-y-6">
+          <div className="md:col-span-2 space-y-8">
 
-            {/* Members Preview Card */}
-            <Card>
-              <CardHeader className="pb-3 px-4">
-                <div className="flex items-center justify-between">
-                  <div className="space-y-1">
-                    <CardTitle className="text-lg flex items-center gap-2">
-                      <IconUsers className="size-5 text-primary" />
-                      Team Members <Badge variant="secondary" className="ml-1">{memberCount}</Badge>
-                    </CardTitle>
-                    <CardDescription>
-                      Overview of the team members
-                    </CardDescription>
-                  </div>
-                  <Link to={`/teams/${teamId}/members`} className="text-sm text-primary hover:underline">
-                    View all
-                  </Link>
+            {/* Team Members Section */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="space-y-1">
+                  <h2 className="text-xl font-semibold tracking-tight">Team Members</h2>
+                  <p className="text-sm text-muted-foreground">
+                    Manage the members of your team.
+                  </p>
                 </div>
-              </CardHeader>
-              <Separator />
-              <CardContent className="px-4">
-                <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-                  {members.slice(0, 6).map((member) => (
-                    <div key={member.userId} className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/50 transition-colors">
-                      <Avatar className="size-10 border">
-                        {member.avatar && <AvatarImage src={`data:image/png;base64,${member.avatar}`} />}
-                        <AvatarFallback>{member.firstName?.[0]}{member.lastName?.[0]}</AvatarFallback>
-                      </Avatar>
-                      <div className="overflow-hidden">
-                        <p className="text-sm font-medium truncate">{member.firstName} {member.lastName}</p>
-                        <p className="text-xs text-muted-foreground truncate">{member.email}</p>
-                      </div>
-                    </div>
-                  ))}
-                  {members.length > 6 && (
-                    <div className="flex items-center justify-center p-2 rounded-lg border border-dashed text-muted-foreground text-sm">
-                      +{members.length - 6} more members
-                    </div>
-                  )}
+                <div className="flex items-center gap-2">
+                  <RoleTeamOwner>
+                    <Button onClick={() => setInviteOpen(true)} size="sm">
+                      <IconPlus className="mr-2 size-4" />
+                      Invite Members
+                    </Button>
+                  </RoleTeamOwner>
                 </div>
-                {members.length === 0 && (
-                  <div className="text-center py-8 text-muted-foreground">
-                    <p>No members found.</p>
-                  </div>
-                )}
-              </CardContent>
-              <CardFooter className="bg-muted/20 border-t p-4">
-                <RoleTeamOwner>
-                  <Button variant="ghost" size="sm" className="w-full sm:w-auto ml-auto" onClick={() => setInviteOpen(true)}>
-                    <span className="mr-2">+</span> Add Member
-                  </Button>
-                </RoleTeamOwner>
-              </CardFooter>
-            </Card>
+              </div>
 
-            {/* Recent Activity or Stats (Placeholder for future) */}
-            {/* You could add a graph or activity log here later */}
+              <div className="flex items-center space-x-2">
+                <Input
+                  placeholder="Search members"
+                  className="h-9 w-full"
+                  value={memberQuery}
+                  onChange={(e) => setMemberQuery(e.target.value)}
+                />
+              </div>
+
+              <div className="rounded-md border bg-card">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="w-[300px]">Name</TableHead>
+                      <TableHead>Email</TableHead>
+                      <TableHead>Roles</TableHead>
+                      <TableHead className="text-right">Joined at</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {filteredMembers.map((member) => (
+                      <TableRow key={member.userId}>
+                        <TableCell className="font-medium">
+                          <div className="flex items-center space-x-3">
+                            <div className="relative">
+                              <Avatar
+                                className={`size-8 ${member.userId === loginUser.username ? "cursor-pointer group" : ""}`}
+                                onClick={member.userId === loginUser.username ? handleSelfAvatarClick : undefined}
+                              >
+                                {member.avatar && (
+                                  <AvatarImage src={`data:image/png;base64,${member.avatar}`} />
+                                )}
+                                <AvatarFallback>{member.firstName?.[0]}{member.lastName?.[0]}</AvatarFallback>
+                              </Avatar>
+                              {member.userId === loginUser.username && (
+                                <input
+                                  ref={avatarFileInputRef}
+                                  type="file"
+                                  accept="image/*"
+                                  className="hidden"
+                                  onChange={handleSelfAvatarFileChange}
+                                />
+                              )}
+                              {member.userId === loginUser.username && (
+                                <span className="animate-pulse border-background absolute -end-0.5 -bottom-0.5 size-3 rounded-full border-2 bg-emerald-500">
+                                  <span className="sr-only">You</span>
+                                </span>
+                              )}
+                            </div>
+                            <span>{member.userId}</span>
+                          </div>
+                        </TableCell>
+                        <TableCell>{member.email}</TableCell>
+                        <TableCell>
+                          <RoleTeamOwner>
+                            <div className="flex items-center gap-2">
+                              <TeamRoleSelector
+                                value={member.roles || [member.role]}
+                                allRoles={allRoles}
+                                disabled={member.userId === loginUser.username}
+                                onChange={(newRoles) => {
+                                  setPendingRoleChange({ userId: member.userId, newRoles })
+                                  setRoleConfirmOpen(true)
+                                }}
+                                className="h-8 max-w-[200px]"
+                              />
+                            </div>
+                          </RoleTeamOwner>
+                          {!hasRole(TEAM_OWNER) && (
+                            <div className="flex gap-2">
+                              <Badge variant="outline" className="capitalize">{member.role}</Badge>
+                            </div>
+                          )}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {member.joinedAt && <UserDateTime value={member.joinedAt} />}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                    {filteredMembers.length === 0 && (
+                      <TableRow>
+                        <TableCell colSpan={4} className="h-24 text-center">
+                          No members found
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+              </div>
+            </div>
+
+            {/* Pending Invites Section */}
+            <RoleTeamOwner>
+              <div className="space-y-4">
+                <div className="space-y-1">
+                  <h2 className="text-xl font-semibold tracking-tight">Pending Invites</h2>
+                  <p className="text-sm text-muted-foreground">
+                    Manage pending invitations.
+                  </p>
+                </div>
+
+                <div className="flex items-center space-x-2">
+                  <Input
+                    placeholder="Search Invitations"
+                    className="h-9 w-full"
+                    value={inviteQuery}
+                    onChange={(e) => setInviteQuery(e.target.value)}
+                  />
+                </div>
+
+                <div className="rounded-md border bg-card">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Email</TableHead>
+                        <TableHead>Roles</TableHead>
+                        <TableHead>Invited at</TableHead>
+                        <TableHead>Expires at</TableHead>
+                        <TableHead>Progress</TableHead>
+                        <TableHead className="text-right">Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {filteredInvitations.length === 0 ? (
+                        <TableRow>
+                          <TableCell colSpan={6} className="h-24 text-center">
+                            No pending invitations
+                          </TableCell>
+                        </TableRow>
+                      ) : (
+                        filteredInvitations.map((invite) => (
+                          <TableRow key={invite.id}>
+                            <TableCell>{invite.inviteeEmail}</TableCell>
+                            <TableCell>
+                              <OverflowBadges
+                                items={(invite.inviteeRoles || "").split(",").filter(Boolean)}
+                                visibleCount={2}
+                                className=""
+                                badgeClassName="capitalize"
+                                popoverBadgeClassName="capitalize"
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <UserDateTime value={invite.createdAt} />
+                            </TableCell>
+                            <TableCell>
+                              <UserDateTime value={invite.expiresAt} />
+                            </TableCell>
+                            <TableCell>
+                              <Badge
+                                className={`capitalize ${invite.status === "EXPIRED"
+                                  ? "bg-red-600/10 text-red-600 shadow-none"
+                                  : ""
+                                  }`}
+                              >
+                                {getInviteProgress(invite)}
+                              </Badge>
+                            </TableCell>
+                            <TableCell className="text-right">
+                              {invite.status === "EXPIRED" ? (
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={async () => {
+                                    try {
+                                      await TeamService.resendInvitation(invite.id)
+                                      toast.success("Invitation resent")
+                                      loadPendingInvitations()
+                                    } catch (error) {
+                                      toast.error("Failed to resend invitation")
+                                      console.error(error)
+                                    }
+                                  }}
+                                >
+                                  Resend
+                                </Button>
+                              ) : (
+                                <span className="text-muted-foreground">—</span>
+                              )}
+                            </TableCell>
+                          </TableRow>
+                        ))
+                      )}
+                    </TableBody>
+                  </Table>
+                </div>
+              </div>
+            </RoleTeamOwner>
 
           </div>
 
@@ -273,15 +526,27 @@ export default function TeamDashboard() {
       />
 
       {teamId && (
-        <InviteMembersDialog
-          open={inviteOpen}
-          onOpenChange={setInviteOpen}
-          teamId={teamId}
-          onSuccess={() => {
-            loadTeamData()
-          }}
-        />
+        <RoleTeamOwner>
+          <InviteMembersDialog
+            open={inviteOpen}
+            onOpenChange={setInviteOpen}
+            teamId={teamId}
+            onSuccess={() => {
+              loadTeamData()
+              loadPendingInvitations()
+            }}
+          />
+        </RoleTeamOwner>
       )}
+
+      <ConfirmDialog
+        open={roleConfirmOpen}
+        onOpenChange={setRoleConfirmOpen}
+        title="Change Role"
+        description="Are you sure you want to change the role for this member?"
+        onConfirm={confirmRoleChange}
+        onCancel={() => setPendingRoleChange(null)}
+      />
     </LayoutBody>
   )
 }
