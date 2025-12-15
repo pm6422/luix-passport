@@ -149,7 +149,7 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Last Sign In" />
       ),
-      cell: ({ row }) => <div className="w-[150px]"><UserDateTime value={row.original.lastSignInAt} /></div>,
+      cell: ({ row }) => <div className="w-[150px]"><UserDateTime value={row.original.lastSignInAt} twoLines={true}/></div>,
       enableSorting: true,
       enableHiding: true,
     },

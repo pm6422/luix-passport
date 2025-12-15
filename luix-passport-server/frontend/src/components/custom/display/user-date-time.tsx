@@ -6,12 +6,25 @@ type Props = {
   value?: string | null
   type?: 'date' | 'time' | 'datetime'
   className?: string
+  twoLines?: boolean
 }
 
-export const UserDateTime = ({ value, type = 'datetime', className }: Props) => {
+export const UserDateTime = ({ value, type = 'datetime', className, twoLines = false }: Props) => {
   const { loginUser } = useLoginUserStore()
 
   if (!value) return null
+
+  if (twoLines && type === 'datetime') {
+    const dateStr = formatDate(loginUser.dateFormat, loginUser.timeZoneId, value)
+    const timeStr = formatTime(loginUser.timeFormat, loginUser.timeZoneId, value)
+
+    return (
+      <span className={cn("flex flex-col items-center leading-snug", className)}>
+        <span>{dateStr}</span>
+        <span className="text-muted-foreground text-xs">{timeStr}</span>
+      </span>
+    )
+  }
 
   let formattedValue = ''
 
