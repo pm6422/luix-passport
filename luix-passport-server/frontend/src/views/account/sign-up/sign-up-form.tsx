@@ -73,7 +73,7 @@ export function SignUpForm() {
               label="Email"
               formItemClassName="text-left"
               inputClassName="w-full h-14 px-5 py-4 rounded-2xl"
-              disabled
+              disabled={!!emailParam}
             />
 
             <InputFormField
