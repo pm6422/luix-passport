@@ -182,7 +182,7 @@ export default function TeamDashboard() {
       {/* Premium Header */}
       <AnimatedPathsBackground className="bg-background border-b" fullScreen={false}>
         <div className="relative pb-6 pt-8 px-3 md:px-4 shadow-sm">
-          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary/50 to-primary/10" />
+          <div className="absolute top-0 start-0 w-full h-1 bg-gradient-to-r from-primary/50 to-primary/10" />
           <div className="flex flex-col md:flex-row items-center md:items-start gap-6 max-w-[1800px] mx-auto">
             <div className={`relative group shrink-0 ${hasRole(TEAM_OWNER) ? "cursor-pointer" : "cursor-default"}`} onClick={handleAvatarClick}>
               <Avatar className="size-24 border-4 border-background shadow-xl">

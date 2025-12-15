@@ -83,7 +83,7 @@ export default function Notifications() {
           <CardContent className="p-0">
             <div className="p-4">
               <div className="relative">
-                <IconSearch className="absolute left-2 top-2.5 size-4 text-muted-foreground" />
+                <IconSearch className="absolute start-2 top-2.5 size-4 text-muted-foreground" />
                 <Input
                   placeholder="Search" className="ps-8"
                   value={keyword}

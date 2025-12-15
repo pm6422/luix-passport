@@ -113,7 +113,7 @@ export function NotificationNav() {
           {unreadCount > 0 && (
             <div
               aria-hidden="true"
-              className="bg-primary absolute top-0.5 right-0.5 size-1 rounded-full"
+              className="bg-primary absolute top-0.5 end-0.5 size-1 rounded-full"
             />
           )}
         </Button>
