@@ -25,7 +25,7 @@ export default function ContentSidebar({
 }: ContentSidebarProps) {
   const { pathname } = useLocation()
   const navigate = useNavigate()
-  const [val, setVal] = useState(pathname ?? "/settings")
+  const [val, setVal] = useState(pathname)
 
   const handleSelect = (e: string) => {
     setVal(e)
