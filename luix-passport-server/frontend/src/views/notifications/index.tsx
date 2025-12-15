@@ -85,7 +85,7 @@ export default function Notifications() {
               <div className="relative">
                 <IconSearch className="absolute left-2 top-2.5 size-4 text-muted-foreground" />
                 <Input
-                  placeholder="Search" className="pl-8"
+                  placeholder="Search" className="ps-8"
                   value={keyword}
                   onChange={(e) => setKeyword(e.target.value)}
                   onKeyDown={search}

@@ -96,12 +96,12 @@ export function ChangePasswordForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-y-8">
         <FormField
           control={form.control}
           name="currentPassword"
           render={({ field }) => (
-            <FormItem className="space-y-1">
+            <FormItem className="flex flex-col gap-y-1">
               <RequiredFormLabel required={true}>Current Password</RequiredFormLabel>
               <FormControl>
                 <PasswordInput {...field} placeholder="" />
@@ -114,7 +114,7 @@ export function ChangePasswordForm() {
           control={form.control}
           name="newPassword"
           render={({ field }) => (
-            <FormItem className="space-y-1">
+            <FormItem className="flex flex-col gap-y-1">
               <RequiredFormLabel required={true}>New Password</RequiredFormLabel>
               <FormControl>
                 <PasswordInput

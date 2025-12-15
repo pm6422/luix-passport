@@ -37,7 +37,7 @@ export function InviteMembersFormFields({
 
   return (
     <>
-      <div className="space-y-3 max-h-[60vh] overflow-y-auto">
+      <div className="flex flex-col gap-y-3 max-h-[60vh] overflow-y-auto">
         {invitations.map((_, index) => (
           <div
             key={index}
@@ -56,7 +56,7 @@ export function InviteMembersFormFields({
               )}
             </div>
 
-            <div className="flex flex-col pl-1">
+            <div className="flex flex-col ps-1">
               <TeamRoleSelector
                 value={form.watch(`invitations.${index}.inviteeRoles`) || []}
                 allRoles={allRoles}

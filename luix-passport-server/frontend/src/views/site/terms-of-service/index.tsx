@@ -54,7 +54,7 @@ export default function TermsOfService() {
 
           <section className="mb-8">
             <h2 className="text-xl font-semibold mb-4">3. Prohibited Activities</h2>
-            <ul className="list-disc pl-5 mb-4">
+            <ul className="list-disc ps-5 mb-4">
               <li className="mb-2">Violating laws or regulations</li>
               <li className="mb-2">Infringing intellectual property rights</li>
               <li className="mb-2">Distributing malware or harmful code</li>

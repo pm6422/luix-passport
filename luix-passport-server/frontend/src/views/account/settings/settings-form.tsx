@@ -79,7 +79,7 @@ export function SettingsForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-y-8">
         <div>
           <h3 className="text-sm font-medium">Username</h3>
           <p className="mt-2 text-sm text-muted-foreground">
@@ -115,7 +115,7 @@ export function SettingsForm() {
           placeholder="Enter a phone number"
         />
 
-        <div className="flex flex-col md:flex-row items-center gap-2 space-y-4 md:space-y-0">
+        <div className="flex flex-col md:flex-row items-center gap-x-2 gap-y-4 md:gap-y-0">
           <InputFormField
             control={form.control}
             name="firstName"
