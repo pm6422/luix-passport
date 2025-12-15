@@ -112,7 +112,7 @@ export function ChangeEmailForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="gap-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-y-6">
         <div>
           <h3 className="text-sm font-medium">Current Email</h3>
           <p className="text-sm text-muted-foreground mt-2">
