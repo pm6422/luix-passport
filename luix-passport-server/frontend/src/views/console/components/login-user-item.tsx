@@ -10,13 +10,13 @@ export function LoginUserItem(loginUser: LoginUser) {
         <AvatarImage src={"/api/user-avatars/" + loginUser.username} alt="avatar" />
         <AvatarFallback><Skeleton className="w-full" /></AvatarFallback>
       </Avatar>
-      <div className="ml-2 space-y-1">
+      <div className="ms-2 space-y-1">
         <p className="text-sm font-medium leading-none">{loginUser.firstName} {loginUser.lastName}</p>
         <p className="text-xs text-muted-foreground truncate max-w-[130px] sm:max-w-[200px]">
           {loginUser.email}
         </p>
       </div>
-      <div className="ml-auto">
+      <div className="ms-auto">
         <UserDateTime value={loginUser.signInAt} className="text-xs sm:text-sm text-muted-foreground" />
       </div>
     </div>
