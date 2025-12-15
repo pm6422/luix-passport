@@ -60,6 +60,13 @@ public class MailServiceImpl implements MailService {
     }
 
     @Override
+    public void sendVerificationCodeMail(User user, String emailTo, String baseUrl) {
+        sendEmailFromTemplate(user, new String[] { emailTo }, "emails/verification-code-email",
+                "verification.code.email.subject", "verification.code.email.title", baseUrl, 15);
+        log.info("Requested sending verification code email to [{}]", user.getEmail());
+    }
+
+    @Override
     public void sendEmailFromTemplate(User user, String[] emailsTo, String contentFragment, String emailSubjectKey,
             String titleKey, String baseUrl, Object... args) {
         Locale locale = LocaleUtils.toLocale(user.getLocale());
@@ -106,12 +113,6 @@ public class MailServiceImpl implements MailService {
         log.info("Requested sending password changed email to [{}]", user.getEmail());
     }
 
-    @Override
-    public void sendVerificationCodeMail(User user, String emailTo, String baseUrl) {
-        sendEmailFromTemplate(user, new String[] { emailTo }, "emails/verification-code-email",
-                "verification.code.email.subject", "verification.code.email.title", baseUrl, 15);
-        log.info("Requested sending verification code email to [{}]", user.getEmail());
-    }
 
     @Override
     public void sendTeamInvitationEmail(String email, String teamName, String inviterName, String role,
