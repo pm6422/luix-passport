@@ -6,7 +6,7 @@ import { DataTableRowActions } from "@/components/custom/data-table/data-table-r
 import { Button } from "@/components/ui/button"
 import { Permission } from "@/domains/permission"
 import { EditDialog } from "../dialog/permission-dialog"
-import { DateTime } from "@/components/custom/display/date-time"
+import { UserDateTime } from "@/components/custom/display/user-date-time"
 
 export function tableColumns(
   entityName: string,
@@ -71,7 +71,7 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Created At" />
       ),
-      cell: ({ row }) => <div className="w-[150px]"><DateTime value={row.original.createdAt}/></div>,
+      cell: ({ row }) => <div className="w-[150px]"><UserDateTime value={row.original.createdAt} /></div>,
       enableSorting: true,
       enableHiding: true,
     },
@@ -80,7 +80,7 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Updated At" />
       ),
-      cell: ({ row }) => <div className="w-[150px]"><DateTime value={row.original.updatedAt}/></div>,
+      cell: ({ row }) => <div className="w-[150px]"><UserDateTime value={row.original.updatedAt} /></div>,
       enableSorting: true,
       enableHiding: true,
     },

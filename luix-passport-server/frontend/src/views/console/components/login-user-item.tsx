@@ -1,6 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import type { LoginUser } from "@/domains/login-user"
-import { DateTime } from "@/components/custom/display/date-time"
+import { UserDateTime } from "@/components/custom/display/user-date-time"
 import { Skeleton } from "@/components/ui/skeleton"
 
 export function LoginUserItem(loginUser: LoginUser) {
@@ -17,7 +17,7 @@ export function LoginUserItem(loginUser: LoginUser) {
         </p>
       </div>
       <div className="ml-auto">
-        <DateTime value={loginUser.signInAt} className="text-xs sm:text-sm text-muted-foreground" />
+        <UserDateTime value={loginUser.signInAt} className="text-xs sm:text-sm text-muted-foreground" />
       </div>
     </div>
   )

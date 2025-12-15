@@ -6,7 +6,7 @@ import { Pagination, PaginationContent, PaginationItem, PaginationLink, Paginati
 import { Skeleton } from "@/components/ui/skeleton"
 import { type UserNotification } from "@/domains/user-notification"
 import { UserNotificationService } from "@/services/user-notification-service"
-import { DateTime } from "@/components/custom/display/date-time"
+import { UserDateTime } from "@/components/custom/display/user-date-time"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { IconBellRinging, IconSearch } from "@tabler/icons-react"
@@ -55,7 +55,7 @@ export default function Notifications() {
     })
   }
 
-  function search(e: React.KeyboardEvent<HTMLInputElement>) : void {
+  function search(e: React.KeyboardEvent<HTMLInputElement>): void {
     if (e.key === 'Enter') {
       loadNotifications(currentPage);
     }
@@ -68,22 +68,22 @@ export default function Notifications() {
         <Card className="w-full lg:w-1/3">
           <CardHeader>
             <CardTitle>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="flex">
-                      <IconBellRinging className="size-4 mr-2"/>
-                      Notifications
-                    </div>
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="flex">
+                    <IconBellRinging className="size-4 mr-2" />
+                    Notifications
                   </div>
-                  <Badge className="bg-green-500 h-5 min-w-5 rounded-full ms-2 font-mono tabular-nums">{totalCount}</Badge>
                 </div>
+                <Badge className="bg-green-500 h-5 min-w-5 rounded-full ms-2 font-mono tabular-nums">{totalCount}</Badge>
+              </div>
             </CardTitle>
           </CardHeader>
-          <Separator/>
+          <Separator />
           <CardContent className="p-0">
             <div className="p-4">
               <div className="relative">
-                <IconSearch className="absolute left-2 top-2.5 size-4 text-muted-foreground"/>
+                <IconSearch className="absolute left-2 top-2.5 size-4 text-muted-foreground" />
                 <Input
                   placeholder="Search" className="pl-8"
                   value={keyword}
@@ -118,10 +118,10 @@ export default function Notifications() {
                   >
                     <div className="flex items-center justify-between">
                       <div>
-                      <h3 className="text-sm line-clamp-1">{notification.title}</h3>
-                      <p className="text-xs text-muted-foreground mt-1">
-                        <DateTime value={notification.createdAt}/>
-                      </p>
+                        <h3 className="text-sm line-clamp-1">{notification.title}</h3>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          <UserDateTime value={notification.createdAt} />
+                        </p>
                       </div>
                       {notification.status === "UNREAD" && (
                         <span className="inline-block w-2 h-2 bg-blue-500 rounded-full ml-2"></span>
@@ -189,13 +189,13 @@ export default function Notifications() {
           <CardHeader>
             <CardTitle>Content</CardTitle>
           </CardHeader>
-          <Separator/>
+          <Separator />
           <CardContent>
             {selectedNotification ? (
               <div>
                 <div className="flex justify-between items-center mb-4 mt-5">
                   <h2 className="text-xl font-bold">{selectedNotification.title}</h2>
-                  <DateTime value={selectedNotification.createdAt} className="text-sm text-muted-foreground"/>
+                  <UserDateTime value={selectedNotification.createdAt} className="text-sm text-muted-foreground" />
                 </div>
 
                 {/* Add a sender information section */}

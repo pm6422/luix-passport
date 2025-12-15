@@ -10,7 +10,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/compon
 import { ConfirmPopover } from "@/components/custom/dialog/confirm-popover";
 import { DataTableColumnHeader } from "@/components/custom/data-table/data-table-column-header";
 import { DataTableRowActions } from "@/components/custom/data-table/data-table-row-actions";
-import { DateTime } from "@/components/custom/display/date-time";
+import { UserDateTime } from "@/components/custom/display/user-date-time";
 import { EditDialog } from "../dialog/user-dialog";
 import { OverflowBadges } from "@/components/custom/display/overflow-badges";
 
@@ -149,7 +149,7 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Last Sign In" />
       ),
-      cell: ({ row }) => <div className="w-[150px]"><DateTime value={row.original.lastSignInAt}/></div>,
+      cell: ({ row }) => <div className="w-[150px]"><UserDateTime value={row.original.lastSignInAt} /></div>,
       enableSorting: true,
       enableHiding: true,
     },
@@ -158,7 +158,7 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Updated At" />
       ),
-      cell: ({ row }) => <div className="w-[150px]"><DateTime value={row.original.updatedAt}/></div>,
+      cell: ({ row }) => <div className="w-[150px]"><UserDateTime value={row.original.updatedAt} /></div>,
       enableSorting: true,
       enableHiding: true,
     },
@@ -173,7 +173,7 @@ export function tableColumns(
                 <span className="sr-only">Update</span>
               </Button>
             </EditDialog>
-          } 
+          }
           moreActions={
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -186,7 +186,7 @@ export function tableColumns(
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-fit space-y-1">
-                <ConfirmPopover 
+                <ConfirmPopover
                   message={"Reset password?"}
                   onClickYes={() => clickResetYes(row.original)}
                 >

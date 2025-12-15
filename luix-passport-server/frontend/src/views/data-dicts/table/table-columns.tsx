@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { YesNoBadge } from "@/components/custom/display/yes-no-badge"
 import { DataDict } from "@/domains/data-dict"
 import { EditDialog } from "../dialog/data-dict-dialog"
-import { DateTime } from "@/components/custom/display/date-time"
+import { UserDateTime } from "@/components/custom/display/user-date-time"
 
 export function tableColumns(
   entityName: string,
@@ -97,7 +97,7 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Updated At" />
       ),
-      cell: ({ row }) => <div className="w-[150px]"><DateTime value={row.original.updatedAt}/></div>,
+      cell: ({ row }) => <div className="w-[150px]"><UserDateTime value={row.original.updatedAt} /></div>,
       enableSorting: true,
       enableHiding: true,
     },

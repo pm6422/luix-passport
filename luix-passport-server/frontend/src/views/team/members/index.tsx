@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from "react"
 import { Button } from "@/components/ui/button"
-import { DateTime } from "@/components/custom/display/date-time"
+import { UserDateTime } from "@/components/custom/display/user-date-time"
 import { InviteMembersDialog } from "./dialog/invite-dialog"
 import { LayoutBody } from "@/layouts/layout-definitions"
 import { IconPlus } from "@tabler/icons-react"
@@ -248,7 +248,7 @@ export default function TeamMembers() {
                     )}
                   </TableCell>
                   <TableCell className="text-right">
-                    {member.joinedAt && <DateTime value={member.joinedAt} />}
+                    {member.joinedAt && <UserDateTime value={member.joinedAt} />}
                   </TableCell>
                 </TableRow>
               ))}
@@ -309,10 +309,10 @@ export default function TeamMembers() {
                         />
                       </TableCell>
                       <TableCell>
-                        <DateTime value={invite.createdAt} />
+                        <UserDateTime value={invite.createdAt} />
                       </TableCell>
                       <TableCell>
-                        <DateTime value={invite.expiresAt} />
+                        <UserDateTime value={invite.expiresAt} />
                       </TableCell>
                       <TableCell>
                         <Badge

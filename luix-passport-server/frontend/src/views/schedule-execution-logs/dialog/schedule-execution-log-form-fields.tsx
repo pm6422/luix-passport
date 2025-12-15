@@ -1,5 +1,5 @@
 import { UseFormReturn } from "react-hook-form"
-import { DateTime } from "@/components/custom/display/date-time"
+import { UserDateTime } from "@/components/custom/display/user-date-time"
 import { type ScheduleExecutionLog } from "@/domains/schedule-execution-log"
 
 interface ScheduleExecutionLogFormFieldsProps {
@@ -28,14 +28,14 @@ export function ScheduleExecutionLogFormFields({
       <div>
         <h3 className="text-sm font-medium">Start At</h3>
         <p className="mt-2 text-sm text-muted-foreground">
-          <DateTime value={form.getValues("startAt") ?? ""}/>
+          <UserDateTime value={form.getValues("startAt") ?? ""} />
         </p>
       </div>
 
       <div>
         <h3 className="text-sm font-medium">End At</h3>
         <p className="mt-2 text-sm text-muted-foreground">
-          <DateTime value={form.getValues("endAt") ?? ""}/>
+          <UserDateTime value={form.getValues("endAt") ?? ""} />
         </p>
       </div>
 

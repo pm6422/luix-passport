@@ -6,7 +6,7 @@ import { DataTableRowActions } from "@/components/custom/data-table/data-table-r
 import { Button } from "@/components/ui/button"
 import { ScheduleExecutionLog } from "@/domains/schedule-execution-log"
 import { EditDialog } from "../dialog/schedule-execution-log-dialog"
-import { DateTime } from "@/components/custom/display/date-time"
+import { UserDateTime } from "@/components/custom/display/user-date-time"
 import { Badge } from '@/components/ui/badge.tsx'
 
 export function tableColumns(
@@ -62,7 +62,7 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Start At" />
       ),
-      cell: ({ row }) => <div className="w-[150px]"><DateTime value={row.original.startAt}/></div>,
+      cell: ({ row }) => <div className="w-[150px]"><UserDateTime value={row.original.startAt} /></div>,
       enableSorting: true,
       enableHiding: true,
     },
@@ -71,7 +71,7 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="End At" />
       ),
-      cell: ({ row }) => <div className="w-[150px]"><DateTime value={row.original.endAt}/></div>,
+      cell: ({ row }) => <div className="w-[150px]"><UserDateTime value={row.original.endAt} /></div>,
       enableSorting: true,
       enableHiding: true,
     },
@@ -115,7 +115,7 @@ export function tableColumns(
       id: "actions",
       cell: ({ row }) => (
         <DataTableRowActions<ScheduleExecutionLog> entityName={entityName} row={row} deleteRow={deleteRow}
-                                                   children={
+          children={
             <EditDialog entityName={entityName} id={row.original.id}>
               <Button variant="secondary" className="flex size-8 p-0">
                 <IconEye className="size-4" />
