@@ -1,7 +1,7 @@
 import { z } from "zod"
 import { BaseCriteria } from "./base/base-criteria"
 
-export const scheduleExecutionLogSchema = z.object({
+export const scheduleLogSchema = z.object({
   id: z.string().trim().min(1, { message: "Required" }),
   scheduleName: z.string().optional().nullable(),
   startAt: z.string().optional().nullable(),
@@ -13,9 +13,9 @@ export const scheduleExecutionLogSchema = z.object({
   error: z.string().optional().nullable(),
 })
 
-export type ScheduleExecutionLog = z.infer<typeof scheduleExecutionLogSchema>
+export type ScheduleLog = z.infer<typeof scheduleLogSchema>
 
-export const initialScheduleExecutionLogState: ScheduleExecutionLog = {
+export const initialScheduleLogState: ScheduleLog = {
   id: "",
   scheduleName: "",
   startAt: "",
@@ -26,13 +26,14 @@ export const initialScheduleExecutionLogState: ScheduleExecutionLog = {
   parameters: "",
   error: ""
 }
-export const scheduleExecutionLogCriteriaSchema = z.object({
+
+export const scheduleLogCriteriaSchema = z.object({
   scheduleName: z.string().optional().nullable(),
   status: z.string().optional().nullable(),
 })
 
-export type ScheduleExecutionLogCriteriaSchema = z.infer<typeof scheduleExecutionLogCriteriaSchema> & BaseCriteria
+export type ScheduleLogCriteriaSchema = z.infer<typeof scheduleLogCriteriaSchema> & BaseCriteria
 
-export const initialScheduleExecutionLogCriteriaState: ScheduleExecutionLogCriteriaSchema = {
+export const initialScheduleLogCriteriaState: ScheduleLogCriteriaSchema = {
   scheduleName: ""
 }

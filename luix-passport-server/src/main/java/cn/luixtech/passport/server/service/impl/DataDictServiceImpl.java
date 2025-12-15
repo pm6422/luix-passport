@@ -1,6 +1,6 @@
 package cn.luixtech.passport.server.service.impl;
 
-import cn.luixtech.passport.server.annotation.SchedulerExecutionLog;
+import cn.luixtech.passport.server.annotation.SchedulerLog;
 import cn.luixtech.passport.server.domain.DataDict;
 import cn.luixtech.passport.server.repository.DataDictRepository;
 import cn.luixtech.passport.server.service.DataDictService;
@@ -52,7 +52,7 @@ public class DataDictServiceImpl implements DataDictService {
     // @Scheduled(initialDelay = 0, fixedRate = 300000)
     @Scheduled(cron = "0 0 2 * * *")
     @SchedulerLock(name = "updateTimezoneUtcOffset")
-    @SchedulerExecutionLog(name = "updateTimezoneUtcOffset")
+    @SchedulerLog(name = "updateTimezoneUtcOffset")
     @Override
     public void updateTimezoneUtcOffset() {
         dataDictRepository.findByCategoryCode(CATEGORY_CODE_TIMEZONE).forEach(timezone -> {

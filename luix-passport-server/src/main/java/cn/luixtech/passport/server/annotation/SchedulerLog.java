@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface SchedulerExecutionLog {
+public @interface SchedulerLog {
     String name() default "";
 
     boolean logParameters() default false;

@@ -153,9 +153,9 @@ const router = createBrowserRouter([
         }),
       },
       {
-        path: "schedule-execution-logs",
+        path: "schedule-logs",
         lazy: async () => ({
-          Component: (await import("@/views/schedule-execution-logs")).default
+          Component: (await import("@/views/schedule-logs")).default
         }),
       },
       {

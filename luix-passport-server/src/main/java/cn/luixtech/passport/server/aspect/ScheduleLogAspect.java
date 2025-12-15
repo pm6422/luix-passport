@@ -1,8 +1,8 @@
 package cn.luixtech.passport.server.aspect;
 
-import cn.luixtech.passport.server.annotation.SchedulerExecutionLog;
-import cn.luixtech.passport.server.domain.ScheduleExecutionLog;
-import cn.luixtech.passport.server.repository.ScheduleExecutionLogRepository;
+import cn.luixtech.passport.server.annotation.SchedulerLog;
+import cn.luixtech.passport.server.domain.ScheduleLog;
+import cn.luixtech.passport.server.repository.ScheduleLogRepository;
 import cn.luixtech.passport.server.service.SchedulerLockService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,48 +22,43 @@ import java.time.Instant;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-import static cn.luixtech.passport.server.domain.ScheduleExecutionLog.*;
+import static cn.luixtech.passport.server.domain.ScheduleLog.*;
 
 @Aspect
 @Component
 @AllArgsConstructor
 @Slf4j
 @Order(Ordered.LOWEST_PRECEDENCE - 1)// keep this aspect lower than ShedLock
-public class ScheduleExecutionLogAspect {
-    private final ScheduleExecutionLogRepository scheduleExecutionLogRepository;
-    private final SchedulerLockService           schedulerLockService;
+public class ScheduleLogAspect {
+    private final ScheduleLogRepository scheduleLogRepository;
+    private final SchedulerLockService  schedulerLockService;
 
-    @Around("@annotation(schedulerExecutionLog)")
-    public Object logScheduleExecution(ProceedingJoinPoint joinPoint, SchedulerExecutionLog schedulerExecutionLog) throws Throwable {
+    @Around("@annotation(schedulerLog)")
+    public Object logScheduleExecution(ProceedingJoinPoint joinPoint, SchedulerLog schedulerLog) throws Throwable {
         Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
         SchedulerLock schedulerLockAnnotation = method.getAnnotation(SchedulerLock.class);
 
         if (schedulerLockAnnotation != null && !isShedLockHeld(schedulerLockAnnotation.name())) {
-            // if shed lock is not held, skip execution
             return null;
         }
 
-        String scheduleName = !schedulerExecutionLog.name().isEmpty() ?
-                schedulerExecutionLog.name() :
+        String scheduleName = !schedulerLog.name().isEmpty() ?
+                schedulerLog.name() :
                 joinPoint.getSignature().getName();
 
-        ScheduleExecutionLog domain = new ScheduleExecutionLog();
+        ScheduleLog domain = new ScheduleLog();
         domain.setScheduleName(scheduleName);
         domain.setStartAt(Instant.now());
         domain.setStatus(STATUS_RUNNING);
         domain.setNode(Utils.getHostname());
 
-        if (schedulerExecutionLog.logParameters()) {
+        if (schedulerLog.logParameters()) {
             domain.setParameters(parseParameters(joinPoint));
         }
 
         try {
-            // save initial record
-            scheduleExecutionLogRepository.save(domain);
-
-            // proceed to execute the target method
+            scheduleLogRepository.save(domain);
             Object result = joinPoint.proceed();
-
             domain.setStatus(STATUS_SUCCESS);
             domain.setEndAt(Instant.now());
             long millis = Duration.between(domain.getStartAt(), domain.getEndAt()).toMillis();
@@ -75,8 +70,7 @@ public class ScheduleExecutionLogAspect {
             domain.setEndAt(Instant.now());
             throw e;
         } finally {
-            // update to final status
-            scheduleExecutionLogRepository.save(domain);
+            scheduleLogRepository.save(domain);
         }
     }
 

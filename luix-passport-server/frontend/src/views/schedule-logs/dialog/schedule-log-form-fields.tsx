@@ -1,14 +1,14 @@
 import { UseFormReturn } from "react-hook-form"
 import { UserDateTime } from "@/components/custom/display/user-date-time"
-import { type ScheduleExecutionLog } from "@/domains/schedule-execution-log"
+import { type ScheduleLog } from "@/domains/schedule-log"
 
-interface ScheduleExecutionLogFormFieldsProps {
-  form: UseFormReturn<ScheduleExecutionLog>
+interface ScheduleLogFormFieldsProps {
+  form: UseFormReturn<ScheduleLog>
 }
 
-export function ScheduleExecutionLogFormFields({
+export function ScheduleLogFormFields({
   form
-}: ScheduleExecutionLogFormFieldsProps) {
+}: ScheduleLogFormFieldsProps) {
   return (
     <>
       <div>

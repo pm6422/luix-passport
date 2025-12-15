@@ -4,15 +4,15 @@ import { IconEye, IconCircleCheckFilled, IconCircleXFilled, IconLoader } from "@
 import { DataTableColumnHeader } from "@/components/custom/data-table/data-table-column-header"
 import { DataTableRowActions } from "@/components/custom/data-table/data-table-row-actions"
 import { Button } from "@/components/ui/button"
-import { ScheduleExecutionLog } from "@/domains/schedule-execution-log"
-import { EditDialog } from "../dialog/schedule-execution-log-dialog"
+import { ScheduleLog } from "@/domains/schedule-log"
+import { EditDialog } from "../dialog/schedule-log-dialog"
 import { UserDateTime } from "@/components/custom/display/user-date-time"
 import { Badge } from '@/components/ui/badge.tsx'
 
 export function tableColumns(
   entityName: string,
-  deleteRow: (row: ScheduleExecutionLog) => Promise<void>
-): ColumnDef<ScheduleExecutionLog>[] {
+  deleteRow: (row: ScheduleLog) => Promise<void>
+): ColumnDef<ScheduleLog>[] {
 
   return [
     {
@@ -114,7 +114,7 @@ export function tableColumns(
     {
       id: "actions",
       cell: ({ row }) => (
-        <DataTableRowActions<ScheduleExecutionLog> entityName={entityName} row={row} deleteRow={deleteRow}
+        <DataTableRowActions<ScheduleLog> entityName={entityName} row={row} deleteRow={deleteRow}
           children={
             <EditDialog entityName={entityName} id={row.original.id}>
               <Button variant="secondary" className="flex size-8 p-0">

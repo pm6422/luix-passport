@@ -5,7 +5,7 @@ import InputFormField from "@/components/custom/form-field/input"
 import SelectFormField from "@/components/custom/form-field/select"
 import { Button } from "@/components/ui/button"
 import { IconFilterSearch } from "@tabler/icons-react"
-import { type ScheduleExecutionLogCriteriaSchema, scheduleExecutionLogCriteriaSchema, initialScheduleExecutionLogCriteriaState } from "@/domains/schedule-execution-log"
+import { type ScheduleLogCriteriaSchema, scheduleLogCriteriaSchema, initialScheduleLogCriteriaState } from "@/domains/schedule-log"
 import { Form } from "@/components/ui/form"
 import {
   Popover,
@@ -14,19 +14,19 @@ import {
 } from "@/components/ui/popover"
 
 interface DataTableToolbarProps{
-  loadPage: (pageNo: number | undefined, pageSize: number | undefined, sorts: Array<string> | undefined, criteria: ScheduleExecutionLogCriteriaSchema) => void
+  loadPage: (pageNo: number | undefined, pageSize: number | undefined, sorts: Array<string> | undefined, criteria: ScheduleLogCriteriaSchema) => void
 }
 
 export function DataTableToolbar ({
   loadPage
 }: DataTableToolbarProps) {
   const [isFilterPopoverOpen, setIsFilterPopoverOpen] = useState(false)
-  const form = useForm<ScheduleExecutionLogCriteriaSchema>({
-    resolver: zodResolver(scheduleExecutionLogCriteriaSchema),
-    defaultValues: initialScheduleExecutionLogCriteriaState
+  const form = useForm<ScheduleLogCriteriaSchema>({
+    resolver: zodResolver(scheduleLogCriteriaSchema),
+    defaultValues: initialScheduleLogCriteriaState
   })
 
-  function onSubmit(formData: ScheduleExecutionLogCriteriaSchema): void {
+  function onSubmit(formData: ScheduleLogCriteriaSchema): void {
     loadPage(undefined, undefined, undefined, formData)
     setIsFilterPopoverOpen(false)
   }

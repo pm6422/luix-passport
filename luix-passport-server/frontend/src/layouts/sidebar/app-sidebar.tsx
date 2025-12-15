@@ -110,7 +110,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           },
           {
             title: "Schedule Logs",
-            url: "/schedule-execution-logs",
+            url: "/schedule-logs",
             icon: IconCalendarStats,
           },
           {

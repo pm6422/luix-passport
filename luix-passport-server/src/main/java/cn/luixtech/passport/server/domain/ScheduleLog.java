@@ -10,9 +10,10 @@ import java.time.Instant;
 
 @Data
 @Entity
+@Table(name = "schedule_logs")
 @NoArgsConstructor
 @AllArgsConstructor
-public class ScheduleExecutionLog {
+public class ScheduleLog {
 
     public static final String STATUS_RUNNING = "RUNNING";
     public static final String STATUS_SUCCESS = "SUCCESS";
