@@ -147,9 +147,9 @@ export function ChangePasswordForm() {
               type="button"
               variant="outline"
               onClick={() => sendVerificationCode()}>
-              <IconSend className="size-4 mr-1" />
+              <IconSend className="size-4 me-1" />
               {saving ? "Sending..." : "Send"}
-              {saving && (<IconReload className="ml-1 size-4 animate-spin" />)}
+              {saving && (<IconReload className="ms-1 size-4 animate-spin" />)}
             </Button>
           }
         />

@@ -96,7 +96,7 @@ export default function ForgotPassword() {
                   control={form.control}
                   name="email"
                   label="Email"
-                  formItemClassName="text-left"
+                  formItemClassName="text-start"
                   inputClassName="w-full h-14 px-5 py-4 rounded-2xl"
                   placeholder="name@example.com"
                 />

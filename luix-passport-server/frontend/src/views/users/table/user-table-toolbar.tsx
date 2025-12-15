@@ -95,10 +95,10 @@ export function DataTableToolbar ({
           </div>
         </PopoverContent>
       </Popover>
-      <div className="space-x-2">
+      <div className="gap-2 flex">
         <EditDialog entityName={entityName} save={save}>
           <Button variant="secondary" size="sm">
-            <IconPlus className="mr-2 size-4" aria-hidden="true" />
+            <IconPlus className="me-2 size-4" aria-hidden="true" />
             Create
           </Button>
         </EditDialog>

@@ -83,7 +83,7 @@ export function InviteMembersFormFields({
                   size="icon"
                   onClick={() => remove(index)}
                   tabIndex={-1}
-                  className="h-9 w-9"
+                  className="size-9"
                 >
                   <IconMinus className="size-4" />
                 </Button>
@@ -100,7 +100,7 @@ export function InviteMembersFormFields({
         className="mt-1 w-[185px]"
         onClick={append}
       >
-        <IconPlus className="mr-2 size-4" />
+        <IconPlus className="me-2 size-4" />
         Add another
       </Button>
     </>

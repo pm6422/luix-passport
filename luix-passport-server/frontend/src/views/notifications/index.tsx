@@ -71,7 +71,7 @@ export default function Notifications() {
               <div className="flex items-center justify-between">
                 <div>
                   <div className="flex">
-                    <IconBellRinging className="size-4 mr-2" />
+                    <IconBellRinging className="size-4 me-2" />
                     Notifications
                   </div>
                 </div>
@@ -124,7 +124,7 @@ export default function Notifications() {
                         </p>
                       </div>
                       {notification.status === "UNREAD" && (
-                        <span className="inline-block w-2 h-2 bg-blue-500 rounded-full ml-2"></span>
+                        <span className="inline-block size-2 bg-blue-500 rounded-full ms-2"></span>
                       )}
                     </div>
                   </div>

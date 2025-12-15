@@ -83,7 +83,7 @@ export function SignInForm() {
           className="w-full py-4 h-14 mb-6 rounded-2xl"
         >
           <svg
-            className="h-5 w-5 mr-2"
+            className="size-5 me-2"
             viewBox="0 0 2350 2314.8"
           >
             <path

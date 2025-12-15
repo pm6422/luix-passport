@@ -8,19 +8,19 @@ export default function DocsPage() {
       title: "Installation",
       description: "Get started by installing our SDK and setting up your project.",
       link: "/docs/installation",
-      icon: <IconCode className="h-5 w-5 text-primary mr-2" />,
+      icon: <IconCode className="size-5 text-primary me-2" />,
     },
     {
       title: "Authentication",
       description: "Learn how to implement secure authentication flows.",
       link: "/docs/authentication",
-      icon: <IconKey className="h-5 w-5 text-primary mr-2" />,
+      icon: <IconKey className="size-5 text-primary me-2" />,
     },
     {
       title: "API Reference",
       description: "Explore our comprehensive API endpoints and usage.",
       link: "/docs/api-reference",
-      icon: <IconBook className="h-5 w-5 text-primary mr-2" />,
+      icon: <IconBook className="size-5 text-primary me-2" />,
     },
   ];
 
@@ -93,7 +93,7 @@ export default function DocsPage() {
                 >
                   <Link to={section.link} className="flex items-center justify-center">
                     Learn More
-                    <IconArrowRight className="h-5 w-5 ml-2" />
+                    <IconArrowRight className="size-5 ms-2" />
                   </Link>
                 </Button>
               </div>

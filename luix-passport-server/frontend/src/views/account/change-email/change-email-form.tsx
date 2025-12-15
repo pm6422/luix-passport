@@ -133,9 +133,9 @@ export function ChangeEmailForm() {
               variant="outline"
               disabled={form.formState.errors.newEmail != null || saving || !form.getValues("newEmail") || form.getValues("currentEmail") == form.getValues("newEmail")}
               onClick={() => sendVerificationCode(form.getValues("newEmail"))}>
-              <IconSend className="size-4 mr-1" />
+              <IconSend className="size-4 me-1" />
               {saving ? "Sending..." : "Send"}
-              {saving && (<IconReload className="ml-1 size-4 animate-spin" />)}
+              {saving && (<IconReload className="ms-1 size-4 animate-spin" />)}
             </Button>
           }
         />

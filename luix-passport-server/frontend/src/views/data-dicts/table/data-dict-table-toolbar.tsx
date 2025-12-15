@@ -92,16 +92,16 @@ export function DataTableToolbar({
           </div>
         </PopoverContent>
       </Popover>
-      <div className="space-x-2">
+      <div className="gap-2 flex">
         <EditDialog entityName={entityName} save={save}>
           <Button variant="secondary" size="sm">
-            <IconPlus className="mr-2 size-4" aria-hidden="true" />
+            <IconPlus className="me-2 size-4" aria-hidden="true" />
             Create
           </Button>
         </EditDialog>
         <UploadDialog entityName={entityName} upload={upload} description="Supported file types: .txt, .json, you can use downloaded the template." templateUrl="/api/data-dicts/import-template">
           <Button variant="secondary" size="sm">
-            <IconUpload className="mr-2 size-4" aria-hidden="true" />
+            <IconUpload className="me-2 size-4" aria-hidden="true" />
             Upload
           </Button>
         </UploadDialog>
