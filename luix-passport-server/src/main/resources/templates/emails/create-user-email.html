@@ -2,13 +2,12 @@
 
   <!-- Greeting -->
   <p style="margin: 0 0 16px 0; font-size: 16px; line-height: 24px; color: #52525b;">
-    <span th:text="#{email.greeting(${user.username})}">Hello,</span>
+    <span th:text="#{email.greeting(${user.username})}">Hey louis,</span>
   </p>
 
   <!-- Instruction -->
   <p style="margin: 0 0 24px 0; font-size: 16px; line-height: 24px; color: #52525b;">
-    <span th:text="#{create.user.email.text}">Your account has been successfully created. To set your password, click
-      the button below:</span>
+    <span th:text="#{create.user.email.text}">Thanks for creating an account on Luix Passport! Click below to set up your password:</span>
   </p>
 
   <!-- CTA Button -->
@@ -25,7 +24,6 @@
 
   <!-- Ignore Tip -->
   <p style="margin: 0; font-size: 13px; line-height: 20px; color: #71717a; text-align: center;">
-    <span th:text="#{reset.password.ignore.tip(${user.email})}">If you did not expect this email, please contact support
-      or ignore it.</span>
+    <span th:text="#{create.user.ignore.tip}">If you did not expect this email, please contact support or ignore it.</span>
   </p>
 </div>

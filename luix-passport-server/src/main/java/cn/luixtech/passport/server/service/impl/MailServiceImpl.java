@@ -1,6 +1,7 @@
 package cn.luixtech.passport.server.service.impl;
 
 import cn.luixtech.passport.server.config.ApplicationProperties;
+import cn.luixtech.passport.server.domain.TeamInvitation;
 import cn.luixtech.passport.server.domain.User;
 import cn.luixtech.passport.server.service.MailService;
 import com.luixtech.utilities.exception.ThirdPartyServiceException;
@@ -86,11 +87,10 @@ public class MailServiceImpl implements MailService {
     }
 
     @Override
-    public void sendTeamInvitationEmail(User user, String baseUrl, String teamName, String inviterName, 
-           int expirationDays) {
+    public void sendTeamInvitationEmail(User user, String baseUrl, String teamName, String inviterName) {
         sendEmailFromTemplate(user, null, "emails/team-invitation-email",
                 "team.invitation.email.subject", "team.invitation.email.title", baseUrl,
-                teamName, user.getEmail(), inviterName, expirationDays);
+                teamName, user.getEmail(), inviterName, TeamInvitation.INVITATION_EXPIRATION_DAYS);
         log.info("Requested sending team invitation email to [{}] for team [{}]", user.getEmail(), teamName);
     }
 

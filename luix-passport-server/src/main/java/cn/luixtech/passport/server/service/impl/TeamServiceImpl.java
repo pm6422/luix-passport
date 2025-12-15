@@ -189,8 +189,7 @@ public class TeamServiceImpl implements TeamService {
               invitee,
               getRequestUrl(request),
               team.getName(),
-              inviterName,
-              TeamInvitation.INVITATION_EXPIRATION_DAYS);
+              inviterName);
           log.info("Sent team invitation email to {} for team {}", invitation.getInviteeEmail(), team.getName());
         } catch (Exception e) {
           log.error("Failed to send team invitation email to {}: {}", invitation.getInviteeEmail(), e.getMessage());
@@ -368,8 +367,7 @@ public class TeamServiceImpl implements TeamService {
             invitee,
             getRequestUrl(request),
             teamRepository.findById(invitation.getTeamId()).map(Team::getName).orElse(""),
-            inviterName,
-            TeamInvitation.INVITATION_EXPIRATION_DAYS);
+            inviterName);
         log.info("Resent invitation email to {}", invitation.getInviteeEmail());
       } catch (Exception e) {
         log.error("Failed to resend team invitation email to {}: {}", invitation.getInviteeEmail(), e.getMessage());

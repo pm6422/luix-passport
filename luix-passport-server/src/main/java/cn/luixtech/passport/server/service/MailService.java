@@ -21,6 +21,5 @@ public interface MailService {
 
         void sendPasswordChangedMail(User user, String baseUrl);
 
-        void sendTeamInvitationEmail(User user, String baseUrl, String teamName, String inviterName,
-                        int expirationDays);
+        void sendTeamInvitationEmail(User user, String baseUrl, String teamName, String inviterName);
 }
