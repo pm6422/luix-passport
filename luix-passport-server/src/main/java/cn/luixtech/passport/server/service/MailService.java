@@ -1,5 +1,7 @@
 package cn.luixtech.passport.server.service;
 
+import java.time.Instant;
+
 import cn.luixtech.passport.server.domain.User;
 
 public interface MailService {
@@ -19,6 +21,6 @@ public interface MailService {
 
     void sendPasswordChangedMail(User user, String baseUrl);
 
-    void sendTeamInvitationEmail(String email, String teamName, String inviterName, String role, String baseUrl,
-            java.time.Instant expiresAt, String inviterLocale);
+    void sendTeamInvitationEmail(User user, String teamName, String inviterName, String role, String baseUrl,
+            Instant expiresAt);
 }

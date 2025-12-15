@@ -87,15 +87,12 @@ public class MailServiceImpl implements MailService {
     }
 
     @Override
-    public void sendTeamInvitationEmail(String email, String teamName, String inviterName, String role,
-            String baseUrl, Instant expiresAt, String inviterLocale) {
-        User user = new User();
-        user.setEmail(email);
-        user.setLocale(inviterLocale);
+    public void sendTeamInvitationEmail(User user, String teamName, String inviterName, String role,
+            String baseUrl, Instant expiresAt) {
         sendEmailFromTemplate(user, null, "emails/team-invitation-email",
                 "team.invitation.email.subject", "team.invitation.email.title", baseUrl,
-                teamName, email, inviterName, role, expiresAt);
-        log.info("Requested sending team invitation email to [{}] for team [{}]", email, teamName);
+                teamName, user.getEmail(), inviterName, role, expiresAt);
+        log.info("Requested sending team invitation email to [{}] for team [{}]", user.getEmail(), teamName);
     }
 
     @Override

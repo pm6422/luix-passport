@@ -151,7 +151,7 @@ public class TeamServiceImpl implements TeamService {
 
       // Check if user is already registered
       if (existingUser.isPresent()) {
-        throw new IllegalArgumentException("The email " + invitation.getEmail() + " is already registered.");
+        throw new IllegalArgumentException("The email " + invitation.getEmail() + " is already registered");
       }
 
       // Check for existing invitation (unregistered or registered and not finalized)
@@ -179,14 +179,15 @@ public class TeamServiceImpl implements TeamService {
       // Send invitation email if user doesn't have an account
       if (existingUser.isEmpty()) {
         try {
+          User invitee = new User();
+          invitee.setEmail(invitation.getEmail());
           mailService.sendTeamInvitationEmail(
-              invitation.getEmail(),
+              invitee,
               team.getName(),
               inviterName,
               String.join(",", invitation.getRoles()),
               getRequestUrl(request),
-              invite.getExpiresAt(),
-              inviterUser.getLocale());
+              invite.getExpiresAt());
           log.info("Sent team invitation email to {} for team {}", invitation.getEmail(), team.getName());
         } catch (Exception e) {
           log.error("Failed to send team invitation email to {}: {}", invitation.getEmail(), e.getMessage());
@@ -357,15 +358,15 @@ public class TeamServiceImpl implements TeamService {
 
     if (!hasAccount) {
       try {
+        User invitee = new User();
+        invitee.setEmail(invitation.getMemberEmail());
         mailService.sendTeamInvitationEmail(
-            invitation.getMemberEmail(),
-            teamRepository.findById(invitation.getTeamId()).map(Team::getName)
-                .orElse(""),
+            invitee,
+            teamRepository.findById(invitation.getTeamId()).map(Team::getName).orElse(""),
             inviterName,
             invitation.getMemberRoles(),
             getRequestUrl(request),
-            invitation.getExpiresAt(),
-            inviterUser.getLocale());
+            invitation.getExpiresAt());
         log.info("Resent invitation email to {}", invitation.getMemberEmail());
       } catch (Exception e) {
         log.error("Failed to resend team invitation email to {}: {}", invitation.getMemberEmail(), e.getMessage());
