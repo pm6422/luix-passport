@@ -32,6 +32,8 @@ export default function ConsolePage() {
       await TeamService.acceptInvitation(invitationId)
       toast.success("Invitation accepted successfully")
       loadInvitations()
+      // Reload page to update permissions/roles
+      setTimeout(() => window.location.reload(), 500)
     } catch (error) {
       toast.error("Failed to accept invitation")
       console.error(error)
@@ -166,7 +168,7 @@ export default function ConsolePage() {
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-medium">Team Invitation</p>
                           <p className="text-xs text-muted-foreground truncate">
-                            Role: {invitation.memberRoles}
+                            Role: {invitation.inviteeRoles}
                           </p>
                         </div>
                       </div>
