@@ -91,7 +91,7 @@ export default function ForgotPassword() {
 
           <div className={cn("grid gap-6")}>
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(requestReset)} className="gap-y-4">
+              <form onSubmit={form.handleSubmit(requestReset)} className="flex flex-col gap-y-4">
                 <InputFormField
                   control={form.control}
                   name="email"

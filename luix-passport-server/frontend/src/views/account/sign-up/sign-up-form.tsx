@@ -66,7 +66,7 @@ export function SignUpForm() {
         <div className="flex flex-col w-full h-full px-5 text-center">
           <h3 className="mb-6 text-2xl font-bold">Create Account</h3>
 
-          <div className="gap-y-4">
+          <div className="flex flex-col gap-y-4">
             <InputFormField
               control={form.control}
               name="email"
@@ -89,10 +89,10 @@ export function SignUpForm() {
               name="password"
               render={({ field }) => (
                 <FormItem className="text-start">
-                  <FormLabel className="mb-2 text-sm">Password</FormLabel>
+                  <FormLabel className="text-sm">Password</FormLabel>
                   <FormControl>
                     <PasswordInput
-                      className="w-full h-14 py-4 rounded-2xl"
+                      className="w-full h-14 rounded-2xl"
                       {...field}
                       onChange={(e) => {
                         field.onChange(e);
@@ -116,10 +116,10 @@ export function SignUpForm() {
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem className="text-start">
-                  <FormLabel className="mb-2 text-sm">Confirm Password</FormLabel>
+                  <FormLabel className="text-sm">Confirm Password</FormLabel>
                   <FormControl>
                     <PasswordInput
-                      className="w-full h-14 px-5 py-4 rounded-2xl"
+                      className="w-full h-14 px-5 rounded-2xl"
                       {...field}
                     />
                   </FormControl>

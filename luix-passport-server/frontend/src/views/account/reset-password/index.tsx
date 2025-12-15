@@ -99,7 +99,7 @@ export default function ForgotPassword() {
         </div>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(completeReset)} className="gap-y-4">
+          <form onSubmit={form.handleSubmit(completeReset)} className="flex flex-col gap-y-4">
             <FormField
               control={form.control}
               name="resetCode"
