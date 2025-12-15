@@ -12,9 +12,6 @@ server:
     session:
       timeout: 1D # Session timeout in 1 day. This parameter can control the login expiration. And this statement can affect Spring Session, which is used by SessionProperties.
 management: # Management http server configuration, used by ManagementServerProperties
-  health:
-    mail:
-      enabled: false
   endpoints:
     web:
       base-path: /management
@@ -66,21 +63,21 @@ spring:
   jpa:
     open-in-view: false
     properties:
-      hibernate.default_schema: public # public schema of PostgresSQL
-      hibernate.jdbc.time_zone: UTC # The time zone must be identical to PostgresSQL
-      hibernate.timezone.default_storage: NORMALIZE
+      '[hibernate.default_schema]': public # public schema of PostgresSQL
+      '[hibernate.jdbc.time_zone]': UTC # The time zone must be identical to PostgresSQL
+      '[hibernate.timezone.default_storage]': NORMALIZE
 #      hibernate.type.preferred_instant_jdbc_type: TIMESTAMP
-      hibernate.id.new_generator_mappings: true
-      hibernate.connection.provider_disables_autocommit: false
-      hibernate.cache.use_second_level_cache: false
-      hibernate.cache.use_query_cache: false
-      hibernate.generate_statistics: false
+      '[hibernate.id.new_generator_mappings]': true
+      '[hibernate.connection.provider_disables_autocommit]': false
+      '[hibernate.cache.use_second_level_cache]': false
+      '[hibernate.cache.use_query_cache]': false
+      '[hibernate.generate_statistics]': false
       # modify batch size as necessary
-      hibernate.jdbc.batch_size: 25
-      hibernate.order_inserts: true
-      hibernate.order_updates: true
-      hibernate.query.fail_on_pagination_over_collection_fetch: true
-      hibernate.query.in_clause_parameter_padding: true
+      '[hibernate.jdbc.batch_size]': 25
+      '[hibernate.order_inserts]': true
+      '[hibernate.order_updates]': true
+      '[hibernate.query.fail_on_pagination_over_collection_fetch]': true
+      '[hibernate.query.in_clause_parameter_padding]': true
     hibernate:
       ddl-auto: none
       naming:
@@ -123,10 +120,10 @@ spring:
 logging:
   level:
     root: INFO
-    org.springframework.web: INFO
-    org.jooq.tools.LoggerListener: DEBUG
-    org.springframework.security: DEBUG
-    org.springframework.security.oauth2: DEBUG
+    '[org.springframework.web]': INFO
+    '[org.jooq.tools.LoggerListener]': DEBUG
+    '[org.springframework.security]': DEBUG
+    '[org.springframework.security.oauth2]': DEBUG
 springdoc: # https://springdoc.org/#migrating-from-springfox
   api-docs:
     enabled: true
