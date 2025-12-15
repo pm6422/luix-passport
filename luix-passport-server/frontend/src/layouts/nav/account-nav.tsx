@@ -61,7 +61,7 @@ export function AccountNav() {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-48" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
-          <div className="flex flex-col space-y-2">
+          <div className="flex flex-col gap-y-2">
             <p className="text-sm font-medium leading-none">{loginUser.firstName} {loginUser.lastName}</p>
             <p className="text-xs leading-none text-muted-foreground">
               {loginUser.email}

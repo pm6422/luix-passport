@@ -52,10 +52,10 @@ const RadioGroupFormField = <TFieldValues extends FieldValues>({
               onValueChange={field.onChange}
               defaultValue={field.value}
               disabled={disabled}
-              className={`flex ${direction === "vertical" ? "flex-col space-y-1" : "flex-row space-x-4"}`}
+              className={`flex ${direction === "vertical" ? "flex-col gap-y-1" : "flex-row gap-x-4"}`}
             >
               {options.map((item) => (
-                <FormItem key={item.value} className="flex items-center space-x-3 space-y-0">
+                <FormItem key={item.value} className="flex items-center gap-x-3 gap-y-0">
                   <FormControl>
                     <RadioGroupItem value={item.value} />
                   </FormControl>

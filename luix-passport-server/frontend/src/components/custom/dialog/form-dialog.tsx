@@ -146,7 +146,7 @@ function FormDialogContent<T extends FieldValues>({
             </pre>
           }
 
-          <DialogFooter className="gap-2 pt-2 sm:space-x-0">
+          <DialogFooter className="gap-2 pt-2 sm:gap-x-0">
             <DialogClose asChild>
               <Button type="button" variant="outline" className="w-full sm:w-auto sm:min-w-[80px]">
                 Cancel

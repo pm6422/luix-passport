@@ -152,8 +152,8 @@ export function PaginatedDataTable<TData, TValue>(
     : data.length
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between space-x-2">
+    <div className="flex flex-col gap-y-4">
+      <div className="flex items-center justify-between gap-x-2">
         {children}
         {Object.keys(rowSelection).length > 0 && (
           <Popover open={delConfirmPopoverOpen} onOpenChange={setDelConfirmPopoverOpen}>
@@ -163,13 +163,13 @@ export function PaginatedDataTable<TData, TValue>(
                 size="sm"
                 className="hidden h-8 lg:flex"
               >
-                <IconTrash className="mr-2 h-4 w-4" />
+                <IconTrash className="me-2 h-4 w-4" />
                 Delete{`(${Object.keys(rowSelection).length})`}
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-[240px]">
               Are your sure to delete?
-              <div className="mt-4 flex items-center justify-between space-x-2">
+              <div className="mt-4 flex items-center justify-between gap-x-2">
                 <Button
                   className="w-full"
                   variant="secondary"

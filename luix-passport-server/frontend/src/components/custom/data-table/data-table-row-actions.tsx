@@ -42,7 +42,7 @@ export function DataTableRowActions<TData>({
   }
 
   return (
-    <div className="flex items-center space-x-2">
+    <div className="flex items-center gap-x-2">
       {children}
       <ConfirmPopover 
         message={"Are your sure to delete it?"}

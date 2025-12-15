@@ -86,7 +86,7 @@ export function TeamRoleSelector({
             {/* Show meaningful roles first? Or just all joined.  */}
             {value.length > 0 ? value.join(", ") : "Select roles"}
           </span>
-          <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          <ChevronDown className="ms-2 size-4 shrink-0 opacity-50" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align={align}>

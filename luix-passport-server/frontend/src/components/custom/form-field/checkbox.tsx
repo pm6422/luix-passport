@@ -3,7 +3,6 @@ import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessa
 import { RequiredFormLabel } from "@/components/custom/form-element/required-form-label"
 import { Checkbox } from "@/components/ui/checkbox"
 
-
 export type CheckboxOption = {
   label: string
   value: string
@@ -53,7 +52,7 @@ const CheckboxFormField = <TFieldValues extends FieldValues>({
             return options.map((item) => (
               <FormItem
                 key={item.value}
-                className="flex flex-row items-start space-x-3 space-y-0"
+                className="flex flex-row items-start gap-3 space-y-0"
               >
                 <FormControl>
                   <Checkbox

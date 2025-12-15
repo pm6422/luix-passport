@@ -100,7 +100,7 @@ const ComboboxFormField = <TFieldValues extends FieldValues>({
                         {option.label}
                         <IconCheck
                           className={cn(
-                            "ml-auto size-4",
+                            "ms-auto size-4",
                             field.value === option.value ? "opacity-100" : "opacity-0"
                           )}
                         />

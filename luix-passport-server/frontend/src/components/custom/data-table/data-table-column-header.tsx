@@ -27,31 +27,31 @@ export function DataTableColumnHeader<TData, TValue>({
   }
 
   return (
-    <div className={cn("flex items-center space-x-2", className)}>
+    <div className={cn("flex items-center gap-x-2", className)}>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
             size="sm"
-            className="-ml-3 h-8 data-[state=open]:bg-accent"
+            className="-ms-3 h-8 data-[state=open]:bg-accent"
           >
             <span>{title}</span>
             {column.getIsSorted() === "desc" ? (
-              <IconArrowDown className="ml-2 size-4" />
+              <IconArrowDown className="ms-2 size-4" />
             ) : column.getIsSorted() === "asc" ? (
-              <IconArrowUp className="ml-2 size-4" />
+              <IconArrowUp className="ms-2 size-4" />
             ) : (
-              <IconSelector className="ml-2 size-4" />
+              <IconSelector className="ms-2 size-4" />
             )}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start">
           <DropdownMenuItem onClick={() => column.toggleSorting(false)}>
-            <IconArrowUp className="mr-2 size-4 text-muted-foreground/70" />
+            <IconArrowUp className="me-2 size-4 text-muted-foreground/70" />
             Asc
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => column.toggleSorting(true)}>
-            <IconArrowDown className="mr-2 size-4 text-muted-foreground/70" />
+            <IconArrowDown className="me-2 size-4 text-muted-foreground/70" />
             Desc
           </DropdownMenuItem>
           {column.getCanHide() && (
@@ -59,7 +59,7 @@ export function DataTableColumnHeader<TData, TValue>({
           )}
           {column.getCanHide() && (
             <DropdownMenuItem onClick={() => column.toggleVisibility(false)}>
-              <IconEyeOff className="mr-2 size-4 text-muted-foreground/70" />
+              <IconEyeOff className="me-2 size-4 text-muted-foreground/70" />
               Hide
             </DropdownMenuItem>
           )}

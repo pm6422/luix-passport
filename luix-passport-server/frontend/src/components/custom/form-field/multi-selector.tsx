@@ -164,10 +164,10 @@ const MultiSelectorInner: React.ForwardRefRenderFunction<HTMLButtonElement, Mult
                       key={value}
                       className={cn(multiSelectorVariants({ variant, className }))}
                     >
-                      {IconComponent && <IconComponent className="size-4 mr-1" />}
+                      {IconComponent && <IconComponent className="size-4 me-1" />}
                       {creatable ? (option ? option.label : value) : option?.label}
                       <IconCircleX
-                        className="ml-1 size-4"
+                        className="ms-1 size-4"
                         onClick={(event) => {
                           event.stopPropagation()
                           handleRemoveValue(value)
@@ -180,7 +180,7 @@ const MultiSelectorInner: React.ForwardRefRenderFunction<HTMLButtonElement, Mult
               <div className="flex items-center justify-between">
                 {showClearButton ? (
                   <IconX
-                    className="size-4 mr-3 text-muted-foreground"
+                    className="size-4 me-3 text-muted-foreground"
                     onClick={(event) => {
                       event.stopPropagation()
                       handleClearAll()
@@ -189,7 +189,7 @@ const MultiSelectorInner: React.ForwardRefRenderFunction<HTMLButtonElement, Mult
                   />
                 ) : (
                   <IconSelector
-                    className="size-4 mr-3 text-muted-foreground"
+                    className="size-4 me-3 text-muted-foreground"
                     onMouseEnter={() => setShowClearButton(true)}
                   />
                 )}
@@ -198,7 +198,7 @@ const MultiSelectorInner: React.ForwardRefRenderFunction<HTMLButtonElement, Mult
           ) : (
             <div className="flex items-center justify-between w-full mx-auto">
               <span className="text-sm text-muted-foreground px-2">{placeholder}</span>
-              <IconSelector className="size-4 mr-3 text-muted-foreground" />
+              <IconSelector className="size-4 me-3 text-muted-foreground" />
             </div>
           )}
         </Button>
@@ -246,7 +246,7 @@ const MultiSelectorInner: React.ForwardRefRenderFunction<HTMLButtonElement, Mult
                   >
                     <div
                       className={cn(
-                        "mr-2 flex size-4 items-center justify-center rounded-sm border border-primary",
+                        "me-2 flex size-4 items-center justify-center rounded-sm border border-primary",
                         isSelected
                           ? "bg-primary dark:bg-primary"
                           : "opacity-50 dark:opacity-70"
@@ -262,7 +262,7 @@ const MultiSelectorInner: React.ForwardRefRenderFunction<HTMLButtonElement, Mult
                       />
                     </div>
                     {option.icon && (
-                      <option.icon className="mr-2 size-4 text-muted-foreground" />
+                      <option.icon className="me-2 size-4 text-muted-foreground" />
                     )}
                     <span>{option.label}</span>
                   </CommandItem>

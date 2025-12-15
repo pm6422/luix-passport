@@ -169,7 +169,7 @@ export function UploadDialog({
                 ))}
               </div>
             )}
-            <DialogFooter className="gap-2 pt-2 sm:space-x-0">
+            <DialogFooter className="gap-2 pt-2 sm:gap-x-0">
               {templateUrl &&
                 <a href={templateUrl} download="template" target="_blank">
                   <Button
