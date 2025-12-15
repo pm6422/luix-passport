@@ -248,11 +248,11 @@ export default function TeamDashboard() {
                     className="h-9 w-[150px]"
                     placeholder="Team name"
                   />
-                  <Button size="sm" className="px-2" onClick={saveTeamName}>
+                  <Button className="px-2" onClick={saveTeamName}>
                     <IconCheck className="size-4" />
                     Save
                   </Button>
-                  <Button size="sm" variant="outline" className="px-2" onClick={cancelEditName}>
+                  <Button variant="outline" className="px-2" onClick={cancelEditName}>
                     <IconX className="size-4" />
                     Cancel
                   </Button>
