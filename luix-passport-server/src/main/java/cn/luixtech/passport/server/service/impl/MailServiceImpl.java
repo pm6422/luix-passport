@@ -17,7 +17,6 @@ import org.springframework.util.StringUtils;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
-import java.time.Instant;
 import java.util.Locale;
 
 /**
@@ -87,11 +86,11 @@ public class MailServiceImpl implements MailService {
     }
 
     @Override
-    public void sendTeamInvitationEmail(User user, String teamName, String inviterName, String role,
-            String baseUrl, Instant expiresAt) {
+    public void sendTeamInvitationEmail(User user, String baseUrl, String teamName, String inviterName, 
+           int expirationDays) {
         sendEmailFromTemplate(user, null, "emails/team-invitation-email",
                 "team.invitation.email.subject", "team.invitation.email.title", baseUrl,
-                teamName, user.getEmail(), inviterName, role, expiresAt);
+                teamName, user.getEmail(), inviterName, expirationDays);
         log.info("Requested sending team invitation email to [{}] for team [{}]", user.getEmail(), teamName);
     }
 

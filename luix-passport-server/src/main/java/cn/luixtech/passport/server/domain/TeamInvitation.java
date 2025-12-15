@@ -14,6 +14,11 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TeamInvitation {
+  /**
+   * Invitation expires in 7 days.
+   */
+  public static final int INVITATION_EXPIRATION_DAYS = 7;
+
   public static final String STATUS_UNREGISTERED = "UNREGISTERED";
   public static final String STATUS_REGISTERED = "REGISTERED";
   public static final String STATUS_ACCEPTED = "ACCEPTED";
