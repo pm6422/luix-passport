@@ -1,8 +1,8 @@
 import { useState, useCallback } from "react"
 import { LayoutBody } from "@/layouts/layout-definitions"
-import { DataTableToolbar } from "./table/table-toolbar"
+import { DataTableToolbar } from "./table/data-dict-table-toolbar"
 import { PaginatedDataTable } from "@/components/custom/data-table/paginated-data-table"
-import { tableColumns } from "./table/table-columns"
+import { tableColumns } from "./table/data-dict-table-columns"
 import { type DataDict, type DataDictCriteria } from "@/domains/data-dict"
 import { DataDictService } from "@/services/data-dict-service"
 type UploadFormSchema = { files: File[] }

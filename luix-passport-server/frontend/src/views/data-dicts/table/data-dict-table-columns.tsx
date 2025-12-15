@@ -97,7 +97,7 @@ export function tableColumns(
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Updated At" />
       ),
-      cell: ({ row }) => <div className="w-[150px]"><UserDateTime value={row.original.updatedAt} /></div>,
+      cell: ({ row }) => <div className="w-[100px]"><UserDateTime value={row.original.updatedAt} twoLines={true} /></div>,
       enableSorting: true,
       enableHiding: true,
     },
