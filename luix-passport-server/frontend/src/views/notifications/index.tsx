@@ -106,7 +106,7 @@ export default function Notifications() {
                     key={notification.id}
                     className={cn(
                       "p-4 cursor-pointer hover:bg-muted transition-colors",
-                      notification.id === selectedNotification?.id && "bg-accent border-l-4 border-primary",
+                      notification.id === selectedNotification?.id && "bg-accent border-s-4 border-primary",
                       notification.status === "UNREAD" && "font-medium"
                     )}
                     onClick={() => {
