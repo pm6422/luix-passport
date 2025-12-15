@@ -69,7 +69,7 @@ export default function DataDict() {
   return (
     <RoleDeveloper>
       <LayoutBody className="flex flex-col" fixedHeight>
-        <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-y-0">
+        <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:gap-y-0">
           <PaginatedDataTable
             paginationMode="server"
             columns={tableColumns(entityName, save, deleteRow)}

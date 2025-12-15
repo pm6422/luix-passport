@@ -13,7 +13,7 @@ export function RecentLoginUsers() {
   }, [])
 
   return (
-    <div className='space-y-8'>
+    <div className='gap-y-8'>
       {
         loginUsers.map((loginUser, index) => (
           <LoginUserItem key={index} {...loginUser} />

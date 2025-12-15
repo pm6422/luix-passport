@@ -203,7 +203,7 @@ export default function TeamDashboard() {
               />
             </div>
 
-            <div className="flex-1 text-center md:text-start space-y-2">
+            <div className="flex-1 text-center md:text-start gap-y-2">
               <h1 className="text-3xl font-bold tracking-tight text-foreground">{team?.name}</h1>
               <div className="flex items-center justify-center md:justify-start gap-2 text-muted-foreground">
                 <span className="text-sm">Team ID:</span>
@@ -222,12 +222,12 @@ export default function TeamDashboard() {
         <div className="max-w-[1800px] mx-auto grid gap-6 md:grid-cols-3">
 
           {/* Left Column (Main Content) */}
-          <div className="md:col-span-2 space-y-6">
+          <div className="md:col-span-2 gap-y-6">
 
             <Card>
               <CardHeader>
                 <div className="flex items-center justify-between">
-                  <div className="space-y-1">
+                  <div className="gap-y-1">
                     <CardTitle className="text-lg flex items-center gap-2">
                       <IconUsers className="size-5" />
                       Team Members
@@ -246,7 +246,7 @@ export default function TeamDashboard() {
                   </div>
                 </div>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="gap-y-4">
                 <div className="flex items-center gap-2">
                   <Input
                     placeholder="Search members"
@@ -327,7 +327,7 @@ export default function TeamDashboard() {
             <RoleTeamOwner>
               <Card>
                 <CardHeader>
-                  <div className="space-y-1">
+                  <div className="gap-y-1">
                     <CardTitle className="text-lg flex items-center gap-2">
                       <IconMail className="size-5" />
                       Pending Invites
@@ -337,7 +337,7 @@ export default function TeamDashboard() {
                     </p>
                   </div>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="gap-y-4">
                   <div className="flex items-center gap-2">
                     <Input
                       placeholder="Search Invitations"
@@ -427,7 +427,7 @@ export default function TeamDashboard() {
           </div>
 
           {/* Right Column (Sidebar) */}
-          <div className="space-y-6">
+          <div className="gap-y-6">
 
             {/* Team Settings Card */}
             <Card>
@@ -437,13 +437,13 @@ export default function TeamDashboard() {
                   Settings
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4 px-4">
-                <div className="space-y-3">
-                  <div className="text-sm space-y-1">
+              <CardContent className="gap-y-4 px-4">
+                <div className="gap-y-3">
+                  <div className="text-sm gap-y-1">
                     <p className="font-medium">Visibility</p>
                     <p className="text-muted-foreground text-xs">This team is currently private and visible only to members.</p>
                   </div>
-                  <div className="text-sm space-y-1">
+                  <div className="text-sm gap-y-1">
                     <p className="font-medium">Role</p>
                     <div className="flex gap-2 flex-wrap">
                       {hasRole(TEAM_OWNER) ? <Badge>Owner</Badge> : <Badge variant="secondary">Member</Badge>}

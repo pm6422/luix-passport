@@ -50,7 +50,7 @@ export default function AuthenticationPage() {
             </Button>
           </div>
           <nav className="mt-10">
-            <ul className="space-y-4">
+            <ul className="gap-y-4">
               {docSections.map((section, index) => (
                 <li key={index}>
                   <Link
@@ -79,7 +79,7 @@ export default function AuthenticationPage() {
             Implement secure authentication flows for your application.
           </p>
 
-          <div className="space-y-12">
+          <div className="gap-y-12">
             {/* Email/Password Authentication */}
             <div className="border rounded-2xl p-6 hover:shadow-md transition-shadow">
               <h3 className="text-xl font-semibold mb-3 flex items-center">
@@ -194,7 +194,7 @@ async function verifyMFA(userId, code) {
 
           <div className="mt-16 border rounded-2xl p-6 bg-muted/50">
             <h3 className="text-xl font-semibold mb-4">Need Help?</h3>
-            <div className="space-y-6">
+            <div className="gap-y-6">
               <div>
                 <h4 className="font-medium">Community Support</h4>
                 <p className="text-muted-foreground mt-1">

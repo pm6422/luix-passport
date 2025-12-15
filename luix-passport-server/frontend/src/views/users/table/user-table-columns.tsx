@@ -185,7 +185,7 @@ export function tableColumns(
                   <span className="sr-only">Open menu</span>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-fit space-y-1">
+              <DropdownMenuContent align="end" className="w-fit gap-y-1">
                 <ConfirmPopover
                   message={"Reset password?"}
                   onClickYes={() => clickResetYes(row.original)}

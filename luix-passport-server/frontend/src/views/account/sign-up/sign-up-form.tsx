@@ -66,7 +66,7 @@ export function SignUpForm() {
         <div className="flex flex-col w-full h-full px-5 text-center">
           <h3 className="mb-6 text-2xl font-bold">Create Account</h3>
 
-          <div className="space-y-4">
+          <div className="gap-y-4">
             <InputFormField
               control={form.control}
               name="email"

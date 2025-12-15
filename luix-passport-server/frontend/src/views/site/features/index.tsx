@@ -83,7 +83,7 @@ export default function FeaturesPage() {
               <div key={index} className="border rounded-2xl p-6 hover:shadow-md transition-shadow">
                 <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
                 <p className="text-muted-foreground mb-4">{feature.description}</p>
-                <ul className="space-y-2">
+                <ul className="gap-y-2">
                   {feature.items.map((item, itemIndex) => (
                     <li key={itemIndex} className="flex items-start">
                       <IconCheck className="size-5 text-green-500 me-2 mt-0.5 shrink-0" />

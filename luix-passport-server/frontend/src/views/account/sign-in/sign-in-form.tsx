@@ -116,7 +116,7 @@ export function SignInForm() {
       )}
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="gap-y-4">
           <FormField
             control={form.control}
             name="username"

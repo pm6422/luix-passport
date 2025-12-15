@@ -65,7 +65,7 @@ export function PasswordStrengthIndicator({
       </div>
 
       {/* Requirements list */}
-      <ul className="space-y-1.5 mt-3">
+      <ul className="gap-y-1.5 mt-3">
         {strength.map((req, index) => (
           <li key={index} className="flex items-center gap-2">
             {req.met ? (

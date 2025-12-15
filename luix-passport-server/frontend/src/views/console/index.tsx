@@ -126,7 +126,7 @@ export default function ConsolePage() {
                 <CardTitle>Recent Activity</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
+                <div className="gap-y-4">
                   {[1, 2, 3, 4].map((item) => (
                     <div key={item} className="flex items-center gap-4 p-2 hover:bg-muted/50 rounded">
                       <div className="bg-primary/10 p-2 rounded-full">
@@ -147,7 +147,7 @@ export default function ConsolePage() {
           </div>
 
           {/* Team Invitations */}
-          <div className="space-y-4">
+          <div className="gap-y-4">
             {!loadingInvitations && invitations.length > 0 && (
               <Card>
                 <CardHeader>
@@ -158,9 +158,9 @@ export default function ConsolePage() {
                     </Badge>
                   </div>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="gap-y-4">
                   {invitations.map((invitation) => (
-                    <div key={invitation.id} className="border rounded-lg p-3 space-y-2">
+                    <div key={invitation.id} className="border rounded-lg p-3 gap-y-2">
                       <div className="flex items-start gap-2">
                         <div className="bg-blue-500/10 p-1.5 rounded-full">
                           <Mail className="size-4 text-blue-500" />
@@ -201,7 +201,7 @@ export default function ConsolePage() {
                 <CardTitle>Security Status</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
+                <div className="gap-y-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <div className="bg-green-500/10 p-1 rounded-full">

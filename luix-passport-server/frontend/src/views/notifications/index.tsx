@@ -62,7 +62,7 @@ export default function Notifications() {
   }
 
   return (
-    <LayoutBody className="space-y-4">
+    <LayoutBody className="gap-y-4">
       <div className="flex h-full gap-4">
         {/* Notifications List */}
         <Card className="w-full lg:w-1/3">
@@ -94,7 +94,7 @@ export default function Notifications() {
             </div>
 
             {isLoading ? (
-              <div className="space-y-2 p-4">
+              <div className="gap-y-2 p-4">
                 {Array(5).fill(0).map((_, i) => (
                   <Skeleton key={i} className="h-16 w-full" />
                 ))}
@@ -201,7 +201,7 @@ export default function Notifications() {
                 {/* Add a sender information section */}
                 {(selectedNotification.sender || selectedNotification.senderEmail) && (
                   <div className="mb-6 p-4 bg-muted/50 rounded-lg">
-                    <div className="space-y-2">
+                    <div className="gap-y-2">
                       {selectedNotification.sender && (
                         <p className="text-sm">
                           <span className="text-muted-foreground">From: </span>

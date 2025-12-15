@@ -54,7 +54,7 @@ export default function SiteHome() {
   }, [loginUser]);
 
   return (
-    <LayoutBody className="space-y-4">
+    <LayoutBody className="gap-y-4">
       <AnimatedPathsBackground>
         <div className="container relative grid h-screen flex-col items-center justify-center lg:max-w-none lg:grid-cols-2">
           {/* Left side - hidden on mobile */}
@@ -105,7 +105,7 @@ export default function SiteHome() {
                     </span>{" "}
                     new notifications.
                   </div>
-                  <div className="w-full max-w-sm space-y-6">
+                  <div className="w-full max-w-sm gap-y-6">
                     <Button asChild variant="link" className="w-full px-5 py-4 h-14 text-base font-medium rounded-2xl">
                       <Link to="/notifications">View Notifications</Link>
                     </Button>
@@ -124,7 +124,7 @@ export default function SiteHome() {
                   <p className="text-lg text-muted-foreground mb-10 max-w-md">
                     Sign in to access your personalized console and features.
                   </p>
-                  <div className="w-full max-w-sm space-y-6">
+                  <div className="w-full max-w-sm gap-y-6">
                     <Button asChild className="w-full px-5 py-4 h-14 text-base font-medium rounded-2xl">
                       <Link to="/sign-in">Sign In</Link>
                     </Button>

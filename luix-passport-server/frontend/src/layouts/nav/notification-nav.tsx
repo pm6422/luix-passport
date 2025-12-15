@@ -141,7 +141,7 @@ export function NotificationNav() {
             className="hover:bg-accent rounded-md px-3 py-2 text-sm transition-colors"
           >
             <div className="relative flex items-start pe-3">
-              <div className="flex-1 space-y-1">
+              <div className="flex-1 gap-y-1">
                 <button
                   className="text-foreground/80 text-start after:absolute after:inset-0"
                   onClick={() => handleNotificationClick(notification.id)}

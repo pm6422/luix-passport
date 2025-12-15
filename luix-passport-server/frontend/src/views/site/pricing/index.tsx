@@ -104,7 +104,7 @@ export default function PricingPage() {
                   )}
                 </div>
                 <p className="text-muted-foreground mb-6">{plan.description}</p>
-                <ul className="space-y-3 mb-8 grow"> {/* Added grow */}
+                <ul className="gap-y-3 mb-8 grow"> {/* Added grow */}
                   {plan.features.map((feature, featureIndex) => (
                     <li key={featureIndex} className="flex items-start">
                       <IconCheck className="size-5 text-green-500 me-2 mt-0.5 shrink-0" />
@@ -130,7 +130,7 @@ export default function PricingPage() {
             <h3 className="text-xl font-semibold mb-4">
               Frequently Asked Questions
             </h3>
-            <div className="space-y-6">
+            <div className="gap-y-6">
               <div>
                 <h4 className="font-medium">Can I change plans later?</h4>
                 <p className="text-muted-foreground mt-1">

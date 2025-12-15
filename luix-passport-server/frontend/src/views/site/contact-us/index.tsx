@@ -104,7 +104,7 @@ export default function ContactUs() {
           </p>
 
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="gap-y-6">
               <InputFormField
                 control={form.control}
                 name="sender"
@@ -160,7 +160,7 @@ export default function ContactUs() {
             <h3 className="mb-4 text-lg font-semibold">
               Other Ways to Reach Us
             </h3>
-            <div className="space-y-3">
+            <div className="gap-y-3">
               <div className="flex items-center">
                 <svg
                   className="me-3 size-5"

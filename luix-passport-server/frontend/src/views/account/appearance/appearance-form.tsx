@@ -40,12 +40,12 @@ export function AppearanceForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="gap-y-8">
         <FormField
           control={form.control}
           name="theme"
           render={({ field }) => (
-            <FormItem className="space-y-1">
+            <FormItem className="gap-y-1">
               <FormLabel>Theme</FormLabel>
               <FormDescription>
                 Select the theme for the console.
@@ -63,8 +63,8 @@ export function AppearanceForm() {
                     </FormControl>
                     <div className="flex flex-col items-center">
                       <div className="items-center rounded-md border-2 border-muted p-1 hover:border-accent">
-                        <div className="space-y-2 rounded-sm bg-[#ecedef] p-1 md:p-2">
-                          <div className="space-y-2 rounded-md bg-white p-1 shadow-xs md:p-2">
+                        <div className="gap-y-2 rounded-sm bg-[#ecedef] p-1 md:p-2">
+                          <div className="gap-y-2 rounded-md bg-white p-1 shadow-xs md:p-2">
                             <div className="h-2 w-[40px] rounded-lg bg-[#ecedef] md:w-[60px]" />
                             <div className="h-2 w-[50px] rounded-lg bg-[#ecedef] md:w-[100px]" />
                           </div>
@@ -87,8 +87,8 @@ export function AppearanceForm() {
                     </FormControl>
                     <div className="flex flex-col items-center">
                       <div className="items-center rounded-md border-2 border-muted bg-popover p-1 hover:bg-accent hover:text-accent-foreground">
-                        <div className="space-y-2 rounded-sm bg-slate-950 p-1 md:p-2">
-                          <div className="space-y-2 rounded-md bg-slate-800 p-1 shadow-xs md:p-2">
+                        <div className="gap-y-2 rounded-sm bg-slate-950 p-1 md:p-2">
+                          <div className="gap-y-2 rounded-md bg-slate-800 p-1 shadow-xs md:p-2">
                             <div className="h-2 w-[40px] rounded-lg bg-slate-400 md:w-[60px]" />
                             <div className="h-2 w-[50px] rounded-lg bg-slate-400 md:w-[100px]" />
                           </div>
@@ -111,8 +111,8 @@ export function AppearanceForm() {
                     </FormControl>
                     <div className="flex flex-col items-center">
                       <div className="items-center rounded-md border-2 border-muted bg-popover p-1 hover:bg-accent hover:text-accent-foreground">
-                        <div className="space-y-2 rounded-sm bg-[#ecedef] p-1 md:p-2">
-                          <div className="space-y-2 rounded-md bg-white p-1 shadow-xs md:p-2">
+                        <div className="gap-y-2 rounded-sm bg-[#ecedef] p-1 md:p-2">
+                          <div className="gap-y-2 rounded-md bg-white p-1 shadow-xs md:p-2">
                             <div className="h-2 w-[40px] rounded-lg bg-[#ecedef] md:w-[60px]" />
                             <div className="h-2 w-[50px] rounded-lg bg-[#ecedef] md:w-[100px]" />
                           </div>

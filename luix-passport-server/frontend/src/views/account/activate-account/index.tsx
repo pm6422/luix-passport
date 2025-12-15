@@ -67,7 +67,7 @@ export default function ActivateAccount() {
 
           <div className="mt-6 mb-8">
             {success ? (
-              <div className="space-y-4">
+              <div className="gap-y-4">
                 <p className="text-lg text-muted-foreground">
                   Your account has been successfully activated!
                 </p>
@@ -79,7 +79,7 @@ export default function ActivateAccount() {
                 </Button>
               </div>
             ) : (
-              <div className="space-y-4">
+              <div className="gap-y-4">
                 <p className="text-lg text-muted-foreground pb-4">
                   {code ? "Activating your account..." : "Invalid activation link"}
                 </p>
