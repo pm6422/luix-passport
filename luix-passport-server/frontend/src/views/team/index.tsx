@@ -24,7 +24,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { AccountService } from "@/services/account-service"
 import { TeamInvitation } from "@/services/team-service"
 import { TeamRoleSelector } from "@/components/custom/form-field/team-role-selector"
 import { OverflowBadges } from "@/components/custom/display/overflow-badges"
@@ -51,8 +50,6 @@ export default function TeamDashboard() {
   const [pendingRoleChange, setPendingRoleChange] = useState<{ userId: string, newRoles: string[] } | null>(null)
 
   const [copiedId, setCopiedId] = useState(false)
-
-  const avatarFileInputRef = useRef<HTMLInputElement>(null)
 
   const loadTeamData = useCallback(async () => {
     if (!teamId) return
@@ -145,26 +142,6 @@ export default function TeamDashboard() {
       : members
   }, [members, memberQuery])
 
-  const handleSelfAvatarClick = () => {
-    avatarFileInputRef.current?.click()
-  }
-
-  const handleSelfAvatarFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files || e.target.files.length === 0) return
-    const file = e.target.files[0]
-    const formData = new FormData()
-    formData.append("file", file)
-    try {
-      await AccountService.uploadAvatar(formData)
-      toast.success("Avatar updated")
-      loadTeamData() // Reload members to refresh avatar
-    } catch (error) {
-      toast.error("Avatar update failed")
-      console.error(error)
-    } finally {
-      e.target.value = ""
-    }
-  }
 
   const confirmRoleChange = async () => {
     if (!pendingRoleChange || !teamId) return
@@ -298,23 +275,13 @@ export default function TeamDashboard() {
                           <div className="flex items-center space-x-3">
                             <div className="relative">
                               <Avatar
-                                className={`size-8 ${member.userId === loginUser.username ? "cursor-pointer group" : ""}`}
-                                onClick={member.userId === loginUser.username ? handleSelfAvatarClick : undefined}
+                                className="size-8"
                               >
                                 {member.avatar && (
                                   <AvatarImage src={`data:image/png;base64,${member.avatar}`} />
                                 )}
                                 <AvatarFallback>{member.firstName?.[0]}{member.lastName?.[0]}</AvatarFallback>
                               </Avatar>
-                              {member.userId === loginUser.username && (
-                                <input
-                                  ref={avatarFileInputRef}
-                                  type="file"
-                                  accept="image/*"
-                                  className="hidden"
-                                  onChange={handleSelfAvatarFileChange}
-                                />
-                              )}
                               {member.userId === loginUser.username && (
                                 <span className="animate-pulse border-background absolute -end-0.5 -bottom-0.5 size-3 rounded-full border-2 bg-emerald-500">
                                   <span className="sr-only">You</span>
