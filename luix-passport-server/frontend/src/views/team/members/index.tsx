@@ -122,7 +122,7 @@ export default function TeamMembers() {
     const q = inviteQuery.trim().toLowerCase()
     return q
       ? invitations.filter((i) => {
-        const values = [i.memberEmail, i.memberRoles, getInviteProgress(i)]
+        const values = [i.inviteeEmail, i.inviteeRoles, getInviteProgress(i)]
         return values.filter(Boolean).some((v) => String(v).toLowerCase().includes(q))
       })
       : invitations
@@ -298,10 +298,10 @@ export default function TeamMembers() {
                 ) : (
                   filteredInvitations.map((invite) => (
                     <TableRow key={invite.id}>
-                      <TableCell>{invite.memberEmail}</TableCell>
+                      <TableCell>{invite.inviteeEmail}</TableCell>
                       <TableCell>
                         <OverflowBadges
-                          items={(invite.memberRoles || "").split(",").filter(Boolean)}
+                          items={(invite.inviteeRoles || "").split(",").filter(Boolean)}
                           visibleCount={2}
                           className=""
                           badgeClassName="capitalize"
