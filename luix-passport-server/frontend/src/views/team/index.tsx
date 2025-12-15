@@ -428,30 +428,6 @@ export default function TeamDashboard() {
           {/* Right Column (Sidebar) */}
           <div className="flex flex-col gap-y-6">
 
-            {/* Team Settings Card */}
-            <Card>
-              <CardHeader className="px-4">
-                <CardTitle className="text-lg flex items-center gap-2">
-                  <IconSettings className="size-5" />
-                  Settings
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="gap-y-4 px-4">
-                <div className="gap-y-3">
-                  <div className="text-sm gap-y-1">
-                    <p className="font-medium">Visibility</p>
-                    <p className="text-muted-foreground text-xs">This team is currently private and visible only to members.</p>
-                  </div>
-                  <div className="text-sm gap-y-1">
-                    <p className="font-medium">Role</p>
-                    <div className="flex gap-2 flex-wrap">
-                      {hasRole(TEAM_OWNER) ? <Badge>Owner</Badge> : <Badge variant="secondary">Member</Badge>}
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
             {/* Danger Zone */}
             <RoleTeamOwner>
               <Card className="shadow-none">
