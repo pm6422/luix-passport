@@ -40,7 +40,8 @@ type PhoneInputProps = Omit<
 const PhoneInput: React.ForwardRefExoticComponent<PhoneInputProps> =
   React.forwardRef<React.ElementRef<typeof RPNInput.default>, PhoneInputProps>(
     ({ className, onChange, value, ...props }, ref) => {
-      const { ["aria-invalid"]: ariaInvalid, ...restProps } = props as Record<string, unknown>
+      type RPNAllowedProps = Omit<RPNInput.Props<typeof RPNInput.default>, "onChange" | "value" | "ref">
+      const { ["aria-invalid"]: ariaInvalid, ...rpnProps } = props as RPNAllowedProps & { ["aria-invalid"]?: boolean }
       return (
         <div className={cn("group", className)} aria-invalid={ariaInvalid ? true : undefined}>
           <RPNInput.default
@@ -52,7 +53,7 @@ const PhoneInput: React.ForwardRefExoticComponent<PhoneInputProps> =
             smartCaret={false}
             value={value || undefined}
             onChange={(value) => onChange?.(value || ("" as RPNInput.Value))}
-            {...(restProps as any)}
+            {...rpnProps}
           />
         </div>
       );
