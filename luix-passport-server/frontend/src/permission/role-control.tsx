@@ -1,5 +1,5 @@
 import { useLoginUserStore } from "@/stores/login-user-store"
-import { ROLE_ADMIN, ROLE_DEVELOPER, ROLE_USER, TEAM_OWNER } from "./roles"
+import { ROLE_ADMIN, ROLE_DEVELOPER, ROLE_USER, TEAM_OWNER } from "@/domains/role"
 
 type Props = {
   children: React.ReactNode
