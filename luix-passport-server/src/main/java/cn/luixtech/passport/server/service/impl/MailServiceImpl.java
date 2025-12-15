@@ -72,7 +72,6 @@ public class MailServiceImpl implements MailService {
         if (args != null && args.length > 0) {
             context.setVariable("args", args);
         }
-        
         String content = springTemplateEngine.process(EMAIL_LAYOUT, context);
         String subject = messageSource.getMessage(emailSubjectKey, null, locale);
         sendEmail(ArrayUtils.isNotEmpty(emailsTo) ? emailsTo : new String[] { user.getEmail() }, subject, content);
