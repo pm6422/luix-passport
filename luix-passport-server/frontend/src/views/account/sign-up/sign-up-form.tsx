@@ -51,7 +51,7 @@ export function SignUpForm() {
       success: () => {
         setIsLoading(false)
         navigate("/sign-in")
-        return "Registered account successfully"
+        return "Registered account successfully, and you will get a confirmation email in a few minutes."
       },
       error: (error) => {
         setIsLoading(false)
