@@ -1,35 +1,68 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title th:text="${title}">Luix Passport</title>
 </head>
-<body style="margin:0;padding:0;background:#fff;color:#000;font-family:Arial,Helvetica,sans-serif;line-height:1.5;">
-<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#fff;">
-  <tr>
-    <td align="center" style="padding:24px 12px;">
-      <table cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;background:#fff;border:2px solid #000;border-radius:0;">
-        <tr>
-          <td style="background:#000;padding:16px 24px;text-align:center;">
-            <a th:href="${domain}" style="text-decoration:none;">
-              <span th:text="${title}" style="color:#fff;font-size:18px;font-weight:700;">Luix Passport</span>
-            </a>
-          </td>
-        </tr>
-        <tr>
-          <td style="padding:24px;color:#000;">
-            <div th:replace="${contentFragment} :: content"></div>
-          </td>
-        </tr>
-        <tr>
-          <td style="padding:12px 24px;text-align:center;border-top:2px solid #000;color:#000;">
-            <span style="font-size:12px;">© 2025 Luix Passport</span>
-          </td>
-        </tr>
-      </table>
-    </td>
-  </tr>
-  </table>
+
+<body
+  style="margin:0;padding:0;background-color:#f4f4f5;color:#18181b;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased;">
+  <div style="background-color: #f4f4f5; margin: 0; padding: 40px 0; width: 100%;">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="width: 100%;">
+      <tr>
+        <td align="center" style="padding: 0 20px;">
+          <!-- Card Container -->
+          <table border="0" cellpadding="0" cellspacing="0" width="100%"
+            style="max-width: 500px; background-color: #ffffff; border-radius: 12px; overflow: hidden; margin: 0 auto;">
+
+            <!-- Header Area -->
+            <tr>
+              <td align="center" style="padding: 30px 40px 0 40px;">
+                <a th:href="${domain}" style="text-decoration:none;">
+                  <div
+                    style="font-size: 20px; font-weight: 800; color: #18181b; letter-spacing: -0.5px; text-transform: uppercase;">
+                    Luix Passport
+                  </div>
+                </a>
+              </td>
+            </tr>
+
+            <!-- Main Content -->
+            <tr>
+              <td style="padding: 40px 40px 30px 40px; text-align: left;">
+                <div th:replace="${contentFragment} :: content"></div>
+              </td>
+            </tr>
+
+            <!-- Footer Divider (Optional, if content doesn't have one) -->
+            <!-- <tr>
+              <td style="padding: 0 40px;">
+                <div style="height: 1px; background-color: #e4e4e7; width: 100%;"></div>
+              </td>
+            </tr> -->
+
+          </table>
+
+          <!-- Exterior Footer -->
+          <table border="0" cellpadding="0" cellspacing="0" width="100%"
+            style="max-width: 500px; margin: 24px auto 0 auto;">
+            <tr>
+              <td align="center" style="font-size: 12px; line-height: 18px; color: #a1a1aa; text-align: center;">
+                <p style="margin: 0 0 8px 0;">This is an automated message, please do not reply.</p>
+                <p style="margin: 0;">
+                  &copy; <span th:text="${#calendars.format(#calendars.createNow(), 'yyyy')}">2025</span> LuixTech. All
+                  rights reserved.
+                </p>
+              </td>
+            </tr>
+          </table>
+
+        </td>
+      </tr>
+    </table>
+  </div>
 </body>
+
 </html>
