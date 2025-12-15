@@ -100,6 +100,8 @@ export function InviteMembersDialog({ open, onOpenChange, teamId, onSuccess }: I
       size="md"
       contentClassName="sm:max-w-[700px]"
       showFormErrors={false}
+      savingButtonText="Sending..."
+      saveButtonText="Send Invitation"
       renderFields={(form) => (
         <InviteMembersFormFields form={form} allRoles={allRoles} />
       )}

@@ -50,6 +50,8 @@ interface FormDialogProps<
   showFormErrors?: boolean
   loadingMessage?: string
   successMessage?: string
+  savingButtonText?: string
+  saveButtonText?: string
 }
 
 interface Props<T extends FieldValues> {
@@ -67,6 +69,8 @@ interface Props<T extends FieldValues> {
   showFormErrors?: boolean
   loadingMessage?: string
   successMessage?: string
+  savingButtonText?: string
+  saveButtonText?: string
 }
 
 function FormDialogContent<T extends FieldValues>({
@@ -84,6 +88,8 @@ function FormDialogContent<T extends FieldValues>({
   showFormErrors = true,
   loadingMessage,
   successMessage,
+  savingButtonText,
+  saveButtonText,
 }: Props<T>) {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<FieldErrors>({})
@@ -148,7 +154,7 @@ function FormDialogContent<T extends FieldValues>({
             </DialogClose>
             {!readonly &&
               <LoadingButton type="submit" loading={saving} className="w-full sm:w-auto sm:min-w-[80px]">
-                {saving ? "Saving" : "Save"}
+                {saving ? (savingButtonText ?? "Saving") : (saveButtonText ?? "Save")}
               </LoadingButton>
             }
           </DialogFooter>
@@ -178,8 +184,10 @@ export function FormDialog<
   onOpenChange: controlledOnOpenChange,
   contentClassName,
   showFormErrors = true,
-  successMessage,
   loadingMessage,
+  successMessage,
+  savingButtonText,
+  saveButtonText,
 }: FormDialogProps<TFieldValues, TOptions>) {
   const [internalOpen, setInternalOpen] = useState(false)
   const isControlled = typeof controlledOpen === "boolean" && typeof controlledOnOpenChange === "function"
@@ -248,6 +256,8 @@ export function FormDialog<
         showFormErrors={showFormErrors}
         successMessage={successMessage}
         loadingMessage={loadingMessage}
+        saveButtonText={saveButtonText}
+        savingButtonText={savingButtonText}
       >
         {loading ? (
           <div className="flex items-center justify-center py-8">
