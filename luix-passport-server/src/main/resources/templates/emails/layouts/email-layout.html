@@ -32,6 +32,12 @@
             <!-- Main Content -->
             <tr>
               <td style="padding: 20px 40px 30px 40px; text-align: left;">
+                <!-- Title -->
+                <div th:text="${title}"
+                  style="margin: 0 0 20px 0; font-size: 20px; font-weight: 700; color: #18181b; text-align: center; line-height: 1.2;">
+                  Email Title
+                </div>
+                <!-- Content -->
                 <div th:replace="${contentFragment} :: content"></div>
               </td>
             </tr>
