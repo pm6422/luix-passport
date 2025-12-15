@@ -1,7 +1,6 @@
 import { useState, useRef, useCallback } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import { LoadingButton } from "@/components/custom/form-element/loading-button"
 import InputFormField from "@/components/custom/form-field/input"
@@ -27,8 +26,6 @@ import { useLoginUserStore } from "@/stores/login-user-store"
 import { AccountService } from "@/services/account-service"
 import { getErrorMessage } from "@/lib/handle-error"
 import { PASSWORD_MIN_LENGTH, ChangePasswordFormSchema, changePasswordFormSchema } from "@/domains/user-registration"
-
-
 
 export function ChangePasswordForm() {
   const { loginUser } = useLoginUserStore()
