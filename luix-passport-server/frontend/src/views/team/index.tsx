@@ -228,7 +228,7 @@ export default function TeamDashboard() {
         <div className="max-w-[1800px] mx-auto grid gap-6 md:grid-cols-3">
 
           {/* Left Column (Main Content) */}
-          <div className="md:col-span-2 space-y-8">
+          <div className="md:col-span-2 space-y-6">
 
             <Card>
               <CardHeader>
