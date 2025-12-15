@@ -103,7 +103,7 @@ export function ChangePasswordForm() {
           render={({ field }) => (
             <FormItem className="flex flex-col gap-y-1">
               <RequiredFormLabel required={true}>Current Password</RequiredFormLabel>
-              <FormControl>
+              <FormControl className="mt-2">
                 <PasswordInput {...field} placeholder="" />
               </FormControl>
               <FormMessage />
@@ -116,7 +116,7 @@ export function ChangePasswordForm() {
           render={({ field }) => (
             <FormItem className="flex flex-col gap-y-1">
               <RequiredFormLabel required={true}>New Password</RequiredFormLabel>
-              <FormControl>
+              <FormControl className="mt-2">
                 <PasswordInput
                   {...field}
                   placeholder=""
