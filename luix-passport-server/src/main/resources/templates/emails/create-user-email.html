@@ -4,26 +4,29 @@
       <td>
         <table cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;background:#ffffff;">
           <tr>
-            <td style="padding:20px 24px 8px;font-size:20px;font-weight:700;color:#000;">
-              <span th:text="#{email.greeting(${user.username})}">Hello User,</span>
+            <td style="padding:20px 24px 8px;font-size:20px;font-weight:700;color:#000;"
+              th:text="#{email.greeting(${user.username})}">
+              Hello User,
             </td>
           </tr>
           <tr>
-            <td style="padding:0 24px 16px;font-size:16px;color:#000;">
-              <span th:text="#{create.user.email.text}">Your account has been successfully created. To set your password, click the button below:</span>
+            <td style="padding:0 24px 16px;font-size:16px;color:#000;" th:text="#{create.user.email.text}">
+              Your account has been successfully created. To set your password, click the button below:
             </td>
           </tr>
           <tr>
             <td style="padding:8px 24px 24px;text-align:center;">
               <a th:href="@{|${baseUrl}/#/reset-password?resetCode=${user.resetCode}|}"
-                 style="display:inline-block;padding:14px 28px;font-size:16px;font-weight:700;background:#000;color:#fff;text-decoration:none;border:2px solid #000;border-radius:0;">
-                <span th:text="#{create.user.email.button.text}">Set Password</span>
+                style="display:inline-block;padding:14px 28px;font-size:16px;font-weight:700;background:#000;color:#fff;text-decoration:none;border:2px solid #000;border-radius:0;"
+                th:text="#{create.user.email.button.text}">
+                Set Password
               </a>
             </td>
           </tr>
           <tr>
-            <td style="padding:0 24px 24px;font-size:13px;color:#000;">
-              <span th:text="#{reset.password.ignore.tip(${user.email})}">If you did not expect this email, please contact support or ignore it.</span>
+            <td style="padding:0 24px 24px;font-size:13px;color:#000;"
+              th:text="#{reset.password.ignore.tip(${user.email})}">
+              If you did not expect this email, please contact support or ignore it.
             </td>
           </tr>
         </table>

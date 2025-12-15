@@ -4,35 +4,31 @@
       <td align="center">
         <table cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;background:#fff;">
           <tr>
-            <td style="padding:18px 24px 8px;text-align:center;font-size:18px;font-weight:700;color:#000;">
-              <span th:text="#{email.greeting(${user.username})}">Hello</span>
-            </td>
+            <td style="padding:18px 24px 8px;text-align:center;font-size:18px;font-weight:700;color:#000;"
+              th:text="#{email.greeting(${user.username})}">Hello</td>
           </tr>
           <tr>
-            <td style="padding:0 24px 16px;text-align:center;font-size:16px;color:#000;">
-              <span th:text="#{verification.code.email.text}">Your verification code is:</span>
-            </td>
+            <td style="padding:0 24px 16px;text-align:center;font-size:16px;color:#000;"
+              th:text="#{verification.code.email.text}">Your verification code is:</td>
           </tr>
           <tr>
             <td style="padding:8px 24px 20px;text-align:center;">
-              <table cellpadding="0" cellspacing="0" border="0" style="margin:0 auto;border:2px solid #000;border-radius:0;background:#fff;">
+              <table cellpadding="0" cellspacing="0" border="0"
+                style="margin:0 auto;border:2px solid #000;border-radius:0;background:#fff;">
                 <tr>
-                  <td style="padding:18px 28px;font-size:40px;letter-spacing:8px;font-weight:900;color:#000;">
-                    <span th:text="${user.verificationCode}">123456</span>
-                  </td>
+                  <td style="padding:18px 28px;font-size:40px;letter-spacing:8px;font-weight:900;color:#000;"
+                    th:text="${user.verificationCode}">123456</td>
                 </tr>
               </table>
             </td>
           </tr>
           <tr>
-            <td style="padding:0 24px 18px;text-align:center;font-size:14px;font-weight:700;color:#000;">
-              <span th:text="#{verification.code.expires.tip}">This code will expire in 15 minutes.</span>
-            </td>
+            <td style="padding:0 24px 18px;text-align:center;font-size:14px;font-weight:700;color:#000;"
+              th:text="#{verification.code.expires.tip}">This code will expire in 15 minutes.</td>
           </tr>
           <tr>
-            <td style="padding:0 24px 24px;text-align:center;font-size:13px;color:#000;">
-              <span>If you didn't request this code, ignore this email.</span>
-            </td>
+            <td style="padding:0 24px 24px;text-align:center;font-size:13px;color:#000;">If you didn't request this
+              code, ignore this email.</td>
           </tr>
         </table>
       </td>
