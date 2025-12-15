@@ -6,10 +6,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-
-/**
- * REST controller for managing teams.
- */
 import cn.luixtech.passport.server.domain.Team;
 import cn.luixtech.passport.server.domain.TeamInvitation;
 import cn.luixtech.passport.server.dto.TeamMember;
@@ -28,6 +24,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * REST controller for managing teams.
+ */
 @RestController
 @AllArgsConstructor
 @Slf4j
@@ -135,23 +134,6 @@ public class TeamController {
         teamService.resendInvitation(request, invitationId, AuthUtils.getCurrentUsername());
         return ResponseEntity.ok().build();
     }
-
-    // @Operation(summary = "batch resend team invitations")
-    // @PostMapping("/api/invitations/batch-resend")
-    // public ResponseEntity<Void> batchResendInvitations(HttpServletRequest
-    // request, @RequestBody java.util.List<String> invitationIds) {
-    // teamService.resendInvitations(request, invitationIds,
-    // AuthUtils.getCurrentUsername());
-    // return ResponseEntity.ok().build();
-    // }
-    //
-    // @Operation(summary = "batch delete team invitations")
-    // @PostMapping("/api/invitations/batch-delete")
-    // public ResponseEntity<Void> batchDeleteInvitations(@RequestBody
-    // java.util.List<String> invitationIds) {
-    // teamService.deleteInvitations(invitationIds, AuthUtils.getCurrentUsername());
-    // return ResponseEntity.ok().build();
-    // }
 
     @Operation(summary = "update team member roles")
     @PutMapping("/api/teams/{teamId}/members/{userId}/role")
