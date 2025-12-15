@@ -27,6 +27,7 @@ export function CreateTeamDialog({ children, onSuccess, open, onOpenChange }: Cr
   async function save(model: CreateTeam): Promise<void> {
     const { data } = await TeamService.create(model.name, model.photo)
     navigate(`/teams/${data.id}`)
+    window.location.reload()
   }
 
   return (
