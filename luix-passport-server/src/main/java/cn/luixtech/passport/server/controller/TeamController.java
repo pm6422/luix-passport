@@ -115,6 +115,13 @@ public class TeamController {
         return ResponseEntity.ok().build();
     }
 
+    @Operation(summary = "update team name")
+    @PutMapping("/api/teams/{teamId}/name")
+    public ResponseEntity<Void> updateTeamName(@PathVariable String teamId, @RequestParam String name) {
+        teamService.updateTeamName(teamId, name, AuthUtils.getCurrentUsername());
+        return ResponseEntity.ok().build();
+    }
+
     @Operation(summary = "get user invitations")
     @GetMapping("/api/user/invitations")
     public ResponseEntity<List<TeamInvitation>> getUserInvitations() {

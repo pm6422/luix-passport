@@ -56,6 +56,10 @@ export class TeamService {
     })
   }
 
+  public static updateTeamName(teamId: string, name: string): Promise<AxiosResponse<void>> {
+    return http.put(`/api/teams/${teamId}/name`, null, { params: { name } })
+  }
+
   public static getUserInvitations(): Promise<AxiosResponse<TeamInvitation[]>> {
     return http.get("/api/user/invitations")
   }

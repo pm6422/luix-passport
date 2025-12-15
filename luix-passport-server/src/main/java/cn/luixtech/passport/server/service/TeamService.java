@@ -35,4 +35,6 @@ public interface TeamService {
   void updateInviteeRoles(String teamId, String userId, java.util.Set<String> roles, String operatorId);
 
   void deleteTeam(String teamId);
+
+  void updateTeamName(String teamId, String name, String operatorId);
 }

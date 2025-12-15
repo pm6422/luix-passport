@@ -255,6 +255,21 @@ public class TeamServiceImpl implements TeamService {
   }
 
   @Override
+  @Transactional(rollbackFor = Exception.class)
+  public void updateTeamName(String teamId, String name, String operatorId) {
+    teamUserRepository.findByTeamIdAndUserId(teamId, operatorId)
+        .orElseThrow(() -> new RuntimeException("Operator is not a member of the team"));
+    Set<String> operatorRoleIds = userRoleService.findRoleIds(operatorId);
+    if (!operatorRoleIds.contains(Role.TEAM_OWNER)) {
+      throw new RuntimeException("Only team owners can update team name");
+    }
+    Team team = teamRepository.findById(teamId)
+        .orElseThrow(() -> new RuntimeException("Team not found"));
+    team.setName(name);
+    teamRepository.save(team);
+  }
+
+  @Override
   public List<TeamInvitation> findUserInvitations(String email) {
     return teamInvitationRepository.findByInviteeEmailAndStatusAndExpiresAtAfter(email,
         TeamInvitation.STATUS_REGISTERED,

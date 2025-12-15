@@ -2,7 +2,7 @@ import { useParams, useNavigate } from "react-router-dom"
 import { useState, useEffect, useRef, useCallback, useMemo } from "react"
 import { Button } from "@/components/ui/button"
 import { LayoutBody } from "@/layouts/layout-definitions"
-import { IconCamera, IconAlertCircle, IconCopy, IconCheck, IconTrash, IconUsers, IconMail } from "@tabler/icons-react"
+import { IconCamera, IconAlertCircle, IconCopy, IconCheck, IconTrash, IconUsers, IconMail, IconPencil, IconX } from "@tabler/icons-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { TeamService, Team, TeamMember } from "@/services/team-service"
 import { toast } from "sonner"
@@ -50,6 +50,8 @@ export default function TeamDashboard() {
   const [pendingRoleChange, setPendingRoleChange] = useState<{ userId: string, newRoles: string[] } | null>(null)
 
   const [copiedId, setCopiedId] = useState(false)
+  const [editingName, setEditingName] = useState(false)
+  const [newName, setNewName] = useState("")
 
   const loadTeamData = useCallback(async () => {
     if (!teamId) return
@@ -60,6 +62,7 @@ export default function TeamDashboard() {
       if (currentTeam) {
         setTeam(currentTeam)
         setAvatarUrl(TeamService.getTeamPhoto(teamId) + `?t=${Date.now()}`)
+        setNewName(currentTeam.name || "")
       }
 
       // Load Members
@@ -129,6 +132,30 @@ export default function TeamDashboard() {
     setCopiedId(true)
     setTimeout(() => setCopiedId(false), 2000)
     toast.success("Team ID copied to clipboard")
+  }
+
+  const startEditName = () => {
+    if (!hasRole(TEAM_OWNER)) return
+    setNewName(team?.name || "")
+    setEditingName(true)
+  }
+
+  const cancelEditName = () => {
+    setEditingName(false)
+    setNewName(team?.name || "")
+  }
+
+  const saveTeamName = async () => {
+    if (!teamId) return
+    try {
+      await TeamService.updateTeamName(teamId, (newName || "").trim())
+      toast.success("Team name updated")
+      setTeam(prev => (prev ? { ...prev, name: (newName || "").trim() } : prev))
+      setEditingName(false)
+    } catch (error) {
+      toast.error("Failed to update team name")
+      console.error(error)
+    }
   }
 
   // Members Logic
@@ -204,8 +231,34 @@ export default function TeamDashboard() {
             </div>
 
             <div className="flex-1 text-center md:text-start gap-y-2">
-              <h1 className="text-3xl font-bold tracking-tight text-foreground">{team?.name}</h1>
-              <div className="flex items-center justify-center md:justify-start gap-2 text-muted-foreground">
+              {!editingName ? (
+                <div className="flex items-center justify-center md:justify-start gap-2">
+                  <h1 className="text-3xl font-bold tracking-tight text-foreground">{team?.name}</h1>
+                  <RoleTeamOwner>
+                    <Button variant="ghost" size="icon" className="size-7" onClick={startEditName}>
+                      <IconPencil className="size-4" />
+                    </Button>
+                  </RoleTeamOwner>
+                </div>
+              ) : (
+                <div className="flex items-center justify-center md:justify-start gap-2">
+                  <Input
+                    value={newName}
+                    onChange={(e) => setNewName(e.target.value)}
+                    className="h-9 w-[150px]"
+                    placeholder="Team name"
+                  />
+                  <Button size="sm" className="px-2" onClick={saveTeamName}>
+                    <IconCheck className="size-4" />
+                    Save
+                  </Button>
+                  <Button size="sm" variant="outline" className="px-2" onClick={cancelEditName}>
+                    <IconX className="size-4" />
+                    Cancel
+                  </Button>
+                </div>
+              )}
+              <div className="flex items-center justify-center mt-5 md:justify-start gap-2 text-muted-foreground">
                 <span className="text-sm">Team ID:</span>
                 <code className="bg-muted px-1.5 py-0.5 rounded text-xs font-mono">{teamId}</code>
                 <Button variant="ghost" size="icon" className="size-6" onClick={copyTeamId}>
