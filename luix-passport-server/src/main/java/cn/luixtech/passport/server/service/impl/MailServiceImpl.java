@@ -62,7 +62,8 @@ public class MailServiceImpl implements MailService {
     @Override
     public void sendVerificationCodeMail(User user, String emailTo, String baseUrl) {
         sendEmailFromTemplate(user, new String[] { emailTo }, "emails/verification-code-email",
-                "verification.code.email.subject", "verification.code.email.title", baseUrl, 15);
+                "verification.code.email.subject", "verification.code.email.title", baseUrl,
+                User.VERIFICATION_CODE_EXPIRATION_MINUTES);
         log.info("Requested sending verification code email to [{}]", user.getEmail());
     }
 
@@ -112,7 +113,6 @@ public class MailServiceImpl implements MailService {
                 "changed.password.email.subject", "changed.password.email.title", baseUrl);
         log.info("Requested sending password changed email to [{}]", user.getEmail());
     }
-
 
     @Override
     public void sendTeamInvitationEmail(String email, String teamName, String inviterName, String role,

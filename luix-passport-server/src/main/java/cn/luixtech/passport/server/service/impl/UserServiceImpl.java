@@ -61,6 +61,7 @@ import static org.apache.commons.lang3.time.DateFormatUtils.ISO_8601_EXTENDED_DA
  * Refer below to review match password
  * DaoAuthenticationProvider#additionalAuthenticationChecks
  */
+
 @Slf4j
 @Service
 @AllArgsConstructor
@@ -294,8 +295,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (StringUtils.isNotEmpty(verificationCode)) {
             Validate.isTrue(verificationCode.equalsIgnoreCase(user.getVerificationCode()),
                     "Invalid verification code!");
-            Validate.isTrue(user.getVerificationCodeSentAt().plus(15, ChronoUnit.MINUTES).isAfter(Instant.now()),
-                    "The verification code has expired and is valid for 15 minutes!");
+            Validate.isTrue(user.getVerificationCodeSentAt()
+                    .plus(User.VERIFICATION_CODE_EXPIRATION_MINUTES, ChronoUnit.MINUTES).isAfter(Instant.now()),
+                    "The verification code has expired and is valid for "
+                            + User.VERIFICATION_CODE_EXPIRATION_MINUTES + " minutes!");
         }
         if (StringUtils.isNotEmpty(oldRawPassword)) {
             Validate.isTrue(passwordEncoder.matches(oldRawPassword, user.getPasswordHash()),

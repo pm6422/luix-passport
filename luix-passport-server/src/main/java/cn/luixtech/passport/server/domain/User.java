@@ -16,6 +16,11 @@ import java.time.Instant;
 @AllArgsConstructor
 public class User {
 
+    /**
+     * Verification code expires in 15 minutes.
+     */
+    public static final int VERIFICATION_CODE_EXPIRATION_MINUTES = 15;
+
     @NotEmpty(message = "username:{Validation.NotEmpty}")
     @Column(nullable = false)
     @Id

@@ -138,7 +138,9 @@ public class AccountController {
 
         User newUser = userService.insert(managedUser.toUser(), managedUser.getRoleIds(), managedUser.getPassword(),
                 false);
-        teamInvitationRepository.findByMemberEmailAndStatusAndExpiresAtAfter(newUser.getEmail(), TeamInvitation.STATUS_UNREGISTERED, Instant.now())
+        teamInvitationRepository
+                .findByMemberEmailAndStatusAndExpiresAtAfter(newUser.getEmail(), TeamInvitation.STATUS_UNREGISTERED,
+                        Instant.now())
                 .forEach(inv -> {
                     inv.setStatus(TeamInvitation.STATUS_REGISTERED);
                     teamInvitationRepository.save(inv);
@@ -215,8 +217,10 @@ public class AccountController {
                 "Please send verification code first!");
         Validate.isTrue(verificationCode.equalsIgnoreCase(currentUser.getVerificationCode()),
                 "Invalid verification code!");
-        Validate.isTrue(currentUser.getVerificationCodeSentAt().plus(15, ChronoUnit.MINUTES).isAfter(Instant.now()),
-                "The verification code has expired and is valid for 15 minutes!");
+        Validate.isTrue(currentUser.getVerificationCodeSentAt()
+                .plus(User.VERIFICATION_CODE_EXPIRATION_MINUTES, ChronoUnit.MINUTES).isAfter(Instant.now()),
+                "The verification code has expired and is valid for " + User.VERIFICATION_CODE_EXPIRATION_MINUTES
+                        + " minutes!");
         userService.changeToNewEmail(currentUser);
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1002")).build();
     }
