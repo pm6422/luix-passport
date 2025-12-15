@@ -48,6 +48,8 @@ interface FormDialogProps<
   onOpenChange?: (open: boolean) => void
   contentClassName?: string
   showFormErrors?: boolean
+  loadingMessage?: string
+  successMessage?: string
 }
 
 interface Props<T extends FieldValues> {
@@ -63,6 +65,8 @@ interface Props<T extends FieldValues> {
   debug?: boolean
   contentClassName?: string
   showFormErrors?: boolean
+  loadingMessage?: string
+  successMessage?: string
 }
 
 function FormDialogContent<T extends FieldValues>({
@@ -78,6 +82,8 @@ function FormDialogContent<T extends FieldValues>({
   debug = false,
   contentClassName,
   showFormErrors = true,
+  loadingMessage,
+  successMessage,
 }: Props<T>) {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<FieldErrors>({})
@@ -86,7 +92,7 @@ function FormDialogContent<T extends FieldValues>({
     setSaving(true)
     if (save) {
       toast.promise(save(formData), {
-        loading: "Saving " + entityName + "...",
+        loading: loadingMessage ?? ("Saving " + entityName + "..."),
         success: () => {
           setOpen(false)
           form.reset()
@@ -94,7 +100,7 @@ function FormDialogContent<T extends FieldValues>({
             afterSave(true)
           }
           setSaving(false)
-          return "Saved " + entityName
+          return successMessage ?? ("Saved " + entityName)
         },
         error: (error) => {
           setOpen(false)
@@ -172,6 +178,8 @@ export function FormDialog<
   onOpenChange: controlledOnOpenChange,
   contentClassName,
   showFormErrors = true,
+  successMessage,
+  loadingMessage,
 }: FormDialogProps<TFieldValues, TOptions>) {
   const [internalOpen, setInternalOpen] = useState(false)
   const isControlled = typeof controlledOpen === "boolean" && typeof controlledOnOpenChange === "function"
@@ -238,10 +246,12 @@ export function FormDialog<
         debug={debug}
         contentClassName={contentClassName}
         showFormErrors={showFormErrors}
+        successMessage={successMessage}
+        loadingMessage={loadingMessage}
       >
         {loading ? (
           <div className="flex items-center justify-center py-8">
-          <div className="text-sm text-muted-foreground">Loading...</div>
+            <div className="text-sm text-muted-foreground">Loading...</div>
           </div>
         ) : (
           renderFields(form, options)

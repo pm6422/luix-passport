@@ -85,6 +85,8 @@ export function InviteMembersDialog({ open, onOpenChange, teamId, onSuccess }: I
   return (
     <FormDialog<z.infer<typeof inviteSchema>>
       entityName="invitation"
+      loadingMessage="Sending invitation mail..."
+      successMessage="Invitation mail sent successfully"
       schema={inviteSchema}
       defaultValues={{ invitations: [{ inviteeEmail: "", inviteeRoles: [ROLE_ANONYMOUS, ROLE_USER, TEAM_MEMBER] }] }}
       save={async (values) => {
