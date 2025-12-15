@@ -1,7 +1,7 @@
 import { z } from "zod"
 import { isValidPhoneNumber } from "react-phone-number-input"
 import { BaseCriteria } from "./base/base-criteria"
-import { ROLE_ANONYMOUS, ROLE_USER } from "@/permission/roles"
+import { ROLE_ANONYMOUS, ROLE_USER } from "@/domains/role"
 
 export const userSchema = z.object({
   username: z.string().trim().min(1, { message: "Required" }),

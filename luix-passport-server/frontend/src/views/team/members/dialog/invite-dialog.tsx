@@ -3,7 +3,7 @@ import { z } from "zod"
 import { TeamService } from "@/services/team-service"
 import { useEffect, useState } from "react"
 import { RoleService } from "@/services/role-service"
-import { ROLE_ANONYMOUS, ROLE_USER, TEAM_MEMBER } from "@/permission/roles"
+import { ROLE_ANONYMOUS, ROLE_USER, TEAM_MEMBER } from "@/domains/role"
 import { InviteMembersFormFields } from "./invite-members-form-fields"
 
 const invitationSchema = z.object({

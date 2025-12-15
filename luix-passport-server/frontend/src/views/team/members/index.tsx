@@ -25,7 +25,7 @@ import { RoleTeamOwner } from "@/permission/role-control"
 import { RoleService } from "@/services/role-service"
 import { ConfirmDialog } from "@/components/custom/dialog/confirm-dialog"
 import { TeamRoleSelector } from "@/components/custom/form-field/team-role-selector"
-import { TEAM_OWNER } from "@/permission/roles"
+import { TEAM_OWNER } from "@/domains/role"
 import { OverflowBadges } from "@/components/custom/display/overflow-badges"
 
 export default function TeamMembers() {

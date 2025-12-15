@@ -28,7 +28,7 @@ import {
 } from "@tabler/icons-react"
 import { useLoginUserStore } from "@/stores/login-user-store"
 import { useAppInfoStore } from "@/stores/app-info-store"
-import { ROLE_USER, ROLE_ADMIN, ROLE_DEVELOPER } from "@/permission/roles"
+import { ROLE_USER, ROLE_ADMIN, ROLE_DEVELOPER } from "@/domains/role"
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { appInfo } = useAppInfoStore()

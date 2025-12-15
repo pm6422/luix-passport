@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { TeamRoleSelector } from "@/components/custom/form-field/team-role-selector"
 import { IconPlus, IconMinus } from "@tabler/icons-react"
-import { ROLE_ANONYMOUS, ROLE_USER, TEAM_MEMBER } from "@/permission/roles"
+import { ROLE_ANONYMOUS, ROLE_USER, TEAM_MEMBER } from "@/domains/role"
 
 type Invitation = { email: string; roles: string[] }
 type InviteForm = { invitations: Invitation[] }
