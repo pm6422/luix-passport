@@ -2,7 +2,7 @@ import { useParams, useNavigate } from "react-router-dom"
 import { useState, useEffect, useRef, useCallback, useMemo } from "react"
 import { Button } from "@/components/ui/button"
 import { LayoutBody } from "@/layouts/layout-definitions"
-import { IconCamera, IconAlertCircle, IconCopy, IconCheck, IconTrash, IconSettings } from "@tabler/icons-react"
+import { IconCamera, IconAlertCircle, IconCopy, IconCheck, IconTrash, IconSettings, IconUsers, IconMail } from "@tabler/icons-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { TeamService, Team, TeamMember } from "@/services/team-service"
 import { toast } from "sonner"
@@ -234,7 +234,10 @@ export default function TeamDashboard() {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div className="space-y-1">
-                    <CardTitle>Team Members</CardTitle>
+                    <CardTitle className="text-lg flex items-center gap-2">
+                      <IconUsers className="size-5" />
+                      Team Members
+                    </CardTitle>
                     <p className="text-sm text-muted-foreground">
                       Manage the members of your team.
                     </p>
@@ -331,7 +334,10 @@ export default function TeamDashboard() {
               <Card>
                 <CardHeader>
                   <div className="space-y-1">
-                    <CardTitle>Pending Invites</CardTitle>
+                    <CardTitle className="text-lg flex items-center gap-2">
+                      <IconMail className="size-5" />
+                      Pending Invites
+                    </CardTitle>
                     <p className="text-sm text-muted-foreground">
                       Manage pending invitations.
                     </p>
