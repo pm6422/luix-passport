@@ -32,7 +32,7 @@ export function UserFormFields({
 }: UserFormFieldsProps) {
   return (
     <>
-      {loginUsername === id && <Notice message="After modifying the current logged-in user information, you will be automatically logged out." />}
+      {loginUsername === id && <Notice message="You’ll be signed out automatically after updating your account." />}
       <div className="flex flex-col md:flex-row items-center justify-between gap-5">
         <div className="flex items-center gap-2">
           <div className="relative">
