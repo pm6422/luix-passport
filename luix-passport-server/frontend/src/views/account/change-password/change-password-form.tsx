@@ -26,18 +26,9 @@ import { RequiredFormLabel } from "@/components/custom/form-element/required-for
 import { useLoginUserStore } from "@/stores/login-user-store"
 import { AccountService } from "@/services/account-service"
 import { getErrorMessage } from "@/lib/handle-error"
-import { PASSWORD_MIN_LENGTH } from "@/domains/user-registration"
+import { PASSWORD_MIN_LENGTH, ChangePasswordFormSchema, changePasswordFormSchema } from "@/domains/user-registration"
 
-const changePasswordFormSchema = z.object({
-  currentPassword: z.string().trim().min(1, { message: "Required" }),
-  newPassword: z
-    .string()
-    .min(PASSWORD_MIN_LENGTH, "New password must be at least 5 characters"),
-  email: z.string().trim(),
-  verificationCode: z.string().trim().min(1, { message: "Required" })
-})
 
-export type ChangePasswordFormSchema = z.infer<typeof changePasswordFormSchema>
 
 export function ChangePasswordForm() {
   const { loginUser } = useLoginUserStore()

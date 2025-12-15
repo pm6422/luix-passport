@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { useNavigate } from "react-router-dom"
 import { LoadingButton } from "@/components/custom/form-element/loading-button";
 import { Link, useSearchParams } from "react-router-dom"
@@ -18,23 +17,8 @@ import { Input } from "@/components/ui/input";
 import { AccountService } from "@/services/account-service";
 import { PasswordInput } from "@/components/custom/form-element/password-input";
 import { PasswordStrengthIndicator } from "@/components/custom/form-element/password-strength-indicator";
-import { PASSWORD_MIN_LENGTH } from "@/domains/user-registration";
+import { PASSWORD_MIN_LENGTH, ResetPasswordFormSchema, resetPasswordFormSchema } from "@/domains/user-registration";
 import { getErrorMessage } from "@/lib/handle-error";
-
-const resetPasswordFormSchema = z
-  .object({
-    newRawPassword: z
-      .string()
-      .min(PASSWORD_MIN_LENGTH, { message: "Password must be at least 5 characters" }),
-    confirmPassword: z.string(),
-    resetCode: z.string().min(1, { message: "Please enter your reset code" }),
-  })
-  .refine((data) => data.newRawPassword === data.confirmPassword, {
-    message: "Passwords don't match.",
-    path: ["confirmPassword"],
-  });
-
-export type ResetPasswordFormSchema = z.infer<typeof resetPasswordFormSchema>
 
 export default function ForgotPassword() {
   const navigate = useNavigate()
