@@ -44,7 +44,7 @@ export default function Account() {
         </p>
       </div>
       <Separator className="my-6" />
-      <div className="flex flex-1 flex-col space-y-8 overflow-auto lg:flex-row lg:space-y-0">
+      <div className="flex flex-1 flex-col gap-y-8 overflow-auto lg:flex-row lg:gap-y-0">
         <aside className="sticky top-0 lg:w-1/5">
           <OneLevelSidebar items={sidebarNavItems} />
         </aside>
