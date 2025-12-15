@@ -62,7 +62,7 @@ const FormErrors = <T extends FieldValues>({
           <IconAlertSquareRoundedFilled className="size-4" />
           Please resolve the following issues.
         </AlertTitle>
-        <div className="mt-2 space-y-1 text-xs">
+        <div className="mt-2 flex flex-col gap-y-1 text-xs">
           {errors.map((err, index) => (
             <div
               key={`${err.field}-${index}`}
@@ -74,7 +74,7 @@ const FormErrors = <T extends FieldValues>({
           ))}
         </div>
         {children && (
-          <AlertDescription className="mt-2 pr-6 text-xs">
+          <AlertDescription className="mt-2 pe-6 text-xs">
             {children}
           </AlertDescription>
         )}

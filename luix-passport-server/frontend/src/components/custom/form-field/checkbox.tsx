@@ -52,7 +52,7 @@ const CheckboxFormField = <TFieldValues extends FieldValues>({
             return options.map((item) => (
               <FormItem
                 key={item.value}
-                className="flex flex-row items-start gap-3 space-y-0"
+                className="flex flex-row items-start gap-3 gap-y-0"
               >
                 <FormControl>
                   <Checkbox

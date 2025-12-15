@@ -31,7 +31,7 @@ export function MultiTextInput<TFieldValues extends FieldValues>({
   });
 
   return (
-    <div className="space-y-3">
+    <div className="flex flex-col gap-y-3">
       {fields.map((field, index) => (
         <div key={field.id} className="flex items-center gap-2">
           <Input
