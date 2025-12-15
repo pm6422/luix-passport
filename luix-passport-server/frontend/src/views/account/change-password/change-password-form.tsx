@@ -177,7 +177,6 @@ export function ChangePasswordForm() {
             </FormItem>
           )}
         />
-
         <div className="flex justify-end">
           <LoadingButton
             type="submit"

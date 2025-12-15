@@ -132,7 +132,7 @@ export function AppearanceForm() {
             </FormItem>
           )}
         />
-        <div className="flex justify-end">
+        <div className="flex justify-end mt-10">
           <Button type="submit" className="w-full sm:w-auto">
             Apply appearance
           </Button>
