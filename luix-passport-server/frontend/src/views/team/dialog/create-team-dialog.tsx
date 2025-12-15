@@ -1,4 +1,5 @@
 import { FormDialog } from "@/components/custom/dialog/form-dialog"
+import { useNavigate } from "react-router-dom"
 import { FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { z } from "zod"
@@ -21,9 +22,11 @@ interface CreateTeamDialogProps {
 }
 
 export function CreateTeamDialog({ children, onSuccess, open, onOpenChange }: CreateTeamDialogProps) {
+  const navigate = useNavigate()
+
   async function save(model: CreateTeam): Promise<void> {
-    await TeamService.create(model.name, model.photo)
-    window.location.reload()
+    const { data } = await TeamService.create(model.name, model.photo)
+    navigate(`/teams/${data.id}`)
   }
 
   return (

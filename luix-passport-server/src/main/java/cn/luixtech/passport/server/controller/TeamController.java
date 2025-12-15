@@ -43,14 +43,14 @@ public class TeamController {
 
     @Operation(summary = "create team")
     @PostMapping("/api/teams")
-    public ResponseEntity<Void> create(@RequestParam String name, @RequestParam(required = false) MultipartFile photo)
+    public ResponseEntity<Team> create(@RequestParam String name, @RequestParam(required = false) MultipartFile photo)
             throws IOException {
         byte[] photoBytes = null;
         if (photo != null && !photo.isEmpty()) {
             photoBytes = photo.getBytes();
         }
-        teamService.create(name, photoBytes);
-        return ResponseEntity.ok().build();
+        Team team = teamService.create(name, photoBytes);
+        return ResponseEntity.ok(team);
     }
 
     @Operation(summary = "get user teams")

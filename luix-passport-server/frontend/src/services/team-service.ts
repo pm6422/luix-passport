@@ -13,7 +13,7 @@ export class TeamService {
     return http.post(`/api/teams/${teamId}/members`, invitations)
   }
 
-  public static create(name: string, photo?: File): Promise<AxiosResponse<void>> {
+  public static create(name: string, photo?: File): Promise<AxiosResponse<Team>> {
     const formData = new FormData()
     formData.append("name", name)
     if (photo) {
