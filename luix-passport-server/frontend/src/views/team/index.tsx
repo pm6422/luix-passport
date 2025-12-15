@@ -203,22 +203,16 @@ export default function TeamDashboard() {
               />
             </div>
 
-            <div className="flex-1 text-center md:text-left space-y-2">
+            <div className="flex-1 text-center md:text-start space-y-2">
               <h1 className="text-3xl font-bold tracking-tight text-foreground">{team?.name}</h1>
               <div className="flex items-center justify-center md:justify-start gap-2 text-muted-foreground">
                 <span className="text-sm">Team ID:</span>
                 <code className="bg-muted px-1.5 py-0.5 rounded text-xs font-mono">{teamId}</code>
-                <Button variant="ghost" size="icon" className="h-6 w-6" onClick={copyTeamId}>
+                <Button variant="ghost" size="icon" className="size-6" onClick={copyTeamId}>
                   {copiedId ? <IconCheck className="size-3 text-green-500" /> : <IconCopy className="size-3" />}
                 </Button>
               </div>
             </div>
-
-            {/* <div className="flex gap-3 mt-4 md:mt-0">
-              <Link to={`/teams/${teamId}/members`}>
-                <Button variant="outline">Manage Members</Button>
-              </Link>
-            </div> */}
           </div>
         </div>
       </AnimatedPathsBackground>
@@ -245,7 +239,7 @@ export default function TeamDashboard() {
                   <div className="flex items-center gap-2">
                     <RoleTeamOwner>
                       <Button onClick={() => setInviteOpen(true)} size="sm">
-                        <IconPlus className="mr-2 size-4" />
+                        <IconPlus className="me-2 size-4" />
                         Invite Members
                       </Button>
                     </RoleTeamOwner>
@@ -253,7 +247,7 @@ export default function TeamDashboard() {
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center gap-2">
                   <Input
                     placeholder="Search members"
                     className="h-9 w-full"
@@ -267,14 +261,14 @@ export default function TeamDashboard() {
                       <TableHead className="w-[300px]">Name</TableHead>
                       <TableHead>Email</TableHead>
                       <TableHead>Roles</TableHead>
-                      <TableHead className="text-right">Joined at</TableHead>
+                      <TableHead className="text-end">Joined at</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {filteredMembers.map((member) => (
                       <TableRow key={member.userId}>
                         <TableCell className="font-medium">
-                          <div className="flex items-center space-x-3">
+                          <div className="flex items-center gap-3">
                             <div className="relative">
                               <Avatar className="size-8">
                                 {member.avatar && (
@@ -313,7 +307,7 @@ export default function TeamDashboard() {
                             </div>
                           )}
                         </TableCell>
-                        <TableCell className="text-right">
+                        <TableCell className="text-end">
                           {member.joinedAt && <UserDateTime value={member.joinedAt} />}
                         </TableCell>
                       </TableRow>
@@ -344,7 +338,7 @@ export default function TeamDashboard() {
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center gap-2">
                     <Input
                       placeholder="Search Invitations"
                       className="h-9 w-full"
@@ -390,21 +384,21 @@ export default function TeamDashboard() {
                               <UserDateTime value={invite.expiresAt} />
                             </TableCell>
                             <TableCell>
-                              <Badge
-                                className={`capitalize ${invite.status === "EXPIRED"
-                                  ? "bg-red-600/10 text-red-600 shadow-none"
-                                  : ""
-                                  }`}
-                              >
-                                {getInviteProgress(invite)}
-                              </Badge>
-                            </TableCell>
-                            <TableCell className="text-right">
-                              {invite.status === "EXPIRED" ? (
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  onClick={async () => {
+                          <Badge
+                            className={`capitalize ${invite.status === "EXPIRED"
+                              ? "bg-red-600/10 text-red-600 shadow-none"
+                              : ""
+                              }`}
+                          >
+                            {getInviteProgress(invite)}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="text-end">
+                          {invite.status === "EXPIRED" ? (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={async () => {
                                     try {
                                       await TeamService.resendInvitation(invite.id)
                                       toast.success("Invitation resent")
@@ -413,22 +407,22 @@ export default function TeamDashboard() {
                                       toast.error("Failed to resend invitation")
                                       console.error(error)
                                     }
-                                  }}
-                                >
-                                  Resend
-                                </Button>
-                              ) : (
-                                <span className="text-muted-foreground">—</span>
-                              )}
-                            </TableCell>
-                          </TableRow>
-                        ))
-                      )}
-                    </TableBody>
-                  </Table>
-                </CardContent>
-              </Card>
-            </RoleTeamOwner>
+                              }}
+                            >
+                              Resend
+                            </Button>
+                          ) : (
+                            <span className="text-muted-foreground">—</span>
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  )}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+        </RoleTeamOwner>
 
           </div>
 
@@ -473,7 +467,7 @@ export default function TeamDashboard() {
                     Deleting the team will permanently remove all data and cannot be undone.
                   </p>
                   <Button variant="destructive" className="w-full" onClick={() => setDeleteOpen(true)}>
-                    <IconTrash className="mr-2 size-4" />
+                    <IconTrash className="me-2 size-4" />
                     Delete Team
                   </Button>
                 </CardContent>
