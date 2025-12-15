@@ -3,12 +3,12 @@
 
   <!-- Greeting -->
   <p style="margin: 0 0 16px 0; font-size: 16px; line-height: 24px; color: #52525b;">
-    <span th:text="#{email.greeting(${email})}">Hello,</span>
+    <span th:text="#{email.greeting(${args[1]})}">Hello,</span>
   </p>
 
   <!-- Invitation Text -->
   <p style="margin: 0 0 16px 0; font-size: 16px; line-height: 24px; color: #52525b;">
-    <span th:text="#{team.invitation.email.text1(${inviterName}, ${teamName})}">You have been invited to join a
+    <span th:text="#{team.invitation.email.text1(${args[2]}, ${args[0]})}">You have been invited to join a
       team.</span>
   </p>
   <p style="margin: 0 0 24px 0; font-size: 16px; line-height: 24px; color: #52525b;">
@@ -17,7 +17,7 @@
 
   <!-- CTA Button -->
   <div style="margin: 0 0 32px 0; text-align: center;">
-    <a th:href="@{|${baseUrl}/sign-up?email=${email}|}"
+    <a th:href="@{|${baseUrl}/sign-up?email=${args[1]}|}"
       style="display: inline-block; background-color: #18181b; color: #ffffff; text-decoration: none; padding: 12px 32px; border-radius: 8px; font-weight: 600; font-size: 16px;"
       th:text="#{team.invitation.email.button.text}">
       Register Account
@@ -33,15 +33,15 @@
     <table border="0" cellpadding="0" cellspacing="0" width="100%">
       <tr>
         <td style="padding: 4px 0; font-size: 14px; color: #71717a; width: 80px;">Team:</td>
-        <td style="padding: 4px 0; font-size: 14px; color: #18181b; font-weight: 500;">[[${teamName}]]</td>
+        <td style="padding: 4px 0; font-size: 14px; color: #18181b; font-weight: 500;">[[${args[0]}]]</td>
       </tr>
       <tr>
         <td style="padding: 4px 0; font-size: 14px; color: #71717a;">Inviter:</td>
-        <td style="padding: 4px 0; font-size: 14px; color: #18181b; font-weight: 500;">[[${inviterName}]]</td>
+        <td style="padding: 4px 0; font-size: 14px; color: #18181b; font-weight: 500;">[[${args[2]}]]</td>
       </tr>
       <tr>
         <td style="padding: 4px 0; font-size: 14px; color: #71717a;">Expires:</td>
-        <td style="padding: 4px 0; font-size: 14px; color: #18181b; font-weight: 500;">[[${expiresAt}]]</td>
+        <td style="padding: 4px 0; font-size: 14px; color: #18181b; font-weight: 500;">[[${args[4]}]]</td>
       </tr>
     </table>
   </div>

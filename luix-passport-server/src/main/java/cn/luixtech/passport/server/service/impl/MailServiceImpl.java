@@ -116,21 +116,12 @@ public class MailServiceImpl implements MailService {
     @Override
     public void sendTeamInvitationEmail(String email, String teamName, String inviterName, String role,
             String baseUrl, java.time.Instant expiresAt, String inviterLocale) {
-        Locale locale = LocaleUtils.toLocale(inviterLocale);
-        Context context = new Context(locale);
-        context.setVariable("email", email);
-        context.setVariable("teamName", teamName);
-        context.setVariable("inviterName", inviterName);
-        context.setVariable("role", role);
-        context.setVariable("expiresAt", expiresAt);
-        context.setVariable(BASE_URL, baseUrl);
-        context.setVariable(DOMAIN, applicationProperties.getCompany().getDomain());
-        context.setVariable(CONTENT_FRAGMENT, "emails/team-invitation-email");
-        String title = messageSource.getMessage("team.invitation.email.title", null, locale);
-        context.setVariable(TITLE, title);
-        String content = springTemplateEngine.process(EMAIL_LAYOUT, context);
-        String subject = messageSource.getMessage("team.invitation.email.subject", new Object[] { teamName }, locale);
-        sendEmail(new String[] { email }, subject, content);
+        User user = new User();
+        user.setEmail(email);
+        user.setLocale(inviterLocale);
+        sendEmailFromTemplate(user, null, "emails/team-invitation-email",
+                "team.invitation.email.subject", "team.invitation.email.title", baseUrl,
+                teamName, email, inviterName, role, expiresAt);
         log.info("Requested sending team invitation email to [{}] for team [{}]", email, teamName);
     }
 }
