@@ -104,7 +104,7 @@ export default function ContactUs() {
           </p>
 
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="gap-y-6">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-y-6">
               <InputFormField
                 control={form.control}
                 name="sender"

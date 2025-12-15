@@ -105,7 +105,7 @@ export default function SiteHome() {
                     </span>{" "}
                     new notifications.
                   </div>
-                  <div className="w-full max-w-sm gap-y-6">
+                  <div className="flex flex-col gap-y-6 w-full max-w-sm">
                     <Button asChild variant="link" className="w-full px-5 py-4 h-14 text-base font-medium rounded-2xl">
                       <Link to="/notifications">View Notifications</Link>
                     </Button>
@@ -124,7 +124,7 @@ export default function SiteHome() {
                   <p className="text-lg text-muted-foreground mb-10 max-w-md">
                     Sign in to access your personalized console and features.
                   </p>
-                  <div className="w-full max-w-sm gap-y-6">
+                  <div className="flex flex-col gap-y-6 w-full max-w-sm">
                     <Button asChild className="w-full px-5 py-4 h-14 text-base font-medium rounded-2xl">
                       <Link to="/sign-in">Sign In</Link>
                     </Button>
