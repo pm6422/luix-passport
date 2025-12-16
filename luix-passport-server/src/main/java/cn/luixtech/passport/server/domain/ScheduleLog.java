@@ -10,7 +10,7 @@ import java.time.Instant;
 
 @Data
 @Entity
-@Table(name = "schedule_logs")
+@Table(name = "schedule_log")
 @NoArgsConstructor
 @AllArgsConstructor
 public class ScheduleLog {
