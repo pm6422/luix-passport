@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect, useMemo, useRef } from "react"
 import { LayoutBody } from "@/layouts/layout-definitions"
-import { type UserNotification } from "@/domains/user-notification"
-import { UserNotificationService } from "@/services/user-notification-service"
+import { type Inbox } from "@/domains/inbox"
+import { InboxService } from "@/services/inbox-service"
 import { toast } from "sonner"
 import { getErrorMessage } from "@/lib/handle-error"
 import { cn } from "@/lib/utils"
@@ -28,7 +28,7 @@ dayjs.extend(isToday)
 dayjs.extend(isYesterday)
 
 export default function InboxPage() {
-  const [data, setData] = useState([] as Array<UserNotification>)
+  const [data, setData] = useState([] as Array<Inbox>)
   const [totalCount, setTotalCount] = useState(0)
   const [totalPages, setTotalPages] = useState(0)
   const [currentPageNo, setCurrentPageNo] = useState(0)
@@ -44,7 +44,7 @@ export default function InboxPage() {
   ): void => {
     setLoading(true)
     setCurrentPageNo(pageNo)
-    UserNotificationService.find({
+    InboxService.find({
       page: pageNo,
       size: pageSize,
       sort: sorts,
@@ -89,9 +89,9 @@ export default function InboxPage() {
     loadPage()
   }, [loadPage])
 
-  function markAsRead(row: UserNotification, e?: React.MouseEvent): Promise<void> {
+  function markAsRead(row: Inbox, e?: React.MouseEvent): Promise<void> {
     e?.stopPropagation()
-    return UserNotificationService.markAsRead(row.id)
+    return InboxService.markAsRead(row.id)
       .then(() => {
         // Optimistic update
         setData(prev => prev.map(item => 
@@ -105,7 +105,7 @@ export default function InboxPage() {
 
   // Group data by date
   const groupedData = useMemo(() => {
-    const groups: { label: string; items: UserNotification[] }[] = []
+    const groups: { label: string; items: Inbox[] }[] = []
     
     data.forEach(item => {
       const date = dayjs(item.createdAt)

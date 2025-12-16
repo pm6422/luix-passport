@@ -2,11 +2,11 @@ package cn.luixtech.passport.server.service.impl;
 
 import cn.luixtech.passport.server.domain.Notification;
 import cn.luixtech.passport.server.domain.User;
-import cn.luixtech.passport.server.domain.UserNotification;
+import cn.luixtech.passport.server.domain.Inbox;
 import cn.luixtech.passport.server.repository.NotificationRepository;
-import cn.luixtech.passport.server.repository.UserNotificationRepository;
+import cn.luixtech.passport.server.repository.InboxRepository;
 import cn.luixtech.passport.server.repository.UserRepository;
-import cn.luixtech.passport.server.service.UserNotificationService;
+import cn.luixtech.passport.server.service.InboxService;
 import com.luixtech.springbootframework.component.SseNotifier;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -18,9 +18,9 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class UserNotificationServiceImpl implements UserNotificationService {
+public class InboxServiceImpl implements InboxService {
     private final NotificationRepository     notificationRepository;
-    private final UserNotificationRepository userNotificationRepository;
+    private final InboxRepository inboxRepository;
     private final UserRepository             userRepository;
     private final SseNotifier                sseNotifier;
 
@@ -52,48 +52,45 @@ public class UserNotificationServiceImpl implements UserNotificationService {
         }
     }
 
-    private Notification saveNotification(String title, String content, String type, String sender,
-                                          String senderEmail) {
+    @Override
+    public long countUnread(String username) {
+        return inboxRepository.countByReceiverIdAndStatus(username, Inbox.STATUS_UNREAD);
+    }
+
+    @Override
+    public void markAsRead(String inboxId) {
+        inboxRepository.findById(inboxId).ifPresent(inbox -> {
+            inbox.setStatus(Inbox.STATUS_READ);
+            inboxRepository.save(inbox);
+        });
+    }
+
+    private void sendNotification(User user, Notification notification) {
+        Inbox inbox = new Inbox();
+        inbox.setReceiverId(user.getUsername());
+        inbox.setNotification(notification);
+        inbox.setStatus(Inbox.STATUS_UNREAD);
+        inbox.setActive(true);
+
+        inboxRepository.save(inbox);
+
+        sseNotifier.send(user.getUsername(), notification.getTitle());
+    }
+
+    private Notification saveNotification(String title, String content, String type, String sender, String senderEmail) {
         Notification notification = new Notification();
         notification.setTitle(title);
         notification.setContent(content);
         notification.setType(type);
         notification.setSender(sender);
         notification.setSenderEmail(senderEmail);
-        notification = notificationRepository.save(notification);
-
-        return notification;
-    }
-
-    private void sendNotification(User user, Notification notification) {
-        UserNotification userNotification = new UserNotification();
-        userNotification.setReceiverId(user.getUsername());
-        userNotification.setNotification(notification);
-        userNotification.setStatus(UserNotification.STATUS_UNREAD);
-        userNotification.setActive(true);
-
-        userNotificationRepository.save(userNotification);
-
-        sseNotifier.send(user.getUsername(), notification.getTitle());
+        return notificationRepository.save(notification);
     }
 
     @Override
-    public long countUnreadNotifications(String username) {
-        return userNotificationRepository.countByReceiverIdAndStatus(username, UserNotification.STATUS_UNREAD);
-    }
-
-    @Override
-    public void markAsRead(String userNotificationId) {
-        userNotificationRepository.findById(userNotificationId).ifPresent(un -> {
-            un.setStatus(UserNotification.STATUS_READ);
-            userNotificationRepository.save(un);
-        });
-    }
-
-    @Override
-    public Page<UserNotification> findUserNotifications(Pageable pageable, String receiverId, String keyword) {
+    public Page<Inbox> findInboxes(Pageable pageable, String receiverId, String keyword) {
         return StringUtils.isEmpty(keyword)
-                ? userNotificationRepository.findByReceiverId(pageable, receiverId)
-                : userNotificationRepository.findByReceiverAndKeyword(pageable, receiverId, keyword);
+                ? inboxRepository.findByReceiverId(pageable, receiverId)
+                : inboxRepository.findByReceiverAndKeyword(pageable, receiverId, keyword);
     }
 }

@@ -1,8 +1,8 @@
 import { z } from "zod"
 
-export const userNotificationSchema = z.object({
+export const inboxSchema = z.object({
   id: z.string(),
-  notificationId: z.string(),
+  notificationId: z.string(), 
   title: z.string(),
   content: z.string(),
   type: z.string(),
@@ -15,9 +15,9 @@ export const userNotificationSchema = z.object({
   updatedAt: z.string()
 })
 
-export type UserNotification = z.infer<typeof userNotificationSchema>
+export type Inbox = z.infer<typeof inboxSchema>
 
-export const initialUserNotificationState: UserNotification = {
+export const initialInboxState: Inbox = {
   id: "",
   notificationId: "",
   title: "",

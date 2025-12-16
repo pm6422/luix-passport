@@ -494,7 +494,7 @@
                 separator=";"
                 tableName="notification">
         </loadData>
-        <createTable tableName="user_notification">
+        <createTable tableName="inbox">
             <column name="id" type="VARCHAR(18)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -521,9 +521,9 @@
             <column name="updated_by" type="VARCHAR(50)"/>
         </createTable>
         <loadData
-                file="config/liquibase/data/user_notification.csv"
+                file="config/liquibase/data/inbox.csv"
                 separator=";"
-                tableName="user_notification">
+                tableName="inbox">
         </loadData>
         <createTable tableName="scheduler_lock">
             <column name="id" type="VARCHAR(128)">
@@ -594,10 +594,10 @@
         <createIndex tableName="user_login" indexName="idx_user_login_username" unique="false">
             <column name="username"/>
         </createIndex>
-        <createIndex tableName="user_notification" indexName="idx_user_notification_notification" unique="false">
+        <createIndex tableName="inbox" indexName="idx_inbox_notification" unique="false">
             <column name="notification_id"/>
         </createIndex>
-        <createIndex tableName="user_notification" indexName="idx_user_notification_user_status" unique="false">
+        <createIndex tableName="inbox" indexName="idx_inbox_receiver_status" unique="false">
             <column name="receiver_id"/>
             <column name="status"/>
         </createIndex>
@@ -617,9 +617,9 @@
                 columnNames="category_code,dict_code"
                 constraintName="uk_data_dict_category_code_dict_code"/>
         <addUniqueConstraint
-                tableName="user_notification"
+                tableName="inbox"
                 columnNames="receiver_id, notification_id"
-                constraintName="uk_user_notification"/>
+                constraintName="uk_inbox"/>
 
         <addForeignKeyConstraint
                 baseTableName="team_user"
@@ -694,17 +694,17 @@
                 onDelete="CASCADE"
                 onUpdate="CASCADE"/>
         <addForeignKeyConstraint
-                baseTableName="user_notification"
+                baseTableName="inbox"
                 baseColumnNames="receiver_id"
-                constraintName="fk_user_notification_user"
+                constraintName="fk_inbox_user"
                 referencedTableName="user"
                 referencedColumnNames="username"
                 onDelete="CASCADE"
                 onUpdate="CASCADE"/>
         <addForeignKeyConstraint
-                baseTableName="user_notification"
+                baseTableName="inbox"
                 baseColumnNames="notification_id"
-                constraintName="fk_user_notification_notification"
+                constraintName="fk_inbox_notification"
                 referencedTableName="notification"
                 referencedColumnNames="id"
                 onDelete="CASCADE"

@@ -293,7 +293,7 @@ Table "notification" {
   "updated_by" varchar(50)
 }
 
-Table "user_notification" {
+Table "inbox" {
   "id" varchar(18) [pk, not null]
   "receiver_id" varchar(20) [not null]
   "notification_id" varchar(20) [not null]
@@ -305,9 +305,9 @@ Table "user_notification" {
   "updated_by" varchar(50)
 
   Indexes {
-    (receiver_id, notification_id) [type: btree, name: "uk_user_notification"]
-    notification_id [type: btree, name: "idx_user_notification_notification"]
-    (receiver_id, status) [type: btree, name: "idx_user_notification_user_status"]
+    (receiver_id, notification_id) [type: btree, name: "uk_inbox"]
+    notification_id [type: btree, name: "idx_inbox_notification"]
+    (receiver_id, status) [type: btree, name: "idx_inbox_user_status"]
   }
 }
 
@@ -355,9 +355,9 @@ Ref "fk_user_avatar_username":"user"."username" < "user_avatar"."id" [update: ca
 
 Ref "fk_user_login_username":"user"."username" < "user_login"."username" [update: cascade, delete: cascade]
 
-Ref "fk_user_notification_notification":"notification"."id" < "user_notification"."notification_id" [update: cascade, delete: cascade]
+Ref "fk_inbox_notification":"notification"."id" < "inbox"."notification_id" [update: cascade, delete: cascade]
 
-Ref "fk_user_notification_user":"user"."username" < "user_notification"."receiver_id" [update: cascade, delete: cascade]
+Ref "fk_inbox_user":"user"."username" < "inbox"."receiver_id" [update: cascade, delete: cascade]
 
 Ref "fk_user_role_role_id":"role"."id" < "user_role"."role_id" [update: cascade, delete: cascade]
 

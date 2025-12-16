@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { useLoginUserStore } from "@/stores/login-user-store"
 import { useEffect, useState } from "react"
-import { UserNotificationService } from "@/services/user-notification-service"
+import { InboxService } from "@/services/inbox-service"
 import { Badge } from "@/components/ui/badge.tsx"
 import { AccountService } from "@/services/account-service"
 import AnimatedPathsBackground from "@/components/custom/background/animated-paths-background"
@@ -47,7 +47,7 @@ export default function SiteHome() {
 
   useEffect(() => {
     if (loginUser.isAuthenticated) {
-      UserNotificationService.countUnread().then((r) => {
+      InboxService.countUnread().then((r) => {
         setUnreadNotifications(r.data)
       })
     }

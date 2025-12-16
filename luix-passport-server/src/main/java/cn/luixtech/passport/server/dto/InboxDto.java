@@ -1,6 +1,6 @@
 package cn.luixtech.passport.server.dto;
 
-import cn.luixtech.passport.server.domain.UserNotification;
+import cn.luixtech.passport.server.domain.Inbox;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -9,7 +9,7 @@ import java.time.Instant;
 
 @Data
 @NoArgsConstructor
-public class MyNotification {
+public class InboxDto {
     private String  id;
     private String  notificationId;
     private String  title;
@@ -23,11 +23,11 @@ public class MyNotification {
     private Instant createdAt;
     private Instant modifiedAt;
 
-    public static MyNotification of(UserNotification userNotification) {
-        MyNotification resp = new MyNotification();
-        BeanUtils.copyProperties(userNotification.getNotification(), resp);
-        BeanUtils.copyProperties(userNotification, resp);
-        resp.setNotificationId(userNotification.getNotification().getId());
+    public static InboxDto of(Inbox inbox) {
+        InboxDto resp = new InboxDto();
+        BeanUtils.copyProperties(inbox.getNotification(), resp);
+        BeanUtils.copyProperties(inbox, resp);
+        resp.setNotificationId(inbox.getNotification().getId());
         return resp;
     }
 }

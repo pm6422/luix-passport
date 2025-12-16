@@ -13,7 +13,7 @@ import java.time.Instant;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserNotification {
+public class Inbox {
 
     @Id
     @GeneratedValue
@@ -25,8 +25,8 @@ public class UserNotification {
 
     private String receiverId;
     /**
-     * 一条Notification可以发送给多个用户 (体现在多个UserNotification记录中)
-     * 一个用户通知 (UserNotification) 只能关联一条具体的通知
+     * 一条Notification可以发送给多个用户 (体现在多个Inbox记录中)
+     * 一个用户通知 (Inbox) 只能关联一条具体的通知
      */
     @ManyToOne
     private Notification notification;

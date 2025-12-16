@@ -6,6 +6,6 @@ export class ContactService {
   }
 
   public static create(model: ContactFormSchema): Promise<void> {
-    return http.post("/open-api/user-notifications/contact", model)
+    return http.post("/open-api/inbox/contact", model)
   }
 }
