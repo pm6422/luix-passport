@@ -318,7 +318,7 @@ Table "scheduler_lock" {
   "locked_by" varchar(50) [not null]
 }
 
-Table "schedule_execution_log" {
+Table "schedule_log" {
   "id" varchar(18) [pk, not null]
   "schedule_name" varchar(100) [not null]
   "start_at" timestamp [not null]

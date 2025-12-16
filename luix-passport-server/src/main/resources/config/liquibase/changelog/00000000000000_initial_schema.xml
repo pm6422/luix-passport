@@ -539,7 +539,7 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <createTable tableName="schedule_execution_log">
+        <createTable tableName="schedule_log">
             <column name="id" type="VARCHAR(18)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
