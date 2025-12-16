@@ -8,7 +8,8 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
-import { IconBell, IconMail, IconCheck, IconX } from "@tabler/icons-react"
+import { UserDateTime } from "@/components/custom/display/user-date-time"
+import { IconBell, IconMail, IconX } from "@tabler/icons-react"
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import isToday from "dayjs/plugin/isToday"
@@ -289,7 +290,7 @@ export default function InboxPage() {
                   <div className="flex items-center gap-3 text-sm text-muted-foreground">
                     <div className={cn(
                     "flex items-center justify-center w-8 h-8 rounded-full shrink-0",
-                    selectedItem.type === "SYSTEM" ? "bg-blue-500/10 text-blue-500" : "bg-orange-500/10 text-orange-500"
+                    selectedItem.type === "SYSTEM" ? "bg-blue-500/10 text-blue-500" : "bg-green-500/10 text-green-500"
                   )}>
                     {selectedItem.type === "SYSTEM" ? <IconBell size={16} /> : <IconMail size={16} />}
                   </div>
@@ -298,14 +299,14 @@ export default function InboxPage() {
                         {selectedItem.sender || 'System'}
                         {selectedItem.senderEmail && <span className="font-normal text-muted-foreground ml-1">&lt;{selectedItem.senderEmail}&gt;</span>}
                       </span>
-                      <span className="text-xs">
-                        {dayjs(selectedItem.createdAt).format('MMMM D, YYYY h:mm A')}
-                      </span>
                     </div>
                   </div>
                 </div>
-                <div className="flex items-center gap-2 shrink-0">
-                  {/* Actions removed as mark-as-read is triggered on click */}
+                <div className="flex flex-col justify-end h-full shrink-0 items-end gap-2">
+                  <UserDateTime
+                    value={selectedItem.createdAt}
+                    className="text-sm text-muted-foreground"
+                  />
                 </div>
               </div>
 
