@@ -1,17 +1,9 @@
-import { useState } from "react"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import InputFormField from "@/components/custom/form-field/input"
+import { useState, useRef, useCallback } from "react"
+import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { IconPlus, IconFilterSearch } from "@tabler/icons-react"
+import { IconPlus, IconX } from "@tabler/icons-react"
 import { EditDialog } from "../dialog/permission-dialog"
-import { type Permission, type PermissionCriteriaSchema, permissionCriteriaSchema, initialPermissionCriteriaState } from "@/domains/permission"
-import { Form } from "@/components/ui/form"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
+import { type Permission, type PermissionCriteriaSchema } from "@/domains/permission"
 
 interface DataTableToolbarProps{
   entityName: string,
@@ -19,65 +11,80 @@ interface DataTableToolbarProps{
   save: (formData: Permission) => Promise<void>
 }
 
+interface FilterState {
+  resourceType: string
+  action: string
+}
+
+const initialFilters: FilterState = {
+  resourceType: "",
+  action: ""
+}
+
 export function DataTableToolbar ({
   entityName,
   loadPage,
   save
 }: DataTableToolbarProps) {
-  const [isFilterPopoverOpen, setIsFilterPopoverOpen] = useState(false)
-  const form = useForm<PermissionCriteriaSchema>({
-    resolver: zodResolver(permissionCriteriaSchema),
-    defaultValues: initialPermissionCriteriaState
-  })
+  const [filters, setFilters] = useState<FilterState>(initialFilters)
+  const debounceRef = useRef<NodeJS.Timeout | null>(null)
 
-  function onSubmit(formData: PermissionCriteriaSchema): void {
-    loadPage(undefined, undefined, undefined, formData)
-    setIsFilterPopoverOpen(false)
+  const triggerSearch = useCallback((newFilters: FilterState) => {
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current)
+    }
+
+    debounceRef.current = setTimeout(() => {
+      loadPage(undefined, undefined, undefined, {
+        resourceType: newFilters.resourceType || undefined,
+        action: newFilters.action || undefined
+      })
+    }, 500)
+  }, [loadPage])
+
+  const handleFilterChange = (key: keyof FilterState, value: string) => {
+    const newFilters = { ...filters, [key]: value }
+    setFilters(newFilters)
+    triggerSearch(newFilters)
   }
+
+  const handleReset = () => {
+    setFilters(initialFilters)
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current)
+    }
+    loadPage(undefined, undefined, undefined, {})
+  }
+
+  const isFiltered = filters.resourceType || filters.action
 
   return (
     <div className="flex items-center justify-between w-full">
-      <Popover open={isFilterPopoverOpen} onOpenChange={setIsFilterPopoverOpen}>
-        <PopoverTrigger asChild>
-          <Button variant="outline" size="icon">
-            <IconFilterSearch className="size-4"/>
+      <div className="flex flex-1 items-center gap-2 flex-wrap">
+        <Input
+          placeholder="Filter resource type..."
+          value={filters.resourceType}
+          onChange={(e) => handleFilterChange("resourceType", e.target.value)}
+          className="h-8 w-[150px] lg:w-[200px]"
+        />
+        <Input
+          placeholder="Filter action..."
+          value={filters.action}
+          onChange={(e) => handleFilterChange("action", e.target.value)}
+          className="h-8 w-[150px] lg:w-[200px]"
+        />
+        
+        {isFiltered && (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleReset}
+          >
+            Reset
+            <IconX className="ml-2 h-4 w-4" />
           </Button>
-        </PopoverTrigger>
-        <PopoverContent className="max-w-[500px] w-auto p-3" align="start">
-          <div className="grid gap-4">
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="flex flex-col gap-4"
-              >
-                <div className="flex flex-col sm:flex-row gap-2">
-                  <InputFormField
-                    control={form.control}
-                    name="resourceType"
-                    label="Resource Type"
-                    formItemClassName="w-full"
-                  />
-
-                  <InputFormField
-                    control={form.control}
-                    name="action"
-                    label="Action"
-                    formItemClassName="w-full"
-                  />
-                </div>
-                <div className="flex flex-col sm:flex-row justify-end gap-2">
-                  <Button type="button" variant="outline" className="w-full sm:w-[80px]" onClick={() => form.reset()}>
-                    Reset
-                  </Button>
-                  <Button className="w-full sm:w-[80px]">
-                    Apply
-                  </Button>
-                </div>
-              </form>
-            </Form>
-          </div>
-        </PopoverContent>
-      </Popover>
+        )}
+      </div>
       <div className="gap-2 flex">
         <EditDialog entityName={entityName} save={save}>
           <Button variant="secondary" size="sm">
