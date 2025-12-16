@@ -1,21 +1,14 @@
-import { useState } from "react"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
+import { useState, useRef, useCallback } from "react"
+import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import InputFormField from "@/components/custom/form-field/input"
-import { IconPlus, IconUpload, IconFilterSearch } from "@tabler/icons-react"
+import { IconPlus, IconUpload, IconX } from "@tabler/icons-react"
 import { EditDialog } from "../dialog/data-dict-dialog"
-import { type DataDict, type DataDictCriteria, dataDictCriteriaSchema, initialDataDictCriteriaState } from "@/domains/data-dict"
-type UploadFormSchema = { files: File[] }
+import { type DataDict, type DataDictCriteria } from "@/domains/data-dict"
 import { UploadDialog } from "@/components/custom/dialog/upload-dialog"
-import { Form } from "@/components/ui/form"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
 import { yesNoOptions } from "@/data/yes-no-options"
-import SelectFormField from "@/components/custom/form-field/select"
+import { UserTableFacetedFilter } from "../../users/table/user-table-faceted-filter"
+
+type UploadFormSchema = { files: File[] }
 
 interface DataTableToolbarProps {
   entityName: string,
@@ -24,74 +17,90 @@ interface DataTableToolbarProps {
   upload: (formData: UploadFormSchema) => Promise<Array<void>>
 }
 
+interface FilterState {
+  id: string
+  categoryCode: string
+  enabled: string[] | undefined
+}
+
+const initialFilters: FilterState = {
+  id: "",
+  categoryCode: "",
+  enabled: undefined
+}
+
 export function DataTableToolbar({
   entityName,
   loadPage,
   save,
   upload
 }: DataTableToolbarProps) {
-  const [isFilterPopoverOpen, setIsFilterPopoverOpen] = useState(false)
-  const form = useForm<DataDictCriteria>({
-    resolver: zodResolver(dataDictCriteriaSchema),
-    defaultValues: initialDataDictCriteriaState
-  })
+  const [filters, setFilters] = useState<FilterState>(initialFilters)
+  const debounceRef = useRef<NodeJS.Timeout | null>(null)
 
-  function onSubmit(formData: DataDictCriteria): void {
-    loadPage(undefined, undefined, undefined, formData)
-    setIsFilterPopoverOpen(false)
+  const triggerSearch = useCallback((newFilters: FilterState) => {
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current)
+    }
+
+    debounceRef.current = setTimeout(() => {
+      loadPage(undefined, undefined, undefined, {
+        id: newFilters.id || undefined,
+        categoryCode: newFilters.categoryCode || undefined,
+        enabled: newFilters.enabled?.[0] || undefined
+      })
+    }, 500)
+  }, [loadPage])
+
+  const handleFilterChange = (key: keyof FilterState, value: any) => {
+    const newFilters = { ...filters, [key]: value }
+    setFilters(newFilters)
+    triggerSearch(newFilters)
   }
+
+  const handleReset = () => {
+    setFilters(initialFilters)
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current)
+    }
+    loadPage(undefined, undefined, undefined, {})
+  }
+
+  const isFiltered = filters.id || filters.categoryCode || (filters.enabled && filters.enabled.length > 0)
 
   return (
     <div className="flex items-center justify-between w-full">
-      <Popover open={isFilterPopoverOpen} onOpenChange={setIsFilterPopoverOpen}>
-        <PopoverTrigger asChild>
-          <Button variant="outline" size="icon">
-            <IconFilterSearch className="size-4" />
+      <div className="flex flex-1 items-center gap-2 flex-wrap">
+        <Input
+          placeholder="Filter ID..."
+          value={filters.id}
+          onChange={(e) => handleFilterChange("id", e.target.value)}
+          className="h-8 w-[150px] lg:w-[200px]"
+        />
+        <Input
+          placeholder="Filter Category Code..."
+          value={filters.categoryCode}
+          onChange={(e) => handleFilterChange("categoryCode", e.target.value)}
+          className="h-8 w-[150px] lg:w-[200px]"
+        />
+        <UserTableFacetedFilter
+          title="Enabled"
+          options={yesNoOptions}
+          value={filters.enabled}
+          onChange={(val) => handleFilterChange("enabled", val)}
+        />
+        
+        {isFiltered && (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleReset}
+          >
+            Reset
+            <IconX className="ml-2 h-4 w-4" />
           </Button>
-        </PopoverTrigger>
-        <PopoverContent className="max-w-[500px] w-auto p-3" align="start">
-          <div className="grid gap-4">
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="flex flex-col gap-4"
-              >
-                <div className="flex flex-col sm:flex-row gap-2">
-                  <InputFormField
-                    control={form.control}
-                    name="id"
-                    label="ID"
-                    formItemClassName="w-full"
-                  />
-
-                  <InputFormField
-                    control={form.control}
-                    name="categoryCode"
-                    label="Category Code"
-                    formItemClassName="w-full"
-                  />
-
-                  <SelectFormField
-                    control={form.control}
-                    name="enabled"
-                    label="Enabled"
-                    options={yesNoOptions}
-                    formItemClassName="w-full"
-                  />
-                </div>
-                <div className="flex flex-col sm:flex-row justify-end gap-2">
-                  <Button type="button" variant="outline" className="w-full sm:w-[80px]" onClick={() => form.reset()}>
-                    Reset
-                  </Button>
-                  <Button className="w-full sm:w-[80px]">
-                    Apply
-                  </Button>
-                </div>
-              </form>
-            </Form>
-          </div>
-        </PopoverContent>
-      </Popover>
+        )}
+      </div>
       <div className="gap-2 flex">
         <EditDialog entityName={entityName} save={save}>
           <Button variant="secondary" size="sm">
