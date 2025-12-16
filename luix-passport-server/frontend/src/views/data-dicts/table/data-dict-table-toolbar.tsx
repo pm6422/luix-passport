@@ -6,7 +6,7 @@ import { EditDialog } from "../dialog/data-dict-dialog"
 import { type DataDict, type DataDictCriteria } from "@/domains/data-dict"
 import { UploadDialog } from "@/components/custom/dialog/upload-dialog"
 import { yesNoOptions } from "@/data/yes-no-options"
-import { UserTableFacetedFilter } from "../../users/table/user-table-faceted-filter"
+import { DataTableFacetedFilter } from "@/components/custom/data-table/data-table-faceted-filter"
 
 type UploadFormSchema = { files: File[] }
 
@@ -83,7 +83,7 @@ export function DataTableToolbar({
           onChange={(e) => handleFilterChange("categoryCode", e.target.value)}
           className="h-8 w-[150px] lg:w-[200px]"
         />
-        <UserTableFacetedFilter
+        <DataTableFacetedFilter
           title="Enabled"
           options={yesNoOptions}
           value={filters.enabled}

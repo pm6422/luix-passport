@@ -39,6 +39,7 @@ export function DataTableToolbar ({
                 control={form.control} 
                 name="keyword" 
                 placeholder="Filter by keyword"
+                inputClassName="h-8 w-[150px] lg:w-[200px]"
                 onKeyDown={e => e.key === 'Enter' ? form.handleSubmit(onSubmit) : ''}
               />
           </form>

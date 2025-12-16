@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { IconX } from "@tabler/icons-react"
 import { type ScheduleLogCriteriaSchema } from "@/domains/schedule-log"
-import { UserTableFacetedFilter } from "../../users/table/user-table-faceted-filter"
+import { DataTableFacetedFilter } from "@/components/custom/data-table/data-table-faceted-filter"
 
 interface DataTableToolbarProps {
   loadPage: (pageNo: number | undefined, pageSize: number | undefined, sorts: Array<string> | undefined, criteria: ScheduleLogCriteriaSchema) => void
@@ -69,7 +69,7 @@ export function DataTableToolbar({
           onChange={(e) => handleFilterChange("scheduleName", e.target.value)}
           className="h-8 w-[150px] lg:w-[250px]"
         />
-        <UserTableFacetedFilter
+        <DataTableFacetedFilter
           title="Status"
           options={statusOptions}
           value={filters.status}
