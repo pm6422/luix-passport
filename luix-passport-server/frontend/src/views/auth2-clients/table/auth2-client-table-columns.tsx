@@ -96,7 +96,7 @@ export function tableColumns(
         <OverflowBadges
           items={(row.original.scopes || []) as string[]}
           visibleCount={1}
-          className="w-[75px] text-xs"
+          className="w-[85px] text-xs"
         />
       ),
       enableSorting: false,
