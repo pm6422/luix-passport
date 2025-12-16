@@ -54,7 +54,7 @@ export function DataTableToolbar({
         username: newFilters.username || undefined,
         email: newFilters.email || undefined,
         mobileNo: newFilters.mobileNo || undefined,
-        enabled: newFilters.enabled?.[0] || undefined
+        enabled: (newFilters.enabled && newFilters.enabled.length === 1) ? newFilters.enabled[0] : undefined
       })
     }, 500)
   }, [loadPage])
