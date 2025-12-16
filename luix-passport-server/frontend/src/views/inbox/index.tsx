@@ -166,7 +166,7 @@ export default function InboxPage() {
           <div className="p-4 border-b space-y-3">
             <div className="flex items-center justify-between">
               <h1 className="text-xl font-semibold tracking-tight">Inbox</h1>
-              <Badge variant="secondary" className="rounded-full bg-primary/10 text-primary hover:bg-primary/20 border-transparent font-normal">
+              <Badge variant="secondary" className="rounded-full bg-green-600/10 text-green-600 hover:bg-green-600/20 border-transparent font-normal shadow-none">
                 {totalCount} messages
               </Badge>
             </div>
