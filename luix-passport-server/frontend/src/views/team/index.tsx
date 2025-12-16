@@ -276,7 +276,7 @@ export default function TeamDashboard() {
 
           {/* Left Column (Main Content) */}
           <div className="md:col-span-2 flex flex-col gap-y-6">
-            <Card>
+            <Card className="bg-background">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div className="gap-y-1">
@@ -377,7 +377,7 @@ export default function TeamDashboard() {
             </Card>
 
             <RoleTeamOwner>
-              <Card>
+              <Card className="bg-background">
                 <CardHeader>
                   <div className="gap-y-1">
                     <CardTitle className="text-lg flex items-center gap-2">
@@ -483,7 +483,7 @@ export default function TeamDashboard() {
 
             {/* Danger Zone */}
             <RoleTeamOwner>
-              <Card className="shadow-none">
+              <Card className="shadow-none bg-background">
                 <CardHeader>
                   <CardTitle className="text-lg text-destructive flex items-center gap-2">
                     <IconAlertCircle className="size-5" />
