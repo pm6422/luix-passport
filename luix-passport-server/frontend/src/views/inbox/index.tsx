@@ -6,17 +6,9 @@ import { toast } from "sonner"
 import { getErrorMessage } from "@/lib/handle-error"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination"
-import { IconBell, IconMail, IconCheck, IconClock, IconX } from "@tabler/icons-react"
+import { IconBell, IconMail, IconCheck, IconX } from "@tabler/icons-react"
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import isToday from "dayjs/plugin/isToday"
@@ -34,11 +26,17 @@ export default function InboxPage() {
   const [currentPageNo, setCurrentPageNo] = useState(0)
   const [loading, setLoading] = useState(false)
   const [searchKeyword, setSearchKeyword] = useState("")
+  const [selectedId, setSelectedId] = useState<string | null>(null)
   const debounceRef = useRef<NodeJS.Timeout | null>(null)
+
+  const selectedItem = useMemo(() => 
+    data.find(item => item.id === selectedId), 
+    [data, selectedId]
+  )
 
   const loadPage = useCallback((
     pageNo: number = 0,
-    pageSize: number = 20, // Increased page size for list view
+    pageSize: number = 20,
     sorts: Array<string> = ["createdAt,desc"],
     criteria: any = {}
   ): void => {
@@ -89,13 +87,13 @@ export default function InboxPage() {
     loadPage()
   }, [loadPage])
 
-  function markAsRead(row: Inbox, e?: React.MouseEvent): Promise<void> {
+  function markAsRead(id: string, e?: React.MouseEvent): Promise<void> {
     e?.stopPropagation()
-    return InboxService.markAsRead(row.id)
+    return InboxService.markAsRead(id)
       .then(() => {
         // Optimistic update
         setData(prev => prev.map(item => 
-          item.id === row.id ? { ...item, status: "READ" } : item
+          item.id === id ? { ...item, status: "READ" } : item
         ))
       })
       .catch((error) => {
@@ -133,212 +131,207 @@ export default function InboxPage() {
   const renderPagination = () => {
     if (totalPages <= 1) return null
     
-    const pages = []
-    const maxVisiblePages = 5
-    let startPage = Math.max(0, currentPageNo - Math.floor(maxVisiblePages / 2))
-    let endPage = Math.min(totalPages - 1, startPage + maxVisiblePages - 1)
-    
-    if (endPage - startPage + 1 < maxVisiblePages) {
-      startPage = Math.max(0, endPage - maxVisiblePages + 1)
-    }
-
-    for (let i = startPage; i <= endPage; i++) {
-      pages.push(i)
-    }
-
+    // Simplified pagination for sidebar
     return (
-      <Pagination className="mt-8 mb-4">
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious 
-              onClick={() => currentPageNo > 0 && loadPage(currentPageNo - 1)}
-              className={currentPageNo === 0 ? "pointer-events-none opacity-50" : "cursor-pointer"}
-            />
-          </PaginationItem>
-          
-          {startPage > 0 && (
-            <>
-              <PaginationItem>
-                <PaginationLink onClick={() => loadPage(0)}>1</PaginationLink>
-              </PaginationItem>
-              {startPage > 1 && (
-                <PaginationItem>
-                  <PaginationEllipsis />
-                </PaginationItem>
-              )}
-            </>
-          )}
-
-          {pages.map(page => (
-            <PaginationItem key={page}>
-              <PaginationLink 
-                isActive={page === currentPageNo}
-                onClick={() => loadPage(page)}
-                className="cursor-pointer"
-              >
-                {page + 1}
-              </PaginationLink>
-            </PaginationItem>
-          ))}
-
-          {endPage < totalPages - 1 && (
-            <>
-              {endPage < totalPages - 2 && (
-                <PaginationItem>
-                  <PaginationEllipsis />
-                </PaginationItem>
-              )}
-              <PaginationItem>
-                <PaginationLink onClick={() => loadPage(totalPages - 1)}>{totalPages}</PaginationLink>
-              </PaginationItem>
-            </>
-          )}
-
-          <PaginationItem>
-            <PaginationNext 
-              onClick={() => currentPageNo < totalPages - 1 && loadPage(currentPageNo + 1)}
-              className={currentPageNo >= totalPages - 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
-            />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
+      <div className="flex items-center justify-between px-4 py-2 border-t text-sm">
+        <Button
+          variant="ghost"
+          size="sm"
+          disabled={currentPageNo === 0}
+          onClick={() => loadPage(currentPageNo - 1)}
+        >
+          Previous
+        </Button>
+        <span className="text-muted-foreground">
+          {currentPageNo + 1} / {totalPages}
+        </span>
+        <Button
+          variant="ghost"
+          size="sm"
+          disabled={currentPageNo >= totalPages - 1}
+          onClick={() => loadPage(currentPageNo + 1)}
+        >
+          Next
+        </Button>
+      </div>
     )
   }
 
   return (
-    <LayoutBody className="flex flex-col" fixedHeight>
-      <div className="flex flex-col h-full max-w-4xl mx-auto w-full">
-        {/* Header Section */}
-        <div className="flex items-center justify-between p-6 pb-2 shrink-0">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">Inbox</h1>
-            <p className="text-muted-foreground mt-1">
-              You have {totalCount} notifications
-            </p>
-          </div>
-          <div className="w-[300px] flex items-center justify-end gap-2">
-            <Input
-              placeholder="Filter notifications..."
-              value={searchKeyword}
-              onChange={(e) => handleSearchChange(e.target.value)}
-              className="h-8 w-full"
-            />
-            {searchKeyword && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleResetSearch}
-                className="px-2"
-              >
-                <IconX className="h-4 w-4" />
-              </Button>
-            )}
-          </div>
-        </div>
-
-        {/* Content Section */}
-        <div className="flex-1 overflow-auto min-h-0 p-6 pt-2">
-          {loading && data.length === 0 ? (
-             <div className="flex flex-col items-center justify-center h-64 text-muted-foreground">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-4"></div>
-                Loading notifications...
-             </div>
-          ) : data.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-64 text-muted-foreground border-2 border-dashed rounded-xl mt-8">
-              <IconBell className="h-12 w-12 mb-4 opacity-20" />
-              <p>No notifications found</p>
+    <LayoutBody className="flex flex-col h-[calc(100vh-64px)] overflow-hidden" fixedHeight>
+      <div className="flex h-full w-full border rounded-xl overflow-hidden bg-background shadow-sm">
+        {/* Left Sidebar - Message List */}
+        <div className="w-[400px] flex flex-col border-r bg-muted/10 shrink-0">
+          {/* Header */}
+          <div className="p-4 border-b space-y-3">
+            <div className="flex items-center justify-between">
+              <h1 className="text-xl font-semibold tracking-tight">Inbox</h1>
+              <Badge variant="secondary" className="rounded-full bg-primary/10 text-primary hover:bg-primary/20 border-transparent font-normal">
+                {totalCount} messages
+              </Badge>
             </div>
-          ) : (
-            <div className="space-y-8">
-              {groupedData.map((group) => (
-                <div key={group.label} className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                  <div className="flex items-center gap-2 mb-4">
-                    <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider bg-background px-2">
+            <div className="relative">
+              <Input
+                placeholder="Search..."
+                value={searchKeyword}
+                onChange={(e) => handleSearchChange(e.target.value)}
+                className="h-9 pl-9 bg-background"
+              />
+              <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <circle cx="11" cy="11" r="8" />
+                  <path d="m21 21-4.3-4.3" />
+                </svg>
+              </div>
+              {searchKeyword && (
+                <button
+                  onClick={handleResetSearch}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                >
+                  <IconX size={14} />
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* List Content */}
+          <div className="flex-1 overflow-y-auto">
+            {loading && data.length === 0 ? (
+              <div className="flex flex-col items-center justify-center h-32 text-muted-foreground">
+                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary mb-2"></div>
+                <span className="text-sm">Loading...</span>
+              </div>
+            ) : data.length === 0 ? (
+              <div className="flex flex-col items-center justify-center h-32 text-muted-foreground p-4 text-center">
+                <IconBell className="h-8 w-8 mb-2 opacity-20" />
+                <p className="text-sm">No notifications found</p>
+              </div>
+            ) : (
+              <div className="divide-y divide-border/50">
+                {groupedData.map((group) => (
+                  <div key={group.label}>
+                    <div className="px-4 py-2 bg-muted/20 text-xs font-medium text-muted-foreground uppercase tracking-wider sticky top-0 backdrop-blur-sm">
                       {group.label}
-                    </h2>
-                    <div className="h-px bg-border flex-1" />
-                  </div>
-                  
-                  <div className="space-y-1">
-                    {group.items.map((notification) => (
+                    </div>
+                    {group.items.map((item) => (
                       <div
-                        key={notification.id}
-                        onClick={(e) => notification.status === 'UNREAD' && markAsRead(notification, e)}
+                        key={item.id}
+                        onClick={() => setSelectedId(item.id)}
                         className={cn(
-                          "group relative flex items-center gap-4 p-4 rounded-xl transition-all duration-200 border border-transparent",
-                          "hover:bg-muted/50 hover:border-border",
-                          notification.status === "UNREAD" ? "bg-primary/5 cursor-pointer shadow-sm border-primary/20" : "bg-background"
+                          "relative p-4 cursor-pointer transition-colors hover:bg-muted/50",
+                          selectedId === item.id ? "bg-primary/5 border-l-2 border-l-primary" : "border-l-2 border-l-transparent",
+                          item.status === "UNREAD" ? "bg-background" : "bg-muted/5"
                         )}
                       >
-                        {/* Unread Indicator */}
-                        {notification.status === "UNREAD" && (
-                          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-full bg-primary rounded-l-xl" />
-                        )}
-
-                        {/* Icon */}
-                        <div className={cn(
-                          "flex h-10 w-10 shrink-0 items-center justify-center rounded-full",
-                          notification.type === "SYSTEM" 
-                            ? "bg-blue-500/10 text-blue-500" 
-                            : "bg-orange-500/10 text-orange-500"
-                        )}>
-                          {notification.type === "SYSTEM" ? <IconBell size={18} /> : <IconMail size={18} />}
-                        </div>
-
-                        {/* Content */}
-                        <div className="flex-1 min-w-0 py-0.5">
-                          <div className="flex items-center justify-between gap-4 mb-1">
-                            <h3 className={cn(
-                              "text-sm font-medium truncate",
-                              notification.status === "UNREAD" ? "text-foreground font-semibold" : "text-muted-foreground"
-                            )}>
-                              {notification.title}
-                            </h3>
-                            <div className="flex items-center gap-2 text-xs text-muted-foreground shrink-0">
-                              <IconClock size={12} />
-                              <span>{dayjs(notification.createdAt).fromNow()}</span>
-                            </div>
-                          </div>
-                          
-                          <p className={cn(
-                            "text-sm line-clamp-2",
-                            notification.status === "UNREAD" ? "text-foreground/80" : "text-muted-foreground/70"
+                        <div className="flex justify-between items-start mb-1">
+                          <h3 className={cn(
+                            "text-sm font-medium truncate pr-2",
+                            item.status === "UNREAD" ? "text-foreground" : "text-muted-foreground"
                           )}>
-                            {notification.content}
-                          </p>
-                          
-                          <div className="mt-2 flex items-center gap-2 text-xs text-muted-foreground/60">
-                            {notification.senderEmail ? (
-                              <span>From: {notification.sender} &lt;{notification.senderEmail}&gt;</span>
-                            ) : (
-                              <span>From: System</span>
-                            )}
-                          </div>
+                            {item.sender || 'System'}
+                          </h3>
+                          <span className={cn(
+                            "text-xs whitespace-nowrap shrink-0",
+                            item.status === "UNREAD" ? "text-primary" : "text-muted-foreground"
+                          )}>
+                            {dayjs(item.createdAt).fromNow(true)}
+                          </span>
                         </div>
-
-                        {/* Actions */}
-                        <div className="flex items-center self-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                          {notification.status === "UNREAD" && (
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              className="h-8 w-8 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-full"
-                              onClick={(e) => markAsRead(notification, e)}
-                              title="Mark as read"
-                            >
-                              <IconCheck size={16} />
-                            </Button>
-                          )}
-                        </div>
+                        <h4 className={cn(
+                          "text-sm mb-1 truncate",
+                          item.status === "UNREAD" ? "font-medium text-foreground" : "text-muted-foreground"
+                        )}>
+                          {item.title}
+                        </h4>
+                        <p className="text-xs text-muted-foreground line-clamp-2">
+                          {item.content}
+                        </p>
+                        {item.status === "UNREAD" && (
+                          <div className="absolute right-4 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-primary" />
+                        )}
                       </div>
                     ))}
                   </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Pagination Footer */}
+          {renderPagination()}
+        </div>
+
+        {/* Right Detail Pane */}
+        <div className="flex-1 flex flex-col min-w-0 bg-background h-full overflow-hidden">
+          {selectedItem ? (
+            <div className="flex flex-col h-full animate-in fade-in duration-300">
+              {/* Detail Header */}
+              <div className="p-6 border-b shrink-0 flex items-start justify-between gap-4">
+                <div className="min-w-0 flex-1">
+                  <h2 className="text-2xl font-semibold leading-tight mb-2 text-foreground">
+                    {selectedItem.title}
+                  </h2>
+                  <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                    <div className={cn(
+                    "flex items-center justify-center w-8 h-8 rounded-full shrink-0",
+                    selectedItem.type === "SYSTEM" ? "bg-blue-500/10 text-blue-500" : "bg-orange-500/10 text-orange-500"
+                  )}>
+                    {selectedItem.type === "SYSTEM" ? <IconBell size={16} /> : <IconMail size={16} />}
+                  </div>
+                    <div className="flex flex-col">
+                      <span className="font-medium text-foreground">
+                        {selectedItem.sender || 'System'}
+                        {selectedItem.senderEmail && <span className="font-normal text-muted-foreground ml-1">&lt;{selectedItem.senderEmail}&gt;</span>}
+                      </span>
+                      <span className="text-xs">
+                        {dayjs(selectedItem.createdAt).format('MMMM D, YYYY h:mm A')}
+                      </span>
+                    </div>
+                  </div>
                 </div>
-              ))}
+                <div className="flex items-center gap-2 shrink-0">
+                  {selectedItem.status === "UNREAD" && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={(e) => markAsRead(selectedItem.id, e)}
+                      className="gap-2"
+                    >
+                      <IconCheck size={16} />
+                      Mark as read
+                    </Button>
+                  )}
+                </div>
+              </div>
+
+              {/* Detail Content */}
+              <div className="flex-1 overflow-y-auto p-8">
+                <div className="prose prose-sm max-w-none text-foreground/90 leading-relaxed whitespace-pre-wrap">
+                  {selectedItem.content}
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center h-full text-muted-foreground bg-muted/5">
+              <div className="size-16 rounded-full bg-muted flex items-center justify-center mb-4">
+                <IconMail className="size-8 opacity-40" />
+              </div>
+              <h3 className="text-lg font-medium text-foreground mb-1">No message selected</h3>
+              <p className="text-sm max-w-xs text-center">
+                Choose a message from the list on the left to view its details.
+              </p>
             </div>
           )}
-          
-          {renderPagination()}
         </div>
       </div>
     </LayoutBody>
