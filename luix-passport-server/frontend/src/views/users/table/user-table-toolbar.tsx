@@ -1,11 +1,10 @@
-import { useState, useRef } from "react"
+import { useState, useRef, useCallback } from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { IconPlus, IconX } from "@tabler/icons-react"
 import { EditDialog } from "../dialog/user-dialog"
 import { type User, type UserCriteriaSchema } from "@/domains/user"
 import { DataTableFacetedFilter } from "./data-table-faceted-filter"
-import { Column } from "@tanstack/react-table"
 import { yesNoOptions } from "@/data/yes-no-options"
 
 interface DataTableToolbarProps {
@@ -14,18 +13,19 @@ interface DataTableToolbarProps {
   save: (formData: User) => Promise<void>
 }
 
-// Helper to create a fake column object for DataTableFacetedFilter
-function createFakeColumn(
-  id: string, 
-  value: any, 
-  setValue: (val: any) => void
-): Column<any, any> {
-  return {
-    id,
-    getFilterValue: () => value,
-    setFilterValue: setValue,
-    getFacetedUniqueValues: () => new Map(),
-  } as unknown as Column<any, any>
+// Define the filter state type
+interface FilterState {
+  username: string
+  email: string
+  mobileNo: string
+  enabled: string[] | undefined
+}
+
+const initialFilters: FilterState = {
+  username: "",
+  email: "",
+  mobileNo: "",
+  enabled: undefined
 }
 
 export function DataTableToolbar({
@@ -33,20 +33,12 @@ export function DataTableToolbar({
   loadPage,
   save
 }: DataTableToolbarProps) {
-  const [username, setUsername] = useState("")
-  const [email, setEmail] = useState("")
-  const [mobileNo, setMobileNo] = useState("")
-  const [enabled, setEnabled] = useState<string[] | undefined>(undefined)
+  const [filters, setFilters] = useState<FilterState>(initialFilters)
 
   // Debounce timer ref
   const debounceRef = useRef<NodeJS.Timeout | null>(null)
 
-  const triggerSearch = (
-    newUsername: string,
-    newEmail: string,
-    newMobileNo: string,
-    newEnabled: string[] | undefined
-  ) => {
+  const triggerSearch = useCallback((newFilters: FilterState) => {
     // Clear previous timer
     if (debounceRef.current) {
       clearTimeout(debounceRef.current)
@@ -55,74 +47,58 @@ export function DataTableToolbar({
     // Set new timer
     debounceRef.current = setTimeout(() => {
       loadPage(undefined, undefined, undefined, {
-        username: newUsername || undefined,
-        email: newEmail || undefined,
-        mobileNo: newMobileNo || undefined,
-        enabled: newEnabled && newEnabled.length > 0 ? newEnabled[0] : undefined
+        username: newFilters.username || undefined,
+        email: newFilters.email || undefined,
+        mobileNo: newFilters.mobileNo || undefined,
+        enabled: newFilters.enabled?.[0] || undefined
       })
     }, 500)
-  }
+  }, [loadPage])
 
-  const handleUsernameChange = (value: string) => {
-    setUsername(value)
-    triggerSearch(value, email, mobileNo, enabled)
-  }
-
-  const handleEmailChange = (value: string) => {
-    setEmail(value)
-    triggerSearch(username, value, mobileNo, enabled)
-  }
-
-  const handleMobileNoChange = (value: string) => {
-    setMobileNo(value)
-    triggerSearch(username, email, value, enabled)
-  }
-
-  const handleEnabledChange = (value: string[] | undefined) => {
-    setEnabled(value)
-    triggerSearch(username, email, mobileNo, value)
+  const handleFilterChange = (key: keyof FilterState, value: any) => {
+    const newFilters = { ...filters, [key]: value }
+    setFilters(newFilters)
+    triggerSearch(newFilters)
   }
 
   const handleReset = () => {
-    setUsername("")
-    setEmail("")
-    setMobileNo("")
-    setEnabled(undefined)
+    setFilters(initialFilters)
     if (debounceRef.current) {
       clearTimeout(debounceRef.current)
     }
     loadPage(undefined, undefined, undefined, {})
   }
 
-  const isFiltered = username || email || mobileNo || (enabled && enabled.length > 0)
+  const isFiltered = filters.username || filters.email || filters.mobileNo || (filters.enabled && filters.enabled.length > 0)
 
   return (
     <div className="flex items-center justify-between w-full">
       <div className="flex flex-1 items-center gap-2 flex-wrap">
         <Input
           placeholder="Filter username..."
-          value={username}
-          onChange={(e) => handleUsernameChange(e.target.value)}
+          value={filters.username}
+          onChange={(e) => handleFilterChange("username", e.target.value)}
           className="h-8 w-[150px] lg:w-[200px]"
         />
         <Input
           placeholder="Filter email..."
-          value={email}
-          onChange={(e) => handleEmailChange(e.target.value)}
+          value={filters.email}
+          onChange={(e) => handleFilterChange("email", e.target.value)}
           className="h-8 w-[150px] lg:w-[200px]"
         />
         <Input
           placeholder="Filter mobile..."
-          value={mobileNo}
-          onChange={(e) => handleMobileNoChange(e.target.value)}
+          value={filters.mobileNo}
+          onChange={(e) => handleFilterChange("mobileNo", e.target.value)}
           className="h-8 w-[150px] lg:w-[200px]"
         />
         <DataTableFacetedFilter
-          column={createFakeColumn("enabled", enabled, handleEnabledChange)}
           title="Enabled"
           options={yesNoOptions}
+          value={filters.enabled}
+          onChange={(val) => handleFilterChange("enabled", val)}
         />
-        
+
         {isFiltered && (
           <Button
             variant="ghost"

@@ -29,15 +29,23 @@ interface DataTableFacetedFilterProps<TData, TValue> {
     value: string
     icon?: React.ComponentType<{ className?: string }>
   }[]
+  value?: string[]
+  onChange?: (value: string[] | undefined) => void
 }
 
 export function DataTableFacetedFilter<TData, TValue>({
   column,
   title,
   options,
+  value: controlledValue,
+  onChange,
 }: DataTableFacetedFilterProps<TData, TValue>) {
   const facets = column?.getFacetedUniqueValues()
-  const selectedValues = new Set(column?.getFilterValue() as string[])
+  const selectedValues = new Set(
+    controlledValue !== undefined
+      ? controlledValue
+      : (column?.getFilterValue() as string[])
+  )
 
   return (
     <Popover>
@@ -98,9 +106,14 @@ export function DataTableFacetedFilter<TData, TValue>({
                         selectedValues.add(option.value)
                       }
                       const filterValues = Array.from(selectedValues)
-                      column?.setFilterValue(
-                        filterValues.length ? filterValues : undefined
-                      )
+                      
+                      if (onChange) {
+                        onChange(filterValues.length ? filterValues : undefined)
+                      } else {
+                        column?.setFilterValue(
+                          filterValues.length ? filterValues : undefined
+                        )
+                      }
                     }}
                   >
                     <div
@@ -131,7 +144,13 @@ export function DataTableFacetedFilter<TData, TValue>({
                 <CommandSeparator />
                 <CommandGroup>
                   <CommandItem
-                    onSelect={() => column?.setFilterValue(undefined)}
+                    onSelect={() => {
+                      if (onChange) {
+                        onChange(undefined)
+                      } else {
+                        column?.setFilterValue(undefined)
+                      }
+                    }}
                     className="justify-center text-center"
                   >
                     Clear filters
