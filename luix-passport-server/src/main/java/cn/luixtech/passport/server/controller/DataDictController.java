@@ -1,7 +1,6 @@
 package cn.luixtech.passport.server.controller;
 
 import cn.luixtech.passport.server.domain.DataDict;
-import cn.luixtech.passport.server.dto.BatchUpdateDataDict;
 import cn.luixtech.passport.server.repository.DataDictRepository;
 import cn.luixtech.passport.server.service.DataDictService;
 import com.alibaba.fastjson2.JSON;
@@ -76,15 +75,6 @@ public class DataDictController {
     public ResponseEntity<Void> update(
             @Parameter(description = "domain", required = true) @Valid @RequestBody DataDict domain) {
         dataDictRepository.save(domain);
-        return ResponseEntity.ok().build();
-    }
-
-    @Operation(summary = "batch update data dict")
-    @PreAuthorize("hasAuthority(\"" + ROLE_DEVELOPER + "\")")
-    @PutMapping("/api/data-dicts/batch-update")
-    public ResponseEntity<Void> batchUpdate(
-            @Parameter(description = "target", required = true) @Valid @RequestBody BatchUpdateDataDict target) {
-        dataDictService.batchUpdateCategoryCode(target.getIds(), target.getTargetCategoryCode());
         return ResponseEntity.ok().build();
     }
 
