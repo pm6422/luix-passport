@@ -97,7 +97,6 @@ export default function InboxPage() {
         setData(prev => prev.map(item => 
           item.id === row.id ? { ...item, status: "READ" } : item
         ))
-        toast.success("Notification marked as read")
       })
       .catch((error) => {
         toast.error(getErrorMessage(error))
@@ -264,15 +263,16 @@ export default function InboxPage() {
                     {group.items.map((notification) => (
                       <div
                         key={notification.id}
+                        onClick={(e) => notification.status === 'UNREAD' && markAsRead(notification, e)}
                         className={cn(
                           "group relative flex items-center gap-4 p-4 rounded-xl transition-all duration-200 border border-transparent",
                           "hover:bg-muted/50 hover:border-border",
-                          notification.status === "UNREAD" ? "bg-primary/5" : "bg-background"
+                          notification.status === "UNREAD" ? "bg-primary/5 cursor-pointer shadow-sm border-primary/20" : "bg-background"
                         )}
                       >
                         {/* Unread Indicator */}
                         {notification.status === "UNREAD" && (
-                          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-12 bg-primary rounded-r-full" />
+                          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-full bg-primary rounded-l-xl" />
                         )}
 
                         {/* Icon */}

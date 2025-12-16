@@ -118,7 +118,7 @@ export default function PricingPage() {
                     plan.featured ? "" : "variant-outline"
                   }`}
                 >
-                  <Link to={plan.name === "Enterprise" ? "/contact" : "/sign-up"}>
+                  <Link to={plan.name === "Enterprise" ? "/contact-us" : "/sign-up"}>
                     {plan.cta}
                   </Link>
                 </Button>
