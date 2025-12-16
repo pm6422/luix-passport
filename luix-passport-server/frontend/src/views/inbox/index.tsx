@@ -163,7 +163,7 @@ export default function InboxPage() {
         {/* Left Sidebar - Message List */}
         <div className="w-[400px] flex flex-col border-r bg-muted/10 shrink-0">
           {/* Header */}
-          <div className="p-4 border-b space-y-3">
+          <div className="p-4 border-b space-y-4">
             <div className="flex items-center justify-between">
               <h1 className="text-xl font-semibold tracking-tight">Inbox</h1>
               <Badge variant="secondary" className="rounded-full bg-green-600/10 text-green-600 hover:bg-green-600/20 border-transparent font-normal shadow-none">
@@ -276,9 +276,9 @@ export default function InboxPage() {
           {selectedItem ? (
             <div className="flex flex-col h-full animate-in fade-in duration-300">
               {/* Detail Header */}
-              <div className="p-6 border-b shrink-0 flex items-start justify-between gap-4">
+              <div className="p-5 border-b shrink-0 flex items-start justify-between gap-4">
                 <div className="min-w-0 flex-1">
-                  <h2 className="text-2xl font-semibold leading-tight mb-2 text-foreground">
+                  <h2 className="text-2xl font-semibold mb-2 text-foreground">
                     {selectedItem.title}
                   </h2>
                   <div className="flex items-center gap-3 text-sm text-muted-foreground">
