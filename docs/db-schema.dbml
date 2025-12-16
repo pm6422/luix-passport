@@ -141,8 +141,8 @@ Table "team_user" {
 Table "team_invitation" {
   "id" varchar(18) [pk, not null]
   "team_id" varchar(18) [not null]
-  "member_email" varchar(30) [not null]
-  "member_role" varchar(20) [not null]
+  "invitee_email" varchar(30) [not null]
+  "invitee_roles" varchar(1000) [not null]
   "inviter_id" varchar(50) [not null]
   "status" varchar(20) [not null]
   "created_at" timestamp [not null]
