@@ -2,7 +2,7 @@ import { useParams, useNavigate } from "react-router-dom"
 import { useState, useEffect, useRef, useCallback, useMemo } from "react"
 import { Button } from "@/components/ui/button"
 import { LayoutBody } from "@/layouts/layout-definitions"
-import { IconCamera, IconAlertCircle, IconCopy, IconCheck, IconTrash, IconUsers, IconMail, IconPencil, IconX } from "@tabler/icons-react"
+import { IconCamera, IconAlertCircle, IconCopy, IconCheck, IconTrash, IconUsers, IconMail, IconPencil, IconX, IconLoader } from "@tabler/icons-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { TeamService, Team, TeamMember } from "@/services/team-service"
 import { toast } from "sonner"
@@ -360,7 +360,7 @@ export default function TeamDashboard() {
                           )}
                         </TableCell>
                         <TableCell className="text-end">
-                          {member.joinedAt && <UserDateTime value={member.joinedAt} />}
+                          {member.joinedAt && <UserDateTime value={member.joinedAt} twoLines={true} />}
                         </TableCell>
                       </TableRow>
                     ))}
@@ -430,18 +430,20 @@ export default function TeamDashboard() {
                               />
                             </TableCell>
                             <TableCell>
-                              <UserDateTime value={invite.createdAt} />
+                              <UserDateTime value={invite.createdAt} twoLines={true} />
                             </TableCell>
                             <TableCell>
-                              <UserDateTime value={invite.expiresAt} />
+                              <UserDateTime value={invite.expiresAt} twoLines={true} />
                             </TableCell>
                             <TableCell>
                           <Badge
+                            variant="secondary"
                             className={`capitalize ${invite.status === "EXPIRED"
                               ? "bg-red-600/10 text-red-600 shadow-none"
                               : ""
                               }`}
                           >
+                            {invite.status !== "EXPIRED" && <IconLoader className="me-1 size-3 animate-spin" />}
                             {getInviteProgress(invite)}
                           </Badge>
                         </TableCell>
