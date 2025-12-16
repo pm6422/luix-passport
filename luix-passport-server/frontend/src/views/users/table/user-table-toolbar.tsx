@@ -1,28 +1,8 @@
-import * as React from "react"
 import { useState, useRef, useCallback } from "react"
-import { type Column } from "@tanstack/react-table"
-import { Check, PlusCircle } from "lucide-react"
 import { IconPlus, IconX } from "@tabler/icons-react"
 
-import { cn } from "@/lib/utils"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-  CommandSeparator,
-} from "@/components/ui/command"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
-import { Separator } from "@/components/ui/separator"
 
 import { EditDialog } from "../dialog/user-dialog"
 import { type User, type UserCriteriaSchema } from "@/domains/user"
