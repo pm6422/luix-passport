@@ -91,9 +91,9 @@ export function UserNav() {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild className="cursor-pointer">
-                <Link to="/notifications">
+                <Link to="/inbox">
                   <IconBellRinging />
-                  Notifications
+                  Inbox
                 </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>

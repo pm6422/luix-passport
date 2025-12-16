@@ -51,8 +51,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             icon: IconUser,
           },
           {
-            title: "Notifications",
-            url: "/notifications",
+            title: "Inbox",
+            url: "/inbox",
             icon: IconBellRinging,
           }
         ] : []),

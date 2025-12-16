@@ -76,9 +76,9 @@ export function AccountNav() {
               {/*<DropdownMenuShortcut>⌘S</DropdownMenuShortcut>*/}
             </DropdownMenuItem>
           </Link>
-          <Link to="/notifications">
+          <Link to="/inbox">
             <DropdownMenuItem className="cursor-pointer">
-              <IconBellRinging className="size-4 me-2" />Notifications
+              <IconBellRinging className="size-4 me-2" />Inbox
             </DropdownMenuItem>
           </Link>
         </DropdownMenuGroup>

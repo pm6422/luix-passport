@@ -123,9 +123,9 @@ const router = createBrowserRouter([
         }),
       },
       {
-        path: "notifications",
+        path: "inbox",
         lazy: async () => ({
-          Component: (await import("@/views/notifications")).default
+          Component: (await import("@/views/inbox")).default
         }),
       },
       {

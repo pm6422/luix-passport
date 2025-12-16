@@ -107,7 +107,7 @@ export default function SiteHome() {
                   </div>
                   <div className="flex flex-col gap-y-6 w-full max-w-sm">
                     <Button asChild variant="link" className="w-full px-5 py-4 h-14 text-base font-medium rounded-2xl">
-                      <Link to="/notifications">View Notifications</Link>
+                      <Link to="/inbox">View Notifications</Link>
                     </Button>
                     <Button asChild className="w-full px-5 py-4 h-14 text-base font-medium rounded-2xl">
                       <Link to="/console">Go to console</Link>
