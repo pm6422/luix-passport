@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/popover"
 import { Separator } from "@/components/ui/separator"
 
-interface DataTableFacetedFilterProps<TData, TValue> {
+interface UserTableFacetedFilterProps<TData, TValue> {
   column?: Column<TData, TValue>
   title?: string
   options: {
@@ -33,13 +33,13 @@ interface DataTableFacetedFilterProps<TData, TValue> {
   onChange?: (value: string[] | undefined) => void
 }
 
-export function DataTableFacetedFilter<TData, TValue>({
+export function UserTableFacetedFilter<TData, TValue>({
   column,
   title,
   options,
   value: controlledValue,
   onChange,
-}: DataTableFacetedFilterProps<TData, TValue>) {
+}: UserTableFacetedFilterProps<TData, TValue>) {
   const facets = column?.getFacetedUniqueValues()
   const selectedValues = new Set(
     controlledValue !== undefined

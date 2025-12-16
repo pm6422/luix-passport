@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { IconPlus, IconX } from "@tabler/icons-react"
 import { EditDialog } from "../dialog/user-dialog"
 import { type User, type UserCriteriaSchema } from "@/domains/user"
-import { DataTableFacetedFilter } from "./data-table-faceted-filter"
+import { UserTableFacetedFilter } from "./user-table-faceted-filter"
 import { yesNoOptions } from "@/data/yes-no-options"
 
 interface DataTableToolbarProps {
@@ -92,7 +92,7 @@ export function DataTableToolbar({
           onChange={(e) => handleFilterChange("mobileNo", e.target.value)}
           className="h-8 w-[150px] lg:w-[200px]"
         />
-        <DataTableFacetedFilter
+        <UserTableFacetedFilter
           title="Enabled"
           options={yesNoOptions}
           value={filters.enabled}
