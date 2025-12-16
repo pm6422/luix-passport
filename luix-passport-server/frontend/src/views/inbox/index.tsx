@@ -226,7 +226,12 @@ export default function InboxPage() {
                     {group.items.map((item) => (
                       <div
                         key={item.id}
-                        onClick={() => setSelectedId(item.id)}
+                        onClick={() => {
+                          setSelectedId(item.id)
+                          if (item.status === "UNREAD") {
+                            markAsRead(item.id)
+                          }
+                        }}
                         className={cn(
                           "relative p-4 cursor-pointer transition-colors hover:bg-muted/50",
                           selectedId === item.id ? "bg-primary/5 border-l-2 border-l-primary" : "border-l-2 border-l-transparent",
@@ -276,9 +281,9 @@ export default function InboxPage() {
           {selectedItem ? (
             <div className="flex flex-col h-full animate-in fade-in duration-300">
               {/* Detail Header */}
-              <div className="p-5 border-b shrink-0 flex items-start justify-between gap-4">
+              <div className="p-6 border-b shrink-0 flex items-start justify-between gap-4 h-[113px]">
                 <div className="min-w-0 flex-1">
-                  <h2 className="text-2xl font-semibold mb-2 text-foreground">
+                  <h2 className="text-xl font-semibold mb-4 text-foreground line-clamp-1">
                     {selectedItem.title}
                   </h2>
                   <div className="flex items-center gap-3 text-sm text-muted-foreground">
@@ -300,17 +305,7 @@ export default function InboxPage() {
                   </div>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
-                  {selectedItem.status === "UNREAD" && (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={(e) => markAsRead(selectedItem.id, e)}
-                      className="gap-2"
-                    >
-                      <IconCheck size={16} />
-                      Mark as read
-                    </Button>
-                  )}
+                  {/* Actions removed as mark-as-read is triggered on click */}
                 </div>
               </div>
 
