@@ -265,7 +265,7 @@ export default function InboxPage() {
                       <div
                         key={notification.id}
                         className={cn(
-                          "group relative flex gap-4 p-4 rounded-xl transition-all duration-200 border border-transparent",
+                          "group relative flex items-center gap-4 p-4 rounded-xl transition-all duration-200 border border-transparent",
                           "hover:bg-muted/50 hover:border-border",
                           notification.status === "UNREAD" ? "bg-primary/5" : "bg-background"
                         )}
@@ -277,10 +277,10 @@ export default function InboxPage() {
 
                         {/* Icon */}
                         <div className={cn(
-                          "flex h-10 w-10 shrink-0 items-center justify-center rounded-full border shadow-sm",
+                          "flex h-10 w-10 shrink-0 items-center justify-center rounded-full",
                           notification.type === "SYSTEM" 
-                            ? "bg-blue-50 text-blue-600 border-blue-100" 
-                            : "bg-orange-50 text-orange-600 border-orange-100"
+                            ? "bg-blue-500/10 text-blue-500" 
+                            : "bg-orange-500/10 text-orange-500"
                         )}>
                           {notification.type === "SYSTEM" ? <IconBell size={18} /> : <IconMail size={18} />}
                         </div>
