@@ -142,7 +142,7 @@ export default function HealthChecksPage() {
   return (
     <RoleDeveloper>
       <LayoutBody className="flex flex-col" fixedHeight>
-        <Card>
+        <Card className="bg-background">
           <CardHeader className="flex flex-row items-center justify-between gap-4">
             <CardTitle>Health Checks</CardTitle>
             <Button variant="outline" className="gap-2" onClick={refresh}>
