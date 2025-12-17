@@ -31,10 +31,9 @@ export default function DataDict() {
       categoryCode: criteria.categoryCode || null,
       enabled: criteria.enabled || null,
     }).then(r => {
-      setTableData(r.data)
-      const total = parseInt(r.headers["x-total-count"])
-      setTotalCount(total)
-      setTotalPages(Math.ceil(total / pageSize))
+      setTableData(r.data.content)
+      setTotalCount(r.data.totalElements)
+      setTotalPages(r.data.totalPages)
     })
   }, [])
 

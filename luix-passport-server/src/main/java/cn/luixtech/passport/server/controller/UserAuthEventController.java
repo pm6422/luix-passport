@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -33,7 +34,6 @@ import java.util.Optional;
 
 import static cn.luixtech.passport.server.domain.UserAuthEvent.AUTH_SUCCESS;
 import static cn.luixtech.passport.server.domain.Role.ROLE_ADMIN;
-import static com.luixtech.springbootframework.utils.HttpHeaderUtils.generatePageHeaders;
 
 /**
  * REST controller for managing user authentication events.
@@ -52,11 +52,11 @@ public class UserAuthEventController {
 
     @Operation(summary = "find user auth event list")
     @GetMapping("/api/user-auth-events")
-    public ResponseEntity<List<UserAuthEvent>> find(@ParameterObject Pageable pageable,
+    public ResponseEntity<Page<UserAuthEvent>> find(@ParameterObject Pageable pageable,
                                                     @Parameter(description = "username") @RequestParam(value = "username", required = false) String username,
                                                     @Parameter(description = "event") @RequestParam(value = "event", required = false) String event) {
         Page<UserAuthEvent> domains = userAuthEventService.find(pageable, username, event);
-        return ResponseEntity.ok().headers(generatePageHeaders(domains)).body(domains.getContent());
+        return ResponseEntity.ok(domains);
     }
 
     @Operation(summary = "find user auth event by id")
@@ -68,11 +68,11 @@ public class UserAuthEventController {
 
     @Operation(summary = "find recent login users list")
     @GetMapping("/api/user-auth-events/recent-login-users")
-    public ResponseEntity<List<LoginUser>> findRecentLoginUsers(@ParameterObject Pageable pageable) {
+    public ResponseEntity<Page<LoginUser>> findRecentLoginUsers(@ParameterObject Pageable pageable) {
         List<LoginUser> loginUsers = new ArrayList<>();
         Page<UserAuthEvent> domains = userAuthEventService.find(pageable, null, AUTH_SUCCESS);
         if (domains.isEmpty()) {
-            return ResponseEntity.ok(loginUsers);
+            return ResponseEntity.ok(Page.empty(pageable));
         }
         for (UserAuthEvent domain : domains.getContent()) {
             Optional<User> user = userRepository.findById(domain.getUsername());
@@ -83,7 +83,7 @@ public class UserAuthEventController {
                 loginUsers.add(loginUser);
             }
         }
-        return ResponseEntity.ok().headers(generatePageHeaders(domains)).body(loginUsers);
+        return ResponseEntity.ok(new PageImpl<>(loginUsers, pageable, domains.getTotalElements()));
     }
 
     @Operation(summary = "get user login count in last seven days")

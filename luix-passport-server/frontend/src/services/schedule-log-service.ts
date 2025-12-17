@@ -1,12 +1,13 @@
 import http from "@/axios"
 import { type ScheduleLog } from "@/domains/schedule-log"
 import { AxiosResponse } from "axios"
+import { Page } from "@/domains/page"
 
 export class ScheduleLogService {
   constructor() {
   }
 
-  public static find(reqParams: object): Promise<AxiosResponse<Array<ScheduleLog>>> {
+  public static find(reqParams: object): Promise<AxiosResponse<Page<ScheduleLog>>> {
     return http.get("/api/schedule-logs", { params: reqParams })
   }
 

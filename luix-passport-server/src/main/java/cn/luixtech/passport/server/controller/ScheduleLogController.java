@@ -15,10 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 import static cn.luixtech.passport.server.domain.Role.ROLE_DEVELOPER;
-import static com.luixtech.springbootframework.utils.HttpHeaderUtils.generatePageHeaders;
 
 @RestController
 @AllArgsConstructor
@@ -30,11 +27,11 @@ public class ScheduleLogController {
 
     @Operation(summary = "find schedule log list")
     @GetMapping("/api/schedule-logs")
-    public ResponseEntity<List<ScheduleLog>> find(@ParameterObject Pageable pageable,
+    public ResponseEntity<Page<ScheduleLog>> find(@ParameterObject Pageable pageable,
                                                   @RequestParam(value = "scheduleName", required = false) String scheduleName,
                                                   @RequestParam(value = "status", required = false) String status) {
         Page<ScheduleLog> domains = scheduleLogService.find(pageable, scheduleName, status);
-        return ResponseEntity.ok().headers(generatePageHeaders(domains)).body(domains.getContent());
+        return ResponseEntity.ok(domains);
     }
 
     @Operation(summary = "find schedule log by id")

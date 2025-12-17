@@ -1,12 +1,13 @@
 import http from "@/axios"
 import { type Inbox } from "@/domains/inbox"
 import {AxiosResponse} from "axios"
+import { Page } from "@/domains/page"
 
 export class InboxService {
   constructor() {
   }
 
-  public static find(reqParams: object): Promise<AxiosResponse<Array<Inbox>>> {
+  public static find(reqParams: object): Promise<AxiosResponse<Page<Inbox>>> {
     return http.get("/api/inbox", { params: reqParams })
   }
 

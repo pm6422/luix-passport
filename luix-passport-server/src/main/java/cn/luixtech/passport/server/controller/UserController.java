@@ -35,7 +35,6 @@ import java.util.Set;
 
 import static cn.luixtech.passport.server.domain.Role.ROLE_ADMIN;
 import static cn.luixtech.passport.server.domain.Role.ROLE_DEVELOPER;
-import static com.luixtech.springbootframework.utils.HttpHeaderUtils.generatePageHeaders;
 import static com.luixtech.springbootframework.utils.NetworkUtils.getRequestUrl;
 
 /**
@@ -66,22 +65,21 @@ public class UserController {
 
     @Operation(summary = "find user list")
     @GetMapping("/api/users")
-    public ResponseEntity<List<ManagedUser>> find(@ParameterObject Pageable pageable,
+    public ResponseEntity<Page<ManagedUser>> find(@ParameterObject Pageable pageable,
                                                   @Parameter(description = "username") @RequestParam(value = "username", required = false) String username,
                                                   @Parameter(description = "email") @RequestParam(value = "email", required = false) String email,
                                                   @Parameter(description = "mobileNo") @RequestParam(value = "mobileNo", required = false) String mobileNo,
                                                   @Parameter(description = "enabled") @RequestParam(value = "enabled", required = false) Boolean enabled,
                                                   @Parameter(description = "activated") @RequestParam(value = "activated", required = false) Boolean activated) {
         Page<User> domains = userService.find(pageable, username, email, mobileNo, enabled, activated);
-        List<ManagedUser> users = new ArrayList<>(domains.getContent().size());
-        domains.stream().forEach(domain -> {
+        Page<ManagedUser> users = domains.map(domain -> {
             ManagedUser user = new ManagedUser();
             BeanUtils.copyProperties(domain, user);
             Set<String> roleIds = userRoleService.findRoleIds(domain.getUsername());
             user.setRoleIds(roleIds);
-            users.add(user);
+            return user;
         });
-        return ResponseEntity.ok().headers(generatePageHeaders(domains)).body(users);
+        return ResponseEntity.ok(users);
     }
 
     @Operation(summary = "find user by id")

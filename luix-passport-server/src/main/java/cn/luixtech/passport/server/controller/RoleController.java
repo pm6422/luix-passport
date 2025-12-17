@@ -16,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +32,6 @@ import java.util.List;
 import java.util.Set;
 
 import static cn.luixtech.passport.server.domain.Role.ROLE_ADMIN;
-import static com.luixtech.springbootframework.utils.HttpHeaderUtils.generatePageHeaders;
 
 @RestController
 @AllArgsConstructor
@@ -55,11 +53,10 @@ public class RoleController {
 
     @Operation(summary = "find role list")
     @GetMapping("/api/roles")
-    public ResponseEntity<List<Role>> find(@ParameterObject Pageable pageable,
+    public ResponseEntity<Page<Role>> find(@ParameterObject Pageable pageable,
             @Parameter(description = "ID") @RequestParam(value = "id", required = false) String id) {
         Page<Role> domains = roleService.find(pageable, id);
-        HttpHeaders headers = generatePageHeaders(domains);
-        return ResponseEntity.ok().headers(headers).body(domains.getContent());
+        return ResponseEntity.ok(domains);
     }
 
     @Operation(summary = "find all role IDs")

@@ -1,16 +1,17 @@
 import http from "@/axios"
 import { type User } from "@/domains/user"
 import { AxiosResponse } from "axios"
+import { Page } from "@/domains/page"
 
 export class UserService {
   constructor() {
   }
 
-  public static find(reqParams: object): Promise<AxiosResponse<Array<User>>> {
+  public static find(reqParams: object): Promise<AxiosResponse<Page<User>>> {
     return http.get("/api/users", { params: reqParams })
   }
 
-  public static findAll(enabled: boolean | null = null): Promise<AxiosResponse<Array<User>>> {
+  public static findAll(enabled: boolean | null = null): Promise<AxiosResponse<Page<User>>> {
     return http.get("/api/users", { params: { page: 0, size: 2000, enabled: enabled }})
   }
 

@@ -1,12 +1,13 @@
 import http from "@/axios"
 import { type Role } from "@/domains/role"
 import {AxiosResponse} from "axios"
+import { Page } from "@/domains/page"
 
 export class RoleService {
   constructor() {
   }
 
-  public static find(reqParams: object): Promise<AxiosResponse<Array<Role>>> {
+  public static find(reqParams: object): Promise<AxiosResponse<Page<Role>>> {
     return http.get("/api/roles", { params: reqParams })
   }
 

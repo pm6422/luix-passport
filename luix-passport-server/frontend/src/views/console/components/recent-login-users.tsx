@@ -8,7 +8,7 @@ export function RecentLoginUsers() {
 
   useEffect(() => {
     UserAuthEventService.findRecentLoginUsers().then((resp) => {
-      setLoginUsers(resp.data)
+      setLoginUsers(resp.data.content)
     })
   }, [])
 

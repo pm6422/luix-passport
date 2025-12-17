@@ -14,7 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,12 +23,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 import static cn.luixtech.passport.server.domain.Role.ROLE_ADMIN;
-import static com.luixtech.springbootframework.utils.HttpHeaderUtils.generatePageHeaders;
+
 import static org.springframework.security.oauth2.core.AuthorizationGrantType.*;
 import static org.springframework.security.oauth2.core.ClientAuthenticationMethod.*;
 import static org.springframework.security.oauth2.server.authorization.OAuth2TokenType.REFRESH_TOKEN;
@@ -54,11 +52,10 @@ public class Oauth2ClientController {
 
     @Operation(summary = "find oauth2 registered client list")
     @GetMapping("/api/oauth2-clients")
-    public ResponseEntity<List<Oauth2Client>> find(@ParameterObject Pageable pageable,
+    public ResponseEntity<Page<Oauth2Client>> find(@ParameterObject Pageable pageable,
                                                    @Parameter(description = "Client ID") @RequestParam(value = "clientId", required = false) String clientId) {
         Page<Oauth2Client> domains = oauth2RegisteredClientService.find(pageable, clientId);
-        HttpHeaders headers = generatePageHeaders(domains);
-        return ResponseEntity.ok().headers(headers).body(domains.getContent());
+        return ResponseEntity.ok(domains);
     }
 
     @Operation(summary = "find oauth2 registered client by id")

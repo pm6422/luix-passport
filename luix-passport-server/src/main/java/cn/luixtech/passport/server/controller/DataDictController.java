@@ -32,7 +32,6 @@ import java.util.*;
 
 import static cn.luixtech.passport.server.domain.Role.ROLE_ADMIN;
 import static cn.luixtech.passport.server.domain.Role.ROLE_DEVELOPER;
-import static com.luixtech.springbootframework.utils.HttpHeaderUtils.generatePageHeaders;
 
 @RestController
 @AllArgsConstructor
@@ -53,12 +52,12 @@ public class DataDictController {
     @Operation(summary = "find data dict list")
     @PreAuthorize("hasAuthority('" + ROLE_ADMIN + "') or hasAuthority('" + ROLE_DEVELOPER + "')")
     @GetMapping("/api/data-dicts")
-    public ResponseEntity<List<DataDict>> find(@ParameterObject Pageable pageable,
+    public ResponseEntity<Page<DataDict>> find(@ParameterObject Pageable pageable,
             @RequestParam(value = "id", required = false) String id,
             @RequestParam(value = "categoryCode", required = false) String categoryCode,
             @RequestParam(value = "enabled", required = false) Boolean enabled) {
         Page<DataDict> domains = dataDictService.find(pageable, id, categoryCode, enabled);
-        return ResponseEntity.ok().headers(generatePageHeaders(domains)).body(domains.getContent());
+        return ResponseEntity.ok(domains);
     }
 
     @Operation(summary = "find data dict by id")

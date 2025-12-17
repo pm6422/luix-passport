@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static cn.luixtech.passport.server.domain.Role.ROLE_ADMIN;
-import static com.luixtech.springbootframework.utils.HttpHeaderUtils.generatePageHeaders;
 
 @RestController
 @AllArgsConstructor
@@ -48,11 +47,11 @@ public class PermissionController {
 
     @Operation(summary = "find permission list")
     @GetMapping("/api/permissions")
-    public ResponseEntity<List<Permission>> find(@ParameterObject Pageable pageable,
+    public ResponseEntity<Page<Permission>> find(@ParameterObject Pageable pageable,
             @RequestParam(value = "resourceType", required = false) String resourceType,
             @RequestParam(value = "action", required = false) String action) {
         Page<Permission> domains = permissionService.find(pageable, resourceType, action);
-        return ResponseEntity.ok().headers(generatePageHeaders(domains)).body(domains.getContent());
+        return ResponseEntity.ok(domains);
     }
 
     @Operation(summary = "find permission by id")

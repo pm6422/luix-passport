@@ -1,12 +1,13 @@
 import http from "@/axios"
 import { type Auth2Client } from "@/domains/auth2-client"
 import { AxiosResponse } from "axios"
+import { Page } from "@/domains/page"
 
 export class Oauth2ClientService {
   constructor() {
   }
 
-  public static find(reqParams: object): Promise<AxiosResponse<Array<Auth2Client>>> {
+  public static find(reqParams: object): Promise<AxiosResponse<Page<Auth2Client>>> {
     return http.get("/api/oauth2-clients", { params: reqParams })
   }
 

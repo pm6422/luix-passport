@@ -29,10 +29,9 @@ export default function Permissions() {
       resourceType: criteria.resourceType || null,
       action: criteria.action || null
     }).then(r => {
-      setTableData(r.data)
-      const total = parseInt(r.headers["x-total-count"])
-      setTotalCount(total)
-      setTotalPages(Math.ceil(total / pageSize))
+      setTableData(r.data.content)
+      setTotalCount(r.data.totalElements)
+      setTotalPages(r.data.totalPages)
     })
   }, [])
 

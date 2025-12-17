@@ -18,10 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import static com.luixtech.springbootframework.utils.HttpHeaderUtils.generatePageHeaders;
 
 /**
  * REST controller for managing user notifications.
@@ -45,14 +42,11 @@ public class InboxController {
 
     @Operation(summary = "find notifications for current user")
     @GetMapping("/api/inbox")
-    public ResponseEntity<List<InboxDto>> getMyNotifications(@ParameterObject Pageable pageable,
+    public ResponseEntity<Page<InboxDto>> getMyNotifications(@ParameterObject Pageable pageable,
                                                                    @RequestParam(value = "keyword", required = false) String keyword) {
-        List<InboxDto> myNotifications = new ArrayList<>();
         Page<Inbox> inboxes = inboxService.findInboxes(pageable, AuthUtils.getCurrentUsername(), keyword);
-        for (Inbox inbox : inboxes) {
-            myNotifications.add(InboxDto.of(inbox));
-        }
-        return ResponseEntity.ok().headers(generatePageHeaders(inboxes)).body(myNotifications);
+        Page<InboxDto> myNotifications = inboxes.map(InboxDto::of);
+        return ResponseEntity.ok(myNotifications);
     }
 
     @Operation(summary = "mark user notification as read")

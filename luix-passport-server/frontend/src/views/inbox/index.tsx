@@ -49,10 +49,9 @@ export default function InboxPage() {
       sort: sorts,
       keyword: criteria.keyword || null
     }).then(r => {
-      setData(r.data)
-      const total = parseInt(r.headers["x-total-count"])
-      setTotalCount(total)
-      setTotalPages(Math.ceil(total / pageSize))
+      setData(r.data.content)
+      setTotalCount(r.data.totalElements)
+      setTotalPages(r.data.totalPages)
     }).finally(() => {
       setLoading(false)
     })

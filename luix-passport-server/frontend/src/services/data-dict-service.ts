@@ -1,20 +1,21 @@
 import http from "@/axios"
 import { type DataDict } from "@/domains/data-dict"
 import {AxiosResponse} from "axios"
+import { Page } from "@/domains/page"
 
 export class DataDictService {
   constructor() {
   }
 
-  public static find(reqParams: object): Promise<AxiosResponse<Array<DataDict>>> {
+  public static find(reqParams: object): Promise<AxiosResponse<Page<DataDict>>> {
     return http.get("/api/data-dicts", { params: reqParams })
   }
 
-  public static findAll(enabled: boolean | null = null): Promise<AxiosResponse<Array<DataDict>>> {
+  public static findAll(enabled: boolean | null = null): Promise<AxiosResponse<Page<DataDict>>> {
     return http.get("/api/data-dicts", { params: { page: 0, size: 2000, enabled: enabled }})
   }
 
-  public static lookup(categoryCode: string, enabled: boolean | null = null): Promise<AxiosResponse<Array<DataDict>>> {
+  public static lookup(categoryCode: string, enabled: boolean | null = null): Promise<AxiosResponse<Page<DataDict>>> {
     return http.get("/api/data-dicts", { params: { page: 0, size: 2000, categoryCode: categoryCode, enabled: enabled }})
   }
 
