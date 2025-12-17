@@ -67,7 +67,13 @@ export function RedeemPromoCodeForm() {
               <div className="flex flex-col gap-1">
                 <span className="text-xs text-muted-foreground">Plan</span>
                 <div>
-                  <Badge variant={loginUser.membershipType.includes("PREMIUM") ? "default" : "secondary"}>
+                  <Badge
+                    className={
+                      loginUser.membershipType.includes("PREMIUM")
+                        ? "bg-primary/10 text-primary hover:bg-primary/20 shadow-none"
+                        : "bg-secondary/50 text-secondary-foreground hover:bg-secondary/60 shadow-none"
+                    }
+                  >
                     {loginUser.membershipType.includes("PREMIUM") ? (
                       <IconDiamond className="size-3" />
                     ) : (
