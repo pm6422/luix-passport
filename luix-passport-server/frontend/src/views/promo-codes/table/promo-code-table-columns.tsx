@@ -2,7 +2,8 @@ import { ColumnDef } from "@tanstack/react-table"
 import { PromoCode } from "@/domains/promo-code"
 import { DataTableColumnHeader } from "@/components/custom/data-table/data-table-column-header"
 import { Badge } from "@/components/ui/badge"
-import dayjs from "dayjs"
+import { YesNoBadge } from "@/components/custom/display/yes-no-badge"
+import { UserDateTime } from "@/components/custom/display/user-date-time"
 
 export function tableColumns(): ColumnDef<PromoCode>[] {
   return [
@@ -46,14 +47,13 @@ export function tableColumns(): ColumnDef<PromoCode>[] {
   {
     accessorKey: "enabled",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Status" />
+      <DataTableColumnHeader column={column} title="Enabled" />
     ),
     cell: ({ row }) => {
-      const enabled = row.getValue("enabled")
       return (
-        <Badge variant={enabled ? "default" : "secondary"}>
-          {enabled ? "Enabled" : "Disabled"}
-        </Badge>
+        <div className="flex w-[50px] items-center justify-center">
+          <YesNoBadge value={row.getValue("enabled")} />
+        </div>
       )
     },
     enableSorting: false,
@@ -72,9 +72,9 @@ export function tableColumns(): ColumnDef<PromoCode>[] {
       <DataTableColumnHeader column={column} title="Used At" />
     ),
     cell: ({ row }) => {
-      const date = row.getValue("usedAt")
+      const date = row.getValue("usedAt") as string
       if (!date) return <div>-</div>
-      return <div>{dayjs(date as string).format("YYYY-MM-DD HH:mm")}</div>
+      return <div className="w-[100px]"><UserDateTime value={date} twoLines={true}/></div>
     },
     enableSorting: false,
   },
@@ -84,9 +84,9 @@ export function tableColumns(): ColumnDef<PromoCode>[] {
       <DataTableColumnHeader column={column} title="Expires At" />
     ),
     cell: ({ row }) => {
-      const date = row.getValue("expiresAt")
+      const date = row.getValue("expiresAt") as string
       if (!date) return <div>-</div>
-      return <div>{dayjs(date as string).format("YYYY-MM-DD HH:mm")}</div>
+      return <div className="w-[100px]"><UserDateTime value={date} twoLines={true}/></div>
     },
     enableSorting: false,
   },
