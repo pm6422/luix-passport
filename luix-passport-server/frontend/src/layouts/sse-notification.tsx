@@ -34,10 +34,10 @@ export function SseNotification() {
               <span>
                 Please go to{" "}
                 <a
-                  href="/notifications"
+                  href="/inbox"
                   className="font-medium text-primary underline-offset-4 hover:underline"
                 >
-                  notification center
+                  Inbox
                 </a>{" "}
                 to check.
               </span>
