@@ -24,8 +24,7 @@ import {
   IconVocabulary,
   IconCalendarStats,
   IconHeartbeat,
-  IconTicket,
-  IconCrown
+  IconTicket
 } from "@tabler/icons-react"
 import { useLoginUserStore } from "@/stores/login-user-store"
 import { useAppInfoStore } from "@/stores/app-info-store"

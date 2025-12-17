@@ -43,6 +43,7 @@ export function RedeemPromoCodeForm() {
       success: () => {
         setSaving(false)
         form.reset()
+        setTimeout(() => window.location.reload(), 500)
         return "Promo code redeemed successfully"
       },
       error: (error) => {
