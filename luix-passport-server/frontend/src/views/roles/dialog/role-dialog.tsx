@@ -21,8 +21,8 @@ export function EditDialog({
   save
 }: EditDialogProps) {
   const loadEntity = async (entityId?: string | null) => {
-    const { data: permissionList } = await PermissionService.find({ page: 0, size: 2000, sort: ["updatedAt,desc"] })
-    const permissionOptions = permissionList.map((item: Permission) => ({ label: item.id, value: item.id }))
+    const { data } = await PermissionService.find({ page: 0, size: 2000, sort: ["updatedAt,desc"] })
+    const permissionOptions = data.content.map((item: Permission) => ({ label: item.id, value: item.id }))
     if (entityId) {
       const { data } = await RoleService.findById(entityId)
       return { options: { permissions: permissionOptions }, entity: data }

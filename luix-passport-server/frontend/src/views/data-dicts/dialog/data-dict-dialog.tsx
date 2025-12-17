@@ -20,7 +20,7 @@ export function EditDialog({
 }: EditDialogProps) {
   const loadEntity = async (entityId: string | null | undefined) => {
     const { data: allDicts } = await DataDictService.findAll(true)
-    const uniqueCodes = Array.from(new Set(allDicts.map(item => item.categoryCode)))
+    const uniqueCodes = Array.from(new Set(allDicts.content.map(item => item.categoryCode)))
     const categoryCodeOptions = uniqueCodes.map(code => ({ label: code, value: code }))
     if (entityId) {
       const { data } = await DataDictService.findById(entityId)
