@@ -172,12 +172,12 @@ Table "user" {
   "time_zone_id" varchar(30) [not null]
   "date_time_format_id" varchar(20) [not null]
   "source" varchar(20)
-  "membership_type" varchar(50)
-  "membership_expires_at" timestamp
   "created_at" timestamp [not null]
   "created_by" varchar(50)
   "updated_at" timestamp [not null]
   "updated_by" varchar(50)
+  "membership_type" varchar(50)
+  "membership_expires_at" timestamp
 
   Indexes {
     date_time_format_id [type: btree, name: "idx_user_date_time_format_id"]
@@ -185,24 +185,8 @@ Table "user" {
   }
 }
 
-Table "promo_code" {
-  "id" varchar(18) [pk, not null]
-  "code" varchar(255) [unique, not null]
-  "type" varchar(50) [not null]
-  "duration_days" int [not null]
-  "enabled" bool [not null, default: true]
-  "used_at" timestamp
-  "used_by" varchar(50)
-  "expires_at" timestamp
-  "batch_id" varchar(50)
-  "created_at" timestamp [not null]
-  "created_by" varchar(50)
-  "updated_at" timestamp [not null]
-  "updated_by" varchar(50)
-}
-
 Table "role" {
-  "id" varchar(18) [pk, not null]
+  "id" varchar(25) [pk, not null]
   "remark" varchar(255)
   "created_at" timestamp [not null]
   "created_by" varchar(50)
@@ -213,7 +197,7 @@ Table "role" {
 Table "user_role" {
   "id" varchar(18) [pk, not null]
   "username" varchar(20) [not null]
-  "role_id" varchar(18) [not null]
+  "role_id" varchar(25) [not null]
   "created_at" timestamp [not null]
   "created_by" varchar(50)
   "updated_at" timestamp [not null]
@@ -239,7 +223,7 @@ Table "permission" {
 
 Table "role_permission" {
   "id" varchar(18) [pk, not null]
-  "role_id" varchar(18) [not null]
+  "role_id" varchar(25) [not null]
   "permission_id" varchar(25) [not null]
   "created_at" timestamp [not null]
   "created_by" varchar(50)
@@ -302,7 +286,6 @@ Table "notification" {
   "id" varchar(18) [pk, not null]
   "title" varchar(20) [not null]
   "content" varchar(1000) [not null]
-  "type" varchar(8) [not null]
   "sender" varchar(20)
   "sender_email" varchar(20)
   "created_at" timestamp [not null]
@@ -316,7 +299,6 @@ Table "inbox" {
   "receiver_id" varchar(20) [not null]
   "notification_id" varchar(20) [not null]
   "status" varchar(7) [not null, default: 'UNREAD']
-  "active" bool [not null, default: true]
   "created_at" timestamp [not null]
   "created_by" varchar(50)
   "updated_at" timestamp [not null]
@@ -325,7 +307,7 @@ Table "inbox" {
   Indexes {
     (receiver_id, notification_id) [type: btree, name: "uk_inbox"]
     notification_id [type: btree, name: "idx_inbox_notification"]
-    (receiver_id, status) [type: btree, name: "idx_inbox_user_status"]
+    (receiver_id, status) [type: btree, name: "idx_inbox_receiver_status"]
   }
 }
 
@@ -359,6 +341,26 @@ Table "job_queue" {
   "processed_at" timestamp
 }
 
+Table "promo_code" {
+  "id" varchar(18) [pk, not null]
+  "code" varchar(255) [unique, not null]
+  "type" varchar(50) [not null]
+  "duration_days" int4 [not null]
+  "enabled" bool [not null, default: true]
+  "used_at" timestamp
+  "used_by" varchar(50)
+  "expires_at" timestamp
+  "batch_id" varchar(50)
+  "created_at" timestamp [not null]
+  "updated_at" timestamp [not null]
+  "created_by" varchar(50)
+  "updated_by" varchar(50)
+}
+
+Ref "fk_inbox_notification":"notification"."id" < "inbox"."notification_id" [update: cascade, delete: cascade]
+
+Ref "fk_inbox_user":"user"."username" < "inbox"."receiver_id" [update: cascade, delete: cascade]
+
 Ref "fk_role_permission_permission_id":"permission"."id" < "role_permission"."permission_id" [update: cascade, delete: cascade]
 
 Ref "fk_role_permission_role_id":"role"."id" < "role_permission"."role_id" [update: cascade, delete: cascade]
@@ -373,12 +375,6 @@ Ref "fk_user_avatar_username":"user"."username" < "user_avatar"."id" [update: ca
 
 Ref "fk_user_login_username":"user"."username" < "user_login"."username" [update: cascade, delete: cascade]
 
-Ref "fk_inbox_notification":"notification"."id" < "inbox"."notification_id" [update: cascade, delete: cascade]
-
-Ref "fk_inbox_user":"user"."username" < "inbox"."receiver_id" [update: cascade, delete: cascade]
-
 Ref "fk_user_role_role_id":"role"."id" < "user_role"."role_id" [update: cascade, delete: cascade]
 
 Ref "fk_user_role_username":"user"."username" < "user_role"."username" [update: cascade, delete: cascade]
-
-Ref "fk_promo_code_used_by":"user"."username" < "promo_code"."used_by" [update: cascade, delete: set null]
