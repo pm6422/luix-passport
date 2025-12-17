@@ -25,7 +25,8 @@ import {
   IconVocabulary,
   IconCalendarStats,
   IconHeartbeat,
-  IconTicket
+  IconTicket,
+  IconCrown
 } from "@tabler/icons-react"
 import { useLoginUserStore } from "@/stores/login-user-store"
 import { useAppInfoStore } from "@/stores/app-info-store"
@@ -52,9 +53,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             icon: IconUser,
           },
           {
-            title: "Redeem Promo Code",
-            url: "/account/redeem-promo-code",
-            icon: IconTicket,
+            title: "Membership",
+            url: "/account/membership",
+            icon: IconCrown,
           },
           {
             title: "Inbox",

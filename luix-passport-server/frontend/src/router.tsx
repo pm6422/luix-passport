@@ -239,9 +239,9 @@ const router = createBrowserRouter([
             }),
           },
           {
-            path: "redeem-promo-code",
+            path: "membership",
             lazy: async () => ({
-              Component: (await import("./views/account/redeem-promo-code")).default
+              Component: (await import("./views/account/membership")).default
             }),
           },
           {

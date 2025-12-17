@@ -9,7 +9,7 @@ import { RoleAdmin } from "@/layouts/permission/role-control"
 import { DataTableToolbar } from "./table/promo-code-table-toolbar"
 
 export default function PromoCodes() {
-  const entityName = "promo-code"
+  const entityName = "promo code"
   const [tableData, setTableData] = useState([] as Array<PromoCode>)
   const [totalCount, setTotalCount] = useState(0)
   const [totalPages, setTotalPages] = useState(0)

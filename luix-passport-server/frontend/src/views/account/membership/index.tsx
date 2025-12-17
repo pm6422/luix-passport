@@ -5,9 +5,9 @@ export default function RedeemPromoCode() {
   return (
     <div className="flex flex-col gap-y-6">
       <div>
-        <h3 className="text-lg font-medium">Redeem Promo Code</h3>
+        <h3 className="text-lg font-medium">Membership</h3>
         <p className="text-sm text-muted-foreground">
-          Enter a promo code to upgrade or extend your membership.
+          View your membership status or redeem a promo code to extend your membership.
         </p>
       </div>
       <Separator />

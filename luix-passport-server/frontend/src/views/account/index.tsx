@@ -4,7 +4,7 @@ import {
   IconTool,
   IconUser,
   IconKey,
-  IconTicket
+  IconCrown
 } from "@tabler/icons-react"
 import { Separator } from "@/components/ui/separator"
 import { LayoutBody } from "@/layouts/layout-definitions"
@@ -23,9 +23,9 @@ export default function Account() {
       href: "/account/settings",
     },
     {
-      title: "Redeem Promo Code",
-      icon: <IconTicket size={18} />,
-      href: "/account/redeem-promo-code",
+      title: "Membership",
+      icon: <IconCrown size={18} />,
+      href: "/account/membership",
     },
     {
       title: "Password",
