@@ -59,7 +59,7 @@ export function RedeemPromoCodeForm() {
           <Card className="bg-primary/5 border-primary/20 shadow-none">
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <IconCrown className="h-4 w-4 text-primary" />
+                <IconCrown className="size-4 text-primary" />
                 Current Membership
               </CardTitle>
             </CardHeader>
@@ -81,7 +81,7 @@ export function RedeemPromoCodeForm() {
                 <div className="flex flex-col gap-1">
                   <span className="text-xs text-muted-foreground">Expires At</span>
                   <div className="flex items-center gap-2 text-sm font-medium">
-                    <IconCalendar className="h-4 w-4 text-muted-foreground" />
+                    <IconCalendar className="size-4 text-muted-foreground" />
                     {dayjs(loginUser.membershipExpiresAt).format("YYYY-MM-DD")}
                   </div>
                 </div>
