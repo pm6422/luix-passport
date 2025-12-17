@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { Avatar } from "@/components/ui/avatar"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Link } from "react-router-dom"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -16,6 +17,8 @@ import {
   IconUser,
   IconLogout,
   IconBellRinging,
+  IconDiamond,
+  IconStar,
 } from "@tabler/icons-react"
 import { AccountService } from "@/services/account-service"
 import { useLoginUserStore } from "@/stores/login-user-store"
@@ -62,7 +65,27 @@ export function AccountNav() {
       <DropdownMenuContent className="w-48" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col gap-y-2">
-            <p className="text-sm font-medium leading-none">{loginUser.firstName} {loginUser.lastName}</p>
+            <div className="flex items-center justify-between">
+              <p className="text-sm font-medium leading-none truncate">{loginUser.firstName} {loginUser.lastName}</p>
+              {loginUser.membershipType && (
+                <Badge
+                  className={`
+                    px-1 py-0 h-4 text-[10px] font-normal border-none shadow-none
+                    ${loginUser.membershipType.includes("PREMIUM")
+                      ? "bg-primary/10 text-primary hover:bg-primary/20"
+                      : "bg-yellow-500/10 text-yellow-600 hover:bg-yellow-500/20"
+                    }
+                  `}
+                >
+                  {loginUser.membershipType.includes("PREMIUM") ? (
+                    <IconDiamond className="size-2.5 mr-0.5" />
+                  ) : (
+                    <IconStar className="size-2.5 mr-0.5" />
+                  )}
+                  {loginUser.membershipType.replace("ROLE_MEMBER_", "")}
+                </Badge>
+              )}
+            </div>
             <p className="text-xs leading-none text-muted-foreground">
               {loginUser.email}
             </p>
