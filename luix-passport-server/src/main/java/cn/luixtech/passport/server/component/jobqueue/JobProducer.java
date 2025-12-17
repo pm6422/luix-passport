@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class JobProducer {
     private final JobQueueRepository jobQueueRepository;
+    private final ObjectMapper objectMapper;
 
     @Transactional
     public void enqueue(String channel, Object payload) {
@@ -38,7 +39,7 @@ public class JobProducer {
 
     private String serializePayload(Object payload) {
         try {
-            return new ObjectMapper().writeValueAsString(payload);
+            return objectMapper.writeValueAsString(payload);
         } catch (JsonProcessingException e) {
             throw new JobQueueException("Failed to serialize payload", e);
         }
