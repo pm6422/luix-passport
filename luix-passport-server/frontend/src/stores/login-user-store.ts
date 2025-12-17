@@ -18,6 +18,8 @@ export type LoginUser = {
     roleIds: Array<string>
     permissionIds: Array<string>
     isAuthenticated: boolean
+    membershipType?: string
+    membershipExpiresAt?: string
 }
 
 interface LoginUserState {

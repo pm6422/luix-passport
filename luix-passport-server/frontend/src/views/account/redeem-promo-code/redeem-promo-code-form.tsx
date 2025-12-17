@@ -1,4 +1,5 @@
 import { useState } from "react"
+import dayjs from "dayjs"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { LoadingButton } from "@/components/custom/form-element/loading-button"
@@ -21,9 +22,11 @@ import { toast } from "sonner"
 import { getErrorMessage } from "@/lib/handle-error"
 import { RedeemPromoCode, redeemPromoCodeSchema, initialRedeemPromoCodeState } from "@/domains/promo-code"
 import { PromoCodeService } from "@/services/promo-code-service"
+import { useLoginUserStore } from "@/stores/login-user-store"
 
 export function RedeemPromoCodeForm() {
   const [saving, setSaving] = useState(false)
+  const { loginUser } = useLoginUserStore()
 
   const form = useForm<RedeemPromoCode>({
     resolver: zodResolver(redeemPromoCodeSchema),
@@ -49,6 +52,19 @@ export function RedeemPromoCodeForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        {loginUser.membershipType && (
+          <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
+            <h3 className="text-lg font-semibold leading-none tracking-tight mb-2">Current Membership</h3>
+            <p className="text-sm text-muted-foreground">
+              Type: <span className="font-medium text-foreground">{loginUser.membershipType}</span>
+            </p>
+            {loginUser.membershipExpiresAt && (
+              <p className="text-sm text-muted-foreground mt-1">
+                Expires At: <span className="font-medium text-foreground">{dayjs(loginUser.membershipExpiresAt).format("YYYY-MM-DD")}</span>
+              </p>
+            )}
+          </div>
+        )}
         <FormField
           control={form.control}
           name="code"

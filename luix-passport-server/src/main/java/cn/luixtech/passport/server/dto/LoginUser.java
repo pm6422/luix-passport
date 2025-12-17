@@ -26,6 +26,8 @@ public class LoginUser {
     private Set<String> roleIds;
     private Set<String> permissionIds;
     private Instant     signInAt;
+    private String      membershipType;
+    private Instant     membershipExpiresAt;
 
     /**
      * Copies properties from the given ManagedUser to this AuthUser.
