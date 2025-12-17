@@ -29,9 +29,10 @@ public class PromoCodeController {
     @GetMapping("/admin/promo-codes")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Page<PromoCode>> find(Pageable pageable,
+                                                @RequestParam(required = false) String code,
                                                 @RequestParam(required = false) String batchId,
                                                 @RequestParam(required = false) Boolean enabled) {
-        return ResponseEntity.ok(promoCodeService.find(pageable, batchId, enabled));
+        return ResponseEntity.ok(promoCodeService.find(pageable, code, batchId, enabled));
     }
 
     @Operation(summary = "Generate promo codes")

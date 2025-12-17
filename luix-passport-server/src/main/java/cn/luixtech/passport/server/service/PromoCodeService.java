@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface PromoCodeService {
 
-    Page<PromoCode> find(Pageable pageable, String batchId, Boolean enabled);
+    Page<PromoCode> find(Pageable pageable, String code, String batchId, Boolean enabled);
 
     List<PromoCode> generateCodes(int count, String type, int durationDays, Instant expiry, String batchId);
 

@@ -56,7 +56,11 @@ export function RedeemPromoCodeForm() {
             <FormItem>
               <FormLabel>Promo Code</FormLabel>
               <FormControl>
-                <InputOTP maxLength={12} {...field}>
+                <InputOTP
+                  maxLength={12}
+                  {...field}
+                  onChange={(value) => field.onChange(value.toUpperCase())}
+                >
                   <InputOTPGroup>
                     <InputOTPSlot index={0} />
                     <InputOTPSlot index={1} />

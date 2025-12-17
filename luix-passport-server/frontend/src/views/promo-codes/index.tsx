@@ -25,6 +25,7 @@ export default function PromoCodes() {
       page: pageNo,
       size: pageSize,
       sort: sorts,
+      code: criteria.code || null,
       batchId: criteria.batchId || null,
       enabled: criteria.enabled || null
     }).then(r => {

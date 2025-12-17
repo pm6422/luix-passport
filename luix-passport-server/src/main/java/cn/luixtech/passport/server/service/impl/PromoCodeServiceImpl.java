@@ -36,8 +36,11 @@ public class PromoCodeServiceImpl implements PromoCodeService {
     private final UserRoleService userRoleService;
 
     @Override
-    public Page<PromoCode> find(Pageable pageable, String batchId, Boolean enabled) {
+    public Page<PromoCode> find(Pageable pageable, String code, String batchId, Boolean enabled) {
         PromoCode probe = new PromoCode();
+        if (code != null && !code.isEmpty()) {
+            probe.setCode(code);
+        }
         if (batchId != null && !batchId.isEmpty()) {
             probe.setBatchId(batchId);
         }

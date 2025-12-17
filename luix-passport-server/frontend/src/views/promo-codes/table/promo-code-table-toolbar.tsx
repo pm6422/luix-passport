@@ -14,11 +14,13 @@ interface DataTableToolbarProps {
 }
 
 interface FilterState {
+  code: string
   batchId: string
   enabled: string[] | undefined
 }
 
 const initialFilters: FilterState = {
+  code: "",
   batchId: "",
   enabled: undefined
 }
@@ -38,6 +40,7 @@ export function DataTableToolbar({
 
     debounceRef.current = setTimeout(() => {
       loadPage(undefined, undefined, undefined, {
+        code: newFilters.code || undefined,
         batchId: newFilters.batchId || undefined,
         enabled: (newFilters.enabled && newFilters.enabled.length === 1) ? newFilters.enabled[0] : undefined
       })
@@ -58,11 +61,17 @@ export function DataTableToolbar({
     loadPage(undefined, undefined, undefined, {})
   }
 
-  const isFiltered = filters.batchId || (filters.enabled && filters.enabled.length > 0)
+  const isFiltered = filters.code || filters.batchId || (filters.enabled && filters.enabled.length > 0)
 
   return (
     <div className="flex items-center justify-between w-full">
       <div className="flex flex-1 items-center gap-2 flex-wrap">
+        <Input
+          placeholder="Filter Code..."
+          value={filters.code}
+          onChange={(e) => handleFilterChange("code", e.target.value)}
+          className="h-8 w-[150px] lg:w-[200px]"
+        />
         <Input
           placeholder="Filter Batch ID..."
           value={filters.batchId}
