@@ -9,4 +9,6 @@ import java.util.Optional;
 @Repository
 public interface PromoCodeRepository extends JpaRepository<PromoCode, String> {
     Optional<PromoCode> findByCode(String code);
+
+    boolean existsByBatchIdAndUsedBy(String batchId, String usedBy);
 }

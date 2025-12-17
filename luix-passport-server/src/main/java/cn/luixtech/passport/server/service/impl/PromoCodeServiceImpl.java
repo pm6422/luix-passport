@@ -70,6 +70,11 @@ public class PromoCodeServiceImpl implements PromoCodeService {
         if (promoCode.getExpiresAt() != null && promoCode.getExpiresAt().isBefore(Instant.now())) {
             throw new IllegalArgumentException("Promo code has expired");
         }
+        
+        // Check if user has already redeemed a code from this batch
+        if (promoCodeRepository.existsByBatchIdAndUsedBy(promoCode.getBatchId(), username)) {
+            throw new IllegalArgumentException("You have already redeemed a code from this batch");
+        }
 
         User user = userRepository.findById(username)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
