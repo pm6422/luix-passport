@@ -18,6 +18,9 @@ import {
   InputOTPSlot,
   InputOTPSeparator,
 } from "@/components/ui/input-otp"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { IconCrown, IconCalendar } from "@tabler/icons-react"
 import { toast } from "sonner"
 import { getErrorMessage } from "@/lib/handle-error"
 import { RedeemPromoCode, redeemPromoCodeSchema, initialRedeemPromoCodeState } from "@/domains/promo-code"
@@ -53,17 +56,33 @@ export function RedeemPromoCodeForm() {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         {loginUser.membershipType && (
-          <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
-            <h3 className="text-lg font-semibold leading-none tracking-tight mb-2">Current Membership</h3>
-            <p className="text-sm text-muted-foreground">
-              Type: <span className="font-medium text-foreground">{loginUser.membershipType}</span>
-            </p>
-            {loginUser.membershipExpiresAt && (
-              <p className="text-sm text-muted-foreground mt-1">
-                Expires At: <span className="font-medium text-foreground">{dayjs(loginUser.membershipExpiresAt).format("YYYY-MM-DD")}</span>
-              </p>
-            )}
-          </div>
+          <Card className="bg-primary/5 border-primary/20 shadow-none">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm font-medium flex items-center gap-2">
+                <IconCrown className="h-4 w-4 text-primary" />
+                Current Membership
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="grid gap-4 sm:grid-cols-2">
+              <div className="flex flex-col gap-1">
+                <span className="text-xs text-muted-foreground">Plan Type</span>
+                <div>
+                  <Badge variant={loginUser.membershipType.includes("PREMIUM") ? "default" : "secondary"}>
+                    {loginUser.membershipType.replace("ROLE_MEMBER_", "")}
+                  </Badge>
+                </div>
+              </div>
+              {loginUser.membershipExpiresAt && (
+                <div className="flex flex-col gap-1">
+                  <span className="text-xs text-muted-foreground">Expires At</span>
+                  <div className="flex items-center gap-2 text-sm font-medium">
+                    <IconCalendar className="h-4 w-4 text-muted-foreground" />
+                    {dayjs(loginUser.membershipExpiresAt).format("YYYY-MM-DD")}
+                  </div>
+                </div>
+              )}
+            </CardContent>
+          </Card>
         )}
         <FormField
           control={form.control}
