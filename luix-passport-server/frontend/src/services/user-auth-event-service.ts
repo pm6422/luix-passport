@@ -1,9 +1,9 @@
 import http from "@/axios"
 import { LoginUser } from "@/domains/login-user"
 import { AxiosResponse } from "axios"
-import { UserLoginCount } from "@/domains/user-login-count.ts"
+import { UserLoginCount } from "@/domains/user-login-count"
 import { Page } from "@/domains/page"
-import { UserAuthEvent } from "@/domains/user-auth-event.ts"
+import { UserAuthEvent } from "@/domains/user-auth-event"
 
 export class UserAuthEventService {
   constructor() {
