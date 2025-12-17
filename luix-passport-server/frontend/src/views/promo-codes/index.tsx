@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react"
+import dayjs from "dayjs"
 import { LayoutBody } from "@/layouts/layout-definitions"
 import { PaginatedDataTable } from "@/components/custom/data-table/paginated-data-table"
 import { tableColumns } from "./table/promo-code-table-columns"
@@ -36,7 +37,11 @@ export default function PromoCodes() {
   }, [])
 
   function generate(formData: GeneratePromoCode): Promise<void> {
-    return PromoCodeService.generate(formData).then(() => {
+    const data = { ...formData }
+    if (data.expiry) {
+      data.expiry = dayjs(data.expiry).endOf('day').toISOString()
+    }
+    return PromoCodeService.generate(data).then(() => {
       loadPage(currentPageNo)
     })
   }
