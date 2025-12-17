@@ -2,6 +2,7 @@ import { ReactNode } from "react"
 import { FormDialog } from "@/components/custom/dialog/form-dialog"
 import { GeneratePromoCode, generatePromoCodeSchema, initialGeneratePromoCodeState } from "@/domains/promo-code"
 import { RoleService } from "@/services/role-service"
+import { ROLE_MEMBER_PRO, ROLE_MEMBER_PREMIUM } from "@/domains/role"
 import { GeneratePromoCodeFormFields } from "./promo-code-form-fields"
 import { Option } from "@/components/custom/form-field/multi-selector"
 
@@ -19,10 +20,13 @@ export function GenerateDialog({
 
   const loadEntity = async () => {
     const roleIdsRes = await RoleService.findAllIds()
-    const roleOptions = roleIdsRes.data.map((roleId: string) => ({
-      label: roleId,
-      value: roleId
-    }))
+    const targetRoles = [ROLE_MEMBER_PRO, ROLE_MEMBER_PREMIUM]
+    const roleOptions = roleIdsRes.data
+      .filter((roleId: string) => targetRoles.includes(roleId))
+      .map((roleId: string) => ({
+        label: roleId,
+        value: roleId
+      }))
     return { options: { roleOptions }, entity: initialGeneratePromoCodeState }
   }
 
