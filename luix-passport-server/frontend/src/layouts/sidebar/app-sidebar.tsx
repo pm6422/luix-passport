@@ -7,7 +7,6 @@ import {
 } from "@/components/ui/sidebar"
 import { AppSidebarHeader } from "./app-sidebar-header"
 import { AppSidebarNavGroup } from "./app-sidebar-nav-group"
-// import { UserNav } from "./user-nav"
 import { TeamSwitcher } from "./team-switcher"
 import {
   IconDashboard,
@@ -156,7 +155,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         ))}
       </SidebarContent>
       <SidebarFooter>
-        {/*<UserNav/>*/}
         <TeamSwitcher />
       </SidebarFooter>
       <SidebarRail />
