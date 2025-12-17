@@ -1,10 +1,10 @@
 package cn.luixtech.passport.server.service.impl;
 
+import cn.luixtech.passport.server.domain.Inbox;
 import cn.luixtech.passport.server.domain.Notification;
 import cn.luixtech.passport.server.domain.User;
-import cn.luixtech.passport.server.domain.Inbox;
-import cn.luixtech.passport.server.repository.NotificationRepository;
 import cn.luixtech.passport.server.repository.InboxRepository;
+import cn.luixtech.passport.server.repository.NotificationRepository;
 import cn.luixtech.passport.server.repository.UserRepository;
 import cn.luixtech.passport.server.service.InboxService;
 import com.luixtech.springbootframework.component.SseNotifier;
@@ -19,10 +19,10 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class InboxServiceImpl implements InboxService {
-    private final NotificationRepository     notificationRepository;
-    private final InboxRepository inboxRepository;
-    private final UserRepository             userRepository;
-    private final SseNotifier                sseNotifier;
+    private final NotificationRepository notificationRepository;
+    private final InboxRepository        inboxRepository;
+    private final UserRepository         userRepository;
+    private final SseNotifier            sseNotifier;
 
     @Override
     public void sendBroadcastNotification(String title, String content, String sender, String senderEmail) {
