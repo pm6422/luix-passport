@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface PromoCodeService {
 
-    List<PromoCode> generateCodes(int count, String type, int durationDays, Instant expiry);
+    List<PromoCode> generateCodes(int count, String type, int durationDays, Instant expiry, String batchId);
 
     void redeemCode(String code, String username);
 }

@@ -18,4 +18,6 @@ public class GeneratePromoCodeDto {
     private int durationDays;
     
     private Instant expiry;
+
+    private String batchId;
 }

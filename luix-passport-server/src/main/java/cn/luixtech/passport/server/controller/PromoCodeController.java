@@ -31,7 +31,8 @@ public class PromoCodeController {
                 dto.getCount(), 
                 dto.getType(), 
                 dto.getDurationDays(), 
-                dto.getExpiry()
+                dto.getExpiry(),
+                dto.getBatchId()
         );
         return ResponseEntity.ok(codes);
     }

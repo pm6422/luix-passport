@@ -33,9 +33,11 @@ public class PromoCodeServiceImpl implements PromoCodeService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public List<PromoCode> generateCodes(int count, String type, int durationDays, Instant expiry) {
+    public List<PromoCode> generateCodes(int count, String type, int durationDays, Instant expiry, String batchId) {
         List<PromoCode> codes = new ArrayList<>();
-        String batchId = String.valueOf(System.currentTimeMillis());
+        if (batchId == null || batchId.isEmpty()) {
+            batchId = String.valueOf(System.currentTimeMillis());
+        }
 
         for (int i = 0; i < count; i++) {
             PromoCode promoCode = new PromoCode();
