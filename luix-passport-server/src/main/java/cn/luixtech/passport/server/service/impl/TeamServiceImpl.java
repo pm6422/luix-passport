@@ -1,5 +1,6 @@
 package cn.luixtech.passport.server.service.impl;
 
+import cn.luixtech.passport.server.annotation.SchedulerLog;
 import cn.luixtech.passport.server.domain.Team;
 import cn.luixtech.passport.server.domain.TeamInvitation;
 import cn.luixtech.passport.server.dto.TeamMember;
@@ -328,6 +329,7 @@ public class TeamServiceImpl implements TeamService {
 
   @Scheduled(cron = "0 0 0 * * ?")
   @SchedulerLock(name = "expireTeamInvitations")
+  @SchedulerLog(name = "expireTeamInvitations")
   @Transactional(rollbackFor = Exception.class)
   public void expireTeamInvitationsJob() {
     Instant now = Instant.now();
