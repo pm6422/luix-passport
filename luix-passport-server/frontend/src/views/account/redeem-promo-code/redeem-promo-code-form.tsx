@@ -1,5 +1,4 @@
 import { useState } from "react"
-import dayjs from "dayjs"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { LoadingButton } from "@/components/custom/form-element/loading-button"
@@ -26,6 +25,7 @@ import { getErrorMessage } from "@/lib/handle-error"
 import { RedeemPromoCode, redeemPromoCodeSchema, initialRedeemPromoCodeState } from "@/domains/promo-code"
 import { PromoCodeService } from "@/services/promo-code-service"
 import { useLoginUserStore } from "@/stores/login-user-store"
+import { UserDateTime } from "@/components/custom/display/user-date-time"
 
 export function RedeemPromoCodeForm() {
   const [saving, setSaving] = useState(false)
@@ -56,16 +56,16 @@ export function RedeemPromoCodeForm() {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         {loginUser.membershipType && (
-          <Card className="bg-primary/5 border-primary/20 shadow-none">
-            <CardHeader className="pb-3">
+          <Card className="bg-primary/5 border-primary/20 shadow-none py-3 gap-1">
+            <CardHeader className="pb-0">
               <CardTitle className="text-sm font-medium flex items-center gap-2">
                 <IconCrown className="size-4 text-primary" />
                 Current Membership
               </CardTitle>
             </CardHeader>
-            <CardContent className="grid gap-4 sm:grid-cols-2">
+            <CardContent className="grid gap-2 sm:grid-cols-2">
               <div className="flex flex-col gap-1">
-                <span className="text-xs text-muted-foreground">Plan Type</span>
+                <span className="text-xs text-muted-foreground">Plan</span>
                 <div>
                   <Badge variant={loginUser.membershipType.includes("PREMIUM") ? "default" : "secondary"}>
                     {loginUser.membershipType.includes("PREMIUM") ? (
@@ -82,7 +82,7 @@ export function RedeemPromoCodeForm() {
                   <span className="text-xs text-muted-foreground">Expires At</span>
                   <div className="flex items-center gap-2 text-sm font-medium">
                     <IconCalendar className="size-4 text-muted-foreground" />
-                    {dayjs(loginUser.membershipExpiresAt).format("YYYY-MM-DD")}
+                    <UserDateTime value={loginUser.membershipExpiresAt} type="date" />
                   </div>
                 </div>
               )}
