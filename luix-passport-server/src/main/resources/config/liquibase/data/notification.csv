@@ -1,2 +1,2 @@
-id;title;content;type;created_at;created_by;updated_at;updated_by
-1;Register account;You have successfully registered a new account;PERSONAL;now;SYSTEM;now;SYSTEM
+id;title;content;created_at;created_by;updated_at;updated_by
+1;Register account;You have successfully registered a new account;now;SYSTEM;now;SYSTEM

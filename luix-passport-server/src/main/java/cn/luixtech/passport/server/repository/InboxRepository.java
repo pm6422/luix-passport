@@ -10,19 +10,18 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface InboxRepository extends JpaRepository<Inbox, String> {
-    long countByReceiverIdAndStatus(String username, String status);
+        long countByReceiverIdAndStatus(String username, String status);
 
-    Page<Inbox> findByReceiverId(Pageable pageable, String username);
+        Page<Inbox> findByReceiverId(Pageable pageable, String username);
 
-    @Query("SELECT un FROM Inbox un " +
-            "JOIN FETCH un.notification n " +  // 使用FETCH避免N+1问题
-            "WHERE un.receiverId = :receiverId " +
-            "AND un.active = true " +
-            "AND (:keyword IS NULL OR :keyword = '' OR " +
-            "     (n.title LIKE %:keyword% OR n.content LIKE %:keyword%)) " +
-            "ORDER BY n.createdAt DESC")
-    Page<Inbox> findByReceiverAndKeyword(
-            Pageable pageable,
-            @Param("receiverId") String receiverId,
-            @Param("keyword") String keyword);
+        @Query("SELECT un FROM Inbox un " +
+                        "JOIN FETCH un.notification n " + // 使用FETCH避免N+1问题
+                        "WHERE un.receiverId = :receiverId " +
+                        "AND (:keyword IS NULL OR :keyword = '' OR " +
+                        "     (n.title LIKE %:keyword% OR n.content LIKE %:keyword%)) " +
+                        "ORDER BY n.createdAt DESC")
+        Page<Inbox> findByReceiverAndKeyword(
+                        Pageable pageable,
+                        @Param("receiverId") String receiverId,
+                        @Param("keyword") String keyword);
 }
