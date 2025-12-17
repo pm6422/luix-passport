@@ -177,6 +177,12 @@ const router = createBrowserRouter([
         }),
       },
       {
+        path: "promo-codes",
+        lazy: async () => ({
+          Component: (await import("./views/promo-codes")).default
+        }),
+      },
+      {
         path: "oauth-clients",
         lazy: async () => ({
           Component: (await import("@/views/auth2-clients")).default

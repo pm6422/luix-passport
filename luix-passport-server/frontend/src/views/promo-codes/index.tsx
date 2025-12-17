@@ -1,11 +1,11 @@
 import { useState, useCallback } from "react"
 import { LayoutBody } from "@/layouts/layout-definitions"
 import { PaginatedDataTable } from "@/components/custom/data-table/paginated-data-table"
-import { columns } from "./columns"
+import { tableColumns } from "./table/promo-code-table-columns"
 import { PromoCode, GeneratePromoCode } from "@/domains/promo-code"
 import { PromoCodeService } from "@/services/promo-code-service"
 import { RoleAdmin } from "@/layouts/permission/role-control"
-import { DataTableToolbar } from "./promo-code-table-toolbar"
+import { DataTableToolbar } from "./table/promo-code-table-toolbar"
 
 export default function PromoCodes() {
   const entityName = "promo-code"
@@ -46,7 +46,7 @@ export default function PromoCodes() {
         <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:gap-y-0">
           <PaginatedDataTable
             paginationMode="server"
-            columns={columns}
+            columns={tableColumns()}
             data={tableData}
             totalCount={totalCount}
             totalPages={totalPages}

@@ -4,9 +4,10 @@ import { DataTableColumnHeader } from "@/components/custom/data-table/data-table
 import { Badge } from "@/components/ui/badge"
 import dayjs from "dayjs"
 
-export const columns: ColumnDef<PromoCode>[] = [
-  {
-    accessorKey: "code",
+export function tableColumns(): ColumnDef<PromoCode>[] {
+  return [
+    {
+      accessorKey: "code",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Code" />
     ),
@@ -90,3 +91,4 @@ export const columns: ColumnDef<PromoCode>[] = [
     enableSorting: false,
   },
 ]
+}

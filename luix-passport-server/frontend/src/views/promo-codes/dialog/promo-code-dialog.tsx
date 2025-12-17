@@ -2,7 +2,7 @@ import { ReactNode } from "react"
 import { FormDialog } from "@/components/custom/dialog/form-dialog"
 import { GeneratePromoCode, generatePromoCodeSchema, initialGeneratePromoCodeState } from "@/domains/promo-code"
 import { RoleService } from "@/services/role-service"
-import { GeneratePromoCodeFormFields } from "./generate-form-fields"
+import { GeneratePromoCodeFormFields } from "./promo-code-form-fields"
 import { Option } from "@/components/custom/form-field/multi-selector"
 
 interface GenerateDialogProps {
