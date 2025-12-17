@@ -25,7 +25,7 @@ public class JobConsumer {
     private final    JobQueueRepository              jobQueueRepository;
     private final    Map<String, JobConsumerHandler> pointToPointHandlers = new ConcurrentHashMap<>();
     private final    ExecutorService                 executorService;
-    private volatile boolean                 running              = true;
+    private volatile boolean                         running              = true;
 
     // 配置参数
     private static final int WORKER_THREADS   = 3;
