@@ -54,7 +54,9 @@ export default function ProfileForm() {
     const formData = new FormData()
     // parse base64 to file
     formData.append("file", form.file)
-    return AccountService.uploadAvatar(formData)
+    return AccountService.uploadAvatar(formData).then(() => {
+      window.location.reload()
+    })
   }
 
   return (
