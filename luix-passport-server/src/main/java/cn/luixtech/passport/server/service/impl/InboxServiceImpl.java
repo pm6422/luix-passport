@@ -4,7 +4,6 @@ import cn.luixtech.passport.server.domain.Inbox;
 import cn.luixtech.passport.server.domain.Notification;
 import cn.luixtech.passport.server.repository.InboxRepository;
 import cn.luixtech.passport.server.repository.NotificationRepository;
-import cn.luixtech.passport.server.repository.UserRepository;
 import cn.luixtech.passport.server.service.InboxService;
 import com.github.f4b6a3.tsid.TsidCreator;
 import com.luixtech.springbootframework.component.SseNotifier;
@@ -21,7 +20,6 @@ import java.util.List;
 @AllArgsConstructor
 public class InboxServiceImpl implements InboxService {
     private final InboxRepository        inboxRepository;
-    private final UserRepository         userRepository;
     private final NotificationRepository notificationRepository;
     private final SseNotifier            sseNotifier;
 
