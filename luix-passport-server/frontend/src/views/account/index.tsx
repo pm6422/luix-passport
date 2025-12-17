@@ -23,6 +23,11 @@ export default function Account() {
       href: "/account/settings",
     },
     {
+      title: "Redeem Promo Code",
+      icon: <IconTicket size={18} />,
+      href: "/account/redeem-promo-code",
+    },
+    {
       title: "Password",
       icon: <IconKey size={18} />,
       href: "/account/change-password",

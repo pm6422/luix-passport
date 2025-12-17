@@ -52,6 +52,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             icon: IconUser,
           },
           {
+            title: "Redeem Promo Code",
+            url: "/account/redeem-promo-code",
+            icon: IconTicket,
+          },
+          {
             title: "Inbox",
             url: "/inbox",
             icon: IconBellRinging,
