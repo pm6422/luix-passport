@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/input-otp"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { IconCrown, IconCalendar } from "@tabler/icons-react"
+import { IconCrown, IconCalendar, IconStar, IconDiamond } from "@tabler/icons-react"
 import { toast } from "sonner"
 import { getErrorMessage } from "@/lib/handle-error"
 import { RedeemPromoCode, redeemPromoCodeSchema, initialRedeemPromoCodeState } from "@/domains/promo-code"
@@ -68,6 +68,11 @@ export function RedeemPromoCodeForm() {
                 <span className="text-xs text-muted-foreground">Plan Type</span>
                 <div>
                   <Badge variant={loginUser.membershipType.includes("PREMIUM") ? "default" : "secondary"}>
+                    {loginUser.membershipType.includes("PREMIUM") ? (
+                      <IconDiamond className="size-3" />
+                    ) : (
+                      <IconStar className="size-3" />
+                    )}
                     {loginUser.membershipType.replace("ROLE_MEMBER_", "")}
                   </Badge>
                 </div>
