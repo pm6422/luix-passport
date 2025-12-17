@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { TeamRoleSelector } from "@/components/custom/form-field/team-role-selector"
 import { IconPlus, IconMinus } from "@tabler/icons-react"
-import { ROLE_ANONYMOUS, ROLE_USER, TEAM_MEMBER } from "@/domains/role"
+import { ROLE_ANONYMOUS, ROLE_USER, ROLE_TEAM_MEMBER } from "@/domains/role"
 
 type Invitation = { inviteeEmail: string; inviteeRoles: string[] }
 type InviteForm = { invitations: Invitation[] }
@@ -20,7 +20,7 @@ export function InviteMembersFormFields({
   const invitations = form.watch("invitations") || []
 
   const append = () => {
-    form.setValue("invitations", [...invitations, { inviteeEmail: "", inviteeRoles: [ROLE_ANONYMOUS, ROLE_USER, TEAM_MEMBER] }], {
+    form.setValue("invitations", [...invitations, { inviteeEmail: "", inviteeRoles: [ROLE_ANONYMOUS, ROLE_USER, ROLE_TEAM_MEMBER] }], {
       shouldDirty: true,
       shouldValidate: true
     })

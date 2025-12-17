@@ -8,7 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { ChevronDown } from "lucide-react"
-import { ROLE_ANONYMOUS, ROLE_USER, TEAM_MEMBER, TEAM_OWNER, SYSTEM_ROLES, TEAM_ROLES } from "@/domains/role"
+import { ROLE_ANONYMOUS, ROLE_USER, ROLE_TEAM_MEMBER, ROLE_TEAM_OWNER, SYSTEM_ROLES, TEAM_ROLES } from "@/domains/role"
 import type { Control, FieldValues, Path } from "react-hook-form"
 import { FormControl, FormDescription, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { RequiredFormLabel } from "@/components/custom/form-element/required-form-label"
@@ -45,25 +45,25 @@ export function TeamRoleSelector({
     if (!newRoles.includes(ROLE_USER)) newRoles.push(ROLE_USER)
 
     // Mutual exclusion logic
-    const hasMember = newRoles.includes(TEAM_MEMBER)
-    const hasOwner = newRoles.includes(TEAM_OWNER)
+    const hasMember = newRoles.includes(ROLE_TEAM_MEMBER)
+    const hasOwner = newRoles.includes(ROLE_TEAM_OWNER)
 
     if (hasMember && hasOwner) {
-      const wasOwner = value.includes(TEAM_OWNER)
+      const wasOwner = value.includes(ROLE_TEAM_OWNER)
       if (wasOwner) {
         // Was owner, now both -> Remove OWNER (Switch to Member)
-        const index = newRoles.indexOf(TEAM_OWNER)
+        const index = newRoles.indexOf(ROLE_TEAM_OWNER)
         if (index > -1) newRoles.splice(index, 1)
       } else {
         // Was member (or neither), now both -> Remove MEMBER (Switch to Owner)
-        const index = newRoles.indexOf(TEAM_MEMBER)
+        const index = newRoles.indexOf(ROLE_TEAM_MEMBER)
         if (index > -1) newRoles.splice(index, 1)
       }
     } else if (!hasMember && !hasOwner) {
       // Neither selected -> Re-add the one that was there
-      const wasOwner = value.includes(TEAM_OWNER)
-      if (wasOwner) newRoles.push(TEAM_OWNER)
-      else newRoles.push(TEAM_MEMBER)
+      const wasOwner = value.includes(ROLE_TEAM_OWNER)
+      if (wasOwner) newRoles.push(ROLE_TEAM_OWNER)
+      else newRoles.push(ROLE_TEAM_MEMBER)
     }
 
     onChange(newRoles)

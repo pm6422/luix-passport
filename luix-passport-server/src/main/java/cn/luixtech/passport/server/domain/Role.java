@@ -18,8 +18,8 @@ public class Role {
     public static final String ROLE_USER = "ROLE_USER";
     public static final String ROLE_ADMIN = "ROLE_ADMIN";
     public static final String ROLE_DEVELOPER = "ROLE_DEVELOPER";
-    public static final String TEAM_OWNER = "TEAM_OWNER";
-    public static final String TEAM_MEMBER = "TEAM_MEMBER";
+    public static final String ROLE_TEAM_OWNER = "ROLE_TEAM_OWNER";
+    public static final String ROLE_TEAM_MEMBER = "ROLE_TEAM_MEMBER";
     public static final String ROLE_MEMBER_PRO = "ROLE_MEMBER_PRO";
     public static final String ROLE_MEMBER_PREMIUM = "ROLE_MEMBER_PREMIUM";
 

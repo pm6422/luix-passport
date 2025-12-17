@@ -6,11 +6,11 @@ export const ROLE_ADMIN = "ROLE_ADMIN"
 export const ROLE_DEVELOPER = "ROLE_DEVELOPER"
 export const ROLE_ANONYMOUS = "ROLE_ANONYMOUS"
 
-export const TEAM_OWNER = "TEAM_OWNER"
-export const TEAM_MEMBER = "TEAM_MEMBER"
+export const ROLE_TEAM_OWNER = "ROLE_TEAM_OWNER"
+export const ROLE_TEAM_MEMBER = "ROLE_TEAM_MEMBER"
 
 export const SYSTEM_ROLES = [ROLE_USER, ROLE_ANONYMOUS]
-export const TEAM_ROLES = [TEAM_OWNER, TEAM_MEMBER]
+export const TEAM_ROLES = [ROLE_TEAM_OWNER, ROLE_TEAM_MEMBER]
 
 export const roleSchema = z.object({
   id: z.string().trim().min(1, { message: "Required" }),

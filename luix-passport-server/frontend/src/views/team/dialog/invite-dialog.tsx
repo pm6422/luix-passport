@@ -2,7 +2,7 @@ import { FormDialog } from "@/components/custom/dialog/form-dialog"
 import { z } from "zod"
 import { TeamService } from "@/services/team-service"
 import { useEffect, useState } from "react"
-import { ROLE_ANONYMOUS, ROLE_USER, TEAM_MEMBER } from "@/domains/role"
+import { ROLE_ANONYMOUS, ROLE_USER, ROLE_TEAM_MEMBER } from "@/domains/role"
 import { InviteMembersFormFields } from "./invite-members-form-fields"
 
 const invitationSchema = z.object({
@@ -87,7 +87,7 @@ export function InviteMembersDialog({ open, onOpenChange, teamId, onSuccess }: I
       loadingMessage="Sending invitation mail..."
       successMessage="Invitation mail sent successfully"
       schema={inviteSchema}
-      defaultValues={{ invitations: [{ inviteeEmail: "", inviteeRoles: [ROLE_ANONYMOUS, ROLE_USER, TEAM_MEMBER] }] }}
+      defaultValues={{ invitations: [{ inviteeEmail: "", inviteeRoles: [ROLE_ANONYMOUS, ROLE_USER, ROLE_TEAM_MEMBER] }] }}
       save={async (values) => {
         await TeamService.inviteMembers(teamId, values.invitations)
       }}

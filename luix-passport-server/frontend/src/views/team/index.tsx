@@ -8,7 +8,7 @@ import { TeamService, Team, TeamMember } from "@/services/team-service"
 import { toast } from "sonner"
 import { useLoginUserStore } from "@/stores/login-user-store"
 import { RoleTeamOwner } from "@/layouts/permission/role-control"
-import { TEAM_OWNER } from "@/domains/role"
+import { ROLE_TEAM_OWNER } from "@/domains/role"
 import { ConfirmDialog } from "@/components/custom/dialog/confirm-dialog"
 import { InviteMembersDialog } from "./dialog/invite-dialog"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
@@ -88,14 +88,14 @@ export default function TeamDashboard() {
     if (teamId) {
       loadTeamData()
     }
-    if (teamId && hasRole(TEAM_OWNER)) {
+    if (teamId && hasRole(ROLE_TEAM_OWNER)) {
       loadPendingInvitations()
       TeamService.findAllRoleIds().then(({ data }) => setAllRoles(data))
     }
   }, [loadTeamData, teamId, loadPendingInvitations, hasRole])
 
   const handleAvatarClick = () => {
-    if (!hasRole(TEAM_OWNER)) return
+    if (!hasRole(ROLE_TEAM_OWNER)) return
     fileInputRef.current?.click()
   }
 
@@ -135,7 +135,7 @@ export default function TeamDashboard() {
   }
 
   const startEditName = () => {
-    if (!hasRole(TEAM_OWNER)) return
+    if (!hasRole(ROLE_TEAM_OWNER)) return
     setNewName(team?.name || "")
     setEditingName(true)
   }
@@ -211,7 +211,7 @@ export default function TeamDashboard() {
         <div className="relative pb-6 pt-8 px-3 md:px-4 shadow-sm">
           <div className="absolute top-0 start-0 w-full h-1 bg-gradient-to-r from-primary/50 to-primary/10" />
           <div className="flex flex-col md:flex-row items-center md:items-start gap-6 max-w-[1800px] mx-auto">
-            <div className={`relative group shrink-0 ${hasRole(TEAM_OWNER) ? "cursor-pointer" : "cursor-default"}`} onClick={handleAvatarClick}>
+            <div className={`relative group shrink-0 ${hasRole(ROLE_TEAM_OWNER) ? "cursor-pointer" : "cursor-default"}`} onClick={handleAvatarClick}>
               <Avatar className="size-24 border-4 border-background shadow-xl">
                 <AvatarImage src={avatarUrl} alt={team?.name || "Team"} />
                 <AvatarFallback className="text-2xl bg-primary/10 text-primary">{team?.name?.[0]?.toUpperCase() || "T"}</AvatarFallback>
@@ -353,7 +353,7 @@ export default function TeamDashboard() {
                               />
                             </div>
                           </RoleTeamOwner>
-                          {!hasRole(TEAM_OWNER) && (
+                          {!hasRole(ROLE_TEAM_OWNER) && (
                             <div className="flex gap-2">
                               <Badge variant="outline" className="capitalize">{member.role}</Badge>
                             </div>
@@ -436,23 +436,23 @@ export default function TeamDashboard() {
                               <UserDateTime value={invite.expiresAt} twoLines={true} />
                             </TableCell>
                             <TableCell>
-                          <Badge
-                            variant="secondary"
-                            className={`capitalize ${invite.status === "EXPIRED"
-                              ? "bg-red-600/10 text-red-600 shadow-none"
-                              : ""
-                              }`}
-                          >
-                            {invite.status !== "EXPIRED" && <IconLoader className="me-1 size-3 animate-spin" />}
-                            {getInviteProgress(invite)}
-                          </Badge>
-                        </TableCell>
-                        <TableCell className="text-end">
-                          {invite.status === "EXPIRED" ? (
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={async () => {
+                              <Badge
+                                variant="secondary"
+                                className={`capitalize ${invite.status === "EXPIRED"
+                                  ? "bg-red-600/10 text-red-600 shadow-none"
+                                  : ""
+                                  }`}
+                              >
+                                {invite.status !== "EXPIRED" && <IconLoader className="me-1 size-3 animate-spin" />}
+                                {getInviteProgress(invite)}
+                              </Badge>
+                            </TableCell>
+                            <TableCell className="text-end">
+                              {invite.status === "EXPIRED" ? (
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={async () => {
                                     try {
                                       await TeamService.resendInvitation(invite.id)
                                       toast.success("Invitation resent")
@@ -461,22 +461,22 @@ export default function TeamDashboard() {
                                       toast.error("Failed to resend invitation")
                                       console.error(error)
                                     }
-                              }}
-                            >
-                              Resend
-                            </Button>
-                          ) : (
-                            <span className="text-muted-foreground">—</span>
-                          )}
-                        </TableCell>
-                      </TableRow>
-                    ))
-                  )}
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
-        </RoleTeamOwner>
+                                  }}
+                                >
+                                  Resend
+                                </Button>
+                              ) : (
+                                <span className="text-muted-foreground">—</span>
+                              )}
+                            </TableCell>
+                          </TableRow>
+                        ))
+                      )}
+                    </TableBody>
+                  </Table>
+                </CardContent>
+              </Card>
+            </RoleTeamOwner>
 
           </div>
 

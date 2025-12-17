@@ -63,7 +63,7 @@ public class TeamServiceImpl implements TeamService {
 
     Set<String> currentRoles = userRoleService.findRoleIds(AuthUtils.getCurrentUsername());
     Set<String> updatedRoles = new java.util.HashSet<>(currentRoles);
-    updatedRoles.add(Role.TEAM_OWNER);
+    updatedRoles.add(Role.ROLE_TEAM_OWNER);
     userRoleService.update(AuthUtils.getCurrentUsername(), updatedRoles);
 
     return team;
@@ -113,7 +113,7 @@ public class TeamServiceImpl implements TeamService {
       member.setLastName(user.getLastName());
       Set<String> roleIds = userRoleService.findRoleIds(user.getUsername());
       member.setRoles(roleIds);
-      member.setRole(roleIds.contains(Role.TEAM_OWNER) ? Role.TEAM_OWNER : Role.TEAM_MEMBER);
+      member.setRole(roleIds.contains(Role.ROLE_TEAM_OWNER) ? Role.ROLE_TEAM_OWNER : Role.ROLE_TEAM_MEMBER);
       member.setJoinedAt(user.getCreatedAt());
 
       try {
@@ -133,7 +133,7 @@ public class TeamServiceImpl implements TeamService {
         .orElseThrow(() -> new IllegalArgumentException("Inviter is not a member of the team"));
 
     Set<String> inviterRoleIds = userRoleService.findRoleIds(inviterId);
-    if (!inviterRoleIds.contains(Role.TEAM_OWNER)) {
+    if (!inviterRoleIds.contains(Role.ROLE_TEAM_OWNER)) {
       throw new IllegalArgumentException("Only team owners can invite new members");
     }
 
@@ -205,7 +205,7 @@ public class TeamServiceImpl implements TeamService {
     teamUserRepository.findByTeamIdAndUserId(teamId, currentUser)
         .orElseThrow(() -> new IllegalArgumentException("Operator is not a member of the team"));
     Set<String> operatorRoleIds = userRoleService.findRoleIds(currentUser);
-    if (!operatorRoleIds.contains(Role.TEAM_OWNER)) {
+    if (!operatorRoleIds.contains(Role.ROLE_TEAM_OWNER)) {
       throw new IllegalArgumentException("Only team owners can view pending invitations");
     }
     List<TeamInvitation> invites = teamInvitationRepository.findByTeamId(teamId);
@@ -246,7 +246,7 @@ public class TeamServiceImpl implements TeamService {
     teamUserRepository.findByTeamIdAndUserId(teamId, currentUser)
         .orElseThrow(() -> new RuntimeException("Operator is not a member of the team"));
     Set<String> operatorRoleIds = userRoleService.findRoleIds(currentUser);
-    if (!operatorRoleIds.contains(Role.TEAM_OWNER)) {
+    if (!operatorRoleIds.contains(Role.ROLE_TEAM_OWNER)) {
       throw new RuntimeException("Only team owners can update team photo");
     }
     Team team = teamRepository.findById(teamId)
@@ -261,7 +261,7 @@ public class TeamServiceImpl implements TeamService {
     teamUserRepository.findByTeamIdAndUserId(teamId, operatorId)
         .orElseThrow(() -> new RuntimeException("Operator is not a member of the team"));
     Set<String> operatorRoleIds = userRoleService.findRoleIds(operatorId);
-    if (!operatorRoleIds.contains(Role.TEAM_OWNER)) {
+    if (!operatorRoleIds.contains(Role.ROLE_TEAM_OWNER)) {
       throw new RuntimeException("Only team owners can update team name");
     }
     Team team = teamRepository.findById(teamId)
@@ -360,7 +360,7 @@ public class TeamServiceImpl implements TeamService {
     teamUserRepository.findByTeamIdAndUserId(invitation.getTeamId(), inviterId)
         .orElseThrow(() -> new IllegalArgumentException("Inviter is not a member of the team"));
     Set<String> inviterRoleIds = userRoleService.findRoleIds(inviterId);
-    if (!inviterRoleIds.contains(Role.TEAM_OWNER)) {
+    if (!inviterRoleIds.contains(Role.ROLE_TEAM_OWNER)) {
       throw new IllegalArgumentException("Only team owners can resend invitations");
     }
 
@@ -398,10 +398,10 @@ public class TeamServiceImpl implements TeamService {
     // Ensure mutually exclusive roles logic (frontend should handle this, but
     // backend must validate)
     // Actually, user said only one of TEAM_OWNER / TEAM_MEMBER can be selected.
-    if (roles.contains(Role.TEAM_OWNER) && roles.contains(Role.TEAM_MEMBER)) {
+    if (roles.contains(Role.ROLE_TEAM_OWNER) && roles.contains(Role.ROLE_TEAM_MEMBER)) {
       throw new IllegalArgumentException("Cannot be both Team Owner and Team Member");
     }
-    if (!roles.contains(Role.TEAM_OWNER) && !roles.contains(Role.TEAM_MEMBER)) {
+    if (!roles.contains(Role.ROLE_TEAM_OWNER) && !roles.contains(Role.ROLE_TEAM_MEMBER)) {
       // Must have one
       throw new IllegalArgumentException("Must have either Team Owner or Team Member role");
     }
@@ -409,14 +409,14 @@ public class TeamServiceImpl implements TeamService {
     teamUserRepository.findByTeamIdAndUserId(teamId, operatorId)
         .orElseThrow(() -> new IllegalArgumentException("Operator is not a member of the team"));
     Set<String> operatorRoleIds = userRoleService.findRoleIds(operatorId);
-    if (!operatorRoleIds.contains(Role.TEAM_OWNER)) {
+    if (!operatorRoleIds.contains(Role.ROLE_TEAM_OWNER)) {
       throw new IllegalArgumentException("Only team owners can edit member roles");
     }
 
     // Check if operator is modifying themselves
     if (operatorId.equals(userId)) {
       // If operator is removing their own owner role
-      if (!roles.contains(Role.TEAM_OWNER)) {
+      if (!roles.contains(Role.ROLE_TEAM_OWNER)) {
         throw new IllegalArgumentException("Owners cannot remove their own owner role");
       }
     }
@@ -424,12 +424,12 @@ public class TeamServiceImpl implements TeamService {
     teamUserRepository.findByTeamIdAndUserId(teamId, userId)
         .orElseThrow(() -> new IllegalArgumentException("Target user is not a member of the team"));
     Set<String> targetRoleIds = userRoleService.findRoleIds(userId);
-    boolean targetWasOwner = targetRoleIds.contains(Role.TEAM_OWNER);
-    boolean targetIsOwner = roles.contains(Role.TEAM_OWNER);
+    boolean targetWasOwner = targetRoleIds.contains(Role.ROLE_TEAM_OWNER);
+    boolean targetIsOwner = roles.contains(Role.ROLE_TEAM_OWNER);
 
     if (targetWasOwner && !targetIsOwner) {
       long ownerCount = teamUserRepository.findByTeamId(teamId).stream().map(TeamUser::getUserId)
-          .filter(uid -> userRoleService.findRoleIds(uid).contains(Role.TEAM_OWNER))
+          .filter(uid -> userRoleService.findRoleIds(uid).contains(Role.ROLE_TEAM_OWNER))
           .count();
       if (ownerCount <= 1) {
         throw new IllegalArgumentException("At least one team owner must remain");
@@ -446,7 +446,7 @@ public class TeamServiceImpl implements TeamService {
     teamUserRepository.findByTeamIdAndUserId(teamId, operatorId)
         .orElseThrow(() -> new IllegalArgumentException("Operator is not a member of the team"));
     Set<String> operatorRoleIds = userRoleService.findRoleIds(operatorId);
-    if (!operatorRoleIds.contains(Role.TEAM_OWNER)) {
+    if (!operatorRoleIds.contains(Role.ROLE_TEAM_OWNER)) {
       throw new IllegalArgumentException("Only team owners can delete team");
     }
     List<TeamInvitation> invites = teamInvitationRepository.findByTeamId(teamId);
