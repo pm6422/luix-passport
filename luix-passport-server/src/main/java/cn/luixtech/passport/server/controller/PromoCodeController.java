@@ -9,6 +9,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +24,15 @@ import java.util.List;
 public class PromoCodeController {
 
     private final PromoCodeService promoCodeService;
+
+    @Operation(summary = "List promo codes")
+    @GetMapping("/admin/promo-codes")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Page<PromoCode>> find(Pageable pageable,
+                                                @RequestParam(required = false) String batchId,
+                                                @RequestParam(required = false) Boolean enabled) {
+        return ResponseEntity.ok(promoCodeService.find(pageable, batchId, enabled));
+    }
 
     @Operation(summary = "Generate promo codes")
     @PostMapping("/admin/promo-codes/generate")

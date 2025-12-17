@@ -3,7 +3,8 @@ import {
   IconPalette,
   IconTool,
   IconUser,
-  IconKey
+  IconKey,
+  IconTicket
 } from "@tabler/icons-react"
 import { Separator } from "@/components/ui/separator"
 import { LayoutBody } from "@/layouts/layout-definitions"

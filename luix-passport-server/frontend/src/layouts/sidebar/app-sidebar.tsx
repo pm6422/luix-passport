@@ -24,7 +24,8 @@ import {
   IconDatabase,
   IconVocabulary,
   IconCalendarStats,
-  IconHeartbeat
+  IconHeartbeat,
+  IconTicket
 } from "@tabler/icons-react"
 import { useLoginUserStore } from "@/stores/login-user-store"
 import { useAppInfoStore } from "@/stores/app-info-store"
@@ -75,6 +76,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 title: "Permissions",
                 url: "/permissions",
                 icon: IconParkingCircle,
+              },
+              {
+                title: "Promo Codes",
+                url: "/promo-codes",
+                icon: IconTicket,
               }
             ],
           },

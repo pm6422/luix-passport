@@ -233,6 +233,12 @@ const router = createBrowserRouter([
             }),
           },
           {
+            path: "redeem-promo-code",
+            lazy: async () => ({
+              Component: (await import("./views/account/redeem-promo-code")).default
+            }),
+          },
+          {
             path: "appearance",
             lazy: async () => ({
               Component: (await import("./views/account/appearance")).default

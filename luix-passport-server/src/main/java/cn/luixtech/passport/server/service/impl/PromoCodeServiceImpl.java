@@ -9,6 +9,10 @@ import cn.luixtech.passport.server.service.PromoCodeService;
 import cn.luixtech.passport.server.service.UserRoleService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +34,22 @@ public class PromoCodeServiceImpl implements PromoCodeService {
     private final PromoCodeRepository promoCodeRepository;
     private final UserRepository userRepository;
     private final UserRoleService userRoleService;
+
+    @Override
+    public Page<PromoCode> find(Pageable pageable, String batchId, Boolean enabled) {
+        PromoCode probe = new PromoCode();
+        if (batchId != null && !batchId.isEmpty()) {
+            probe.setBatchId(batchId);
+        }
+
+        ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreNullValues();
+        if (enabled != null) {
+            probe.setEnabled(enabled);
+        } else {
+            matcher = matcher.withIgnorePaths("enabled");
+        }
+        return promoCodeRepository.findAll(Example.of(probe, matcher), pageable);
+    }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
