@@ -29,39 +29,43 @@ export function SseNotifier() {
       eventSource.onmessage = (event) => {
         try {
           if (event.data) {
-            let message = event.data
             // Try to parse as JSON first
             try {
-              const data = JSON.parse(event.data)
-              // If it's an object with message/description, use them
-              if (typeof data === "object" && data !== null) {
-                message = data.message || data.title || JSON.stringify(data)
-              } else {
-                message = String(data)
-              }
+              const sseMessage = JSON.parse(event.data)
+              const title = sseMessage.name || sseMessage.data?.title
+
+              toast(
+                <div className="flex items-start gap-2">
+                  <IconBellBolt className="size-8 shrink-0 self-center me-2 text-primary" />
+                  <div className="flex flex-col gap-1">
+                    {title && <span className="font-bold">{title}</span>}
+                    {!title && <span>{JSON.stringify(sseMessage)}</span>}
+                    <span className="text-muted-foreground text-xs">
+                      Please go to{" "}
+                      <a
+                        href="/inbox"
+                        className="font-medium text-primary underline-offset-4 hover:underline"
+                      >
+                        Inbox
+                      </a>{" "}
+                      to check.
+                    </span>
+                  </div>
+                </div>,
+                { duration: 5000 }
+              )
             } catch {
               // Not JSON, use original data
+              toast(
+                <div className="flex items-start gap-2">
+                  <IconBellBolt className="size-8 shrink-0 self-center me-2 text-primary" />
+                  <div className="flex flex-col gap-1">
+                    <span className="font-bold">{String(event.data)}</span>
+                  </div>
+                </div>,
+                { duration: 5000 }
+              )
             }
-
-            toast(
-              <div className="flex items-start gap-2">
-                <IconBellBolt className="size-8 shrink-0 self-center me-2 text-primary" />
-                <div className="flex flex-col gap-1">
-                  <span className="font-bold">{message}</span>
-                  <span>
-                    Please go to{" "}
-                    <a
-                      href="/inbox"
-                      className="font-medium text-primary underline-offset-4 hover:underline"
-                    >
-                      Inbox
-                    </a>{" "}
-                    to check.
-                  </span>
-                </div>
-              </div>,
-              { duration: 5000 }
-            )
           }
         } catch (error) {
           console.error("Error processing SSE message:", error)
