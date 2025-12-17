@@ -29,15 +29,24 @@ public class JobConsumer {
     private final TransactionTemplate transactionTemplate;
     private volatile boolean running = true;
 
-    // 配置参数
+    // Configuration parameters
     private static final int WORKER_THREADS = 3;
     private static final int POLL_INTERVAL_MS = 1000;
     private static final int BATCH_SIZE = 5;
 
-    public JobConsumer(JobQueueRepository jobQueueRepository, PlatformTransactionManager transactionManager) {
+    public JobConsumer(JobQueueRepository jobQueueRepository,
+            PlatformTransactionManager transactionManager,
+            List<JobConsumerHandler> handlers) {
         this.jobQueueRepository = jobQueueRepository;
         this.transactionTemplate = new TransactionTemplate(transactionManager);
-        // 使用有意义的线程名称，便于调试
+
+        // Automatically register all handlers
+        for (JobConsumerHandler handler : handlers) {
+            pointToPointHandlers.put(handler.getChannel(), handler);
+            log.info("Auto-registered handler for channel: {}", handler.getChannel());
+        }
+
+        // Use meaningful thread names for easier debugging
         this.executorService = Executors.newFixedThreadPool(WORKER_THREADS, new ThreadFactory() {
             private final AtomicInteger count = new AtomicInteger(1);
 
@@ -71,15 +80,11 @@ public class JobConsumer {
         log.info("Job consumer stopped");
     }
 
-    public void registerPointToPointHandler(String channel, JobConsumerHandler handler) {
-        pointToPointHandlers.put(channel, handler);
-        log.info("Registered point-to-point handler for channel: {}", channel);
-    }
-
     public void processJobs() {
         while (running && !Thread.currentThread().isInterrupted()) {
             try {
-                // 使用 TransactionTemplate 手动管理事务，避免 @Transactional 自调用失效的问题
+                // Manually manage transactions using TransactionTemplate to avoid
+                // @Transactional self-invocation issues
                 Boolean processed = transactionTemplate.execute(status -> {
                     if (processBatchJobs(BATCH_SIZE)) {
                         return true;
@@ -94,7 +99,7 @@ public class JobConsumer {
                 Thread.currentThread().interrupt();
             } catch (Exception e) {
                 log.error("Job processing error", e);
-                // 发生异常时稍作休眠，避免死循环打印日志
+                // Sleep briefly on exception to avoid log flooding in tight loops
                 try {
                     TimeUnit.MILLISECONDS.sleep(1000);
                 } catch (InterruptedException ex) {
@@ -104,8 +109,10 @@ public class JobConsumer {
         }
     }
 
-    // 注意：此方法现在在 TransactionTemplate 中调用，所以不需要 @Transactional 注解
-    // 如果需要更细粒度的事务控制（如 processJob 独立事务），需要调整逻辑
+    // Note: This method is now called within TransactionTemplate, so @Transactional
+    // annotation is not needed.
+    // If finer-grained transaction control (e.g., independent transaction for
+    // processJob) is required, logic adjustment is needed.
     public Optional<JobQueue> fetchAndProcessSingleJob() {
         return jobQueueRepository.lockAndGetNextPendingJob().map(this::processJob);
     }
