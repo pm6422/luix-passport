@@ -9,7 +9,7 @@ import { useLoginUserStore } from "@/stores/login-user-store";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/layouts/sidebar/app-sidebar";
 import { AuthLayoutHeader } from "./auth-layout-header";
-import { SseNotification } from "./sse-notification";
+import { SseNotifier } from "./sse-notifier";
 
 export default function AuthLayout() {
   const navigate = useNavigate()
@@ -26,7 +26,7 @@ export default function AuthLayout() {
   return (
     <div className="relative h-full overflow-hidden bg-background">
       <SidebarProvider defaultOpen={defaultOpen}>
-        <SseNotification />
+        <SseNotifier />
         <AppSidebar />
         <main
           id="content"

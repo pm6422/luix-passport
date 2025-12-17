@@ -472,9 +472,6 @@
             <column name="content" type="VARCHAR(1000)">
                 <constraints nullable="false"/>
             </column>
-            <column name="type" type="VARCHAR(8)">
-                <constraints nullable="false"/>
-            </column>
             <column name="sender" type="VARCHAR(20)">
             </column>
             <column name="sender_email" type="VARCHAR(20)">
@@ -505,9 +502,6 @@
                 <constraints nullable="false"/>
             </column>
             <column name="status" type="VARCHAR(7)" defaultValue="UNREAD">
-                <constraints nullable="false"/>
-            </column>
-            <column name="active" type="boolean" defaultValueBoolean="true">
                 <constraints nullable="false"/>
             </column>
             <column name="created_at" type="timestamp">

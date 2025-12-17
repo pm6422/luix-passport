@@ -13,11 +13,11 @@ import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
-public class SseController {
+public class SseNotifierController {
     private final SseNotifier sseNotifier;
 
     @Operation(summary = "return a SseEmitter HTTP long connection for current user")
-    @GetMapping(path = "/api/sse/connect", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @GetMapping(path = "/api/sse-notifiers/connect", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter connect() {
         // Return a SseEmitter HTTP long connection
         return Optional.ofNullable(sseNotifier.connect(AuthUtils.getCurrentUsername()))

@@ -7,11 +7,10 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface InboxService {
-    void sendBroadcastNotification(String title, String content, String sender, String senderEmail);
 
-    void sendPersonalNotification(List<String> receiverIds, String title, String content);
+    void pushNotification(List<String> usernames, String title, String content);
 
-    void sendPersonalNotification(List<String> receiverIds, String title, String content, String sender, String senderEmail);
+    void pushNotification(List<String> usernames, String title, String content, String sender, String senderEmail);
 
     long countUnread(String username);
 

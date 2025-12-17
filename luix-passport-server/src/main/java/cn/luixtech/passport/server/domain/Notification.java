@@ -1,11 +1,11 @@
 package cn.luixtech.passport.server.domain;
 
 import cn.luixtech.passport.server.utils.AuthUtils;
+import com.luixtech.springbootframework.idgenerator.TsidGenerator;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import com.luixtech.springbootframework.idgenerator.TsidGenerator;
 
 import java.time.Instant;
 
@@ -14,9 +14,6 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Notification {
-    public static final String TYPE_SYSTEM = "SYSTEM";
-    public static final String TYPE_PERSONAL = "PERSONAL";
-
     @Id
     @GeneratedValue
     @TsidGenerator
@@ -25,7 +22,6 @@ public class Notification {
 
     private String title;
     private String content;
-    private String type;
     private String sender;
     private String senderEmail;
 

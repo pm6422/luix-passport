@@ -239,7 +239,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         List<UserRole> userRoles = userRoleService.assignWithDefaults(domain.getUsername(), Sets.newHashSet());
         userRoleRepository.saveAll(userRoles);
 
-        inboxService.sendPersonalNotification(Collections.singletonList(username),
+        inboxService.pushNotification(Collections.singletonList(username),
                 "Created account",
                 "You have successfully created the account, please contact the administrator to grant appropriate roles.");
         return domain;
@@ -317,7 +317,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setVerificationCodeSentAt(Instant.now());
         user.setNewEmail(email);
         userRepository.save(user);
-        inboxService.sendPersonalNotification(Collections.singletonList(user.getUsername()),
+        inboxService.pushNotification(Collections.singletonList(user.getUsername()),
                 "Change email", "You have requested to change your email.");
         return user;
     }
@@ -328,7 +328,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setVerificationCode(generateRandomVerificationCode());
         user.setVerificationCodeSentAt(Instant.now());
         userRepository.save(user);
-        inboxService.sendPersonalNotification(Collections.singletonList(user.getUsername()),
+        inboxService.pushNotification(Collections.singletonList(user.getUsername()),
                 "Change password", "You have requested to change your password.");
         return user;
     }
@@ -386,7 +386,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userRepository.save(user);
         stateMachine.sendEvent(Mono.just(MessageBuilder.withPayload(UserEvent.ACTIVATE).build()));
 
-        inboxService.sendPersonalNotification(Collections.singletonList(user.getUsername()),
+        inboxService.pushNotification(Collections.singletonList(user.getUsername()),
                 "Activated account",
                 "You have successfully activated the account, please contact the administrator to grant appropriate roles.");
         log.info("Activated user by activation code {}", activationCode);

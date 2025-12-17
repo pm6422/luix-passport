@@ -3,7 +3,7 @@ import { useLoginUserStore } from "@/stores/login-user-store"
 import { toast } from "sonner"
 import { IconBellBolt } from "@tabler/icons-react"
 
-export function SseNotification() {
+export function SseNotifier() {
   const { loginUser } = useLoginUserStore()
   const eventSourceRef = useRef<EventSource | null>(null)
   const retryTimeoutRef = useRef<NodeJS.Timeout | null>(null)
@@ -19,7 +19,7 @@ export function SseNotification() {
         eventSourceRef.current.close()
       }
 
-      const eventSource = new EventSource("/api/sse/connect")
+      const eventSource = new EventSource("/api/sse-notifiers/connect")
       eventSourceRef.current = eventSource
 
       eventSource.onopen = () => {

@@ -36,7 +36,7 @@ public class InboxController {
     @Operation(summary = "create a new contact us notification")
     @PostMapping("/open-api/inbox/contact")
     public ResponseEntity<Void> createContactUsNotification(@Parameter(description = "notification", required = true) @Valid @RequestBody Notification domain) {
-        inboxService.sendPersonalNotification(List.of("louis", "admin"),
+        inboxService.pushNotification(List.of("louis", "admin"),
                 domain.getTitle(), domain.getContent(), domain.getSender(), domain.getSenderEmail());
         return ResponseEntity.status(HttpStatus.CREATED)
                 .headers(httpHeaderCreator.createSuccessHeader("SM1001", domain.getId()))

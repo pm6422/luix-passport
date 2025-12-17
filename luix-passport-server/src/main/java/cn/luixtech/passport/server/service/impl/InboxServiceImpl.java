@@ -2,12 +2,13 @@ package cn.luixtech.passport.server.service.impl;
 
 import cn.luixtech.passport.server.domain.Inbox;
 import cn.luixtech.passport.server.domain.Notification;
-import cn.luixtech.passport.server.domain.User;
 import cn.luixtech.passport.server.repository.InboxRepository;
 import cn.luixtech.passport.server.repository.NotificationRepository;
 import cn.luixtech.passport.server.repository.UserRepository;
 import cn.luixtech.passport.server.service.InboxService;
+import com.github.f4b6a3.tsid.TsidCreator;
 import com.luixtech.springbootframework.component.SseNotifier;
+import com.luixtech.springbootframework.component.SseNotifier.SseMessage;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
@@ -19,36 +20,24 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class InboxServiceImpl implements InboxService {
-    private final NotificationRepository notificationRepository;
     private final InboxRepository        inboxRepository;
     private final UserRepository         userRepository;
+    private final NotificationRepository notificationRepository;
     private final SseNotifier            sseNotifier;
 
     @Override
-    public void sendBroadcastNotification(String title, String content, String sender, String senderEmail) {
-        Notification notification = saveNotification(title, content, Notification.TYPE_SYSTEM, sender, senderEmail);
-
-        // Create user notifications for each user
-        List<User> allUsers = userRepository.findAll();
-        for (User user : allUsers) {
-            sendNotification(user, notification);
-        }
+    public void pushNotification(List<String> usernames, String title, String content) {
+        pushNotification(usernames, title, content, null, null);
     }
 
     @Override
-    public void sendPersonalNotification(List<String> receiverIds, String title, String content) {
-        sendPersonalNotification(receiverIds, title, content, null, null);
-    }
+    public void pushNotification(List<String> usernames, String title, String content, String sender,
+                                 String senderEmail) {
+        Notification notification = saveNotification(title, content, sender, senderEmail);
 
-    @Override
-    public void sendPersonalNotification(List<String> receiverIds, String title, String content, String sender,
-                                         String senderEmail) {
-        Notification notification = saveNotification(title, content, Notification.TYPE_PERSONAL, sender, senderEmail);
-
-        // Create user notifications for each receiver
-        List<User> receivers = userRepository.findAllById(receiverIds);
-        for (User receiver : receivers) {
-            sendNotification(receiver, notification);
+        // Push notifications for each receiver
+        for (String username : usernames) {
+            pushNotification(username, notification);
         }
     }
 
@@ -65,26 +54,27 @@ public class InboxServiceImpl implements InboxService {
         });
     }
 
-    private void sendNotification(User user, Notification notification) {
-        Inbox inbox = new Inbox();
-        inbox.setReceiverId(user.getUsername());
-        inbox.setNotification(notification);
-        inbox.setStatus(Inbox.STATUS_UNREAD);
-        inbox.setActive(true);
-
-        inboxRepository.save(inbox);
-
-        sseNotifier.send(user.getUsername(), notification.getTitle());
-    }
-
-    private Notification saveNotification(String title, String content, String type, String sender, String senderEmail) {
+    private Notification saveNotification(String title, String content, String sender, String senderEmail) {
         Notification notification = new Notification();
         notification.setTitle(title);
         notification.setContent(content);
-        notification.setType(type);
         notification.setSender(sender);
         notification.setSenderEmail(senderEmail);
         return notificationRepository.save(notification);
+    }
+
+    private void pushNotification(String username, Notification notification) {
+        Inbox inbox = new Inbox();
+        inbox.setReceiverId(username);
+        inbox.setNotification(notification);
+        inbox.setStatus(Inbox.STATUS_UNREAD);
+        inboxRepository.save(inbox);
+
+        SseMessage msg = new SseMessage();
+        msg.setId(StringUtils.EMPTY + TsidCreator.getTsid().toLong());
+        msg.setName(notification.getTitle());
+        msg.setData(notification);
+        sseNotifier.send(username, msg);
     }
 
     @Override
