@@ -25,8 +25,8 @@ export function EditDialog({
       DataDictService.lookup("PermissionResourceType", true),
       DataDictService.lookup("PermissionAction", true),
     ])
-    const resourceTypeOptions = resourceTypesRes.data.map((item: DataDict) => ({ label: item.dictCode, value: item.dictCode }))
-    const actionOptions = actionsRes.data.map((item: DataDict) => ({ label: item.dictCode, value: item.dictCode }))
+    const resourceTypeOptions = resourceTypesRes.data.content.map((item: DataDict) => ({ label: item.dictCode, value: item.dictCode }))
+    const actionOptions = actionsRes.data.content.map((item: DataDict) => ({ label: item.dictCode, value: item.dictCode }))
     if (entityId) {
       const { data } = await PermissionService.findById(entityId)
       return { options: { resourceTypes: resourceTypeOptions, actions: actionOptions }, entity: data }
