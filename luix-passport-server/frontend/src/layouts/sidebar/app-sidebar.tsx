@@ -53,11 +53,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             icon: IconUser,
           },
           {
-            title: "Membership",
-            url: "/account/membership",
-            icon: IconCrown,
-          },
-          {
             title: "Inbox",
             url: "/inbox",
             icon: IconBellRinging,
