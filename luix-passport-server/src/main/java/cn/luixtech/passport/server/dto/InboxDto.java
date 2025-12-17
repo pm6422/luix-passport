@@ -14,12 +14,10 @@ public class InboxDto {
     private String  notificationId;
     private String  title;
     private String  content;
-    private String  type;
     private String  sender;
     private String  senderEmail;
     private String  receiverId;
     private String  status;
-    private Boolean active;
     private Instant createdAt;
     private Instant modifiedAt;
 

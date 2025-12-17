@@ -30,8 +30,8 @@ export default function InboxPage() {
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const debounceRef = useRef<NodeJS.Timeout | null>(null)
 
-  const selectedItem = useMemo(() => 
-    data.find(item => item.id === selectedId), 
+  const selectedItem = useMemo(() =>
+    data.find(item => item.id === selectedId),
     [data, selectedId]
   )
 
@@ -93,7 +93,7 @@ export default function InboxPage() {
     return InboxService.markAsRead(id)
       .then(() => {
         // Optimistic update
-        setData(prev => prev.map(item => 
+        setData(prev => prev.map(item =>
           item.id === id ? { ...item, status: "READ" } : item
         ))
       })
@@ -105,11 +105,11 @@ export default function InboxPage() {
   // Group data by date
   const groupedData = useMemo(() => {
     const groups: { label: string; items: Inbox[] }[] = []
-    
+
     data.forEach(item => {
       const date = dayjs(item.createdAt)
       let label = "Earlier"
-      
+
       if (date.isToday()) {
         label = "Today"
       } else if (date.isYesterday()) {
@@ -117,7 +117,7 @@ export default function InboxPage() {
       } else if (date.isAfter(dayjs().subtract(7, 'day'))) {
         label = "This Week"
       }
-      
+
       const existingGroup = groups.find(g => g.label === label)
       if (existingGroup) {
         existingGroup.items.push(item)
@@ -125,13 +125,13 @@ export default function InboxPage() {
         groups.push({ label, items: [item] })
       }
     })
-    
+
     return groups
   }, [data])
 
   const renderPagination = () => {
     if (totalPages <= 1) return null
-    
+
     // Simplified pagination for sidebar
     return (
       <div className="flex items-center justify-between px-4 py-2 border-t text-sm">
@@ -289,11 +289,11 @@ export default function InboxPage() {
                   </h2>
                   <div className="flex items-center gap-3 text-sm text-muted-foreground">
                     <div className={cn(
-                    "flex items-center justify-center w-8 h-8 rounded-full shrink-0",
-                    selectedItem.type === "SYSTEM" ? "bg-blue-500/10 text-blue-500" : "bg-green-500/10 text-green-500"
-                  )}>
-                    {selectedItem.type === "SYSTEM" ? <IconBell size={16} /> : <IconMail size={16} />}
-                  </div>
+                      "flex items-center justify-center w-8 h-8 rounded-full shrink-0",
+                      (!selectedItem.sender || selectedItem.sender === "SYSTEM") ? "bg-blue-500/10 text-blue-500" : "bg-green-500/10 text-green-500"
+                    )}>
+                      {(!selectedItem.sender || selectedItem.sender === "SYSTEM") ? <IconBell size={16} /> : <IconMail size={16} />}
+                    </div>
                     <div className="flex flex-col">
                       <span className="font-medium text-foreground">
                         {selectedItem.sender || 'System'}
