@@ -2,10 +2,21 @@ import { useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { LoadingButton } from "@/components/custom/form-element/loading-button"
-import InputFormField from "@/components/custom/form-field/input"
 import {
   Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from "@/components/ui/form"
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+  InputOTPSeparator,
+} from "@/components/ui/input-otp"
 import { toast } from "sonner"
 import { getErrorMessage } from "@/lib/handle-error"
 import { RedeemPromoCode, redeemPromoCodeSchema, initialRedeemPromoCodeState } from "@/domains/promo-code"
@@ -38,12 +49,42 @@ export function RedeemPromoCodeForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <InputFormField
+        <FormField
           control={form.control}
           name="code"
-          label="Promo Code"
-          placeholder="Enter your promo code"
-          description="Enter the 12-character promo code to redeem your membership."
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Promo Code</FormLabel>
+              <FormControl>
+                <InputOTP maxLength={12} {...field}>
+                  <InputOTPGroup>
+                    <InputOTPSlot index={0} />
+                    <InputOTPSlot index={1} />
+                    <InputOTPSlot index={2} />
+                    <InputOTPSlot index={3} />
+                  </InputOTPGroup>
+                  <InputOTPSeparator />
+                  <InputOTPGroup>
+                    <InputOTPSlot index={4} />
+                    <InputOTPSlot index={5} />
+                    <InputOTPSlot index={6} />
+                    <InputOTPSlot index={7} />
+                  </InputOTPGroup>
+                  <InputOTPSeparator />
+                  <InputOTPGroup>
+                    <InputOTPSlot index={8} />
+                    <InputOTPSlot index={9} />
+                    <InputOTPSlot index={10} />
+                    <InputOTPSlot index={11} />
+                  </InputOTPGroup>
+                </InputOTP>
+              </FormControl>
+              <FormDescription>
+                Enter the 12-character promo code to redeem your membership.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
         />
 
         <LoadingButton loading={saving} type="submit">
