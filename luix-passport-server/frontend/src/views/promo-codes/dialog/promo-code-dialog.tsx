@@ -37,6 +37,9 @@ export function GenerateDialog({
       defaultValues={initialGeneratePromoCodeState}
       save={save}
       onLoad={loadEntity}
+      successMessage="Promo codes generated successfully"
+      saveButtonText="Generate"
+      savingButtonText="Generating..."
       renderFields={(form, options) => (
         <GeneratePromoCodeFormFields
           form={form}
