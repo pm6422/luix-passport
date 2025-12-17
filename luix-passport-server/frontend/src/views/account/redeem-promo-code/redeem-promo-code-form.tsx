@@ -71,7 +71,7 @@ export function RedeemPromoCodeForm() {
                     className={
                       loginUser.membershipType.includes("PREMIUM")
                         ? "bg-primary/10 text-primary hover:bg-primary/20 shadow-none"
-                        : "bg-secondary/50 text-secondary-foreground hover:bg-secondary/60 shadow-none"
+                        : "bg-yellow-500/10 text-yellow-600 hover:bg-yellow-500/20 shadow-none"
                     }
                   >
                     {loginUser.membershipType.includes("PREMIUM") ? (
