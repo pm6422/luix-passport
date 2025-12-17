@@ -27,8 +27,9 @@ public class InitializingAppRunner implements ApplicationRunner {
 
         if (promoCodeRepository.count() == 0) {
             log.info("Initializing promo codes...");
-            promoCodeService.generateCodes(100, Role.ROLE_MEMBER_PRO, 7, Instant.now().plus(365, ChronoUnit.DAYS), "INIT_BATCH");
-            log.info("Initialized 100 promo codes.");
+            promoCodeService.generateCodes(50, Role.ROLE_MEMBER_PRO, 7, Instant.now().plus(365, ChronoUnit.DAYS), "INIT_BATCH");
+            promoCodeService.generateCodes(50, Role.ROLE_MEMBER_PREMIUM, 7, Instant.now().plus(365, ChronoUnit.DAYS), "INIT_BATCH");
+            log.info("Initialized 100 promo codes (50 PRO, 50 PREMIUM).");
         }
     }
 }
