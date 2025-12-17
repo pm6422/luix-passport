@@ -1,7 +1,6 @@
 package cn.luixtech.passport.server.component.jobqueue;
 
 import cn.luixtech.passport.server.domain.JobQueue;
-import cn.luixtech.passport.server.jobconsumer.base.JobConsumerHandler;
 import cn.luixtech.passport.server.repository.JobQueueRepository;
 import jakarta.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
