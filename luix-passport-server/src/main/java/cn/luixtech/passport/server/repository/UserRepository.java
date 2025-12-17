@@ -32,4 +32,5 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     long countByEnabledIsTrue();
 
+    List<User> findByMembershipExpiresAtBeforeAndMembershipTypeNotNull(java.time.Instant now);
 }

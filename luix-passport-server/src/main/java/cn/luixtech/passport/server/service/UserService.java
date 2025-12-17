@@ -53,4 +53,6 @@ public interface UserService {
     void updateLastLoginTime(String username);
 
     void cascadeUpdateUsername(String oldUsername, String newUsername);
+
+    void checkExpiredMemberships();
 }

@@ -2,6 +2,7 @@ package cn.luixtech.passport.server.service.impl;
 
 import cn.luixtech.passport.server.config.ApplicationProperties;
 import cn.luixtech.passport.server.config.oauth.AuthUser;
+import cn.luixtech.passport.server.domain.Role;
 import cn.luixtech.passport.server.domain.SupportedDateTimeFormat;
 import cn.luixtech.passport.server.domain.User;
 import cn.luixtech.passport.server.domain.UserRole;
@@ -31,6 +32,7 @@ import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.messaging.support.MessageBuilder;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -453,6 +455,38 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setUpdatedAt(Instant.now());
         user.setUpdatedBy(AuthUtils.getCurrentUsername());
         userRepository.save(user);
+    }
+
+    @Override
+    @Scheduled(fixedRate = 3600000) // Every hour
+    @Transactional(rollbackFor = Exception.class)
+    public void checkExpiredMemberships() {
+        log.info("Checking for expired memberships...");
+        Instant now = Instant.now();
+        List<User> expiredUsers = userRepository.findByMembershipExpiresAtBeforeAndMembershipTypeNotNull(now);
+
+        for (User user : expiredUsers) {
+            log.info("Downgrading user {} from {} (expired at {})", user.getUsername(), user.getMembershipType(), user.getMembershipExpiresAt());
+
+            // Clear membership info
+            String oldType = user.getMembershipType();
+            user.setMembershipType(null);
+            user.setMembershipExpiresAt(null);
+            userRepository.save(user);
+
+            // Remove roles
+            Set<String> roles = userRoleService.findRoleIds(user.getUsername());
+            roles.remove(oldType);
+
+            // Ensure ROLE_USER is present (it should be, but just in case)
+            roles.add(Role.ROLE_USER);
+
+            userRoleService.update(user.getUsername(), roles);
+        }
+
+        if (!expiredUsers.isEmpty()) {
+            log.info("Processed {} expired memberships.", expiredUsers.size());
+        }
     }
 
     private ManagedUser buildManagedUser(User user, String username) {

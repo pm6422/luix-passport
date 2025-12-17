@@ -66,6 +66,9 @@ public class User {
     private String timeZoneId;
     private String source;
 
+    private String membershipType;
+    private Instant membershipExpiresAt;
+
     @Column(nullable = false, updatable = false)
     private Instant createdAt;
 

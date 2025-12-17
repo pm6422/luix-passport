@@ -172,6 +172,8 @@ Table "user" {
   "time_zone_id" varchar(30) [not null]
   "date_time_format_id" varchar(20) [not null]
   "source" varchar(20)
+  "membership_type" varchar(50)
+  "membership_expires_at" timestamp
   "created_at" timestamp [not null]
   "created_by" varchar(50)
   "updated_at" timestamp [not null]
@@ -181,6 +183,22 @@ Table "user" {
     date_time_format_id [type: btree, name: "idx_user_date_time_format_id"]
     time_zone_id [type: btree, name: "idx_user_time_zone_id"]
   }
+}
+
+Table "promo_code" {
+  "id" varchar(18) [pk, not null]
+  "code" varchar(255) [unique, not null]
+  "type" varchar(50) [not null]
+  "duration_days" int [not null]
+  "enabled" bool [not null, default: true]
+  "used_at" timestamp
+  "used_by" varchar(50)
+  "expires_at" timestamp
+  "batch_id" varchar(50)
+  "created_at" timestamp [not null]
+  "created_by" varchar(50)
+  "updated_at" timestamp [not null]
+  "updated_by" varchar(50)
 }
 
 Table "role" {
@@ -362,3 +380,5 @@ Ref "fk_inbox_user":"user"."username" < "inbox"."receiver_id" [update: cascade, 
 Ref "fk_user_role_role_id":"role"."id" < "user_role"."role_id" [update: cascade, delete: cascade]
 
 Ref "fk_user_role_username":"user"."username" < "user_role"."username" [update: cascade, delete: cascade]
+
+Ref "fk_promo_code_used_by":"user"."username" < "promo_code"."used_by" [update: cascade, delete: set null]
