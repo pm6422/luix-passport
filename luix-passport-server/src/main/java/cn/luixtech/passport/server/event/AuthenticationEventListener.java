@@ -1,8 +1,6 @@
 package cn.luixtech.passport.server.event;
 
 import cn.luixtech.passport.server.config.oauth.AuthUser;
-import cn.luixtech.passport.server.domain.UserAuthEvent;
-import cn.luixtech.passport.server.repository.UserAuthEventRepository;
 import cn.luixtech.passport.server.service.UserService;
 import com.luixtech.springbootframework.component.SseNotifier;
 import lombok.AllArgsConstructor;
@@ -22,15 +20,12 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-import static cn.luixtech.passport.server.domain.UserAuthEvent.AUTH_FAILURE;
-import static cn.luixtech.passport.server.domain.UserAuthEvent.AUTH_SUCCESS;
 import static cn.luixtech.passport.server.utils.AuthUtils.getCurrentUsername;
 
 @Slf4j
 @Component
 @AllArgsConstructor
 public class AuthenticationEventListener {
-    private final UserAuthEventRepository userAuthEventRepository;
     private final UserService             userService;
     private final SessionRegistry         sessionRegistry;
     private final SseNotifier             sseNotifier;
@@ -39,12 +34,6 @@ public class AuthenticationEventListener {
     public void authenticationSuccessEvent(AuthenticationSuccessEvent event) {
         if (event.getSource() instanceof UsernamePasswordAuthenticationToken token) {
             if (token.getPrincipal() instanceof AuthUser authUser) {
-                UserAuthEvent domain = new UserAuthEvent();
-                domain.setUsername(authUser.getUsername());
-                domain.setEvent(AUTH_SUCCESS);
-                domain.setRemark(event.getSource().getClass().getSimpleName());
-                userAuthEventRepository.save(domain);
-
                 userService.updateLastLoginTime(authUser.getUsername());
                 log.info("Authenticated successfully for user: {}", authUser.getUsername());
             }
@@ -55,12 +44,6 @@ public class AuthenticationEventListener {
     public void authenticationFailureEvent(AbstractAuthenticationFailureEvent event) {
         String username = getCurrentUsername();
         if (StringUtils.isNotEmpty(username)) {
-            // insert
-            UserAuthEvent domain = new UserAuthEvent();
-            domain.setUsername(username);
-            domain.setEvent(AUTH_FAILURE);
-            domain.setRemark(StringUtils.abbreviate(event.getException().getMessage(), 64));
-            userAuthEventRepository.save(domain);
             log.warn("Authenticate failure for user: {} with exception: {}", username, event.getException().getMessage());
         }
     }
@@ -92,12 +75,6 @@ public class AuthenticationEventListener {
     public void logoutSuccessEvent(LogoutSuccessEvent event) {
         String username = getCurrentUsername();
         if (StringUtils.isNotEmpty(username)) {
-            // insert
-            UserAuthEvent domain = new UserAuthEvent();
-            domain.setUsername(username);
-            domain.setEvent("LogoutSuccess");
-            domain.setRemark(event.getSource().getClass().getSimpleName());
-            userAuthEventRepository.save(domain);
             log.info("Logged out for user: [{}] and initiated by {}", username, event.getSource().getClass().getSimpleName());
         }
     }
