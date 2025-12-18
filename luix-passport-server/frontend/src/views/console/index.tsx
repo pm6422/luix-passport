@@ -10,17 +10,16 @@ import {
   CreditCard,
   Globe,
   CircleDot,
-  MoreVertical,
   LogOut,
   UserPlus,
-  LogIn,
-  Key,
-  Mail
+  Mail,
+  Inbox
 } from "lucide-react"
 import { LayoutBody } from "@/layouts/layout-definitions"
 import { useEffect, useState } from "react"
 import { TeamService, TeamInvitation, Team } from "@/services/team-service"
 import { InboxService } from "@/services/inbox-service"
+import { type Inbox as InboxType } from "@/domains/inbox"
 import { Oauth2ClientService } from "@/services/oauth2-client-service"
 import { UserService } from "@/services/user-service"
 import { toast } from "sonner"
@@ -98,6 +97,7 @@ export default function ConsolePage() {
   const { loginUser, hasRole } = useLoginUserStore()
   const [invitations, setInvitations] = useState<TeamInvitation[]>([])
   const [teams, setTeams] = useState<Team[]>([])
+  const [messages, setMessages] = useState<InboxType[]>([])
   const [userCount, setUserCount] = useState(0)
   const [stats, setStats] = useState({
     teams: 0,
@@ -113,17 +113,19 @@ export default function ConsolePage() {
   const fetchDashboardData = async () => {
     setLoading(true)
     try {
-      const [invitationsRes, teamsRes, unreadRes, appsCountRes, usersRes] = await Promise.all([
+      const [invitationsRes, teamsRes, unreadRes, appsCountRes, usersRes, inboxRes] = await Promise.all([
         TeamService.getUserInvitations(),
         TeamService.findUserTeams(),
         InboxService.countUnread(),
         hasRole("ROLE_ADMIN") ? Oauth2ClientService.count() : Promise.resolve({ data: 0 }),
-        hasRole("ROLE_ADMIN") ? UserService.count() : Promise.resolve({ data: 0 })
+        hasRole("ROLE_ADMIN") ? UserService.count() : Promise.resolve({ data: 0 }),
+        InboxService.find({ page: 0, size: 4 })
       ])
 
       setInvitations(invitationsRes.data)
       setTeams(teamsRes.data)
       setUserCount(usersRes.data)
+      setMessages(inboxRes.data.content)
       setStats({
         teams: teamsRes.data.length,
         unreadMessages: unreadRes.data,
@@ -383,6 +385,49 @@ export default function ConsolePage() {
 
         {/* Sidebar Widgets */}
         <div className="space-y-6">
+          {/* Recent Notifications Widget */}
+          <Card className="border-none shadow-sm overflow-hidden text-clip">
+            <CardHeader className="pb-3 flex flex-row items-center justify-between border-b border-border/50">
+              <div>
+                <CardTitle className="text-sm font-bold flex items-center">
+                  <Inbox className="mr-2 h-4 w-4 text-primary" />
+                  Recent Notifications
+                </CardTitle>
+              </div>
+              {stats.unreadMessages > 0 && (
+                <Badge variant="outline" className="text-[10px] bg-primary/5 text-primary border-primary/20">
+                  {stats.unreadMessages} New
+                </Badge>
+              )}
+            </CardHeader>
+            <CardContent className="p-0">
+              <div className="divide-y divide-border/50">
+                {loading ? (
+                  [1, 2, 3].map(i => <div key={i} className="p-4 space-y-2"><div className="h-4 w-3/4 bg-muted animate-pulse rounded" /><div className="h-3 w-1/2 bg-muted/60 animate-pulse rounded" /></div>)
+                ) : messages.length > 0 ? (
+                  messages.map((msg) => (
+                    <div key={msg.id} className={`p-4 hover:bg-muted/30 transition-colors cursor-pointer group ${msg.status === 'unread' ? 'bg-primary/[0.02]' : ''}`} onClick={() => navigate("/inbox")}>
+                      <div className="flex justify-between items-start gap-2">
+                        <h4 className={`text-xs font-semibold truncate ${msg.status === 'unread' ? 'text-foreground' : 'text-muted-foreground'}`}>{msg.title}</h4>
+                        <span className="text-[10px] text-muted-foreground whitespace-nowrap">{msg.createdAt.split('T')[0]}</span>
+                      </div>
+                      <p className="text-[10px] text-muted-foreground line-clamp-1 mt-1 group-hover:text-foreground/70 transition-colors">
+                        {msg.content}
+                      </p>
+                    </div>
+                  ))
+                ) : (
+                  <div className="p-8 text-center text-clip">
+                    <p className="text-[10px] text-muted-foreground italic">No messages found.</p>
+                  </div>
+                )}
+              </div>
+              <Button variant="ghost" className="w-full rounded-none h-10 text-xs border-t border-border/50 hover:bg-muted/50" onClick={() => navigate("/inbox")}>
+                View All Messages
+              </Button>
+            </CardContent>
+          </Card>
+
           {/* Quick Stats Widget */}
           <Card className="border-none shadow-sm bg-primary/5">
             <CardHeader className="pb-2">
