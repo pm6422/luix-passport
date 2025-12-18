@@ -20,11 +20,11 @@ import static com.luixtech.utilities.encryption.JasyptEncryptUtils.DEFAULT_ALGOR
 @Service
 @AllArgsConstructor
 public class UserAvatarServiceImpl implements UserAvatarService {
-    private static final String DEFAULT_USER_PHOTO_URL = "/assets/images/cartoon/01.png";
-    public static final String CURRENT_USER_PHOTO_URL = "/api/accounts/avatar";
-    public static final String USER_PHOTO_URL = "/open-api/user-avatars/";
-    public static final String USER_PHOTO_TOKEN_KEY = "dw4rfer54g&^@dsfd#";
-    private final UserAvatarRepository userAvatarRepository;
+    private static final String               DEFAULT_USER_PHOTO_URL = "/assets/images/cartoon/01.png";
+    public static final  String               CURRENT_USER_PHOTO_URL = "/api/accounts/avatar";
+    public static final  String               USER_PHOTO_URL         = "/open-api/user-avatars/";
+    public static final  String               USER_PHOTO_TOKEN_KEY   = "dw4rfer54g&^@dsfd#";
+    private final        UserAvatarRepository userAvatarRepository;
 
     @Override
     public String buildAvatarUrl(String username, HttpServletRequest request) {
