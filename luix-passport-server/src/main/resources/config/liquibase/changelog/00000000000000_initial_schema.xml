@@ -652,14 +652,6 @@
                 onDelete="CASCADE"
                 onUpdate="CASCADE"/>
         <addForeignKeyConstraint
-                baseTableName="user_login"
-                baseColumnNames="username"
-                constraintName="fk_user_login_username"
-                referencedTableName="user"
-                referencedColumnNames="username"
-                onDelete="CASCADE"
-                onUpdate="CASCADE"/>
-        <addForeignKeyConstraint
                 baseTableName="user_avatar"
                 baseColumnNames="id"
                 constraintName="fk_user_avatar_username"
