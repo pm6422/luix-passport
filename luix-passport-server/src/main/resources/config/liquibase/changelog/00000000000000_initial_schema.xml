@@ -576,9 +576,6 @@
         <createIndex tableName="role_permission" indexName="idx_role_permission_permission_id" unique="false">
             <column name="permission_id"/>
         </createIndex>
-        <createIndex tableName="user_login" indexName="idx_user_login_username" unique="false">
-            <column name="username"/>
-        </createIndex>
         <createIndex tableName="inbox" indexName="idx_inbox_notification" unique="false">
             <column name="notification_id"/>
         </createIndex>
