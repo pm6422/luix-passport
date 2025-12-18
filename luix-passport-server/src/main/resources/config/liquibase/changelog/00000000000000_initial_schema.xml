@@ -386,29 +386,6 @@
                 separator=";"
                 tableName="role_permission">
         </loadData>
-        <createTable tableName="user_login">
-            <column name="id" type="VARCHAR(18)">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="username" type="VARCHAR(20)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="logged_at" type="timestamp">
-                <constraints nullable="false"/>
-            </column>
-            <column name="location" type="VARCHAR(20)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="ip" type="VARCHAR(20)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="os" type="VARCHAR(20)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="browser" type="VARCHAR(20)">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
         <createTable tableName="user_avatar">
             <column name="id" type="varchar(18)">
                 <constraints primaryKey="true" nullable="false"/>
