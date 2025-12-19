@@ -524,7 +524,7 @@ function KpiCard({ title, value, trend, isUp, icon: Icon, description }: any) {
             <Icon className="size-8" />
           </div>
           <div className={`flex items-center text-xs font-bold ${isUp ? 'text-emerald-500' : 'text-rose-500'} bg-transparent p-1`}>
-            {isUp ? <ArrowUpRight className="h-3 w-3 mr-0.5" /> : <ArrowDownRight className="h-3 w-3 mr-0.5" />}
+            {isUp ? <ArrowUpRight className="size-3 mr-0.5" /> : <ArrowDownRight className="size-3 mr-0.5" />}
             {trend}
           </div>
         </div>
