@@ -23,6 +23,8 @@ public class LoginLog {
   @Column(nullable = false)
   private String username;
 
+  private String email;
+
   private String ip;
 
   private String location;

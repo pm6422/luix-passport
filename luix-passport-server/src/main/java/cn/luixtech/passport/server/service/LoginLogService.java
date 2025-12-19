@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface LoginLogService {
-  void recordLogin(String username, String status, HttpServletRequest request);
+  void recordLogin(String username, String email, String status, HttpServletRequest request);
 
   Page<LoginLog> findRecentLogins(String username, Pageable pageable);
 

@@ -344,7 +344,7 @@ export default function ConsolePage() {
                                 </AvatarFallback>
                               </Avatar>
                               <div className="flex flex-col">
-                                <span className="text-sm font-semibold text-foreground/90">{log.username}</span>
+                                <span className="text-sm font-semibold text-foreground/90">{log.email || log.username}</span>
                                 <span className="text-[10px] text-muted-foreground lg:hidden">{log.ip}</span>
                               </div>
                             </div>

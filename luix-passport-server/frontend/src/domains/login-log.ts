@@ -3,6 +3,7 @@ import { z } from "zod"
 export const loginLogSchema = z.object({
   id: z.string(),
   username: z.string(),
+  email: z.string().optional().nullable(),
   ip: z.string(),
   location: z.string(),
   device: z.string(),

@@ -564,6 +564,7 @@
             <column name="username" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
+            <column name="email" type="varchar(255)"/>
             <column name="ip" type="varchar(50)"/>
             <column name="location" type="varchar(255)"/>
             <column name="device" type="text"/>

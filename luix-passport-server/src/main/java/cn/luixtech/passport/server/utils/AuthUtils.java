@@ -56,7 +56,14 @@ public abstract class AuthUtils {
      * Get the email of the current logged user.
      */
     public static String getCurrentUserEmail() {
-        AuthUser currentUser = getCurrentUser();
+        return getCurrentUserEmail(SecurityContextHolder.getContext().getAuthentication());
+    }
+
+    /**
+     * Get the email of the current logged user.
+     */
+    public static String getCurrentUserEmail(Authentication authentication) {
+        AuthUser currentUser = getCurrentUser(authentication);
         return currentUser != null ? currentUser.getEmail() : null;
     }
 

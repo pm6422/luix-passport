@@ -37,7 +37,7 @@ public class AuthenticationEventListener {
     public void authenticationSuccessEvent(AuthenticationSuccessEvent event) {
         if (event.getAuthentication().getPrincipal() instanceof AuthUser authUser) {
             userService.updateLastLoginTime(authUser.getUsername());
-            loginLogService.recordLogin(authUser.getUsername(), "success", httpServletRequest);
+            loginLogService.recordLogin(authUser.getUsername(), authUser.getEmail(), "success", httpServletRequest);
             log.info("Authenticated successfully for user: {}", authUser.getUsername());
         }
     }
@@ -45,8 +45,16 @@ public class AuthenticationEventListener {
     @EventListener
     public void authenticationFailureEvent(AbstractAuthenticationFailureEvent event) {
         String username = cn.luixtech.passport.server.utils.AuthUtils.getCurrentUsername(event.getAuthentication());
+        String email = cn.luixtech.passport.server.utils.AuthUtils.getCurrentUserEmail(event.getAuthentication());
         if (StringUtils.isNotEmpty(username)) {
-            loginLogService.recordLogin(username, "failed", httpServletRequest);
+            if (email == null) {
+                try {
+                    email = userService.findByUsername(username).getEmail();
+                } catch (Exception e) {
+                    // Ignore if user not found
+                }
+            }
+            loginLogService.recordLogin(username, email, "failed", httpServletRequest);
             log.warn("Authenticate failure for user: {} with exception: {}", username,
                     event.getException().getMessage());
         }

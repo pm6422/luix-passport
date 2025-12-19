@@ -32,20 +32,21 @@ public class LoginLogServiceImpl implements LoginLogService {
 
   @Override
   @Transactional
-  public void recordLogin(String username, String status, HttpServletRequest request) {
+  public void recordLogin(String username, String email, String status, HttpServletRequest request) {
     String xff = request.getHeader("X-Forwarded-For");
     String finalIp = xff != null ? xff.split(",")[0].trim() : request.getRemoteAddr();
     String userAgentString = request.getHeader("User-Agent");
 
     // Use CompletableFuture to run the heavy processing asynchronously within the
     // same service
-    CompletableFuture.runAsync(() -> saveLoginLog(username, status, finalIp, userAgentString));
+    CompletableFuture.runAsync(() -> saveLoginLog(username, email, status, finalIp, userAgentString));
     log.info("Triggered login log record for user: {}, status: {}, ip: {}", username, status, finalIp);
   }
 
-  private void saveLoginLog(String username, String status, String ip, String userAgentString) {
+  private void saveLoginLog(String username, String email, String status, String ip, String userAgentString) {
     LoginLog loginLog = new LoginLog();
     loginLog.setUsername(username);
+    loginLog.setEmail(email);
     loginLog.setStatus(status);
     loginLog.setIp(ip);
     loginLog.setLoginAt(Instant.now());
