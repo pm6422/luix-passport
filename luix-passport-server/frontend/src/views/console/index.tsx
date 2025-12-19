@@ -175,6 +175,8 @@ export default function ConsolePage() {
           isUp={true}
           icon={Users}
           description="Total registered identifiers"
+          bgClass="bg-emerald-500/15 dark:bg-emerald-500/10"
+          iconClass="bg-emerald-500/25 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400"
         />
         <KpiCard
           title="Active Sessions"
@@ -183,6 +185,8 @@ export default function ConsolePage() {
           isUp={true}
           icon={CircleDot}
           description="Concurrent auth tokens"
+          bgClass="bg-blue-500/15 dark:bg-blue-500/10"
+          iconClass="bg-blue-500/25 dark:bg-blue-500/20 text-blue-700 dark:text-blue-400"
         />
         <KpiCard
           title="OAuth2 Clients"
@@ -191,6 +195,8 @@ export default function ConsolePage() {
           isUp={false}
           icon={AppWindow}
           description="Applications connected"
+          bgClass="bg-amber-500/15 dark:bg-amber-500/10"
+          iconClass="bg-amber-500/25 dark:bg-amber-500/20 text-amber-700 dark:text-amber-400"
         />
         <KpiCard
           title="Monthly Requests"
@@ -199,13 +205,15 @@ export default function ConsolePage() {
           isUp={true}
           icon={Globe}
           description="API bridge throughput"
+          bgClass="bg-indigo-500/15 dark:bg-indigo-500/10"
+          iconClass="bg-indigo-500/25 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-400"
         />
       </div>
 
       {/* Analytics Section */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Main Chart */}
-        <Card className="lg:col-span-2 overflow-hidden border-none shadow-sm bg-background/50 backdrop-blur-sm">
+        <Card className="lg:col-span-2 overflow-hidden border-none shadow-sm bg-violet-500/10 dark:bg-violet-500/5 backdrop-blur-xl">
           <CardHeader className="flex flex-row items-center justify-between pb-8">
             <div>
               <CardTitle>Security Activity</CardTitle>
@@ -266,7 +274,7 @@ export default function ConsolePage() {
         </Card>
 
         {/* Membership Distribution */}
-        <Card className="border-none shadow-sm bg-background/50 backdrop-blur-sm">
+        <Card className="border-none shadow-sm bg-rose-500/10 dark:bg-rose-500/5 backdrop-blur-xl">
           <CardHeader>
             <CardTitle>Membership Stats</CardTitle>
             <CardDescription>User tier distribution</CardDescription>
@@ -320,7 +328,7 @@ export default function ConsolePage() {
             </div>
 
             <TabsContent value="logins" className="mt-0 outline-none">
-              <Card className="border-none shadow-sm bg-background/50 backdrop-blur-sm overflow-hidden">
+              <Card className="border-none shadow-sm bg-sky-500/10 dark:bg-sky-500/5 backdrop-blur-xl overflow-hidden">
                 <CardContent className="p-0">
                   <Table>
                     <TableHeader>
@@ -401,7 +409,7 @@ export default function ConsolePage() {
         {/* Sidebar Widgets */}
         <div className="space-y-6">
           {/* Recent Notifications Widget */}
-          <Card className="border-none shadow-sm overflow-hidden text-clip">
+          <Card className="border-none shadow-sm overflow-hidden text-clip bg-indigo-500/10 dark:bg-indigo-500/5 backdrop-blur-xl">
             <CardHeader className="pb-3 flex flex-row items-center justify-between border-b border-border/50">
               <div>
                 <CardTitle className="text-sm font-bold flex items-center">
@@ -444,7 +452,7 @@ export default function ConsolePage() {
           </Card>
 
           {/* Quick Stats Widget */}
-          <Card className="border-none shadow-sm bg-primary/5">
+          <Card className="border-none shadow-sm bg-blue-500/10 dark:bg-blue-500/5 backdrop-blur-xl">
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-bold flex items-center">
                 <ShieldCheck className="mr-2 h-4 w-4 text-primary" />
@@ -482,7 +490,7 @@ export default function ConsolePage() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
               >
-                <Card className="border-none shadow-lg shadow-primary/10">
+                <Card className="border-none shadow-lg shadow-primary/10 bg-fuchsia-500/10 dark:bg-fuchsia-500/5 backdrop-blur-xl">
                   <CardHeader className="pb-3 border-b border-border/50">
                     <div className="flex items-center justify-between">
                       <CardTitle className="text-md">Team Requests</CardTitle>
@@ -516,7 +524,7 @@ export default function ConsolePage() {
           </AnimatePresence>
 
           {/* Quick Links Overlay */}
-          <Card className="border-none shadow-sm mt-4">
+          <Card className="border-none shadow-sm mt-4 bg-slate-500/10 dark:bg-slate-500/5 backdrop-blur-xl">
             <div className="p-2 grid grid-cols-2 gap-2">
               <QuickLink icon={AppWindow} label="Apps" onClick={() => navigate("/management/oauth2-clients")} />
               <QuickLink icon={ShieldCheck} label="Permissions" onClick={() => navigate("/management/permissions")} />
@@ -530,12 +538,12 @@ export default function ConsolePage() {
   )
 }
 
-function KpiCard({ title, value, trend, isUp, icon: Icon, description }: any) {
+function KpiCard({ title, value, trend, isUp, icon: Icon, description, bgClass, iconClass }: any) {
   return (
-    <Card className="border-none shadow-sm hover:shadow-md transition-shadow">
+    <Card className={`border-none shadow-sm hover:shadow-md transition-all duration-300 ${bgClass || 'bg-background/50'} backdrop-blur-xl`}>
       <CardContent className="p-5">
         <div className="flex justify-between items-start">
-          <div className="size-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary mb-4 shadow-sm">
+          <div className={`size-14 rounded-2xl ${iconClass || 'bg-primary/10 text-primary'} flex items-center justify-center mb-4 shadow-sm`}>
             <Icon className="size-8" />
           </div>
           <div className={`flex items-center text-xs font-bold ${isUp ? 'text-emerald-500' : 'text-rose-500'} bg-transparent p-1`}>
