@@ -1,29 +1,29 @@
-import axios from "axios"
+import axios, { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from "axios"
 
 const TIMEOUT = 60 * 1000
 
-const instance = axios.create({
+const instance: AxiosInstance = axios.create({
   paramsSerializer: { indexes: null }
 })
 
 instance.interceptors.request.use(
-  function (config) {
+  (config: InternalAxiosRequestConfig) => {
     // Modify request config before sending
     config.headers["X-Trace-Id"] = "R" + Date.now() + (Math.random() * 100000).toFixed()
     config.timeout = TIMEOUT
     return config
   },
-  function (error) {
+  (error) => {
     // Handle request errors
     return Promise.reject(error)
   }
 )
 
 instance.interceptors.response.use(
-  function (response) {
+  (response: AxiosResponse) => {
     // Modify response data before resolving the promise
     // Only redirect if the response is actually coming from the login page (not just containing the string)
-    const url = response.request.responseURL
+    const url = response.request?.responseURL
     if (url && (url.endsWith("/login") || url.includes("/login?")) && !url.includes("/api/")) {
       // Redirect to login page
       console.warn("Detected redirect to login page in response URL: ", url)
@@ -31,23 +31,28 @@ instance.interceptors.response.use(
     }
     return response
   },
-  function (error) {
+  (error) => {
     // Handle response errors
-    if (error.response.status === 403) {
+    if (!error.response) {
+      // Handle network errors (e.g., server down, timeout)
+      console.error("Network error or server is down: ", error.message)
+      return Promise.reject(error)
+    }
+
+    const { status } = error.response
+    if (status === 403) {
       // Handle 403 forbidden error
       window.location.href = "/403"
-    } else if (error.response.status === 401) {
+    } else if (status === 401) {
       // Handle 401 unauthorized error
-      console.warn("Redirecting to login")
+      console.warn("Redirecting to login due to 401")
       window.location.href = "/sign-in"
     } else {
       // Handle other errors
-      console.error("Request failed: ", error.message)
+      console.error("Request failed with status: ", status, error.message)
     }
     return Promise.reject(error)
   }
 )
 
-const http = instance
-
-export default http
+export default instance
