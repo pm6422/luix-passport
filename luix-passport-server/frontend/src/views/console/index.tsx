@@ -26,6 +26,7 @@ import { useLoginUserStore } from "@/stores/login-user-store"
 import { useNavigate } from "react-router-dom"
 import { LoginLogService } from "@/services/login-log-service"
 import { type LoginLog } from "@/domains/login-log"
+import { ROLE_ADMIN } from "@/domains/role"
 import { formatRelativeTime, formatTime } from "@/lib/time-utils"
 import {
   AreaChart,
@@ -116,10 +117,10 @@ export default function ConsolePage() {
         TeamService.getUserInvitations(),
         TeamService.findUserTeams(),
         InboxService.countUnread(),
-        hasRole("ROLE_ADMIN") ? Oauth2ClientService.count() : Promise.resolve({ data: 0 }),
-        hasRole("ROLE_ADMIN") ? UserService.count() : Promise.resolve({ data: 0 }),
+        hasRole(ROLE_ADMIN) ? Oauth2ClientService.count() : Promise.resolve({ data: 0 }),
+        hasRole(ROLE_ADMIN) ? UserService.count() : Promise.resolve({ data: 0 }),
         InboxService.find({ page: 0, size: 4 }),
-        hasRole("ROLE_ADMIN") ? LoginLogService.findRecentLogins(0, 5) : Promise.resolve({ data: { content: [] } })
+        hasRole(ROLE_ADMIN) ? LoginLogService.findRecentLogins(0, 5) : Promise.resolve({ data: { content: [] } })
       ])
 
       setInvitations(invitationsRes.data)
@@ -182,7 +183,7 @@ export default function ConsolePage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <KpiCard
           title="Total Users"
-          value={loading ? "..." : (hasRole("ROLE_ADMIN") ? userCount : "1").toLocaleString()}
+          value={loading ? "..." : (hasRole(ROLE_ADMIN) ? userCount : "1").toLocaleString()}
           trend="+12.5%"
           isUp={true}
           icon={Users}

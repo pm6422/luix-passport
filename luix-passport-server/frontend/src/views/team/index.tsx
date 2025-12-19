@@ -473,29 +473,6 @@ export default function TeamDashboard() {
 
         {/* Right Column (Sidebar) */}
         <div className="flex flex-col gap-y-6">
-          {/* Infrastructure Health Widget */}
-          <Card className="border-none shadow-sm bg-blue-500/10 dark:bg-blue-500/5 backdrop-blur-xl">
-            <CardHeader className="pb-3 border-b border-white/5">
-              <CardTitle className="text-sm font-bold flex items-center gap-2">
-                <IconAlertCircle className="size-4 text-blue-600 dark:text-blue-400" />
-                Infrastructure Metrics
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="pt-4 space-y-4">
-              <div className="flex justify-between items-center text-xs">
-                <span className="text-muted-foreground font-medium">Availability</span>
-                <span className="font-bold text-emerald-500">99.9%</span>
-              </div>
-              <div className="h-1.5 w-full bg-blue-500/10 rounded-full overflow-hidden">
-                <div className="h-full bg-emerald-500 w-[99.9%]" />
-              </div>
-              <div className="flex justify-between items-center text-xs">
-                <span className="text-muted-foreground font-medium">Policy Compliance</span>
-                <span className="font-bold text-blue-600 dark:text-blue-400">Stable</span>
-              </div>
-            </CardContent>
-          </Card>
-
           {/* Danger Zone */}
           <RoleTeamOwner>
             <Card className="border-none shadow-lg shadow-rose-500/10 bg-rose-500/10 dark:bg-rose-500/5 backdrop-blur-xl">
@@ -510,7 +487,7 @@ export default function TeamDashboard() {
                   Critical infrastructure deletion. This operation is irreversible and will purge all data associated with this team.
                 </p>
                 <Button variant="destructive" className="w-full text-xs font-bold shadow-lg shadow-rose-500/20" onClick={() => setDeleteOpen(true)}>
-                  DESTROY TEAM
+                  DELETE TEAM
                 </Button>
               </CardContent>
             </Card>
