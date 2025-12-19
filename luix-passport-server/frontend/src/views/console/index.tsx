@@ -317,7 +317,6 @@ export default function ConsolePage() {
                 <TabsTrigger value="teams">Team Activities</TabsTrigger>
                 <TabsTrigger value="security">Security Events</TabsTrigger>
               </TabsList>
-              <Button variant="ghost" size="sm" className="text-xs">Export CSV</Button>
             </div>
 
             <TabsContent value="logins" className="mt-0 outline-none">
