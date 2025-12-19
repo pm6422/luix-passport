@@ -520,8 +520,8 @@ function KpiCard({ title, value, trend, isUp, icon: Icon, description }: any) {
     <Card className="border-none shadow-sm hover:shadow-md transition-shadow">
       <CardContent className="p-5">
         <div className="flex justify-between items-start">
-          <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary mb-4">
-            <Icon className="h-5 w-5" />
+          <div className="size-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary mb-4 shadow-sm">
+            <Icon className="size-8" />
           </div>
           <div className={`flex items-center text-xs font-bold ${isUp ? 'text-emerald-500' : 'text-rose-500'} bg-transparent p-1`}>
             {isUp ? <ArrowUpRight className="h-3 w-3 mr-0.5" /> : <ArrowDownRight className="h-3 w-3 mr-0.5" />}
