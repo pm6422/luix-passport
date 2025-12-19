@@ -148,7 +148,7 @@ export default function ConsolePage() {
       {/* Top Banner / System Health */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-gradient-to-r from-primary/5 to-transparent p-6 rounded-2xl border border-primary/10">
         <div>
-          <h1 className="text-3xl font-extrabold tracking-tight">Command Center</h1>
+          <h1 className="text-3xl font-extrabold tracking-tight">Management Console</h1>
           <div className="flex items-center gap-2 mt-1 text-muted-foreground">
             <span className="relative flex h-3 w-3">
               <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${apiStatus === 'operational' ? 'bg-emerald-400' : apiStatus === 'degraded' ? 'bg-amber-400' : 'bg-rose-400'
@@ -173,9 +173,9 @@ export default function ConsolePage() {
             <Activity className="mr-2 h-4 w-4" />
             Full Logs
           </Button>
-          <Button size="sm" className="shadow-lg shadow-primary/20">
-            <UserPlus className="mr-2 h-4 w-4" />
-            Invite Member
+          <Button size="sm" className="shadow-lg shadow-primary/20" onClick={() => navigate("/teams")}>
+            <Users className="mr-2 h-4 w-4" />
+            Create Team
           </Button>
         </div>
       </div>
