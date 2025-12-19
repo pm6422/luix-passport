@@ -28,7 +28,7 @@ import { useLoginUserStore } from "@/stores/login-user-store"
 import { useNavigate } from "react-router-dom"
 import { LoginLogService } from "@/services/login-log-service"
 import { type LoginLog } from "@/domains/login-log"
-import { formatRelativeTime } from "@/lib/time-utils"
+import { formatRelativeTime, formatTime } from "@/lib/time-utils"
 import {
   AreaChart,
   Area,
@@ -103,7 +103,7 @@ export default function ConsolePage() {
   })
   const [loading, setLoading] = useState(true)
   const [apiStatus, setApiStatus] = useState<'operational' | 'degraded' | 'offline'>('operational')
-  const [lastSync, setLastSync] = useState(new Date().toLocaleTimeString())
+  const [lastSync, setLastSync] = useState<string>(new Date().toISOString())
 
   useEffect(() => {
     fetchDashboardData()
@@ -132,7 +132,7 @@ export default function ConsolePage() {
         unreadMessages: unreadRes.data,
         apps: appsCountRes.data
       })
-      setLastSync(new Date().toLocaleTimeString())
+      setLastSync(new Date().toISOString())
       setApiStatus('operational')
     } catch (error) {
       console.error("Failed to load dashboard data:", error)
@@ -165,7 +165,7 @@ export default function ConsolePage() {
               </span>
             </span>
             <span className="mx-2 text-border">|</span>
-            <span className="text-sm">Last Sync: {lastSync}</span>
+            <span className="text-sm">Updated at: {formatTime(loginUser.timeFormat, loginUser.timeZoneId, lastSync)}</span>
           </div>
         </div>
         <div className="flex items-center gap-2">
