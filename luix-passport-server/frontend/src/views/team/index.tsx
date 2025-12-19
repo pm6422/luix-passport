@@ -486,7 +486,7 @@ export default function TeamDashboard() {
               </CardHeader>
               <CardContent className="pt-4">
                 <p className="text-[10px] font-medium text-rose-600/70 mb-4 leading-relaxed italic">
-                  Deleting this identity organization is irreversible. This action will permanently purge all associated members, roles, and historical data.
+                  Deleting this identity organization will dissolve the organization and remove all member associations and invitations. Member user accounts and their personal data will remain unaffected.
                 </p>
                 <Button variant="destructive" className="w-full text-xs font-bold shadow-lg shadow-rose-500/20" onClick={() => setDeleteOpen(true)}>
                   DELETE TEAM
