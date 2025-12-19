@@ -26,6 +26,9 @@ import { toast } from "sonner"
 import { Badge } from "@/components/ui/badge"
 import { useLoginUserStore } from "@/stores/login-user-store"
 import { useNavigate } from "react-router-dom"
+import { LoginLogService } from "@/services/login-log-service"
+import { type LoginLog } from "@/domains/login-log"
+import { formatRelativeTime } from "@/lib/time-utils"
 import {
   AreaChart,
   Area,
@@ -74,13 +77,6 @@ const membershipData = [
   { name: "Enterprise", value: 25, color: "#8b5cf6" },
 ]
 
-const recentLogins = [
-  { id: 1, user: "admin@luixtech.cn", ip: "192.168.1.1", location: "Beijing, CN", device: "Chrome / macOS", time: "2 mins ago", status: "success" },
-  { id: 2, user: "jack.dorsey@twitter.com", ip: "45.22.11.102", location: "San Francisco, US", device: "Safari / iOS", time: "15 mins ago", status: "success" },
-  { id: 3, user: "unknown", ip: "103.11.2.45", location: "Moscow, RU", device: "Unknown / Linux", time: "1 hour ago", status: "failed" },
-  { id: 4, user: "lisa@gmail.com", ip: "210.34.12.8", location: "London, UK", device: "Firefox / Windows", time: "2 hours ago", status: "success" },
-]
-
 const chartConfig = {
   users: {
     label: "Active Users",
@@ -98,6 +94,7 @@ export default function ConsolePage() {
   const [invitations, setInvitations] = useState<TeamInvitation[]>([])
   const [teams, setTeams] = useState<Team[]>([])
   const [messages, setMessages] = useState<InboxType[]>([])
+  const [loginLogs, setLoginLogs] = useState<LoginLog[]>([])
   const [userCount, setUserCount] = useState(0)
   const [stats, setStats] = useState({
     teams: 0,
@@ -113,19 +110,21 @@ export default function ConsolePage() {
   const fetchDashboardData = async () => {
     setLoading(true)
     try {
-      const [invitationsRes, teamsRes, unreadRes, appsCountRes, usersRes, inboxRes] = await Promise.all([
+      const [invitationsRes, teamsRes, unreadRes, appsCountRes, usersRes, inboxRes, logsRes] = await Promise.all([
         TeamService.getUserInvitations(),
         TeamService.findUserTeams(),
         InboxService.countUnread(),
         hasRole("ROLE_ADMIN") ? Oauth2ClientService.count() : Promise.resolve({ data: 0 }),
         hasRole("ROLE_ADMIN") ? UserService.count() : Promise.resolve({ data: 0 }),
-        InboxService.find({ page: 0, size: 4 })
+        InboxService.find({ page: 0, size: 4 }),
+        hasRole("ROLE_ADMIN") ? LoginLogService.findRecentLogins(0, 5) : Promise.resolve({ data: { content: [] } })
       ])
 
       setInvitations(invitationsRes.data)
       setTeams(teamsRes.data)
       setUserCount(usersRes.data)
       setMessages(inboxRes.data.content)
+      setLoginLogs(logsRes.data.content)
       setStats({
         teams: teamsRes.data.length,
         unreadMessages: unreadRes.data,
@@ -335,41 +334,48 @@ export default function ConsolePage() {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {recentLogins.map((login) => (
-                        <TableRow key={login.id} className="cursor-default hover:bg-muted/30 transition-colors border-muted/50">
+                      {loginLogs.map((log: LoginLog) => (
+                        <TableRow key={log.id} className="cursor-default hover:bg-muted/30 transition-colors border-muted/50">
                           <TableCell className="pl-6 py-4">
                             <div className="flex items-center gap-3">
                               <Avatar className="h-8 w-8 border border-primary/10">
                                 <AvatarFallback className="text-xs bg-primary/5 text-primary font-bold">
-                                  {login.user[0].toUpperCase()}
+                                  {log.username[0].toUpperCase()}
                                 </AvatarFallback>
                               </Avatar>
                               <div className="flex flex-col">
-                                <span className="text-sm font-semibold text-foreground/90">{login.user}</span>
-                                <span className="text-[10px] text-muted-foreground lg:hidden">{login.ip}</span>
+                                <span className="text-sm font-semibold text-foreground/90">{log.username}</span>
+                                <span className="text-[10px] text-muted-foreground lg:hidden">{log.ip}</span>
                               </div>
                             </div>
                           </TableCell>
                           <TableCell className="py-4">
                             <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                               <Globe className="size-3 text-primary/40" />
-                              {login.location}
+                              {log.location}
                             </div>
                           </TableCell>
                           <TableCell className="py-4">
-                            <div className="flex flex-col gap-0.5">
-                              <span className="text-xs font-medium">{login.device}</span>
-                              <span className="text-[10px] text-muted-foreground font-mono">{login.ip}</span>
+                            <div className="flex flex-col gap-0.5 max-w-[150px]">
+                              <span className="text-xs font-medium truncate" title={log.device}>{log.device}</span>
+                              <span className="text-[10px] text-muted-foreground font-mono">{log.ip}</span>
                             </div>
                           </TableCell>
-                          <TableCell className="py-4 text-xs font-medium">{login.time}</TableCell>
+                          <TableCell className="py-4 text-xs font-medium">{formatRelativeTime(log.loginAt)}</TableCell>
                           <TableCell className="pr-6 py-4 text-right">
-                            <Badge variant={login.status === 'success' ? 'default' : 'destructive'} className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full shadow-none border-none">
-                              {login.status}
+                            <Badge variant={log.status === 'success' ? 'default' : 'destructive'} className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full shadow-none border-none">
+                              {log.status}
                             </Badge>
                           </TableCell>
                         </TableRow>
                       ))}
+                      {loginLogs.length === 0 && !loading && (
+                        <TableRow>
+                          <TableCell colSpan={5} className="py-10 text-center text-muted-foreground italic">
+                            No recent login logs found.
+                          </TableCell>
+                        </TableRow>
+                      )}
                     </TableBody>
                   </Table>
                 </CardContent>
@@ -415,7 +421,7 @@ export default function ConsolePage() {
                 {loading ? (
                   [1, 2, 3].map(i => <div key={i} className="p-4 space-y-2"><div className="h-4 w-3/4 bg-muted animate-pulse rounded" /><div className="h-3 w-1/2 bg-muted/60 animate-pulse rounded" /></div>)
                 ) : messages.length > 0 ? (
-                  messages.map((msg) => (
+                  messages.map((msg: InboxType) => (
                     <div key={msg.id} className={`p-4 hover:bg-muted/30 transition-colors cursor-pointer group ${msg.status === 'unread' ? 'bg-primary/[0.02]' : ''}`} onClick={() => navigate("/inbox")}>
                       <div className="flex justify-between items-start gap-2">
                         <h4 className={`text-xs font-semibold truncate ${msg.status === 'unread' ? 'text-foreground' : 'text-muted-foreground'}`}>{msg.title}</h4>
@@ -487,7 +493,7 @@ export default function ConsolePage() {
                     </div>
                   </CardHeader>
                   <CardContent className="p-4 space-y-4">
-                    {invitations.map((inv) => (
+                    {invitations.map((inv: TeamInvitation) => (
                       <div key={inv.id} className="p-3 bg-muted/30 rounded-lg flex flex-col gap-3">
                         <div className="flex items-start gap-3">
                           <div className="h-8 w-8 rounded-full bg-blue-500/10 flex items-center justify-center">

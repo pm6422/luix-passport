@@ -1,13 +1,14 @@
 package cn.luixtech.passport.server.event;
 
 import cn.luixtech.passport.server.config.oauth.AuthUser;
+import cn.luixtech.passport.server.service.LoginLogService;
 import cn.luixtech.passport.server.service.UserService;
 import com.luixtech.springbootframework.component.SseNotifier;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.event.EventListener;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.event.AbstractAuthenticationFailureEvent;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.security.authentication.event.LogoutSuccessEvent;
@@ -26,25 +27,28 @@ import static cn.luixtech.passport.server.utils.AuthUtils.getCurrentUsername;
 @Component
 @AllArgsConstructor
 public class AuthenticationEventListener {
-    private final UserService             userService;
-    private final SessionRegistry         sessionRegistry;
-    private final SseNotifier             sseNotifier;
+    private final UserService userService;
+    private final SessionRegistry sessionRegistry;
+    private final SseNotifier sseNotifier;
+    private final LoginLogService loginLogService;
+    private final HttpServletRequest httpServletRequest;
 
     @EventListener
     public void authenticationSuccessEvent(AuthenticationSuccessEvent event) {
-        if (event.getSource() instanceof UsernamePasswordAuthenticationToken token) {
-            if (token.getPrincipal() instanceof AuthUser authUser) {
-                userService.updateLastLoginTime(authUser.getUsername());
-                log.info("Authenticated successfully for user: {}", authUser.getUsername());
-            }
+        if (event.getAuthentication().getPrincipal() instanceof AuthUser authUser) {
+            userService.updateLastLoginTime(authUser.getUsername());
+            loginLogService.recordLogin(authUser.getUsername(), "success", httpServletRequest);
+            log.info("Authenticated successfully for user: {}", authUser.getUsername());
         }
     }
 
     @EventListener
     public void authenticationFailureEvent(AbstractAuthenticationFailureEvent event) {
-        String username = getCurrentUsername();
+        String username = cn.luixtech.passport.server.utils.AuthUtils.getCurrentUsername(event.getAuthentication());
         if (StringUtils.isNotEmpty(username)) {
-            log.warn("Authenticate failure for user: {} with exception: {}", username, event.getException().getMessage());
+            loginLogService.recordLogin(username, "failed", httpServletRequest);
+            log.warn("Authenticate failure for user: {} with exception: {}", username,
+                    event.getException().getMessage());
         }
     }
 
@@ -61,7 +65,7 @@ public class AuthenticationEventListener {
                     if (sessionsInfo != null && !sessionsInfo.isEmpty()) {
                         for (SessionInformation sessionInformation : sessionsInfo) {
                             log.info("Expire now :" + sessionInformation.getSessionId());
-                            //Expire or logout the user
+                            // Expire or logout the user
                             sessionInformation.expireNow();
                         }
                     }
@@ -70,24 +74,26 @@ public class AuthenticationEventListener {
         }
     }
 
-
     @EventListener
     public void logoutSuccessEvent(LogoutSuccessEvent event) {
         String username = getCurrentUsername();
         if (StringUtils.isNotEmpty(username)) {
-            log.info("Logged out for user: [{}] and initiated by {}", username, event.getSource().getClass().getSimpleName());
+            log.info("Logged out for user: [{}] and initiated by {}", username,
+                    event.getSource().getClass().getSimpleName());
         }
     }
 
     @EventListener
     public void authorizationGrantedEvent(AuthorizationGrantedEvent<?> event) {
-        log.info("Granted authorization for user: [{}] and initiated by {}", getCurrentUsername(event.getAuthentication().get()),
+        log.info("Granted authorization for user: [{}] and initiated by {}",
+                getCurrentUsername(event.getAuthentication().get()),
                 event.getSource().getClass().getSimpleName());
     }
 
     @EventListener
     public void authorizationDeniedEvent(AuthorizationDeniedEvent<?> event) {
-        log.warn("Denied authorization for user: [{}] and initiated by {}", getCurrentUsername(event.getAuthentication().get()),
+        log.warn("Denied authorization for user: [{}] and initiated by {}",
+                getCurrentUsername(event.getAuthentication().get()),
                 event.getSource().getClass().getSimpleName());
     }
 

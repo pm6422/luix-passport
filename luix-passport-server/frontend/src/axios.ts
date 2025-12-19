@@ -22,8 +22,11 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   function (response) {
     // Modify response data before resolving the promise
-    if(response.request.responseURL.indexOf("/login") !== -1) {
+    // Only redirect if the response is actually coming from the login page (not just containing the string)
+    const url = response.request.responseURL
+    if (url && (url.endsWith("/login") || url.includes("/login?")) && !url.includes("/api/")) {
       // Redirect to login page
+      console.warn("Detected redirect to login page in response URL: ", url)
       window.location.href = "/sign-in"
     }
     return response

@@ -557,6 +557,29 @@
             <column name="created_by" type="varchar(50)"/>
             <column name="updated_by" type="varchar(50)"/>
         </createTable>
+        <createTable tableName="login_log">
+            <column name="id" type="VARCHAR(18)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="username" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ip" type="varchar(50)"/>
+            <column name="location" type="varchar(255)"/>
+            <column name="device" type="text"/>
+            <column name="browser" type="varchar(100)"/>
+            <column name="os" type="varchar(100)"/>
+            <column name="status" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="login_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createIndex tableName="login_log" indexName="idx_login_log_username" unique="false">
+            <column name="username"/>
+        </createIndex>
 
         <createIndex tableName="user" indexName="idx_user_time_zone_id" unique="false">
             <column name="time_zone_id"/>

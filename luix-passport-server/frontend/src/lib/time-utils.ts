@@ -1,9 +1,11 @@
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
+import relativeTime from 'dayjs/plugin/relativeTime'
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
+dayjs.extend(relativeTime)
 
 export function formatDateTime(
   dateTimeFormat: string,
@@ -36,4 +38,11 @@ export function formatTime(
     return ''
   }
   return dayjs(value).tz(timeZone).format(timeFormat)
+}
+
+export function formatRelativeTime(value?: string | null): string {
+  if (!value) {
+    return ''
+  }
+  return dayjs(value).fromNow()
 }
