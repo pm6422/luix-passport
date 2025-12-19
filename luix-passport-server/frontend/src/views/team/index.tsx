@@ -416,10 +416,7 @@ export default function TeamDashboard() {
                       filteredInvitations.map((invite) => (
                         <TableRow key={invite.id} className="hover:bg-white/5 border-indigo-500/10">
                           <TableCell className="pl-6 py-4">
-                            <div className="flex flex-col">
-                              <span className="text-sm font-semibold">{invite.inviteeEmail}</span>
-                              <span className="text-[10px] text-muted-foreground flex items-center gap-1">Expires at <UserDateTime value={invite.expiresAt} type="datetime" /></span>
-                            </div>
+                            <span className="text-sm font-semibold">{invite.inviteeEmail}</span>
                           </TableCell>
                           <TableCell className="py-4">
                             <OverflowBadges
@@ -430,16 +427,21 @@ export default function TeamDashboard() {
                             />
                           </TableCell>
                           <TableCell className="py-4">
-                            <Badge
-                              variant="secondary"
-                              className={`text-[10px] font-bold px-2 py-0.5 uppercase tracking-wide rounded-full ${invite.status === "EXPIRED"
-                                ? "bg-rose-500/10 text-rose-600 border-rose-500/20"
-                                : "bg-emerald-500/10 text-emerald-600 border-emerald-500/20"
-                                }`}
-                            >
-                              {invite.status !== "EXPIRED" && <IconLoader className="me-1 size-3 animate-spin" />}
-                              {getInviteProgress(invite)}
-                            </Badge>
+                            <div className="flex flex-col items-start gap-1.5">
+                              <Badge
+                                variant="secondary"
+                                className={`text-[10px] font-bold px-2 py-0.5 uppercase tracking-wide rounded-full ${invite.status === "EXPIRED"
+                                  ? "bg-rose-500/10 text-rose-600 border-rose-500/20"
+                                  : "bg-emerald-500/10 text-emerald-600 border-emerald-500/20"
+                                  }`}
+                              >
+                                {invite.status !== "EXPIRED" && <IconLoader className="me-1 size-3 animate-spin" />}
+                                {getInviteProgress(invite)}
+                              </Badge>
+                              <span className="text-[10px] text-muted-foreground flex items-center gap-1 opacity-80">
+                                Expires at <UserDateTime value={invite.expiresAt} type="datetime" />
+                              </span>
+                            </div>
                           </TableCell>
                           <TableCell className="pr-6 py-4 text-right">
                             {invite.status === "EXPIRED" && (
@@ -475,7 +477,7 @@ export default function TeamDashboard() {
         <div className="flex flex-col gap-y-6">
           {/* Danger Zone */}
           <RoleTeamOwner>
-            <Card className="border-none shadow-lg shadow-rose-500/10 bg-rose-500/10 dark:bg-rose-500/5 backdrop-blur-xl">
+            <Card className="border-none shadow-sm shadow-rose-500/10 bg-rose-500/10 dark:bg-rose-500/5 backdrop-blur-xl">
               <CardHeader className="pb-3 border-b border-rose-500/10">
                 <CardTitle className="text-sm font-bold text-rose-600 dark:text-rose-400 flex items-center gap-2">
                   <IconTrash className="size-4" />
