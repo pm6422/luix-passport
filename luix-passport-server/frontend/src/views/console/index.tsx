@@ -11,7 +11,6 @@ import {
   Globe,
   CircleDot,
   LogOut,
-  UserPlus,
   Mail,
   Inbox
 } from "lucide-react"
@@ -59,6 +58,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Progress } from "@/components/ui/progress"
 import { motion, AnimatePresence } from "framer-motion"
+import { CreateTeamDialog } from "@/views/team/dialog/create-team-dialog"
 
 // Mock Data for Analytics
 const activityData = [
@@ -104,6 +104,7 @@ export default function ConsolePage() {
   const [loading, setLoading] = useState(true)
   const [apiStatus, setApiStatus] = useState<'operational' | 'degraded' | 'offline'>('operational')
   const [lastSync, setLastSync] = useState<string>(new Date().toISOString())
+  const [createTeamOpen, setCreateTeamOpen] = useState(false)
 
   useEffect(() => {
     fetchDashboardData()
@@ -173,10 +174,12 @@ export default function ConsolePage() {
             <Activity className="mr-2 h-4 w-4" />
             Full Logs
           </Button>
-          <Button size="sm" className="shadow-lg shadow-primary/20" onClick={() => navigate("/teams")}>
-            <Users className="mr-2 h-4 w-4" />
-            Create Team
-          </Button>
+          <CreateTeamDialog open={createTeamOpen} onOpenChange={setCreateTeamOpen}>
+            <Button size="sm" className="shadow-lg shadow-primary/20" onClick={() => setCreateTeamOpen(true)}>
+              <Users className="mr-2 h-4 w-4" />
+              Create Team
+            </Button>
+          </CreateTeamDialog>
         </div>
       </div>
 
