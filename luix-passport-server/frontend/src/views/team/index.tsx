@@ -291,7 +291,7 @@ export default function TeamDashboard() {
                     Team Members
                   </CardTitle>
                   <p className="text-xs text-muted-foreground mt-0.5">
-                    Authorized operators within this infrastructure.
+                    Manage the members of your team.
                   </p>
                 </div>
                 <div className="w-1/3 max-w-[200px]">
@@ -356,7 +356,7 @@ export default function TeamDashboard() {
                         )}
                       </TableCell>
                       <TableCell className="pr-6 py-4 text-right">
-                        {member.joinedAt && <UserDateTime value={member.joinedAt} twoLines={true} className="text-[10px] font-medium opacity-80" />}
+                        {member.joinedAt && <UserDateTime value={member.joinedAt} twoLines={true} align="end" className="text-[10px] font-medium opacity-80" />}
                       </TableCell>
                     </TableRow>
                   ))}
@@ -382,7 +382,7 @@ export default function TeamDashboard() {
                       Pending Invitations
                     </CardTitle>
                     <p className="text-xs text-muted-foreground mt-0.5">
-                      Invitations sent to prospective members.
+                      Manage pending team invitations.
                     </p>
                   </div>
                   <div className="w-1/3 max-w-[180px]">
@@ -486,7 +486,7 @@ export default function TeamDashboard() {
               </CardHeader>
               <CardContent className="pt-4">
                 <p className="text-[10px] font-medium text-rose-600/70 mb-4 leading-relaxed italic">
-                  Critical infrastructure deletion. This operation is irreversible and will purge all data associated with this team.
+                  Deleting this identity organization is irreversible. This action will permanently purge all associated members, roles, and historical data.
                 </p>
                 <Button variant="destructive" className="w-full text-xs font-bold shadow-lg shadow-rose-500/20" onClick={() => setDeleteOpen(true)}>
                   DELETE TEAM

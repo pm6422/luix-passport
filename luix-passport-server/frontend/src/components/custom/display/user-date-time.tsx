@@ -7,9 +7,10 @@ type Props = {
   type?: 'date' | 'time' | 'datetime'
   className?: string
   twoLines?: boolean
+  align?: 'start' | 'center' | 'end'
 }
 
-export const UserDateTime = ({ value, type = 'datetime', className, twoLines = false }: Props) => {
+export const UserDateTime = ({ value, type = 'datetime', className, twoLines = false, align = 'center' }: Props) => {
   const { loginUser } = useLoginUserStore()
 
   if (!value) return null
@@ -18,10 +19,12 @@ export const UserDateTime = ({ value, type = 'datetime', className, twoLines = f
     const dateStr = formatDate(loginUser.dateFormat, loginUser.timeZoneId, value)
     const timeStr = formatTime(loginUser.timeFormat, loginUser.timeZoneId, value)
 
+    const alignClass = align === 'start' ? 'items-start' : align === 'end' ? 'items-end' : 'items-center'
+
     return (
-      <span className={cn("flex flex-col items-center leading-snug", className)}>
+      <span className={cn("flex flex-col leading-snug", alignClass, className)}>
         <span>{dateStr}</span>
-        <span className="text-muted-foreground text-xs">{timeStr}</span>
+        <span className="text-muted-foreground opacity-80 text-[0.9em]">{timeStr}</span>
       </span>
     )
   }
