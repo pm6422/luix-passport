@@ -170,10 +170,6 @@ export default function ConsolePage() {
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" className="hidden sm:flex">
-            <Activity className="mr-2 h-4 w-4" />
-            Full Logs
-          </Button>
           <CreateTeamDialog open={createTeamOpen} onOpenChange={setCreateTeamOpen}>
             <Button size="sm" className="shadow-lg shadow-primary/20" onClick={() => setCreateTeamOpen(true)}>
               <Users className="mr-2 h-4 w-4" />
