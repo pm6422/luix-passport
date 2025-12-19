@@ -226,7 +226,7 @@ export default function ConsolePage() {
       {/* Analytics Section */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Main Chart */}
-        <Card className="lg:col-span-2 overflow-hidden border-none shadow-sm bg-violet-500/10 dark:bg-violet-500/5 backdrop-blur-xl">
+        <Card className="lg:col-span-2 overflow-hidden border-none shadow-sm bg-violet-500/10 dark:bg-violet-600/10 backdrop-blur-xl">
           <CardHeader className="flex flex-row items-center justify-between pb-8">
             <div>
               <CardTitle>Security Activity</CardTitle>
@@ -244,12 +244,12 @@ export default function ConsolePage() {
               <AreaChart data={activityData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                 <defs>
                   <linearGradient id="colorUsers" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="var(--color-users)" stopOpacity={0.3} />
-                    <stop offset="95%" stopColor="var(--color-users)" stopOpacity={0} />
+                    <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.6} />
+                    <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0.2} />
                   </linearGradient>
                   <linearGradient id="colorLogins" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="var(--color-logins)" stopOpacity={0.1} />
-                    <stop offset="95%" stopColor="var(--color-logins)" stopOpacity={0} />
+                    <stop offset="5%" stopColor="#10b981" stopOpacity={0.4} />
+                    <stop offset="95%" stopColor="#10b981" stopOpacity={0.1} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid vertical={false} strokeDasharray="3 3" />
@@ -267,7 +267,7 @@ export default function ConsolePage() {
                 <Area
                   type="monotone"
                   dataKey="users"
-                  stroke="var(--color-users)"
+                  stroke="#8b5cf6"
                   fillOpacity={1}
                   fill="url(#colorUsers)"
                   strokeWidth={2}
@@ -275,7 +275,7 @@ export default function ConsolePage() {
                 <Area
                   type="monotone"
                   dataKey="logins"
-                  stroke="var(--color-logins)"
+                  stroke="#10b981"
                   fillOpacity={1}
                   fill="url(#colorLogins)"
                   strokeWidth={2}
