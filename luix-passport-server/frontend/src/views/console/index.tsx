@@ -321,48 +321,58 @@ export default function ConsolePage() {
               <Button variant="ghost" size="sm" className="text-xs">Export CSV</Button>
             </div>
 
-            <TabsContent value="logins" className="mt-0">
-              <Card className="border-none shadow-sm">
-                <Table>
-                  <TableHeader>
-                    <TableRow className="hover:bg-transparent">
-                      <TableHead>User Identity</TableHead>
-                      <TableHead>Location</TableHead>
-                      <TableHead>Device / IP</TableHead>
-                      <TableHead>Time</TableHead>
-                      <TableHead className="text-right">Status</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {recentLogins.map((login) => (
-                      <TableRow key={login.id} className="cursor-default">
-                        <TableCell>
-                          <div className="flex items-center gap-2">
-                            <Avatar className="h-7 w-7">
-                              <AvatarFallback className="text-[10px] bg-primary/10 text-primary">
-                                {login.user[0].toUpperCase()}
-                              </AvatarFallback>
-                            </Avatar>
-                            <span className="text-sm font-medium">{login.user}</span>
-                          </div>
-                        </TableCell>
-                        <TableCell className="text-xs text-muted-foreground">{login.location}</TableCell>
-                        <TableCell>
-                          <div className="flex flex-col">
-                            <span className="text-xs">{login.device}</span>
-                            <span className="text-[10px] text-muted-foreground">{login.ip}</span>
-                          </div>
-                        </TableCell>
-                        <TableCell className="text-xs">{login.time}</TableCell>
-                        <TableCell className="text-right">
-                          <Badge variant={login.status === 'success' ? 'default' : 'destructive'} className="text-[10px] px-1.5 py-0">
-                            {login.status}
-                          </Badge>
-                        </TableCell>
+            <TabsContent value="logins" className="mt-0 outline-none">
+              <Card className="border-none shadow-sm bg-background/50 backdrop-blur-sm overflow-hidden">
+                <CardContent className="p-0">
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="hover:bg-transparent border-muted/50">
+                        <TableHead className="pl-6 h-12 uppercase text-[10px] font-bold tracking-wider text-muted-foreground/70">User Identity</TableHead>
+                        <TableHead className="h-12 uppercase text-[10px] font-bold tracking-wider text-muted-foreground/70">Location</TableHead>
+                        <TableHead className="h-12 uppercase text-[10px] font-bold tracking-wider text-muted-foreground/70">Device / IP</TableHead>
+                        <TableHead className="h-12 uppercase text-[10px] font-bold tracking-wider text-muted-foreground/70">Time</TableHead>
+                        <TableHead className="pr-6 h-12 text-right uppercase text-[10px] font-bold tracking-wider text-muted-foreground/70">Status</TableHead>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                    </TableHeader>
+                    <TableBody>
+                      {recentLogins.map((login) => (
+                        <TableRow key={login.id} className="cursor-default hover:bg-muted/30 transition-colors border-muted/50">
+                          <TableCell className="pl-6 py-4">
+                            <div className="flex items-center gap-3">
+                              <Avatar className="h-8 w-8 border border-primary/10">
+                                <AvatarFallback className="text-xs bg-primary/5 text-primary font-bold">
+                                  {login.user[0].toUpperCase()}
+                                </AvatarFallback>
+                              </Avatar>
+                              <div className="flex flex-col">
+                                <span className="text-sm font-semibold text-foreground/90">{login.user}</span>
+                                <span className="text-[10px] text-muted-foreground lg:hidden">{login.ip}</span>
+                              </div>
+                            </div>
+                          </TableCell>
+                          <TableCell className="py-4">
+                            <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                              <Globe className="size-3 text-primary/40" />
+                              {login.location}
+                            </div>
+                          </TableCell>
+                          <TableCell className="py-4">
+                            <div className="flex flex-col gap-0.5">
+                              <span className="text-xs font-medium">{login.device}</span>
+                              <span className="text-[10px] text-muted-foreground font-mono">{login.ip}</span>
+                            </div>
+                          </TableCell>
+                          <TableCell className="py-4 text-xs font-medium">{login.time}</TableCell>
+                          <TableCell className="pr-6 py-4 text-right">
+                            <Badge variant={login.status === 'success' ? 'default' : 'destructive'} className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full shadow-none border-none">
+                              {login.status}
+                            </Badge>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </CardContent>
               </Card>
             </TabsContent>
 
