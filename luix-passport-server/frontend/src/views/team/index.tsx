@@ -294,7 +294,7 @@ export default function TeamDashboard() {
                     Manage the members of your team.
                   </p>
                 </div>
-                <div className="w-1/3 max-w-[200px]">
+                <div className="w-1/3 max-w-[220px]">
                   <Input
                     placeholder="Search members..."
                     className="h-8 text-xs bg-background/30 border-sky-500/10"
@@ -385,9 +385,9 @@ export default function TeamDashboard() {
                       Manage pending team invitations.
                     </p>
                   </div>
-                  <div className="w-1/3 max-w-[180px]">
+                  <div className="w-1/3 max-w-[220px]">
                     <Input
-                      placeholder="Filter invites..."
+                      placeholder="Search invitations..."
                       className="h-8 text-xs bg-background/30 border-indigo-500/10"
                       value={inviteQuery}
                       onChange={(e) => setInviteQuery(e.target.value)}
