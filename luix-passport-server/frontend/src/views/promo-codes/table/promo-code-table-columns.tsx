@@ -1,9 +1,9 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { PromoCode } from "@/domains/promo-code"
 import { DataTableColumnHeader } from "@/components/custom/data-table/data-table-column-header"
-import { Badge } from "@/components/ui/badge"
 import { UserDateTime } from "@/components/custom/display/user-date-time"
 import { Switch } from "@/components/ui/switch"
+import { MembershipBadge } from "@/components/custom/display/membership-badge"
 import { Button } from "@/components/ui/button"
 import { Mail } from "lucide-react"
 
@@ -29,9 +29,8 @@ export function getPromoCodeColumns({ toggleEnabled, onSendEmail }: TableColumns
         <DataTableColumnHeader column={column} title="Type" />
       ),
       cell: ({ row }) => {
-        return (
-          <Badge variant="outline">{row.getValue("type")}</Badge>
-        )
+        const type = row.getValue("type") as string
+        return <MembershipBadge type={type} />
       },
       enableSorting: false,
     },

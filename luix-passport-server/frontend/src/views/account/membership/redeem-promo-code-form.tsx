@@ -18,14 +18,14 @@ import {
   InputOTPSeparator,
 } from "@/components/ui/input-otp"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { IconCrown, IconCalendar, IconStar, IconDiamond } from "@tabler/icons-react"
+import { IconCrown, IconCalendar } from "@tabler/icons-react"
 import { toast } from "sonner"
 import { getErrorMessage } from "@/lib/handle-error"
 import { RedeemPromoCode, redeemPromoCodeSchema, initialRedeemPromoCodeState } from "@/domains/promo-code"
 import { PromoCodeService } from "@/services/promo-code-service"
 import { useLoginUserStore } from "@/stores/login-user-store"
 import { UserDateTime } from "@/components/custom/display/user-date-time"
+import { MembershipBadge } from "@/components/custom/display/membership-badge"
 
 export function RedeemPromoCodeForm() {
   const [saving, setSaving] = useState(false)
@@ -68,20 +68,7 @@ export function RedeemPromoCodeForm() {
               <div className="flex flex-col gap-1">
                 <span className="text-xs text-muted-foreground">Plan</span>
                 <div>
-                  <Badge
-                    className={
-                      loginUser.membershipType.includes("PREMIUM")
-                        ? "bg-primary/10 text-primary hover:bg-primary/20 shadow-none"
-                        : "bg-yellow-500/10 text-yellow-600 hover:bg-yellow-500/20 shadow-none"
-                    }
-                  >
-                    {loginUser.membershipType.includes("PREMIUM") ? (
-                      <IconDiamond className="size-3" />
-                    ) : (
-                      <IconStar className="size-3" />
-                    )}
-                    {loginUser.membershipType.replace("ROLE_MEMBER_", "")}
-                  </Badge>
+                  <MembershipBadge type={loginUser.membershipType} />
                 </div>
               </div>
               {loginUser.membershipExpiresAt && (
