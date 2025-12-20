@@ -43,8 +43,10 @@ export class AccountService {
   }
 
   public static async signOut(): Promise<void> {
-    await http.post("/api/accounts/sign-out")
-    window.location.reload()
+    http.post("/api/accounts/sign-out").then(() => {
+      // Redirect to sign-in page instead of reloading
+      window.location.href = "/sign-in"
+    })
   }
 
   public static register(model: UserRegistrationFormSchema): Promise<void> {
