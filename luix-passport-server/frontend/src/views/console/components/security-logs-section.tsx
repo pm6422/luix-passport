@@ -11,7 +11,7 @@ import { SecurityAuditLogService } from "@/services/security-audit-log-service"
 import { formatRelativeTime } from "@/lib/time-utils"
 import { useEffect, useState } from "react"
 
-export function AdminTabsSection() {
+export function SecurityLogsSection() {
   const [loading, setLoading] = useState(true)
   const [loginLogs, setLoginLogs] = useState<LoginLog[]>([])
   const [securityLogs, setSecurityLogs] = useState<SecurityAuditLog[]>([])

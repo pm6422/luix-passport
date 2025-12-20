@@ -7,7 +7,7 @@ import { SystemStatusBanner } from "./components/system-status-banner"
 import { KpiGrid } from "./components/kpi-grid"
 import { LoginActivityChart } from "./components/login-activity-chart"
 import { MembershipStats } from "./components/membership-stats"
-import { AdminTabsSection } from "./components/admin-tabs-section"
+import { SecurityLogsSection } from "./components/security-logs-section"
 import { RecentNotifications } from "./components/recent-notifications"
 import { PendingInvitations } from "./components/pending-invitations"
 
@@ -43,13 +43,10 @@ export default function ConsolePage() {
       {/* Tabs Section for Deep Data - Admin Only + Recent Notifications */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <RoleAdmin>
-          <AdminTabsSection />
+          <SecurityLogsSection />
         </RoleAdmin>
-
-        {/* Recent Notifications Widget */}
         <div className="space-y-6">
           <RecentNotifications />
-
           <PendingInvitations />
         </div>
       </div>
