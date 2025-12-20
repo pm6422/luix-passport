@@ -22,4 +22,6 @@ public interface MailService {
         void sendPasswordChangedMail(User user, String baseUrl);
 
         void sendTeamInvitationEmail(User user, String baseUrl, String teamName, String inviterName);
+
+        void sendPromoCodeEmail(String emailTo, String baseUrl, String promoCode, String type, Integer durationDays);
 }

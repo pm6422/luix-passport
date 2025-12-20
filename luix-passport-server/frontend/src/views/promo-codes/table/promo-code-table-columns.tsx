@@ -4,12 +4,15 @@ import { DataTableColumnHeader } from "@/components/custom/data-table/data-table
 import { Badge } from "@/components/ui/badge"
 import { UserDateTime } from "@/components/custom/display/user-date-time"
 import { Switch } from "@/components/ui/switch"
+import { Button } from "@/components/ui/button"
+import { Mail } from "lucide-react"
 
 interface TableColumnsProps {
   toggleEnabled: (id: string, checked: boolean) => void
+  onSendEmail: (promoCode: PromoCode) => void
 }
 
-export function getPromoCodeColumns({ toggleEnabled }: TableColumnsProps): ColumnDef<PromoCode>[] {
+export function getPromoCodeColumns({ toggleEnabled, onSendEmail }: TableColumnsProps): ColumnDef<PromoCode>[] {
   return [
     {
       accessorKey: "code",
@@ -102,6 +105,27 @@ export function getPromoCodeColumns({ toggleEnabled }: TableColumnsProps): Colum
       },
       enableSorting: false,
     },
-
+    {
+      id: "actions",
+      cell: ({ row }) => {
+        const promoCode = row.original
+        return (
+          <div className="flex justify-end">
+            <Button
+              variant="secondary"
+              className="flex size-8 p-0"
+              onClick={(e) => {
+                e.stopPropagation()
+                onSendEmail(promoCode)
+              }}
+              title="Send Email"
+            >
+              <Mail className="size-4" />
+              <span className="sr-only">Send Email</span>
+            </Button>
+          </div>
+        )
+      },
+    }
   ]
 }

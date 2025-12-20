@@ -17,4 +17,6 @@ public interface PromoCodeService {
     void redeemCode(String code, String username);
 
     void updateEnabled(String id, boolean enabled);
+
+    void sendEmail(String id, String email, String baseUrl);
 }

@@ -6,6 +6,7 @@ import cn.luixtech.passport.server.domain.User;
 import cn.luixtech.passport.server.repository.PromoCodeRepository;
 import cn.luixtech.passport.server.repository.UserRepository;
 import cn.luixtech.passport.server.service.PromoCodeService;
+import cn.luixtech.passport.server.service.MailService;
 import cn.luixtech.passport.server.service.UserRoleService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +35,7 @@ public class PromoCodeServiceImpl implements PromoCodeService {
     private final PromoCodeRepository promoCodeRepository;
     private final UserRepository userRepository;
     private final UserRoleService userRoleService;
+    private final MailService mailService;
 
     @Override
     public Page<PromoCode> find(Pageable pageable, String code, String batchId, Boolean enabled) {
@@ -152,5 +154,14 @@ public class PromoCodeServiceImpl implements PromoCodeService {
         promoCode.setEnabled(enabled);
         promoCodeRepository.save(promoCode);
         log.info("Promo code {} status updated to {}", id, enabled);
+    }
+
+    @Override
+    public void sendEmail(String id, String email, String baseUrl) {
+        PromoCode promoCode = promoCodeRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Promo code not found"));
+
+        mailService.sendPromoCodeEmail(email, baseUrl, promoCode.getCode(), promoCode.getType(),
+                promoCode.getDurationDays());
     }
 }

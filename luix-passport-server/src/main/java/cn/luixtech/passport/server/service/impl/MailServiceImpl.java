@@ -122,4 +122,20 @@ public class MailServiceImpl implements MailService {
                 "changed.password.email.subject", "changed.password.email.title", baseUrl);
         log.info("Requested sending password changed email to [{}]", user.getEmail());
     }
+
+    @Override
+    public void sendPromoCodeEmail(String emailTo, String baseUrl, String promoCode, String type,
+            Integer durationDays) {
+        User dummyUser = new User();
+        dummyUser.setUsername(emailTo.split("@")[0]);
+        dummyUser.setEmail(emailTo);
+        // Default to English
+        dummyUser.setLocale(Locale.US.toString());
+
+        sendEmailFromTemplate(dummyUser, new String[] { emailTo }, "emails/promo-code-email",
+                "promo.code.email.subject", "promo.code.email.title", baseUrl,
+                promoCode, type, durationDays);
+
+        log.info("Requested sending promo code email to [{}]", emailTo);
+    }
 }

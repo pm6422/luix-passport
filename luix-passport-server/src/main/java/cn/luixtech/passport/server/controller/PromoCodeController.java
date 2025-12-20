@@ -63,4 +63,15 @@ public class PromoCodeController {
         promoCodeService.updateEnabled(id, enabled);
         return ResponseEntity.ok().build();
     }
+
+    @Operation(summary = "Send promo code via email")
+    @PostMapping("/admin/promo-codes/{id}/send-email")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Void> sendEmail(@PathVariable String id, @RequestParam String email,
+            jakarta.servlet.http.HttpServletRequest request) {
+        String baseUrl = org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromContextPath(request)
+                .build().toUriString();
+        promoCodeService.sendEmail(id, email, baseUrl);
+        return ResponseEntity.ok().build();
+    }
 }

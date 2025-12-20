@@ -20,4 +20,8 @@ export class PromoCodeService {
   public static updateEnabled(id: string, enabled: boolean): Promise<void> {
     return http.patch(`/api/admin/promo-codes/${id}/enabled`, null, { params: { enabled } })
   }
+
+  public static sendEmail(id: string, email: string): Promise<void> {
+    return http.post(`/api/admin/promo-codes/${id}/send-email`, null, { params: { email } })
+  }
 }

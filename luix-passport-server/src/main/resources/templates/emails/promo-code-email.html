@@ -1,0 +1,44 @@
+<div th:fragment="content">
+
+  <!-- Greeting -->
+  <p style="margin: 0 0 16px 0; font-size: 16px; line-height: 24px; color: #52525b;">
+    <span th:text="#{email.greeting('User')}">Hey User,</span>
+  </p>
+
+  <!-- Content -->
+  <p style="margin: 0 0 16px 0; font-size: 16px; line-height: 24px; color: #52525b;">
+    <span th:text="#{promo.code.email.text.1}">You have been invited to join Luix Passport!</span>
+  </p>
+
+  <p style="margin: 0 0 24px 0; font-size: 16px; line-height: 24px; color: #52525b;">
+    <span th:text="#{promo.code.email.text.2}">Here is your exclusive promo code to redeem a membership:</span>
+  </p>
+
+  <!-- Promo Code Box -->
+  <div style="margin: 0 0 24px 0; text-align: center;">
+    <div style="display: inline-block; background-color: #f4f4f5; border: 1px border #e4e4e7; border-radius: 8px; padding: 16px 32px;">
+      <span style="font-family: monospace; font-size: 24px; font-weight: 700; letter-spacing: 2px; color: #18181b;" th:text="${promoCode}">CODE123</span>
+    </div>
+  </div>
+
+  <p style="margin: 0 0 24px 0; font-size: 16px; line-height: 24px; color: #52525b; text-align: center;">
+    <span th:text="#{promo.code.email.details(${type}, ${duration})}">Redeem for Pro Plan (30 Days)</span>
+  </p>
+
+  <!-- CTA Button -->
+  <div style="margin: 0 0 32px 0; text-align: center;">
+    <a th:href="@{|${baseUrl}/register|}"
+      style="display: inline-block; background-color: #18181b; color: #ffffff; text-decoration: none; padding: 12px 32px; border-radius: 8px; font-weight: 600; font-size: 16px;"
+      th:text="#{promo.code.email.button.text}">
+      Register & Redeem
+    </a>
+  </div>
+
+  <!-- Divider -->
+  <div style="height: 1px; background-color: #e4e4e7; width: 100%; margin-bottom: 20px;"></div>
+
+  <!-- Ignore Tip -->
+  <p style="margin: 0; font-size: 13px; line-height: 20px; color: #71717a; text-align: center;">
+    <span th:text="#{promo.code.ignore.tip}">If you did not expect this, please ignore this email.</span>
+  </p>
+</div>

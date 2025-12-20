@@ -8,6 +8,14 @@ import { PromoCodeService } from "@/services/promo-code-service"
 import { RoleAdmin } from "@/layouts/permission/role-control"
 import { DataTableToolbar } from "./table/promo-code-table-toolbar"
 import { toast } from "sonner"
+import { z } from "zod"
+import { Input } from "@/components/ui/input"
+import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form"
+import { FormDialog } from "@/components/custom/dialog/form-dialog"
+
+const emailSchema = z.object({
+  email: z.string().email("Invalid email address"),
+})
 
 export default function PromoCodes() {
   const entityName = "promo code"
@@ -15,6 +23,9 @@ export default function PromoCodes() {
   const [totalCount, setTotalCount] = useState(0)
   const [totalPages, setTotalPages] = useState(0)
   const [currentPageNo, setCurrentPageNo] = useState(0)
+
+  const [emailDialogOpen, setEmailDialogOpen] = useState(false)
+  const [selectedPromoCode, setSelectedPromoCode] = useState<PromoCode | null>(null)
 
   const loadPage = useCallback((
     pageNo: number = 0,
@@ -54,13 +65,18 @@ export default function PromoCodes() {
     })
   }
 
+  function openEmailDialog(promoCode: PromoCode) {
+    setSelectedPromoCode(promoCode)
+    setEmailDialogOpen(true)
+  }
+
   return (
     <RoleAdmin>
       <LayoutBody className="flex flex-col" fixedHeight>
         <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:gap-y-0">
           <PaginatedDataTable
             paginationMode="server"
-            columns={getPromoCodeColumns({ toggleEnabled: toggleEnabled })}
+            columns={getPromoCodeColumns({ toggleEnabled: toggleEnabled, onSendEmail: openEmailDialog })}
             data={tableData}
             totalCount={totalCount}
             totalPages={totalPages}
@@ -69,6 +85,45 @@ export default function PromoCodes() {
             <DataTableToolbar entityName={entityName} loadPage={loadPage} save={generate} />
           </PaginatedDataTable>
         </div>
+
+        <FormDialog
+          entityName="Invitation"
+          open={emailDialogOpen}
+          onOpenChange={setEmailDialogOpen}
+          schema={emailSchema}
+          defaultValues={{ email: "" }}
+          save={async (formData) => {
+            if (selectedPromoCode) {
+              await PromoCodeService.sendEmail(selectedPromoCode.id, formData.email)
+            }
+          }}
+          loadingMessage="Sending email..."
+          successMessage="Email sent successfully"
+          saveButtonText="Send Email"
+          renderFields={(form) => (
+            <>
+              <div className="text-sm text-muted-foreground mb-4">
+                Send promo code <strong>{selectedPromoCode?.code}</strong> to a user via email.
+              </div>
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input placeholder="user@example.com" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </>
+          )}
+        >
+          {/* This child is needed as trigger but we control open state externally from the table action */}
+          <div />
+        </FormDialog>
       </LayoutBody>
     </RoleAdmin>
   )
