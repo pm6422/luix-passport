@@ -147,7 +147,7 @@ export default function ConsolePage() {
   return (
     <LayoutBody className="flex flex-col space-y-6 pb-10" fixedHeight={false}>
       {/* Top Banner / System Health */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-gradient-to-r from-primary/5 to-transparent p-6 rounded-2xl border border-primary/10">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-secondary/50 dark:bg-gradient-to-r dark:from-primary/10 dark:to-transparent p-6 rounded-2xl border border-border/50 dark:border-primary/10">
         <div>
           <h1 className="text-3xl font-extrabold tracking-tight">Management Console</h1>
           <div className="flex items-center gap-2 mt-1 text-muted-foreground">
@@ -188,7 +188,7 @@ export default function ConsolePage() {
           isUp={true}
           icon={Users}
           description="Total registered identifiers"
-          bgClass="bg-emerald-500/15 dark:bg-emerald-500/10"
+          bgClass="bg-secondary/50 dark:bg-emerald-500/10"
           iconClass="bg-emerald-500/25 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400"
         />
         <KpiCard
@@ -198,7 +198,7 @@ export default function ConsolePage() {
           isUp={true}
           icon={CircleDot}
           description="Concurrent auth tokens"
-          bgClass="bg-blue-500/15 dark:bg-blue-500/10"
+          bgClass="bg-secondary/50 dark:bg-blue-500/10"
           iconClass="bg-blue-500/25 dark:bg-blue-500/20 text-blue-700 dark:text-blue-400"
         />
         <KpiCard
@@ -208,7 +208,7 @@ export default function ConsolePage() {
           isUp={false}
           icon={AppWindow}
           description="Applications connected"
-          bgClass="bg-amber-500/15 dark:bg-amber-500/10"
+          bgClass="bg-secondary/50 dark:bg-amber-500/10"
           iconClass="bg-amber-500/25 dark:bg-amber-500/20 text-amber-700 dark:text-amber-400"
         />
         <KpiCard
@@ -218,7 +218,7 @@ export default function ConsolePage() {
           isUp={true}
           icon={Globe}
           description="API bridge throughput"
-          bgClass="bg-indigo-500/15 dark:bg-indigo-500/10"
+          bgClass="bg-secondary/50 dark:bg-indigo-500/10"
           iconClass="bg-indigo-500/25 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-400"
         />
       </div>
@@ -226,7 +226,7 @@ export default function ConsolePage() {
       {/* Analytics Section */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Main Chart */}
-        <Card className="lg:col-span-2 overflow-hidden border-none shadow-sm bg-violet-500/10 dark:bg-violet-600/10 backdrop-blur-xl">
+        <Card className="lg:col-span-2 overflow-hidden border-none shadow-sm bg-secondary/50 dark:bg-violet-600/10 backdrop-blur-xl">
           <CardHeader className="flex flex-row items-center justify-between pb-8">
             <div>
               <CardTitle>Security Activity</CardTitle>
@@ -287,7 +287,7 @@ export default function ConsolePage() {
         </Card>
 
         {/* Membership Distribution */}
-        <Card className="border-none shadow-sm bg-rose-500/10 dark:bg-rose-500/5 backdrop-blur-xl">
+        <Card className="border-none shadow-sm bg-secondary/50 dark:bg-rose-500/5 backdrop-blur-xl">
           <CardHeader>
             <CardTitle>Membership Stats</CardTitle>
             <CardDescription>User tier distribution</CardDescription>
@@ -341,7 +341,7 @@ export default function ConsolePage() {
             </div>
 
             <TabsContent value="logins" className="mt-0 outline-none">
-              <Card className="border-none shadow-sm bg-sky-500/10 dark:bg-sky-500/5 backdrop-blur-xl overflow-hidden">
+              <Card className="border-none shadow-sm bg-secondary/50 dark:bg-sky-500/5 backdrop-blur-xl overflow-hidden">
                 <CardContent className="p-0">
                   <Table>
                     <TableHeader>
@@ -403,7 +403,7 @@ export default function ConsolePage() {
             </TabsContent>
 
             <TabsContent value="teams">
-              <Card className="p-12 text-center border-dashed border-2">
+              <Card className="p-12 text-center border-dashed border-2 bg-secondary/50">
                 <div className="mx-auto w-12 h-12 rounded-full bg-muted flex items-center justify-center mb-4">
                   <Users className="h-6 w-6 text-muted-foreground text-opacity-40" />
                 </div>
@@ -422,7 +422,7 @@ export default function ConsolePage() {
         {/* Sidebar Widgets */}
         <div className="space-y-6">
           {/* Recent Notifications Widget */}
-          <Card className="border-none shadow-sm overflow-hidden text-clip bg-indigo-500/10 dark:bg-indigo-500/5 backdrop-blur-xl">
+          <Card className="border-none shadow-sm overflow-hidden text-clip bg-secondary/50 dark:bg-indigo-500/5 backdrop-blur-xl">
             <CardHeader className="pb-3 flex flex-row items-center justify-between border-b border-border/50">
               <div>
                 <CardTitle className="text-sm font-bold flex items-center">
@@ -465,7 +465,7 @@ export default function ConsolePage() {
           </Card>
 
           {/* Quick Stats Widget */}
-          <Card className="border-none shadow-sm bg-blue-500/10 dark:bg-blue-500/5 backdrop-blur-xl">
+          <Card className="border-none shadow-sm bg-secondary/50 dark:bg-blue-500/5 backdrop-blur-xl">
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-bold flex items-center">
                 <ShieldCheck className="mr-2 h-4 w-4 text-primary" />
@@ -503,7 +503,7 @@ export default function ConsolePage() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
               >
-                <Card className="border-none shadow-lg shadow-primary/10 bg-fuchsia-500/10 dark:bg-fuchsia-500/5 backdrop-blur-xl">
+                <Card className="border-none shadow-lg shadow-primary/10 bg-secondary/50 dark:bg-fuchsia-500/5 backdrop-blur-xl">
                   <CardHeader className="pb-3 border-b border-border/50">
                     <div className="flex items-center justify-between">
                       <CardTitle className="text-md">Team Requests</CardTitle>
@@ -537,7 +537,7 @@ export default function ConsolePage() {
           </AnimatePresence>
 
           {/* Quick Links Overlay */}
-          <Card className="border-none shadow-sm mt-4 bg-slate-500/10 dark:bg-slate-500/5 backdrop-blur-xl">
+          <Card className="border-none shadow-sm mt-4 bg-secondary/50 dark:bg-slate-500/5 backdrop-blur-xl">
             <div className="p-2 grid grid-cols-2 gap-2">
               <QuickLink icon={AppWindow} label="Apps" onClick={() => navigate("/management/oauth2-clients")} />
               <QuickLink icon={ShieldCheck} label="Permissions" onClick={() => navigate("/management/permissions")} />
