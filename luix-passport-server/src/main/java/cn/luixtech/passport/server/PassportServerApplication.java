@@ -6,11 +6,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHttpSession;
 
 @SpringBootApplication
 @EnableLuixSpringBootFramework
 @EnableScheduling
 @EnableAsync
+@EnableJdbcHttpSession
 public class PassportServerApplication {
     public static ConfigurableApplicationContext applicationContext;
 
