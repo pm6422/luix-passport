@@ -87,6 +87,7 @@ export default function PromoCodes() {
         </div>
 
         <FormDialog
+          size="sm"
           entityName="Invitation"
           open={emailDialogOpen}
           onOpenChange={setEmailDialogOpen}
