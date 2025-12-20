@@ -62,20 +62,12 @@ import { motion, AnimatePresence } from "framer-motion"
 import { CreateTeamDialog } from "@/views/team/dialog/create-team-dialog"
 import { calculateTrend } from "@/lib/utils"
 
-// Data is fetched dynamically in the component
-
-// Membership Pie Chart Config
-// Membership Pie Chart Config
-// Data is fetched dynamically in the component
-
 const chartConfig = {
   users: {
     label: "Active Users",
-    color: "hsl(var(--primary))",
   },
   logins: {
     label: "Auth Requests",
-    color: "hsl(var(--destructive))",
   },
 } satisfies ChartConfig
 
