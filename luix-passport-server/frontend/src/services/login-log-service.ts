@@ -13,8 +13,10 @@ export class LoginLogService {
     })
   }
 
-  public static getActivityStats(): Promise<AxiosResponse<Array<ActivityData>>> {
-    return http.get("/api/login-logs/activity")
+  public static getActivityStats(days?: number): Promise<AxiosResponse<Array<ActivityData>>> {
+    return http.get("/api/login-logs/activity", {
+      params: { days }
+    })
   }
 }
 

@@ -104,10 +104,18 @@ export default function ConsolePage() {
   const [createTeamOpen, setCreateTeamOpen] = useState(false)
   const [membershipData, setMembershipData] = useState<any[]>([])
   const [activityData, setActivityData] = useState<ActivityData[]>([])
+  const [activityDays, setActivityDays] = useState("7d")
 
   useEffect(() => {
     fetchDashboardData()
   }, [])
+
+  useEffect(() => {
+    if (hasRole(ROLE_ADMIN)) {
+      const days = parseInt(activityDays.replace("d", ""))
+      LoginLogService.getActivityStats(days).then(({ data }) => setActivityData(data))
+    }
+  }, [activityDays, hasRole])
 
   const fetchDashboardData = async () => {
     setLoading(true)
@@ -117,7 +125,7 @@ export default function ConsolePage() {
       const since = yesterday.toISOString()
       const sinceMs = yesterday.getTime()
 
-      const [invitationsRes, teamsRes, unreadRes, appsCountRes, appsPrevCountRes, usersRes, usersPrevRes, sessionCountRes, sessionPrevRes, teamCountRes, teamPrevCountRes, membershipRes, activityRes, inboxRes, logsRes] = await Promise.all([
+      const [invitationsRes, teamsRes, unreadRes, appsCountRes, appsPrevCountRes, usersRes, usersPrevRes, sessionCountRes, sessionPrevRes, teamCountRes, teamPrevCountRes, membershipRes, inboxRes, logsRes] = await Promise.all([
         TeamService.getUserInvitations(),
         TeamService.findUserTeams(),
         InboxService.countUnread(),
@@ -130,7 +138,6 @@ export default function ConsolePage() {
         hasRole(ROLE_ADMIN) ? TeamService.count() : Promise.resolve({ data: 0 }),
         hasRole(ROLE_ADMIN) ? TeamService.count(since) : Promise.resolve({ data: 0 }),
         hasRole(ROLE_ADMIN) ? TeamService.getMembershipStats() : Promise.resolve({ data: { FREE: 0, PRO: 0, PREMIUM: 0 } }),
-        hasRole(ROLE_ADMIN) ? LoginLogService.getActivityStats() : Promise.resolve({ data: [] }),
         InboxService.find({ page: 0, size: 4 }),
         hasRole(ROLE_ADMIN) ? LoginLogService.findRecentLogins(0, 5) : Promise.resolve({ data: { content: [] } })
       ])
@@ -157,7 +164,7 @@ export default function ConsolePage() {
         { name: "Premium Plan", value: mStats.PREMIUM || 0, color: "#8b5cf6" },
       ]
       setMembershipData(formattedMembershipData)
-      setActivityData(activityRes.data)
+      setMembershipData(formattedMembershipData)
 
       const userTrendInfo = calculateTrend(currentUsers, currentUsers - prevUsers)
       const appTrendInfo = calculateTrend(currentApps, currentApps - prevApps)
@@ -271,9 +278,9 @@ export default function ConsolePage() {
           <CardHeader className="flex flex-row items-center justify-between pb-8">
             <div>
               <CardTitle>Login Activity</CardTitle>
-              <CardDescription>Authentication trends & active users (Last 7 Days)</CardDescription>
+              <CardDescription>Authentication trends & active users (Last {activityDays.replace("d", "")} Days)</CardDescription>
             </div>
-            <Tabs defaultValue="7d" className="w-[180px]">
+            <Tabs defaultValue="7d" className="w-[180px]" value={activityDays} onValueChange={setActivityDays}>
               <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="7d">7 Days</TabsTrigger>
                 <TabsTrigger value="30d">30 Days</TabsTrigger>

@@ -45,10 +45,11 @@ public class LoginLogController {
   @Operation(summary = "get login activity statistics")
   @GetMapping("/api/login-logs/activity")
   @PreAuthorize("hasAuthority(\"" + ROLE_ADMIN + "\")")
-  public ResponseEntity<List<Map<String, Object>>> getActivityStats() {
+  public ResponseEntity<List<Map<String, Object>>> getActivityStats(
+      @Parameter(description = "days") @RequestParam(defaultValue = "7") int days) {
     List<Map<String, Object>> activity = new ArrayList<>();
     LocalDate today = LocalDate.now();
-    for (int i = 6; i >= 0; i--) {
+    for (int i = days - 1; i >= 0; i--) {
       LocalDate date = today.minusDays(i);
       Instant startOfDay = date.atStartOfDay(ZoneId.systemDefault()).toInstant();
       Instant endOfDay = date.plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant();
