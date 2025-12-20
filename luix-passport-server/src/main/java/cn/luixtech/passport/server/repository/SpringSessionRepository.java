@@ -10,4 +10,6 @@ import java.util.List;
 public interface SpringSessionRepository extends JpaRepository<SpringSession, String> {
 
     List<SpringSession> findAllByOrderByLastAccessTimeDesc();
+
+    long countByCreationTimeAfter(Long since);
 }

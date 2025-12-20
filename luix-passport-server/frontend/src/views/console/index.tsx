@@ -20,6 +20,7 @@ import { InboxService } from "@/services/inbox-service"
 import { type Inbox as InboxType } from "@/domains/inbox"
 import { Oauth2ClientService } from "@/services/oauth2-client-service"
 import { UserService } from "@/services/user-service"
+import { SpringSessionService } from "@/services/spring-session-service"
 import { toast } from "sonner"
 import { Badge } from "@/components/ui/badge"
 import { useLoginUserStore } from "@/stores/login-user-store"
@@ -100,9 +101,11 @@ export default function ConsolePage() {
   const [stats, setStats] = useState({
     teams: 0,
     apps: 0,
+    sessions: 0,
     unreadMessages: 0,
     userTrend: { trend: "+0%", isUp: true },
-    appTrend: { trend: "+0%", isUp: true }
+    appTrend: { trend: "+0%", isUp: true },
+    sessionTrend: { trend: "+0%", isUp: true }
   })
   const [loading, setLoading] = useState(true)
   const [apiStatus, setApiStatus] = useState<'operational' | 'degraded' | 'offline'>('operational')
@@ -119,8 +122,9 @@ export default function ConsolePage() {
       const yesterday = new Date()
       yesterday.setDate(yesterday.getDate() - 1)
       const since = yesterday.toISOString()
+      const sinceMs = yesterday.getTime()
 
-      const [invitationsRes, teamsRes, unreadRes, appsCountRes, appsPrevCountRes, usersRes, usersPrevRes, inboxRes, logsRes] = await Promise.all([
+      const [invitationsRes, teamsRes, unreadRes, appsCountRes, appsPrevCountRes, usersRes, usersPrevRes, sessionCountRes, sessionPrevRes, inboxRes, logsRes] = await Promise.all([
         TeamService.getUserInvitations(),
         TeamService.findUserTeams(),
         InboxService.countUnread(),
@@ -128,6 +132,8 @@ export default function ConsolePage() {
         hasRole(ROLE_ADMIN) ? Oauth2ClientService.count(since) : Promise.resolve({ data: 0 }),
         hasRole(ROLE_ADMIN) ? UserService.count() : Promise.resolve({ data: 0 }),
         hasRole(ROLE_ADMIN) ? UserService.count(since) : Promise.resolve({ data: 0 }),
+        hasRole(ROLE_ADMIN) ? SpringSessionService.count() : Promise.resolve({ data: 0 }),
+        hasRole(ROLE_ADMIN) ? SpringSessionService.count(sinceMs) : Promise.resolve({ data: 0 }),
         InboxService.find({ page: 0, size: 4 }),
         hasRole(ROLE_ADMIN) ? LoginLogService.findRecentLogins(0, 5) : Promise.resolve({ data: { content: [] } })
       ])
@@ -136,6 +142,8 @@ export default function ConsolePage() {
       const prevUsers = usersPrevRes.data
       const currentApps = appsCountRes.data
       const prevApps = appsPrevCountRes.data
+      const currentSessions = sessionCountRes.data
+      const prevSessions = sessionPrevRes.data
 
       setInvitations(invitationsRes.data)
       setTeams(teamsRes.data)
@@ -145,13 +153,16 @@ export default function ConsolePage() {
 
       const userTrendInfo = calculateTrend(currentUsers, prevUsers)
       const appTrendInfo = calculateTrend(currentApps, prevApps)
+      const sessionTrendInfo = calculateTrend(currentSessions, prevSessions)
 
       setStats({
         teams: teamsRes.data.length,
         unreadMessages: unreadRes.data,
         apps: currentApps,
+        sessions: currentSessions,
         userTrend: userTrendInfo,
-        appTrend: appTrendInfo
+        appTrend: appTrendInfo,
+        sessionTrend: sessionTrendInfo
       })
       setLastSync(new Date().toISOString())
       setApiStatus('operational')
@@ -223,9 +234,9 @@ export default function ConsolePage() {
         />
         <KpiCard
           title="Active Sessions"
-          value="128"
-          trend="+4.2%"
-          isUp={true}
+          value={loading ? "..." : stats.sessions}
+          trend={stats.sessionTrend?.trend || "+0%"}
+          isUp={stats.sessionTrend?.isUp ?? true}
           icon={CircleDot}
           description="Concurrent auth tokens"
           bgClass="bg-secondary/50 dark:bg-blue-500/10"

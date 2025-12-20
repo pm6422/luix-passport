@@ -9,4 +9,8 @@ export class SpringSessionService {
   public static findAll(): Promise<AxiosResponse<Array<SpringSession>>> {
     return http.get("/api/spring-sessions")
   }
+
+  public static count(since?: number): Promise<AxiosResponse<number>> {
+    return http.get("/api/spring-sessions/count", { params: { since } })
+  }
 }
