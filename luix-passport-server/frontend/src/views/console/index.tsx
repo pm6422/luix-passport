@@ -254,7 +254,7 @@ export default function ConsolePage() {
           trend={stats.sessionTrend?.trend || "+0%"}
           isUp={stats.sessionTrend?.isUp ?? true}
           icon={CircleDot}
-          description="Concurrent auth tokens"
+          description="Currently active sessions"
           bgClass="bg-secondary/50 dark:bg-blue-500/10"
           iconClass="bg-blue-500/25 dark:bg-blue-500/20 text-blue-700 dark:text-blue-400"
         />
