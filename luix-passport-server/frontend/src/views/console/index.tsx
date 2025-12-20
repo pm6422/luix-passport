@@ -196,7 +196,7 @@ export default function ConsolePage() {
   return (
     <LayoutBody className="flex flex-col space-y-6 pb-10" fixedHeight={false}>
       {/* Top Banner / System Health */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-secondary/50 dark:bg-gradient-to-r dark:from-primary/10 dark:to-transparent p-6 rounded-2xl border border-border/50 dark:border-primary/10">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-card p-6 rounded-2xl border border-border/50 shadow-sm">
         <div>
           <h1 className="text-3xl font-extrabold tracking-tight">Management Console</h1>
           <div className="flex items-center gap-2 mt-1 text-muted-foreground">
@@ -237,7 +237,7 @@ export default function ConsolePage() {
           isUp={stats.userTrend?.isUp ?? true}
           icon={Users}
           description="Total registered users"
-          bgClass="bg-secondary/50 dark:bg-emerald-500/10"
+          bgClass="bg-card border-border/50"
           iconClass="bg-emerald-500/25 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400"
         />
         <KpiCard
@@ -247,7 +247,7 @@ export default function ConsolePage() {
           isUp={stats.appTrend?.isUp ?? true}
           icon={AppWindow}
           description="Total registered applications"
-          bgClass="bg-secondary/50 dark:bg-amber-500/10"
+          bgClass="bg-card border-border/50"
           iconClass="bg-amber-500/25 dark:bg-amber-500/20 text-amber-700 dark:text-amber-400"
         />
         <KpiCard
@@ -257,7 +257,7 @@ export default function ConsolePage() {
           isUp={stats.sessionTrend?.isUp ?? true}
           icon={CircleDot}
           description="Currently active sessions"
-          bgClass="bg-secondary/50 dark:bg-blue-500/10"
+          bgClass="bg-card border-border/50"
           iconClass="bg-blue-500/25 dark:bg-blue-500/20 text-blue-700 dark:text-blue-400"
         />
         <KpiCard
@@ -267,7 +267,7 @@ export default function ConsolePage() {
           isUp={stats.teamTrend?.isUp ?? true}
           icon={Users}
           description="Total organizations"
-          bgClass="bg-secondary/50 dark:bg-indigo-500/10"
+          bgClass="bg-card border-border/50"
           iconClass="bg-indigo-500/25 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-400"
         />
       </div>
@@ -275,7 +275,7 @@ export default function ConsolePage() {
       {/* Analytics Section */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Main Chart */}
-        <Card className="lg:col-span-2 overflow-hidden border-none shadow-sm bg-secondary/50 dark:bg-violet-600/10 backdrop-blur-xl">
+        <Card className="lg:col-span-2 overflow-hidden border border-border/50 shadow-sm bg-card">
           <CardHeader className="flex flex-row items-center justify-between pb-8">
             <div>
               <CardTitle>Login Activity</CardTitle>
@@ -336,7 +336,7 @@ export default function ConsolePage() {
         </Card>
 
         {/* Membership Distribution */}
-        <Card className="border-none shadow-sm bg-secondary/50 dark:bg-rose-500/5 backdrop-blur-xl">
+        <Card className="border border-border/50 shadow-sm bg-card">
           <CardHeader>
             <CardTitle>Membership Stats</CardTitle>
             <CardDescription>User tier distribution</CardDescription>
@@ -397,7 +397,7 @@ export default function ConsolePage() {
             </div>
 
             <TabsContent value="logins" className="mt-0 outline-none">
-              <Card className="border-none shadow-sm bg-secondary/50 dark:bg-sky-500/5 backdrop-blur-xl overflow-hidden">
+              <Card className="border border-border/50 shadow-sm bg-card overflow-hidden">
                 <CardContent className="p-0">
                   <Table>
                     <TableHeader>
@@ -459,7 +459,7 @@ export default function ConsolePage() {
             </TabsContent>
 
             <TabsContent value="security" className="mt-0 outline-none">
-              <Card className="border-none shadow-sm bg-secondary/50 dark:bg-red-500/5 backdrop-blur-xl overflow-hidden">
+              <Card className="border border-border/50 shadow-sm bg-card overflow-hidden">
                 <CardContent className="p-0">
                   <Table>
                     <TableHeader>
@@ -527,7 +527,7 @@ export default function ConsolePage() {
 
         {/* Recent Notifications Widget */}
         <div className="space-y-6">
-          <Card className="border-none shadow-sm overflow-hidden text-clip bg-secondary/50 dark:bg-indigo-500/5 backdrop-blur-xl">
+          <Card className="border border-border/50 shadow-sm overflow-hidden text-clip bg-card">
             <CardHeader className="pb-3 flex flex-row items-center justify-between border-b border-border/50">
               <div>
                 <CardTitle className="text-sm font-bold flex items-center">
@@ -577,7 +577,7 @@ export default function ConsolePage() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
               >
-                <Card className="border-none shadow-lg shadow-primary/10 bg-secondary/50 dark:bg-fuchsia-500/5 backdrop-blur-xl">
+                <Card className="border border-border/50 shadow-lg shadow-primary/10 bg-card">
                   <CardHeader className="pb-3 border-b border-border/50">
                     <div className="flex items-center justify-between">
                       <CardTitle className="text-md">Team Requests</CardTitle>
@@ -635,18 +635,5 @@ function KpiCard({ title, value, trend, isUp, icon: Icon, description, bgClass, 
         </div>
       </CardContent>
     </Card>
-  )
-}
-
-function QuickLink({ icon: Icon, label, onClick, color }: any) {
-  return (
-    <Button
-      variant="ghost"
-      className={`h-auto py-3 px-2 flex flex-col items-center justify-center gap-1.5 hover:bg-muted/50 rounded-xl ${color || 'text-foreground'}`}
-      onClick={onClick}
-    >
-      <Icon className="h-4 w-4" />
-      <span className="text-[10px] font-semibold">{label}</span>
-    </Button>
   )
 }
