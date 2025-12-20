@@ -1,4 +1,4 @@
-import { useRef, useState } from "react"
+import { useRef, useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { IconCamera, IconCopy, IconCheck, IconPencil, IconX, IconPlus } from "@tabler/icons-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -11,19 +11,34 @@ import { ROLE_TEAM_OWNER } from "@/domains/role"
 import { Input } from "@/components/ui/input"
 
 interface TeamHeaderProps {
-  team: Team | null
   teamId: string
-  onTeamUpdate: () => void
   onInviteClick: () => void
 }
 
-export function TeamHeader({ team, teamId, onTeamUpdate, onInviteClick }: TeamHeaderProps) {
+export function TeamHeader({ teamId, onInviteClick }: TeamHeaderProps) {
   const { hasRole } = useLoginUserStore()
+  const [team, setTeam] = useState<Team | null>(null)
   const [avatarUrl, setAvatarUrl] = useState<string>(TeamService.getTeamPhoto(teamId) + `?t=${Date.now()}`)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [copiedId, setCopiedId] = useState(false)
   const [editingName, setEditingName] = useState(false)
-  const [newName, setNewName] = useState(team?.name || "")
+  const [newName, setNewName] = useState("")
+
+  useEffect(() => {
+    const loadTeam = async () => {
+      try {
+        const { data: teams } = await TeamService.findUserTeams()
+        const currentTeam = teams.find(t => t.id === teamId)
+        if (currentTeam) {
+          setTeam(currentTeam)
+          setNewName(currentTeam.name || "")
+        }
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    loadTeam()
+  }, [teamId])
 
   const handleAvatarClick = () => {
     if (!hasRole(ROLE_TEAM_OWNER)) return
@@ -68,8 +83,8 @@ export function TeamHeader({ team, teamId, onTeamUpdate, onInviteClick }: TeamHe
     try {
       await TeamService.updateTeamName(teamId, (newName || "").trim())
       toast.success("Team name updated")
+      setTeam(prev => (prev ? { ...prev, name: (newName || "").trim() } : prev))
       setEditingName(false)
-      onTeamUpdate()
     } catch (error) {
       toast.error("Failed to update team name")
       console.error(error)

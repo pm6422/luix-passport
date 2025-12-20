@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
@@ -17,16 +17,32 @@ import { toast } from "sonner"
 
 interface TeamMembersTableProps {
   teamId: string
-  members: TeamMember[]
-  allRoles: string[]
-  onMemberUpdated: () => void
 }
 
-export function TeamMembersTable({ teamId, members, allRoles, onMemberUpdated }: TeamMembersTableProps) {
+export function TeamMembersTable({ teamId }: TeamMembersTableProps) {
   const { loginUser, hasRole } = useLoginUserStore()
   const [memberQuery, setMemberQuery] = useState("")
+  const [members, setMembers] = useState<TeamMember[]>([])
+  const [allRoles, setAllRoles] = useState<string[]>([])
   const [roleConfirmOpen, setRoleConfirmOpen] = useState(false)
   const [pendingRoleChange, setPendingRoleChange] = useState<{ userId: string, newRoles: string[] } | null>(null)
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const { data: teamMembers } = await TeamService.getMembers(teamId)
+        setMembers(teamMembers)
+
+        if (hasRole(ROLE_TEAM_OWNER)) {
+          const { data: roles } = await TeamService.findAllRoleIds()
+          setAllRoles(roles)
+        }
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    loadData()
+  }, [teamId, hasRole])
 
   const filteredMembers = useMemo(() => {
     const q = memberQuery.trim().toLowerCase()
@@ -48,7 +64,9 @@ export function TeamMembersTable({ teamId, members, allRoles, onMemberUpdated }:
     try {
       await TeamService.updateMemberRole(teamId, pendingRoleChange.userId, pendingRoleChange.newRoles)
       toast.success("Role updated")
-      onMemberUpdated()
+      // Reload members data
+      const { data: teamMembers } = await TeamService.getMembers(teamId)
+      setMembers(teamMembers)
     } catch (error) {
       toast.error("Role update failed")
       console.error(error)

@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -12,12 +12,24 @@ import { TeamService } from "@/services/team-service"
 import { toast } from "sonner"
 
 interface PendingInvitationsTableProps {
-  invitations: TeamInvitation[]
-  onInvitationResent: () => void
+  teamId: string
 }
 
-export function PendingInvitationsTable({ invitations, onInvitationResent }: PendingInvitationsTableProps) {
+export function PendingInvitationsTable({ teamId }: PendingInvitationsTableProps) {
   const [inviteQuery, setInviteQuery] = useState("")
+  const [invitations, setInvitations] = useState<TeamInvitation[]>([])
+
+  useEffect(() => {
+    const loadInvitations = async () => {
+      try {
+        const { data } = await TeamService.getPendingInvitations(teamId)
+        setInvitations(data)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    loadInvitations()
+  }, [teamId])
 
   const getInviteProgress = (i: TeamInvitation) => {
     if (i.status === "ACCEPTED") return "Accepted"
@@ -41,7 +53,9 @@ export function PendingInvitationsTable({ invitations, onInvitationResent }: Pen
     try {
       await TeamService.resendInvitation(inviteId)
       toast.success("Invitation resent successfully")
-      onInvitationResent()
+      // Reload invitations data
+      const { data } = await TeamService.getPendingInvitations(teamId)
+      setInvitations(data)
     } catch (error) {
       toast.error("Failed to resend invitation")
     }
