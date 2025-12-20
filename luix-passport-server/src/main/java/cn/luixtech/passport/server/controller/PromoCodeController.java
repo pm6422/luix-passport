@@ -57,10 +57,10 @@ public class PromoCodeController {
     }
 
     @Operation(summary = "Enable/Disable promo code")
-    @PatchMapping("/admin/promo-codes/{id}/status")
+    @PatchMapping("/admin/promo-codes/{id}/enabled")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Void> updateStatus(@PathVariable String id, @RequestParam boolean enabled) {
-        promoCodeService.updateStatus(id, enabled);
+    public ResponseEntity<Void> updateEnabled(@PathVariable String id, @RequestParam boolean enabled) {
+        promoCodeService.updateEnabled(id, enabled);
         return ResponseEntity.ok().build();
     }
 }

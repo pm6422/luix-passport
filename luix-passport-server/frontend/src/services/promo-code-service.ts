@@ -17,7 +17,7 @@ export class PromoCodeService {
     return http.post("/api/promo-codes/redeem", data)
   }
 
-  public static updateStatus(id: string, enabled: boolean): Promise<void> {
-    return http.patch(`/api/admin/promo-codes/${id}/status`, null, { params: { enabled } })
+  public static updateEnabled(id: string, enabled: boolean): Promise<void> {
+    return http.patch(`/api/admin/promo-codes/${id}/enabled`, null, { params: { enabled } })
   }
 }

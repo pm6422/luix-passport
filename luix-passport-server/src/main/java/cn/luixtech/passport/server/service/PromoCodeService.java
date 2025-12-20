@@ -16,5 +16,5 @@ public interface PromoCodeService {
 
     void redeemCode(String code, String username);
 
-    void updateStatus(String id, boolean enabled);
+    void updateEnabled(String id, boolean enabled);
 }

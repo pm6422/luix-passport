@@ -146,7 +146,7 @@ public class PromoCodeServiceImpl implements PromoCodeService {
     }
 
     @Override
-    public void updateStatus(String id, boolean enabled) {
+    public void updateEnabled(String id, boolean enabled) {
         PromoCode promoCode = promoCodeRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Promo code not found"));
         promoCode.setEnabled(enabled);

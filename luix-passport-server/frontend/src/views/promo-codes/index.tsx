@@ -2,11 +2,12 @@ import { useState, useCallback } from "react"
 import dayjs from "dayjs"
 import { LayoutBody } from "@/layouts/layout-definitions"
 import { PaginatedDataTable } from "@/components/custom/data-table/paginated-data-table"
-import { tableColumns } from "./table/promo-code-table-columns"
+import { getPromoCodeColumns } from "./table/promo-code-table-columns"
 import { PromoCode, GeneratePromoCode } from "@/domains/promo-code"
 import { PromoCodeService } from "@/services/promo-code-service"
 import { RoleAdmin } from "@/layouts/permission/role-control"
 import { DataTableToolbar } from "./table/promo-code-table-toolbar"
+import { toast } from "sonner"
 
 export default function PromoCodes() {
   const entityName = "promo code"
@@ -46,13 +47,20 @@ export default function PromoCodes() {
     })
   }
 
+  function toggleEnabled(id: string, enabled: boolean) {
+    PromoCodeService.updateEnabled(id, enabled).then(() => {
+      toast.success(`Promo code ${enabled ? 'enabled' : 'disabled'}`)
+      loadPage(currentPageNo) // Refresh the table
+    })
+  }
+
   return (
     <RoleAdmin>
       <LayoutBody className="flex flex-col" fixedHeight>
         <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:gap-y-0">
           <PaginatedDataTable
             paginationMode="server"
-            columns={tableColumns()}
+            columns={getPromoCodeColumns({ toggleEnabled: toggleEnabled })}
             data={tableData}
             totalCount={totalCount}
             totalPages={totalPages}
