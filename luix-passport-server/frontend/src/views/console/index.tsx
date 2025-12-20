@@ -59,6 +59,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Progress } from "@/components/ui/progress"
 import { motion, AnimatePresence } from "framer-motion"
 import { CreateTeamDialog } from "@/views/team/dialog/create-team-dialog"
+import { calculateTrend } from "@/lib/utils"
 
 // Mock Data for Analytics
 const activityData = [
@@ -99,7 +100,9 @@ export default function ConsolePage() {
   const [stats, setStats] = useState({
     teams: 0,
     apps: 0,
-    unreadMessages: 0
+    unreadMessages: 0,
+    userTrend: { trend: "+0%", isUp: true },
+    appTrend: { trend: "+0%", isUp: true }
   })
   const [loading, setLoading] = useState(true)
   const [apiStatus, setApiStatus] = useState<'operational' | 'degraded' | 'offline'>('operational')
@@ -113,25 +116,42 @@ export default function ConsolePage() {
   const fetchDashboardData = async () => {
     setLoading(true)
     try {
-      const [invitationsRes, teamsRes, unreadRes, appsCountRes, usersRes, inboxRes, logsRes] = await Promise.all([
+      const yesterday = new Date()
+      yesterday.setDate(yesterday.getDate() - 1)
+      const since = yesterday.toISOString()
+
+      const [invitationsRes, teamsRes, unreadRes, appsCountRes, appsPrevCountRes, usersRes, usersPrevRes, inboxRes, logsRes] = await Promise.all([
         TeamService.getUserInvitations(),
         TeamService.findUserTeams(),
         InboxService.countUnread(),
         hasRole(ROLE_ADMIN) ? Oauth2ClientService.count() : Promise.resolve({ data: 0 }),
+        hasRole(ROLE_ADMIN) ? Oauth2ClientService.count(since) : Promise.resolve({ data: 0 }),
         hasRole(ROLE_ADMIN) ? UserService.count() : Promise.resolve({ data: 0 }),
+        hasRole(ROLE_ADMIN) ? UserService.count(since) : Promise.resolve({ data: 0 }),
         InboxService.find({ page: 0, size: 4 }),
         hasRole(ROLE_ADMIN) ? LoginLogService.findRecentLogins(0, 5) : Promise.resolve({ data: { content: [] } })
       ])
 
+      const currentUsers = usersRes.data
+      const prevUsers = usersPrevRes.data
+      const currentApps = appsCountRes.data
+      const prevApps = appsPrevCountRes.data
+
       setInvitations(invitationsRes.data)
       setTeams(teamsRes.data)
-      setUserCount(usersRes.data)
+      setUserCount(currentUsers)
       setMessages(inboxRes.data.content)
       setLoginLogs(logsRes.data.content)
+
+      const userTrendInfo = calculateTrend(currentUsers, prevUsers)
+      const appTrendInfo = calculateTrend(currentApps, prevApps)
+
       setStats({
         teams: teamsRes.data.length,
         unreadMessages: unreadRes.data,
-        apps: appsCountRes.data
+        apps: currentApps,
+        userTrend: userTrendInfo,
+        appTrend: appTrendInfo
       })
       setLastSync(new Date().toISOString())
       setApiStatus('operational')
@@ -184,12 +204,22 @@ export default function ConsolePage() {
         <KpiCard
           title="Total Users"
           value={loading ? "..." : (hasRole(ROLE_ADMIN) ? userCount : "1").toLocaleString()}
-          trend="+12.5%"
-          isUp={true}
+          trend={stats.userTrend?.trend || "+0%"}
+          isUp={stats.userTrend?.isUp ?? true}
           icon={Users}
-          description="Total registered identifiers"
+          description="Total registered users"
           bgClass="bg-secondary/50 dark:bg-emerald-500/10"
           iconClass="bg-emerald-500/25 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400"
+        />
+        <KpiCard
+          title="OAuth2 Clients"
+          value={loading ? "..." : stats.apps}
+          trend={stats.appTrend?.trend || "+0%"}
+          isUp={stats.appTrend?.isUp ?? true}
+          icon={AppWindow}
+          description="Total registered applications"
+          bgClass="bg-secondary/50 dark:bg-amber-500/10"
+          iconClass="bg-amber-500/25 dark:bg-amber-500/20 text-amber-700 dark:text-amber-400"
         />
         <KpiCard
           title="Active Sessions"
@@ -200,16 +230,6 @@ export default function ConsolePage() {
           description="Concurrent auth tokens"
           bgClass="bg-secondary/50 dark:bg-blue-500/10"
           iconClass="bg-blue-500/25 dark:bg-blue-500/20 text-blue-700 dark:text-blue-400"
-        />
-        <KpiCard
-          title="OAuth2 Clients"
-          value={loading ? "..." : stats.apps}
-          trend="-2"
-          isUp={false}
-          icon={AppWindow}
-          description="Applications connected"
-          bgClass="bg-secondary/50 dark:bg-amber-500/10"
-          iconClass="bg-amber-500/25 dark:bg-amber-500/20 text-amber-700 dark:text-amber-400"
         />
         <KpiCard
           title="Monthly Requests"

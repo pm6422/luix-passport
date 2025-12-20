@@ -21,6 +21,7 @@ import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.Instant;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Optional;
@@ -37,13 +38,14 @@ import static org.springframework.security.oauth2.server.authorization.OAuth2Tok
 @PreAuthorize("hasAuthority(\"" + ROLE_ADMIN + "\")")
 @AllArgsConstructor
 public class Oauth2ClientController {
-    private final HttpHeaderCreator                httpHeaderCreator;
+    private final HttpHeaderCreator httpHeaderCreator;
     private final Oauth2RegisteredClientRepository oauth2RegisteredClientRepository;
-    private final Oauth2RegisteredClientService    oauth2RegisteredClientService;
+    private final Oauth2RegisteredClientService oauth2RegisteredClientService;
 
     @Operation(summary = "create a new oauth2 registered client")
     @PostMapping("/api/oauth2-clients")
-    public ResponseEntity<Void> create(@Parameter(description = "oauth2 registered client", required = true) @Valid @RequestBody Oauth2Client pojo) {
+    public ResponseEntity<Void> create(
+            @Parameter(description = "oauth2 registered client", required = true) @Valid @RequestBody Oauth2Client pojo) {
         oauth2RegisteredClientService.insert(pojo);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .headers(httpHeaderCreator.createSuccessHeader("SM1001", pojo.getClientId()))
@@ -53,21 +55,23 @@ public class Oauth2ClientController {
     @Operation(summary = "find oauth2 registered client list")
     @GetMapping("/api/oauth2-clients")
     public ResponseEntity<Page<Oauth2Client>> find(@ParameterObject Pageable pageable,
-                                                   @Parameter(description = "Client ID") @RequestParam(value = "clientId", required = false) String clientId) {
+            @Parameter(description = "Client ID") @RequestParam(value = "clientId", required = false) String clientId) {
         Page<Oauth2Client> domains = oauth2RegisteredClientService.find(pageable, clientId);
         return ResponseEntity.ok(domains);
     }
 
     @Operation(summary = "find oauth2 registered client by id")
     @GetMapping("/api/oauth2-clients/{id}")
-    public ResponseEntity<Oauth2Client> findById(@Parameter(description = "ID", required = true) @PathVariable String id) {
+    public ResponseEntity<Oauth2Client> findById(
+            @Parameter(description = "ID", required = true) @PathVariable String id) {
         Oauth2Client domain = oauth2RegisteredClientService.findById(id);
         return ResponseEntity.ok(domain);
     }
 
     @Operation(summary = "update oauth2 registered client")
     @PutMapping("/api/oauth2-clients")
-    public ResponseEntity<Void> update(@Parameter(description = "oauth2 registered client", required = true) @Valid @RequestBody Oauth2Client pojo) {
+    public ResponseEntity<Void> update(
+            @Parameter(description = "oauth2 registered client", required = true) @Valid @RequestBody Oauth2Client pojo) {
         oauth2RegisteredClientService.update(pojo);
         return ResponseEntity.ok()
                 .headers(httpHeaderCreator.createSuccessHeader("SM1002", pojo.getClientId()))
@@ -77,7 +81,8 @@ public class Oauth2ClientController {
     @Operation(summary = "delete oauth2 registered client by id", description = "the data may be referenced by other data, and some problems may occur after deletion")
     @DeleteMapping("/api/oauth2-clients/{id}")
     public ResponseEntity<Void> delete(@Parameter(description = "ID", required = true) @PathVariable String id) {
-        Oauth2RegisteredClient client = oauth2RegisteredClientRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
+        Oauth2RegisteredClient client = oauth2RegisteredClientRepository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException(id));
         oauth2RegisteredClientRepository.deleteById(id);
         return ResponseEntity.ok()
                 .headers(httpHeaderCreator.createSuccessHeader("SM1003", client.getClientId())).build();
@@ -86,8 +91,9 @@ public class Oauth2ClientController {
     @Operation(summary = "upload photo of the oauth2 registered client")
     @PutMapping("/api/oauth2-clients/photo/upload")
     public void uploadPhoto(@Parameter(description = "id", required = true) @RequestPart String id,
-                                   @Parameter(description = "photo", required = true) @RequestPart MultipartFile file) throws IOException {
-        Oauth2RegisteredClient oauth2RegisteredClient = oauth2RegisteredClientRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
+            @Parameter(description = "photo", required = true) @RequestPart MultipartFile file) throws IOException {
+        Oauth2RegisteredClient oauth2RegisteredClient = oauth2RegisteredClientRepository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException(id));
         oauth2RegisteredClient.setPhoto(file.getBytes());
         oauth2RegisteredClientRepository.save(oauth2RegisteredClient);
         log.info("Uploaded oauth2 registered client photo with file name {} and ID {}", file.getOriginalFilename(), id);
@@ -95,7 +101,8 @@ public class Oauth2ClientController {
 
     @Operation(summary = "find photo by id")
     @GetMapping("/api/oauth2-clients/photo/{id}")
-    public ResponseEntity<byte[]> findPhotoById(@Parameter(description = "id", required = true) @PathVariable String id) {
+    public ResponseEntity<byte[]> findPhotoById(
+            @Parameter(description = "id", required = true) @PathVariable String id) {
         Optional<Oauth2RegisteredClient> oauth2RegisteredClient = oauth2RegisteredClientRepository.findById(id);
         return oauth2RegisteredClient.map(photo -> ResponseEntity.ok(photo.getPhoto())).orElse(null);
     }
@@ -139,7 +146,11 @@ public class Oauth2ClientController {
 
     @Operation(summary = "count enabled oauth 2 registered clients")
     @GetMapping("/api/oauth2-clients/count")
-    public ResponseEntity<Long> count() {
+    public ResponseEntity<Long> count(
+            @Parameter(description = "since") @RequestParam(value = "since", required = false) Instant since) {
+        if (since != null) {
+            return ResponseEntity.ok(oauth2RegisteredClientRepository.countByCreatedAtAfter(since));
+        }
         return ResponseEntity.ok(oauth2RegisteredClientRepository.count());
     }
 }

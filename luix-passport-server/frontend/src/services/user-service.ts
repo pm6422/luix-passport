@@ -12,7 +12,7 @@ export class UserService {
   }
 
   public static findAll(enabled: boolean | null = null): Promise<AxiosResponse<Page<User>>> {
-    return http.get("/api/users", { params: { page: 0, size: 2000, enabled: enabled }})
+    return http.get("/api/users", { params: { page: 0, size: 2000, enabled: enabled } })
   }
 
   public static findById(username: string): Promise<AxiosResponse<User>> {
@@ -31,7 +31,7 @@ export class UserService {
     return http.put("/api/users/reset-password/" + username)
   }
 
-  public static count(): Promise<AxiosResponse<number>> {
-    return http.get("/api/users/count")
+  public static count(since?: string): Promise<AxiosResponse<number>> {
+    return http.get("/api/users/count", { params: { since } })
   }
 }

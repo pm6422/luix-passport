@@ -35,7 +35,7 @@ export class Oauth2ClientService {
     return http.get("/api/oauth2-clients/scopes")
   }
 
-  public static count(): Promise<AxiosResponse<number>> {
-    return http.get("/api/oauth2-clients/count")
+  public static count(since?: string): Promise<AxiosResponse<number>> {
+    return http.get("/api/oauth2-clients/count", { params: { since } })
   }
 }

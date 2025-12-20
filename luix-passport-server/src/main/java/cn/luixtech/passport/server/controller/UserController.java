@@ -28,6 +28,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -43,32 +44,34 @@ import static com.luixtech.springbootframework.utils.NetworkUtils.getRequestUrl;
 @PreAuthorize("hasAuthority(\"" + ROLE_ADMIN + "\")")
 @Slf4j
 public class UserController {
-    private final ApplicationProperties     applicationProperties;
+    private final ApplicationProperties applicationProperties;
     private final ApplicationEventPublisher applicationEventPublisher;
-    private final UserService               userService;
-    private final UserRepository            userRepository;
-    private final UserRoleService           userRoleService;
-    private final MailService               mailService;
-    private final HttpHeaderCreator         httpHeaderCreator;
+    private final UserService userService;
+    private final UserRepository userRepository;
+    private final UserRoleService userRoleService;
+    private final MailService mailService;
+    private final HttpHeaderCreator httpHeaderCreator;
 
     @Operation(summary = "create new user and send a user creation email")
     @PostMapping("/api/users")
     public ResponseEntity<Void> create(HttpServletRequest request,
-                                       @Parameter(description = "user", required = true) @Valid @RequestBody User domain) {
-        User newUser = userService.insert(domain, new HashSet<>(), applicationProperties.getAccount().getDefaultPassword(), true);
+            @Parameter(description = "user", required = true) @Valid @RequestBody User domain) {
+        User newUser = userService.insert(domain, new HashSet<>(),
+                applicationProperties.getAccount().getDefaultPassword(), true);
         mailService.sendUserCreationEmail(newUser, getRequestUrl(request));
-        HttpHeaders headers = httpHeaderCreator.createSuccessHeader("NM1011", applicationProperties.getAccount().getDefaultPassword());
+        HttpHeaders headers = httpHeaderCreator.createSuccessHeader("NM1011",
+                applicationProperties.getAccount().getDefaultPassword());
         return ResponseEntity.status(HttpStatus.CREATED).headers(headers).build();
     }
 
     @Operation(summary = "find user list")
     @GetMapping("/api/users")
     public ResponseEntity<Page<ManagedUser>> find(@ParameterObject Pageable pageable,
-                                                  @Parameter(description = "username") @RequestParam(value = "username", required = false) String username,
-                                                  @Parameter(description = "email") @RequestParam(value = "email", required = false) String email,
-                                                  @Parameter(description = "mobileNo") @RequestParam(value = "mobileNo", required = false) String mobileNo,
-                                                  @Parameter(description = "enabled") @RequestParam(value = "enabled", required = false) Boolean enabled,
-                                                  @Parameter(description = "activated") @RequestParam(value = "activated", required = false) Boolean activated) {
+            @Parameter(description = "username") @RequestParam(value = "username", required = false) String username,
+            @Parameter(description = "email") @RequestParam(value = "email", required = false) String email,
+            @Parameter(description = "mobileNo") @RequestParam(value = "mobileNo", required = false) String mobileNo,
+            @Parameter(description = "enabled") @RequestParam(value = "enabled", required = false) Boolean enabled,
+            @Parameter(description = "activated") @RequestParam(value = "activated", required = false) Boolean activated) {
         Page<User> domains = userService.find(pageable, username, email, mobileNo, enabled, activated);
         Page<ManagedUser> users = domains.map(domain -> {
             ManagedUser user = new ManagedUser();
@@ -82,15 +85,18 @@ public class UserController {
 
     @Operation(summary = "find user by id")
     @GetMapping("/api/users/{id}")
-    public ResponseEntity<ManagedUser> findById(@Parameter(description = "ID", required = true) @PathVariable String id) {
+    public ResponseEntity<ManagedUser> findById(
+            @Parameter(description = "ID", required = true) @PathVariable String id) {
         return ResponseEntity.ok(userService.findByUsername(id));
     }
 
     @Operation(summary = "update user")
     @PutMapping("/api/users")
-    public ResponseEntity<Void> update(@Parameter(description = "new user", required = true) @Valid @RequestBody ManagedUser domain) {
+    public ResponseEntity<Void> update(
+            @Parameter(description = "new user", required = true) @Valid @RequestBody ManagedUser domain) {
         userService.update(domain);
-        return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1002", domain.getUsername())).build();
+        return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1002", domain.getUsername()))
+                .build();
     }
 
     @Operation(summary = "delete user by id", description = "the data may be referenced by other data, and some problems may occur after deletion")
@@ -108,21 +114,27 @@ public class UserController {
             // Logout if the current user were changed
             applicationEventPublisher.publishEvent(new LogoutEvent(this, AuthUtils.getCurrentUsername()));
         }
-        HttpHeaders headers = httpHeaderCreator.createSuccessHeader("NM1011", applicationProperties.getAccount().getDefaultPassword());
+        HttpHeaders headers = httpHeaderCreator.createSuccessHeader("NM1011",
+                applicationProperties.getAccount().getDefaultPassword());
         return ResponseEntity.ok().headers(headers).build();
     }
 
     @Operation(summary = "count enabled users")
     @GetMapping("/api/users/count")
-    public ResponseEntity<Long> count() {
+    public ResponseEntity<Long> count(
+            @Parameter(description = "since") @RequestParam(value = "since", required = false) Instant since) {
+        if (since != null) {
+            return ResponseEntity.ok(userRepository.countByCreatedAtAfter(since));
+        }
         return ResponseEntity.ok(userRepository.count());
     }
 
     @Operation(summary = "cascade update username from the old to new one")
     @PutMapping("/api/users/username")
     @PreAuthorize("hasAuthority(\"" + ROLE_DEVELOPER + "\")")
-    public ResponseEntity<Void> updateUsername(@Parameter(description = "oldUsername", required = true) @RequestParam(value = "oldUsername") String oldUsername,
-                                               @Parameter(description = "newUsername", required = true) @RequestParam(value = "newUsername") String newUsername) {
+    public ResponseEntity<Void> updateUsername(
+            @Parameter(description = "oldUsername", required = true) @RequestParam(value = "oldUsername") String oldUsername,
+            @Parameter(description = "newUsername", required = true) @RequestParam(value = "newUsername") String newUsername) {
         userRepository.findById(oldUsername).orElseThrow(() -> new DataNotFoundException(oldUsername));
         userService.cascadeUpdateUsername(oldUsername, newUsername);
         return ResponseEntity.ok().build();

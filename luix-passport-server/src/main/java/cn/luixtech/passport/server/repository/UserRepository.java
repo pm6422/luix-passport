@@ -4,6 +4,7 @@ import cn.luixtech.passport.server.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,5 +33,7 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     long countByEnabledIsTrue();
 
-    List<User> findByMembershipExpiresAtBeforeAndMembershipTypeNotNull(java.time.Instant now);
+    long countByCreatedAtAfter(Instant since);
+
+    List<User> findByMembershipExpiresAtBeforeAndMembershipTypeNotNull(Instant now);
 }
