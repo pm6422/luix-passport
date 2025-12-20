@@ -276,7 +276,7 @@ export default function ConsolePage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Main Chart */}
         <Card className="lg:col-span-2 overflow-hidden border border-border/50 shadow-sm bg-card">
-          <CardHeader className="flex flex-row items-center justify-between pb-8">
+          <CardHeader className="flex flex-row items-center justify-between pb-4">
             <div>
               <CardTitle>Login Activity</CardTitle>
               <CardDescription>Authentication trends & active users (Last {activityDays.replace("d", "")} Days)</CardDescription>
@@ -289,7 +289,7 @@ export default function ConsolePage() {
             </Tabs>
           </CardHeader>
           <CardContent className="px-2">
-            <ChartContainer config={chartConfig} className="h-[300px] w-full">
+            <ChartContainer config={chartConfig} className="h-[250px] w-full">
               <AreaChart data={activityData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                 <defs>
                   <linearGradient id="colorUsers" x1="0" y1="0" x2="0" y2="1">
@@ -342,7 +342,7 @@ export default function ConsolePage() {
             <CardDescription>User tier distribution</CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col items-center">
-            <div className="h-[200px] w-full">
+            <div className="h-[180px] w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
@@ -363,7 +363,7 @@ export default function ConsolePage() {
                 </PieChart>
               </ResponsiveContainer>
             </div>
-            <div className="w-full space-y-3 mt-4">
+            <div className="w-full space-y-2 mt-2">
               {membershipData.map((item) => {
                 const total = membershipData.reduce((acc: number, curr: any) => acc + curr.value, 0)
                 const percentage = total > 0 ? Math.round((item.value / total) * 100) : 0
