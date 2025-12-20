@@ -132,8 +132,8 @@ export default function ConsolePage() {
         hasRole(ROLE_ADMIN) ? TeamService.count(since) : Promise.resolve({ data: 0 }),
         hasRole(ROLE_ADMIN) ? TeamService.getMembershipStats() : Promise.resolve({ data: { FREE: 0, PRO: 0, PREMIUM: 0 } }),
         InboxService.find({ page: 0, size: 1, sort: ["status,desc", "createdAt,desc"] }),
-        hasRole(ROLE_ADMIN) ? LoginLogService.findRecentLogins(0, 5) : Promise.resolve({ data: { content: [] } }),
-        hasRole(ROLE_ADMIN) ? SecurityAuditLogService.find(0, 5) : Promise.resolve({ data: { content: [] } })
+        hasRole(ROLE_ADMIN) ? LoginLogService.findRecentLogins({ page: 0, size: 5, sort: "loginAt,desc" }) : Promise.resolve({ data: { content: [] } }),
+        hasRole(ROLE_ADMIN) ? SecurityAuditLogService.find({ page: 0, size: 5, sort: "createdAt,desc" }) : Promise.resolve({ data: { content: [] } })
       ])
 
       const currentUsers = usersRes.data

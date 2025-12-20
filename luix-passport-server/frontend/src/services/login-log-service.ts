@@ -7,10 +7,8 @@ export class LoginLogService {
   constructor() {
   }
 
-  public static findRecentLogins(page: number, size: number, username?: string): Promise<AxiosResponse<Page<LoginLog>>> {
-    return http.get("/api/login-logs/recent", {
-      params: { page, size, username, sort: "loginAt,desc" }
-    })
+  public static findRecentLogins(reqParams: object): Promise<AxiosResponse<Page<LoginLog>>> {
+    return http.get("/api/login-logs/recent", { params: reqParams })
   }
 
   public static getActivityStats(days?: number): Promise<AxiosResponse<Array<ActivityData>>> {
