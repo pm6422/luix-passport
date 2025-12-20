@@ -2,7 +2,7 @@ import { LayoutBody } from "@/layouts/layout-definitions"
 import { useState } from "react"
 import { useLoginUserStore } from "@/stores/login-user-store"
 import { useNavigate } from "react-router-dom"
-import { RoleAdmin } from "@/layouts/permission/role-control"
+import { RoleAdmin, RoleUser } from "@/layouts/permission/role-control"
 import { SystemStatusBanner } from "./components/system-status-banner"
 import { KpiGrid } from "./components/kpi-grid"
 import { LoginActivityChart } from "./components/login-activity-chart"
@@ -39,15 +39,24 @@ export default function ConsolePage() {
         </div>
       </RoleAdmin>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <RoleAdmin>
+      {/* Admin role */}
+      <RoleAdmin>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <SecurityLogsSection />
-        </RoleAdmin>
+          <div className="space-y-6">
+            <RecentNotifications />
+            <PendingInvitations />
+          </div>
+        </div>
+      </RoleAdmin>
+
+      {/* User role */}
+      <RoleUser>
         <div className="space-y-6">
           <RecentNotifications />
           <PendingInvitations />
         </div>
-      </div>
+      </RoleUser>
     </LayoutBody>
   )
 }
