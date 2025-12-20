@@ -11,7 +11,7 @@ public class SpringSession {
 
     @Schema(description = "ID")
     @Id
-    protected String primaryId;
+    private String primaryId;
     private Long creationTime;
     private Long lastAccessTime;
     private String principalName;
