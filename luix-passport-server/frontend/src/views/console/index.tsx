@@ -391,7 +391,6 @@ export default function ConsolePage() {
             <div className="flex items-center justify-between mb-4">
               <TabsList className="bg-muted/50 p-1">
                 <TabsTrigger value="logins">Recent Logins</TabsTrigger>
-                <TabsTrigger value="teams">Team Activities</TabsTrigger>
                 <TabsTrigger value="security">Security Events</TabsTrigger>
               </TabsList>
             </div>
