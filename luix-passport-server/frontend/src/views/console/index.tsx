@@ -627,7 +627,7 @@ function KpiCard({ title, value, trend, isUp, icon: Icon, description, bgClass, 
               {isUp ? <ArrowUpRight className="size-3 mr-0.5" /> : <ArrowDownRight className="size-3 mr-0.5" />}
               {trend}
             </div>
-            <p className="text-[10px] text-muted-foreground italic opacity-60 truncate max-w-[100px] hidden xl:block">{description}</p>
+            <p className="text-[10px] text-muted-foreground italic opacity-60 truncate max-w-[150px] hidden xl:block">{description}</p>
           </div>
         </div>
         <div className={`size-12 rounded-xl ${iconClass || 'bg-primary/10 text-primary'} flex items-center justify-center shadow-sm ml-2`}>
