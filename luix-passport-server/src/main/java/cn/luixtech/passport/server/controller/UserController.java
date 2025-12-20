@@ -139,4 +139,15 @@ public class UserController {
         userService.cascadeUpdateUsername(oldUsername, newUsername);
         return ResponseEntity.ok().build();
     }
+
+    @Operation(summary = "get membership statistics")
+    @GetMapping("/api/users/membership-stats")
+    public ResponseEntity<java.util.Map<String, Long>> getMembershipStats() {
+        java.util.Map<String, Long> stats = new java.util.HashMap<>();
+        stats.put("FREE", userRepository.countByMembershipTypeIsNull());
+        stats.put("PRO", userRepository.countByMembershipType(cn.luixtech.passport.server.domain.Role.ROLE_MEMBER_PRO));
+        stats.put("PREMIUM",
+                userRepository.countByMembershipType(cn.luixtech.passport.server.domain.Role.ROLE_MEMBER_PREMIUM));
+        return ResponseEntity.ok(stats);
+    }
 }

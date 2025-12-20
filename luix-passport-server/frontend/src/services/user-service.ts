@@ -34,4 +34,8 @@ export class UserService {
   public static count(since?: string): Promise<AxiosResponse<number>> {
     return http.get("/api/users/count", { params: { since } })
   }
+
+  public static getMembershipStats(): Promise<AxiosResponse<Record<string, number>>> {
+    return http.get("/api/users/membership-stats")
+  }
 }

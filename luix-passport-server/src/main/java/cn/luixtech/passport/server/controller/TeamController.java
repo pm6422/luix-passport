@@ -39,7 +39,10 @@ public class TeamController {
 
     @Operation(summary = "count enabled teams")
     @GetMapping("/api/teams/count")
-    public ResponseEntity<Long> count() {
+    public ResponseEntity<Long> count(@RequestParam(required = false) java.time.Instant since) {
+        if (since != null) {
+            return ResponseEntity.ok(teamRepository.countByCreatedAtAfter(since));
+        }
         return ResponseEntity.ok(teamRepository.count());
     }
 

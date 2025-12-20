@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TeamRepository extends JpaRepository<Team, String> {
     long countByEnabledIsTrue();
+
+    long countByCreatedAtAfter(java.time.Instant createdAt);
 }

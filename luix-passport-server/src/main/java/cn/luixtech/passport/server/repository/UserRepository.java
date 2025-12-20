@@ -35,5 +35,9 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     long countByCreatedAtAfter(Instant since);
 
+    long countByMembershipType(String membershipType);
+
+    long countByMembershipTypeIsNull();
+
     List<User> findByMembershipExpiresAtBeforeAndMembershipTypeNotNull(Instant now);
 }

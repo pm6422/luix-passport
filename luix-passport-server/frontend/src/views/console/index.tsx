@@ -73,11 +73,9 @@ const activityData = [
   { name: "Sun", users: 349, logins: 430 },
 ]
 
-const membershipData = [
-  { name: "Free Layer", value: 45, color: "#94a3b8" },
-  { name: "Pro Plan", value: 30, color: "#3b82f6" },
-  { name: "Enterprise", value: 25, color: "#8b5cf6" },
-]
+// Membership Pie Chart Config
+// Membership Pie Chart Config
+// Data is fetched dynamically in the component
 
 const chartConfig = {
   users: {
@@ -105,12 +103,14 @@ export default function ConsolePage() {
     unreadMessages: 0,
     userTrend: { trend: "+0%", isUp: true },
     appTrend: { trend: "+0%", isUp: true },
-    sessionTrend: { trend: "+0%", isUp: true }
+    sessionTrend: { trend: "+0%", isUp: true },
+    teamTrend: { trend: "+0%", isUp: true }
   })
   const [loading, setLoading] = useState(true)
   const [apiStatus, setApiStatus] = useState<'operational' | 'degraded' | 'offline'>('operational')
   const [lastSync, setLastSync] = useState<string>(new Date().toISOString())
   const [createTeamOpen, setCreateTeamOpen] = useState(false)
+  const [membershipData, setMembershipData] = useState<any[]>([])
 
   useEffect(() => {
     fetchDashboardData()
@@ -124,7 +124,7 @@ export default function ConsolePage() {
       const since = yesterday.toISOString()
       const sinceMs = yesterday.getTime()
 
-      const [invitationsRes, teamsRes, unreadRes, appsCountRes, appsPrevCountRes, usersRes, usersPrevRes, sessionCountRes, sessionPrevRes, inboxRes, logsRes] = await Promise.all([
+      const [invitationsRes, teamsRes, unreadRes, appsCountRes, appsPrevCountRes, usersRes, usersPrevRes, sessionCountRes, sessionPrevRes, teamCountRes, teamPrevCountRes, membershipRes, inboxRes, logsRes] = await Promise.all([
         TeamService.getUserInvitations(),
         TeamService.findUserTeams(),
         InboxService.countUnread(),
@@ -134,6 +134,9 @@ export default function ConsolePage() {
         hasRole(ROLE_ADMIN) ? UserService.count(since) : Promise.resolve({ data: 0 }),
         hasRole(ROLE_ADMIN) ? SpringSessionService.count() : Promise.resolve({ data: 0 }),
         hasRole(ROLE_ADMIN) ? SpringSessionService.count(sinceMs) : Promise.resolve({ data: 0 }),
+        hasRole(ROLE_ADMIN) ? TeamService.count() : Promise.resolve({ data: 0 }),
+        hasRole(ROLE_ADMIN) ? TeamService.count(since) : Promise.resolve({ data: 0 }),
+        hasRole(ROLE_ADMIN) ? UserService.getMembershipStats() : Promise.resolve({ data: { FREE: 0, PRO: 0, PREMIUM: 0 } }),
         InboxService.find({ page: 0, size: 4 }),
         hasRole(ROLE_ADMIN) ? LoginLogService.findRecentLogins(0, 5) : Promise.resolve({ data: { content: [] } })
       ])
@@ -144,6 +147,8 @@ export default function ConsolePage() {
       const prevApps = appsPrevCountRes.data
       const currentSessions = sessionCountRes.data
       const prevSessions = sessionPrevRes.data
+      const currentTeams = teamCountRes.data
+      const prevTeams = teamPrevCountRes.data
 
       setInvitations(invitationsRes.data)
       setTeams(teamsRes.data)
@@ -151,18 +156,29 @@ export default function ConsolePage() {
       setMessages(inboxRes.data.content)
       setLoginLogs(logsRes.data.content)
 
-      const userTrendInfo = calculateTrend(currentUsers, prevUsers)
-      const appTrendInfo = calculateTrend(currentApps, prevApps)
-      const sessionTrendInfo = calculateTrend(currentSessions, prevSessions)
+      const mStats = membershipRes.data
+      const totalMembers = (mStats.FREE || 0) + (mStats.PRO || 0) + (mStats.PREMIUM || 0)
+      const formattedMembershipData = [
+        { name: "Free Layer", value: totalMembers > 0 ? Math.round(((mStats.FREE || 0) / totalMembers) * 100) : 0, color: "#94a3b8" },
+        { name: "Pro Plan", value: totalMembers > 0 ? Math.round(((mStats.PRO || 0) / totalMembers) * 100) : 0, color: "#3b82f6" },
+        { name: "Premium", value: totalMembers > 0 ? Math.round(((mStats.PREMIUM || 0) / totalMembers) * 100) : 0, color: "#8b5cf6" },
+      ]
+      setMembershipData(formattedMembershipData)
+
+      const userTrendInfo = calculateTrend(currentUsers, currentUsers - prevUsers)
+      const appTrendInfo = calculateTrend(currentApps, currentApps - prevApps)
+      const sessionTrendInfo = calculateTrend(currentSessions, currentSessions - prevSessions)
+      const teamTrendInfo = calculateTrend(currentTeams, currentTeams - prevTeams)
 
       setStats({
-        teams: teamsRes.data.length,
+        teams: currentTeams,
         unreadMessages: unreadRes.data,
         apps: currentApps,
         sessions: currentSessions,
         userTrend: userTrendInfo,
         appTrend: appTrendInfo,
-        sessionTrend: sessionTrendInfo
+        sessionTrend: sessionTrendInfo,
+        teamTrend: teamTrendInfo
       })
       setLastSync(new Date().toISOString())
       setApiStatus('operational')
@@ -243,12 +259,12 @@ export default function ConsolePage() {
           iconClass="bg-blue-500/25 dark:bg-blue-500/20 text-blue-700 dark:text-blue-400"
         />
         <KpiCard
-          title="Monthly Requests"
-          value="42.5k"
-          trend="+18%"
-          isUp={true}
-          icon={Globe}
-          description="API bridge throughput"
+          title="Total Teams"
+          value={loading ? "..." : (hasRole(ROLE_ADMIN) ? stats.teams : teams.length).toLocaleString()}
+          trend={stats.teamTrend?.trend || "+0%"}
+          isUp={stats.teamTrend?.isUp ?? true}
+          icon={Users}
+          description="Total organizations"
           bgClass="bg-secondary/50 dark:bg-indigo-500/10"
           iconClass="bg-indigo-500/25 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-400"
         />

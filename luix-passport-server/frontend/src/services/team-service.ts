@@ -5,8 +5,8 @@ export class TeamService {
   constructor() {
   }
 
-  public static count(): Promise<AxiosResponse<number>> {
-    return http.get("/api/teams/count")
+  public static count(since?: string): Promise<AxiosResponse<number>> {
+    return http.get("/api/teams/count", { params: { since } })
   }
 
   public static inviteMembers(teamId: string, invitations: { inviteeEmail: string, inviteeRoles: string[] }[]): Promise<AxiosResponse<void>> {
