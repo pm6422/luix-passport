@@ -28,7 +28,6 @@ export default function ConsolePage() {
         onCreateTeam={() => navigate("/teams")}
       />
 
-      {/* Admin Only Sections */}
       <RoleAdmin>
         {/* KPI Grid */}
         <KpiGrid />
@@ -40,7 +39,6 @@ export default function ConsolePage() {
         </div>
       </RoleAdmin>
 
-      {/* Tabs Section for Deep Data - Admin Only + Recent Notifications */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <RoleAdmin>
           <SecurityLogsSection />
