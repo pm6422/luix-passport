@@ -82,6 +82,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final HttpServletRequest httpServletRequest;
     private final Environment env;
     private final StateMachine<UserState, UserEvent> stateMachine;
+    private final SecurityAuditLogService securityAuditLogService;
 
     @Override
     public UserDetails loadUserByUsername(final String loginName) {
@@ -286,6 +287,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
 
         userRepository.save(existingOne);
+        securityAuditLogService.log(managedUser.getUsername(), "PROFILE_UPDATE", "INFO",
+                httpServletRequest.getHeader("User-Agent"), httpServletRequest.getRemoteAddr(), "Unknown",
+                "User updated profile information");
         log.debug("Updated user: {}", existingOne);
         return existingOne;
     }
@@ -308,6 +312,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
         user.setPasswordHash(DEFAULT_PASSWORD_ENCODER_PREFIX + BCRYPT_PASSWORD_ENCODER.encode(newRawPassword));
         userRepository.save(user);
+        securityAuditLogService.log(username, "PASSWORD_CHANGE", "WARN", httpServletRequest.getHeader("User-Agent"),
+                httpServletRequest.getRemoteAddr(), "Unknown", "User changed password");
         log.info("Changed password for user: {}", user);
         return user;
     }
@@ -355,7 +361,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User user = userRepository.findOneByResetCode(resetCode)
                 .orElseThrow(() -> new RuntimeException("Invalid or expired reset code"));
 
-        Validate.isTrue(Instant.now().isBefore(user.getResetAt().plus(RESET_CODE_EXPIRATION_MINUTES, ChronoUnit.MINUTES)),
+        Validate.isTrue(
+                Instant.now().isBefore(user.getResetAt().plus(RESET_CODE_EXPIRATION_MINUTES, ChronoUnit.MINUTES)),
                 messageCreator.getMessage("UE1023"));
 
         user.setPasswordHash(DEFAULT_PASSWORD_ENCODER_PREFIX + BCRYPT_PASSWORD_ENCODER.encode(newRawPassword));
@@ -466,7 +473,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         List<User> expiredUsers = userRepository.findByMembershipExpiresAtBeforeAndMembershipTypeNotNull(now);
 
         for (User user : expiredUsers) {
-            log.info("Downgrading user {} from {} (expired at {})", user.getUsername(), user.getMembershipType(), user.getMembershipExpiresAt());
+            log.info("Downgrading user {} from {} (expired at {})", user.getUsername(), user.getMembershipType(),
+                    user.getMembershipExpiresAt());
 
             // Clear membership info
             String oldType = user.getMembershipType();

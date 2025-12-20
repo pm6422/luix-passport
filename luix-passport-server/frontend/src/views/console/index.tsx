@@ -5,11 +5,8 @@ import {
   AppWindow,
   ArrowUpRight,
   ArrowDownRight,
-  ShieldCheck,
-  CreditCard,
   Globe,
   CircleDot,
-  LogOut,
   Mail,
   Inbox
 } from "lucide-react"
@@ -27,6 +24,8 @@ import { Badge } from "@/components/ui/badge"
 import { useLoginUserStore } from "@/stores/login-user-store"
 import { useNavigate } from "react-router-dom"
 import { LoginLogService, type ActivityData } from "@/services/login-log-service"
+import { SecurityAuditLogService } from "@/services/security-audit-log-service"
+import { type SecurityAuditLog } from "@/domains/security-audit-log"
 import { type LoginLog } from "@/domains/login-log"
 import { ROLE_ADMIN } from "@/domains/role"
 import { formatRelativeTime, formatTime } from "@/lib/time-utils"
@@ -59,7 +58,6 @@ import {
 } from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { Progress } from "@/components/ui/progress"
 import { motion, AnimatePresence } from "framer-motion"
 import { CreateTeamDialog } from "@/views/team/dialog/create-team-dialog"
 import { calculateTrend } from "@/lib/utils"
@@ -106,6 +104,7 @@ export default function ConsolePage() {
   const [membershipData, setMembershipData] = useState<any[]>([])
   const [activityData, setActivityData] = useState<ActivityData[]>([])
   const [activityDays, setActivityDays] = useState("7d")
+  const [securityLogs, setSecurityLogs] = useState<SecurityAuditLog[]>([])
 
   useEffect(() => {
     fetchDashboardData()
@@ -126,7 +125,7 @@ export default function ConsolePage() {
       const since = yesterday.toISOString()
       const sinceMs = yesterday.getTime()
 
-      const [invitationsRes, teamsRes, unreadRes, appsCountRes, appsPrevCountRes, usersRes, usersPrevRes, sessionCountRes, sessionPrevRes, teamCountRes, teamPrevCountRes, membershipRes, inboxRes, logsRes] = await Promise.all([
+      const [invitationsRes, teamsRes, unreadRes, appsCountRes, appsPrevCountRes, usersRes, usersPrevRes, sessionCountRes, sessionPrevRes, teamCountRes, teamPrevCountRes, membershipRes, inboxRes, logsRes, securityLogsRes] = await Promise.all([
         TeamService.getUserInvitations(),
         TeamService.findUserTeams(),
         InboxService.countUnread(),
@@ -140,7 +139,8 @@ export default function ConsolePage() {
         hasRole(ROLE_ADMIN) ? TeamService.count(since) : Promise.resolve({ data: 0 }),
         hasRole(ROLE_ADMIN) ? TeamService.getMembershipStats() : Promise.resolve({ data: { FREE: 0, PRO: 0, PREMIUM: 0 } }),
         InboxService.find({ page: 0, size: 4 }),
-        hasRole(ROLE_ADMIN) ? LoginLogService.findRecentLogins(0, 5) : Promise.resolve({ data: { content: [] } })
+        hasRole(ROLE_ADMIN) ? LoginLogService.findRecentLogins(0, 5) : Promise.resolve({ data: { content: [] } }),
+        hasRole(ROLE_ADMIN) ? SecurityAuditLogService.find(0, 5) : Promise.resolve({ data: { content: [] } })
       ])
 
       const currentUsers = usersRes.data
@@ -157,6 +157,7 @@ export default function ConsolePage() {
       setUserCount(currentUsers)
       setMessages(inboxRes.data.content)
       setLoginLogs(logsRes.data.content)
+      setSecurityLogs(securityLogsRes.data.content)
 
       const mStats = membershipRes.data
       const formattedMembershipData = [
@@ -457,18 +458,68 @@ export default function ConsolePage() {
               </Card>
             </TabsContent>
 
-            <TabsContent value="teams">
-              <Card className="p-12 text-center border-dashed border-2 bg-secondary/50">
-                <div className="mx-auto w-12 h-12 rounded-full bg-muted flex items-center justify-center mb-4">
-                  <Users className="h-6 w-6 text-muted-foreground text-opacity-40" />
-                </div>
-                <h3 className="font-semibold text-lg">No recent team activity</h3>
-                <p className="text-muted-foreground text-sm max-w-xs mx-auto mt-2">
-                  Team member actions and role changes will appear here as they happen.
-                </p>
-                <Button variant="outline" size="sm" className="mt-4" onClick={() => navigate("/teams")}>
-                  Manage Teams
-                </Button>
+            <TabsContent value="security" className="mt-0 outline-none">
+              <Card className="border-none shadow-sm bg-secondary/50 dark:bg-red-500/5 backdrop-blur-xl overflow-hidden">
+                <CardContent className="p-0">
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="hover:bg-transparent border-muted/50">
+                        <TableHead className="pl-6 h-12 w-[100px] uppercase text-[10px] font-bold tracking-wider text-muted-foreground/70">Severity</TableHead>
+                        <TableHead className="h-12 uppercase text-[10px] font-bold tracking-wider text-muted-foreground/70">Event</TableHead>
+                        <TableHead className="h-12 uppercase text-[10px] font-bold tracking-wider text-muted-foreground/70">Principal</TableHead>
+                        <TableHead className="h-12 uppercase text-[10px] font-bold tracking-wider text-muted-foreground/70">Context</TableHead>
+                        <TableHead className="pr-6 h-12 text-right uppercase text-[10px] font-bold tracking-wider text-muted-foreground/70">Time</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {securityLogs.map((log: SecurityAuditLog) => (
+                        <TableRow key={log.id} className="cursor-default hover:bg-muted/30 transition-colors border-muted/50">
+                          <TableCell className="pl-6 py-4">
+                            <Badge variant={log.severity === 'CRITICAL' ? 'destructive' : log.severity === 'WARN' ? 'secondary' : 'outline'}
+                              className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded-full shadow-none border-none
+                                     ${log.severity === 'WARN' ? 'bg-yellow-500/10 text-yellow-600 dark:text-yellow-400' : ''}
+                                     ${log.severity === 'INFO' ? 'bg-blue-500/10 text-blue-600 dark:text-blue-400' : ''}
+                                   `}>
+                              {log.severity}
+                            </Badge>
+                          </TableCell>
+                          <TableCell className="py-4">
+                            <div className="flex flex-col">
+                              <span className="text-sm font-semibold text-foreground/90">{log.action}</span>
+                              <span className="text-[10px] text-muted-foreground truncate max-w-[200px]" title={log.details}>{log.details}</span>
+                            </div>
+                          </TableCell>
+                          <TableCell className="py-4">
+                            <div className="flex items-center gap-2">
+                              <Avatar className="h-6 w-6 border border-primary/10">
+                                <AvatarFallback className="text-[10px] bg-primary/5 text-primary font-bold">
+                                  {log.principal[0].toUpperCase()}
+                                </AvatarFallback>
+                              </Avatar>
+                              <span className="text-xs font-medium">{log.principal}</span>
+                            </div>
+                          </TableCell>
+                          <TableCell className="py-4">
+                            <div className="flex flex-col gap-0.5">
+                              <span className="text-xs text-muted-foreground">{log.ip}</span>
+                              <span className="text-[10px] text-muted-foreground italic">{log.location}</span>
+                            </div>
+                          </TableCell>
+                          <TableCell className="pr-6 py-4 text-right text-xs text-muted-foreground font-medium">
+                            {formatRelativeTime(log.createdAt)}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                      {securityLogs.length === 0 && !loading && (
+                        <TableRow>
+                          <TableCell colSpan={5} className="py-10 text-center text-muted-foreground italic">
+                            No security events recorded.
+                          </TableCell>
+                        </TableRow>
+                      )}
+                    </TableBody>
+                  </Table>
+                </CardContent>
               </Card>
             </TabsContent>
           </Tabs>

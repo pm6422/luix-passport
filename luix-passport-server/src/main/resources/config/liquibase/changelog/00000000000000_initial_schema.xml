@@ -707,5 +707,26 @@
                 referencedColumnNames="id"
                 onDelete="CASCADE"
                 onUpdate="CASCADE"/>
+        <createTable tableName="security_audit_log">
+            <column name="id" type="VARCHAR(18)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="principal" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="action" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="severity" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ip" type="VARCHAR(255)"/>
+            <column name="location" type="VARCHAR(255)"/>
+            <column name="user_agent" type="VARCHAR(255)"/>
+            <column name="details" type="TEXT"/>
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
     </changeSet>
 </databaseChangeLog>

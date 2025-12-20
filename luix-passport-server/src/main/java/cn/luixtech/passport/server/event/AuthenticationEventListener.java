@@ -31,6 +31,7 @@ public class AuthenticationEventListener {
     private final SessionRegistry sessionRegistry;
     private final SseNotifier sseNotifier;
     private final LoginLogService loginLogService;
+    private final cn.luixtech.passport.server.service.SecurityAuditLogService securityAuditLogService;
     private final HttpServletRequest httpServletRequest;
 
     @EventListener
@@ -39,6 +40,12 @@ public class AuthenticationEventListener {
             userService.updateLastLoginTime(authUser.getUsername());
             loginLogService.recordLogin(authUser.getUsername(), authUser.getEmail(), "success", httpServletRequest);
             log.info("Authenticated successfully for user: {}", authUser.getUsername());
+
+            // Audit Log
+            String ip = httpServletRequest.getRemoteAddr();
+            String details = "Successful login via " + event.getSource().getClass().getSimpleName();
+            securityAuditLogService.log(authUser.getUsername(), "LOGIN_SUCCESS", "INFO",
+                    httpServletRequest.getHeader("User-Agent"), ip, "Unknown", details);
         }
     }
 
@@ -57,6 +64,12 @@ public class AuthenticationEventListener {
             loginLogService.recordLogin(username, email, "failed", httpServletRequest);
             log.warn("Authenticate failure for user: {} with exception: {}", username,
                     event.getException().getMessage());
+
+            // Audit Log
+            String ip = httpServletRequest.getRemoteAddr();
+            String details = "Failed login: " + event.getException().getMessage();
+            securityAuditLogService.log(username, "LOGIN_FAILURE", "WARN", httpServletRequest.getHeader("User-Agent"),
+                    ip, "Unknown", details);
         }
     }
 
