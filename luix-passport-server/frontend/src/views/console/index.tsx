@@ -48,6 +48,7 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart"
+import colors from "tailwindcss/colors"
 import {
   Table,
   TableBody,
@@ -159,11 +160,10 @@ export default function ConsolePage() {
 
       const mStats = membershipRes.data
       const formattedMembershipData = [
-        { name: "Free Layer", value: mStats.FREE || 0, color: "#94a3b8" },
-        { name: "Pro Plan", value: mStats.PRO || 0, color: "#3b82f6" },
-        { name: "Premium Plan", value: mStats.PREMIUM || 0, color: "#8b5cf6" },
+        { name: "Free Layer", value: mStats.FREE || 0, color: colors.gray[400] },
+        { name: "Pro Plan", value: mStats.PRO || 0, color: colors.yellow[500] },
+        { name: "Premium Plan", value: mStats.PREMIUM || 0, color: colors.purple[600] },
       ]
-      setMembershipData(formattedMembershipData)
       setMembershipData(formattedMembershipData)
 
       const userTrendInfo = calculateTrend(currentUsers, currentUsers - prevUsers)
@@ -348,10 +348,11 @@ export default function ConsolePage() {
                     data={membershipData}
                     cx="50%"
                     cy="50%"
-                    innerRadius={60}
-                    outerRadius={80}
-                    paddingAngle={5}
+                    innerRadius={0}
+                    outerRadius={85}
+                    paddingAngle={0}
                     dataKey="value"
+                    stroke="none"
                   >
                     {membershipData.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={entry.color} />
@@ -519,37 +520,6 @@ export default function ConsolePage() {
             </CardContent>
           </Card>
 
-          {/* Quick Stats Widget */}
-          <Card className="border-none shadow-sm bg-secondary/50 dark:bg-blue-500/5 backdrop-blur-xl">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-bold flex items-center">
-                <ShieldCheck className="mr-2 h-4 w-4 text-primary" />
-                Security Health
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <div className="flex justify-between text-xs font-medium">
-                  <span>MFA Adoption</span>
-                  <span>78%</span>
-                </div>
-                <Progress value={78} className="h-1.5" />
-              </div>
-              <div className="space-y-2">
-                <div className="flex justify-between text-xs font-medium">
-                  <span>API Key Rotation</span>
-                  <span>42%</span>
-                </div>
-                <Progress value={42} className="h-1.5" />
-              </div>
-              <div className="pt-2">
-                <Button variant="link" className="p-0 h-auto text-xs text-primary" onClick={() => navigate("/account/settings")}>
-                  Strengthen Security Settings →
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-
           {/* Pending Invitations (Refined) */}
           <AnimatePresence>
             {invitations.length > 0 && (
@@ -590,16 +560,6 @@ export default function ConsolePage() {
               </motion.div>
             )}
           </AnimatePresence>
-
-          {/* Quick Links Overlay */}
-          <Card className="border-none shadow-sm mt-4 bg-secondary/50 dark:bg-slate-500/5 backdrop-blur-xl">
-            <div className="p-2 grid grid-cols-2 gap-2">
-              <QuickLink icon={AppWindow} label="Apps" onClick={() => navigate("/management/oauth2-clients")} />
-              <QuickLink icon={ShieldCheck} label="Permissions" onClick={() => navigate("/management/permissions")} />
-              <QuickLink icon={CreditCard} label="Billing" />
-              <QuickLink icon={LogOut} label="Sign Out" onClick={() => navigate("/logout")} color="text-destructive" />
-            </div>
-          </Card>
         </div>
       </div>
     </LayoutBody>
