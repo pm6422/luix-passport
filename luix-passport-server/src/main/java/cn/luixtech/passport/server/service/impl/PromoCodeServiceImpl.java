@@ -64,7 +64,8 @@ public class PromoCodeServiceImpl implements PromoCodeService {
 
         for (int i = 0; i < count; i++) {
             PromoCode promoCode = new PromoCode();
-            // Generate a readable random code, e.g., 12 chars, avoiding ambiguous characters (I, 1, L, O, 0)
+            // Generate a readable random code, e.g., 12 chars, avoiding ambiguous
+            // characters (I, 1, L, O, 0)
             StringBuilder sb = new StringBuilder(12);
             for (int j = 0; j < 12; j++) {
                 sb.append(PROMO_CODE_CHARS.charAt(RANDOM.nextInt(PROMO_CODE_CHARS.length())));
@@ -95,7 +96,7 @@ public class PromoCodeServiceImpl implements PromoCodeService {
         if (promoCode.getExpiresAt() != null && promoCode.getExpiresAt().isBefore(Instant.now())) {
             throw new IllegalArgumentException("Promo code has expired");
         }
-        
+
         // Check if user has already redeemed a code from this batch
         if (promoCodeRepository.existsByBatchIdAndUsedBy(promoCode.getBatchId(), username)) {
             throw new IllegalArgumentException("You have already redeemed a code from this batch");
@@ -111,9 +112,9 @@ public class PromoCodeServiceImpl implements PromoCodeService {
         Instant now = Instant.now();
         Instant newExpiry;
 
-        if (newType.equals(user.getMembershipType()) && 
-            user.getMembershipExpiresAt() != null && 
-            user.getMembershipExpiresAt().isAfter(now)) {
+        if (newType.equals(user.getMembershipType()) &&
+                user.getMembershipExpiresAt() != null &&
+                user.getMembershipExpiresAt().isAfter(now)) {
             // Extend existing membership
             newExpiry = user.getMembershipExpiresAt().plus(durationDays, ChronoUnit.DAYS);
         } else {
@@ -130,17 +131,26 @@ public class PromoCodeServiceImpl implements PromoCodeService {
         // Remove old membership roles to ensure only one active (or clean up)
         roles.remove(Role.ROLE_MEMBER_PRO);
         roles.remove(Role.ROLE_MEMBER_PREMIUM);
-        
+
         // Add new role
         roles.add(newType);
-        
+
         userRoleService.update(username, roles);
 
         // Mark code as used
         promoCode.setUsedAt(now);
         promoCode.setUsedBy(username);
         promoCodeRepository.save(promoCode);
-        
+
         log.info("User {} redeemed code {} for {} days of {}", username, code, durationDays, newType);
+    }
+
+    @Override
+    public void updateStatus(String id, boolean enabled) {
+        PromoCode promoCode = promoCodeRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Promo code not found"));
+        promoCode.setEnabled(enabled);
+        promoCodeRepository.save(promoCode);
+        log.info("Promo code {} status updated to {}", id, enabled);
     }
 }

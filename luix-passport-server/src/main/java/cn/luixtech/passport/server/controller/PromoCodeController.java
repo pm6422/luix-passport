@@ -29,9 +29,9 @@ public class PromoCodeController {
     @GetMapping("/admin/promo-codes")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Page<PromoCode>> find(Pageable pageable,
-                                                @RequestParam(required = false) String code,
-                                                @RequestParam(required = false) String batchId,
-                                                @RequestParam(required = false) Boolean enabled) {
+            @RequestParam(required = false) String code,
+            @RequestParam(required = false) String batchId,
+            @RequestParam(required = false) Boolean enabled) {
         return ResponseEntity.ok(promoCodeService.find(pageable, code, batchId, enabled));
     }
 
@@ -40,12 +40,11 @@ public class PromoCodeController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<PromoCode>> generate(@Valid @RequestBody GeneratePromoCodeDto dto) {
         List<PromoCode> codes = promoCodeService.generateCodes(
-                dto.getCount(), 
-                dto.getType(), 
-                dto.getDurationDays(), 
+                dto.getCount(),
+                dto.getType(),
+                dto.getDurationDays(),
                 dto.getExpiry(),
-                dto.getBatchId()
-        );
+                dto.getBatchId());
         return ResponseEntity.ok(codes);
     }
 
@@ -54,6 +53,14 @@ public class PromoCodeController {
     public ResponseEntity<Void> redeem(@Valid @RequestBody RedeemPromoCodeDto dto) {
         String username = AuthUtils.getCurrentUsername();
         promoCodeService.redeemCode(dto.getCode(), username);
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "Enable/Disable promo code")
+    @PatchMapping("/admin/promo-codes/{id}/status")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Void> updateStatus(@PathVariable String id, @RequestParam boolean enabled) {
+        promoCodeService.updateStatus(id, enabled);
         return ResponseEntity.ok().build();
     }
 }

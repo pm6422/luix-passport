@@ -4,7 +4,7 @@ import { AxiosResponse } from "axios"
 import { Page } from "@/domains/page"
 
 export class PromoCodeService {
-  
+
   public static find(reqParams: object): Promise<AxiosResponse<Page<PromoCode>>> {
     return http.get("/api/admin/promo-codes", { params: reqParams })
   }
@@ -15,5 +15,9 @@ export class PromoCodeService {
 
   public static redeem(data: RedeemPromoCode): Promise<void> {
     return http.post("/api/promo-codes/redeem", data)
+  }
+
+  public static updateStatus(id: string, enabled: boolean): Promise<void> {
+    return http.patch(`/api/admin/promo-codes/${id}/status`, null, { params: { enabled } })
   }
 }
