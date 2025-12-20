@@ -618,20 +618,20 @@ export default function ConsolePage() {
 function KpiCard({ title, value, trend, isUp, icon: Icon, description, bgClass, iconClass }: any) {
   return (
     <Card className={`border-none shadow-sm hover:shadow-md transition-all duration-300 ${bgClass || 'bg-background/50'} backdrop-blur-xl`}>
-      <CardContent className="p-5">
-        <div className="flex justify-between items-start">
-          <div className={`size-14 rounded-2xl ${iconClass || 'bg-primary/10 text-primary'} flex items-center justify-center mb-4 shadow-sm`}>
-            <Icon className="size-8" />
-          </div>
-          <div className={`flex items-center text-xs font-bold ${isUp ? 'text-emerald-500' : 'text-rose-500'} bg-transparent p-1`}>
-            {isUp ? <ArrowUpRight className="size-3 mr-0.5" /> : <ArrowDownRight className="size-3 mr-0.5" />}
-            {trend}
+      <CardContent className="p-5 flex items-center justify-between">
+        <div className="flex flex-col gap-0.5">
+          <p className="text-[10px] font-bold text-muted-foreground uppercase opacity-70">{title}</p>
+          <h3 className="text-2xl font-black tracking-tight leading-none my-0.5">{value}</h3>
+          <div className="flex items-center gap-2">
+            <div className={`flex items-center text-[10px] font-bold ${isUp ? 'text-emerald-500' : 'text-rose-500'} bg-transparent`}>
+              {isUp ? <ArrowUpRight className="size-3 mr-0.5" /> : <ArrowDownRight className="size-3 mr-0.5" />}
+              {trend}
+            </div>
+            <p className="text-[10px] text-muted-foreground italic opacity-60 truncate max-w-[100px] hidden xl:block">{description}</p>
           </div>
         </div>
-        <div>
-          <h3 className="text-2xl font-black tracking-tight">{value}</h3>
-          <p className="text-xs font-bold text-muted-foreground uppercase opacity-70 mb-1">{title}</p>
-          <p className="text-[10px] text-muted-foreground italic font-medium">{description}</p>
+        <div className={`size-12 rounded-xl ${iconClass || 'bg-primary/10 text-primary'} flex items-center justify-center shadow-sm ml-2`}>
+          <Icon className="size-6" />
         </div>
       </CardContent>
     </Card>
