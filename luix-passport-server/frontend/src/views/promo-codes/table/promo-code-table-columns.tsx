@@ -119,6 +119,7 @@ export function getPromoCodeColumns({ toggleEnabled, onSendEmail }: TableColumns
                 onSendEmail(promoCode)
               }}
               title="Send Email"
+              disabled={!!promoCode.usedBy || !!promoCode.usedAt}
             >
               <Mail className="size-4" />
               <span className="sr-only">Send Email</span>
