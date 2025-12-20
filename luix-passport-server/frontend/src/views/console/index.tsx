@@ -58,6 +58,7 @@ import {
 } from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { UserDateTime } from "@/components/custom/display/user-date-time"
 import { motion, AnimatePresence } from "framer-motion"
 import { CreateTeamDialog } from "@/views/team/dialog/create-team-dialog"
 import { calculateTrend } from "@/lib/utils"
@@ -130,7 +131,7 @@ export default function ConsolePage() {
         hasRole(ROLE_ADMIN) ? TeamService.count() : Promise.resolve({ data: 0 }),
         hasRole(ROLE_ADMIN) ? TeamService.count(since) : Promise.resolve({ data: 0 }),
         hasRole(ROLE_ADMIN) ? TeamService.getMembershipStats() : Promise.resolve({ data: { FREE: 0, PRO: 0, PREMIUM: 0 } }),
-        InboxService.find({ page: 0, size: 4 }),
+        InboxService.find({ page: 0, size: 1, sort: ["status,desc", "createdAt,desc"] }),
         hasRole(ROLE_ADMIN) ? LoginLogService.findRecentLogins(0, 5) : Promise.resolve({ data: { content: [] } }),
         hasRole(ROLE_ADMIN) ? SecurityAuditLogService.find(0, 5) : Promise.resolve({ data: { content: [] } })
       ])
@@ -537,34 +538,45 @@ export default function ConsolePage() {
               <div className="divide-y divide-border/50">
                 {loading ? (
                   [1, 2, 3].map(i => <div key={i} className="p-4 space-y-2"><div className="h-4 w-3/4 bg-muted animate-pulse rounded" /><div className="h-3 w-1/2 bg-muted/60 animate-pulse rounded" /></div>)
-                ) : (
-                  (() => {
-                    const unreadMessages = messages.filter(m => m.status === 'unread')
-                      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-                      // Get only the single most recent unread message
-                      .slice(0, 1)
-
-                    return unreadMessages.length > 0 ? (
-                      unreadMessages.map((msg: InboxType) => (
-                        <div key={msg.id} className={`p-4 hover:bg-muted/30 transition-colors cursor-pointer group ${msg.status === 'unread' ? 'bg-primary/[0.02]' : ''}`} onClick={() => navigate("/inbox")}>
-                          <div className="flex justify-between items-start gap-2">
-                            <h4 className={`text-xs font-semibold truncate flex items-center ${msg.status === 'unread' ? 'text-foreground' : 'text-muted-foreground'}`}>
-                              {msg.status === 'unread' && <span className="h-2 w-2 rounded-full bg-red-500 mr-2 flex-shrink-0" title="Unread" />}
-                              {msg.title}
-                            </h4>
-                            <span className="text-[10px] text-muted-foreground whitespace-nowrap">{msg.createdAt.split('T')[0]}</span>
-                          </div>
-                          <p className="text-[10px] text-muted-foreground line-clamp-1 mt-1 group-hover:text-foreground/70 transition-colors">
-                            {msg.content}
-                          </p>
-                        </div>
-                      ))
-                    ) : (
-                      <div className="p-8 text-center text-clip">
-                        <p className="text-[10px] text-muted-foreground italic">No unread messages.</p>
+                ) : messages.length > 0 ? (
+                  messages.map((msg: InboxType) => (
+                    <div
+                      key={msg.id}
+                      className={`relative p-4 hover:bg-muted/30 transition-colors cursor-pointer group ${msg.status === 'UNREAD' ? 'bg-primary/[0.02]' : ''}`}
+                      onClick={async () => {
+                        if (msg.status === 'UNREAD') {
+                          try {
+                            await InboxService.markAsRead(msg.id)
+                            const updatedMessages = messages.map(m => m.id === msg.id ? { ...m, status: 'READ' } : m)
+                            setMessages(updatedMessages)
+                            setStats(prev => ({ ...prev, unreadMessages: Math.max(0, prev.unreadMessages - 1) }))
+                          } catch (e) {
+                            console.error(e)
+                          }
+                        }
+                        navigate("/inbox")
+                      }}
+                    >
+                      <div className="flex justify-between items-start gap-2">
+                        <h4 className={`text-xs font-semibold truncate flex items-center gap-2 ${msg.status === 'UNREAD' ? 'text-foreground' : 'text-muted-foreground'}`}>
+                          {msg.status === "UNREAD" && (
+                            <div className="w-2 h-2 rounded-full bg-primary flex-shrink-0" />
+                          )}
+                          {msg.title}
+                        </h4>
+                        <span className="text-[10px] text-muted-foreground whitespace-nowrap">
+                          <UserDateTime value={msg.createdAt} type="datetime" />
+                        </span>
                       </div>
-                    )
-                  })()
+                      <p className="text-[10px] text-muted-foreground line-clamp-1 mt-1 group-hover:text-foreground/70 transition-colors">
+                        {msg.content}
+                      </p>
+                    </div>
+                  ))
+                ) : (
+                  <div className="p-8 text-center text-clip">
+                    <p className="text-[10px] text-muted-foreground italic">No messages found.</p>
+                  </div>
                 )}
               </div>
               <Button variant="ghost" className="w-full rounded-none h-10 text-xs border-t border-border/50 hover:bg-muted/50" onClick={() => navigate("/inbox")}>
