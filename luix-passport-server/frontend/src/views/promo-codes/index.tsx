@@ -93,6 +93,7 @@ export default function PromoCodes() {
           onOpenChange={setEmailDialogOpen}
           schema={emailSchema}
           defaultValues={{ email: "" }}
+          showFormErrors={false}
           save={async (formData) => {
             if (selectedPromoCode) {
               await PromoCodeService.sendEmail(selectedPromoCode.id, formData.email)
