@@ -475,9 +475,8 @@ export default function ConsolePage() {
           </Tabs>
         </div>
 
-        {/* Sidebar Widgets */}
+        {/* Recent Notifications Widget */}
         <div className="space-y-6">
-          {/* Recent Notifications Widget */}
           <Card className="border-none shadow-sm overflow-hidden text-clip bg-secondary/50 dark:bg-indigo-500/5 backdrop-blur-xl">
             <CardHeader className="pb-3 flex flex-row items-center justify-between border-b border-border/50">
               <div>
