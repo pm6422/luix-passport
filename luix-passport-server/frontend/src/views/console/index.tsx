@@ -15,7 +15,8 @@ import {
 } from "lucide-react"
 import { LayoutBody } from "@/layouts/layout-definitions"
 import { useEffect, useState } from "react"
-import { TeamService, TeamInvitation, Team } from "@/services/team-service"
+import { TeamService } from "@/services/team-service"
+import { type TeamInvitation, type Team } from "@/domains/team"
 import { InboxService } from "@/services/inbox-service"
 import { type Inbox as InboxType } from "@/domains/inbox"
 import { Oauth2ClientService } from "@/services/oauth2-client-service"
@@ -25,7 +26,7 @@ import { toast } from "sonner"
 import { Badge } from "@/components/ui/badge"
 import { useLoginUserStore } from "@/stores/login-user-store"
 import { useNavigate } from "react-router-dom"
-import { LoginLogService } from "@/services/login-log-service"
+import { LoginLogService, type ActivityData } from "@/services/login-log-service"
 import { type LoginLog } from "@/domains/login-log"
 import { ROLE_ADMIN } from "@/domains/role"
 import { formatRelativeTime, formatTime } from "@/lib/time-utils"
@@ -62,16 +63,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { CreateTeamDialog } from "@/views/team/dialog/create-team-dialog"
 import { calculateTrend } from "@/lib/utils"
 
-// Mock Data for Analytics
-const activityData = [
-  { name: "Mon", users: 400, logins: 240 },
-  { name: "Tue", users: 300, logins: 139 },
-  { name: "Wed", users: 200, logins: 980 },
-  { name: "Thu", users: 278, logins: 390 },
-  { name: "Fri", users: 189, logins: 480 },
-  { name: "Sat", users: 239, logins: 380 },
-  { name: "Sun", users: 349, logins: 430 },
-]
+// Data is fetched dynamically in the component
 
 // Membership Pie Chart Config
 // Membership Pie Chart Config
@@ -111,6 +103,7 @@ export default function ConsolePage() {
   const [lastSync, setLastSync] = useState<string>(new Date().toISOString())
   const [createTeamOpen, setCreateTeamOpen] = useState(false)
   const [membershipData, setMembershipData] = useState<any[]>([])
+  const [activityData, setActivityData] = useState<ActivityData[]>([])
 
   useEffect(() => {
     fetchDashboardData()
@@ -124,7 +117,7 @@ export default function ConsolePage() {
       const since = yesterday.toISOString()
       const sinceMs = yesterday.getTime()
 
-      const [invitationsRes, teamsRes, unreadRes, appsCountRes, appsPrevCountRes, usersRes, usersPrevRes, sessionCountRes, sessionPrevRes, teamCountRes, teamPrevCountRes, membershipRes, inboxRes, logsRes] = await Promise.all([
+      const [invitationsRes, teamsRes, unreadRes, appsCountRes, appsPrevCountRes, usersRes, usersPrevRes, sessionCountRes, sessionPrevRes, teamCountRes, teamPrevCountRes, membershipRes, activityRes, inboxRes, logsRes] = await Promise.all([
         TeamService.getUserInvitations(),
         TeamService.findUserTeams(),
         InboxService.countUnread(),
@@ -136,7 +129,8 @@ export default function ConsolePage() {
         hasRole(ROLE_ADMIN) ? SpringSessionService.count(sinceMs) : Promise.resolve({ data: 0 }),
         hasRole(ROLE_ADMIN) ? TeamService.count() : Promise.resolve({ data: 0 }),
         hasRole(ROLE_ADMIN) ? TeamService.count(since) : Promise.resolve({ data: 0 }),
-        hasRole(ROLE_ADMIN) ? UserService.getMembershipStats() : Promise.resolve({ data: { FREE: 0, PRO: 0, PREMIUM: 0 } }),
+        hasRole(ROLE_ADMIN) ? TeamService.getMembershipStats() : Promise.resolve({ data: { FREE: 0, PRO: 0, PREMIUM: 0 } }),
+        hasRole(ROLE_ADMIN) ? LoginLogService.getActivityStats() : Promise.resolve({ data: [] }),
         InboxService.find({ page: 0, size: 4 }),
         hasRole(ROLE_ADMIN) ? LoginLogService.findRecentLogins(0, 5) : Promise.resolve({ data: { content: [] } })
       ])
@@ -157,13 +151,13 @@ export default function ConsolePage() {
       setLoginLogs(logsRes.data.content)
 
       const mStats = membershipRes.data
-      const totalMembers = (mStats.FREE || 0) + (mStats.PRO || 0) + (mStats.PREMIUM || 0)
       const formattedMembershipData = [
-        { name: "Free Layer", value: totalMembers > 0 ? Math.round(((mStats.FREE || 0) / totalMembers) * 100) : 0, color: "#94a3b8" },
-        { name: "Pro Plan", value: totalMembers > 0 ? Math.round(((mStats.PRO || 0) / totalMembers) * 100) : 0, color: "#3b82f6" },
-        { name: "Premium", value: totalMembers > 0 ? Math.round(((mStats.PREMIUM || 0) / totalMembers) * 100) : 0, color: "#8b5cf6" },
+        { name: "Free Layer", value: mStats.FREE || 0, color: "#94a3b8" },
+        { name: "Pro Plan", value: mStats.PRO || 0, color: "#3b82f6" },
+        { name: "Premium Plan", value: mStats.PREMIUM || 0, color: "#8b5cf6" },
       ]
       setMembershipData(formattedMembershipData)
+      setActivityData(activityRes.data)
 
       const userTrendInfo = calculateTrend(currentUsers, currentUsers - prevUsers)
       const appTrendInfo = calculateTrend(currentApps, currentApps - prevApps)
@@ -276,8 +270,8 @@ export default function ConsolePage() {
         <Card className="lg:col-span-2 overflow-hidden border-none shadow-sm bg-secondary/50 dark:bg-violet-600/10 backdrop-blur-xl">
           <CardHeader className="flex flex-row items-center justify-between pb-8">
             <div>
-              <CardTitle>Security Activity</CardTitle>
-              <CardDescription>Authentication & Authorization trends (7 Days)</CardDescription>
+              <CardTitle>Login Activity</CardTitle>
+              <CardDescription>Authentication trends & active users (Last 7 Days)</CardDescription>
             </div>
             <Tabs defaultValue="7d" className="w-[180px]">
               <TabsList className="grid w-full grid-cols-2">
@@ -361,15 +355,22 @@ export default function ConsolePage() {
               </ResponsiveContainer>
             </div>
             <div className="w-full space-y-3 mt-4">
-              {membershipData.map((item) => (
-                <div key={item.name} className="flex items-center justify-between text-sm">
-                  <div className="flex items-center gap-2">
-                    <div className="h-2 w-2 rounded-full" style={{ backgroundColor: item.color }} />
-                    <span className="text-muted-foreground">{item.name}</span>
+              {membershipData.map((item) => {
+                const total = membershipData.reduce((acc: number, curr: any) => acc + curr.value, 0)
+                const percentage = total > 0 ? Math.round((item.value / total) * 100) : 0
+                return (
+                  <div key={item.name} className="flex items-center justify-between text-sm">
+                    <div className="flex items-center gap-2">
+                      <div className="h-2 w-2 rounded-full" style={{ backgroundColor: item.color }} />
+                      <span className="text-muted-foreground">{item.name}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="font-mono text-[10px] text-muted-foreground">{item.value}</span>
+                      <span className="font-medium">{percentage}%</span>
+                    </div>
                   </div>
-                  <span className="font-medium">{item.value}%</span>
-                </div>
-              ))}
+                )
+              })}
             </div>
           </CardContent>
         </Card>

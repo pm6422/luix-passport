@@ -20,7 +20,8 @@ import {
 } from "@/components/ui/sidebar"
 
 import { CreateTeamDialog } from "@/views/team/dialog/create-team-dialog"
-import { TeamService, type Team } from "@/services/team-service";
+import { TeamService } from "@/services/team-service";
+import { type Team } from "@/domains/team";
 import { useNavigate } from "react-router-dom";
 
 export function TeamSwitcher() {
@@ -102,7 +103,7 @@ export function TeamSwitcher() {
             <DropdownMenuSeparator />
             <DropdownMenuItem className="gap-2 p-2" onClick={() => setCreateTeamOpen(true)}>
               <div className="flex size-6 items-center justify-center">
-                <IconPlus className="size-4"/>
+                <IconPlus className="size-4" />
               </div>
               <div className="text-muted-foreground font-medium">Create Team</div>
             </DropdownMenuItem>

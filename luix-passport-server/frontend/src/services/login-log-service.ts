@@ -8,8 +8,18 @@ export class LoginLogService {
   }
 
   public static findRecentLogins(page: number, size: number, username?: string): Promise<AxiosResponse<Page<LoginLog>>> {
-    return http.get("/api/recent-logins", {
+    return http.get("/api/login-logs/recent", {
       params: { page, size, username }
     })
   }
+
+  public static getActivityStats(): Promise<AxiosResponse<Array<ActivityData>>> {
+    return http.get("/api/login-logs/activity")
+  }
+}
+
+export interface ActivityData {
+  name: string
+  users: number
+  logins: number
 }

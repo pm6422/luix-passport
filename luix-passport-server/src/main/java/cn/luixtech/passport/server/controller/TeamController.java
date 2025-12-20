@@ -1,11 +1,14 @@
 package cn.luixtech.passport.server.controller;
 
 import cn.luixtech.passport.server.repository.TeamRepository;
+import cn.luixtech.passport.server.repository.UserRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+
+import cn.luixtech.passport.server.domain.Role;
 import cn.luixtech.passport.server.domain.Team;
 import cn.luixtech.passport.server.domain.TeamInvitation;
 import cn.luixtech.passport.server.dto.TeamMember;
@@ -24,7 +27,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.Set;
+
+import static cn.luixtech.passport.server.domain.Role.ROLE_ADMIN;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 /**
  * REST controller for managing teams.
@@ -36,6 +44,7 @@ public class TeamController {
     private final TeamRepository teamRepository;
     private final TeamService teamService;
     private final RoleService roleService;
+    private final UserRepository userRepository;
 
     @Operation(summary = "count enabled teams")
     @GetMapping("/api/teams/count")
@@ -44,6 +53,19 @@ public class TeamController {
             return ResponseEntity.ok(teamRepository.countByCreatedAtAfter(since));
         }
         return ResponseEntity.ok(teamRepository.count());
+    }
+
+    @Operation(summary = "get membership statistics")
+    @GetMapping("/api/teams/membership-stats")
+    @PreAuthorize("hasAuthority(\"" + ROLE_ADMIN + "\")")
+    public ResponseEntity<Map<String, Long>> getMembershipStats() {
+        Map<String, Long> membershipStats = new HashMap<>();
+        membershipStats.put("FREE", userRepository.countByMembershipTypeIsNull());
+        membershipStats.put("PRO",
+                userRepository.countByMembershipType(Role.ROLE_MEMBER_PRO));
+        membershipStats.put("PREMIUM",
+                userRepository.countByMembershipType(Role.ROLE_MEMBER_PREMIUM));
+        return ResponseEntity.ok(membershipStats);
     }
 
     @Operation(summary = "find all role IDs")
@@ -161,4 +183,5 @@ public class TeamController {
         teamService.updateInviteeRoles(teamId, userId, roles, AuthUtils.getCurrentUsername());
         return ResponseEntity.ok().build();
     }
+
 }

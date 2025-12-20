@@ -1,5 +1,6 @@
 import http from "@/axios"
 import { AxiosResponse } from "axios"
+import { type Team, type TeamMember, type TeamInvitation } from "@/domains/team"
 
 export class TeamService {
   constructor() {
@@ -7,6 +8,10 @@ export class TeamService {
 
   public static count(since?: string): Promise<AxiosResponse<number>> {
     return http.get("/api/teams/count", { params: { since } })
+  }
+
+  public static getMembershipStats(): Promise<AxiosResponse<Record<string, number>>> {
+    return http.get("/api/teams/membership-stats")
   }
 
   public static inviteMembers(teamId: string, invitations: { inviteeEmail: string, inviteeRoles: string[] }[]): Promise<AxiosResponse<void>> {
@@ -85,33 +90,4 @@ export class TeamService {
   public static delete(teamId: string): Promise<AxiosResponse<void>> {
     return http.delete(`/api/teams/${teamId}`)
   }
-}
-
-export interface Team {
-  id: string
-  name: string
-  photo?: string
-  enabled: boolean
-}
-
-export interface TeamMember {
-  userId: string
-  email: string
-  firstName: string
-  lastName: string
-  avatar?: string
-  role: string
-  roles: string[]
-  joinedAt?: string
-}
-
-export interface TeamInvitation {
-  id: string
-  teamId: string
-  inviteeEmail: string
-  inviteeRoles: string
-  inviterId: string
-  status: string
-  createdAt: string
-  expiresAt: string
 }
