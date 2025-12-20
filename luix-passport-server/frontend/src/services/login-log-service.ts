@@ -9,7 +9,7 @@ export class LoginLogService {
 
   public static findRecentLogins(page: number, size: number, username?: string): Promise<AxiosResponse<Page<LoginLog>>> {
     return http.get("/api/login-logs/recent", {
-      params: { page, size, username }
+      params: { page, size, username, sort: "loginAt,desc" }
     })
   }
 

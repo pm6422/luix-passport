@@ -6,7 +6,7 @@ import { AxiosResponse } from "axios"
 export class SecurityAuditLogService {
   public static find(page: number, size: number): Promise<AxiosResponse<Page<SecurityAuditLog>>> {
     return http.get("/api/security-audit-logs", {
-      params: { page, size }
+      params: { page, size, sort: "createdAt,desc" }
     })
   }
 }
