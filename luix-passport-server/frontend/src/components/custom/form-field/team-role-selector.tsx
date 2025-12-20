@@ -22,6 +22,7 @@ interface TeamRoleSelectorProps {
   disabled?: boolean
   className?: string
   align?: "start" | "end" | "center"
+  maxDisplay?: number
 }
 
 export function TeamRoleSelector({
@@ -31,6 +32,7 @@ export function TeamRoleSelector({
   disabled = false,
   className,
   align = "start",
+  maxDisplay = 4,
 }: TeamRoleSelectorProps) {
   const handleRoleChange = (role: string, checked: boolean) => {
     let newRoles = [...value]
@@ -83,8 +85,15 @@ export function TeamRoleSelector({
           disabled={disabled}
         >
           <span className="truncate">
-            {/* Show meaningful roles first? Or just all joined.  */}
-            {value.length > 0 ? value.join(", ") : "Select roles"}
+            {value.length > 0 ? (
+              value.length > maxDisplay ? (
+                `${value.slice(0, maxDisplay).join(", ")} +${value.length - maxDisplay}`
+              ) : (
+                value.join(", ")
+              )
+            ) : (
+              "Select roles"
+            )}
           </span>
           <ChevronDown className="ms-2 size-4 shrink-0 opacity-50" />
         </Button>
@@ -157,6 +166,7 @@ interface Props<TFieldValues extends FieldValues> {
   description?: string
   className?: string
   hide?: boolean
+  maxDisplay?: number
 }
 
 const TeamRoleSelectorFormField = <TFieldValues extends FieldValues>({
@@ -168,7 +178,8 @@ const TeamRoleSelectorFormField = <TFieldValues extends FieldValues>({
   disabled,
   description,
   className,
-  hide = false
+  hide = false,
+  maxDisplay,
 }: Props<TFieldValues>) => {
   if (hide) return null
   return (
@@ -185,6 +196,7 @@ const TeamRoleSelectorFormField = <TFieldValues extends FieldValues>({
               allRoles={allRoles}
               disabled={disabled}
               className="w-full"
+              maxDisplay={maxDisplay}
             />
           </FormControl>
           {description && <FormDescription>{description}</FormDescription>}
