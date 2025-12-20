@@ -206,7 +206,7 @@ export default function TeamDashboard() {
   return (
     <LayoutBody className="flex flex-col space-y-6 pb-10" fixedHeight={false}>
       {/* Premium Header / Banner Style */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 bg-gradient-to-r from-primary/5 to-transparent p-6 rounded-2xl border border-primary/10">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 bg-secondary/50 dark:bg-gradient-to-r dark:from-primary/10 dark:to-transparent p-6 rounded-2xl border border-border/50 dark:border-primary/10">
         <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
           <div className={`relative group shrink-0 ${hasRole(ROLE_TEAM_OWNER) ? "cursor-pointer" : "cursor-default"}`} onClick={handleAvatarClick}>
             <Avatar className="size-24 border-4 border-background shadow-xl">
@@ -282,7 +282,7 @@ export default function TeamDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Column (Main Content) */}
         <div className="lg:col-span-2 flex flex-col gap-y-6">
-          <Card className="border-none shadow-sm bg-sky-500/10 dark:bg-sky-500/5 backdrop-blur-xl">
+          <Card className="border-none shadow-sm bg-secondary/50 dark:bg-sky-500/5 backdrop-blur-xl">
             <CardHeader className="pb-3 border-b border-white/5">
               <div className="flex items-center justify-between">
                 <div>
@@ -373,7 +373,7 @@ export default function TeamDashboard() {
           </Card>
 
           <RoleTeamOwner>
-            <Card className="border-none shadow-sm bg-indigo-500/10 dark:bg-indigo-500/5 backdrop-blur-xl">
+            <Card className="border-none shadow-sm bg-secondary/50 dark:bg-indigo-500/5 backdrop-blur-xl">
               <CardHeader className="pb-3 border-b border-white/5">
                 <div className="flex items-center justify-between">
                   <div>
@@ -477,7 +477,7 @@ export default function TeamDashboard() {
         <div className="flex flex-col gap-y-6">
           {/* Danger Zone */}
           <RoleTeamOwner>
-            <Card className="border-none shadow-sm shadow-rose-500/10 bg-rose-500/10 dark:bg-rose-500/5 backdrop-blur-xl">
+            <Card className="border-none shadow-sm shadow-rose-500/10 bg-secondary/50 dark:bg-rose-500/5 backdrop-blur-xl">
               <CardHeader className="pb-3 border-b border-rose-500/10">
                 <CardTitle className="text-sm font-bold text-rose-600 dark:text-rose-400 flex items-center gap-2">
                   <IconTrash className="size-4" />

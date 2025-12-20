@@ -158,11 +158,11 @@ export default function ConsolePage() {
                 }`}></span>
             </span>
             <span className="text-sm font-medium">
-              System Health: <span className={
+              System Status: <span className={
                 apiStatus === 'operational' ? 'text-emerald-600 dark:text-emerald-400' :
                   apiStatus === 'degraded' ? 'text-amber-600 dark:text-amber-400' : 'text-rose-600 dark:text-rose-400'
               }>
-                {apiStatus === 'operational' ? 'Stable' : apiStatus === 'degraded' ? 'Issues Detected' : 'Offline'}
+                {apiStatus === 'operational' ? 'Healthy' : apiStatus === 'degraded' ? 'Issues Detected' : 'Offline'}
               </span>
             </span>
             <span className="mx-2 text-border">|</span>
