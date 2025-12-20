@@ -161,7 +161,7 @@ export default function ConsolePage() {
 
       const mStats = membershipRes.data
       const formattedMembershipData = [
-        { name: "Free Layer", value: mStats.FREE || 0, color: colors.gray[400] },
+        { name: "Free Layer", value: mStats.FREE || 0, color: colors.blue[800] },
         { name: "Pro Plan", value: mStats.PRO || 0, color: colors.yellow[500] },
         { name: "Premium Plan", value: mStats.PREMIUM || 0, color: colors.purple[600] },
       ]
