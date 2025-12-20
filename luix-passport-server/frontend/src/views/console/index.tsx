@@ -381,121 +381,8 @@ export default function ConsolePage() {
       </RoleAdmin>
 
       {/* Tabs Section for Deep Data */}
-      <RoleAdmin>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Main Chart */}
-          <Card className="lg:col-span-2 overflow-hidden border border-border/50 shadow-sm bg-card">
-            <CardHeader className="flex flex-row items-center justify-between pb-4">
-              <div>
-                <CardTitle>Login Activity</CardTitle>
-                <CardDescription>Authentication trends & active users (Last {activityDays.replace("d", "")} Days)</CardDescription>
-              </div>
-              <Tabs defaultValue="7d" className="w-[180px]" value={activityDays} onValueChange={setActivityDays}>
-                <TabsList className="grid w-full grid-cols-2">
-                  <TabsTrigger value="7d">7 Days</TabsTrigger>
-                  <TabsTrigger value="30d">30 Days</TabsTrigger>
-                </TabsList>
-              </Tabs>
-            </CardHeader>
-            <CardContent className="px-2">
-              <ChartContainer config={chartConfig} className="h-[250px] w-full">
-                <AreaChart data={activityData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-                  <defs>
-                    <linearGradient id="colorUsers" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.6} />
-                      <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0.2} />
-                    </linearGradient>
-                    <linearGradient id="colorLogins" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#10b981" stopOpacity={0.4} />
-                      <stop offset="95%" stopColor="#10b981" stopOpacity={0.1} />
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid vertical={false} strokeDasharray="3 3" />
-                  <XAxis
-                    dataKey="name"
-                    axisLine={false}
-                    tickLine={false}
-                    tickMargin={10}
-                  />
-                  <YAxis
-                    axisLine={false}
-                    tickLine={false}
-                  />
-                  <ChartTooltip content={<ChartTooltipContent />} />
-                  <Area
-                    type="monotone"
-                    dataKey="users"
-                    stroke="#8b5cf6"
-                    fillOpacity={1}
-                    fill="url(#colorUsers)"
-                    strokeWidth={2}
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="logins"
-                    stroke="#10b981"
-                    fillOpacity={1}
-                    fill="url(#colorLogins)"
-                    strokeWidth={2}
-                    strokeDasharray="4 4"
-                  />
-                </AreaChart>
-              </ChartContainer>
-            </CardContent>
-          </Card>
-
-          {/* Membership Distribution */}
-          <Card className="border border-border/50 shadow-sm bg-card">
-            <CardHeader>
-              <CardTitle>Membership Stats</CardTitle>
-              <CardDescription>User tier distribution</CardDescription>
-            </CardHeader>
-            <CardContent className="flex flex-col items-center">
-              <div className="h-[180px] w-full">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={membershipData}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={0}
-                      outerRadius={85}
-                      paddingAngle={0}
-                      dataKey="value"
-                      stroke="none"
-                    >
-                      {membershipData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
-                      ))}
-                    </Pie>
-                    <RechartsTooltip />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
-              <div className="w-full space-y-2 mt-2">
-                {membershipData.map((item) => {
-                  const total = membershipData.reduce((acc: number, curr: any) => acc + curr.value, 0)
-                  const percentage = total > 0 ? Math.round((item.value / total) * 100) : 0
-                  return (
-                    <div key={item.name} className="flex items-center justify-between text-sm">
-                      <div className="flex items-center gap-2">
-                        <div className="h-2 w-2 rounded-full" style={{ backgroundColor: item.color }} />
-                        <span className="text-muted-foreground">{item.name}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <span className="font-mono text-[10px] text-muted-foreground">{item.value}</span>
-                        <span className="font-medium">{percentage}%</span>
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Tabs Section for Deep Data */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <RoleAdmin>
           <div className="lg:col-span-2">
             <Tabs defaultValue="logins" className="w-full">
               <div className="flex items-center justify-between mb-4">
@@ -633,118 +520,118 @@ export default function ConsolePage() {
               </TabsContent>
             </Tabs>
           </div>
-        </div>
-      </RoleAdmin>
+        </RoleAdmin>
 
-      {/* Recent Notifications Widget */}
-      <div className="space-y-6">
-        <Card className="border border-border/50 shadow-sm overflow-hidden text-clip bg-card">
-          <CardHeader className="pb-3 flex flex-row items-center justify-between border-b border-border/50">
-            <div>
-              <CardTitle className="text-sm font-bold flex items-center">
-                <Inbox className="mr-2 h-4 w-4 text-primary" />
-                Recent Notifications
-              </CardTitle>
-            </div>
-            {stats.unreadMessages > 0 && (
-              <Badge variant="outline" className="text-[10px] bg-primary/5 text-primary border-primary/20">
-                {stats.unreadMessages} New
-              </Badge>
-            )}
-          </CardHeader>
-          <CardContent className="p-0">
-            <div className="divide-y divide-border/50">
-              {loading ? (
-                [1, 2, 3].map(i => <div key={i} className="p-4 space-y-2"><div className="h-4 w-3/4 bg-muted animate-pulse rounded" /><div className="h-3 w-1/2 bg-muted/60 animate-pulse rounded" /></div>)
-              ) : messages.length > 0 ? (
-                messages.map((msg: InboxType) => (
-                  <div
-                    key={msg.id}
-                    className={`relative p-4 hover:bg-muted/30 transition-colors cursor-pointer group ${msg.status === 'UNREAD' ? 'bg-primary/[0.02]' : ''}`}
-                    onClick={async () => {
-                      if (msg.status === 'UNREAD') {
-                        try {
-                          await InboxService.markAsRead(msg.id)
-                          const updatedMessages = messages.map(m => m.id === msg.id ? { ...m, status: 'READ' } : m)
-                          setMessages(updatedMessages)
-                          setStats(prev => ({ ...prev, unreadMessages: Math.max(0, prev.unreadMessages - 1) }))
-                        } catch (e) {
-                          console.error(e)
-                        }
-                      }
-                      navigate("/inbox")
-                    }}
-                  >
-                    <div className="flex justify-between items-start gap-2">
-                      <h4 className={`text-xs font-semibold truncate flex items-center gap-2 ${msg.status === 'UNREAD' ? 'text-foreground' : 'text-muted-foreground'}`}>
-                        {msg.status === "UNREAD" && (
-                          <div className="w-2 h-2 rounded-full bg-primary flex-shrink-0" />
-                        )}
-                        {msg.title}
-                      </h4>
-                      <span className="text-[10px] text-muted-foreground whitespace-nowrap">
-                        <UserDateTime value={msg.createdAt} type="datetime" />
-                      </span>
-                    </div>
-                    <p className="text-[10px] text-muted-foreground line-clamp-1 mt-1 group-hover:text-foreground/70 transition-colors">
-                      {msg.content}
-                    </p>
-                  </div>
-                ))
-              ) : (
-                <div className="p-8 text-center text-clip">
-                  <p className="text-[10px] text-muted-foreground italic">No messages found.</p>
-                </div>
+        {/* Recent Notifications Widget - Visible to all users */}
+        <div className="space-y-6">
+          <Card className="border border-border/50 shadow-sm overflow-hidden text-clip bg-card">
+            <CardHeader className="pb-3 flex flex-row items-center justify-between border-b border-border/50">
+              <div>
+                <CardTitle className="text-sm font-bold flex items-center">
+                  <Inbox className="mr-2 h-4 w-4 text-primary" />
+                  Recent Notifications
+                </CardTitle>
+              </div>
+              {stats.unreadMessages > 0 && (
+                <Badge variant="outline" className="text-[10px] bg-primary/5 text-primary border-primary/20">
+                  {stats.unreadMessages} New
+                </Badge>
               )}
-            </div>
-            <Button variant="ghost" className="w-full rounded-none h-10 text-xs border-t border-border/50 hover:bg-muted/50" onClick={() => navigate("/inbox")}>
-              View All Messages
-            </Button>
-          </CardContent>
-        </Card>
-
-        {/* Pending Invitations (Refined) */}
-        <AnimatePresence>
-          {invitations.length > 0 && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-            >
-              <Card className="border border-border/50 shadow-lg shadow-primary/10 bg-card">
-                <CardHeader className="pb-3 border-b border-border/50">
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-md">Team Requests</CardTitle>
-                    <Badge variant="destructive" className="rounded-full h-5 w-5 p-0 flex items-center justify-center text-[10px]">
-                      {invitations.length}
-                    </Badge>
-                  </div>
-                </CardHeader>
-                <CardContent className="p-4 space-y-4">
-                  {invitations.map((inv: TeamInvitation) => (
-                    <div key={inv.id} className="p-3 bg-muted/30 rounded-lg flex flex-col gap-3">
-                      <div className="flex items-start gap-3">
-                        <div className="h-8 w-8 rounded-full bg-blue-500/10 flex items-center justify-center">
-                          <Mail className="h-4 w-4 text-blue-600" />
-                        </div>
-                        <div className="flex-1 overflow-hidden">
-                          <p className="text-xs font-semibold truncate italic text-muted-foreground">{inv.inviteeRoles}</p>
-                          <p className="text-[10px] text-muted-foreground">Expires {new Date(inv.expiresAt).toLocaleDateString()}</p>
-                        </div>
+            </CardHeader>
+            <CardContent className="p-0">
+              <div className="divide-y divide-border/50">
+                {loading ? (
+                  [1, 2, 3].map(i => <div key={i} className="p-4 space-y-2"><div className="h-4 w-3/4 bg-muted animate-pulse rounded" /><div className="h-3 w-1/2 bg-muted/60 animate-pulse rounded" /></div>)
+                ) : messages.length > 0 ? (
+                  messages.map((msg: InboxType) => (
+                    <div
+                      key={msg.id}
+                      className={`relative p-4 hover:bg-muted/30 transition-colors cursor-pointer group ${msg.status === 'UNREAD' ? 'bg-primary/[0.02]' : ''}`}
+                      onClick={async () => {
+                        if (msg.status === 'UNREAD') {
+                          try {
+                            await InboxService.markAsRead(msg.id)
+                            const updatedMessages = messages.map(m => m.id === msg.id ? { ...m, status: 'READ' } : m)
+                            setMessages(updatedMessages)
+                            setStats(prev => ({ ...prev, unreadMessages: Math.max(0, prev.unreadMessages - 1) }))
+                          } catch (e) {
+                            console.error(e)
+                          }
+                        }
+                        navigate("/inbox")
+                      }}
+                    >
+                      <div className="flex justify-between items-start gap-2">
+                        <h4 className={`text-xs font-semibold truncate flex items-center gap-2 ${msg.status === 'UNREAD' ? 'text-foreground' : 'text-muted-foreground'}`}>
+                          {msg.status === "UNREAD" && (
+                            <div className="w-2 h-2 rounded-full bg-primary flex-shrink-0" />
+                          )}
+                          {msg.title}
+                        </h4>
+                        <span className="text-[10px] text-muted-foreground whitespace-nowrap">
+                          <UserDateTime value={msg.createdAt} type="datetime" />
+                        </span>
                       </div>
-                      <div className="flex gap-2">
-                        <Button size="sm" className="flex-1 h-7 text-[10px]" onClick={() => navigate(`/teams`)}>Accept</Button>
-                        <Button size="sm" variant="ghost" className="flex-1 h-7 text-[10px]">Ignore</Button>
-                      </div>
+                      <p className="text-[10px] text-muted-foreground line-clamp-1 mt-1 group-hover:text-foreground/70 transition-colors">
+                        {msg.content}
+                      </p>
                     </div>
-                  ))}
-                </CardContent>
-              </Card>
-            </motion.div>
-          )}
-        </AnimatePresence>
+                  ))
+                ) : (
+                  <div className="p-8 text-center text-clip">
+                    <p className="text-[10px] text-muted-foreground italic">No messages found.</p>
+                  </div>
+                )}
+              </div>
+              <Button variant="ghost" className="w-full rounded-none h-10 text-xs border-t border-border/50 hover:bg-muted/50" onClick={() => navigate("/inbox")}>
+                View All Messages
+              </Button>
+            </CardContent>
+          </Card>
+
+          {/* Pending Invitations (Refined) */}
+          <AnimatePresence>
+            {invitations.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+              >
+                <Card className="border border-border/50 shadow-lg shadow-primary/10 bg-card">
+                  <CardHeader className="pb-3 border-b border-border/50">
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="text-md">Team Requests</CardTitle>
+                      <Badge variant="destructive" className="rounded-full h-5 w-5 p-0 flex items-center justify-center text-[10px]">
+                        {invitations.length}
+                      </Badge>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="p-4 space-y-4">
+                    {invitations.map((inv: TeamInvitation) => (
+                      <div key={inv.id} className="p-3 bg-muted/30 rounded-lg flex flex-col gap-3">
+                        <div className="flex items-start gap-3">
+                          <div className="h-8 w-8 rounded-full bg-blue-500/10 flex items-center justify-center">
+                            <Mail className="h-4 w-4 text-blue-600" />
+                          </div>
+                          <div className="flex-1 overflow-hidden">
+                            <p className="text-xs font-semibold truncate italic text-muted-foreground">{inv.inviteeRoles}</p>
+                            <p className="text-[10px] text-muted-foreground">Expires {new Date(inv.expiresAt).toLocaleDateString()}</p>
+                          </div>
+                        </div>
+                        <div className="flex gap-2">
+                          <Button size="sm" className="flex-1 h-7 text-[10px]" onClick={() => navigate(`/teams`)}>Accept</Button>
+                          <Button size="sm" variant="ghost" className="flex-1 h-7 text-[10px]">Ignore</Button>
+                        </div>
+                      </div>
+                    ))}
+                  </CardContent>
+                </Card>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </div>
-    </LayoutBody >
+    </LayoutBody>
   )
 }
 
