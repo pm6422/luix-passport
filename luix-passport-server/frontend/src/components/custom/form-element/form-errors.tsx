@@ -66,10 +66,10 @@ const FormErrors = <T extends FieldValues>({
           {errors.map((err, index) => (
             <div
               key={`${err.field}-${index}`}
-              className="flex items-start gap-2"
+              className="flex items-center gap-2"
             >
-              <Badge variant="outline" className="capitalize text-[10px] px-1.5 py-0.5 leading-none border-destructive">{err.field}</Badge>
-              <span className="text-muted-foreground text-xs">{err.message}</span>
+              <Badge variant="outline" className="capitalize text-[10px] px-1.5 py-0.5 leading-none border-destructive whitespace-nowrap">{err.field}</Badge>
+              <span className="text-muted-foreground text-xs whitespace-nowrap">{err.message}</span>
             </div>
           ))}
         </div>
