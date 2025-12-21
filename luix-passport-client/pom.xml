@@ -103,7 +103,7 @@
                         <version>3.5.0</version>
                         <configuration>
                             <from>
-                                <image>eclipse-temurin:25-jre-jammy</image>
+                                <image>eclipse-temurin:25-jre-jammy@sha256:1f12ca3f1527ae593d1f326fc1c8cfa5dee38517549f43c86349a109615c5cfd</image>
                                 <platforms>
                                     <platform>
                                         <architecture>${jib.arch}</architecture>
