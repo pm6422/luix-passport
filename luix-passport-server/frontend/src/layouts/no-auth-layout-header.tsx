@@ -21,10 +21,6 @@ export function NoAuthLayoutHeader() {
       href: "/features"
     },
     {
-      title: "Pricing",
-      href: "/pricing"
-    },
-    {
       title: "Docs",
       href: "/docs"
     },
