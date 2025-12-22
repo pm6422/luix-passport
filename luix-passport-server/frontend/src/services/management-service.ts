@@ -6,10 +6,14 @@ import appInfoData from "@/data/app-info.json"
 
 export type HealthComponent = {
   status?: "UP" | "DOWN" | "UNKNOWN"
-  components?: Record<string, HealthComponent>
   details?: Record<string, unknown>
   error?: string
   [key: string]: unknown
+}
+
+export type HealthResponse = {
+  status: "UP" | "DOWN" | "UNKNOWN" | "OUT_OF_SERVICE"
+  components?: Record<string, HealthComponent>
 }
 
 export class ManagementService {
@@ -25,7 +29,7 @@ export class ManagementService {
     }
   }
 
-  public static getHealth(): Promise<AxiosResponse<{ components: Record<string, HealthComponent> }>> {
+  public static getHealth(): Promise<AxiosResponse<HealthResponse>> {
     return http.get("management/health", {})
   }
 }
