@@ -55,11 +55,10 @@ export default function ApiReferencePage() {
                 <li key={index}>
                   <Link
                     to={section.link}
-                    className={`flex items-center text-base ${
-                      section.title === "API Reference"
+                    className={`flex items-center text-base ${section.title === "API Reference"
                         ? "text-primary font-semibold"
                         : "text-muted-foreground hover:text-primary"
-                    }`}
+                      }`}
                   >
                     {section.icon}
                     {section.title}
@@ -80,32 +79,32 @@ export default function ApiReferencePage() {
           </p>
 
           <div className="flex flex-col gap-y-12">
-            {/* User Management */}
+            {/* User Profile */}
             <div className="border rounded-2xl p-6 hover:shadow-md transition-shadow">
               <h3 className="text-xl font-semibold mb-3 flex items-center">
                 <IconApi className="size-5 text-primary me-2" />
-                User Management
+                User Profile
               </h3>
               <p className="text-muted-foreground mb-4">
-                Manage user accounts and profiles.
+                Retrieve current authenticated user details.
               </p>
-              <h4 className="font-medium mb-2">GET /api/users/{'{userId}'}</h4>
-              <p className="text-muted-foreground mb-2">Retrieve user details.</p>
+              <h4 className="font-medium mb-2">GET /api/users/profile</h4>
               <div className="bg-muted/50 p-4 rounded-lg">
                 <pre className="text-sm text-muted-foreground">
-{`curl -X GET "https://api.luix-universe.com/v1/users/{userId}" \\
--H "Authorization: Bearer {your-api-key}"
+                  {`curl -X GET "https://api.example.com/api/users/profile" \\
+-H "Authorization: Bearer {access-token}"
 `}
                 </pre>
               </div>
               <p className="text-muted-foreground mt-4 mb-2">Response:</p>
               <div className="bg-muted/50 p-4 rounded-lg">
                 <pre className="text-sm text-muted-foreground">
-{`{
-  "id": "{userId}",
+                  {`{
+  "id": "123",
   "email": "user@example.com",
-  "name": "John Doe",
-  "createdAt": "2025-05-31T18:31:00Z"
+  "firstName": "John",
+  "lastName": "Doe",
+  "roles": ["ROLE_USER"]
 }
 `}
                 </pre>
@@ -119,13 +118,12 @@ export default function ApiReferencePage() {
                 Authentication
               </h3>
               <p className="text-muted-foreground mb-4">
-                Authenticate users and obtain access tokens.
+                Obtain authentication tokens.
               </p>
-              <h4 className="font-medium mb-2">POST /api/auth/login</h4>
-              <p className="text-muted-foreground mb-2">Log in a user.</p>
+              <h4 className="font-medium mb-2">POST /open-api/accounts/sign-in</h4>
               <div className="bg-muted/50 p-4 rounded-lg">
                 <pre className="text-sm text-muted-foreground">
-{`curl -X POST "https://api.luix-universe.com/v1/auth/login" \\
+                  {`curl -X POST "https://api.example.com/open-api/accounts/sign-in" \\
 -H "Content-Type: application/json" \\
 -d '{"email": "user@example.com", "password": "your-password"}'
 `}
@@ -134,42 +132,40 @@ export default function ApiReferencePage() {
               <p className="text-muted-foreground mt-4 mb-2">Response:</p>
               <div className="bg-muted/50 p-4 rounded-lg">
                 <pre className="text-sm text-muted-foreground">
-{`{
-  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-  "expiresIn": 3600
+                  {`{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "user": { ... }
 }
 `}
                 </pre>
               </div>
             </div>
 
-            {/* Data Retrieval */}
+            {/* Teams Management */}
             <div className="border rounded-2xl p-6 hover:shadow-md transition-shadow">
               <h3 className="text-xl font-semibold mb-3 flex items-center">
                 <IconApi className="size-5 text-primary me-2" />
-                Data Retrieval
+                Teams
               </h3>
               <p className="text-muted-foreground mb-4">
-                Fetch data from your application.
+                Manage user teams.
               </p>
-              <h4 className="font-medium mb-2">GET /api/data</h4>
-              <p className="text-muted-foreground mb-2">Retrieve data entries.</p>
+              <h4 className="font-medium mb-2">GET /api/teams</h4>
               <div className="bg-muted/50 p-4 rounded-lg">
                 <pre className="text-sm text-muted-foreground">
-{`curl -X GET "https://api.luix-universe.com/v1/data?limit=10" \\
--H "Authorization: Bearer {your-api-key}"
+                  {`curl -X GET "https://api.example.com/api/teams" \\
+-H "Authorization: Bearer {access-token}"
 `}
                 </pre>
               </div>
               <p className="text-muted-foreground mt-4 mb-2">Response:</p>
               <div className="bg-muted/50 p-4 rounded-lg">
                 <pre className="text-sm text-muted-foreground">
-{`[
+                  {`[
   {
-    "id": "data1",
-    "value": "Sample Data",
-    "createdAt": "2025-05-31T18:31:00Z"
+    "id": "team-1",
+    "name": "Engineering",
+    "role": "OWNER"
   },
   ...
 ]
@@ -181,7 +177,7 @@ export default function ApiReferencePage() {
 
           <div className="mt-16 border rounded-2xl p-6 bg-muted/50">
             <h3 className="text-xl font-semibold mb-4">Need Help?</h3>
-            <div className="gap-y-6">
+            <div className="flex flex-col gap-y-6">
               <div>
                 <h4 className="font-medium">Community Support</h4>
                 <p className="text-muted-foreground mt-1">

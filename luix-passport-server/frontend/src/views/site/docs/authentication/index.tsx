@@ -55,11 +55,10 @@ export default function AuthenticationPage() {
                 <li key={index}>
                   <Link
                     to={section.link}
-                    className={`flex items-center text-base ${
-                      section.title === "Authentication"
+                    className={`flex items-center text-base ${section.title === "Authentication"
                         ? "text-primary font-semibold"
                         : "text-muted-foreground hover:text-primary"
-                    }`}
+                      }`}
                   >
                     {section.icon}
                     {section.title}
@@ -80,121 +79,60 @@ export default function AuthenticationPage() {
           </p>
 
           <div className="flex flex-col gap-y-12">
-            {/* Email/Password Authentication */}
+            {/* Identity Management */}
             <div className="border rounded-2xl p-6 hover:shadow-md transition-shadow">
               <h3 className="text-xl font-semibold mb-3 flex items-center">
                 <IconKey className="size-5 text-primary me-2" />
-                Email/Password Authentication
+                Identity Management
               </h3>
               <p className="text-muted-foreground mb-4">
-                Set up email and password login for your users.
+                Complete user identity lifecycle management.
               </p>
-              <div className="bg-muted/50 p-4 rounded-lg">
-                <pre className="text-sm text-muted-foreground">
-{`import Luix from '@luix-universe/sdk';
-
-const luix = new Luix({ apiKey: 'your-api-key' });
-
-async function signUp(email, password) {
-  try {
-    const user = await luix.auth.signUp({ email, password });
-    return user;
-  } catch (error) {
-    console.error('Sign-up failed:', error);
-  }
-}
-
-async function signIn(email, password) {
-  try {
-    const user = await luix.auth.signIn({ email, password });
-    return user;
-  } catch (error) {
-    console.error('Sign-in failed:', error);
-  }
-}
-`}
-                </pre>
-              </div>
+              <ul className="list-disc list-inside text-muted-foreground space-y-2">
+                <li>Sign-up and Sign-in flows</li>
+                <li>Email verification</li>
+                <li>Password reset and recovery</li>
+                <li>Profile management and avatar upload</li>
+              </ul>
             </div>
 
-            {/* Social Logins */}
+            {/* Team Collaboration */}
             <div className="border rounded-2xl p-6 hover:shadow-md transition-shadow">
               <h3 className="text-xl font-semibold mb-3 flex items-center">
-                <IconKey className="size-5 text-primary me-2" />
-                Social Logins
+                <IconCode className="size-5 text-primary me-2" />
+                Team Collaboration
               </h3>
               <p className="text-muted-foreground mb-4">
-                Enable login with Google, GitHub, or other providers.
+                Built-in multi-tenant team support.
               </p>
-              <div className="bg-muted/50 p-4 rounded-lg">
-                <pre className="text-sm text-muted-foreground">
-{`import Luix from '@luix-universe/sdk';
-
-const luix = new Luix({ apiKey: 'your-api-key' });
-
-async function signInWithGoogle() {
-  try {
-    const user = await luix.auth.signInWithProvider('google');
-    return user;
-  } catch (error) {
-    console.error('Google sign-in failed:', error);
-  }
-}
-
-async function signInWithGitHub() {
-  try {
-    const user = await luix.auth.signInWithProvider('github');
-    return user;
-  } catch (error) {
-    console.error('GitHub sign-in failed:', error);
-  }
-}
-`}
-                </pre>
-              </div>
+              <ul className="list-disc list-inside text-muted-foreground space-y-2">
+                <li>Create and manage multiple teams</li>
+                <li>Invite members via email</li>
+                <li>Accept/Reject invitations</li>
+                <li>Switch contexts between teams easily</li>
+              </ul>
             </div>
 
-            {/* Multi-Factor Authentication */}
+            {/* RBAC */}
             <div className="border rounded-2xl p-6 hover:shadow-md transition-shadow">
               <h3 className="text-xl font-semibold mb-3 flex items-center">
                 <IconShieldLock className="size-5 text-primary me-2" />
-                Multi-Factor Authentication
+                Access Control (RBAC)
               </h3>
               <p className="text-muted-foreground mb-4">
-                Add an extra layer of security with MFA.
+                Secure your resources with role-based access control.
               </p>
-              <div className="bg-muted/50 p-4 rounded-lg">
-                <pre className="text-sm text-muted-foreground">
-{`import Luix from '@luix-universe/sdk';
-
-const luix = new Luix({ apiKey: 'your-api-key' });
-
-async function enableMFA(userId) {
-  try {
-    await luix.auth.enableMFA(userId, { method: 'sms' });
-    console.log('MFA enabled');
-  } catch (error) {
-    console.error('MFA setup failed:', error);
-  }
-}
-
-async function verifyMFA(userId, code) {
-  try {
-    const verified = await luix.auth.verifyMFA(userId, code);
-    return verified;
-  } catch (error) {
-    console.error('MFA verification failed:', error);
-  }
-}
-`}
-                </pre>
-              </div>
+              <ul className="list-disc list-inside text-muted-foreground space-y-2">
+                <li>Pre-defined roles: Team Owner, Team Member</li>
+                <li>Fine-grained permissions</li>
+                <li>Resource-level authorization</li>
+              </ul>
             </div>
           </div>
 
           <div className="mt-16 border rounded-2xl p-6 bg-muted/50">
             <h3 className="text-xl font-semibold mb-4">Need Help?</h3>
-            <div className="gap-y-6">
+            <div className="flex flex-col gap-y-6">
               <div>
                 <h4 className="font-medium">Community Support</h4>
                 <p className="text-muted-foreground mt-1">

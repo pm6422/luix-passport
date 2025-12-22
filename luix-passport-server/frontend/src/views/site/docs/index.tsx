@@ -5,20 +5,20 @@ import { IconBook, IconCode, IconKey, IconArrowRight } from "@tabler/icons-react
 export default function DocsPage() {
   const docSections = [
     {
-      title: "Installation",
-      description: "Get started by installing our SDK and setting up your project.",
+      title: "Deployment",
+      description: "Learn how to deploy and run the server.",
       link: "/docs/installation",
       icon: <IconCode className="size-5 text-primary me-2" />,
     },
     {
-      title: "Authentication",
-      description: "Learn how to implement secure authentication flows.",
+      title: "Core Features",
+      description: "Explore identity management, teams, and RBAC.",
       link: "/docs/authentication",
       icon: <IconKey className="size-5 text-primary me-2" />,
     },
     {
       title: "API Reference",
-      description: "Explore our comprehensive API endpoints and usage.",
+      description: "Comprehensive API endpoints for integration.",
       link: "/docs/api-reference",
       icon: <IconBook className="size-5 text-primary me-2" />,
     },
@@ -102,7 +102,7 @@ export default function DocsPage() {
 
           <div className="mt-16 border rounded-2xl p-6 bg-muted/50">
             <h3 className="text-xl font-semibold mb-4">Need Help?</h3>
-            <div className="gap-y-6">
+            <div className="flex flex-col gap-y-6">
               <div>
                 <h4 className="font-medium">Community Support</h4>
                 <p className="text-muted-foreground mt-1">

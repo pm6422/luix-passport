@@ -55,11 +55,10 @@ export default function InstallationPage() {
                 <li key={index}>
                   <Link
                     to={section.link}
-                    className={`flex items-center text-base ${
-                      section.title === "Installation"
+                    className={`flex items-center text-base ${section.title === "Installation"
                         ? "text-primary font-semibold"
                         : "text-muted-foreground hover:text-primary"
-                    }`}
+                      }`}
                   >
                     {section.icon}
                     {section.title}
@@ -80,93 +79,54 @@ export default function InstallationPage() {
           </p>
 
           <div className="flex flex-col gap-y-12">
-            {/* Node.js Installation */}
+            {/* Docker Deployment */}
             <div className="border rounded-2xl p-6 hover:shadow-md transition-shadow">
               <h3 className="text-xl font-semibold mb-3 flex items-center">
                 <IconCode className="size-5 text-primary me-2" />
-                Node.js
+                Docker Compose (Recommended)
               </h3>
               <p className="text-muted-foreground mb-4">
-                Install the SDK using npm or yarn.
+                The easiest way to run Luix Passport is using Docker Compose.
               </p>
               <div className="bg-muted/50 p-4 rounded-lg">
                 <pre className="text-sm text-muted-foreground">
-                  npm install @luix-universe/sdk
+                  git clone https://github.com/luix-tech/luix-passport.git
                 </pre>
                 <pre className="text-sm text-muted-foreground mt-2">
-                  yarn add @luix-universe/sdk
+                  cd luix-passport
+                </pre>
+                <pre className="text-sm text-muted-foreground mt-2">
+                  docker-compose up -d
                 </pre>
               </div>
               <p className="text-muted-foreground mt-4">
-                Initialize the SDK in your project:
+                This will start the backend server, frontend console, and PostgreSQL database.
               </p>
-              <div className="bg-muted/50 p-4 rounded-lg mt-2">
-                <pre className="text-sm text-muted-foreground">
-{`import Luix from '@luix-universe/sdk';
-
-const luix = new Luix({
-  apiKey: 'your-api-key',
-});
-`}
-                </pre>
-              </div>
             </div>
 
-            {/* Python Installation */}
-            <div className="border rounded-2xl p-6 hover:shadow-md transition-shadow">
-              <h3 className="text-xl font-semibold mb-3 flex items-center">
-                <IconCode className="size-5 text-primary me-2" />
-                Python
-              </h3>
-              <p className="text-muted-foreground mb-4">
-                Install the SDK using pip.
-              </p>
-              <div className="bg-muted/50 p-4 rounded-lg">
-                <pre className="text-sm text-muted-foreground">
-                  pip install luix-universe
-                </pre>
-              </div>
-              <p className="text-muted-foreground mt-4">
-                Initialize the SDK in your project:
-              </p>
-              <div className="bg-muted/50 p-4 rounded-lg mt-2">
-                <pre className="text-sm text-muted-foreground">
-{`from luix_universe import Luix
-
-luix = Luix(api_key='your-api-key')
-`}
-                </pre>
-              </div>
-            </div>
-
-            {/* CLI Installation */}
+            {/* Manual Installation */}
             <div className="border rounded-2xl p-6 hover:shadow-md transition-shadow">
               <h3 className="text-xl font-semibold mb-3 flex items-center">
                 <IconTerminal2 className="size-5 text-primary me-2" />
-                CLI
+                Manual Setup (Java 25+)
               </h3>
               <p className="text-muted-foreground mb-4">
-                Install the CLI tool for managing your projects.
+                Run the server directly from source using Maven.
               </p>
               <div className="bg-muted/50 p-4 rounded-lg">
                 <pre className="text-sm text-muted-foreground">
-                  npm install -g @luix-universe/cli
+                  ./mvnw spring-boot:run
                 </pre>
               </div>
               <p className="text-muted-foreground mt-4">
-                Verify installation:
+                Make sure you have a PostgreSQL database running and configured in validation properties.
               </p>
-              <div className="bg-muted/50 p-4 rounded-lg mt-2">
-                <pre className="text-sm text-muted-foreground">
-                  luix --version
-                </pre>
-              </div>
             </div>
           </div>
 
           <div className="mt-16 border rounded-2xl p-6 bg-muted/50">
             <h3 className="text-xl font-semibold mb-4">Need Help?</h3>
-            <div className="gap-y-6">
+            <div className="flex flex-col gap-y-6">
               <div>
                 <h4 className="font-medium">Community Support</h4>
                 <p className="text-muted-foreground mt-1">
