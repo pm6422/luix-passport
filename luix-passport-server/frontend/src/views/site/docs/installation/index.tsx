@@ -50,7 +50,7 @@ export default function InstallationPage() {
             </Button>
           </div>
           <nav className="mt-10">
-            <ul className="gap-y-4">
+            <ul className="flex flex-col gap-y-4">
               {docSections.map((section, index) => (
                 <li key={index}>
                   <Link
@@ -79,7 +79,7 @@ export default function InstallationPage() {
             Get started by installing our SDK or CLI in your project.
           </p>
 
-          <div className="gap-y-12">
+          <div className="flex flex-col gap-y-12">
             {/* Node.js Installation */}
             <div className="border rounded-2xl p-6 hover:shadow-md transition-shadow">
               <h3 className="text-xl font-semibold mb-3 flex items-center">
