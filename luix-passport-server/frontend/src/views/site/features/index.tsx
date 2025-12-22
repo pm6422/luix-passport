@@ -5,43 +5,43 @@ import { Button } from "@/components/ui/button"
 export default function FeaturesPage() {
   const features = [
     {
-      title: "Secure Authentication",
-      description: "Industry-standard encryption and security protocols to protect user credentials",
+      title: "Authentication & Identity",
+      description: "Complete identity management system for your users",
       items: [
-        "OAuth 2.0 & OpenID Connect support",
-        "Password hashing with bcrypt",
-        "Multi-factor authentication",
-        "JWT token-based sessions"
+        "Sign-up & Sign-in flows",
+        "Email verification & Password reset",
+        "Profile & Avatar management",
+        "Multiple identity providers"
       ]
     },
     {
-      title: "Easy Integration",
-      description: "Simple implementation for any application stack",
+      title: "Team Collaboration",
+      description: "Built-in team management and member coordination",
       items: [
-        "RESTful API endpoints",
-        "React/Next.js components",
-        "TypeScript support",
-        "Webhook notifications"
+        "Create & manage multiple teams",
+        "Invite members via email",
+        "Pending invitation management",
+        "Team-level settings"
       ]
     },
     {
-      title: "User Management",
-      description: "Complete control over user accounts and permissions",
+      title: "Access Control (RBAC)",
+      description: "Granular permission system for secure access",
       items: [
-        "Profile management",
         "Role-based access control",
-        "Account verification flows",
-        "Password reset functionality"
+        "Customizable user roles",
+        "Fine-grained permissions",
+        "Resource hierarchy protection"
       ]
     },
     {
-      title: "Analytics & Security",
-      description: "Monitor and protect your user accounts",
+      title: "Security & Auditing",
+      description: "Keep track of security events and system health",
       items: [
-        "Login activity tracking",
-        "Suspicious activity detection",
-        "Device fingerprinting",
-        "Automated security audits"
+        "Visualized security dashboards",
+        "Detailed audit logs",
+        "Login history tracking",
+        "Active session management"
       ]
     }
   ];
