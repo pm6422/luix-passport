@@ -1,12 +1,9 @@
 import { Button } from "@/components/ui/button"
-import { formatTime } from "@/lib/time-utils"
-import { useLoginUserStore } from "@/stores/login-user-store"
 import { useState } from "react"
-
 import { CreateTeamDialog } from "@/views/team/dialog/create-team-dialog"
+import { UserDateTime } from "@/components/custom/display/user-date-time"
 
 export function SystemStatusBanner() {
-  const { loginUser } = useLoginUserStore()
   const [apiStatus] = useState<'operational' | 'degraded' | 'offline'>('operational')
   const [lastSync] = useState<string>(new Date().toISOString())
   const [createTeamOpen, setCreateTeamOpen] = useState(false)
@@ -35,7 +32,7 @@ export function SystemStatusBanner() {
             </span>
           </span>
           <span className="mx-2 text-border">|</span>
-          <span className="text-sm">Updated at: {formatTime(loginUser.timeFormat, loginUser.timeZoneId, lastSync)}</span>
+          <span className="text-sm">Updated at: <UserDateTime value={lastSync} type="time" /></span>
         </div>
       </div>
       <Button onClick={() => setCreateTeamOpen(true)}>Create Team</Button>
