@@ -50,7 +50,7 @@ export default function DocsPage() {
             </Button>
           </div>
           <nav className="mt-10">
-            <ul className="gap-y-4">
+            <ul className="flex flex-col gap-y-4">
               {docSections.map((section, index) => (
                 <li key={index}>
                   <Link
