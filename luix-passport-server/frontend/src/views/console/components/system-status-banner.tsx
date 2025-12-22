@@ -1,14 +1,15 @@
 import { Button } from "@/components/ui/button"
 import { formatTime } from "@/lib/time-utils"
 import { useLoginUserStore } from "@/stores/login-user-store"
-import { useNavigate } from "react-router-dom"
 import { useState } from "react"
 
+import { CreateTeamDialog } from "@/views/team/dialog/create-team-dialog"
+
 export function SystemStatusBanner() {
-  const navigate = useNavigate()
   const { loginUser } = useLoginUserStore()
   const [apiStatus] = useState<'operational' | 'degraded' | 'offline'>('operational')
   const [lastSync] = useState<string>(new Date().toISOString())
+  const [createTeamOpen, setCreateTeamOpen] = useState(false)
   return (
     <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-card p-6 rounded-2xl border border-border/50 shadow-sm">
       <div>
@@ -37,7 +38,8 @@ export function SystemStatusBanner() {
           <span className="text-sm">Updated at: {formatTime(loginUser.timeFormat, loginUser.timeZoneId, lastSync)}</span>
         </div>
       </div>
-      <Button onClick={() => navigate("/teams")}>Create Team</Button>
+      <Button onClick={() => setCreateTeamOpen(true)}>Create Team</Button>
+      <CreateTeamDialog open={createTeamOpen} onOpenChange={setCreateTeamOpen} />
     </div>
   )
 }
