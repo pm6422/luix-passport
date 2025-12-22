@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils"
 import { Link, useLocation } from "react-router-dom"
+import { Fragment } from "react"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -48,22 +49,24 @@ export function TopNav({ className, links, ...props }: Props) {
 
       <nav
         className={cn(
-          "hidden items-center gap-4 md:flex lg:gap-6",
+          "hidden items-center md:flex",
           className
         )}
         {...props}
       >
-        {links.map(({ title, href }) => {
+        {links.map(({ title, href }, index) => {
           const isActive = location.pathname === href
           return (
-            <Link
-              key={`${title}-${href}`}
-              to={href}
-              className={`text-sm font-medium transition-colors hover:text-primary ${isActive ? "" : "text-muted-foreground"
-                }`}
-            >
-              {title}
-            </Link>
+            <Fragment key={`${title}-${href}`}>
+              {index > 0 && <span className="mx-4 text-border select-none">|</span>}
+              <Link
+                to={href}
+                className={`text-sm font-medium transition-colors hover:text-primary ${isActive ? "" : "text-muted-foreground"
+                  }`}
+              >
+                {title}
+              </Link>
+            </Fragment>
           )
         })}
       </nav>
