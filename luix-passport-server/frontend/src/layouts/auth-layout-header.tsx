@@ -10,6 +10,11 @@ export function AuthLayoutHeader() {
       title: "Home",
       href: "/",
       isActive: false,
+    },
+    {
+      title: "Console",
+      href: "/console",
+      isActive: false,
     }
   ]
 
