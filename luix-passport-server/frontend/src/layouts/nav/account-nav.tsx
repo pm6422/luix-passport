@@ -48,13 +48,15 @@ export function AccountNav() {
               </Avatar>
             ) : (
               <MinusIntroY>
-                <Avatar className="size-12">
-                  <img
-                    src={imageUrl}
-                    alt="Avatar"
-                    className="w-full h-full object-cover"
-                  />
-                </Avatar>
+                <div className="p-[2px] bg-gradient-to-tr from-cyan-400 via-blue-500 to-purple-500 rounded-full">
+                  <Avatar className="size-12 border-2 border-background">
+                    <img
+                      src={imageUrl}
+                      alt="Avatar"
+                      className="w-full h-full object-cover"
+                    />
+                  </Avatar>
+                </div>
               </MinusIntroY>
             )}
           </div>
