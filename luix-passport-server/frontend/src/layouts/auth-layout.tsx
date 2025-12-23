@@ -16,24 +16,24 @@ export default function AuthLayout() {
   const [checkingAuth, setCheckingAuth] = useState(true)
 
   useEffect(() => {
-    let active = true
+    let cancelled = false
 
-    ;(async () => {
-      if (!loginUser.isAuthenticated) {
-        const currentUser = await AccountService.getCurrentUser()
-        if (!active) return
-
-        setLoginUser(currentUser)
-      }
-
-      if (active) {
-        setCheckingAuth(false)
-      }
-    })()
-
-    return () => {
-      active = false
+    if (loginUser.isAuthenticated) {
+      setCheckingAuth(false)
+      return
     }
+
+    AccountService.getCurrentUser()
+      .then((currentUser) => {
+        if (cancelled) return
+        setLoginUser(currentUser)
+      })
+      .finally(() => {
+        if (cancelled) return
+        setCheckingAuth(false)
+      })
+
+    return () => { cancelled = true }
   }, [loginUser.isAuthenticated, setLoginUser])
 
   if (checkingAuth) {
