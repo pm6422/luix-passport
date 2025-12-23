@@ -2,16 +2,18 @@ import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import Cookies from "js-cookie";
 import { Layout, LayoutHeader } from "@/layouts/layout-definitions";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { useLoginUserStore } from "@/stores/login-user-store";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/layouts/sidebar/app-sidebar";
 import { AuthLayoutHeader } from "./auth-layout-header";
 import { SseNotifier } from "./sse-notifier";
 import { AccountService } from "@/services/account-service";
+import { isEmpty } from "lodash";
 
 export default function AuthLayout() {
   const { loginUser, setLoginUser } = useLoginUserStore()
+  const navigate = useNavigate()
   const defaultOpen = Cookies.get("sidebar_state") !== "false"
   const [checkingAuth, setCheckingAuth] = useState(true)
 
@@ -27,6 +29,9 @@ export default function AuthLayout() {
       .then((currentUser) => {
         if (cancelled) return
         setLoginUser(currentUser)
+        if (isEmpty(currentUser)) {
+          navigate("/sign-in", { replace: true })
+        }
       })
       .finally(() => {
         if (cancelled) return
@@ -34,7 +39,7 @@ export default function AuthLayout() {
       })
 
     return () => { cancelled = true }
-  }, [loginUser.isAuthenticated, setLoginUser])
+  }, [loginUser.isAuthenticated, navigate, setLoginUser])
 
   if (checkingAuth) {
     return null
