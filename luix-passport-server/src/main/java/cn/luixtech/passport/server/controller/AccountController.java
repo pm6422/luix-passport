@@ -76,13 +76,10 @@ public class AccountController {
     private final ApplicationEventPublisher applicationEventPublisher;
     private final AuthenticationManager authenticationManager;
 
-    @Operation(summary = "get current user who are signed in")
-    @GetMapping("/open-api/accounts/user")
+    @Operation(summary = "get the currently authenticated user")
+    @GetMapping("/api/accounts/user")
     public ResponseEntity<LoginUser> getCurrentUser() {
-        if (AuthUtils.getCurrentUser() == null || AuthUtils.getCurrentUser().getEmail() == null) {
-            return ResponseEntity.ok(null);
-        }
-        LoginUser loginUser = LoginUser.of(userService.findByEmail(AuthUtils.getCurrentUser().getEmail()));
+        LoginUser loginUser = LoginUser.of(userService.findByEmail(AuthUtils.getCurrentUserEmail()));
         DateTimeFormat dateTimeFormat = dateTimeFormatRepository
                 .findById(loginUser.getDateTimeFormatId())
                 .orElseThrow(() -> new DataNotFoundException(loginUser.getDateTimeFormatId()));

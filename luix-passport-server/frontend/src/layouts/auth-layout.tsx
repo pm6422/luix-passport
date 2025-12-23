@@ -3,7 +3,6 @@ import { cn } from "@/lib/utils";
 import Cookies from "js-cookie";
 import { Layout, LayoutHeader } from "@/layouts/layout-definitions";
 import { Outlet } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 import { useLoginUserStore } from "@/stores/login-user-store";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/layouts/sidebar/app-sidebar";
@@ -12,7 +11,6 @@ import { SseNotifier } from "./sse-notifier";
 import { AccountService } from "@/services/account-service";
 
 export default function AuthLayout() {
-  const navigate = useNavigate()
   const { loginUser, setLoginUser } = useLoginUserStore()
   const defaultOpen = Cookies.get("sidebar_state") !== "false"
   const [checkingAuth, setCheckingAuth] = useState(true)
@@ -25,12 +23,7 @@ export default function AuthLayout() {
         const currentUser = await AccountService.getCurrentUser()
         if (!active) return
 
-        if (currentUser?.username || currentUser?.email) {
-          setLoginUser(currentUser)
-        } else {
-          navigate("/sign-in")
-          return
-        }
+        setLoginUser(currentUser)
       }
 
       if (active) {
@@ -41,7 +34,7 @@ export default function AuthLayout() {
     return () => {
       active = false
     }
-  }, [loginUser.isAuthenticated, navigate, setLoginUser])
+  }, [loginUser.isAuthenticated, setLoginUser])
 
   if (checkingAuth) {
     return null

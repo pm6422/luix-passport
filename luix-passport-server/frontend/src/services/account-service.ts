@@ -15,7 +15,7 @@ export class AccountService {
 
   public static async getCurrentUser(): Promise<LoginUser> {
     try {
-      const res = await http.get<LoginUser>("/open-api/accounts/user")
+      const res = await http.get<LoginUser>("/api/accounts/user")
       return (res.data ?? ({} as LoginUser)) as LoginUser
     } catch (_error) {
       return {} as LoginUser
@@ -38,6 +38,7 @@ export class AccountService {
 
   public static async signOut(): Promise<void> {
     http.post("/api/accounts/sign-out").then(() => {
+      sessionStorage.removeItem("login-user")
       // Redirect to sign-in page instead of reloading
       window.location.href = "/sign-in"
     })

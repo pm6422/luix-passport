@@ -44,7 +44,7 @@ export function SignInForm() {
 
   useEffect(() => {
     if (loginUser.isAuthenticated) {
-      navigate("/")
+      navigate("/", { replace: true })
     }
   }, [loginUser.isAuthenticated, navigate])
 
