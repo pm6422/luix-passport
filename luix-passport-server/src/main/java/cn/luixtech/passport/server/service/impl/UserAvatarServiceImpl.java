@@ -16,7 +16,7 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class UserAvatarServiceImpl implements UserAvatarService {
-    private static final String DEFAULT_USER_PHOTO_URL = "/assets/images/cartoon/01.png";
+    private static final String DEFAULT_AVATAR_CLASSPATH = "static/assets/images/cartoon/01.png";
     private final UserAvatarRepository userAvatarRepository;
 
     @Override
@@ -27,7 +27,7 @@ public class UserAvatarServiceImpl implements UserAvatarService {
         }
         // Set the default avatar
         return StreamUtils.copyToByteArray(
-                new ClassPathResource("static" + DEFAULT_USER_PHOTO_URL).getInputStream());
+                new ClassPathResource(DEFAULT_AVATAR_CLASSPATH).getInputStream());
     }
 
     @Override
