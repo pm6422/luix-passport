@@ -268,8 +268,8 @@ public class AccountController {
     }
 
     @Operation(summary = "get all supported time zones")
-    @GetMapping("/api/accounts/all-supported-time-zones")
-    public ResponseEntity<List<DataDict>> getSupportedTimeZones() {
+    @GetMapping("/api/accounts/time-zones")
+    public ResponseEntity<List<DataDict>> getTimeZones() {
         return ResponseEntity.ok(dataDictService.findAllTimezone());
     }
 

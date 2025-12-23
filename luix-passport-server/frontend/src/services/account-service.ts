@@ -84,7 +84,7 @@ export class AccountService {
   }
 
   public static findSupportedTimezones(): Promise<AxiosResponse<Array<DataDict>>> {
-    return http.get("/api/accounts/all-supported-time-zones")
+    return http.get("/api/accounts/time-zones")
   }
 
   public static findDateTimeFormats(): Promise<AxiosResponse<Array<DateTimeFormat>>> {
