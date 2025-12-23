@@ -7,10 +7,6 @@ import java.io.IOException;
 
 public interface UserAvatarService {
 
-    String buildAvatarUrl(String username, HttpServletRequest request);
-
-    byte[] getAvatarByUserToken(String userToken, HttpServletRequest request) throws IOException;
-
     byte[] getAvatar(String username, HttpServletRequest request) throws IOException;
 
     void insert(String username, byte[] photoData);

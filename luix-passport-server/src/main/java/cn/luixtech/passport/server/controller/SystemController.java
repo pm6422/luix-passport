@@ -2,6 +2,7 @@ package cn.luixtech.passport.server.controller;
 
 import cn.luixtech.passport.server.config.oauth.ScopeWithDescription;
 import cn.luixtech.passport.server.domain.User;
+import cn.luixtech.passport.server.service.UserAvatarService;
 import cn.luixtech.passport.server.repository.UserRepository;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,11 +22,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.*;
-
-import static cn.luixtech.passport.server.service.impl.UserAvatarServiceImpl.CURRENT_USER_PHOTO_URL;
-import static com.luixtech.springbootframework.utils.NetworkUtils.getRequestUrl;
 
 @Controller
 @AllArgsConstructor
@@ -34,6 +33,7 @@ public class SystemController {
     private final RegisteredClientRepository registeredClientRepository;
     private final OAuth2AuthorizationConsentService authorizationConsentService;
     private final UserRepository userRepository;
+    private final UserAvatarService userAvatarService;
 
     @RequestMapping("/system/error")
     public String handleError(Model model, HttpServletRequest request) {
@@ -69,7 +69,7 @@ public class SystemController {
             @RequestParam(OAuth2ParameterNames.CLIENT_ID) String clientId,
             @RequestParam(OAuth2ParameterNames.SCOPE) String scope,
             @RequestParam(OAuth2ParameterNames.STATE) String state,
-            @RequestParam(name = OAuth2ParameterNames.USER_CODE, required = false) String userCode) {
+            @RequestParam(name = OAuth2ParameterNames.USER_CODE, required = false) String userCode) throws IOException {
 
         // Remove scopes that were already approved
         Set<String> scopesToApprove = new HashSet<>();
@@ -101,7 +101,11 @@ public class SystemController {
         model.addAttribute("previouslyApprovedScopes", withDescription(previouslyApprovedScopes));
         model.addAttribute("principalName", user.isPresent() ? user.get().getEmail() : principal.getName());
         model.addAttribute("userCode", userCode);
-        model.addAttribute("userAvatar", getRequestUrl(request) + CURRENT_USER_PHOTO_URL);
+
+        byte[] avatarBytes = userAvatarService.getAvatar(principal.getName(), request);
+        String base64Avatar = Base64.getEncoder().encodeToString(avatarBytes);
+        model.addAttribute("userAvatar", "data:image/png;base64," + base64Avatar);
+
         if (StringUtils.hasText(userCode)) {
             model.addAttribute("requestURI", "/oauth2/device_verification");
         } else {

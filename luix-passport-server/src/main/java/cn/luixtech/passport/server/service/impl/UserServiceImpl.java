@@ -76,7 +76,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRoleService userRoleService;
     private final InboxService inboxService;
     private final RolePermissionService rolePermissionService;
-    private final UserAvatarService userAvatarService;
     private final TeamUserService teamUserService;
     private final MessageCreator messageCreator;
     private final HttpServletRequest httpServletRequest;
@@ -94,14 +93,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         String normalizedLogin = StringUtils.trimToEmpty(loginName).toLowerCase();
         User user = findOne(normalizedLogin)
                 .orElseThrow(() -> new UsernameNotFoundException("User " + loginName + " was not found"));
-        // Assuming existingUser would be retrieved from a session or cache if this
-        // check is needed
-        // For this change, we'll assume `existingUser` is not defined in this scope and
-        // skip the block
-        // if (existingUser != null &&
-        // !existingUser.getUpdatedAt().equals(user.getUpdatedAt())) {
-        // throw new UserModifiedException();
-        // }
 
         if (!Boolean.TRUE.equals(user.getActivated())) {
             throw new UserNotActivatedException(loginName + " is not activated.");
@@ -122,13 +113,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         String modifiedTime = ISO_8601_EXTENDED_DATETIME_TIME_ZONE_FORMAT
                 .format(user.getUpdatedAt().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
 
-        String avatarUrl = null;
-        if (httpServletRequest != null) {
-            avatarUrl = userAvatarService.buildAvatarUrl(user.getUsername(), httpServletRequest);
-        }
         return new AuthUser(user.getUsername(), user.getEmail(), user.getMobileNo(), user.getFirstName(),
                 user.getLastName(), user.getPasswordHash(), user.getEnabled(), accountNonExpired, passwordNonExpired,
-                true, avatarUrl, user.getLocale(), modifiedTime, authorities, roleIds, permissionIds, orgIds);
+                true, user.getLocale(), modifiedTime, authorities, roleIds, permissionIds, orgIds);
     }
 
     @Override

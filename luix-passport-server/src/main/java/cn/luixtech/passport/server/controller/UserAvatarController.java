@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 
 import static cn.luixtech.passport.server.domain.Role.ROLE_ADMIN;
-import static cn.luixtech.passport.server.service.impl.UserAvatarServiceImpl.USER_PHOTO_URL;
 
 /**
  * REST controller for managing users' avatar picture.
@@ -32,12 +31,5 @@ public class UserAvatarController {
     public ResponseEntity<byte[]> findById(HttpServletRequest request,
             @Parameter(description = "username", required = true) @PathVariable String username) throws IOException {
         return ResponseEntity.ok(userAvatarService.getAvatar(username, request));
-    }
-
-    @Operation(summary = "find user avatar by user token")
-    @GetMapping(USER_PHOTO_URL + "{userToken}")
-    public ResponseEntity<byte[]> findByUserToken(HttpServletRequest request,
-            @Parameter(description = "userToken", required = true) @PathVariable String userToken) throws IOException {
-        return ResponseEntity.ok(userAvatarService.getAvatarByUserToken(userToken, request));
     }
 }

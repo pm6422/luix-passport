@@ -52,7 +52,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import static cn.luixtech.passport.server.service.impl.UserAvatarServiceImpl.CURRENT_USER_PHOTO_URL;
 import static cn.luixtech.passport.server.utils.ImageCompressor.compressImage;
 import static com.luixtech.springbootframework.utils.NetworkUtils.getRequestUrl;
 import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
@@ -234,7 +233,7 @@ public class AccountController {
     }
 
     @Operation(summary = "get avatar of the current user")
-    @GetMapping(CURRENT_USER_PHOTO_URL)
+    @GetMapping("/api/accounts/avatar")
     public ResponseEntity<byte[]> getAvatar(HttpServletRequest request) throws IOException {
         return ResponseEntity.ok(userAvatarService.getAvatar(AuthUtils.getCurrentUsername(), request));
     }

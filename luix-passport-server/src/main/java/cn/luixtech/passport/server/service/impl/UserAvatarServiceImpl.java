@@ -3,7 +3,6 @@ package cn.luixtech.passport.server.service.impl;
 import cn.luixtech.passport.server.domain.UserAvatar;
 import cn.luixtech.passport.server.repository.UserAvatarRepository;
 import cn.luixtech.passport.server.service.UserAvatarService;
-import com.luixtech.utilities.encryption.JasyptEncryptUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.core.io.UrlResource;
@@ -15,28 +14,12 @@ import java.io.IOException;
 import java.util.Optional;
 
 import static com.luixtech.springbootframework.utils.NetworkUtils.getRequestUrl;
-import static com.luixtech.utilities.encryption.JasyptEncryptUtils.DEFAULT_ALGORITHM;
 
 @Service
 @AllArgsConstructor
 public class UserAvatarServiceImpl implements UserAvatarService {
     private static final String               DEFAULT_USER_PHOTO_URL = "/assets/images/cartoon/01.png";
-    public static final  String               CURRENT_USER_PHOTO_URL = "/api/accounts/avatar";
-    public static final  String               USER_PHOTO_URL         = "/open-api/user-avatars/";
-    public static final  String               USER_PHOTO_TOKEN_KEY   = "dw4rfer54g&^@dsfd#";
-    private final        UserAvatarRepository userAvatarRepository;
-
-    @Override
-    public String buildAvatarUrl(String username, HttpServletRequest request) {
-        return getRequestUrl(request) + USER_PHOTO_URL +
-                JasyptEncryptUtils.encrypt(username, DEFAULT_ALGORITHM, USER_PHOTO_TOKEN_KEY);
-    }
-
-    @Override
-    public byte[] getAvatarByUserToken(String userToken, HttpServletRequest request) throws IOException {
-        String username = JasyptEncryptUtils.decrypt(userToken, DEFAULT_ALGORITHM, USER_PHOTO_TOKEN_KEY);
-        return getAvatar(username, request);
-    }
+    private final       UserAvatarRepository userAvatarRepository;
 
     @Override
     public byte[] getAvatar(String username, HttpServletRequest request) throws IOException {
