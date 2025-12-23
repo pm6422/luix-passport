@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-export const supportedDateTimeFormatSchema = z.object({
+export const dateTimeFormatSchema = z.object({
   id: z.string().trim().min(1, { message: "Required" }),
   displayName: z.string().trim().min(1, { message: "Required" }),
   dateTimeFormat: z.string().trim().min(1, { message: "Required" }),
@@ -10,4 +10,4 @@ export const supportedDateTimeFormatSchema = z.object({
   preset: z.boolean()
 })
 
-export type SupportedDateTimeFormat = z.infer<typeof supportedDateTimeFormatSchema>
+export type DateTimeFormat = z.infer<typeof dateTimeFormatSchema>

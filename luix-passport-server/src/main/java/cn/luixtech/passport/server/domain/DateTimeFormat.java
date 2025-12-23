@@ -11,7 +11,7 @@ import com.luixtech.springbootframework.idgenerator.TsidGenerator;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class SupportedDateTimeFormat {
+public class DateTimeFormat {
 
     @Id
     @GeneratedValue

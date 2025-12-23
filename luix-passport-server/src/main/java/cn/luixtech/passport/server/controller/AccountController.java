@@ -1,13 +1,13 @@
 package cn.luixtech.passport.server.controller;
 
 import cn.luixtech.passport.server.domain.DataDict;
-import cn.luixtech.passport.server.domain.SupportedDateTimeFormat;
+import cn.luixtech.passport.server.domain.DateTimeFormat;
 import cn.luixtech.passport.server.domain.TeamInvitation;
 import cn.luixtech.passport.server.domain.User;
 import cn.luixtech.passport.server.domain.UserAvatar;
 import cn.luixtech.passport.server.event.LogoutEvent;
 import cn.luixtech.passport.server.dto.*;
-import cn.luixtech.passport.server.repository.SupportedDateTimeFormatRepository;
+import cn.luixtech.passport.server.repository.DateTimeFormatRepository;
 import cn.luixtech.passport.server.repository.UserAvatarRepository;
 import cn.luixtech.passport.server.repository.UserRepository;
 import cn.luixtech.passport.server.repository.TeamInvitationRepository;
@@ -70,7 +70,7 @@ public class AccountController {
     private final UserRepository userRepository;
     private final TeamInvitationRepository teamInvitationRepository;
     private final UserAvatarRepository userAvatarRepository;
-    private final SupportedDateTimeFormatRepository supportedDateTimeFormatRepository;
+    private final DateTimeFormatRepository dateTimeFormatRepository;
     private final UserService userService;
     private final UserAvatarService userAvatarService;
     private final DataDictService dataDictService;
@@ -84,12 +84,12 @@ public class AccountController {
             return ResponseEntity.ok(null);
         }
         LoginUser loginUser = LoginUser.of(userService.findByEmail(AuthUtils.getCurrentUser().getEmail()));
-        SupportedDateTimeFormat supportedDateTimeFormat = supportedDateTimeFormatRepository
+        DateTimeFormat dateTimeFormat = dateTimeFormatRepository
                 .findById(loginUser.getDateTimeFormatId())
                 .orElseThrow(() -> new DataNotFoundException(loginUser.getDateTimeFormatId()));
-        loginUser.setDateTimeFormat(supportedDateTimeFormat.getDateTimeFormat());
-        loginUser.setDateFormat(supportedDateTimeFormat.getDateFormat());
-        loginUser.setTimeFormat(supportedDateTimeFormat.getTimeFormat());
+        loginUser.setDateTimeFormat(dateTimeFormat.getDateTimeFormat());
+        loginUser.setDateFormat(dateTimeFormat.getDateFormat());
+        loginUser.setTimeFormat(dateTimeFormat.getTimeFormat());
         return ResponseEntity.ok(loginUser);
     }
 
@@ -274,9 +274,9 @@ public class AccountController {
     }
 
     @Operation(summary = "get all supported date time formats")
-    @GetMapping("/api/accounts/all-supported-date-time-formats")
-    public ResponseEntity<List<SupportedDateTimeFormat>> getSupportedDateTimeFormats() {
-        return ResponseEntity.ok(supportedDateTimeFormatRepository.findAll());
+    @GetMapping("/api/accounts/date-time-formats")
+    public ResponseEntity<List<DateTimeFormat>> getDateTimeFormats() {
+        return ResponseEntity.ok(dateTimeFormatRepository.findAll());
     }
 
     @Operation(summary = "get all messages for oauth2 client")

@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from "axios"
 import http from "@/axios"
 import type { LoginUser } from "@/stores/login-user-store"
 import { type DataDict } from "@/domains/data-dict"
-import { type SupportedDateTimeFormat } from "@/domains/supported-date-time-format"
+import { type DateTimeFormat } from "@/domains/date-time-format"
 import { SettingsFormSchema } from "@/views/account/settings/settings-form"
 import { type ChangePasswordFormSchema } from "@/domains/user-registration"
 import { type ResetPasswordFormSchema } from "@/domains/user-registration"
@@ -87,7 +87,7 @@ export class AccountService {
     return http.get("/api/accounts/all-supported-time-zones")
   }
 
-  public static findSupportedDateTimeFormats(): Promise<AxiosResponse<Array<SupportedDateTimeFormat>>> {
-    return http.get("/api/accounts/all-supported-date-time-formats")
+  public static findDateTimeFormats(): Promise<AxiosResponse<Array<DateTimeFormat>>> {
+    return http.get("/api/accounts/date-time-formats")
   }
 }

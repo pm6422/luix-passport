@@ -19,7 +19,7 @@ interface UserFormFieldsProps {
   loginUsername?: string | null
   enabledRoles: string[]
   supportedTimezones: Option[]
-  supportedDateTimeFormats: Option[]
+  dateTimeFormats: Option[]
 }
 
 export function UserFormFields({
@@ -28,7 +28,7 @@ export function UserFormFields({
   loginUsername,
   enabledRoles,
   supportedTimezones,
-  supportedDateTimeFormats
+  dateTimeFormats
 }: UserFormFieldsProps) {
   return (
     <>
@@ -114,7 +114,7 @@ export function UserFormFields({
           control={form.control}
           name="dateTimeFormatId"
           label="Date Time Format"
-          options={supportedDateTimeFormats}
+          options={dateTimeFormats}
           formItemClassName="w-full"
           required
         />

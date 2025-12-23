@@ -6,7 +6,7 @@ import { UserService } from "@/services/user-service"
 import { RoleService } from "@/services/role-service"
 import { Option } from "@/components/custom/form-field/multi-selector"
 import { type DataDict } from "@/domains/data-dict"
-import type { SupportedDateTimeFormat } from "@/domains/supported-date-time-format"
+import type { DateTimeFormat } from "@/domains/date-time-format"
 import { useLoginUserStore } from "@/stores/login-user-store"
 import { UserFormFields } from "./user-form-fields"
 
@@ -35,20 +35,20 @@ export function EditDialog({
     const [roleIdsRes, timezonesRes, dateTimeFormatsRes] = await Promise.all([
       RoleService.findAllIds(),
       AccountService.findSupportedTimezones(),
-      AccountService.findSupportedDateTimeFormats()
+      AccountService.findDateTimeFormats()
     ])
     const tzOptions = timezonesRes.data.map((item: DataDict) =>
       ({ label: "(UTC" + item.dictName + ") " + item.dictCode, value: item.dictCode }))
-    const dtfOptions = dateTimeFormatsRes.data.map((item: SupportedDateTimeFormat) =>
+    const dtfOptions = dateTimeFormatsRes.data.map((item: DateTimeFormat) =>
       ({ label: item.displayName + " (" + item.example + ")", value: item.id }))
     if (entityId) {
       const { data } = await UserService.findById(entityId)
-      return { options: { enabledRoles: roleIdsRes.data, supportedTimezones: tzOptions, supportedDateTimeFormats: dtfOptions }, entity: data }
+      return { options: { enabledRoles: roleIdsRes.data, supportedTimezones: tzOptions, dateTimeFormats: dtfOptions }, entity: data }
     }
-    return { options: { enabledRoles: roleIdsRes.data, supportedTimezones: tzOptions, supportedDateTimeFormats: dtfOptions }, entity: initialUserState }
+    return { options: { enabledRoles: roleIdsRes.data, supportedTimezones: tzOptions, dateTimeFormats: dtfOptions }, entity: initialUserState }
   }
   return (
-    <FormDialog<User, { enabledRoles: string[], supportedTimezones: Option[], supportedDateTimeFormats: Option[] }>
+    <FormDialog<User, { enabledRoles: string[], supportedTimezones: Option[], dateTimeFormats: Option[] }>
       entityName={entityName}
       id={id}
       schema={userSchema}
@@ -63,7 +63,7 @@ export function EditDialog({
           loginUsername={loginUser.username}
           enabledRoles={options.enabledRoles}
           supportedTimezones={options.supportedTimezones}
-          supportedDateTimeFormats={options.supportedDateTimeFormats}
+          dateTimeFormats={options.dateTimeFormats}
         />
       )}
     >

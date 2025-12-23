@@ -15,7 +15,7 @@ import { useLoginUserStore } from "@/stores/login-user-store"
 import { AccountService } from "@/services/account-service"
 import { getErrorMessage } from "@/lib/handle-error"
 import { isValidPhoneNumber } from "react-phone-number-input"
-import { type SupportedDateTimeFormat } from "@/domains/supported-date-time-format"
+import { type DateTimeFormat } from "@/domains/date-time-format"
 import { type DataDict } from "@/domains/data-dict"
 import { Link } from "react-router-dom"
 import { Option } from "@/components/custom/form-field/multi-selector"
@@ -38,7 +38,7 @@ export function SettingsForm() {
   const { loginUser } = useLoginUserStore()
   const [saving, setSaving] = useState(false)
   const [supportedTimezones, setSupportedTimezones] = useState(Array<Option>)
-  const [supportedDateTimeFormats, setSupportedDateTimeFormats] = useState(Array<Option>)
+  const [dateTimeFormats, setDateTimeFormats] = useState(Array<Option>)
 
   const form = useForm<SettingsFormSchema>({
     resolver: zodResolver(settingsFormSchema),
@@ -48,12 +48,12 @@ export function SettingsForm() {
   useEffect(() => {
     Promise.all([
       AccountService.findSupportedTimezones(),
-      AccountService.findSupportedDateTimeFormats()
+      AccountService.findDateTimeFormats()
     ]).then(results => {
       // load options
       setSupportedTimezones(results[0].data.map((item: DataDict) =>
         ({ label: "(UTC" + item.dictName + ") " + item.dictCode, value: item.dictCode })));
-      setSupportedDateTimeFormats(results[1].data.map((item: SupportedDateTimeFormat) =>
+      setDateTimeFormats(results[1].data.map((item: DateTimeFormat) =>
         ({ label: item.displayName + " (" + item.example + ")", value: item.id })));
 
       AccountService.getCurrentUser().then(user => {
@@ -148,7 +148,7 @@ export function SettingsForm() {
           control={form.control}
           name="dateTimeFormatId"
           label="Date Time Format"
-          options={supportedDateTimeFormats}
+          options={dateTimeFormats}
           required
         />
 

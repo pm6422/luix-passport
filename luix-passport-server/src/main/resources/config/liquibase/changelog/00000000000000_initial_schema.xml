@@ -11,7 +11,7 @@
         http://www.liquibase.org/xml/ns/pro
         http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
     <changeSet author="louislau (generated)" id="00000000000001">
-        <createTable tableName="supported_date_time_format">
+        <createTable tableName="date_time_format">
             <column name="id" type="VARCHAR(18)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -35,9 +35,9 @@
             </column>
         </createTable>
         <loadData
-            file="config/liquibase/data/supported_date_time_format.csv"
+            file="config/liquibase/data/date_time_format.csv"
             separator=";"
-            tableName="supported_date_time_format">
+            tableName="date_time_format">
         </loadData>
         <createTable tableName="oauth2_authorization">
             <column name="id" type="VARCHAR(100)">
@@ -686,8 +686,8 @@
         <addForeignKeyConstraint
                 baseTableName="user"
                 baseColumnNames="date_time_format_id"
-                constraintName="fk_user_date_time_format_supported_date_time_format_id"
-                referencedTableName="supported_date_time_format"
+                constraintName="fk_user_date_time_format"
+                referencedTableName="date_time_format"
                 referencedColumnNames="id"
                 onDelete="CASCADE"
                 onUpdate="CASCADE"/>
