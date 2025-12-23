@@ -1,262 +1,92 @@
-import { createBrowserRouter } from "react-router-dom"
-import GeneralError from "./views/errors/general-error"
-import ForbiddenError from "./views/errors/forbidden-error"
-import NotFoundError from "./views/errors/not-found-error"
-import MaintenanceError from "./views/errors/maintenance-error"
+import type { ComponentType } from "react"
+import { createBrowserRouter, type RouteObject } from "react-router-dom"
+import ForbiddenError from "@/views/errors/forbidden-error"
+import GeneralError from "@/views/errors/general-error"
+import MaintenanceError from "@/views/errors/maintenance-error"
+import NotFoundError from "@/views/errors/not-found-error"
 
-const router = createBrowserRouter([
-  // account-related routes
-  {
-    path: "/sign-in",
-    lazy: async () => ({
-      Component: (await import("./views/account/sign-in")).default
-    }),
-  },
-  {
-    path: "/sign-up",
-    lazy: async () => ({
-      Component: (await import("./views/account/sign-up")).default
-    }),
-  },
-  {
-    path: "/activate-account",
-    lazy: async () => ({
-      Component: (await import("./views/account/activate-account")).default
-    }),
-  },
-  {
-    path: "/forgot-password",
-    lazy: async () => ({
-      Component: (await import("./views/account/forgot-password")).default
-    }),
-  },
-  {
-    path: "/reset-password",
-    lazy: async () => ({
-      Component: (await import("./views/account/reset-password")).default
-    }),
-  },
+type DefaultExport<T> = { default: T }
 
-  // no-auth routes
-  {
-    path: "/",
-    lazy: async () => ({
-      Component: (await import("./layouts/no-auth-layout")).default
-    }),
-    errorElement: <GeneralError />,
-    children: [
-      {
-        index: true,
-        lazy: async () => ({
-          Component: (await import("./views/site/home")).default
-        }),
-      },
-      {
-        path: "/features",
-        lazy: async () => ({
-          Component: (await import("./views/site/features")).default
-        }),
-      },
-      {
-        path: "/docs",
-        lazy: async () => ({
-          Component: (await import("./views/site/docs")).default
-        }),
-      },
-      {
-        path: "/docs/installation",
-        lazy: async () => ({
-          Component: (await import("./views/site/docs/installation")).default
-        }),
-      },
-      {
-        path: "/docs/authentication",
-        lazy: async () => ({
-          Component: (await import("./views/site/docs/authentication")).default
-        }),
-      },
-      {
-        path: "/docs/api-reference",
-        lazy: async () => ({
-          Component: (await import("./views/site/docs/api-reference")).default
-        }),
-      },
-      {
-        path: "/terms-of-service",
-        lazy: async () => ({
-          Component: (await import("./views/site/terms-of-service")).default
-        }),
-      },
-      {
-        path: "/privacy-policy",
-        lazy: async () => ({
-          Component: (await import("./views/site/privacy-policy")).default
-        }),
-      },
-      {
-        path: "/contact-us",
-        lazy: async () => ({
-          Component: (await import("./views/site/contact-us")).default
-        }),
-      }
-    ],
-  },
+const lazyComponent = (importer: () => Promise<DefaultExport<ComponentType>>) => {
+  return async () => ({
+    Component: (await importer()).default,
+  })
+}
 
-  // auth routes
-  {
-    path: "/",
-    lazy: async () => ({
-      Component: (await import("./layouts/auth-layout")).default
-    }),
-    errorElement: <GeneralError />,
-    children: [
-      {
-        path: "console",
-        lazy: async () => ({
-          Component: (await import("./views/console")).default
-        }),
-      },
-      {
-        path: "inbox",
-        lazy: async () => ({
-          Component: (await import("@/views/inbox")).default
-        }),
-      },
-      {
-        path: "api-docs",
-        lazy: async () => ({
-          Component: (await import("@/views/api-docs")).default
-        }),
-      },
-      {
-        path: "db-schema",
-        lazy: async () => ({
-          Component: (await import("@/views/db-schema")).default
-        }),
-      },
-      {
-        path: "health-check",
-        lazy: async () => ({
-          Component: (await import("@/views/health-check")).default
-        }),
-      },
-      {
-        path: "data-dicts",
-        lazy: async () => ({
-          Component: (await import("@/views/data-dicts")).default
-        }),
-      },
-      {
-        path: "schedule-logs",
-        lazy: async () => ({
-          Component: (await import("@/views/schedule-logs")).default
-        }),
-      },
-      {
-        path: "users",
-        lazy: async () => ({
-          Component: (await import("@/views/users")).default
-        }),
-      },
-      {
-        path: "permissions",
-        lazy: async () => ({
-          Component: (await import("@/views/permissions")).default
-        }),
-      },
-      {
-        path: "roles",
-        lazy: async () => ({
-          Component: (await import("@/views/roles")).default
-        }),
-      },
-      {
-        path: "promo-codes",
-        lazy: async () => ({
-          Component: (await import("./views/promo-codes")).default
-        }),
-      },
-      {
-        path: "oauth-clients",
-        lazy: async () => ({
-          Component: (await import("@/views/auth2-clients")).default
-        }),
-      },
-      {
-        path: "teams/:teamId",
-        lazy: async () => ({
-          Component: (await import("@/views/team")).default
-        }),
-      },
+const accountRoutes: RouteObject[] = [
+  { path: "/sign-in", lazy: lazyComponent(() => import("@/views/account/sign-in")) },
+  { path: "/sign-up", lazy: lazyComponent(() => import("@/views/account/sign-up")) },
+  { path: "/activate-account", lazy: lazyComponent(() => import("@/views/account/activate-account")) },
+  { path: "/forgot-password", lazy: lazyComponent(() => import("@/views/account/forgot-password")) },
+  { path: "/reset-password", lazy: lazyComponent(() => import("@/views/account/reset-password")) },
+]
 
-      {
-        path: "tech-docs",
-        lazy: async () => ({
-          Component: (await import("@/views/site/docs")).default
-        }),
-      },
-      {
-        path: "user-overview",
-        lazy: async () => ({
-          Component: (await import("@/components/custom/display/coming-soon")).default
-        }),
-      },
-      {
-        path: "account",
-        lazy: async () => ({
-          Component: (await import("./views/account")).default
-        }),
-        errorElement: <GeneralError />,
-        children: [
-          {
-            index: true,
-            lazy: async () => ({
-              Component: (await import("./views/account/profile")).default
-            }),
-          },
-          {
-            path: "settings",
-            lazy: async () => ({
-              Component: (await import("./views/account/settings")).default
-            }),
-          },
-          {
-            path: "change-password",
-            lazy: async () => ({
-              Component: (await import("./views/account/change-password")).default
-            }),
-          },
-          {
-            path: "change-email",
-            lazy: async () => ({
-              Component: (await import("./views/account/change-email")).default
-            }),
-          },
-          {
-            path: "membership",
-            lazy: async () => ({
-              Component: (await import("./views/account/membership")).default
-            }),
-          },
-          {
-            path: "appearance",
-            lazy: async () => ({
-              Component: (await import("./views/account/appearance")).default
-            }),
-          }
-        ],
-      }
-    ],
-  },
+const publicRoutes: RouteObject = {
+  path: "/",
+  lazy: lazyComponent(() => import("@/layouts/no-auth-layout")),
+  errorElement: <GeneralError />,
+  children: [
+    { index: true, lazy: lazyComponent(() => import("@/views/site/home")) },
+    { path: "features", lazy: lazyComponent(() => import("@/views/site/features")) },
+    { path: "docs", lazy: lazyComponent(() => import("@/views/site/docs")) },
+    { path: "docs/installation", lazy: lazyComponent(() => import("@/views/site/docs/installation")) },
+    { path: "docs/authentication", lazy: lazyComponent(() => import("@/views/site/docs/authentication")) },
+    { path: "docs/api-reference", lazy: lazyComponent(() => import("@/views/site/docs/api-reference")) },
+    { path: "terms-of-service", lazy: lazyComponent(() => import("@/views/site/terms-of-service")) },
+    { path: "privacy-policy", lazy: lazyComponent(() => import("@/views/site/privacy-policy")) },
+    { path: "contact-us", lazy: lazyComponent(() => import("@/views/site/contact-us")) },
+  ],
+}
 
-  // Error routes
+const authRoutes: RouteObject = {
+  path: "/",
+  lazy: lazyComponent(() => import("@/layouts/auth-layout")),
+  errorElement: <GeneralError />,
+  children: [
+    { path: "console", lazy: lazyComponent(() => import("@/views/console")) },
+    { path: "inbox", lazy: lazyComponent(() => import("@/views/inbox")) },
+    { path: "api-docs", lazy: lazyComponent(() => import("@/views/api-docs")) },
+    { path: "db-schema", lazy: lazyComponent(() => import("@/views/db-schema")) },
+    { path: "health-check", lazy: lazyComponent(() => import("@/views/health-check")) },
+    { path: "data-dicts", lazy: lazyComponent(() => import("@/views/data-dicts")) },
+    { path: "schedule-logs", lazy: lazyComponent(() => import("@/views/schedule-logs")) },
+    { path: "users", lazy: lazyComponent(() => import("@/views/users")) },
+    { path: "permissions", lazy: lazyComponent(() => import("@/views/permissions")) },
+    { path: "roles", lazy: lazyComponent(() => import("@/views/roles")) },
+    { path: "promo-codes", lazy: lazyComponent(() => import("@/views/promo-codes")) },
+    { path: "oauth-clients", lazy: lazyComponent(() => import("@/views/auth2-clients")) },
+    { path: "teams/:teamId", lazy: lazyComponent(() => import("@/views/team")) },
+    { path: "tech-docs", lazy: lazyComponent(() => import("@/views/site/docs")) },
+    { path: "user-overview", lazy: lazyComponent(() => import("@/components/custom/display/coming-soon")) },
+    {
+      path: "account",
+      lazy: lazyComponent(() => import("@/views/account")),
+      errorElement: <GeneralError />,
+      children: [
+        { index: true, lazy: lazyComponent(() => import("@/views/account/profile")) },
+        { path: "settings", lazy: lazyComponent(() => import("@/views/account/settings")) },
+        { path: "change-password", lazy: lazyComponent(() => import("@/views/account/change-password")) },
+        { path: "change-email", lazy: lazyComponent(() => import("@/views/account/change-email")) },
+        { path: "membership", lazy: lazyComponent(() => import("@/views/account/membership")) },
+        { path: "appearance", lazy: lazyComponent(() => import("@/views/account/appearance")) },
+      ],
+    },
+  ],
+}
+
+const errorRoutes: RouteObject[] = [
   { path: "/403", Component: ForbiddenError },
   { path: "/404", Component: NotFoundError },
   { path: "/500", Component: GeneralError },
   { path: "/503", Component: MaintenanceError },
-
-  // Fallback 404 route
   { path: "*", Component: NotFoundError },
+]
+
+const router = createBrowserRouter([
+  ...accountRoutes,
+  publicRoutes,
+  authRoutes,
+  ...errorRoutes,
 ])
 
 export default router
