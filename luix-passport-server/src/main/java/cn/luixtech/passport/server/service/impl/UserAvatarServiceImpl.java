@@ -5,7 +5,7 @@ import cn.luixtech.passport.server.repository.UserAvatarRepository;
 import cn.luixtech.passport.server.service.UserAvatarService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
-import org.springframework.core.io.UrlResource;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StreamUtils;
@@ -13,13 +13,11 @@ import org.springframework.util.StreamUtils;
 import java.io.IOException;
 import java.util.Optional;
 
-import static com.luixtech.springbootframework.utils.NetworkUtils.getRequestUrl;
-
 @Service
 @AllArgsConstructor
 public class UserAvatarServiceImpl implements UserAvatarService {
-    private static final String               DEFAULT_USER_PHOTO_URL = "/assets/images/cartoon/01.png";
-    private final       UserAvatarRepository userAvatarRepository;
+    private static final String DEFAULT_USER_PHOTO_URL = "/assets/images/cartoon/01.png";
+    private final UserAvatarRepository userAvatarRepository;
 
     @Override
     public byte[] getAvatar(String username, HttpServletRequest request) throws IOException {
@@ -29,7 +27,7 @@ public class UserAvatarServiceImpl implements UserAvatarService {
         }
         // Set the default avatar
         return StreamUtils.copyToByteArray(
-                new UrlResource(getRequestUrl(request) + DEFAULT_USER_PHOTO_URL).getInputStream());
+                new ClassPathResource("static" + DEFAULT_USER_PHOTO_URL).getInputStream());
     }
 
     @Override
