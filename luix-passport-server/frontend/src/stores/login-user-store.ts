@@ -1,6 +1,5 @@
 import { create } from "zustand"
 import { isEmpty } from "lodash"
-import { createJSONStorage, persist } from "zustand/middleware"
 
 export type LoginUser = {
     username: string
@@ -31,38 +30,29 @@ interface LoginUserState {
 }
 
 export const useLoginUserStore = create<LoginUserState>()(
-    persist(
-        (set, get) => ({
-            loginUser: {} as LoginUser,
+    (set, get) => ({
+        loginUser: {} as LoginUser,
 
-            setLoginUser: (loginUser: LoginUser) => {
-                const authenticated = !isEmpty(loginUser)
-                set({
-                    loginUser: { ...loginUser, isAuthenticated: authenticated } as LoginUser,
-                })
-            },
+        setLoginUser: (loginUser: LoginUser) => {
+            const authenticated = !isEmpty(loginUser)
+            set({
+                loginUser: { ...loginUser, isAuthenticated: authenticated } as LoginUser,
+            })
+        },
 
-            hasRole: (roleId: string): boolean => {
-                const roleIds = get().loginUser?.roleIds
-                return Array.isArray(roleIds) && roleIds.includes(roleId)
-            },
+        hasRole: (roleId: string): boolean => {
+            const roleIds = get().loginUser?.roleIds
+            return Array.isArray(roleIds) && roleIds.includes(roleId)
+        },
 
-            hasRoles: (roleIds: string[], matchAll = false): boolean => {
-                const userRoleIds = get().loginUser?.roleIds
-                if (!Array.isArray(userRoleIds) || !Array.isArray(roleIds) || roleIds.length === 0) {
-                    return false
-                }
-                return matchAll
-                    ? roleIds.every(id => userRoleIds.includes(id))
-                    : roleIds.some(id => userRoleIds.includes(id))
+        hasRoles: (roleIds: string[], matchAll = false): boolean => {
+            const userRoleIds = get().loginUser?.roleIds
+            if (!Array.isArray(userRoleIds) || !Array.isArray(roleIds) || roleIds.length === 0) {
+                return false
             }
-        }),
-        {
-            name: "login-user",
-            storage: createJSONStorage(() => sessionStorage),
-            partialize: (state) => ({
-                loginUser: state.loginUser,
-            }),
+            return matchAll
+                ? roleIds.every(id => userRoleIds.includes(id))
+                : roleIds.some(id => userRoleIds.includes(id))
         }
-    )
+    })
 )

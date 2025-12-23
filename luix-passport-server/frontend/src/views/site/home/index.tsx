@@ -42,8 +42,21 @@ function SiteFooter() {
 }
 
 export default function SiteHome() {
-  const { loginUser } = useLoginUserStore()
+  const { loginUser, setLoginUser } = useLoginUserStore()
   const [unreadNotifications, setUnreadNotifications] = useState(0)
+
+  useEffect(() => {
+    let active = true
+
+    AccountService.getCurrentUser().then((currentUser) => {
+      if (!active) return
+      setLoginUser(currentUser)
+    })
+
+    return () => {
+      active = false
+    }
+  }, [setLoginUser])
 
   useEffect(() => {
     if (loginUser.isAuthenticated) {

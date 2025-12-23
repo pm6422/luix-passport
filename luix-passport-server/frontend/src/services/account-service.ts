@@ -38,7 +38,6 @@ export class AccountService {
 
   public static async signOut(): Promise<void> {
     http.post("/api/accounts/sign-out").then(() => {
-      sessionStorage.removeItem("login-user")
       // Redirect to sign-in page instead of reloading
       window.location.href = "/sign-in"
     })

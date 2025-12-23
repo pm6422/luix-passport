@@ -34,6 +34,19 @@ export function SignInForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [logoutMessage, setLogoutMessage] = useState<string | null>(null);
 
+  useEffect(() => {
+    let active = true
+
+    AccountService.getCurrentUser().then((currentUser) => {
+      if (!active) return
+      setLoginUser(currentUser)
+    })
+
+    return () => {
+      active = false
+    }
+  }, [setLoginUser])
+
   const form = useForm<SignInFormSchema>({
     resolver: zodResolver(signInformSchema),
     defaultValues: {
