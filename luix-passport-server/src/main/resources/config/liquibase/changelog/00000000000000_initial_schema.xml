@@ -35,10 +35,11 @@
             </column>
         </createTable>
         <loadData
-            file="config/liquibase/data/date_time_format.csv"
-            separator=";"
-            tableName="date_time_format">
-        </loadData>
+                file="config/liquibase/data/date_time_format.csv"
+                separator=";"
+                tableName="date_time_format"
+        />
+
         <createTable tableName="oauth2_authorization">
             <column name="id" type="VARCHAR(100)">
                 <constraints primaryKey="true" nullable="false"/>
@@ -82,6 +83,7 @@
             <column name="device_code_expires_at" type="timestamp"/>
             <column name="device_code_metadata" type="TEXT"/>
         </createTable>
+
         <createTable tableName="oauth2_authorization_consent">
             <column name="registered_client_id" type="VARCHAR(100)">
                 <constraints primaryKey="true" nullable="false"/>
@@ -93,6 +95,7 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+
         <createTable tableName="oauth2_registered_client">
             <column name="id" type="VARCHAR(18)">
                 <constraints primaryKey="true" nullable="false"/>
@@ -140,8 +143,9 @@
         <loadData
                 file="config/liquibase/data/oauth2_registered_client.csv"
                 separator=";"
-                tableName="oauth2_registered_client">
-        </loadData>
+                tableName="oauth2_registered_client"
+        />
+
         <createTable tableName="spring_session">
             <column name="PRIMARY_ID" type="CHAR(36)">
                 <constraints primaryKey="true" nullable="false"/>
@@ -163,6 +167,7 @@
             </column>
             <column name="PRINCIPAL_NAME" type="VARCHAR(100)"/>
         </createTable>
+
         <createTable tableName="spring_session_attributes">
             <column name="SESSION_PRIMARY_ID" type="CHAR(36)">
                 <constraints primaryKey="true" nullable="false"/>
@@ -174,6 +179,7 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+
         <createTable tableName="team">
             <column name="id" type="VARCHAR(18)">
                 <constraints primaryKey="true" nullable="false"/>
@@ -195,6 +201,7 @@
             <column name="created_by" type="VARCHAR(50)"/>
             <column name="updated_by" type="VARCHAR(50)"/>
         </createTable>
+
         <createTable tableName="team_user">
             <column name="id" type="VARCHAR(18)">
                 <constraints primaryKey="true" nullable="false"/>
@@ -206,6 +213,7 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+
         <createTable tableName="team_invitation">
             <column name="id" type="VARCHAR(18)">
                 <constraints primaryKey="true" nullable="false"/>
@@ -232,6 +240,7 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+
         <createTable tableName="user">
             <column name="username" type="VARCHAR(20)">
                 <constraints primaryKey="true" nullable="false"/>
@@ -288,8 +297,9 @@
         <loadData
                 file="config/liquibase/data/user.csv"
                 separator=";"
-                tableName="user">
-        </loadData>
+                tableName="user"
+        />
+
         <createTable tableName="role">
             <column name="id" type="VARCHAR(25)">
                 <constraints primaryKey="true" nullable="false"/>
@@ -308,8 +318,9 @@
         <loadData
                 file="config/liquibase/data/role.csv"
                 separator=";"
-                tableName="role">
-        </loadData>
+                tableName="role"
+        />
+
         <createTable tableName="user_role">
             <column name="id" type="VARCHAR(18)">
                 <constraints primaryKey="true" nullable="false"/>
@@ -333,8 +344,9 @@
         <loadData
                 file="config/liquibase/data/user_role.csv"
                 separator=";"
-                tableName="user_role">
-        </loadData>
+                tableName="user_role"
+        />
+
         <createTable tableName="permission">
             <column name="id" type="VARCHAR(18)">
                 <constraints primaryKey="true" nullable="false"/>
@@ -359,8 +371,9 @@
         <loadData
                 file="config/liquibase/data/permission.csv"
                 separator=";"
-                tableName="permission">
-        </loadData>
+                tableName="permission"
+        />
+
         <createTable tableName="role_permission">
             <column name="id" type="VARCHAR(18)">
                 <constraints primaryKey="true" nullable="false"/>
@@ -384,8 +397,9 @@
         <loadData
                 file="config/liquibase/data/role_permission.csv"
                 separator=";"
-                tableName="role_permission">
-        </loadData>
+                tableName="role_permission"
+        />
+
         <createTable tableName="user_avatar">
             <column name="id" type="varchar(18)">
                 <constraints primaryKey="true" nullable="false"/>
@@ -394,6 +408,7 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+
         <createTable tableName="data_dict">
             <column name="id" type="varchar(18)">
                 <constraints primaryKey="true" nullable="false"/>
@@ -422,8 +437,9 @@
         <loadData
                 file="config/liquibase/data/data_dict.csv"
                 separator=";"
-                tableName="data_dict">
-        </loadData>
+                tableName="data_dict"
+        />
+
         <createTable tableName="notification">
             <column name="id" type="VARCHAR(18)">
                 <constraints primaryKey="true" nullable="false"/>
@@ -451,8 +467,9 @@
         <loadData
                 file="config/liquibase/data/notification.csv"
                 separator=";"
-                tableName="notification">
-        </loadData>
+                tableName="notification"
+        />
+
         <createTable tableName="inbox">
             <column name="id" type="VARCHAR(18)">
                 <constraints primaryKey="true" nullable="false"/>
@@ -479,8 +496,9 @@
         <loadData
                 file="config/liquibase/data/inbox.csv"
                 separator=";"
-                tableName="inbox">
-        </loadData>
+                tableName="inbox"
+        />
+
         <createTable tableName="scheduler_lock">
             <column name="id" type="VARCHAR(128)">
                 <constraints primaryKey="true" nullable="false"/>
@@ -495,6 +513,7 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+
         <createTable tableName="schedule_log">
             <column name="id" type="VARCHAR(18)">
                 <constraints primaryKey="true" nullable="false"/>
@@ -516,6 +535,7 @@
             <column name="parameters" type="TEXT"/>
             <column name="error" type="TEXT"/>
         </createTable>
+
         <createTable tableName="job_queue">
             <column name="id" type="VARCHAR(18)">
                 <constraints primaryKey="true" nullable="false"/>
@@ -528,6 +548,7 @@
             <column name="created_at" type="timestamp"/>
             <column name="processed_at" type="timestamp"/>
         </createTable>
+
         <createTable tableName="promo_code">
             <column name="id" type="varchar(18)">
                 <constraints primaryKey="true" nullable="false"/>
@@ -557,6 +578,7 @@
             <column name="created_by" type="varchar(50)"/>
             <column name="updated_by" type="varchar(50)"/>
         </createTable>
+
         <createTable tableName="login_log">
             <column name="id" type="VARCHAR(18)">
                 <constraints primaryKey="true" nullable="false"/>
@@ -621,11 +643,13 @@
         <addUniqueConstraint
                 tableName="data_dict"
                 columnNames="category_code,dict_code"
-                constraintName="uk_data_dict_category_code_dict_code"/>
+                constraintName="uk_data_dict_category_code_dict_code"
+        />
         <addUniqueConstraint
                 tableName="inbox"
                 columnNames="receiver_id, notification_id"
-                constraintName="uk_inbox"/>
+                constraintName="uk_inbox"
+        />
 
         <addForeignKeyConstraint
                 baseTableName="team_user"
@@ -634,7 +658,8 @@
                 referencedTableName="user"
                 referencedColumnNames="username"
                 onDelete="CASCADE"
-                onUpdate="CASCADE"/>
+                onUpdate="CASCADE"
+        />
         <addForeignKeyConstraint
                 baseTableName="team_invitation"
                 baseColumnNames="team_id"
@@ -642,7 +667,8 @@
                 referencedTableName="team"
                 referencedColumnNames="id"
                 onDelete="CASCADE"
-                onUpdate="CASCADE"/>
+                onUpdate="CASCADE"
+        />
         <addForeignKeyConstraint
                 baseTableName="user_role"
                 baseColumnNames="username"
@@ -650,7 +676,8 @@
                 referencedTableName="user"
                 referencedColumnNames="username"
                 onDelete="CASCADE"
-                onUpdate="CASCADE"/>
+                onUpdate="CASCADE"
+        />
         <addForeignKeyConstraint
                 baseTableName="user_role"
                 baseColumnNames="role_id"
@@ -658,7 +685,8 @@
                 referencedTableName="role"
                 referencedColumnNames="id"
                 onDelete="CASCADE"
-                onUpdate="CASCADE"/>
+                onUpdate="CASCADE"
+        />
         <addForeignKeyConstraint
                 baseTableName="role_permission"
                 baseColumnNames="role_id"
@@ -666,7 +694,8 @@
                 referencedTableName="role"
                 referencedColumnNames="id"
                 onDelete="CASCADE"
-                onUpdate="CASCADE"/>
+                onUpdate="CASCADE"
+        />
         <addForeignKeyConstraint
                 baseTableName="role_permission"
                 baseColumnNames="permission_id"
@@ -674,7 +703,8 @@
                 referencedTableName="permission"
                 referencedColumnNames="id"
                 onDelete="CASCADE"
-                onUpdate="CASCADE"/>
+                onUpdate="CASCADE"
+        />
         <addForeignKeyConstraint
                 baseTableName="user_avatar"
                 baseColumnNames="id"
@@ -682,7 +712,8 @@
                 referencedTableName="user"
                 referencedColumnNames="username"
                 onDelete="CASCADE"
-                onUpdate="CASCADE"/>
+                onUpdate="CASCADE"
+        />
         <addForeignKeyConstraint
                 baseTableName="user"
                 baseColumnNames="date_time_format_id"
@@ -690,7 +721,8 @@
                 referencedTableName="date_time_format"
                 referencedColumnNames="id"
                 onDelete="CASCADE"
-                onUpdate="CASCADE"/>
+                onUpdate="CASCADE"
+        />
         <addForeignKeyConstraint
                 baseTableName="inbox"
                 baseColumnNames="receiver_id"
@@ -698,7 +730,8 @@
                 referencedTableName="user"
                 referencedColumnNames="username"
                 onDelete="CASCADE"
-                onUpdate="CASCADE"/>
+                onUpdate="CASCADE"
+        />
         <addForeignKeyConstraint
                 baseTableName="inbox"
                 baseColumnNames="notification_id"
@@ -706,7 +739,9 @@
                 referencedTableName="notification"
                 referencedColumnNames="id"
                 onDelete="CASCADE"
-                onUpdate="CASCADE"/>
+                onUpdate="CASCADE"
+        />
+
         <createTable tableName="security_audit_log">
             <column name="id" type="VARCHAR(18)">
                 <constraints primaryKey="true" nullable="false"/>
