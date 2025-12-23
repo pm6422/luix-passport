@@ -93,26 +93,17 @@ public class AccountController {
         return ResponseEntity.ok(loginUser);
     }
 
-    @Operation(summary = "sign in for current system")
+    @Operation(summary = "sign in with username and password")
     @PostMapping("/open-api/accounts/sign-in")
-    public ResponseEntity<Void> signIn(HttpServletRequest request,
-            @Valid @RequestBody LoginRequest loginRequest) {
-        // create an authentication token
-        UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(
-                loginRequest.getUsername(),
-                loginRequest.getPassword());
-
-        // authenticate
-        Authentication authentication = authenticationManager.authenticate(authRequest);
-
-        // save the result of authentication to the security context
+    public ResponseEntity<LoginUser> signIn(HttpServletRequest request, @Valid @RequestBody SignInRequest dto) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        // create a new session
         HttpSession session = request.getSession(true);
         session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
 
-        return ResponseEntity.ok().build();
+        return getCurrentUser();
     }
 
     @Operation(summary = "sign out current user")

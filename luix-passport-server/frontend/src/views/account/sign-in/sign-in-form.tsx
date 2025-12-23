@@ -30,7 +30,7 @@ export type SignInFormSchema = z.infer<typeof signInformSchema>
 
 export function SignInForm() {
   const navigate = useNavigate()
-  const { loginUser } = useLoginUserStore()
+  const { loginUser, setLoginUser } = useLoginUserStore()
   const [isLoading, setIsLoading] = useState(false);
   const [logoutMessage, setLogoutMessage] = useState<string | null>(null);
 
@@ -48,29 +48,26 @@ export function SignInForm() {
     }
   }, [loginUser.isAuthenticated, navigate])
 
-  const onSubmit = async (data: SignInFormSchema) => {
-    setIsLoading(true);
+  useEffect(() => {
+    // Check URL for the logout parameter (simulating Thymeleaf"s th:if="${param.logout}")
+    const params = new URLSearchParams(window.location.search)
+    setLogoutMessage(params.get("logout") ? "You have been logged out" : null)
+  }, [])
 
+  const onSubmit = (data: SignInFormSchema) => {
+    setIsLoading(true)
     toast.promise(AccountService.signIn(data), {
       loading: "Signing in...",
-      success: () => {
+      success: (currentUser) => {
+        setLoginUser(currentUser)
         setIsLoading(false)
-        window.location.href = "/";
-        return "Signed in successfully"
+        return "Sign in successful"
       },
       error: (error) => {
         setIsLoading(false)
         return getErrorMessage(error)
       }
     })
-  }
-
-  // Check URL for the logout parameter (simulating Thymeleaf"s th:if="${param.logout}")
-  if (typeof window !== "undefined") {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get("logout")) {
-      setLogoutMessage("You have been logged out");
-    }
   }
 
   return (

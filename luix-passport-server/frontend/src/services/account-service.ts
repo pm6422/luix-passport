@@ -16,23 +16,17 @@ export class AccountService {
   public static async getCurrentUser(): Promise<LoginUser> {
     try {
       const res = await axios.get<LoginUser>("/open-api/accounts/user")
-      return res.data
+      return (res.data ?? ({} as LoginUser)) as LoginUser
     } catch (_error) {
       return {} as LoginUser
     }
   }
 
-  public static async login(formData: FormData): Promise<void> {
-    return axios.post("/login", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data", // Important for form data
-      }
-    })
+  public static async signIn(model: SignInFormSchema): Promise<LoginUser> {
+    const res = await http.post<LoginUser>("/open-api/accounts/sign-in", model)
+    return res.data
   }
 
-  public static async signIn(model: SignInFormSchema): Promise<void> {
-    return http.post("/open-api/accounts/sign-in", model)
-  }
 
   public static async getAvatar(): Promise<AxiosResponse<Blob>> {
     return axios.get("/api/accounts/avatar", {

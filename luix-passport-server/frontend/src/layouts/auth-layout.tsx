@@ -21,7 +21,7 @@ export default function AuthLayout() {
     if (!loginUser.isAuthenticated) {
       navigate("/sign-in")
     }
-  }, [location, loginUser, navigate]);
+  }, [location.pathname, loginUser.isAuthenticated, navigate]);
 
   return (
     <div className="relative h-full overflow-hidden bg-background">

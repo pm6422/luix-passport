@@ -24,8 +24,8 @@ export function PendingInvitationsTable({ teamId }: PendingInvitationsTableProps
       try {
         const { data } = await TeamService.getPendingInvitations(teamId)
         setInvitations(data)
-      } catch (error) {
-        console.error(error)
+      } catch (_error) {
+        console.error(_error)
       }
     }
     loadInvitations()
@@ -56,7 +56,7 @@ export function PendingInvitationsTable({ teamId }: PendingInvitationsTableProps
       // Reload invitations data
       const { data } = await TeamService.getPendingInvitations(teamId)
       setInvitations(data)
-    } catch (error) {
+    } catch (_error) {
       toast.error("Failed to resend invitation")
     }
   }
