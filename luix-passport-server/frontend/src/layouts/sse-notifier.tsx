@@ -22,10 +22,6 @@ export function SseNotifier() {
       const eventSource = new EventSource("/api/sse-notifiers/connect")
       eventSourceRef.current = eventSource
 
-      eventSource.onopen = () => {
-        console.log("SSE connection established")
-      }
-
       eventSource.onmessage = (event) => {
         try {
           if (event.data) {

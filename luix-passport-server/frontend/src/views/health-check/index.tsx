@@ -96,9 +96,9 @@ const flattenHealthData = (
   }
 }
 
-const transformHealthData = (data: { components: Record<string, HealthComponent> }): HealthData[] => {
+const transformHealthData = (data: { components?: Record<string, HealthComponent> }): HealthData[] => {
   const response: HealthData[] = []
-  flattenHealthData(response, null, data.components)
+  flattenHealthData(response, null, data.components || {})
   return response
 }
 
