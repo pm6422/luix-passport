@@ -15,7 +15,7 @@ export class AccountService {
 
   public static async getCurrentUser(): Promise<LoginUser> {
     try {
-      const res = await http.get<LoginUser>("/api/accounts/user")
+      const res = await http.get<LoginUser>("/api/accounts")
       return (res.data ?? ({} as LoginUser)) as LoginUser
     } catch (_error) {
       return {} as LoginUser
@@ -48,7 +48,7 @@ export class AccountService {
   }
 
   public static update(model: SettingsFormSchema): Promise<void> {
-    return http.put("/api/accounts/user", model)
+    return http.put("/api/accounts", model)
   }
 
   public static sendEmailChangeVerificationCode(email: string): Promise<void> {

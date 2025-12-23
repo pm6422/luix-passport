@@ -76,19 +76,6 @@ public class AccountController {
     private final ApplicationEventPublisher applicationEventPublisher;
     private final AuthenticationManager authenticationManager;
 
-    @Operation(summary = "get the currently authenticated user")
-    @GetMapping("/api/accounts/user")
-    public ResponseEntity<LoginUser> getCurrentUser() {
-        LoginUser loginUser = LoginUser.of(userService.findByEmail(AuthUtils.getCurrentUserEmail()));
-        DateTimeFormat dateTimeFormat = dateTimeFormatRepository
-                .findById(loginUser.getDateTimeFormatId())
-                .orElseThrow(() -> new DataNotFoundException(loginUser.getDateTimeFormatId()));
-        loginUser.setDateTimeFormat(dateTimeFormat.getDateTimeFormat());
-        loginUser.setDateFormat(dateTimeFormat.getDateFormat());
-        loginUser.setTimeFormat(dateTimeFormat.getTimeFormat());
-        return ResponseEntity.ok(loginUser);
-    }
-
     @Operation(summary = "sign in with username and password")
     @PostMapping("/open-api/accounts/sign-in")
     public ResponseEntity<LoginUser> signIn(HttpServletRequest request, @Valid @RequestBody SignInRequest dto) {
@@ -102,7 +89,7 @@ public class AccountController {
         return getCurrentUser();
     }
 
-    @Operation(summary = "sign out current user")
+    @Operation(summary = "sign out the currently authenticated user")
     @PostMapping("/api/accounts/sign-out")
     public void signOut(HttpServletRequest request,
             HttpServletResponse response) {
@@ -136,8 +123,21 @@ public class AccountController {
         return ResponseEntity.ok().build();
     }
 
+    @Operation(summary = "get the currently authenticated user")
+    @GetMapping("/api/accounts")
+    public ResponseEntity<LoginUser> getCurrentUser() {
+        LoginUser loginUser = LoginUser.of(userService.findByEmail(AuthUtils.getCurrentUserEmail()));
+        DateTimeFormat dateTimeFormat = dateTimeFormatRepository
+                .findById(loginUser.getDateTimeFormatId())
+                .orElseThrow(() -> new DataNotFoundException(loginUser.getDateTimeFormatId()));
+        loginUser.setDateTimeFormat(dateTimeFormat.getDateTimeFormat());
+        loginUser.setDateFormat(dateTimeFormat.getDateFormat());
+        loginUser.setTimeFormat(dateTimeFormat.getTimeFormat());
+        return ResponseEntity.ok(loginUser);
+    }
+
     @Operation(summary = "update current user")
-    @PutMapping("/api/accounts/user")
+    @PutMapping("/api/accounts")
     public ResponseEntity<Void> update(
             @Parameter(description = "new user info", required = true) @Valid @RequestBody ManagedUser domain) {
         Validate.isTrue(AuthUtils.getCurrentUsername().equals(domain.getUsername()), "Invalid username!");
