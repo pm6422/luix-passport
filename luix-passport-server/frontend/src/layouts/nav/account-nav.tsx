@@ -48,7 +48,7 @@ export function AccountNav() {
               </Avatar>
             ) : (
               <MinusIntroY>
-                <div className="p-[2px] bg-gradient-to-tr from-cyan-400 via-blue-500 to-purple-500 rounded-full">
+                <div className="rounded-full p-[2px] bg-[conic-gradient(#4285F4_0_60deg,#34A853_60deg_120deg,#FBBC05_120deg_180deg,#EA4335_180deg_240deg,#A142F4_240deg_300deg,#00ACC1_300deg_360deg)]">
                   <Avatar className="size-12 border-2 border-background">
                     <img
                       src={imageUrl}
