@@ -272,6 +272,8 @@
             <column name="date_time_format_id" type="varchar(20)">
                 <constraints nullable="false"/>
             </column>
+            <column name="membership_type" type="varchar(50)"/>
+            <column name="membership_expires_at" type="timestamp"/>
             <column name="source" type="VARCHAR(20)"/>
             <column name="created_at" type="timestamp">
                 <constraints nullable="false"/>
@@ -282,8 +284,6 @@
                 <constraints nullable="false"/>
             </column>
             <column name="updated_by" type="VARCHAR(50)"/>
-            <column name="membership_type" type="varchar(50)"/>
-            <column name="membership_expires_at" type="timestamp"/>
         </createTable>
         <loadData
                 file="config/liquibase/data/user.csv"
