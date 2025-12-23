@@ -15,7 +15,7 @@ export class AccountService {
 
   public static async getCurrentUser(): Promise<LoginUser> {
     try {
-      const res = await axios.get<LoginUser>("/open-api/accounts/user")
+      const res = await http.get<LoginUser>("/open-api/accounts/user")
       return (res.data ?? ({} as LoginUser)) as LoginUser
     } catch (_error) {
       return {} as LoginUser

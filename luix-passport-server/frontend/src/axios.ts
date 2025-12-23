@@ -3,7 +3,8 @@ import axios, { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 
 const TIMEOUT = 60 * 1000
 
 const instance: AxiosInstance = axios.create({
-  paramsSerializer: { indexes: null }
+  paramsSerializer: { indexes: null },
+  withCredentials: true
 })
 
 instance.interceptors.request.use(
