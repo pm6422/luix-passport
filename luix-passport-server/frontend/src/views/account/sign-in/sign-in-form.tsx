@@ -32,7 +32,6 @@ export function SignInForm() {
   const navigate = useNavigate()
   const { loginUser, setLoginUser } = useLoginUserStore()
   const [isLoading, setIsLoading] = useState(false);
-  const [logoutMessage, setLogoutMessage] = useState<string | null>(null);
 
   useEffect(() => {
     let active = true
@@ -60,12 +59,6 @@ export function SignInForm() {
       navigate("/", { replace: true })
     }
   }, [loginUser.isAuthenticated, navigate])
-
-  useEffect(() => {
-    // Check URL for the logout parameter (simulating Thymeleaf"s th:if="${param.logout}")
-    const params = new URLSearchParams(window.location.search)
-    setLogoutMessage(params.get("logout") ? "You have been logged out" : null)
-  }, [])
 
   const onSubmit = (data: SignInFormSchema) => {
     setIsLoading(true)
@@ -117,13 +110,6 @@ export function SignInForm() {
         <p className="mx-4 text-sm text-muted-foreground uppercase">or continue with</p>
         <hr className="h-0 border-b border-muted grow" />
       </div>
-
-      {/* Logout messages */}
-      {logoutMessage && (
-        <div className="mb-6 p-4 text-center text-muted-foreground">
-          {logoutMessage}
-        </div>
-      )}
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-y-4">

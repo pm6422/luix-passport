@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from "axios"
+import { AxiosResponse } from "axios"
 import http from "@/axios"
 import type { LoginUser } from "@/stores/login-user-store"
 import { type DataDict } from "@/domains/data-dict"
@@ -29,9 +29,8 @@ export class AccountService {
 
 
   public static async getAvatar(): Promise<AxiosResponse<Blob>> {
-    return axios.get("/api/accounts/avatar", {
+    return http.get<Blob>("/api/accounts/avatar", {
       responseType: "blob",
-      withCredentials: true,
       timeout: 5000
     })
   }
