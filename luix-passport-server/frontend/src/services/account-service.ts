@@ -15,11 +15,21 @@ export class AccountService {
 
   public static async getCurrentUser(): Promise<LoginUser> {
     try {
-      // When unauthenticated, Spring Security intercepts this request and responds with a 302 redirect to `/login`
-      const res = await http.get<LoginUser>("/api/accounts")
-      return (res.data ?? ({} as LoginUser)) as LoginUser
+      // When unauthenticated, Spring Security intercepts this request 
+      // and responds with a 302 redirect to `/login`
+      const res = await http.get("/api/accounts", {
+        headers: { Accept: "application/json" },
+        // Treat 401 as a valid response so we can return an empty user without triggering the global 401 redirect interceptor.
+        validateStatus: (status) => status === 200 || status === 401
+      })
+
+      if (res.status === 401) {
+        return {} as LoginUser
+      }
+
+      return res.data as LoginUser
     } catch (_error) {
-      // Catch error and return empty LoginUser
+      // Catch any error and return empty LoginUser
       return {} as LoginUser
     }
   }
