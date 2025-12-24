@@ -15,6 +15,8 @@ import java.time.Instant;
 @AllArgsConstructor
 public class Oauth2RegisteredClient {
 
+    public static final String SCOPE_MESSAGE_READ = "message:read";
+
     @Id
     @GeneratedValue
     @TsidGenerator
