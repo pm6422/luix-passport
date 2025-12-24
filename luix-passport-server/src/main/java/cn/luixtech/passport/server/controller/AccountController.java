@@ -85,8 +85,7 @@ public class AccountController {
 
         HttpSession session = request.getSession(true);
         session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
-
-        return getCurrentUser();
+        return getAccount();
     }
 
     @Operation(summary = "sign out the currently authenticated user")
@@ -124,7 +123,7 @@ public class AccountController {
 
     @Operation(summary = "get the currently authenticated user")
     @GetMapping("/api/accounts")
-    public ResponseEntity<LoginUser> getCurrentUser() {
+    public ResponseEntity<LoginUser> getAccount() {
         LoginUser loginUser = LoginUser.of(userService.findByEmail(AuthUtils.getCurrentUserEmail()));
         DateTimeFormat dateTimeFormat = dateTimeFormatRepository
                 .findById(loginUser.getDateTimeFormatId())
@@ -137,7 +136,7 @@ public class AccountController {
 
     @Operation(summary = "update current user")
     @PutMapping("/api/accounts")
-    public ResponseEntity<Void> update(
+    public ResponseEntity<Void> updateAccount(
             @Parameter(description = "new user info", required = true) @Valid @RequestBody ManagedUser domain) {
         Validate.isTrue(AuthUtils.getCurrentUsername().equals(domain.getUsername()), "Invalid username!");
         domain.setEmail(null);
@@ -151,7 +150,7 @@ public class AccountController {
 
     @Operation(summary = "delete current user")
     @DeleteMapping("/api/accounts")
-    public void delete() {
+    public void deleteAccount() {
         userService.deleteByUsername(AuthUtils.getCurrentUsername());
     }
 
