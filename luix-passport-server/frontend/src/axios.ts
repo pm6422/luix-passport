@@ -24,12 +24,12 @@ instance.interceptors.response.use(
   (response: AxiosResponse) => {
     // Modify response data before resolving the promise
     // Only redirect if the response is actually coming from the login page (not just containing the string)
-    const url = response.request?.responseURL
-    if (url && (url.endsWith("/login") || url.includes("/login?")) && !url.includes("/api/")) {
-      // Redirect to login page
-      console.warn("Detected redirect to login page in response URL: ", url)
-      window.location.href = "/sign-in"
-    }
+    // const url = response.request?.responseURL
+    // if (url && (url.endsWith("/login") || url.includes("/login?")) && !url.includes("/api/")) {
+    //   // Redirect to login page
+    //   console.warn("Detected redirect to login page in response URL: ", url)
+    //   window.location.href = "/sign-in"
+    // }
     return response
   },
   (error) => {
@@ -46,8 +46,10 @@ instance.interceptors.response.use(
       window.location.href = "/403"
     } else if (status === 401) {
       // Handle 401 unauthorized error
-      console.warn("Redirecting to login due to 401")
-      window.location.href = "/sign-in"
+      if (typeof window !== "undefined" && window.location.pathname !== "/sign-in") {
+        console.warn("Redirecting to login due to 401 unauthorized error")
+        window.location.href = "/sign-in"
+      }
     } else {
       // Handle other errors
       console.error("Request failed with status: ", status, error.message)
