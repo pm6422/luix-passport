@@ -19,7 +19,7 @@ export class AccountService {
       // and responds with a 302 redirect to `/login`
       const res = await http.get("/api/accounts", {
         headers: { Accept: "application/json" },
-        // Treat 401 as a valid response so we can return an empty user without triggering the global 401 redirect interceptor.
+        // Treat 401 unauthorized error as a valid response so we can return an empty user without triggering the global 401 redirect interceptor.
         validateStatus: (status) => status === 200 || status === 401
       })
 
