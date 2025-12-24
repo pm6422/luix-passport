@@ -15,9 +15,11 @@ export class AccountService {
 
   public static async getCurrentUser(): Promise<LoginUser> {
     try {
+      // When unauthenticated, Spring Security intercepts this request and responds with a 302 redirect to `/login`
       const res = await http.get<LoginUser>("/api/accounts")
       return (res.data ?? ({} as LoginUser)) as LoginUser
     } catch (_error) {
+      // Catch error and return empty LoginUser
       return {} as LoginUser
     }
   }
