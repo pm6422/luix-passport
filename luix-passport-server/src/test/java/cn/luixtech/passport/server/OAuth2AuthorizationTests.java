@@ -39,7 +39,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static cn.luixtech.passport.server.config.AuthorizationServerConfiguration.*;
-import static cn.luixtech.passport.server.dto.Oauth2Client.SCOPE_MESSAGE_READ;
+import static cn.luixtech.passport.server.domain.Oauth2RegisteredClient.SCOPE_MESSAGE_READ;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;

@@ -6,7 +6,7 @@ import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import java.util.HashMap;
 import java.util.Map;
 
-import static cn.luixtech.passport.server.dto.Oauth2Client.SCOPE_MESSAGE_READ;
+import static cn.luixtech.passport.server.domain.Oauth2RegisteredClient.SCOPE_MESSAGE_READ;
 
 @Data
 public class ScopeWithDescription {
