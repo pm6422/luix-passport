@@ -110,7 +110,6 @@ public class WebServerSecurityConfiguration {
 					.requestMatchers(MANAGEMENT_REQUESTS).permitAll()
 					.requestMatchers("/open-api/**").permitAll()
 					.requestMatchers("/api/accounts/oauth2-server-messages").hasAuthority("SCOPE_" + SCOPE_MESSAGE_READ)
-//					.requestMatchers("/userinfo").hasAuthority("SCOPE_external:read")
 					.requestMatchers("/swagger-ui/**").hasAuthority("ROLE_DEVELOPER")
 					.requestMatchers("/v3/api-docs/**").hasAuthority("ROLE_DEVELOPER")
 					.anyRequest().authenticated()
