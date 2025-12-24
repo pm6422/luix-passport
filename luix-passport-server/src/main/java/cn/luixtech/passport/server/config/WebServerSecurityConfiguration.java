@@ -25,6 +25,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 import static cn.luixtech.passport.server.domain.Oauth2RegisteredClient.SCOPE_MESSAGE_READ;
+import static cn.luixtech.passport.server.domain.Role.ROLE_DEVELOPER;
 
 /**
  * Use org.springframework.security.crypto.password.DelegatingPasswordEncoder as default
@@ -110,8 +111,8 @@ public class WebServerSecurityConfiguration {
 					.requestMatchers(MANAGEMENT_REQUESTS).permitAll()
 					.requestMatchers("/open-api/**").permitAll()
 					.requestMatchers("/api/accounts/oauth2-server-messages").hasAuthority("SCOPE_" + SCOPE_MESSAGE_READ)
-					.requestMatchers("/swagger-ui/**").hasAuthority("ROLE_DEVELOPER")
-					.requestMatchers("/v3/api-docs/**").hasAuthority("ROLE_DEVELOPER")
+					.requestMatchers("/swagger-ui/**").hasAuthority(ROLE_DEVELOPER)
+					.requestMatchers("/v3/api-docs/**").hasAuthority(ROLE_DEVELOPER)
 					.anyRequest().authenticated()
 			)
 			.csrf(csrf-> csrf
