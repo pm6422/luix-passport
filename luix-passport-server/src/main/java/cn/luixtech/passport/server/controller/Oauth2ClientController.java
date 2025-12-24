@@ -28,6 +28,8 @@ import java.util.Optional;
 import java.util.Set;
 
 import static cn.luixtech.passport.server.domain.Role.ROLE_ADMIN;
+import static cn.luixtech.passport.server.domain.Oauth2RegisteredClient.SCOPE_EXTERNAL_READ;
+import static cn.luixtech.passport.server.domain.Oauth2RegisteredClient.SCOPE_EXTERNAL_WRITE;
 
 import static org.springframework.security.oauth2.core.AuthorizationGrantType.*;
 import static org.springframework.security.oauth2.core.ClientAuthenticationMethod.*;
@@ -139,8 +141,8 @@ public class Oauth2ClientController {
         sets.add(OidcScopes.PROFILE);
         sets.add(OidcScopes.EMAIL);
         sets.add(OidcScopes.PHONE);
-        sets.add("external:read");
-        sets.add("external:write");
+        sets.add(SCOPE_EXTERNAL_READ);
+        sets.add(SCOPE_EXTERNAL_WRITE);
         return ResponseEntity.ok(sets);
     }
 

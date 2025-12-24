@@ -16,6 +16,8 @@ import java.time.Instant;
 public class Oauth2RegisteredClient {
 
     public static final String SCOPE_MESSAGE_READ = "message:read";
+    public static final String SCOPE_EXTERNAL_READ = "external:read";
+    public static final String SCOPE_EXTERNAL_WRITE = "external:write";
 
     @Id
     @GeneratedValue
