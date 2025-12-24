@@ -91,8 +91,7 @@ public class AccountController {
 
     @Operation(summary = "sign out the currently authenticated user")
     @PostMapping("/api/accounts/sign-out")
-    public void signOut(HttpServletRequest request,
-            HttpServletResponse response) {
+    public void signOut(HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) {
             new SecurityContextLogoutHandler().logout(request, response, auth);
