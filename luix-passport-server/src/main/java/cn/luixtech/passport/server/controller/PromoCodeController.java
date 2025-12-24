@@ -6,7 +6,6 @@ import cn.luixtech.passport.server.dto.RedeemPromoCodeDto;
 import cn.luixtech.passport.server.service.PromoCodeService;
 import cn.luixtech.passport.server.utils.AuthUtils;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -20,7 +19,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 @AllArgsConstructor
-@Tag(name = "promo-codes", description = "Promo Code Management")
 public class PromoCodeController {
 
     private final PromoCodeService promoCodeService;

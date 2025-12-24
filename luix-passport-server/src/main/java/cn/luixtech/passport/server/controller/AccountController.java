@@ -235,7 +235,7 @@ public class AccountController {
 
     @Operation(summary = "upload avatar picture of the current user")
     @PostMapping(value = "/api/accounts/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public void uploadAvatarPicture(
+    public void uploadAvatar(
             @Parameter(description = "user avatar", required = true) @RequestPart MultipartFile file)
             throws IOException {
         log.info("Original file size: {} bytes ({} KB)", file.getSize(), file.getSize() / 1024);
