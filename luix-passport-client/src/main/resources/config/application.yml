@@ -30,13 +30,9 @@ management: # Management http server configuration, used by ManagementServerProp
           - liquibase
           - luixopenapigroups
   endpoint:
-    health: # used by HealthEndpointProperties, Note: it will show health details if it has the access token by Ajax
-      enabled: true
-      show-details: WHEN_AUTHORIZED
-    httptrace:
-      enabled: true
-    shutdown:
-      enabled: true # explicitly enable
+    health:
+      show-details: always
+      access: unrestricted
 spring:
   application:
     name: luix-passport-client
@@ -89,9 +85,10 @@ spring:
 logging:
   level:
     root: INFO
-    org.springframework.web: INFO
-    org.springframework.security: INFO
-    org.springframework.security.oauth2: INFO
+    '[org.springframework.web]': INFO
+    '[org.jooq.tools.LoggerListener]': DEBUG
+    '[org.springframework.security]': DEBUG
+    '[org.springframework.security.oauth2]': DEBUG
 springdoc: # https://springdoc.org/#migrating-from-springfox
   api-docs:
     enabled: true
@@ -118,7 +115,7 @@ luix:
     license-url:
   aop-logging:
     enabled: true
-    method-whitelist-mode: false
+    method-blacklist-mode: false
   elapsed-time-logging:
     enabled: true
     slow-execution-threshold: 300 # unit: ms
