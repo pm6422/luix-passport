@@ -1,0 +1,75 @@
+package com.luixtech.passport.server.controller;
+
+import com.luixtech.passport.server.domain.PromoCode;
+import com.luixtech.passport.server.dto.GeneratePromoCodeDto;
+import com.luixtech.passport.server.dto.RedeemPromoCodeDto;
+import com.luixtech.passport.server.service.PromoCodeService;
+import com.luixtech.passport.server.utils.AuthUtils;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api")
+@AllArgsConstructor
+public class PromoCodeController {
+
+    private final PromoCodeService promoCodeService;
+
+    @Operation(summary = "List promo codes")
+    @GetMapping("/admin/promo-codes")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Page<PromoCode>> find(Pageable pageable,
+            @RequestParam(required = false) String code,
+            @RequestParam(required = false) String batchId,
+            @RequestParam(required = false) Boolean enabled) {
+        return ResponseEntity.ok(promoCodeService.find(pageable, code, batchId, enabled));
+    }
+
+    @Operation(summary = "Generate promo codes")
+    @PostMapping("/admin/promo-codes/generate")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<List<PromoCode>> generate(@Valid @RequestBody GeneratePromoCodeDto dto) {
+        List<PromoCode> codes = promoCodeService.generateCodes(
+                dto.getCount(),
+                dto.getType(),
+                dto.getDurationDays(),
+                dto.getExpiry(),
+                dto.getBatchId());
+        return ResponseEntity.ok(codes);
+    }
+
+    @Operation(summary = "Redeem promo code")
+    @PostMapping("/promo-codes/redeem")
+    public ResponseEntity<Void> redeem(@Valid @RequestBody RedeemPromoCodeDto dto) {
+        String username = AuthUtils.getCurrentUsername();
+        promoCodeService.redeemCode(dto.getCode(), username);
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "Enable/Disable promo code")
+    @PatchMapping("/admin/promo-codes/{id}/enabled")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Void> updateEnabled(@PathVariable String id, @RequestParam boolean enabled) {
+        promoCodeService.updateEnabled(id, enabled);
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "Send promo code via email")
+    @PostMapping("/admin/promo-codes/{id}/send-email")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Void> sendEmail(@PathVariable String id, @RequestParam String email,
+            jakarta.servlet.http.HttpServletRequest request) {
+        String baseUrl = org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromContextPath(request)
+                .build().toUriString();
+        promoCodeService.sendEmail(id, email, baseUrl);
+        return ResponseEntity.ok().build();
+    }
+}

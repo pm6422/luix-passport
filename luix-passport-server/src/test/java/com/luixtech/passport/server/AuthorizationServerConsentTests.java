@@ -1,0 +1,123 @@
+package com.luixtech.passport.server;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.htmlunit.WebClient;
+import org.htmlunit.WebResponse;
+import org.htmlunit.html.DomElement;
+import org.htmlunit.html.HtmlCheckBoxInput;
+import org.htmlunit.html.HtmlPage;
+import jakarta.annotation.Resource;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.oauth2.core.oidc.OidcScopes;
+import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationConsentService;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.htmlunit.MockMvcWebClientBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import static com.luixtech.passport.server.domain.Oauth2RegisteredClient.SCOPE_MESSAGE_READ;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
+/**
+ * Consent screen integration tests for the sample Authorization Server.
+ */
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc
+public class AuthorizationServerConsentTests {
+    private static final String BASE_URL = "http://localhost";
+    private static final String REDIRECT_URI = "http://127.0.0.1/login/oauth2/code/messaging-client-oidc";
+    private static final String AUTHORIZATION_REQUEST_URI = UriComponentsBuilder
+            .fromUriString(BASE_URL + "/oauth2/authorize")
+            .queryParam("client_id", "messaging-client")
+            .queryParam("response_type", "code")
+            .queryParam("scope", OidcScopes.OPENID + " " + SCOPE_MESSAGE_READ)
+            .queryParam("state", "state")
+            .queryParam("redirect_uri", REDIRECT_URI)
+            .toUriString();
+    @Resource
+    private WebClient webClient;
+    @Resource
+    private MockMvc mockMvc;
+    @MockitoBean
+    private OAuth2AuthorizationConsentService authorizationConsentService;
+
+    @BeforeEach
+    public void setUp() {
+        this.webClient = MockMvcWebClientBuilder.mockMvcSetup(this.mockMvc).build();
+        this.webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
+        this.webClient.getOptions().setRedirectEnabled(true);
+        this.webClient.getOptions().setThrowExceptionOnScriptError(false);
+        this.webClient.getCookieManager().clearCookies();
+        when(this.authorizationConsentService.findById(any(), any())).thenReturn(null);
+    }
+
+    private static HtmlPage signIn(HtmlPage page, String username, String password) throws IOException {
+        org.htmlunit.html.HtmlInput usernameInput = page.querySelector("input[name='username']");
+        org.htmlunit.html.HtmlInput passwordInput = page.querySelector("input[name='password']");
+        org.htmlunit.html.HtmlButton signInButton = page.querySelector("button");
+        usernameInput.type(username);
+        passwordInput.type(password);
+        return signInButton.click();
+    }
+
+    @Test
+    @WithMockUser("user1")
+    public void whenUserConsentsToAllScopesThenReturnAuthorizationCode() throws IOException {
+        final HtmlPage loginPage = this.webClient.getPage(BASE_URL + "/login");
+        signIn(loginPage, "user", "user");
+        final HtmlPage consentPage = this.webClient.getPage(AUTHORIZATION_REQUEST_URI);
+        assertThat(consentPage.getTitleText()).isEqualTo("Passport | Authorization");
+
+        List<HtmlCheckBoxInput> scopes = new ArrayList<>();
+        consentPage.querySelectorAll("input[name='scope']").forEach(scope -> scopes.add((HtmlCheckBoxInput) scope));
+        for (HtmlCheckBoxInput scope : scopes) {
+            scope.click();
+        }
+
+        List<String> scopeIds = new ArrayList<>();
+        scopes.forEach(scope -> {
+            assertThat(scope.isChecked()).isTrue();
+            scopeIds.add(scope.getId());
+        });
+        assertThat(scopeIds).containsExactlyInAnyOrder(SCOPE_MESSAGE_READ);
+
+        DomElement submitConsentButton = consentPage.querySelector("button[id='submit-consent']");
+        this.webClient.getOptions().setRedirectEnabled(false);
+
+        WebResponse approveConsentResponse = submitConsentButton.click().getWebResponse();
+        assertThat(approveConsentResponse.getStatusCode()).isEqualTo(HttpStatus.MOVED_PERMANENTLY.value());
+        String location = approveConsentResponse.getResponseHeaderValue("location");
+        assertThat(location).startsWith(REDIRECT_URI);
+        assertThat(location).contains("code=");
+    }
+
+    @Test
+    @WithMockUser("user1")
+    public void whenUserCancelsConsentThenReturnAccessDeniedError() throws IOException {
+        final HtmlPage loginPage = this.webClient.getPage(BASE_URL + "/login");
+        signIn(loginPage, "user", "user");
+        final HtmlPage consentPage = this.webClient.getPage(AUTHORIZATION_REQUEST_URI);
+        assertThat(consentPage.getTitleText()).isEqualTo("Passport | Authorization");
+
+        DomElement cancelConsentButton = consentPage.querySelector("button[id='cancel-consent']");
+        this.webClient.getOptions().setRedirectEnabled(false);
+
+        WebResponse cancelConsentResponse = cancelConsentButton.click().getWebResponse();
+        // 禁用导致
+        assertThat(cancelConsentResponse.getStatusCode()).isEqualTo(HttpStatus.MOVED_PERMANENTLY.value());
+        String location = cancelConsentResponse.getResponseHeaderValue("location");
+        assertThat(location).startsWith(REDIRECT_URI);
+        assertThat(location).contains("error=access_denied");
+    }
+}

@@ -19,7 +19,7 @@
         <jib.registry.password/>
         <jib.registry.url/>
         <jib.registry.username/>
-        <start-class>cn.luixtech.passport.resourceserver.PassportResourceServerApplication</start-class>
+        <start-class>com.luixtech.passport.resourceserver.PassportResourceServerApplication</start-class>
     </properties>
     <dependencyManagement>
         <dependencies>

@@ -22,7 +22,7 @@
         <jib.registry.username/>
         <node.version>v24.2.0</node.version>
         <npm.version>11.3.0</npm.version>
-        <start-class>cn.luixtech.passport.server.PassportServerApplication</start-class>
+        <start-class>com.luixtech.passport.server.PassportServerApplication</start-class>
     </properties>
     <dependencyManagement>
         <dependencies>
