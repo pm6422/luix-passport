@@ -23,12 +23,10 @@ management: # Management http server configuration, used by ManagementServerProp
           - luixopenapigroups
   endpoint:
     health: # used by HealthEndpointProperties, Note: it will show health details if it has the access token by Ajax
-      enabled: true
-      show-details: WHEN_AUTHORIZED
-    httptrace:
-      enabled: true
+      show-details: when-authorized
+      access: unrestricted
     shutdown:
-      enabled: true # explicitly enable
+      access: unrestricted
 spring:
   application:
     name: luix-passport-resource-server
@@ -47,9 +45,9 @@ spring:
 logging:
   level:
     root: INFO
-    org.springframework.web: INFO
-    org.springframework.security: INFO
-    org.springframework.security.oauth2: INFO
+    '[org.springframework.web]': INFO
+    '[org.springframework.security]': INFO
+    '[org.springframework.security.oauth2]': INFO
 springdoc: # https://springdoc.org/#migrating-from-springfox
   api-docs:
     enabled: true
