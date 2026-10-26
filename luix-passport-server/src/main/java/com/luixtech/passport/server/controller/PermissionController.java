@@ -18,7 +18,15 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StreamUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -30,6 +38,7 @@ import java.util.List;
 import static com.luixtech.passport.server.domain.Role.ROLE_ADMIN;
 
 @RestController
+@RequestMapping("/api/permissions")
 @AllArgsConstructor
 @PreAuthorize("hasAuthority(\"" + ROLE_ADMIN + "\")")
 @Slf4j
@@ -38,7 +47,7 @@ public class PermissionController {
     private final PermissionService permissionService;
 
     @Operation(summary = "save permission")
-    @PostMapping("/api/permissions")
+    @PostMapping
     public ResponseEntity<Void> save(
             @Parameter(description = "domain", required = true) @Valid @RequestBody Permission domain) {
         permissionRepository.save(domain);
@@ -46,7 +55,7 @@ public class PermissionController {
     }
 
     @Operation(summary = "find permission list")
-    @GetMapping("/api/permissions")
+    @GetMapping
     public ResponseEntity<Page<Permission>> find(@ParameterObject Pageable pageable,
             @RequestParam(value = "resourceType", required = false) String resourceType,
             @RequestParam(value = "action", required = false) String action) {
@@ -55,7 +64,7 @@ public class PermissionController {
     }
 
     @Operation(summary = "find permission by id")
-    @GetMapping("/api/permissions/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Permission> findById(
             @Parameter(description = "ID", required = true) @PathVariable String id) {
         Permission domain = permissionRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
@@ -63,14 +72,14 @@ public class PermissionController {
     }
 
     @Operation(summary = "delete permission by id")
-    @DeleteMapping("/api/permissions/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@Parameter(description = "ID", required = true) @PathVariable String id) {
         permissionRepository.deleteById(id);
         return ResponseEntity.ok().build();
     }
 
     @Operation(summary = "import permissions", description = "file format should be JSON")
-    @PostMapping(value = "/api/permissions/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public void importData(@Parameter(description = "file", required = true) @RequestPart MultipartFile file)
             throws IOException {
         String jsonStr = StreamUtils.copyToString(file.getInputStream(), StandardCharsets.UTF_8);

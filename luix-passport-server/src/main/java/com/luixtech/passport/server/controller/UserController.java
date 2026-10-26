@@ -26,7 +26,15 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.time.Instant;
 import java.util.HashSet;
@@ -40,6 +48,7 @@ import static com.luixtech.springbootframework.utils.NetworkUtils.getRequestUrl;
  * REST controller for managing users.
  */
 @RestController
+@RequestMapping("/api/users")
 @AllArgsConstructor
 @PreAuthorize("hasAuthority(\"" + ROLE_ADMIN + "\")")
 @Slf4j
@@ -53,7 +62,7 @@ public class UserController {
     private final HttpHeaderCreator httpHeaderCreator;
 
     @Operation(summary = "create new user and send a user creation email")
-    @PostMapping("/api/users")
+    @PostMapping
     public ResponseEntity<Void> create(HttpServletRequest request,
             @Parameter(description = "user", required = true) @Valid @RequestBody User domain) {
         User newUser = userService.insert(domain, new HashSet<>(),
@@ -65,7 +74,7 @@ public class UserController {
     }
 
     @Operation(summary = "find user list")
-    @GetMapping("/api/users")
+    @GetMapping
     public ResponseEntity<Page<ManagedUser>> find(@ParameterObject Pageable pageable,
             @Parameter(description = "username") @RequestParam(value = "username", required = false) String username,
             @Parameter(description = "email") @RequestParam(value = "email", required = false) String email,
@@ -84,14 +93,14 @@ public class UserController {
     }
 
     @Operation(summary = "find user by id")
-    @GetMapping("/api/users/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<ManagedUser> findById(
             @Parameter(description = "ID", required = true) @PathVariable String id) {
         return ResponseEntity.ok(userService.findByUsername(id));
     }
 
     @Operation(summary = "update user")
-    @PutMapping("/api/users")
+    @PutMapping
     public ResponseEntity<Void> update(
             @Parameter(description = "new user", required = true) @Valid @RequestBody ManagedUser domain) {
         userService.update(domain);
@@ -100,14 +109,14 @@ public class UserController {
     }
 
     @Operation(summary = "delete user by id", description = "the data may be referenced by other data, and some problems may occur after deletion")
-    @DeleteMapping("/api/users/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@Parameter(description = "ID", required = true) @PathVariable String id) {
         userService.deleteByUsername(id);
         return ResponseEntity.ok().headers(httpHeaderCreator.createSuccessHeader("SM1003", id)).build();
     }
 
     @Operation(summary = "reset password to default one")
-    @PutMapping("/api/users/reset-password/{id}")
+    @PutMapping("/reset-password/{id}")
     public ResponseEntity<Void> resetPassword(@Parameter(description = "id", required = true) @PathVariable String id) {
         userService.changePassword(id, null, applicationProperties.getAccount().getDefaultPassword(), null);
         if (id.equals(AuthUtils.getCurrentUsername())) {
@@ -120,7 +129,7 @@ public class UserController {
     }
 
     @Operation(summary = "count enabled users")
-    @GetMapping("/api/users/count")
+    @GetMapping("/count")
     public ResponseEntity<Long> count(
             @Parameter(description = "since") @RequestParam(value = "since", required = false) Instant since) {
         if (since != null) {
@@ -130,7 +139,7 @@ public class UserController {
     }
 
     @Operation(summary = "cascade update username from the old to new one")
-    @PutMapping("/api/users/username")
+    @PutMapping("/username")
     @PreAuthorize("hasAuthority(\"" + ROLE_DEVELOPER + "\")")
     public ResponseEntity<Void> updateUsername(
             @Parameter(description = "oldUsername", required = true) @RequestParam(value = "oldUsername") String oldUsername,

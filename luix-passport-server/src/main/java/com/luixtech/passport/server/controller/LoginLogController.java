@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,6 +28,7 @@ import java.util.Map;
 import static com.luixtech.passport.server.domain.Role.ROLE_ADMIN;
 
 @RestController
+@RequestMapping("/api/login-logs")
 @AllArgsConstructor
 @Slf4j
 public class LoginLogController {
@@ -35,7 +37,7 @@ public class LoginLogController {
   private final LoginLogRepository loginLogRepository;
 
   @Operation(summary = "find recent login logs")
-  @GetMapping("/api/login-logs/recent")
+  @GetMapping("/recent")
   @PreAuthorize("hasAuthority(\"" + ROLE_ADMIN + "\")")
   public ResponseEntity<Page<LoginLog>> findRecentLogins(@ParameterObject Pageable pageable,
       @Parameter(description = "username") @RequestParam(value = "username", required = false) String username) {
@@ -43,7 +45,7 @@ public class LoginLogController {
   }
 
   @Operation(summary = "get login activity statistics")
-  @GetMapping("/api/login-logs/activity")
+  @GetMapping("/activity")
   @PreAuthorize("hasAuthority(\"" + ROLE_ADMIN + "\")")
   public ResponseEntity<List<Map<String, Object>>> getActivityStats(
       @Parameter(description = "days") @RequestParam(defaultValue = "7") int days) {

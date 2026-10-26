@@ -22,18 +22,31 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StreamUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 import static com.luixtech.passport.server.domain.Role.ROLE_ADMIN;
 import static com.luixtech.passport.server.domain.Role.ROLE_DEVELOPER;
 
 @RestController
+@RequestMapping("/api/data-dicts")
 @AllArgsConstructor
 @Slf4j
 public class DataDictController {
@@ -42,7 +55,7 @@ public class DataDictController {
 
     @Operation(summary = "create new data dict")
     @PreAuthorize("hasAuthority(\"" + ROLE_DEVELOPER + "\")")
-    @PostMapping("/api/data-dicts")
+    @PostMapping
     public ResponseEntity<Void> create(
             @Parameter(description = "domain", required = true) @Valid @RequestBody DataDict domain) {
         dataDictRepository.save(domain);
@@ -51,7 +64,7 @@ public class DataDictController {
 
     @Operation(summary = "find data dict list")
     @PreAuthorize("hasAuthority('" + ROLE_ADMIN + "') or hasAuthority('" + ROLE_DEVELOPER + "')")
-    @GetMapping("/api/data-dicts")
+    @GetMapping
     public ResponseEntity<Page<DataDict>> find(@ParameterObject Pageable pageable,
             @RequestParam(value = "id", required = false) String id,
             @RequestParam(value = "categoryCode", required = false) String categoryCode,
@@ -62,7 +75,7 @@ public class DataDictController {
 
     @Operation(summary = "find data dict by id")
     @PreAuthorize("hasAuthority(\"" + ROLE_DEVELOPER + "\")")
-    @GetMapping("/api/data-dicts/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<DataDict> findById(@Parameter(description = "ID", required = true) @PathVariable String id) {
         DataDict domain = dataDictRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
         return ResponseEntity.ok(domain);
@@ -70,7 +83,7 @@ public class DataDictController {
 
     @Operation(summary = "update data dict")
     @PreAuthorize("hasAuthority(\"" + ROLE_DEVELOPER + "\")")
-    @PutMapping("/api/data-dicts")
+    @PutMapping
     public ResponseEntity<Void> update(
             @Parameter(description = "domain", required = true) @Valid @RequestBody DataDict domain) {
         dataDictRepository.save(domain);
@@ -79,7 +92,7 @@ public class DataDictController {
 
     @Operation(summary = "delete data dict by id")
     @PreAuthorize("hasAuthority(\"" + ROLE_DEVELOPER + "\")")
-    @DeleteMapping("/api/data-dicts/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@Parameter(description = "ID", required = true) @PathVariable String id) {
         dataDictRepository.deleteById(id);
         return ResponseEntity.ok().build();
@@ -87,7 +100,7 @@ public class DataDictController {
 
     @Operation(summary = "import data dicts", description = "file format should be JSON")
     @PreAuthorize("hasAuthority(\"" + ROLE_DEVELOPER + "\")")
-    @PostMapping(value = "/api/data-dicts/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public void importData(@Parameter(description = "file", required = true) @RequestPart MultipartFile file)
             throws IOException {
         String jsonStr = StreamUtils.copyToString(file.getInputStream(), StandardCharsets.UTF_8);
@@ -103,7 +116,7 @@ public class DataDictController {
     }
 
     @Operation(summary = "download import template")
-    @GetMapping("/api/data-dicts/import-template")
+    @GetMapping("/import-template")
     public ResponseEntity<ByteArrayResource> getImportTemplate() {
         DataDict dataDict = dataDictRepository.findFirstByOrderByIdAsc();
         byte[] data = JSON.toJSONString(Collections.singletonList(dataDict), JSONWriter.Feature.PrettyFormat)

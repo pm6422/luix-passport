@@ -21,7 +21,16 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StreamUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -34,6 +43,7 @@ import java.util.Set;
 import static com.luixtech.passport.server.domain.Role.ROLE_ADMIN;
 
 @RestController
+@RequestMapping("/api/roles")
 @AllArgsConstructor
 @PreAuthorize("hasAuthority(\"" + ROLE_ADMIN + "\")")
 @Slf4j
@@ -44,7 +54,7 @@ public class RoleController {
     private final HttpHeaderCreator httpHeaderCreator;
 
     @Operation(summary = "create new role")
-    @PostMapping("/api/roles")
+    @PostMapping
     public ResponseEntity<Void> create(
             @Parameter(description = "domain", required = true) @Valid @RequestBody ManagedRole domain) {
         roleService.insert(domain);
@@ -52,7 +62,7 @@ public class RoleController {
     }
 
     @Operation(summary = "find role list")
-    @GetMapping("/api/roles")
+    @GetMapping
     public ResponseEntity<Page<Role>> find(@ParameterObject Pageable pageable,
             @Parameter(description = "ID") @RequestParam(value = "id", required = false) String id) {
         Page<Role> domains = roleService.find(pageable, id);
@@ -60,13 +70,13 @@ public class RoleController {
     }
 
     @Operation(summary = "find all role IDs")
-    @GetMapping("/api/roles/ids")
+    @GetMapping("/ids")
     public ResponseEntity<Set<String>> findAllIds() {
         return ResponseEntity.ok().body(roleService.findAllIds());
     }
 
     @Operation(summary = "find role by id")
-    @GetMapping("/api/roles/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<ManagedRole> findById(
             @Parameter(description = "ID", required = true) @PathVariable String id) {
         Role domain = roleRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
@@ -75,7 +85,7 @@ public class RoleController {
     }
 
     @Operation(summary = "update role")
-    @PutMapping("/api/roles")
+    @PutMapping
     public ResponseEntity<Void> update(
             @Parameter(description = "new role", required = true) @Valid @RequestBody ManagedRole domain) {
         roleService.update(domain);
@@ -83,14 +93,14 @@ public class RoleController {
     }
 
     @Operation(summary = "delete role by id")
-    @DeleteMapping("/api/roles/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@Parameter(description = "ID", required = true) @PathVariable String id) {
         roleRepository.deleteById(id);
         return ResponseEntity.ok().build();
     }
 
     @Operation(summary = "import roles", description = "file format should be JSON")
-    @PostMapping(value = "/api/roles/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public void importData(@Parameter(description = "file", required = true) @RequestPart MultipartFile file)
             throws IOException {
         String jsonStr = StreamUtils.copyToString(file.getInputStream(), StandardCharsets.UTF_8);

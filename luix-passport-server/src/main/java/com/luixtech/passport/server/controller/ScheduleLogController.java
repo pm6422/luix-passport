@@ -13,11 +13,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import static com.luixtech.passport.server.domain.Role.ROLE_DEVELOPER;
 
 @RestController
+@RequestMapping("/api/schedule-logs")
 @AllArgsConstructor
 @PreAuthorize("hasAuthority(\"" + ROLE_DEVELOPER + "\")")
 @Slf4j
@@ -26,7 +32,7 @@ public class ScheduleLogController {
     private final ScheduleLogService    scheduleLogService;
 
     @Operation(summary = "find schedule log list")
-    @GetMapping("/api/schedule-logs")
+    @GetMapping
     public ResponseEntity<Page<ScheduleLog>> find(@ParameterObject Pageable pageable,
                                                   @RequestParam(value = "scheduleName", required = false) String scheduleName,
                                                   @RequestParam(value = "status", required = false) String status) {
@@ -35,14 +41,14 @@ public class ScheduleLogController {
     }
 
     @Operation(summary = "find schedule log by id")
-    @GetMapping("/api/schedule-logs/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<ScheduleLog> findById(@Parameter(description = "ID", required = true) @PathVariable String id) {
         ScheduleLog domain = scheduleLogRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id));
         return ResponseEntity.ok(domain);
     }
 
     @Operation(summary = "delete schedule log by id")
-    @DeleteMapping("/api/schedule-logs/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@Parameter(description = "ID", required = true) @PathVariable String id) {
         scheduleLogRepository.deleteById(id);
         return ResponseEntity.ok().build();
