@@ -45,8 +45,8 @@ sdk install java 25.0.1-amzn
 
 === Backend
 * Java 25
-* Spring Boot 4.0.0
-* Spring Security OAuth2 Authorization Server 7.0.0
+* Spring Boot 4.1.0
+* Spring Security OAuth2 Authorization Server 7.1.0
 * PostgresSQL 18
 * Liquibase (Database Migration)
 * SpringDoc OpenAPI (Swagger)
