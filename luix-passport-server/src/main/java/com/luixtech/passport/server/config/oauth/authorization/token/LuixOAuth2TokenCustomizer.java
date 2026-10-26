@@ -60,6 +60,7 @@ public final class LuixOAuth2TokenCustomizer implements OAuth2TokenCustomizer<Jw
         return new HashMap<>(claims);
     }
 
+    @SuppressWarnings("null")
     private void addAuthoritiesClaim(Map<String, Object> claims, Authentication authentication) {
         if (CollectionUtils.isNotEmpty(authentication.getAuthorities())) {
             Set<String> authorities = authentication.getAuthorities().stream()

@@ -2,11 +2,9 @@ package com.luixtech.passport.server.repository;
 
 import com.luixtech.passport.server.domain.TeamUser;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
 public interface TeamUserRepository extends JpaRepository<TeamUser, String> {
 
     List<TeamUser> findByTeamId(String teamId);

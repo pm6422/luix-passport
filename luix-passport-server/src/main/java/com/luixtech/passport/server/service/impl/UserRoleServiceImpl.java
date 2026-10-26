@@ -18,6 +18,7 @@ import static com.luixtech.passport.server.domain.Role.ROLE_USER;
 
 @Service
 @AllArgsConstructor
+@SuppressWarnings("null")
 public class UserRoleServiceImpl implements UserRoleService {
 
     private final UserRoleRepository userRoleRepository;

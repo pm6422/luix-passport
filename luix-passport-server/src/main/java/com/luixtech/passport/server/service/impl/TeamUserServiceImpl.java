@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+@SuppressWarnings("null")
 public class TeamUserServiceImpl implements TeamUserService {
 
     private final TeamUserRepository teamUserRepository;

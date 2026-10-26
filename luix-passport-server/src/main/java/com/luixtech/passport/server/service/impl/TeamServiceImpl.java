@@ -37,6 +37,7 @@ import static com.luixtech.springbootframework.utils.NetworkUtils.getRequestUrl;
 @Service
 @AllArgsConstructor
 @Slf4j
+@SuppressWarnings("null")
 public class TeamServiceImpl implements TeamService {
 
   private final TeamRepository teamRepository;

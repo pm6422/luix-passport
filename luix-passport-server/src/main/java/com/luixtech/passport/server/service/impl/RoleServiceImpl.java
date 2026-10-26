@@ -26,6 +26,7 @@ import java.util.Set;
 @Service
 @AllArgsConstructor
 @Slf4j
+@SuppressWarnings("null")
 public class RoleServiceImpl implements RoleService {
     private final RoleRepository roleRepository;
     private final RolePermissionRepository rolePermissionRepository;

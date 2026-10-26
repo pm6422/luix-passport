@@ -45,6 +45,7 @@ public class ExceptionTranslatorAdvice {
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseBody
+    @SuppressWarnings("null")
     public ResponseEntity<Result<Void>> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         log.warn(ILLEGAL_ARGUMENTS_LOG, ex);
         List<ObjectError> objectErrors = ex.getBindingResult().getAllErrors();
