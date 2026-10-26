@@ -44,6 +44,11 @@
         <pluginManagement>
             <plugins>
                 <plugin>
+                    <groupId>com.google.cloud.tools</groupId>
+                    <artifactId>jib-maven-plugin</artifactId>
+                    <version>3.5.2</version>
+                </plugin>
+                <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.14.1</version>
@@ -68,7 +73,7 @@
                 <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
-                    <version>4.1.0</version>
+                    <version>${spring_boot_version}</version>
                     <configuration>
                         <mainClass>${start-class}</mainClass>
                     </configuration>
