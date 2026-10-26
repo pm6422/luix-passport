@@ -9,5 +9,5 @@ ${AnsiColor.RED}
 
 ${AnsiColor.WHITE}████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
                                             ${AnsiColor.YELLOW}:: Powered by Spring Boot ${spring-boot.version} ::
-                                            ${AnsiColor.YELLOW}:: https://passport.luixtech.cn ::
+                                            ${AnsiColor.YELLOW}:: https://passport.luixtech.com ::
                                             ${AnsiColor.YELLOW}:: Designed by ${AnsiStyle.BOLD}Louis ::${AnsiStyle.NORMAL}${AnsiColor.DEFAULT}

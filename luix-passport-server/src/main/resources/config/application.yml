@@ -145,7 +145,7 @@ luix:
     terms-of-service-url:
     contact-name: Louis
     contact-url:
-    contact-email: louis@luixtech.cn
+    contact-email: louis@luixtech.com
     license: Unlicensed
     license-url:
   aop-logging:
@@ -169,8 +169,8 @@ application:
     default-password: ${spring.application.name}
   company:
     name: Luix Passport
-    domain: https://passport.luixtech.cn
+    domain: https://passport.luixtech.com
   mail:
     resend-api-key: ${RESEND_API_KEY:use-your-resend-api-key} # https://resend.com
-    from-username: louis@luixtech.cn
+    from-username: louis@luixtech.com
     admin-email: ${luix.api-docs.contact-email}

@@ -13,7 +13,7 @@
     <packaging>pom</packaging>
     <name>luix-passport-dependencies-bom</name>
     <description>Luix Passport dependencies BOM</description>
-    <url>http://www.luixtech.cn</url>
+    <url>http://www.luixtech.com</url>
     <properties>
         <bootstrap_version>5.3.3</bootstrap_version>
         <jquery_version>3.7.1</jquery_version>

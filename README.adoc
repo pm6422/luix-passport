@@ -4,7 +4,7 @@ This project provides a standard authorization server based on https://datatrack
 
 [[website]]
 == Official Website
-https://passport.luixtech.cn
+https://passport.luixtech.com
 
 [[repository]]
 == Code Repository

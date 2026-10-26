@@ -45,7 +45,7 @@ public final class LuixOAuth2TokenCustomizer implements OAuth2TokenCustomizer<Jw
 
     private Map<String, Object> extractClaims(Authentication authentication, Set<String> authorizedScopes) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put(LuixClaimNames.COMPANY, "https://luixtech.cn");
+        claims.put(LuixClaimNames.COMPANY, "https://luixtech.com");
 
         if (authentication.getPrincipal() instanceof OidcUser oidcUser) {
             OidcIdToken idToken = oidcUser.getIdToken();
@@ -70,7 +70,8 @@ public final class LuixOAuth2TokenCustomizer implements OAuth2TokenCustomizer<Jw
         }
     }
 
-    private void addClaimsByScopes(Map<String, Object> claims, Authentication authentication, Set<String> authorizedScopes) {
+    private void addClaimsByScopes(Map<String, Object> claims, Authentication authentication,
+            Set<String> authorizedScopes) {
         Set<String> authorizedClaimNames = new HashSet<>(32);
 
         authorizedClaimNames.add(StandardClaimNames.SUB);
